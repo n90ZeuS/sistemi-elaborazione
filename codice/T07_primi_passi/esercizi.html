@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07_primi_passi/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T07_primi_passi_python.html">Dispensa</a> &bull; <a href="../../presentazioni/T07_primi_passi_python.html">Presentazione</a> &bull; <a href="esempi.html">Esempi</a></nav>
+<h1>T07_primi_passi/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F07 — Primi passi in Python</span>
+<span class="cm"># Esercizi per la lezione frontale 7</span>
+<span class="cm"># Conversioni, calcoli base, formattazione</span>
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 1: Conversione di temperatura</span>
+<span class="cm"># Convertire gradi Celsius in Fahrenheit e viceversa.</span>
+<span class="cm"># Formula: F = C * 9/5 + 32</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Conversione di temperatura ---&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">celsius_to_fahrenheit</span>(<span class="fn">celsius</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Celsius in Fahrenheit.&quot;&quot;&quot;</span>
+    fahrenheit: <span class="nb">float</span> <span class="op">=</span> celsius <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>
+    <span class="kw">return</span> fahrenheit
+
+
+<span class="kw">def</span> <span class="fn">fahrenheit_to_celsius</span>(<span class="fn">fahrenheit</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Fahrenheit in Celsius.&quot;&quot;&quot;</span>
+    celsius: <span class="nb">float</span> <span class="op">=</span> (fahrenheit <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>
+    <span class="kw">return</span> celsius
+
+
+<span class="cm"># Test di verifica</span>
+<span class="kw">assert</span> celsius_to_fahrenheit(<span class="mi">0.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">32.0</span>, <span class="st">&quot;0°C deve essere 32°F&quot;</span>
+<span class="kw">assert</span> celsius_to_fahrenheit(<span class="mi">100.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">212.0</span>, <span class="st">&quot;100°C deve essere 212°F&quot;</span>
+<span class="kw">assert</span> celsius_to_fahrenheit(<span class="op">-</span><span class="mi">40.0</span>) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">40.0</span>, <span class="st">&quot;-40°C deve essere -40°F&quot;</span>
+
+<span class="kw">assert</span> fahrenheit_to_celsius(<span class="mi">32.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0.0</span>
+<span class="kw">assert</span> fahrenheit_to_celsius(<span class="mi">212.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">100.0</span>
+<span class="kw">assert</span> fahrenheit_to_celsius(<span class="op">-</span><span class="mi">40.0</span>) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">40.0</span>
+
+<span class="cm"># Andata e ritorno: la conversione deve essere reversibile</span>
+temp_originale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">36.6</span>
+temp_convertita: <span class="nb">float</span> <span class="op">=</span> fahrenheit_to_celsius(celsius_to_fahrenheit(temp_originale))
+<span class="kw">assert</span> <span class="nb">abs</span>(temp_convertita <span class="op">-</span> temp_originale) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>, <span class="st">&quot;La conversione deve essere reversibile&quot;</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  0°C = {celsius_to_fahrenheit(0.0):.1f}°F&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  100°C = {celsius_to_fahrenheit(100.0):.1f}°F&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  36.6°C = {celsius_to_fahrenheit(36.6):.1f}°F&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  98.6°F = {fahrenheit_to_celsius(98.6):.1f}°C&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 1 superato!\n&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 2: Calcolo dell&#x27;area di figure geometriche</span>
+<span class="cm"># Calcolare area e perimetro di rettangolo, cerchio e triangolo.</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Area di figure geometriche ---&quot;</span>)
+
+<span class="kw">import</span> math
+
+
+<span class="kw">def</span> <span class="fn">area_rettangolo</span>(<span class="fn">base</span>: <span class="nb">float</span>, altezza: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;area di un rettangolo.&quot;&quot;&quot;</span>
+    area: <span class="nb">float</span> <span class="op">=</span> base <span class="op">*</span> altezza
+    <span class="kw">return</span> area
+
+
+<span class="kw">def</span> <span class="fn">perimetro_rettangolo</span>(<span class="fn">base</span>: <span class="nb">float</span>, altezza: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola il perimetro di un rettangolo.&quot;&quot;&quot;</span>
+    perimetro: <span class="nb">float</span> <span class="op">=</span> <span class="mi">2</span> <span class="op">*</span> (base <span class="op">+</span> altezza)
+    <span class="kw">return</span> perimetro
+
+
+<span class="kw">def</span> <span class="fn">area_cerchio</span>(<span class="fn">raggio</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;area di un cerchio.&quot;&quot;&quot;</span>
+    area: <span class="nb">float</span> <span class="op">=</span> math.pi <span class="op">*</span> raggio <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+    <span class="kw">return</span> area
+
+
+<span class="kw">def</span> <span class="fn">circonferenza_cerchio</span>(<span class="fn">raggio</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la circonferenza di un cerchio.&quot;&quot;&quot;</span>
+    circ: <span class="nb">float</span> <span class="op">=</span> <span class="mi">2</span> <span class="op">*</span> math.pi <span class="op">*</span> raggio
+    <span class="kw">return</span> circ
+
+
+<span class="kw">def</span> <span class="fn">area_triangolo</span>(<span class="fn">base</span>: <span class="nb">float</span>, altezza: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;area di un triangolo.&quot;&quot;&quot;</span>
+    area: <span class="nb">float</span> <span class="op">=</span> base <span class="op">*</span> altezza <span class="op">/</span> <span class="mi">2</span>
+    <span class="kw">return</span> area
+
+
+<span class="cm"># Test rettangolo</span>
+<span class="kw">assert</span> area_rettangolo(<span class="mi">5.0</span>, <span class="mi">3.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">15.0</span>
+<span class="kw">assert</span> perimetro_rettangolo(<span class="mi">5.0</span>, <span class="mi">3.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">16.0</span>
+
+<span class="cm"># Test cerchio (con tolleranza per confronti con float)</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(area_cerchio(<span class="mi">1.0</span>) <span class="op">-</span> math.pi) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(area_cerchio(<span class="mi">10.0</span>) <span class="op">-</span> <span class="mi">314.159265</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">3</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(circonferenza_cerchio(<span class="mi">1.0</span>) <span class="op">-</span> <span class="mi">2</span> <span class="op">*</span> math.pi) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>
+
+<span class="cm"># Test triangolo</span>
+<span class="kw">assert</span> area_triangolo(<span class="mi">6.0</span>, <span class="mi">4.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">12.0</span>
+<span class="kw">assert</span> area_triangolo(<span class="mi">10.0</span>, <span class="mi">5.0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">25.0</span>
+
+<span class="cm"># Stampa formattata dei risultati</span>
+base_r: <span class="nb">float</span> <span class="op">=</span> <span class="mi">8.5</span>
+alt_r: <span class="nb">float</span> <span class="op">=</span> <span class="mi">4.2</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Rettangolo {base_r} x {alt_r}:&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    Area = {area_rettangolo(base_r, alt_r):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    Perimetro = {perimetro_rettangolo(base_r, alt_r):.2f}&quot;</span>)
+
+raggio: <span class="nb">float</span> <span class="op">=</span> <span class="mi">5.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Cerchio raggio = {raggio}:&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    Area = {area_cerchio(raggio):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    Circonferenza = {circonferenza_cerchio(raggio):.2f}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 2 superato!\n&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 3: Calcolo del BMI (Indice di Massa Corporea)</span>
+<span class="cm"># BMI = peso_kg / altezza_m^2</span>
+<span class="cm"># Classificazione:</span>
+<span class="cm">#   &lt; 18.5  → Sottopeso</span>
+<span class="cm">#   18.5-24.9 → Normopeso</span>
+<span class="cm">#   25.0-29.9 → Sovrappeso</span>
+<span class="cm">#   &gt;= 30.0   → Obesita&#x27;</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Calcolo del BMI ---&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">calcola_bmi</span>(<span class="fn">peso_kg</span>: <span class="nb">float</span>, altezza_m: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;indice di massa corporea.&quot;&quot;&quot;</span>
+    bmi: <span class="nb">float</span> <span class="op">=</span> peso_kg <span class="op">/</span> (altezza_m <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+    <span class="kw">return</span> <span class="nb">round</span>(bmi, <span class="mi">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">classifica_bmi</span>(<span class="fn">bmi</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce la classificazione del BMI come stringa.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> bmi <span class="op">&lt;</span> <span class="mi">18.5</span>:
+        categoria: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Sottopeso&quot;</span>
+    <span class="kw">elif</span> bmi <span class="op">&lt;</span> <span class="mi">25.0</span>:
+        categoria <span class="op">=</span> <span class="st">&quot;Normopeso&quot;</span>
+    <span class="kw">elif</span> bmi <span class="op">&lt;</span> <span class="mi">30.0</span>:
+        categoria <span class="op">=</span> <span class="st">&quot;Sovrappeso&quot;</span>
+    <span class="kw">else</span>:
+        categoria <span class="op">=</span> <span class="st">&quot;Obesita&#x27;&quot;</span>
+    <span class="kw">return</span> categoria
+
+
+<span class="kw">def</span> <span class="fn">report_bmi</span>(<span class="fn">peso_kg</span>: <span class="nb">float</span>, altezza_m: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Genera un report completo del BMI.&quot;&quot;&quot;</span>
+    bmi: <span class="nb">float</span> <span class="op">=</span> calcola_bmi(peso_kg, altezza_m)
+    categoria: <span class="nb">str</span> <span class="op">=</span> classifica_bmi(bmi)
+    report: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;Peso: {peso_kg} kg, Altezza: {altezza_m} m → BMI: {bmi} ({categoria})&quot;</span>
+    <span class="kw">return</span> report
+
+
+<span class="cm"># Test BMI</span>
+<span class="kw">assert</span> calcola_bmi(<span class="mi">70.0</span>, <span class="mi">1.75</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">22.9</span>
+<span class="kw">assert</span> calcola_bmi(<span class="mi">50.0</span>, <span class="mi">1.70</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">17.3</span>
+<span class="kw">assert</span> calcola_bmi(<span class="mi">95.0</span>, <span class="mi">1.70</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">32.9</span>
+
+<span class="cm"># Test classificazione</span>
+<span class="kw">assert</span> classifica_bmi(<span class="mi">17.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Sottopeso&quot;</span>
+<span class="kw">assert</span> classifica_bmi(<span class="mi">22.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Normopeso&quot;</span>
+<span class="kw">assert</span> classifica_bmi(<span class="mi">27.5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Sovrappeso&quot;</span>
+<span class="kw">assert</span> classifica_bmi(<span class="mi">35.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Obesita&#x27;&quot;</span>
+
+<span class="cm"># Test casi limite</span>
+<span class="kw">assert</span> classifica_bmi(<span class="mi">18.5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Normopeso&quot;</span>
+<span class="kw">assert</span> classifica_bmi(<span class="mi">25.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Sovrappeso&quot;</span>
+<span class="kw">assert</span> classifica_bmi(<span class="mi">30.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Obesita&#x27;&quot;</span>
+
+<span class="cm"># Stampa report per diversi soggetti</span>
+soggetti: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">float</span>, <span class="nb">float</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Anna&quot;</span>, <span class="mi">55.0</span>, <span class="mi">1.65</span>),
+    (<span class="st">&quot;Marco&quot;</span>, <span class="mi">80.0</span>, <span class="mi">1.80</span>),
+    (<span class="st">&quot;Giulia&quot;</span>, <span class="mi">48.0</span>, <span class="mi">1.70</span>),
+    (<span class="st">&quot;Luca&quot;</span>, <span class="mi">105.0</span>, <span class="mi">1.78</span>),
+]
+
+<span class="kw">for</span> nome, peso, altezza <span class="kw">in</span> soggetti:
+    bmi_val: <span class="nb">float</span> <span class="op">=</span> calcola_bmi(peso, altezza)
+    cat: <span class="nb">str</span> <span class="op">=</span> classifica_bmi(bmi_val)
+    <span class="nb">print</span>(<span class="st">f&quot;  {nome:&gt;8}: peso={peso:.0f}kg, h={altezza:.2f}m → BMI={bmi_val:.1f} ({cat})&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 3 superato!\n&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 4 (Bonus): Statistiche base di un dataset</span>
+<span class="cm"># Calcolare media, minimo e massimo di una lista di voti.</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4 (Bonus): Statistiche base ---&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">media_voti</span>(<span class="fn">voti</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica di una lista di voti.&quot;&quot;&quot;</span>
+    somma: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(voti)
+    risultato: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
+    <span class="kw">return</span> <span class="nb">round</span>(risultato, <span class="mi">2</span>)
+
+
+<span class="kw">def</span> <span class="fn">report_statistico</span>(<span class="fn">voti</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Genera un report statistico di base per una lista di voti.&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(voti)
+    med: <span class="nb">float</span> <span class="op">=</span> media_voti(voti)
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(voti)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(voti)
+    report: <span class="nb">str</span> <span class="op">=</span> (
+        <span class="st">f&quot;n={n}, media={med:.2f}, min={minimo:.1f}, max={massimo:.1f}&quot;</span>
+    )
+    <span class="kw">return</span> report
+
+
+<span class="cm"># Dati di test: voti di un esame</span>
+voti_esame: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">28.0</span>, <span class="mi">30.0</span>, <span class="mi">25.0</span>, <span class="mi">18.0</span>, <span class="mi">27.0</span>, <span class="mi">30.0</span>, <span class="mi">22.0</span>, <span class="mi">26.0</span>]
+
+<span class="kw">assert</span> media_voti(voti_esame) <span class="op">=</span><span class="op">=</span> <span class="mi">25.75</span>
+<span class="kw">assert</span> <span class="nb">min</span>(voti_esame) <span class="op">=</span><span class="op">=</span> <span class="mi">18.0</span>
+<span class="kw">assert</span> <span class="nb">max</span>(voti_esame) <span class="op">=</span><span class="op">=</span> <span class="mi">30.0</span>
+
+<span class="cm"># Voti con un solo elemento</span>
+<span class="kw">assert</span> media_voti([<span class="mi">30.0</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">30.0</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  Voti: {voti_esame}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  {report_statistico(voti_esame)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 4 superato!\n&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">&quot;Tutti gli esercizi F07 completati con successo!&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

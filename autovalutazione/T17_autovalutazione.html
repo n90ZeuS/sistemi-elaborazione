@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autovalutazione — T17: NumPy, Pandas e visualizzazione — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/T17_numpy_pandas_visualizzazione.html">Dispensa</a> &bull; <a href="../errori_comuni/T17_errori.html">Errori comuni</a></nav>
+<h1>Autovalutazione — T17: NumPy, Pandas e visualizzazione</h1>
+
+<h1>Autovalutazione — T17: NumPy e Pandas</h1>
+<p>Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere <strong>prima</strong> di guardare la soluzione.</p>
+<hr>
+<h2>Cosa stampa questo codice?</h2>
+<h3>Esercizio 1</h3>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+a <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>])
+b <span class="op">=</span> np.array([<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">40</span>])
+<span class="nb">print</span>(a <span class="op">+</span> b)
+<span class="nb">print</span>(a <span class="op">*</span> b)
+<span class="nb">print</span>(a <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">11</span> <span class="mi">22</span> <span class="mi">33</span> <span class="mi">44</span>]
+[ <span class="mi">10</span>  <span class="mi">40</span>  <span class="mi">90</span> <span class="mi">160</span>]
+[ <span class="mi">1</span>  <span class="mi">4</span>  <span class="mi">9</span> <span class="mi">16</span>]</code></pre>
+<p><strong>Spiegazione:</strong> A differenza delle liste Python, le operazioni sugli array NumPy sono <strong>elemento per elemento</strong> (element-wise):</p>
+<ul>
+<li><code>a + b</code> somma ogni elemento di <code>a</code> con l'elemento corrispondente di <code>b</code>.</li>
+<li><code>a * b</code> moltiplica elemento per elemento.</li>
+<li><code>a ** 2</code> eleva al quadrato ogni elemento.</li>
+</ul>
+<p>Questo e' molto diverso dal comportamento delle liste, dove <code>+</code> concatena e <code>*</code> ripete.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 2</h3>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+matrice <span class="op">=</span> np.array([[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>],
+                    [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]])
+
+<span class="nb">print</span>(matrice <span class="op">+</span> <span class="mi">10</span>)
+<span class="nb">print</span>()
+<span class="nb">print</span>(matrice <span class="op">*</span> np.array([<span class="mi">1</span>, <span class="mi">0</span>, <span class="mi">1</span>]))</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[[<span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span>]
+ [<span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span>]]
+
+[[<span class="mi">1</span> <span class="mi">0</span> <span class="mi">3</span>]
+ [<span class="mi">4</span> <span class="mi">0</span> <span class="mi">6</span>]]</code></pre>
+<p><strong>Spiegazione:</strong> Questo e' il <strong>broadcasting</strong> di NumPy:</p>
+<ul>
+<li><code>matrice + 10</code>: lo scalare <code>10</code> viene "espanso" per essere sommato a ogni elemento della matrice.</li>
+<li><code>matrice * np.array([1, 0, 1])</code>: l'array <code>[1, 0, 1]</code> ha 3 elementi come le colonne della matrice. Viene moltiplicato per ogni riga. La seconda colonna viene azzerata (moltiplicata per 0).</li>
+</ul>
+<p>Il broadcasting permette operazioni tra array di forme diverse, seguendo regole precise.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 3</h3>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+dati <span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>],
+        <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>],
+        <span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>, <span class="st">&quot;Stat&quot;</span>]}
+df <span class="op">=</span> pd.DataFrame(dati)
+
+<span class="nb">print</span>(df[df[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">27</span>])
+<span class="nb">print</span>()
+<span class="nb">print</span>(df[<span class="st">&quot;nome&quot;</span>].values)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>    nome  voto corso
+<span class="mi">0</span>  Alice    <span class="mi">28</span>  Stat
+<span class="mi">2</span>  Carla    <span class="mi">30</span>  Stat
+
+[<span class="st">&#x27;Alice&#x27;</span> <span class="st">&#x27;Bob&#x27;</span> <span class="st">&#x27;Carla&#x27;</span>]</code></pre>
+<p><strong>Spiegazione:</strong></p>
+<ul>
+<li><code>df["voto"] >= 27</code> crea una Serie booleana: <code>[True, False, True]</code>. Usata come filtro su <code>df</code>, restituisce solo le righe dove la condizione e' vera (Alice e Carla).</li>
+<li><code>df["nome"].values</code> restituisce i valori della colonna "nome" come array NumPy. Notate che gli indici originali (0 e 2) vengono mantenuti nel DataFrame filtrato.</li>
+</ul>
+<p></details></p>
+<hr>
+<h3>Esercizio 4</h3>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+a <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+b <span class="op">=</span> a
+b[<span class="mi">0</span>] <span class="op">=</span> <span class="mi">99</span>
+<span class="nb">print</span>(a)
+
+c <span class="op">=</span> a.copy()
+c[<span class="mi">1</span>] <span class="op">=</span> <span class="mi">88</span>
+<span class="nb">print</span>(a)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">99</span>  <span class="mi">2</span>  <span class="mi">3</span>]
+[<span class="mi">99</span>  <span class="mi">2</span>  <span class="mi">3</span>]</code></pre>
+<p><strong>Spiegazione:</strong> Come per le liste, <code>b = a</code> crea un <strong>alias</strong>: <code>a</code> e <code>b</code> puntano allo stesso array. Modificare <code>b[0]</code> modifica anche <code>a</code>. Invece <code>c = a.copy()</code> crea una <strong>copia indipendente</strong>: modificare <code>c[1]</code> non influenza <code>a</code>. Questo comportamento e' identico a quello visto con le liste Python.</p>
+<p></details></p>
+<hr>
+<h2>Trova l'errore</h2>
+<h3>Esercizio 5</h3>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+a <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+b <span class="op">=</span> np.array([<span class="mi">4</span>, <span class="mi">5</span>])
+c <span class="op">=</span> a <span class="op">+</span> b
+<span class="nb">print</span>(c)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>ValueError: operands could not be broadcast together with shapes (3,) (2,)</code></p>
+<p><strong>Problema:</strong> Il broadcasting di NumPy ha regole precise. Due array possono essere sommati solo se le loro dimensioni sono compatibili. Un array di 3 elementi e uno di 2 elementi non sono compatibili: non c'e' modo di "allinearli" elemento per elemento.</p>
+<p><strong>Correzione (dipende dall'intento):</strong></p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Opzione 1: assicurarsi che abbiano la stessa lunghezza</span>
+a <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+b <span class="op">=</span> np.array([<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>])
+<span class="nb">print</span>(a <span class="op">+</span> b)  <span class="cm"># [5 7 9]</span>
+
+<span class="cm"># Opzione 2: usare il padding se serve</span>
+a <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+b <span class="op">=</span> np.array([<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">0</span>])  <span class="cm"># aggiungiamo uno 0</span>
+<span class="nb">print</span>(a <span class="op">+</span> b)  <span class="cm"># [5 7 3]</span></code></pre>
+<p><strong>Lezione:</strong> Prima di fare operazioni tra array, verificate le forme con <code>.shape</code>. Le regole del broadcasting richiedono che le dimensioni siano uguali o che una delle due sia 1.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 6</h3>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>],
+    <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>]
+})
+
+<span class="cm"># Vogliamo il voto di Bob</span>
+<span class="nb">print</span>(df[<span class="st">&quot;Bob&quot;</span>])</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>KeyError: 'Bob'</code></p>
+<p><strong>Problema:</strong> <code>df["Bob"]</code> cerca una <strong>colonna</strong> chiamata "Bob", non una riga. In Pandas, <code>df[...]</code> con una stringa accede alle colonne, non alle righe.</p>
+<p><strong>Correzione:</strong></p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>],
+    <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>]
+})
+
+<span class="cm"># Metodo 1: filtrare con condizione booleana</span>
+<span class="nb">print</span>(df[df[<span class="st">&quot;nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Bob&quot;</span>])
+<span class="cm">#   nome  voto</span>
+<span class="cm"># 1  Bob    24</span>
+
+<span class="cm"># Metodo 2: usare .loc con un indice personalizzato</span>
+df_indicizzato <span class="op">=</span> df.set_index(<span class="st">&quot;nome&quot;</span>)
+<span class="nb">print</span>(df_indicizzato.loc[<span class="st">&quot;Bob&quot;</span>])
+<span class="cm"># voto    24</span>
+<span class="cm"># Name: Bob, dtype: int64</span></code></pre>
+<p><strong>Lezione:</strong> In Pandas, <code>df["..."]</code> seleziona <strong>colonne</strong>. Per selezionare <strong>righe</strong>, usate <code>df.loc[...]</code> (per etichette) o <code>df.iloc[...]</code> (per posizione numerica), oppure filtrate con condizioni booleane.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 7</h3>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+interi <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+risultato <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]) <span class="op">/</span> <span class="mi">2</span>
+<span class="nb">print</span>(risultato)
+<span class="nb">print</span>(risultato.dtype)
+
+misto <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="st">&quot;tre&quot;</span>])
+<span class="nb">print</span>(misto)
+<span class="nb">print</span>(misto.dtype)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">0.5</span> <span class="mi">1.</span>  <span class="mi">1.5</span>]
+float64
+[<span class="st">&#x27;1&#x27;</span> <span class="st">&#x27;2&#x27;</span> <span class="st">&#x27;tre&#x27;</span>]
+<span class="op">&lt;</span>U21</code></pre>
+<p><strong>Problema illustrato (dtype promotion):</strong></p>
+<ul>
+<li>La divisione <code>/</code> converte automaticamente gli interi in float: il risultato e' <code>float64</code> anche se gli input erano interi.</li>
+<li>Quando un array contiene tipi misti (numeri e stringhe), NumPy converte <strong>tutto</strong> al tipo piu' generale. <code>1</code> e <code>2</code> diventano le stringhe <code>'1'</code> e <code>'2'</code>. Il dtype <code><U21</code> significa "stringa Unicode fino a 21 caratteri".</li>
+</ul>
+<p><strong>Attenzione:</strong> Con l'array misto, operazioni numeriche come <code>misto + 1</code> causerebbero un errore, perche' non si puo' sommare 1 a una stringa. Assicuratevi che i vostri array contengano dati omogenei.</p>
+<p></details></p>
+<hr>
+<h2>Completa il codice</h2>
+<h3>Esercizio 8</h3>
+<p>Completa la funzione che usa NumPy per calcolare statistiche base di un dataset.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">statistiche_array</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Calcola statistiche descrittive di un array numerico.
+
+    Args:
+        dati: lista o array di numeri.
+
+    Returns:
+        Dizionario con media, mediana, deviazione standard, minimo e massimo.
+    &quot;&quot;&quot;</span>
+    arr <span class="op">=</span> np.array(dati)
+
+    <span class="cm"># --- COMPLETA: calcola le statistiche usando funzioni NumPy ---</span>
+    <span class="kw">return</span> {
+        <span class="st">&quot;media&quot;</span>: ???,
+        <span class="st">&quot;mediana&quot;</span>: ???,
+        <span class="st">&quot;dev_std&quot;</span>: ???,
+        <span class="st">&quot;minimo&quot;</span>: ???,
+        <span class="st">&quot;massimo&quot;</span>: ???
+    }
+
+<span class="cm"># Test</span>
+risultato <span class="op">=</span> statistiche_array([<span class="mi">4</span>, <span class="mi">8</span>, <span class="mi">15</span>, <span class="mi">16</span>, <span class="mi">23</span>, <span class="mi">42</span>])
+<span class="kw">for</span> chiave, valore <span class="kw">in</span> risultato.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{chiave}: {valore:.2f}&quot;</span>)
+<span class="cm"># Output atteso:</span>
+<span class="cm"># media: 18.00</span>
+<span class="cm"># mediana: 15.50</span>
+<span class="cm"># dev_std: 12.66</span>
+<span class="cm"># minimo: 4.00</span>
+<span class="cm"># massimo: 42.00</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la soluzione</summary></p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">statistiche_array</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Calcola statistiche descrittive di un array numerico.
+
+    Args:
+        dati: lista o array di numeri.
+
+    Returns:
+        Dizionario con media, mediana, deviazione standard, minimo e massimo.
+    &quot;&quot;&quot;</span>
+    arr <span class="op">=</span> np.array(dati)
+
+    <span class="kw">return</span> {
+        <span class="st">&quot;media&quot;</span>: np.mean(arr),
+        <span class="st">&quot;mediana&quot;</span>: np.median(arr),
+        <span class="st">&quot;dev_std&quot;</span>: np.std(arr),
+        <span class="st">&quot;minimo&quot;</span>: np.<span class="nb">min</span>(arr),
+        <span class="st">&quot;massimo&quot;</span>: np.<span class="nb">max</span>(arr)
+    }
+
+risultato <span class="op">=</span> statistiche_array([<span class="mi">4</span>, <span class="mi">8</span>, <span class="mi">15</span>, <span class="mi">16</span>, <span class="mi">23</span>, <span class="mi">42</span>])
+<span class="kw">for</span> chiave, valore <span class="kw">in</span> risultato.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{chiave}: {valore:.2f}&quot;</span>)</code></pre>
+<p><strong>Spiegazione:</strong> NumPy fornisce funzioni ottimizzate per le statistiche:</p>
+<ul>
+<li><code>np.mean()</code> calcola la media aritmetica.</li>
+<li><code>np.median()</code> calcola la mediana (valore centrale).</li>
+<li><code>np.std()</code> calcola la deviazione standard (popolazione, non campionaria).</li>
+<li><code>np.min()</code> e <code>np.max()</code> trovano il minimo e il massimo.</li>
+</ul>
+<p>Queste funzioni sono molto piu' veloci dei corrispondenti Python puro su grandi dataset.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 9</h3>
+<p>Completa la funzione che crea un DataFrame e risponde a una domanda sui dati.</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">analisi_esami</span>(<span class="fn">nomi</span>, voti, corsi):
+    <span class="st">&quot;&quot;&quot;Crea un DataFrame e calcola la media per corso.
+
+    Args:
+        nomi: lista di nomi studenti.
+        voti: lista di voti.
+        corsi: lista di nomi dei corsi.
+
+    Returns:
+        Serie Pandas con la media dei voti per ogni corso.
+    &quot;&quot;&quot;</span>
+    <span class="cm"># --- COMPLETA: crea il DataFrame ---</span>
+
+    <span class="cm"># --- COMPLETA: calcola la media raggruppando per corso ---</span>
+
+<span class="cm"># Test</span>
+nomi <span class="op">=</span> [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Diana&quot;</span>, <span class="st">&quot;Eva&quot;</span>, <span class="st">&quot;Franco&quot;</span>]
+voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">25</span>]
+corsi <span class="op">=</span> [<span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>]
+
+risultato <span class="op">=</span> analisi_esami(nomi, voti, corsi)
+<span class="nb">print</span>(risultato)
+<span class="cm"># Output atteso:</span>
+<span class="cm"># corso</span>
+<span class="cm"># Info    23.666667</span>
+<span class="cm"># Stat    28.333333</span>
+<span class="cm"># Name: voto, dtype: float64</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la soluzione</summary></p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="kw">def</span> <span class="fn">analisi_esami</span>(<span class="fn">nomi</span>, voti, corsi):
+    <span class="st">&quot;&quot;&quot;Crea un DataFrame e calcola la media per corso.
+
+    Args:
+        nomi: lista di nomi studenti.
+        voti: lista di voti.
+        corsi: lista di nomi dei corsi.
+
+    Returns:
+        Serie Pandas con la media dei voti per ogni corso.
+    &quot;&quot;&quot;</span>
+    df <span class="op">=</span> pd.DataFrame({
+        <span class="st">&quot;nome&quot;</span>: nomi,
+        <span class="st">&quot;voto&quot;</span>: voti,
+        <span class="st">&quot;corso&quot;</span>: corsi
+    })
+
+    medie_per_corso <span class="op">=</span> df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>].mean()
+    <span class="kw">return</span> medie_per_corso
+
+nomi <span class="op">=</span> [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Diana&quot;</span>, <span class="st">&quot;Eva&quot;</span>, <span class="st">&quot;Franco&quot;</span>]
+voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">25</span>]
+corsi <span class="op">=</span> [<span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>]
+
+risultato <span class="op">=</span> analisi_esami(nomi, voti, corsi)
+<span class="nb">print</span>(risultato)</code></pre>
+<p><strong>Spiegazione:</strong></p>
+<ol>
+<li><code>pd.DataFrame({...})</code> crea una tabella a partire da un dizionario dove ogni chiave diventa il nome di una colonna.</li>
+<li><code>df.groupby("corso")</code> raggruppa le righe per valore della colonna "corso".</li>
+<li><code>["voto"].mean()</code> seleziona la colonna "voto" e calcola la media per ogni gruppo.</li>
+</ol>
+<p>Il risultato e' una Serie Pandas indicizzata per corso. <code>groupby</code> e' uno degli strumenti piu' potenti di Pandas per l'analisi dei dati.</p>
+<p></details></p>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

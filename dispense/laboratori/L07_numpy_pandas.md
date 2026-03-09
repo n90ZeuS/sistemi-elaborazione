@@ -1,6 +1,6 @@
 # Laboratorio 7 — NumPy e Pandas
 
-**Prerequisiti:** Frontale F17 (NumPy, Pandas, analisi dati)
+**Prerequisiti:** Frontale T17 (NumPy, Pandas, analisi dati)
 
 ---
 

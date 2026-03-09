@@ -4,13 +4,13 @@
 
 ---
 
-## Fase 1 — Solo lezioni frontali (Architettura + Sezione ponte)
+## Fase 1 — Solo lezioni frontali (Fondamenti)
 
 *Le prime 6 lezioni costruiscono le fondamenta: dalla materia alla macchina, dalla macchina al pensiero computazionale, dal pensiero al linguaggio.*
 
 ---
 
-### Frontale 1 — Informazione, bit e sistemi di numerazione
+### Lezione 1 — Informazione, bit e sistemi di numerazione
 
 **Argomenti dal programma:** §1.1.1, §1.1.2
 
@@ -28,7 +28,7 @@
 
 ---
 
-### Frontale 2 — Logica booleana e storia del calcolo
+### Lezione 2 — Logica booleana e storia del calcolo
 
 **Argomenti dal programma:** §1.1.3, §1.1.4
 
@@ -44,7 +44,7 @@
 
 ---
 
-### Frontale 3 — Architettura degli elaboratori
+### Lezione 3 — Architettura degli elaboratori
 
 **Argomenti dal programma:** §1.2.1, §1.2.2, §1.2.3, §1.2.4
 
@@ -62,7 +62,7 @@
 
 ---
 
-### Frontale 4 — Sistemi operativi e software di sistema
+### Lezione 4 — Sistemi operativi e software di sistema
 
 **Argomenti dal programma:** §1.3
 
@@ -82,7 +82,7 @@
 
 ---
 
-### Frontale 5 — Rappresentazione dei dati
+### Lezione 5 — Rappresentazione dei dati
 
 **Argomenti dal programma:** §1.4
 
@@ -100,7 +100,7 @@
 
 ---
 
-### Frontale 6 — Dal problema al programma: la sezione ponte
+### Lezione 6 — Dal problema al programma
 
 **Argomenti dal programma:** §P.1, §P.2, §P.3, §P.4
 
@@ -127,7 +127,7 @@
 
 ---
 
-### Frontale 7 — Primi passi in Python
+### Lezione 7 — Primi passi in Python
 
 **Argomenti dal programma:** §2.1.1, §2.1.2, §2.1.3
 
@@ -143,7 +143,7 @@
 
 ---
 
-### Frontale 8 — Operatori, I/O e strutture condizionali
+### Lezione 8 — Operatori, I/O e strutture condizionali
 
 **Argomenti dal programma:** §2.1.4, §2.1.5, §2.2.1
 
@@ -175,7 +175,7 @@
 
 ---
 
-### Frontale 9 — Cicli
+### Lezione 9 — Cicli
 
 **Argomenti dal programma:** §2.2.2, §2.2.3
 
@@ -192,7 +192,7 @@
 
 ---
 
-### Frontale 10 — Comprehension e stringhe
+### Lezione 10 — Comprehension e stringhe
 
 **Argomenti dal programma:** §2.2.4, §2.3.6
 
@@ -212,7 +212,7 @@
 
 ### 🖥️ Laboratorio 2 — Cicli, comprehension e stringhe
 
-**Prerequisiti frontali:** F9, F10
+**Prerequisiti frontali:** F9, T10
 
 | Attività | Descrizione |
 |----------|-------------|
@@ -224,7 +224,7 @@
 
 ---
 
-### Frontale 11 — Liste e tuple
+### Lezione 11 — Liste e tuple
 
 **Argomenti dal programma:** §2.3.1, §2.3.2
 
@@ -241,7 +241,7 @@
 
 ---
 
-### Frontale 12 — Dizionari, set e mutabilità
+### Lezione 12 — Dizionari, set e mutabilità
 
 **Argomenti dal programma:** §2.3.3, §2.3.4, §2.3.5
 
@@ -261,7 +261,7 @@
 
 ### 🖥️ Laboratorio 3 — Strutture dati
 
-**Prerequisiti frontali:** F11, F12
+**Prerequisiti frontali:** T11, T12
 
 | Attività | Descrizione |
 |----------|-------------|
@@ -274,7 +274,7 @@
 
 ---
 
-### Frontale 13 — Funzioni: fondamenti
+### Lezione 13 — Funzioni: fondamenti
 
 **Argomenti dal programma:** §2.4.1, §2.4.2, §2.4.3, §2.4.4
 
@@ -291,7 +291,7 @@
 
 ---
 
-### Frontale 14 — Funzioni avanzate, moduli e ambienti
+### Lezione 14 — Funzioni avanzate, moduli e ambienti
 
 **Argomenti dal programma:** §2.4.5, §2.4.6
 
@@ -311,7 +311,7 @@
 
 ### 🖥️ Laboratorio 4 — Funzioni e modularità
 
-**Prerequisiti frontali:** F13, F14
+**Prerequisiti frontali:** T13, T14
 
 | Attività | Descrizione |
 |----------|-------------|
@@ -324,7 +324,7 @@
 
 ---
 
-### Frontale 15 — File, dati e gestione degli errori
+### Lezione 15 — File, dati e gestione degli errori
 
 **Argomenti dal programma:** §2.5.1, §2.5.2, §2.5.3, §2.5.4
 
@@ -344,7 +344,7 @@
 
 ### 🖥️ Laboratorio 5 — File e gestione dati
 
-**Prerequisiti frontali:** F15
+**Prerequisiti frontali:** T15
 
 | Attività | Descrizione |
 |----------|-------------|
@@ -356,7 +356,7 @@
 
 ---
 
-### Frontale 16 — Programmazione orientata agli oggetti
+### Lezione 16 — Programmazione orientata agli oggetti
 
 **Argomenti dal programma:** §2.6
 
@@ -376,7 +376,7 @@
 
 ### 🖥️ Laboratorio 6 — Classi e oggetti
 
-**Prerequisiti frontali:** F16
+**Prerequisiti frontali:** T16
 
 | Attività | Descrizione |
 |----------|-------------|
@@ -388,7 +388,7 @@
 
 ---
 
-### Frontale 17 — NumPy, Pandas e visualizzazione
+### Lezione 17 — NumPy, Pandas e visualizzazione
 
 **Argomenti dal programma:** §2.7.1, §2.7.2, §2.7.3, §2.7.4 (cenni), §2.8 (cenni), §2.9 (consolidamento)
 
@@ -425,7 +425,7 @@
 
 ### 🖥️ Laboratorio 7 — NumPy e Pandas
 
-**Prerequisiti frontali:** F17
+**Prerequisiti frontali:** T17
 
 | Attività | Descrizione |
 |----------|-------------|
@@ -440,7 +440,7 @@
 
 ### 🖥️ Laboratorio 8 — Visualizzazione e progetto riepilogativo
 
-**Prerequisiti frontali:** F17
+**Prerequisiti frontali:** T17
 
 | Attività | Descrizione |
 |----------|-------------|
@@ -468,7 +468,7 @@
 | 3 | Frontale | Architettura degli elaboratori | Architettura |
 | 4 | Frontale | **Sistemi operativi e software di sistema** | Architettura |
 | 5 | Frontale | **Rappresentazione dei dati** | Architettura |
-| 6 | Frontale | Dal problema al programma (sezione ponte) | Ponte |
+| 6 | Frontale | Dal problema al programma  | Fondamenti |
 | 7 | Frontale | Primi passi in Python | Python base |
 | 8 | Frontale | Operatori, I/O e condizionali | Python base |
 | 9 | **Lab 1** | Ambiente, variabili, tipi, condizionali | Python base |

@@ -2,7 +2,7 @@
 
 ## Informazioni
 
-- **Prerequisiti:** Lezioni frontali F13 (Funzioni) e F14 (Modularità e buone pratiche)
+- **Prerequisiti:** Lezioni frontali T13 (Funzioni) e T14 (Modularità e buone pratiche)
 - **Durata stimata:** 2 ore
 - **Obiettivi:** Definire funzioni con type hints e docstring. Usare `assert` per verificare la correttezza. Fare refactoring di codice monolitico. Usare `sorted()` con `key`. Creare e importare moduli.
 

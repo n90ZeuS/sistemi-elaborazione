@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NumPy, Pandas e Visualizzazione</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>NumPy, Pandas e Visualizzazione</h1>
+                <div class="subtitle">L'ecosistema scientifico di Python per l'analisi dei dati</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione — Lezione 17<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <div class="columns">
+                    <div class="col">
+                        <ol>
+                            <li class="fragment"><strong>NumPy</strong> — il motore del calcolo numerico
+                                <ul>
+                                    <li>Array <code>ndarray</code> e creazione</li>
+                                    <li>Vettorizzazione e performance</li>
+                                    <li>Funzioni statistiche e broadcasting</li>
+                                    <li>Generazione di campioni casuali</li>
+                                </ul>
+                            </li>
+                            <li class="fragment"><strong>Pandas</strong> — dati tabulari
+                                <ul>
+                                    <li>Series e DataFrame</li>
+                                    <li>Selezione, filtro, pulizia</li>
+                                    <li>Aggregazione con <code>groupby()</code></li>
+                                </ul>
+                            </li>
+                            <li class="fragment"><strong>Visualizzazione</strong> — Matplotlib e Seaborn</li>
+                            <li class="fragment"><strong>Orizzonti</strong> — SciPy, scikit-learn, best practice</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== SEZIONE 1: NUMPY ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>1. NumPy</h2>
+                    <p>Il motore del calcolo numerico</p>
+                </section>
+
+                <!-- Perche' servono nuovi strumenti -->
+                <section>
+                    <h2>Perche servono nuovi strumenti?</h2>
+                    <p>Python base e <strong>lento</strong> per il calcolo numerico e <strong>scomodo</strong> per l'analisi dei dati.</p>
+                    <div class="box box-yellow">
+                        <strong>Scenario:</strong> un milione di osservazioni &rarr; media, deviazione standard, filtri, aggregazioni, grafici.<br>
+                        Con liste Python e cicli <code>for</code>: secondi o minuti.<br>
+                        Con l'ecosistema scientifico: <strong>millisecondi</strong>.
+                    </div>
+                    <div class="diagram fragment">
+                        NumPy (calcolo numerico) &rarr; Pandas (dati tabulari) &rarr; Matplotlib/Seaborn (grafici)<br>
+                        &#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473; la spina dorsale del lavoro quantitativo in Python &#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;
+                    </div>
+                </section>
+
+                <!-- Perche esiste NumPy -->
+                <section>
+                    <h2>Perche esiste NumPy</h2>
+                    <ul>
+                        <li class="fragment">Le liste Python: oggetti generici, overhead di memoria, cicli lenti</li>
+                        <li class="fragment">1995: <strong>Numeric</strong> (Jim Hugunin) &rarr; poi Numarray</li>
+                        <li class="fragment">2005: <strong>Travis Oliphant</strong> unifica tutto in <strong>NumPy</strong></li>
+                    </ul>
+                    <div class="box box-blue fragment">
+                        <strong>Il segreto di NumPy:</strong> memoria contigua, tipo omogeneo, operazioni in C compilato.<br>
+                        Risultato: fino a <strong>100x piu veloce</strong> del Python puro.
+                    </div>
+                    <pre class="fragment"><code class="language-python">import numpy as np
+
+# Lista Python: ogni elemento e un oggetto separato
+lista: list[float] = [1.0, 2.0, 3.0, 4.0, 5.0]
+
+# Array NumPy: blocco contiguo di float64 in memoria
+array: np.ndarray = np.array([1.0, 2.0, 3.0, 4.0, 5.0])</code></pre>
+                    <aside class="notes">Sottolineare che la convenzione universale e importare NumPy come np. Mai usare from numpy import *.</aside>
+                </section>
+
+                <!-- Creare array -->
+                <section>
+                    <h2>Creare array: il tipo <code>ndarray</code></h2>
+                    <h3>Da una lista Python</h3>
+                    <pre><code class="language-python">import numpy as np
+
+# Vettore (1D)
+voti: np.ndarray = np.array([28, 30, 25, 27, 30])
+
+# Matrice (2D) — lista di liste
+matrice: np.ndarray = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])</code></pre>
+                    <h3 class="fragment">Con funzioni di costruzione</h3>
+                    <pre class="fragment"><code class="language-python">zeri: np.ndarray = np.zeros(10)            # 10 zeri float64
+zeri_2d: np.ndarray = np.zeros((3, 4))     # Matrice 3x4 di zeri
+uni: np.ndarray = np.ones(5)               # 5 uno float64
+intervallo: np.ndarray = np.arange(0, 10, 0.5)  # [0.0, 0.5, ..., 9.5]
+punti: np.ndarray = np.linspace(0, 1, 100)      # 100 punti tra 0 e 1</code></pre>
+                </section>
+
+                <!-- arange vs linspace -->
+                <section>
+                    <h2><code>arange</code> vs <code>linspace</code></h2>
+                    <div class="compare">
+                        <div class="good">
+                            <h3><code>np.linspace(0, 1, 5)</code></h3>
+                            <p>Specifica il <strong>numero di punti</strong></p>
+                            <pre><code class="language-python"># [0.0, 0.25, 0.5, 0.75, 1.0]
+# Ideale per ascisse dei grafici</code></pre>
+                        </div>
+                        <div class="bad">
+                            <h3><code>np.arange(0, 1, 0.25)</code></h3>
+                            <p>Specifica il <strong>passo</strong></p>
+                            <pre><code class="language-python"># [0.0, 0.25, 0.5, 0.75]
+# Estremo superiore ESCLUSO
+# Problemi con float!</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        <strong>Regola pratica:</strong> per generare ascisse di un grafico, <code>linspace</code> e quasi sempre la scelta migliore.
+                    </div>
+                </section>
+
+                <!-- Attributi di un array -->
+                <section>
+                    <h2>Attributi di un array</h2>
+                    <pre><code class="language-python">import numpy as np
+
+dati: np.ndarray = np.array([[1.5, 2.3, 3.1],
+                              [4.0, 5.7, 6.2]])
+
+print(dati.shape)    # (2, 3) — 2 righe, 3 colonne
+print(dati.dtype)    # float64 — tipo degli elementi
+print(dati.ndim)     # 2 — numero di dimensioni
+print(dati.size)     # 6 — numero totale di elementi</code></pre>
+                    <table class="fragment">
+                        <thead>
+                            <tr><th>Attributo</th><th>Significato</th><th>Esempio</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>.shape</code></td><td>Dimensioni</td><td><code>(2, 3)</code></td></tr>
+                            <tr><td><code>.dtype</code></td><td>Tipo degli elementi</td><td><code>float64</code></td></tr>
+                            <tr><td><code>.ndim</code></td><td>Numero di dimensioni</td><td><code>2</code></td></tr>
+                            <tr><td><code>.size</code></td><td>Totale elementi</td><td><code>6</code></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-yellow fragment">
+                        <strong>Promozione di tipo:</strong> se si mescolano tipi, NumPy promuove al piu generale.<br>
+                        <code>np.array([1, 2.5, 3]).dtype</code> &rarr; <code>float64</code>
+                    </div>
+                </section>
+
+                <!-- Vettorizzazione -->
+                <section>
+                    <h2>Vettorizzazione: operare senza cicli</h2>
+                    <p>Il concetto <strong>piu importante</strong> di NumPy.</p>
+                    <div class="compare">
+                        <div class="bad">
+                            <h3>Liste Python</h3>
+                            <pre><code class="language-python">valori = [1.0, 2.0, 3.0, 4.0, 5.0]
+quadrati = []
+for v in valori:
+    quadrati.append(v ** 2)</code></pre>
+                        </div>
+                        <div class="good">
+                            <h3>NumPy vettorizzato</h3>
+                            <pre><code class="language-python">valori = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+quadrati = valori ** 2
+# [1.0, 4.0, 9.0, 16.0, 25.0]</code></pre>
+                        </div>
+                    </div>
+                    <pre class="fragment"><code class="language-python">a = np.array([10, 20, 30])
+b = np.array([1, 2, 3])
+
+print(a + b)     # [11, 22, 33]
+print(a * b)     # [10, 40, 90]
+print(a / b)     # [10.0, 10.0, 10.0]
+print(a > 15)    # [False, True, True]  — confronto vettorizzato</code></pre>
+                </section>
+
+                <!-- Filtraggio e performance -->
+                <section>
+                    <h2>Filtraggio vettorizzato e performance</h2>
+                    <h3>Filtro con maschera booleana</h3>
+                    <pre><code class="language-python">temperature = np.array([15.2, 22.1, 31.5, 18.7, 28.3])
+calde = temperature[temperature > 25]  # [31.5, 28.3]</code></pre>
+                    <h3 class="fragment">Confronto di performance (1 milione di elementi)</h3>
+                    <pre class="fragment"><code class="language-python">n = 1_000_000
+
+# Lista Python
+lista = list(range(n))
+risultato = [x ** 2 + 2 * x + 1 for x in lista]  # ~0.350 s
+
+# NumPy
+array = np.arange(n, dtype=np.float64)
+risultato = array ** 2 + 2 * array + 1            # ~0.004 s
+# Speedup: ~80x</code></pre>
+                    <div class="box box-red fragment">
+                        <strong>Regola d'oro:</strong> se vi trovate a scrivere un ciclo <code>for</code> su dati numerici, probabilmente esiste un modo vettorizzato per farlo con NumPy.
+                    </div>
+                </section>
+
+                <!-- Funzioni statistiche -->
+                <section>
+                    <h2>Funzioni statistiche</h2>
+                    <pre><code class="language-python">voti = np.array([28, 30, 25, 27, 30, 24, 29, 26])
+
+np.mean(voti)          # 27.375  — media aritmetica
+np.median(voti)        # 27.5    — mediana
+np.std(voti)           # 2.155   — dev. std (popolazione)
+np.std(voti, ddof=1)   # 2.326   — dev. std campionaria
+np.var(voti)           # 4.484   — varianza (popolazione)
+np.sum(voti)           # 219     — somma
+np.min(voti)           # 24      — minimo
+np.max(voti)           # 30      — massimo</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Nota per gli statistici:</strong> <code>np.std</code> e <code>np.var</code> dividono per <em>n</em> (popolazione).<br>
+                        Per la versione campionaria (dividi per <em>n - 1</em>), usate <code>ddof=1</code>.
+                    </div>
+                </section>
+
+                <!-- Broadcasting -->
+                <section>
+                    <h2>Broadcasting</h2>
+                    <p>Quando si opera tra array di forma diversa, NumPy "espande" automaticamente l'array piu piccolo.</p>
+                    <pre><code class="language-python"># Scalare + array
+dati = np.array([10.0, 20.0, 30.0])
+normalizzati = dati / np.max(dati)  # [0.333, 0.667, 1.0]
+
+# Standardizzazione (z-score)
+z_scores = (dati - np.mean(dati)) / np.std(dati, ddof=1)</code></pre>
+                    <pre class="fragment"><code class="language-python"># Broadcasting su matrici: sottrarre la media per colonna
+matrice = np.array([[1.0, 2.0, 3.0],
+                     [4.0, 5.0, 6.0],
+                     [7.0, 8.0, 9.0]])
+
+medie_colonne = np.mean(matrice, axis=0)  # [4.0, 5.0, 6.0]
+centrata = matrice - medie_colonne        # Broadcasting!</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong><code>axis=0</code></strong>: opera lungo le righe (risultato per colonna)<br>
+                        <strong><code>axis=1</code></strong>: opera lungo le colonne (risultato per riga)
+                    </div>
+                </section>
+
+                <!-- Campioni casuali -->
+                <section>
+                    <h2>Generazione di campioni casuali</h2>
+                    <pre><code class="language-python">import numpy as np
+
+# Generatore moderno (preferito)
+rng = np.random.default_rng(seed=42)
+
+# Distribuzioni
+uniformi  = rng.uniform(low=0.0, high=1.0, size=1000)
+normali   = rng.normal(loc=0.0, scale=1.0, size=1000)
+binomiali = rng.binomial(n=10, p=0.5, size=1000)
+
+# Interi casuali (es. simulazione dado)
+dadi = rng.integers(low=1, high=7, size=100)
+
+# Permutazione casuale
+ordine = rng.permutation(10)  # [3, 7, 0, 5, ...]</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Riproducibilita:</strong> il parametro <code>seed</code> garantisce che con lo stesso seed si ottengano sempre gli stessi numeri "casuali". Fondamentale nel lavoro scientifico.
+                    </div>
+                </section>
+
+            </section><!-- Fine sezione NumPy -->
+
+            <!-- ========== SEZIONE 2: PANDAS ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>2. Pandas</h2>
+                    <p>Dati tabulari con potenza e semplicita</p>
+                </section>
+
+                <!-- Origine e filosofia -->
+                <section>
+                    <h2>Origine e filosofia</h2>
+                    <ul>
+                        <li class="fragment">2008: <strong>Wes McKinney</strong>, analista finanziario, crea Pandas</li>
+                        <li class="fragment">Nome da <em>panel data</em> (termine dell'econometria)</li>
+                        <li class="fragment">Costruito sopra NumPy: ne sfrutta la velocita</li>
+                    </ul>
+                    <div class="diagram fragment">
+                        NumPy = il motore (velocita, array numerici)<br>
+                        &darr;<br>
+                        Pandas = il cruscotto (etichette, NaN, I/O, aggregazioni)
+                    </div>
+                    <pre class="fragment"><code class="language-python">import pandas as pd
+
+# Convenzione: importare pandas come pd</code></pre>
+                </section>
+
+                <!-- Series e DataFrame -->
+                <section>
+                    <h2>Series e DataFrame</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Series <span class="badge badge-blue">1D</span></h3>
+                            <pre><code class="language-python">voti = pd.Series(
+    data=[28, 30, 25, 27],
+    index=["Alice", "Bob",
+           "Carla", "Dario"],
+    name="voto"
+)
+print(voti["Alice"])  # 28
+print(voti.mean())    # 27.5</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3>DataFrame <span class="badge badge-green">2D</span></h3>
+                            <pre><code class="language-python">df = pd.DataFrame({
+    "nome": ["Alice", "Bob",
+             "Carla", "Dario"],
+    "voto": [28, 30, 25, 27],
+    "corso": ["Stat I", "Stat I",
+              "Stat II", "Stat II"]
+})</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        Nella pratica quotidiana si lavora quasi sempre con i <strong>DataFrame</strong>: le Series emergono quando si seleziona una singola colonna.
+                    </div>
+                </section>
+
+                <!-- Leggere dati -->
+                <section>
+                    <h2>Leggere dati: <code>read_csv()</code></h2>
+                    <pre><code class="language-python"># Lettura base
+df = pd.read_csv("dati/esami.csv")
+
+# Lettura con opzioni comuni
+df = pd.read_csv(
+    "dati/esami_europeo.csv",
+    sep=";",                    # Separatore (default: virgola)
+    encoding="utf-8",           # Encoding del file
+    decimal=",",                # Separatore decimale europeo
+    na_values=["", "NA", "?"],  # Valori da trattare come mancanti
+)</code></pre>
+                    <h3 class="fragment">Esplorazione iniziale</h3>
+                    <pre class="fragment"><code class="language-python">df.head()       # Prime 5 righe
+df.tail()       # Ultime 5 righe
+df.info()       # Struttura: tipi, valori non nulli, memoria
+df.describe()   # Statistiche descrittive (numeriche)
+df.shape        # (numero_righe, numero_colonne)
+df.columns      # Nomi delle colonne</code></pre>
+                </section>
+
+                <!-- describe e value_counts -->
+                <section>
+                    <h2>Esplorare i dati</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3><code>describe()</code></h3>
+                            <p>Statistiche descrittive in un colpo solo:</p>
+                            <ul>
+                                <li>Conteggio, media, std</li>
+                                <li>Min, max, quartili</li>
+                                <li>Per categoriali: <code>describe(include="object")</code></li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3><code>value_counts()</code></h3>
+                            <pre><code class="language-python"># Frequenze assolute
+df["corso"].value_counts()
+
+# Frequenze relative
+df["corso"].value_counts(
+    normalize=True
+)</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Selezione di colonne e filtro -->
+                <section>
+                    <h2>Selezione e filtro</h2>
+                    <h3>Selezione di colonne</h3>
+                    <pre><code class="language-python"># Una colonna → Series
+voti = df["voto"]
+
+# Piu colonne → DataFrame
+sottoinsieme = df[["nome", "voto"]]</code></pre>
+                    <h3 class="fragment">Filtro di righe con condizioni booleane</h3>
+                    <pre class="fragment"><code class="language-python"># Filtro semplice
+promossi = df[df["voto"] >= 18]
+
+# Filtro combinato (parentesi OBBLIGATORIE!)
+eccellenti_stat = df[
+    (df["voto"] >= 28) & (df["corso"] == "Statistica I")
+]
+# & = AND, | = OR, ~ = NOT</code></pre>
+                </section>
+
+                <!-- loc vs iloc -->
+                <section>
+                    <h2><code>loc</code> vs <code>iloc</code></h2>
+                    <div class="compare">
+                        <div class="good">
+                            <h3><code>loc</code> — per etichetta</h3>
+                            <pre><code class="language-python"># Per etichetta (nome)
+df.loc[0]
+df.loc[0, "nome"]
+df.loc[0:5, ["nome", "voto"]]
+# INCLUDE entrambi gli estremi
+# df.loc[0:5] → 6 righe</code></pre>
+                        </div>
+                        <div class="bad">
+                            <h3><code>iloc</code> — per posizione</h3>
+                            <pre><code class="language-python"># Per posizione intera
+df.iloc[0]
+df.iloc[:3]
+df.iloc[:5, :2]
+# ESCLUDE estremo superiore
+# df.iloc[0:5] → 5 righe</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <strong>Differenza chiave:</strong> <code>loc[0:5]</code> restituisce <strong>6 righe</strong> (include 5), <code>iloc[0:5]</code> restituisce <strong>5 righe</strong> (esclude 5, come <code>range</code>).
+                    </div>
+                </section>
+
+                <!-- Pulizia dei dati -->
+                <section>
+                    <h2>Pulizia dei dati</h2>
+                    <h3>Valori mancanti (<code>NaN</code>)</h3>
+                    <pre><code class="language-python"># Quanti mancanti per colonna?
+df.isna().sum()
+
+# Rimuovere righe con valori mancanti
+pulito = df.dropna()
+pulito = df.dropna(subset=["voto", "nome"])  # Solo colonne specifiche
+
+# Sostituire i mancanti
+riempito = df.fillna({"voto": 0, "corso": "Sconosciuto"})
+df["voto"] = df["voto"].fillna(df["voto"].mean())  # Con la media</code></pre>
+                    <h3 class="fragment">Duplicati e conversioni di tipo</h3>
+                    <pre class="fragment"><code class="language-python">df.duplicated().sum()                  # Contare duplicati
+df.drop_duplicates()                   # Rimuoverli
+df["voto"] = df["voto"].astype(int)    # Conversione tipo
+df["data"] = pd.to_datetime(df["data"])  # A datetime
+df = df.rename(columns={"voto": "punteggio"})  # Rinominare</code></pre>
+                </section>
+
+                <!-- groupby -->
+                <section>
+                    <h2>Aggregazione con <code>groupby()</code></h2>
+                    <div class="diagram">
+                        Split &rarr; Apply &rarr; Combine
+                    </div>
+                    <pre><code class="language-python"># Media del voto per corso
+medie = df.groupby("corso")["voto"].mean()
+
+# Piu statistiche contemporaneamente
+statistiche = df.groupby("corso")["voto"].agg(
+    ["mean", "std", "min", "max", "count"]
+)
+
+# Raggruppamento su piu colonne
+dettaglio = df.groupby(["corso", "anno"])["voto"].mean()</code></pre>
+                    <aside class="notes">groupby implementa il pattern split-apply-combine: divide i dati in gruppi, applica una funzione a ciascun gruppo, e combina i risultati.</aside>
+                </section>
+
+                <!-- merge -->
+                <section>
+                    <h2>Unire tabelle con <code>merge()</code></h2>
+                    <pre><code class="language-python">esami = pd.DataFrame({
+    "studente_id": [1, 2, 3, 4],
+    "voto": [28, 30, 25, 27]
+})
+anagrafica = pd.DataFrame({
+    "studente_id": [1, 2, 3, 5],
+    "nome": ["Alice", "Bob", "Carla", "Eva"]
+})
+
+# Inner join (solo corrispondenze in entrambe)
+risultato = pd.merge(esami, anagrafica, on="studente_id")
+
+# Left join (tutte le righe della tabella di sinistra)
+risultato_left = pd.merge(esami, anagrafica,
+                           on="studente_id", how="left")</code></pre>
+                    <table class="fragment">
+                        <thead>
+                            <tr><th>Tipo di join</th><th><code>how=</code></th><th>Risultato</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Inner</td><td><code>"inner"</code></td><td>Solo corrispondenze</td></tr>
+                            <tr><td>Left</td><td><code>"left"</code></td><td>Tutte le righe a sinistra</td></tr>
+                            <tr><td>Right</td><td><code>"right"</code></td><td>Tutte le righe a destra</td></tr>
+                            <tr><td>Outer</td><td><code>"outer"</code></td><td>Tutte le righe</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Method chaining -->
+                <section>
+                    <h2>Method chaining</h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <h3>Senza chaining</h3>
+                            <pre><code class="language-python">df1 = df.dropna(subset=["voto"])
+df2 = df1[df1["voto"] >= 18]
+df3 = df2.groupby("corso")["voto"].mean()
+risultato = df3.reset_index()</code></pre>
+                        </div>
+                        <div class="good">
+                            <h3>Con chaining</h3>
+                            <pre><code class="language-python">risultato = (
+    df
+    .dropna(subset=["voto"])
+    .query("voto >= 18")
+    .groupby("corso")["voto"]
+    .mean()
+    .reset_index()
+    .rename(columns={"voto": "media_voto"})
+)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        Il metodo <code>query()</code> e un'alternativa alla selezione booleana che si integra bene nel chaining.
+                    </div>
+                </section>
+
+            </section><!-- Fine sezione Pandas -->
+
+            <!-- ========== SEZIONE 3: VISUALIZZAZIONE ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>3. Visualizzazione</h2>
+                    <p>Matplotlib e Seaborn</p>
+                </section>
+
+                <!-- Matplotlib intro -->
+                <section>
+                    <h2>Matplotlib — la base</h2>
+                    <ul>
+                        <li class="fragment">2003: creata da <strong>John Hunter</strong> (neuroscienziato)</li>
+                        <li class="fragment">Nome da MATLAB + plot + library</li>
+                        <li class="fragment">Estremamente flessibile, a volte verbosa</li>
+                        <li class="fragment">Si usa il sottomodulo <code>pyplot</code></li>
+                    </ul>
+                    <pre class="fragment"><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# Convenzione: importare pyplot come plt</code></pre>
+                </section>
+
+                <!-- Grafico a linee -->
+                <section>
+                    <h2>Grafico a linee</h2>
+                    <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2 * np.pi, 100)
+y = np.sin(x)
+
+plt.figure(figsize=(8, 4))
+plt.plot(x, y, color="steelblue", linewidth=1.5, label="sin(x)")
+plt.title("Funzione seno")
+plt.xlabel("x (radianti)")
+plt.ylabel("sin(x)")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig("seno.png", dpi=150)
+plt.show()</code></pre>
+                </section>
+
+                <!-- Istogramma -->
+                <section>
+                    <h2>Istogramma</h2>
+                    <p>Distribuzione di una variabile continua:</p>
+                    <pre><code class="language-python">rng = np.random.default_rng(seed=42)
+dati = rng.normal(loc=170, scale=10, size=500)  # Altezze simulate
+
+plt.figure(figsize=(8, 4))
+plt.hist(dati, bins=25, color="steelblue",
+         edgecolor="white", alpha=0.8)
+plt.title("Distribuzione delle altezze (campione simulato)")
+plt.xlabel("Altezza (cm)")
+plt.ylabel("Frequenza")
+plt.axvline(np.mean(dati), color="red",
+            linestyle="--", label="Media")
+plt.legend()
+plt.tight_layout()
+plt.show()</code></pre>
+                </section>
+
+                <!-- Scatter e Bar -->
+                <section>
+                    <h2>Scatter plot e bar plot</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Scatter plot</h3>
+                            <pre><code class="language-python">plt.scatter(
+    ore_studio, voto,
+    alpha=0.6,
+    color="steelblue",
+    edgecolors="white"
+)
+plt.xlabel("Ore di studio")
+plt.ylabel("Voto esame")</code></pre>
+                            <p><em>Relazione tra due variabili</em></p>
+                        </div>
+                        <div class="col">
+                            <h3>Bar plot</h3>
+                            <pre><code class="language-python">corsi = ["Stat I", "Stat II",
+         "Info", "Mat"]
+medie = [26.5, 24.8, 27.1, 23.2]
+
+plt.bar(corsi, medie,
+        color="steelblue",
+        edgecolor="white")
+plt.ylabel("Voto medio")</code></pre>
+                            <p><em>Confronto tra categorie</em></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Boxplot -->
+                <section>
+                    <h2>Boxplot</h2>
+                    <p>Distribuzione e outlier:</p>
+                    <pre><code class="language-python">rng = np.random.default_rng(seed=42)
+stat1 = rng.normal(26, 3, size=100)
+stat2 = rng.normal(24, 4, size=100)
+info  = rng.normal(27, 2, size=100)
+
+plt.figure(figsize=(7, 4))
+plt.boxplot(
+    [stat1, stat2, info],
+    labels=["Stat I", "Stat II", "Informatica"],
+    patch_artist=True,
+    boxprops=dict(facecolor="steelblue", alpha=0.5)
+)
+plt.title("Distribuzione dei voti per corso")
+plt.ylabel("Voto")
+plt.tight_layout()
+plt.show()</code></pre>
+                </section>
+
+                <!-- Personalizzazione -->
+                <section>
+                    <h2>Personalizzazione dei grafici</h2>
+                    <p>Un grafico senza titolo, senza etichette e senza legenda e un grafico <strong>inutile</strong>.</p>
+                    <table>
+                        <thead>
+                            <tr><th>Elemento</th><th>Funzione</th><th>Scopo</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Titolo</td><td><code>plt.title()</code></td><td>Descrive <em>cosa</em> mostra il grafico</td></tr>
+                            <tr><td>Etichette assi</td><td><code>plt.xlabel()</code>, <code>plt.ylabel()</code></td><td>Variabili e unita di misura</td></tr>
+                            <tr><td>Legenda</td><td><code>plt.legend()</code></td><td>Identifica piu serie</td></tr>
+                            <tr><td>Layout</td><td><code>plt.tight_layout()</code></td><td>Evita etichette tagliate</td></tr>
+                            <tr><td>Salvataggio</td><td><code>plt.savefig()</code></td><td>Salva in formato file</td></tr>
+                        </tbody>
+                    </table>
+                    <pre class="fragment"><code class="language-python"># Impostazioni globali per uniformita
+plt.rcParams.update({
+    "font.size": 12, "axes.titlesize": 14,
+    "axes.labelsize": 12, "figure.figsize": (8, 5),
+})</code></pre>
+                </section>
+
+                <!-- Seaborn -->
+                <section>
+                    <h2>Seaborn — grafici statistici</h2>
+                    <ul>
+                        <li class="fragment">Costruito sopra Matplotlib</li>
+                        <li class="fragment">Integrazione diretta con DataFrame Pandas</li>
+                        <li class="fragment">Grafici esteticamente curati con meno codice</li>
+                    </ul>
+                    <pre class="fragment"><code class="language-python">import seaborn as sns
+
+# Boxplot con Seaborn — confrontate con la versione Matplotlib!
+plt.figure(figsize=(8, 5))
+sns.boxplot(data=df, x="corso", y="voto", palette="Set2")
+plt.title("Distribuzione dei voti per corso")
+plt.tight_layout()
+plt.show()</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Vantaggi di Seaborn:</strong> si passa il DataFrame direttamente e si specificano le colonne per nome. Non serve preparare i dati manualmente.
+                    </div>
+                </section>
+
+                <!-- Heatmap e pairplot -->
+                <section>
+                    <h2>Heatmap e pairplot</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Heatmap di correlazione</h3>
+                            <pre><code class="language-python">correlazione = df.corr()
+
+sns.heatmap(
+    correlazione,
+    annot=True,
+    fmt=".2f",
+    cmap="coolwarm",
+    vmin=-1, vmax=1,
+    center=0
+)
+plt.title("Matrice di correlazione")</code></pre>
+                            <p class="fragment"><em>Identifica a colpo d'occhio le correlazioni.</em></p>
+                        </div>
+                        <div class="col">
+                            <h3>Pairplot</h3>
+                            <pre><code class="language-python">sns.pairplot(
+    df,
+    hue="corso",
+    palette="Set2",
+    diag_kind="kde"
+)</code></pre>
+                            <p class="fragment"><em>Tutte le relazioni a due a due. Usare con 3-6 variabili.</em></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Edward Tufte -->
+                <section>
+                    <h2>Edward Tufte e il data-ink ratio</h2>
+                    <div class="box box-blue">
+                        <strong>Data-ink ratio</strong> = inchiostro per i dati / inchiostro totale<br>
+                        <em>"Ogni elemento visivo che non comunica informazione e rumore e va eliminato."</em>
+                    </div>
+                    <ol>
+                        <li class="fragment"><strong>Massimizzare</strong> il data-ink ratio</li>
+                        <li class="fragment"><strong>Evitare effetti 3D</strong>: distorcono la percezione</li>
+                        <li class="fragment"><strong>Evitare colori decorativi</strong>: il colore codifica una variabile</li>
+                        <li class="fragment"><strong>Preferire small multiples</strong> a grafici complessi</li>
+                        <li class="fragment"><strong>Etichettare direttamente</strong> i dati quando possibile</li>
+                    </ol>
+                </section>
+
+                <!-- Esempio stile Tufte -->
+                <section>
+                    <h2>Stile minimale (Tufte-inspired)</h2>
+                    <pre><code class="language-python">fig, ax = plt.subplots(figsize=(7, 4))
+ax.hist(dati, bins=30, color="steelblue",
+        edgecolor="white", alpha=0.85)
+ax.set_title("Campione da distribuzione normale standard")
+ax.set_xlabel("Valore")
+ax.set_ylabel("Frequenza")
+ax.spines["top"].set_visible(False)     # Rimuove bordo superiore
+ax.spines["right"].set_visible(False)   # Rimuove bordo destro
+ax.grid(axis="y", alpha=0.2)
+fig.tight_layout()
+plt.show()</code></pre>
+                    <div class="box box-green fragment">
+                        Rimuovere i bordi superiore e destro (<em>spines</em>) e un piccolo cambiamento che rende il grafico immediatamente piu pulito. Abitudine da adottare <strong>sempre</strong>.
+                    </div>
+                </section>
+
+            </section><!-- Fine sezione visualizzazione -->
+
+            <!-- ========== SEZIONE 4: ORIZZONTI ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>4. Orizzonti e best practice</h2>
+                    <p>Oltre NumPy e Pandas</p>
+                </section>
+
+                <!-- SciPy -->
+                <section>
+                    <h2>SciPy — statistiche avanzate</h2>
+                    <p><code>scipy.stats</code>: test di ipotesi, distribuzioni, intervalli di confidenza.</p>
+                    <pre><code class="language-python">from scipy import stats
+import numpy as np
+
+rng = np.random.default_rng(seed=42)
+campione = rng.normal(loc=100, scale=15, size=30)
+
+# Test t di Student per un campione
+risultato = stats.ttest_1samp(campione, popmean=100)
+print(f"Statistica t: {risultato.statistic:.3f}")
+print(f"p-value:      {risultato.pvalue:.4f}")
+
+# Distribuzione normale
+stats.norm.cdf(1.96)   # ~0.975
+stats.norm.ppf(0.975)  # ~1.96</code></pre>
+                </section>
+
+                <!-- scikit-learn -->
+                <section>
+                    <h2>scikit-learn — machine learning</h2>
+                    <p>Design uniforme: tutti i modelli seguono il pattern <code>fit</code> / <code>predict</code>.</p>
+                    <pre><code class="language-python">from sklearn.linear_model import LinearRegression
+import numpy as np
+
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([2.1, 3.9, 6.2, 7.8, 10.1])
+
+modello = LinearRegression()
+modello.fit(X, y)
+
+previsione = modello.predict(np.array([[6]]))
+print(f"Previsione per x=6: {previsione[0]:.2f}")
+print(f"Coefficiente:        {modello.coef_[0]:.3f}")
+print(f"Intercetta:          {modello.intercept_:.3f}")</code></pre>
+                    <div class="box box-blue fragment">
+                        SciPy e scikit-learn richiederebbero corsi interi. L'obiettivo qui e sapere che <strong>esistono</strong> e riconoscerne il pattern d'uso.
+                    </div>
+                </section>
+
+                <!-- Dati dal mondo esterno -->
+                <section>
+                    <h2>Dati dal mondo esterno</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>API REST</h3>
+                            <pre><code class="language-python">import requests
+import pandas as pd
+
+risposta = requests.get(
+    "https://api.esempio.it/dati"
+)
+if risposta.status_code == 200:
+    dati = risposta.json()
+    df = pd.DataFrame(dati)</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3>Database SQLite</h3>
+                            <pre><code class="language-python">import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect("uni.db")
+df = pd.read_sql(
+    "SELECT nome, voto "
+    "FROM esami "
+    "WHERE voto >= 18",
+    conn
+)
+conn.close()</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- LLM e ruolo dello statistico -->
+                <section>
+                    <h2>LLM e il ruolo dello statistico</h2>
+                    <div class="box box-red">
+                        <strong>Un LLM non capisce i dati.</strong><br>
+                        Puo generare codice che calcola una media, ma non sa se ha senso statistico.<br>
+                        Puo produrre un grafico, ma non sa se e fuorviante.<br>
+                        Puo suggerire un modello, ma non sa se le assunzioni sono violate.
+                    </div>
+                    <div class="fragment">
+                        <p>Il ruolo dello statistico non e scrivere codice velocemente. E <strong>pensare ai dati</strong>:</p>
+                        <ul>
+                            <li class="fragment">Formulare domande</li>
+                            <li class="fragment">Scegliere metodi appropriati</li>
+                            <li class="fragment">Interpretare i risultati</li>
+                            <li class="fragment">Comunicare le conclusioni con rigore</li>
+                        </ul>
+                    </div>
+                    <div class="box box-green fragment">
+                        Chi sa programmare puo <strong>verificare, modificare e comprendere</strong>. Chi non sa programmare e costretto a fidarsi ciecamente dell'output.
+                    </div>
+                </section>
+
+                <!-- Best practice: linter, formatter -->
+                <section>
+                    <h2>Linter e formatter</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Ruff <span class="badge badge-blue">linter</span></h3>
+                            <p>Scritto in Rust, estremamente veloce. Sostituisce flake8, isort e altri.</p>
+                            <pre><code class="language-python"># Analizza il codice
+ruff check mio_progetto/
+
+# Corregge automaticamente
+ruff check --fix mio_progetto/</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3>Black <span class="badge badge-green">formatter</span></h3>
+                            <p>Formatter "opinato": uno stile, nessuna discussione.</p>
+                            <pre><code class="language-python"># Formatta tutto il codice
+black mio_progetto/</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>mypy</strong> — controllo statico dei tipi: se dichiarate <code>x: int = "ciao"</code>, mypy segnala l'errore <em>prima</em> dell'esecuzione.
+                    </div>
+                </section>
+
+                <!-- Struttura progetto -->
+                <section>
+                    <h2>Struttura di un progetto</h2>
+                    <div class="diagram">
+progetto_analisi/<br>
+├── dati/<br>
+│   ├── raw/            # Dati originali (MAI modificarli)<br>
+│   └── processed/      # Dati elaborati<br>
+├── src/<br>
+│   ├── __init__.py<br>
+│   ├── caricamento.py<br>
+│   ├── pulizia.py<br>
+│   └── analisi.py<br>
+├── test/<br>
+├── grafici/<br>
+├── requirements.txt<br>
+├── pyproject.toml<br>
+└── README.md
+                    </div>
+                </section>
+
+                <!-- Principi guida -->
+                <section>
+                    <h2>Principi guida</h2>
+                    <div class="box box-blue fragment">
+                        <strong>Riproducibilita:</strong> chiunque deve poter eseguire il vostro codice e ottenere gli stessi risultati. Usate seed, documentate le dipendenze, versionate con Git.
+                    </div>
+                    <div class="box box-green fragment">
+                        <strong>DRY</strong> (<em>Don't Repeat Yourself</em>): se copiate e incollate codice, probabilmente dovreste estrarre una funzione.
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <strong>KISS</strong> (<em>Keep It Simple, Stupid</em>): il codice piu semplice che risolve il problema e il codice migliore. La complessita non e un segno di competenza; la semplicita lo e.
+                    </div>
+                </section>
+
+            </section><!-- Fine sezione orizzonti -->
+
+            <!-- ========== SLIDE RIEPILOGO ========== -->
+            <section>
+                <h2>Riepilogo</h2>
+                <p>Tre concetti da portare con se:</p>
+                <div class="box box-blue fragment">
+                    <strong>1. Vettorizzazione</strong><br>
+                    Operare su interi array, non su singoli elementi. Separa il codice lento da quello veloce, il verboso dall'elegante.
+                </div>
+                <div class="box box-green fragment">
+                    <strong>2. Il DataFrame come unita di lavoro</strong><br>
+                    Filtrare, aggregare, unire, trasformare: tutto espresso in modo conciso e leggibile con Pandas.
+                </div>
+                <div class="box box-yellow fragment">
+                    <strong>3. Il grafico come strumento di pensiero</strong><br>
+                    Non e una decorazione per un report. E uno strumento per <em>capire</em> i dati. Ogni elemento deve informare, mai decorare.
+                </div>
+            </section>
+
+            <!-- ========== TABELLA RIASSUNTIVA ========== -->
+            <section>
+                <h2>Tabella riassuntiva delle librerie</h2>
+                <table>
+                    <thead>
+                        <tr><th>Libreria</th><th>Import</th><th>Scopo principale</th><th>Struttura chiave</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>NumPy</strong></td><td><code>import numpy as np</code></td><td>Calcolo numerico veloce</td><td><code>ndarray</code></td></tr>
+                        <tr><td><strong>Pandas</strong></td><td><code>import pandas as pd</code></td><td>Dati tabulari</td><td><code>DataFrame</code>, <code>Series</code></td></tr>
+                        <tr><td><strong>Matplotlib</strong></td><td><code>import matplotlib.pyplot as plt</code></td><td>Grafici (base)</td><td><code>figure</code>, <code>axes</code></td></tr>
+                        <tr><td><strong>Seaborn</strong></td><td><code>import seaborn as sns</code></td><td>Grafici statistici</td><td>Funzioni ad alto livello</td></tr>
+                        <tr><td><strong>SciPy</strong></td><td><code>from scipy import stats</code></td><td>Statistiche avanzate</td><td>Test, distribuzioni</td></tr>
+                        <tr><td><strong>scikit-learn</strong></td><td><code>from sklearn...</code></td><td>Machine learning</td><td><code>fit</code> / <code>predict</code></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ========== SLIDE FINALE ========== -->
+            <section class="section-slide">
+                <h2>Domande?</h2>
+                <p>Avete percorso molta strada dal primo giorno.<br>
+                Questi strumenti non sono il punto di arrivo,<br>
+                ma un punto di partenza solido.</p>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T16_programmazione_oggetti.html" style="color: var(--accent);">&larr; T16: Programmazione a oggetti</a></div><div><a href="L01_ambiente_variabili_condizionali.html" style="color: var(--accent);">L01: Ambiente, variabili e condizionali &rarr;</a></div><div><a href="../dispense/frontali/T17_numpy_pandas_visualizzazione.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/T17_numpy_pandas/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — T17</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

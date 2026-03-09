@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmazione orientata agli oggetti</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ============ SLIDE 1: TITOLO ============ -->
+            <section class="title-slide">
+                <h1>Programmazione orientata agli oggetti</h1>
+                <div class="subtitle">Classi, istanze, metodi e ereditarietà in Python</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione — Lezione 16<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- ============ SLIDE 2: AGENDA ============ -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li>Il problema della crescita del codice</li>
+                    <li class="fragment">Oggetti in Python: li usate già</li>
+                    <li class="fragment">Un po' di storia</li>
+                    <li class="fragment">Classi e istanze</li>
+                    <li class="fragment"><code>__init__</code> e <code>self</code></li>
+                    <li class="fragment">Attributi di istanza vs attributi di classe</li>
+                    <li class="fragment">Metodi speciali (dunder methods)</li>
+                    <li class="fragment">Ereditarietà e composizione</li>
+                    <li class="fragment">Incapsulamento e <code>@property</code></li>
+                    <li class="fragment">Collegamento con il mondo dei dati</li>
+                </ol>
+            </section>
+
+            <!-- ============ SEZIONE: IL PROBLEMA ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Il problema della crescita del codice</h2>
+                    <p><em>Perché serve un nuovo paradigma?</em></p>
+                </section>
+
+                <section>
+                    <h2>Approccio procedurale: dati e funzioni separati</h2>
+                    <pre><code class="language-python">studente_1: dict[str, str | int | list[int]] = {
+    "nome": "Anna",
+    "cognome": "Rossi",
+    "matricola": 12345,
+    "voti": [28, 30, 25, 27]
+}
+
+def calcola_media(studente: dict[str, str | int | list[int]]) -> float:
+    voti: list[int] = studente["voti"]  # type: ignore
+    return sum(voti) / len(voti)
+
+def aggiungi_voto(studente: dict[str, str | int | list[int]],
+                  voto: int) -> None:
+    if not 18 <= voto <= 30:
+        raise ValueError(f"Voto {voto} non valido")
+    studente["voti"].append(voto)  # type: ignore</code></pre>
+                    <aside class="notes">Questo è il punto di partenza: codice procedurale che funziona ma scala male.</aside>
+                </section>
+
+                <section>
+                    <h2>I problemi concreti</h2>
+                    <ul>
+                        <li class="fragment"><strong>Nessuna garanzia di struttura</strong> — nulla impedisce un dizionario senza la chiave <code>"voti"</code></li>
+                        <li class="fragment"><strong>Funzioni scollegate dai dati</strong> — <code>calcola_media</code> potrebbe ricevere un dizionario qualsiasi</li>
+                        <li class="fragment"><strong>Tipo illeggibile</strong> — <code>dict[str, str | int | list[int]]</code> non dice "questo è uno studente"</li>
+                        <li class="fragment"><strong>Validazione non centralizzata</strong> — bisogna controllare la matricola in ogni funzione</li>
+                    </ul>
+                    <div class="box box-blue fragment">
+                        <strong>La soluzione:</strong> unire <strong>stato</strong> (dati) e <strong>comportamento</strong> (funzioni) in un'unica entità chiamata <em>oggetto</em>.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: GIÀ USATE OGGETTI ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Già usate oggetti</h2>
+                    <p><em>In Python, tutto è un oggetto</em></p>
+                </section>
+
+                <section>
+                    <h2>Oggetti che conoscete già</h2>
+                    <pre><code class="language-python"># Le stringhe sono oggetti
+nome: str = "ciao"
+print(nome.upper())       # "CIAO" — upper() è un metodo
+print(nome.replace("c", "C"))  # "Ciao"
+
+# Le liste sono oggetti
+voti: list[int] = [28, 30, 25]
+voti.append(27)            # append() è un metodo
+voti.sort()                # sort() è un altro metodo
+
+# Anche i numeri sono oggetti
+n: int = 42
+print(n.bit_length())     # 6 — quanti bit servono per 42
+print((3.14).is_integer()) # False</code></pre>
+                    <div class="box box-green">
+                        Il punto (<code>.</code>) è l'operatore per accedere a metodi e attributi di un oggetto.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Tipi e classi</h2>
+                    <pre><code class="language-python">print(type(42))        # &lt;class 'int'&gt;
+print(type("ciao"))    # &lt;class 'str'&gt;
+print(type([1, 2, 3])) # &lt;class 'list'&gt;</code></pre>
+                    <div class="box box-blue fragment">
+                        La parola <code>class</code> nell'output ci dice che <code>int</code>, <code>str</code> e <code>list</code> sono <strong>classi</strong>.<br>
+                        Ogni valore concreto (42, "ciao", [1, 2, 3]) è un'<strong>istanza</strong> di quella classe.
+                    </div>
+                    <div class="diagram fragment">
+                        Classe: <strong>str</strong> (il modello)<br>
+                        &darr;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&darr;<br>
+                        "ciao"&nbsp;&nbsp;"mondo"&nbsp;&nbsp;"python"<br>
+                        <em>(istanze concrete)</em>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: STORIA ============ -->
+            <section>
+                <h2>Un po' di storia</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Anno</th>
+                            <th>Linguaggio</th>
+                            <th>Contributo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1967</td>
+                            <td><strong>Simula 67</strong></td>
+                            <td>Primo linguaggio OOP, nato per le simulazioni</td>
+                        </tr>
+                        <tr>
+                            <td>1970s</td>
+                            <td><strong>Smalltalk</strong></td>
+                            <td>"Tutto è un oggetto" — Alan Kay, Xerox PARC</td>
+                        </tr>
+                        <tr>
+                            <td>1980s</td>
+                            <td><strong>C++</strong></td>
+                            <td>OOP nel mondo dei sistemi</td>
+                        </tr>
+                        <tr>
+                            <td>1990s</td>
+                            <td><strong>Java</strong></td>
+                            <td>OOP mainstream</td>
+                        </tr>
+                        <tr>
+                            <td>1991+</td>
+                            <td><strong>Python</strong></td>
+                            <td>OOP elegante e pragmatica</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="box box-yellow fragment">
+                    <em>"Il miglior modo di predire il futuro è inventarlo."</em> — Alan Kay
+                </div>
+            </section>
+
+            <!-- ============ SEZIONE: CLASSI E ISTANZE ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Classi e istanze</h2>
+                    <p><em>Il modello e la realizzazione concreta</em></p>
+                </section>
+
+                <section>
+                    <h2>Classe = progetto, Istanza = oggetto concreto</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="diagram">
+                                <strong>Classe</strong> (il progetto)<br>
+                                &boxdr;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxdl;<br>
+                                &boxv; attributi: x, y &boxv;<br>
+                                &boxv; metodi: ...&nbsp;&nbsp;&nbsp;&nbsp; &boxv;<br>
+                                &boxur;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxh;&boxul;<br>
+                                &darr;&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                                ist.1&nbsp;&nbsp;ist.2&nbsp;&nbsp;ist.3
+                            </div>
+                        </div>
+                        <div class="col">
+                            <p>La classe è il <strong>progetto architettonico</strong> di una casa.</p>
+                            <p class="fragment">L'istanza è una <strong>casa costruita</strong> seguendo quel progetto.</p>
+                            <p class="fragment">Da un unico progetto si possono costruire cento case, ciascuna con i propri abitanti.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>La prima classe: <code>Punto</code></h2>
+                    <pre><code class="language-python"># La classe è il progetto
+class Punto:
+    """Rappresenta un punto nel piano cartesiano."""
+
+    def __init__(self, x: float, y: float) -> None:
+        self.x: float = x
+        self.y: float = y
+
+# Le istanze sono i punti concreti
+origine: Punto = Punto(0.0, 0.0)
+p1: Punto = Punto(3.0, 4.0)
+p2: Punto = Punto(-1.5, 2.7)
+
+print(p1.x)  # 3.0 — accediamo all'attributo x dell'istanza p1</code></pre>
+                    <div class="box box-green fragment">
+                        Ogni istanza ha i propri valori per <code>x</code> e <code>y</code>. Modificare <code>p1.x</code> non cambia <code>p2.x</code>.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: ESEMPIO COMPLETO STUDENTE ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Esempio completo: la classe Studente</h2>
+                    <p><em>Risolviamo il problema dell'introduzione</em></p>
+                </section>
+
+                <section>
+                    <h2>Definizione della classe <code>Studente</code></h2>
+                    <pre><code class="language-python">class Studente:
+    """Rappresenta uno studente universitario con i suoi esami."""
+
+    universita: str = "Università degli Studi"  # Attributo di CLASSE
+
+    def __init__(self, nome: str, cognome: str, matricola: int) -> None:
+        if not nome.strip():
+            raise ValueError("Il nome non può essere vuoto")
+        if matricola <= 0:
+            raise ValueError(f"Matricola non valida: {matricola}")
+
+        self.nome: str = nome.strip()        # Attributi di ISTANZA
+        self.cognome: str = cognome.strip()
+        self.matricola: int = matricola
+        self.voti: list[int] = []</code></pre>
+                    <aside class="notes">Notare la validazione centralizzata nel costruttore: non è possibile creare uno studente malformato.</aside>
+                </section>
+
+                <section>
+                    <h2>Metodi della classe <code>Studente</code></h2>
+                    <pre><code class="language-python">    def aggiungi_voto(self, voto: int) -> None:
+        """Aggiunge un voto alla carriera dello studente."""
+        if not 18 <= voto <= 30:
+            raise ValueError(f"Voto {voto} fuori dall'intervallo 18-30")
+        self.voti.append(voto)
+
+    def media(self) -> float:
+        """Calcola la media aritmetica dei voti."""
+        if not self.voti:
+            raise ValueError("Nessun voto registrato")
+        return sum(self.voti) / len(self.voti)
+
+    def numero_esami(self) -> int:
+        return len(self.voti)
+
+    def descrizione(self) -> str:
+        stato: str = f"media {self.media():.1f}" if self.voti else "nessun esame"
+        return f"{self.nome} {self.cognome} (mat. {self.matricola}) — {stato}"</code></pre>
+                </section>
+
+                <section>
+                    <h2>Uso della classe <code>Studente</code></h2>
+                    <pre><code class="language-python">anna: Studente = Studente("Anna", "Rossi", 12345)
+marco: Studente = Studente("Marco", "Bianchi", 67890)
+
+anna.aggiungi_voto(28)
+anna.aggiungi_voto(30)
+anna.aggiungi_voto(25)
+
+print(anna.descrizione())  # Anna Rossi (mat. 12345) — media 27.7
+print(marco.media())       # ValueError: Nessun voto registrato
+
+# La validazione funziona
+anna.aggiungi_voto(35)  # ValueError: Voto 35 fuori dall'intervallo 18-30</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Vantaggi rispetto al procedurale:</strong> tipo chiaro, validazione centralizzata, dati e comportamento uniti, supporto del type checker.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: __init__ E self ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2><code>__init__</code> e <code>self</code></h2>
+                    <p><em>Due concetti fondamentali</em></p>
+                </section>
+
+                <section>
+                    <h2><code>__init__</code>: inizializzazione, non costruzione</h2>
+                    <div class="box box-yellow">
+                        <strong>Precisazione:</strong> <code>__init__</code> <strong>non</strong> è il costruttore. Il vero costruttore è <code>__new__</code>, che crea l'oggetto in memoria. <code>__init__</code> lo <em>configura</em>.
+                    </div>
+                    <p>Quando scriviamo <code>Studente("Anna", "Rossi", 12345)</code>, Python esegue:</p>
+                    <ol>
+                        <li class="fragment">Crea un nuovo oggetto di tipo <code>Studente</code> (tramite <code>__new__</code>)</li>
+                        <li class="fragment">Chiama <code>__init__</code> passandogli quell'oggetto come primo argomento (<code>self</code>)</li>
+                    </ol>
+                    <div class="diagram fragment">
+                        Studente("Anna", "Rossi", 12345)<br>
+                        &darr;<br>
+                        __new__ &rarr; crea oggetto vuoto<br>
+                        &darr;<br>
+                        __init__(self, "Anna", "Rossi", 12345) &rarr; configura
+                    </div>
+                </section>
+
+                <section>
+                    <h2><code>self</code>: il riferimento esplicito</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <pre><code class="language-python">class Esempio:
+    def saluta(self) -> str:
+        return f"Sono l'oggetto {id(self)}"
+
+e: Esempio = Esempio()
+print(e.saluta())
+# Sono l'oggetto 140234567890
+
+# Python traduce internamente in:
+# Esempio.saluta(e)</code></pre>
+                        </div>
+                        <div class="col-40">
+                            <div class="box box-blue">
+                                <strong>Zen di Python:</strong><br>
+                                <em>"Explicit is better than implicit."</em>
+                            </div>
+                            <p class="fragment" style="font-size:0.85em">A differenza di Java/C++ (<code>this</code> implicito), Python rende <code>self</code> esplicito.</p>
+                            <p class="fragment" style="font-size:0.85em">Vantaggio: sempre chiaro cosa è <code>self.nome</code> (attributo) vs <code>nome</code> (variabile locale).</p>
+                        </div>
+                    </div>
+                    <aside class="notes">self non è una parola riservata, ma usare un nome diverso è un errore di stile grave.</aside>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: ATTRIBUTI DI ISTANZA VS CLASSE ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Attributi di istanza vs di classe</h2>
+                    <p><em>Due tipi di attributi, da non confondere</em></p>
+                </section>
+
+                <section>
+                    <h2>Attributi di istanza</h2>
+                    <p>Definiti con <code>self.nome_attributo</code> dentro <code>__init__</code>. Ogni istanza ha la <strong>propria copia</strong>.</p>
+                    <pre><code class="language-python">class Contatore:
+    def __init__(self) -> None:
+        self.valore: int = 0  # Attributo di istanza
+
+    def incrementa(self) -> None:
+        self.valore += 1
+
+c1: Contatore = Contatore()
+c2: Contatore = Contatore()
+c1.incrementa()
+c1.incrementa()
+
+print(c1.valore)  # 2
+print(c2.valore)  # 0 — c2 è indipendente da c1</code></pre>
+                </section>
+
+                <section>
+                    <h2>Attributi di classe</h2>
+                    <p>Definiti nel corpo della classe, fuori dai metodi. <strong>Condivisi</strong> da tutte le istanze.</p>
+                    <pre><code class="language-python">class Studente:
+    universita: str = "Università degli Studi"  # Attr. di classe
+    _contatore: int = 0
+
+    def __init__(self, nome: str) -> None:
+        self.nome: str = nome           # Attr. di istanza
+        Studente._contatore += 1
+        self.numero: int = Studente._contatore
+
+s1: Studente = Studente("Anna")
+s2: Studente = Studente("Marco")
+print(Studente.universita)   # "Università degli Studi"
+print(Studente._contatore)   # 2</code></pre>
+                    <div class="box box-yellow fragment">
+                        Utili per costanti condivise o contatori globali. Usateli con parsimonia.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Confronto rapido</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Attributo di istanza</th>
+                                <th>Attributo di classe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Dove</strong></td>
+                                <td>Dentro <code>__init__</code> con <code>self.</code></td>
+                                <td>Nel corpo della classe</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Condivisione</strong></td>
+                                <td>Ogni istanza ha la propria copia</td>
+                                <td>Condiviso tra tutte le istanze</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Accesso</strong></td>
+                                <td><code>self.attributo</code></td>
+                                <td><code>Classe.attributo</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Uso tipico</strong></td>
+                                <td>Dati specifici dell'oggetto</td>
+                                <td>Costanti, contatori globali</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: METODI SPECIALI ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Metodi speciali</h2>
+                    <p><em>I dunder methods: integrazione con il linguaggio</em></p>
+                </section>
+
+                <section>
+                    <h2><code>__str__</code> e <code>__repr__</code></h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python">class Punto:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+p = Punto(3.0, 4.0)
+print(p)
+# &lt;__main__.Punto object
+#  at 0x...&gt;</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python">class Punto:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+    def __repr__(self):
+        return f"Punto(x={self.x}, y={self.y})"
+
+p = Punto(3.0, 4.0)
+print(p)    # (3.0, 4.0)
+repr(p)     # Punto(x=3.0, y=4.0)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <code>__str__</code> = leggibile per gli umani. <code>__repr__</code> = tecnica, per i programmatori.<br>
+                        Se ne definite uno solo, scegliete <code>__repr__</code>: Python lo usa come fallback.
+                    </div>
+                </section>
+
+                <section>
+                    <h2><code>__len__</code> e <code>__getitem__</code></h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3><code>__len__</code></h3>
+                            <pre><code class="language-python">class Classe:
+    def __init__(self, nome: str):
+        self.nome = nome
+        self.studenti: list[str] = []
+
+    def aggiungi(self, s: str):
+        self.studenti.append(s)
+
+    def __len__(self) -> int:
+        return len(self.studenti)
+
+c = Classe("1A")
+c.aggiungi("Anna")
+c.aggiungi("Marco")
+print(len(c))  # 2</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3><code>__getitem__</code></h3>
+                            <pre><code class="language-python">class SerieStorica:
+    def __init__(self, valori: list[float]):
+        self.valori = valori
+
+    def __getitem__(self, i: int):
+        return self.valori[i]
+
+    def __len__(self) -> int:
+        return len(self.valori)
+
+serie = SerieStorica([100, 102.5, 98.3])
+print(serie[0])   # 100.0
+print(serie[-1])  # 98.3</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2><code>__eq__</code> e <code>__lt__</code>: confronti</h2>
+                    <pre><code class="language-python">class Punto:
+    def __init__(self, x: float, y: float) -> None:
+        self.x, self.y = x, y
+
+    def __eq__(self, altro: object) -> bool:
+        if not isinstance(altro, Punto):
+            return NotImplemented
+        return self.x == altro.x and self.y == altro.y
+
+    def __lt__(self, altro: "Punto") -> bool:
+        """Ordina per distanza dall'origine."""
+        return (self.x ** 2 + self.y ** 2) < (altro.x ** 2 + altro.y ** 2)
+
+p1: Punto = Punto(3.0, 4.0)
+p2: Punto = Punto(3.0, 4.0)
+print(p1 == p2)  # True  — stesse coordinate
+print(p1 is p2)  # False — oggetti diversi in memoria</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Attenzione:</strong> in <code>__eq__</code> si restituisce <code>NotImplemented</code> (non <code>NotImplementedError</code>!) se il tipo non corrisponde.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Riepilogo dei metodi speciali</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metodo</th>
+                                <th>Invocato da</th>
+                                <th>Scopo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>__init__</code></td>
+                                <td><code>Classe(...)</code></td>
+                                <td>Inizializzazione</td>
+                            </tr>
+                            <tr>
+                                <td><code>__str__</code></td>
+                                <td><code>str(obj)</code>, <code>print(obj)</code></td>
+                                <td>Rappresentazione leggibile</td>
+                            </tr>
+                            <tr>
+                                <td><code>__repr__</code></td>
+                                <td><code>repr(obj)</code>, nel REPL</td>
+                                <td>Rappresentazione tecnica</td>
+                            </tr>
+                            <tr>
+                                <td><code>__len__</code></td>
+                                <td><code>len(obj)</code></td>
+                                <td>Lunghezza</td>
+                            </tr>
+                            <tr>
+                                <td><code>__eq__</code></td>
+                                <td><code>obj1 == obj2</code></td>
+                                <td>Uguaglianza</td>
+                            </tr>
+                            <tr>
+                                <td><code>__lt__</code></td>
+                                <td><code>obj1 &lt; obj2</code>, <code>sorted()</code></td>
+                                <td>Confronto "minore di"</td>
+                            </tr>
+                            <tr>
+                                <td><code>__getitem__</code></td>
+                                <td><code>obj[i]</code></td>
+                                <td>Accesso per indice</td>
+                            </tr>
+                            <tr>
+                                <td><code>__contains__</code></td>
+                                <td><code>x in obj</code></td>
+                                <td>Appartenenza</td>
+                            </tr>
+                            <tr>
+                                <td><code>__add__</code></td>
+                                <td><code>obj1 + obj2</code></td>
+                                <td>Somma</td>
+                            </tr>
+                            <tr>
+                                <td><code>__bool__</code></td>
+                                <td><code>if obj:</code></td>
+                                <td>Valore di verità</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: EREDITARIETÀ ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Ereditarietà</h2>
+                    <p><em>Creare nuove classi basate su classi esistenti</em></p>
+                </section>
+
+                <section>
+                    <h2>La relazione "è un" (is-a)</h2>
+                    <div class="diagram">
+                        <strong>Studente</strong> (superclasse)<br>
+                        nome, cognome, matricola, voti<br>
+                        aggiungi_voto(), media(), __str__()<br>
+                        &boxv;<br>
+                        &boxv; eredita<br>
+                        &darr;<br>
+                        <strong>StudenteLavoratore</strong> (sottoclasse)<br>
+                        + azienda, ore_settimanali<br>
+                        + è_part_time()
+                    </div>
+                    <div class="box box-blue fragment">
+                        Uno <code>StudenteLavoratore</code> <strong>è uno</strong> <code>Studente</code> con caratteristiche in più.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Superclasse: <code>Studente</code></h2>
+                    <pre><code class="language-python">class Studente:
+    """Studente universitario."""
+
+    def __init__(self, nome: str, cognome: str, matricola: int) -> None:
+        self.nome: str = nome
+        self.cognome: str = cognome
+        self.matricola: int = matricola
+        self.voti: list[int] = []
+
+    def aggiungi_voto(self, voto: int) -> None:
+        if not 18 <= voto <= 30:
+            raise ValueError(f"Voto {voto} fuori dall'intervallo 18-30")
+        self.voti.append(voto)
+
+    def media(self) -> float:
+        if not self.voti:
+            raise ValueError("Nessun voto registrato")
+        return sum(self.voti) / len(self.voti)
+
+    def __str__(self) -> str:
+        return f"{self.nome} {self.cognome} (mat. {self.matricola})"</code></pre>
+                </section>
+
+                <section>
+                    <h2>Sottoclasse: <code>StudenteLavoratore</code></h2>
+                    <pre><code class="language-python">class StudenteLavoratore(Studente):
+    """Studente che lavora part-time."""
+
+    def __init__(self, nome: str, cognome: str, matricola: int,
+                 azienda: str, ore_settimanali: int) -> None:
+        super().__init__(nome, cognome, matricola)  # Chiama il __init__ madre
+        self.azienda: str = azienda
+        self.ore_settimanali: int = ore_settimanali
+
+    def è_part_time(self) -> bool:
+        return self.ore_settimanali < 20
+
+    def __str__(self) -> str:
+        base: str = super().__str__()
+        return f"{base} — lavora presso {self.azienda} ({self.ore_settimanali}h/sett.)"</code></pre>
+                    <div class="box box-green fragment">
+                        <code>super()</code> restituisce un riferimento alla superclasse, per riutilizzarne il codice senza duplicazione.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Uso della sottoclasse</h2>
+                    <pre><code class="language-python">sl: StudenteLavoratore = StudenteLavoratore(
+    "Giulia", "Verdi", 11111, "DataCorp", 16
+)
+
+# Metodi ereditati da Studente
+sl.aggiungi_voto(28)
+sl.aggiungi_voto(30)
+print(sl.media())       # 29.0
+
+# Metodi propri di StudenteLavoratore
+print(sl.è_part_time()) # True
+
+# __str__ ridefinito
+print(sl)  # Giulia Verdi (mat. 11111) — lavora presso DataCorp (16h/sett.)
+
+# isinstance funziona con l'ereditarietà
+print(isinstance(sl, StudenteLavoratore))  # True
+print(isinstance(sl, Studente))            # True</code></pre>
+                </section>
+
+                <section>
+                    <h2>"È un" vs "ha un": composizione</h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python"># Dipartimento NON è una lista
+class Dipartimento(list):
+    pass</code></pre>
+                            <p style="font-size:0.8em">Ereditarietà sbagliata: un Dipartimento non "è una" lista</p>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python"># Dipartimento HA una lista
+class Dipartimento:
+    def __init__(self, nome: str):
+        self.nome = nome
+        self.docenti: list[Docente] = []
+
+    def aggiungi_docente(self, d):
+        self.docenti.append(d)</code></pre>
+                            <p style="font-size:0.8em">Composizione: il Dipartimento contiene docenti come attributo</p>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <em>"Preferire la composizione all'ereditarietà."</em><br>
+                        L'ereditarietà crea accoppiamento forte. La composizione è più flessibile.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: INCAPSULAMENTO ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Incapsulamento e <code>@property</code></h2>
+                    <p><em>Controllare l'accesso agli attributi</em></p>
+                </section>
+
+                <section>
+                    <h2>La convenzione dell'underscore</h2>
+                    <pre><code class="language-python">class ContoBancario:
+    def __init__(self, titolare: str, saldo_iniziale: float = 0.0) -> None:
+        self.titolare: str = titolare
+        self._saldo: float = saldo_iniziale  # _ = uso interno
+
+    def deposita(self, importo: float) -> None:
+        if importo <= 0:
+            raise ValueError("L'importo deve essere positivo")
+        self._saldo += importo
+
+    def preleva(self, importo: float) -> None:
+        if importo <= 0:
+            raise ValueError("L'importo deve essere positivo")
+        if importo > self._saldo:
+            raise ValueError("Saldo insufficiente")
+        self._saldo -= importo</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>L'underscore <code>_</code></strong> è una convenzione, non un divieto tecnico: "non accedere direttamente a <code>_saldo</code> da fuori la classe".
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Il decoratore <code>@property</code></h2>
+                    <pre><code class="language-python">class ContoBancario:
+    def __init__(self, titolare: str, saldo_iniziale: float = 0.0) -> None:
+        self.titolare: str = titolare
+        self._saldo: float = saldo_iniziale
+
+    @property
+    def saldo(self) -> float:
+        """Il saldo corrente (sola lettura)."""
+        return self._saldo
+
+    def deposita(self, importo: float) -> None:
+        if importo <= 0:
+            raise ValueError("L'importo deve essere positivo")
+        self._saldo += importo</code></pre>
+                    <pre><code class="language-python">conto: ContoBancario = ContoBancario("Anna Rossi", 1000.0)
+print(conto.saldo)   # 1000.0 — sembra un attributo, ma è un metodo!
+conto.deposita(500)
+print(conto.saldo)   # 1500.0
+
+conto.saldo = 9999   # AttributeError: property 'saldo' has no setter</code></pre>
+                    <div class="box box-green fragment">
+                        <code>@property</code> permette di aggiungere logica (validazione, log, conversioni) senza cambiare l'interfaccia esterna.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: COLLEGAMENTO DATI ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Collegamento con il mondo dei dati</h2>
+                    <p><em>Lo state già usando nelle librerie scientifiche</em></p>
+                </section>
+
+                <section>
+                    <h2>pandas DataFrame</h2>
+                    <pre><code class="language-python">import pandas as pd
+
+df: pd.DataFrame = pd.DataFrame({
+    "età": [22, 25, 21],
+    "voto": [28, 30, 25]
+})
+
+print(df.shape)       # (3, 2)       — attributo
+print(df.describe())  # statistiche  — metodo
+print(df["età"])       # colonna      — __getitem__
+print(len(df))         # 3            — __len__</code></pre>
+                    <div class="box box-blue">
+                        State usando esattamente i concetti di questa lezione: attributi, metodi, metodi speciali.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>scikit-learn: modelli come oggetti</h2>
+                    <pre><code class="language-python">from sklearn.linear_model import LinearRegression
+import numpy as np
+
+modello: LinearRegression = LinearRegression()       # Istanza
+X: np.ndarray = np.array([[1], [2], [3], [4]])
+y: np.ndarray = np.array([2.1, 3.9, 6.2, 7.8])
+
+modello.fit(X, y)                         # Metodo: addestra
+previsioni = modello.predict(X)           # Metodo: predice
+print(modello.coef_)                      # Attributo: coefficienti
+print(modello.intercept_)                 # Attributo: intercetta</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Consistenza:</strong> tutti i modelli scikit-learn (regressione, alberi, reti neurali) seguono la stessa interfaccia <code>.fit()</code> / <code>.predict()</code> grazie all'ereditarietà.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ============ SEZIONE: RIEPILOGO ============ -->
+            <section>
+                <section class="section-slide">
+                    <h2>Riepilogo</h2>
+                    <p><em>I concetti fondamentali da portare con sé</em></p>
+                </section>
+
+                <section>
+                    <h2>Concetti chiave</h2>
+                    <ol>
+                        <li class="fragment"><strong>Classe = modello, istanza = oggetto concreto.</strong><br>
+                            La classe definisce la struttura; le istanze contengono i dati.</li>
+                        <li class="fragment"><strong><code>self</code> è esplicito.</strong><br>
+                            Ogni metodo riceve il riferimento all'istanza come primo argomento.</li>
+                        <li class="fragment"><strong>I metodi speciali integrano gli oggetti nel linguaggio.</strong><br>
+                            <code>__str__</code>, <code>__repr__</code>, <code>__len__</code>, <code>__eq__</code> rendono i vostri oggetti cittadini di prima classe.</li>
+                        <li class="fragment"><strong>Preferite la composizione all'ereditarietà.</strong><br>
+                            "È un" &rarr; ereditarietà. "Ha un" &rarr; composizione.</li>
+                        <li class="fragment"><strong>Tutto in Python è un oggetto.</strong><br>
+                            Stringhe, liste, DataFrame, modelli ML — tutto segue gli stessi principi.</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>Quando usare una classe?</h2>
+                    <div class="box box-blue">
+                        Python è <strong>multi-paradigma</strong>: potete mescolare funzioni, classi e moduli.
+                    </div>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <h3>Usate una classe se:</h3>
+                            <ul>
+                                <li>Avete dati e comportamento che vanno insieme</li>
+                                <li>Serve validazione centralizzata</li>
+                                <li>Volete un tipo chiaro e riutilizzabile</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3>Lasciate una funzione se:</h3>
+                            <ul>
+                                <li>Non serve stato interno</li>
+                                <li>La logica è semplice e autonoma</li>
+                                <li>Non avete bisogno di più istanze</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <aside class="notes">Non tutto deve essere una classe. La regola è pragmatica, non dogmatica.</aside>
+                </section>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T15_file_dati_errori.html" style="color: var(--accent);">&larr; T15: File, dati e gestione errori</a></div><div><a href="T17_numpy_pandas_visualizzazione.html" style="color: var(--accent);">T17: NumPy, Pandas e visualizzazione &rarr;</a></div><div><a href="../dispense/frontali/T16_programmazione_oggetti.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/T16_programmazione_oggetti/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — T16</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

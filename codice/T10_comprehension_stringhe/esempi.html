@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T10_comprehension_stringhe/esempi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T10_comprehension_stringhe.html">Dispensa</a> &bull; <a href="../../presentazioni/T10_comprehension_stringhe.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>T10_comprehension_stringhe/esempi.py</h1>
+<a class="download-link" href="esempi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F10 — Comprehension e stringhe</span>
+<span class="cm"># Esempi per la lezione frontale 10</span>
+<span class="cm"># List/dict/set comprehension, metodi stringa, slicing, f-string avanzate</span>
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 1. List comprehension — sintassi base</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- 1. List comprehension base ---&quot;</span>)
+
+<span class="cm"># Sintassi: [espressione for variabile in iterabile]</span>
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">11</span>)]
+<span class="kw">assert</span> quadrati <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">9</span>, <span class="mi">16</span>, <span class="mi">25</span>, <span class="mi">36</span>, <span class="mi">49</span>, <span class="mi">64</span>, <span class="mi">81</span>, <span class="mi">100</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Quadrati 1-10: {quadrati}&quot;</span>)
+
+<span class="cm"># Equivalente con ciclo for</span>
+quadrati_loop: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">11</span>):
+    quadrati_loop.append(x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+<span class="kw">assert</span> quadrati <span class="op">=</span><span class="op">=</span> quadrati_loop
+
+<span class="cm"># Trasformazione di tipo</span>
+temperature_str: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;36.5&quot;</span>, <span class="st">&quot;37.2&quot;</span>, <span class="st">&quot;38.1&quot;</span>, <span class="st">&quot;36.8&quot;</span>, <span class="st">&quot;37.0&quot;</span>]
+temperature_float: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="nb">float</span>(t) <span class="kw">for</span> t <span class="kw">in</span> temperature_str]
+<span class="kw">assert</span> temperature_float <span class="op">=</span><span class="op">=</span> [<span class="mi">36.5</span>, <span class="mi">37.2</span>, <span class="mi">38.1</span>, <span class="mi">36.8</span>, <span class="mi">37.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Temperature: {temperature_float}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 2. List comprehension con filtro (clausola if)</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 2. Comprehension con filtro ---&quot;</span>)
+
+<span class="cm"># Sintassi: [espressione for variabile in iterabile if condizione]</span>
+numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">list</span>(<span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">21</span>))
+
+pari: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [n <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>]
+<span class="kw">assert</span> pari <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>, <span class="mi">10</span>, <span class="mi">12</span>, <span class="mi">14</span>, <span class="mi">16</span>, <span class="mi">18</span>, <span class="mi">20</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Pari 1-20: {pari}&quot;</span>)
+
+<span class="cm"># Filtrare e trasformare contemporaneamente</span>
+<span class="cm"># Quadrati dei numeri dispari</span>
+quadrati_dispari: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">!</span><span class="op">=</span> <span class="mi">0</span>]
+<span class="kw">assert</span> quadrati_dispari <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">9</span>, <span class="mi">25</span>, <span class="mi">49</span>, <span class="mi">81</span>, <span class="mi">121</span>, <span class="mi">169</span>, <span class="mi">225</span>, <span class="mi">289</span>, <span class="mi">361</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Quadrati dispari: {quadrati_dispari}&quot;</span>)
+
+<span class="cm"># Filtrare voti sufficienti</span>
+voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">15</span>, <span class="mi">22</span>, <span class="mi">30</span>, <span class="mi">17</span>, <span class="mi">25</span>, <span class="mi">10</span>, <span class="mi">19</span>, <span class="mi">30</span>, <span class="mi">24</span>]
+sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+<span class="kw">assert</span> sufficienti <span class="op">=</span><span class="op">=</span> [<span class="mi">28</span>, <span class="mi">22</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">19</span>, <span class="mi">30</span>, <span class="mi">24</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Voti sufficienti: {sufficienti}&quot;</span>)
+
+<span class="cm"># Espressione condizionale nella parte espressione (if-else)</span>
+<span class="cm"># Attenzione: il if-else va PRIMA del for, il filtro DOPO</span>
+etichette: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;OK&quot;</span> <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span> <span class="kw">else</span> <span class="st">&quot;KO&quot;</span> <span class="kw">for</span> v <span class="kw">in</span> voti]
+<span class="kw">assert</span> etichette <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;OK&quot;</span>, <span class="st">&quot;KO&quot;</span>, <span class="st">&quot;OK&quot;</span>, <span class="st">&quot;OK&quot;</span>, <span class="st">&quot;KO&quot;</span>, <span class="st">&quot;OK&quot;</span>, <span class="st">&quot;KO&quot;</span>, <span class="st">&quot;OK&quot;</span>, <span class="st">&quot;OK&quot;</span>, <span class="st">&quot;OK&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Etichette: {etichette}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 3. Dict e set comprehension</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 3. Dict e set comprehension ---&quot;</span>)
+
+<span class="cm"># Dict comprehension: {chiave: valore for ...}</span>
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Davide&quot;</span>]
+lunghezze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {nome: <span class="nb">len</span>(nome) <span class="kw">for</span> nome <span class="kw">in</span> nomi}
+<span class="kw">assert</span> lunghezze <span class="op">=</span><span class="op">=</span> {<span class="st">&quot;Alice&quot;</span>: <span class="mi">5</span>, <span class="st">&quot;Bob&quot;</span>: <span class="mi">3</span>, <span class="st">&quot;Carla&quot;</span>: <span class="mi">5</span>, <span class="st">&quot;Davide&quot;</span>: <span class="mi">6</span>}
+<span class="nb">print</span>(<span class="st">f&quot;  Lunghezze nomi: {lunghezze}&quot;</span>)
+
+<span class="cm"># Invertire un dizionario</span>
+originale: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;a&quot;</span>: <span class="mi">1</span>, <span class="st">&quot;b&quot;</span>: <span class="mi">2</span>, <span class="st">&quot;c&quot;</span>: <span class="mi">3</span>}
+invertito: <span class="nb">dict</span>[<span class="nb">int</span>, <span class="nb">str</span>] <span class="op">=</span> {v: k <span class="kw">for</span> k, v <span class="kw">in</span> originale.items()}
+<span class="kw">assert</span> invertito <span class="op">=</span><span class="op">=</span> {<span class="mi">1</span>: <span class="st">&quot;a&quot;</span>, <span class="mi">2</span>: <span class="st">&quot;b&quot;</span>, <span class="mi">3</span>: <span class="st">&quot;c&quot;</span>}
+<span class="nb">print</span>(<span class="st">f&quot;  Invertito: {invertito}&quot;</span>)
+
+<span class="cm"># Set comprehension: {espressione for ...}</span>
+parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;ciao&quot;</span>, <span class="st">&quot;hello&quot;</span>, <span class="st">&quot;CIAO&quot;</span>, <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;arrivederci&quot;</span>]
+parole_uniche_lower: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {p.lower() <span class="kw">for</span> p <span class="kw">in</span> parole}
+<span class="kw">assert</span> parole_uniche_lower <span class="op">=</span><span class="op">=</span> {<span class="st">&quot;ciao&quot;</span>, <span class="st">&quot;hello&quot;</span>, <span class="st">&quot;arrivederci&quot;</span>}
+<span class="nb">print</span>(<span class="st">f&quot;  Parole uniche (lower): {sorted(parole_uniche_lower)}&quot;</span>)
+
+<span class="cm"># Cifre presenti in un numero</span>
+numero_grande: <span class="nb">int</span> <span class="op">=</span> <span class="mi">112233445566</span>
+cifre_presenti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {c <span class="kw">for</span> c <span class="kw">in</span> <span class="nb">str</span>(numero_grande)}
+<span class="kw">assert</span> cifre_presenti <span class="op">=</span><span class="op">=</span> {<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;5&quot;</span>, <span class="st">&quot;6&quot;</span>}
+<span class="nb">print</span>(<span class="st">f&quot;  Cifre in {numero_grande}: {sorted(cifre_presenti)}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 4. Comprehension annidate</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 4. Comprehension annidate ---&quot;</span>)
+
+<span class="cm"># Matrice 3x4 con comprehension</span>
+matrice: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[i <span class="op">*</span> <span class="mi">4</span> <span class="op">+</span> j <span class="op">+</span> <span class="mi">1</span> <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">4</span>)] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">3</span>)]
+<span class="kw">assert</span> matrice <span class="op">=</span><span class="op">=</span> [
+    [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>],
+    [<span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>],
+    [<span class="mi">9</span>, <span class="mi">10</span>, <span class="mi">11</span>, <span class="mi">12</span>],
+]
+<span class="nb">print</span>(<span class="st">f&quot;  Matrice 3x4:&quot;</span>)
+<span class="kw">for</span> riga <span class="kw">in</span> matrice:
+    <span class="nb">print</span>(<span class="st">f&quot;    {riga}&quot;</span>)
+
+<span class="cm"># Appiattire una matrice (flatten)</span>
+piatta: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [elem <span class="kw">for</span> riga <span class="kw">in</span> matrice <span class="kw">for</span> elem <span class="kw">in</span> riga]
+<span class="kw">assert</span> piatta <span class="op">=</span><span class="op">=</span> <span class="nb">list</span>(<span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">13</span>))
+<span class="nb">print</span>(<span class="st">f&quot;  Appiattita: {piatta}&quot;</span>)
+
+<span class="cm"># Tutte le coppie (i, j) con i &lt; j</span>
+coppie: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> [(i, j) <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">4</span>) <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(i <span class="op">+</span> <span class="mi">1</span>, <span class="mi">4</span>)]
+<span class="kw">assert</span> <span class="nb">len</span>(coppie) <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Coppie (i,j) con i&lt;j, range(4): {coppie}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 5. Metodi delle stringhe</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 5. Metodi delle stringhe ---&quot;</span>)
+
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;  Python e&#x27; un linguaggio fantastico!  &quot;</span>
+
+<span class="cm"># upper, lower, title, capitalize</span>
+<span class="kw">assert</span> testo.strip().upper() <span class="op">=</span><span class="op">=</span> <span class="st">&quot;PYTHON E&#x27; UN LINGUAGGIO FANTASTICO!&quot;</span>
+<span class="kw">assert</span> testo.strip().lower() <span class="op">=</span><span class="op">=</span> <span class="st">&quot;python e&#x27; un linguaggio fantastico!&quot;</span>
+<span class="kw">assert</span> testo.strip().title() <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Python E&#x27; Un Linguaggio Fantastico!&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Originale: &#x27;{testo}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  strip():   &#x27;{testo.strip()}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  upper():   &#x27;{testo.strip().upper()}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  lower():   &#x27;{testo.strip().lower()}&#x27;&quot;</span>)
+
+<span class="cm"># split e join</span>
+frase: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;uno due tre quattro cinque&quot;</span>
+parole_lista: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> frase.split()
+<span class="kw">assert</span> parole_lista <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;uno&quot;</span>, <span class="st">&quot;due&quot;</span>, <span class="st">&quot;tre&quot;</span>, <span class="st">&quot;quattro&quot;</span>, <span class="st">&quot;cinque&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;\n  split(): {parole_lista}&quot;</span>)
+
+ricomposta: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot; - &quot;</span>.join(parole_lista)
+<span class="kw">assert</span> ricomposta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;uno - due - tre - quattro - cinque&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  join(&#x27; - &#x27;): &#x27;{ricomposta}&#x27;&quot;</span>)
+
+<span class="cm"># split con separatore specifico</span>
+csv_riga: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Alice,28,Informatica,Bologna&quot;</span>
+campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> csv_riga.split(<span class="st">&quot;,&quot;</span>)
+<span class="kw">assert</span> campi <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;28&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Bologna&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;\n  CSV: &#x27;{csv_riga}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  split(&#x27;,&#x27;): {campi}&quot;</span>)
+
+<span class="cm"># replace</span>
+frase_nuova: <span class="nb">str</span> <span class="op">=</span> frase.replace(<span class="st">&quot;tre&quot;</span>, <span class="st">&quot;3&quot;</span>)
+<span class="kw">assert</span> frase_nuova <span class="op">=</span><span class="op">=</span> <span class="st">&quot;uno due 3 quattro cinque&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  replace(&#x27;tre&#x27;, &#x27;3&#x27;): &#x27;{frase_nuova}&#x27;&quot;</span>)
+
+<span class="cm"># find e index</span>
+pos: <span class="nb">int</span> <span class="op">=</span> frase.find(<span class="st">&quot;tre&quot;</span>)
+<span class="kw">assert</span> pos <span class="op">=</span><span class="op">=</span> <span class="mi">8</span>
+pos_non_trovato: <span class="nb">int</span> <span class="op">=</span> frase.find(<span class="st">&quot;sei&quot;</span>)
+<span class="kw">assert</span> pos_non_trovato <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>  <span class="cm"># find restituisce -1 se non trova</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  find(&#x27;tre&#x27;): {pos}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  find(&#x27;sei&#x27;): {pos_non_trovato}&quot;</span>)
+
+<span class="cm"># startswith e endswith</span>
+nome_file: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;relazione_finale.pdf&quot;</span>
+<span class="kw">assert</span> nome_file.startswith(<span class="st">&quot;relazione&quot;</span>)
+<span class="kw">assert</span> nome_file.endswith(<span class="st">&quot;.pdf&quot;</span>)
+<span class="kw">assert</span> <span class="kw">not</span> nome_file.endswith(<span class="st">&quot;.docx&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;\n  &#x27;{nome_file}&#x27;.endswith(&#x27;.pdf&#x27;): {nome_file.endswith(&#x27;.pdf&#x27;)}&quot;</span>)
+
+<span class="cm"># Metodi di verifica</span>
+<span class="kw">assert</span> <span class="st">&quot;42&quot;</span>.isdigit()
+<span class="kw">assert</span> <span class="st">&quot;ciao&quot;</span>.isalpha()
+<span class="kw">assert</span> <span class="st">&quot;ciao42&quot;</span>.isalnum()
+<span class="kw">assert</span> <span class="st">&quot;   &quot;</span>.isspace()
+<span class="nb">print</span>(<span class="st">f&quot;  &#x27;42&#x27;.isdigit() = {(&#x27;42&#x27;).isdigit()}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  &#x27;ciao&#x27;.isalpha() = {&#x27;ciao&#x27;.isalpha()}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 6. Slicing delle stringhe</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 6. String slicing ---&quot;</span>)
+
+s: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Programmazione&quot;</span>
+
+<span class="cm"># s[start:stop:step] — stop escluso</span>
+<span class="kw">assert</span> s[<span class="mi">0</span>:<span class="mi">6</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Progra&quot;</span>
+<span class="kw">assert</span> s[:<span class="mi">6</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Progra&quot;</span>        <span class="cm"># start default = 0</span>
+<span class="kw">assert</span> s[<span class="mi">6</span>:] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;mmazione&quot;</span>      <span class="cm"># stop default = fine</span>
+<span class="kw">assert</span> s[<span class="op">-</span><span class="mi">6</span>:] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;azione&quot;</span>       <span class="cm"># Indici negativi</span>
+<span class="kw">assert</span> s[::<span class="mi">2</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Pormain&quot;</span>      <span class="cm"># Ogni 2 caratteri</span>
+<span class="kw">assert</span> s[::<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;enoizammargorP&quot;</span>  <span class="cm"># Stringa invertita</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  s = &#x27;{s}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  s[0:6]   = &#x27;{s[0:6]}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  s[6:]    = &#x27;{s[6:]}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  s[-6:]   = &#x27;{s[-6:]}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  s[::2]   = &#x27;{s[::2]}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  s[::-1]  = &#x27;{s[::-1]}&#x27;&quot;</span>)
+
+<span class="cm"># Verificare se una stringa e&#x27; un palindromo</span>
+<span class="kw">def</span> <span class="fn">is_palindromo</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+    <span class="st">&quot;&quot;&quot;Verifica se una stringa e&#x27; un palindromo (ignorando maiuscole e spazi).&quot;&quot;&quot;</span>
+    pulita: <span class="nb">str</span> <span class="op">=</span> testo.lower().replace(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>)
+    <span class="kw">return</span> pulita <span class="op">=</span><span class="op">=</span> pulita[::<span class="op">-</span><span class="mi">1</span>]
+
+<span class="kw">assert</span> is_palindromo(<span class="st">&quot;anna&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> is_palindromo(<span class="st">&quot;i topi non avevano nipoti&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> is_palindromo(<span class="st">&quot;python&quot;</span>) <span class="kw">is</span> <span class="kw">False</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  &#x27;anna&#x27; palindromo? {is_palindromo(&#x27;anna&#x27;)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  &#x27;i topi non avevano nipoti&#x27; palindromo? {is_palindromo(&#x27;i topi non avevano nipoti&#x27;)}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 7. f-string avanzate</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 7. f-string avanzate ---&quot;</span>)
+
+<span class="cm"># Debug con = (Python 3.8+)</span>
+x: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
+y: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.14</span>
+<span class="nb">print</span>(<span class="st">f&quot;  {x = }&quot;</span>)      <span class="cm"># Stampa &#x27;x = 42&#x27;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  {y = :.1f}&quot;</span>)  <span class="cm"># Stampa &#x27;y = 3.1&#x27;</span>
+
+<span class="cm"># Formattazione di tabelle</span>
+studenti: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">float</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Alice&quot;</span>, <span class="mi">28</span>, <span class="mi">98.5</span>),
+    (<span class="st">&quot;Bob&quot;</span>, <span class="mi">22</span>, <span class="mi">75.3</span>),
+    (<span class="st">&quot;Carla&quot;</span>, <span class="mi">30</span>, <span class="mi">100.0</span>),
+    (<span class="st">&quot;Davide&quot;</span>, <span class="mi">25</span>, <span class="mi">88.7</span>),
+]
+
+<span class="nb">print</span>(<span class="st">f&quot;\n  {&#x27;Nome&#x27;:&lt;12}{&#x27;Voto&#x27;:&gt;6}{&#x27;Percentile&#x27;:&gt;12}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  {&#x27;-&#x27; * 30}&quot;</span>)
+<span class="kw">for</span> nome_s, voto_s, perc <span class="kw">in</span> studenti:
+    <span class="nb">print</span>(<span class="st">f&quot;  {nome_s:&lt;12}{voto_s:&gt;6}{perc:&gt;11.1f}%&quot;</span>)
+
+<span class="cm"># Numeri con formattazione speciale</span>
+grande: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1_500_000</span>
+piccolo: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.00034567</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  Separatore migliaia: {grande:,}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Notazione scientifica: {piccolo:.3e}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Binario: {255:b}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Esadecimale: {255:x}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Ottale: {255:o}&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">&quot;\nTutti gli assert passati — esempi F10 completati con successo!&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

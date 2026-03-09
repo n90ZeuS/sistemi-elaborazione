@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T14_funzioni_avanzate/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T14_funzioni_avanzate_moduli.html">Dispensa</a> &bull; <a href="../../presentazioni/T14_funzioni_avanzate_moduli.html">Presentazione</a> &bull; <a href="esempi.html">Esempi</a></nav>
+<h1>T14_funzioni_avanzate/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F14 — Funzioni avanzate, moduli</span>
+<span class="cm"># Esercizi per la lezione frontale 14</span>
+
+<span class="kw">import</span> time
+<span class="kw">import</span> statistics
+<span class="kw">from</span> typing <span class="kw">import</span> Callable, TypeVar
+
+T <span class="op">=</span> TypeVar(<span class="st">&quot;T&quot;</span>)
+R <span class="op">=</span> TypeVar(<span class="st">&quot;R&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 1: Implementare map e filter personalizzati</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 1: map e filter personalizzati ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">mia_map</span>(
+    funzione: Callable[[T], R],
+    iterabile: <span class="nb">list</span>[T]
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[R]:
+    <span class="st">&quot;&quot;&quot;
+    Implementazione personalizzata di map().
+    Applica la funzione a ogni elemento e restituisce una nuova lista.
+    &quot;&quot;&quot;</span>
+    risultato: <span class="nb">list</span>[R] <span class="op">=</span> []
+    <span class="kw">for</span> elemento <span class="kw">in</span> iterabile:
+        risultato.append(funzione(elemento))
+    <span class="kw">return</span> risultato
+
+
+<span class="kw">def</span> <span class="fn">mia_filter</span>(
+    predicato: Callable[[T], <span class="nb">bool</span>],
+    iterabile: <span class="nb">list</span>[T]
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[T]:
+    <span class="st">&quot;&quot;&quot;
+    Implementazione personalizzata di filter().
+    Restituisce gli elementi per cui il predicato è True.
+    &quot;&quot;&quot;</span>
+    risultato: <span class="nb">list</span>[T] <span class="op">=</span> []
+    <span class="kw">for</span> elemento <span class="kw">in</span> iterabile:
+        <span class="kw">if</span> predicato(elemento):
+            risultato.append(elemento)
+    <span class="kw">return</span> risultato
+
+
+<span class="kw">def</span> <span class="fn">mia_reduce</span>(
+    funzione: Callable[[T, T], T],
+    iterabile: <span class="nb">list</span>[T],
+    iniziale: T <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span>
+) <span class="op">-</span><span class="op">&gt;</span> T:
+    <span class="st">&quot;&quot;&quot;
+    Implementazione personalizzata di reduce().
+    Applica la funzione cumulativamente agli elementi.
+    &quot;&quot;&quot;</span>
+    it <span class="op">=</span> <span class="nb">iter</span>(iterabile)
+    <span class="kw">if</span> iniziale <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:
+        accumulatore: T <span class="op">=</span> iniziale
+    <span class="kw">else</span>:
+        accumulatore <span class="op">=</span> <span class="nb">next</span>(it)
+    <span class="kw">for</span> elemento <span class="kw">in</span> it:
+        accumulatore <span class="op">=</span> funzione(accumulatore, elemento)
+    <span class="kw">return</span> accumulatore
+
+
+<span class="cm"># Test mia_map</span>
+numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> mia_map(<span class="kw">lambda</span> x: x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>, numeri)
+<span class="kw">assert</span> quadrati <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">9</span>, <span class="mi">16</span>, <span class="mi">25</span>]
+<span class="kw">assert</span> quadrati <span class="op">=</span><span class="op">=</span> <span class="nb">list</span>(<span class="nb">map</span>(<span class="kw">lambda</span> x: x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>, numeri))
+<span class="nb">print</span>(<span class="st">f&quot;mia_map(x², {numeri}) = {quadrati}&quot;</span>)
+
+stringhe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> mia_map(<span class="nb">str</span>, numeri)
+<span class="kw">assert</span> stringhe <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;5&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;mia_map(str, {numeri}) = {stringhe}&quot;</span>)
+
+<span class="cm"># Test mia_filter</span>
+pari: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> mia_filter(<span class="kw">lambda</span> x: x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>, numeri)
+<span class="kw">assert</span> pari <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">4</span>]
+<span class="kw">assert</span> pari <span class="op">=</span><span class="op">=</span> <span class="nb">list</span>(<span class="nb">filter</span>(<span class="kw">lambda</span> x: x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>, numeri))
+<span class="nb">print</span>(<span class="st">f&quot;mia_filter(pari, {numeri}) = {pari}&quot;</span>)
+
+positivi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> mia_filter(<span class="kw">lambda</span> x: x <span class="op">&gt;</span> <span class="mi">0</span>, [<span class="op">-</span><span class="mi">3</span>, <span class="op">-</span><span class="mi">1</span>, <span class="mi">0</span>, <span class="mi">2</span>, <span class="mi">5</span>])
+<span class="kw">assert</span> positivi <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">5</span>]
+<span class="nb">print</span>(<span class="st">f&quot;mia_filter(positivi, [-3,-1,0,2,5]) = {positivi}&quot;</span>)
+
+<span class="cm"># Test mia_reduce</span>
+somma: <span class="nb">int</span> <span class="op">=</span> mia_reduce(<span class="kw">lambda</span> a, b: a <span class="op">+</span> b, numeri)
+<span class="kw">assert</span> somma <span class="op">=</span><span class="op">=</span> <span class="mi">15</span>
+<span class="nb">print</span>(<span class="st">f&quot;mia_reduce(+, {numeri}) = {somma}&quot;</span>)
+
+prodotto: <span class="nb">int</span> <span class="op">=</span> mia_reduce(<span class="kw">lambda</span> a, b: a <span class="op">*</span> b, numeri, <span class="mi">1</span>)
+<span class="kw">assert</span> prodotto <span class="op">=</span><span class="op">=</span> <span class="mi">120</span>
+<span class="nb">print</span>(<span class="st">f&quot;mia_reduce(*, {numeri}) = {prodotto}&quot;</span>)
+
+<span class="cm"># Combinazione: somma dei quadrati dei pari</span>
+risultato: <span class="nb">int</span> <span class="op">=</span> mia_reduce(
+    <span class="kw">lambda</span> a, b: a <span class="op">+</span> b,
+    mia_map(<span class="kw">lambda</span> x: x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>, mia_filter(<span class="kw">lambda</span> x: x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>, <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">11</span>))),
+    <span class="mi">0</span>
+)
+<span class="kw">assert</span> risultato <span class="op">=</span><span class="op">=</span> <span class="mi">4</span> <span class="op">+</span> <span class="mi">16</span> <span class="op">+</span> <span class="mi">36</span> <span class="op">+</span> <span class="mi">64</span> <span class="op">+</span> <span class="mi">100</span>  <span class="cm"># = 220</span>
+<span class="nb">print</span>(<span class="st">f&quot;Somma dei quadrati dei pari (1-10): {risultato}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 2: Decoratore per timing</span>
+<span class="cm"># Creare un decoratore che misura e registra i tempi di esecuzione.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 2: Decoratore timing avanzato ===&quot;</span>)
+
+<span class="cm"># Registro globale dei tempi (per scopi didattici)</span>
+registro_tempi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> {}
+
+
+<span class="kw">def</span> <span class="fn">cronometra</span>(<span class="fn">func</span>: Callable) <span class="op">-</span><span class="op">&gt;</span> Callable:
+    <span class="st">&quot;&quot;&quot;
+    Decoratore che misura il tempo di esecuzione e lo registra
+    nel registro globale.
+    &quot;&quot;&quot;</span>
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span><span class="fn">args</span>, <span class="op">*</span><span class="op">*</span>kwargs):
+        inizio: <span class="nb">float</span> <span class="op">=</span> time.perf_counter()
+        risultato <span class="op">=</span> func(<span class="op">*</span>args, <span class="op">*</span><span class="op">*</span>kwargs)
+        fine: <span class="nb">float</span> <span class="op">=</span> time.perf_counter()
+        durata: <span class="nb">float</span> <span class="op">=</span> fine <span class="op">-</span> inizio
+        nome: <span class="nb">str</span> <span class="op">=</span> func.__name__
+        <span class="kw">if</span> nome <span class="kw">not</span> <span class="kw">in</span> registro_tempi:
+            registro_tempi[nome] <span class="op">=</span> []
+        registro_tempi[nome].append(durata)
+        <span class="kw">return</span> risultato
+    wrapper.__name__ <span class="op">=</span> func.__name__
+    wrapper.__doc__ <span class="op">=</span> func.__doc__
+    <span class="kw">return</span> wrapper
+
+
+<span class="kw">def</span> <span class="fn">conta_chiamate</span>(<span class="fn">func</span>: Callable) <span class="op">-</span><span class="op">&gt;</span> Callable:
+    <span class="st">&quot;&quot;&quot;Decoratore che conta il numero di chiamate a una funzione.&quot;&quot;&quot;</span>
+    contatore: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">0</span>]
+
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span><span class="fn">args</span>, <span class="op">*</span><span class="op">*</span>kwargs):
+        contatore[<span class="mi">0</span>] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        risultato <span class="op">=</span> func(<span class="op">*</span>args, <span class="op">*</span><span class="op">*</span>kwargs)
+        <span class="kw">return</span> risultato
+
+    wrapper.__name__ <span class="op">=</span> func.__name__
+    wrapper.chiamate <span class="op">=</span> <span class="kw">lambda</span>: contatore[<span class="mi">0</span>]  <span class="cm"># type: ignore</span>
+    <span class="kw">return</span> wrapper
+
+
+<span class="dc">@cronometra</span>
+<span class="kw">def</span> <span class="fn">somma_lenta</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Somma i primi n numeri (versione iterativa).&quot;&quot;&quot;</span>
+    totale: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(n <span class="op">+</span> <span class="mi">1</span>):
+        totale <span class="op">+</span><span class="op">=</span> i
+    <span class="kw">return</span> totale
+
+
+<span class="dc">@cronometra</span>
+<span class="kw">def</span> <span class="fn">somma_veloce</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Somma i primi n numeri (formula di Gauss).&quot;&quot;&quot;</span>
+    <span class="kw">return</span> n <span class="op">*</span> (n <span class="op">+</span> <span class="mi">1</span>) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+
+
+<span class="dc">@conta_chiamate</span>
+<span class="kw">def</span> <span class="fn">fibonacci</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;n-esimo numero di Fibonacci (iterativo).&quot;&quot;&quot;</span>
+    <span class="kw">if</span> n <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> n
+    a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    b: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, n <span class="op">+</span> <span class="mi">1</span>):
+        a, b <span class="op">=</span> b, a <span class="op">+</span> b
+    <span class="kw">return</span> b
+
+
+<span class="cm"># Test timing</span>
+n_test: <span class="nb">int</span> <span class="op">=</span> <span class="mi">100_000</span>
+ris_lenta: <span class="nb">int</span> <span class="op">=</span> somma_lenta(n_test)
+ris_veloce: <span class="nb">int</span> <span class="op">=</span> somma_veloce(n_test)
+<span class="kw">assert</span> ris_lenta <span class="op">=</span><span class="op">=</span> ris_veloce
+<span class="nb">print</span>(<span class="st">f&quot;Somma lenta({n_test}) = {ris_lenta}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Somma veloce({n_test}) = {ris_veloce}&quot;</span>)
+
+<span class="cm"># Eseguiamo più volte per avere statistiche</span>
+<span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):
+    somma_lenta(n_test)
+    somma_veloce(n_test)
+
+<span class="kw">for</span> nome, tempi <span class="kw">in</span> registro_tempi.items():
+    media_t: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(tempi) <span class="op">/</span> <span class="nb">len</span>(tempi)
+    <span class="nb">print</span>(<span class="st">f&quot;  {nome}: media={media_t:.6f}s ({len(tempi)} chiamate)&quot;</span>)
+
+<span class="cm"># Test conta_chiamate</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">10</span>):
+    fibonacci(i)
+<span class="kw">assert</span> fibonacci.chiamate() <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+<span class="nb">print</span>(<span class="st">f&quot;\nfibonacci chiamata {fibonacci.chiamate()} volte&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;fibonacci(9) = {fibonacci(9)}&quot;</span>)
+<span class="kw">assert</span> fibonacci.chiamate() <span class="op">=</span><span class="op">=</span> <span class="mi">11</span>  <span class="cm"># una chiamata in più</span>
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 3: Confronto con modulo statistics</span>
+<span class="cm"># Implementare funzioni statistiche e confrontare con statistics.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 3: Confronto con modulo statistics ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">mia_media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+<span class="kw">def</span> <span class="fn">mia_varianza</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la varianza campionaria (n-1).&quot;&quot;&quot;</span>
+    m: <span class="nb">float</span> <span class="op">=</span> mia_media(valori)
+    <span class="kw">return</span> <span class="nb">sum</span>((x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori) <span class="op">/</span> (<span class="nb">len</span>(valori) <span class="op">-</span> <span class="mi">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">mia_deviazione_standard</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la deviazione standard campionaria.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> mia_varianza(valori) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+
+
+<span class="kw">def</span> <span class="fn">mia_mediana</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la mediana.&quot;&quot;&quot;</span>
+    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(ordinati)
+    mid: <span class="nb">int</span> <span class="op">=</span> n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> ordinati[mid]
+    <span class="kw">return</span> (ordinati[mid <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[mid]) <span class="op">/</span> <span class="mi">2</span>
+
+
+<span class="kw">def</span> <span class="fn">mia_correlazione</span>(<span class="fn">x</span>: <span class="nb">list</span>[<span class="nb">float</span>], y: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola il coefficiente di correlazione di Pearson tra due liste.
+    &quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(x)
+    media_x: <span class="nb">float</span> <span class="op">=</span> mia_media(x)
+    media_y: <span class="nb">float</span> <span class="op">=</span> mia_media(y)
+    numeratore: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((xi <span class="op">-</span> media_x) <span class="op">*</span> (yi <span class="op">-</span> media_y) <span class="kw">for</span> xi, yi <span class="kw">in</span> <span class="nb">zip</span>(x, y))
+    den_x: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((xi <span class="op">-</span> media_x) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> xi <span class="kw">in</span> x) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+    den_y: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((yi <span class="op">-</span> media_y) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> yi <span class="kw">in</span> y) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+    <span class="kw">if</span> den_x <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> den_y <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">return</span> <span class="mi">0.0</span>
+    <span class="kw">return</span> numeratore <span class="op">/</span> (den_x <span class="op">*</span> den_y)
+
+
+<span class="cm"># Dati di test</span>
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">2.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">5.0</span>, <span class="mi">7.0</span>, <span class="mi">9.0</span>]
+
+<span class="cm"># Confronto con statistics</span>
+tolleranza: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+mia_m: <span class="nb">float</span> <span class="op">=</span> mia_media(dati)
+lib_m: <span class="nb">float</span> <span class="op">=</span> statistics.mean(dati)
+<span class="kw">assert</span> <span class="nb">abs</span>(mia_m <span class="op">-</span> lib_m) <span class="op">&lt;</span> tolleranza
+<span class="nb">print</span>(<span class="st">f&quot;Media:     mia={mia_m:.6f}  lib={lib_m:.6f}  OK&quot;</span>)
+
+mia_v: <span class="nb">float</span> <span class="op">=</span> mia_varianza(dati)
+lib_v: <span class="nb">float</span> <span class="op">=</span> statistics.variance(dati)
+<span class="kw">assert</span> <span class="nb">abs</span>(mia_v <span class="op">-</span> lib_v) <span class="op">&lt;</span> tolleranza
+<span class="nb">print</span>(<span class="st">f&quot;Varianza:  mia={mia_v:.6f}  lib={lib_v:.6f}  OK&quot;</span>)
+
+mia_ds: <span class="nb">float</span> <span class="op">=</span> mia_deviazione_standard(dati)
+lib_ds: <span class="nb">float</span> <span class="op">=</span> statistics.stdev(dati)
+<span class="kw">assert</span> <span class="nb">abs</span>(mia_ds <span class="op">-</span> lib_ds) <span class="op">&lt;</span> tolleranza
+<span class="nb">print</span>(<span class="st">f&quot;Dev.std:   mia={mia_ds:.6f}  lib={lib_ds:.6f}  OK&quot;</span>)
+
+mia_med: <span class="nb">float</span> <span class="op">=</span> mia_mediana(dati)
+lib_med: <span class="nb">float</span> <span class="op">=</span> statistics.median(dati)
+<span class="kw">assert</span> <span class="nb">abs</span>(mia_med <span class="op">-</span> lib_med) <span class="op">&lt;</span> tolleranza
+<span class="nb">print</span>(<span class="st">f&quot;Mediana:   mia={mia_med:.6f}  lib={lib_med:.6f}  OK&quot;</span>)
+
+<span class="cm"># Test correlazione</span>
+ore_studio: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">6.0</span>, <span class="mi">7.0</span>, <span class="mi">8.0</span>]
+voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.0</span>, <span class="mi">20.0</span>, <span class="mi">22.0</span>, <span class="mi">24.0</span>, <span class="mi">26.0</span>, <span class="mi">27.0</span>, <span class="mi">29.0</span>, <span class="mi">30.0</span>]
+corr: <span class="nb">float</span> <span class="op">=</span> mia_correlazione(ore_studio, voti)
+<span class="kw">assert</span> corr <span class="op">&gt;</span> <span class="mi">0.99</span>  <span class="cm"># correlazione quasi perfetta</span>
+<span class="nb">print</span>(<span class="st">f&quot;\nCorrelazione ore_studio vs voti: {corr:.4f}&quot;</span>)
+
+<span class="cm"># Correlazione negativa</span>
+temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">30.0</span>, <span class="mi">25.0</span>, <span class="mi">20.0</span>, <span class="mi">15.0</span>, <span class="mi">10.0</span>]
+vendite_cappotti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">10.0</span>, <span class="mi">20.0</span>, <span class="mi">35.0</span>, <span class="mi">50.0</span>, <span class="mi">70.0</span>]
+corr_neg: <span class="nb">float</span> <span class="op">=</span> mia_correlazione(temperature, vendite_cappotti)
+<span class="kw">assert</span> corr_neg <span class="op">&lt;</span> <span class="op">-</span><span class="mi">0.95</span>  <span class="cm"># correlazione negativa forte</span>
+<span class="nb">print</span>(<span class="st">f&quot;Correlazione temperatura vs vendite_cappotti: {corr_neg:.4f}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\nEsercizio 3 superato!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;\n=== Tutti gli esercizi F14 completati! ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

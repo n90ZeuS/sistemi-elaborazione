@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operatori, I/O e Strutture Condizionali</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>Operatori, I/O e<br>Strutture Condizionali</h1>
+                <div class="subtitle">Calcolare, comunicare e decidere</div>
+                <div class="course-info">
+                    <p>Sistemi di Elaborazione &mdash; Lezione 8</p>
+                    <p>Corso di Laurea in Scienze Statistiche</p>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <div class="columns">
+                    <div class="col">
+                        <ol>
+                            <li class="fragment"><strong>Operatori</strong>
+                                <ul>
+                                    <li>Aritmetici</li>
+                                    <li>Di confronto</li>
+                                    <li>Logici</li>
+                                    <li>Di appartenenza</li>
+                                    <li>Precedenza</li>
+                                </ul>
+                            </li>
+                            <li class="fragment"><strong>Input / Output</strong>
+                                <ul>
+                                    <li><code>print()</code> e f-string</li>
+                                    <li><code>input()</code></li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <ol start="3">
+                            <li class="fragment"><strong>Strutture condizionali</strong>
+                                <ul>
+                                    <li><code>if</code>, <code>elif</code>, <code>else</code></li>
+                                    <li>Operatore ternario</li>
+                                    <li>Condizioni composte</li>
+                                </ul>
+                            </li>
+                            <li class="fragment"><strong>Best practice</strong>
+                                <ul>
+                                    <li>Truthy e falsy</li>
+                                    <li>Early return</li>
+                                    <li>Validazione input</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <aside class="notes">Oggi aggiungiamo tre capacità fondamentali: calcolare, comunicare e decidere. Alla fine i programmi saranno in grado di interagire con l'utente e prendere decisioni basate sui dati.</aside>
+            </section>
+
+            <!-- ========== SEZIONE: OPERATORI ========== -->
+            <section>
+
+                <!-- SLIDE 3: Sezione operatori -->
+                <section class="section-slide">
+                    <h2>Operatori</h2>
+                    <p>Calcolare con i dati</p>
+                </section>
+
+                <!-- SLIDE 4: Operatori aritmetici -->
+                <section>
+                    <h2>Operatori aritmetici</h2>
+                    <pre><code class="language-python">a: int = 17
+b: int = 5
+
+print(a + b)    # 22  — addizione
+print(a - b)    # 12  — sottrazione
+print(a * b)    # 85  — moltiplicazione
+print(a / b)    # 3.4 — divisione vera (restituisce SEMPRE un float)
+print(a // b)   # 3   — divisione intera (tronca verso il basso)
+print(a % b)    # 2   — modulo (resto della divisione)
+print(a ** b)   # 1419857 — potenza (17⁵)</code></pre>
+                    <aside class="notes">Sette operatori aritmetici. Notare che / restituisce sempre un float, anche quando il risultato sarebbe intero (10/2 = 5.0).</aside>
+                </section>
+
+                <!-- SLIDE 5: Divisione / vs // -->
+                <section>
+                    <h2>Divisione: <code>/</code> vs <code>//</code></h2>
+                    <div class="box box-yellow">
+                        <strong>Nota storica:</strong> in Python 2, <code>/</code> tra interi restituiva un intero (<code>17 / 5</code> dava <code>3</code>). Fonte di bug insidiosi!
+                    </div>
+                    <div class="columns" style="margin-top: 0.8em;">
+                        <div class="col">
+                            <h3><code>/</code> &mdash; Divisione vera</h3>
+                            <pre><code class="language-python">17 / 5   # 3.4
+10 / 2   # 5.0  (sempre float!)
+-17 / 5  # -3.4</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3><code>//</code> &mdash; Divisione intera</h3>
+                            <pre><code class="language-python">17 // 5   # 3
+10 // 2   # 5   (int)
+-17 // 5  # -4  (tronca verso il basso)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>Regola:</strong> usate <code>/</code> per risultati decimali, <code>//</code> quando volete esplicitamente la parte intera.
+                    </div>
+                </section>
+
+                <!-- SLIDE 6: Il modulo -->
+                <section>
+                    <h2>L'operatore modulo <code>%</code></h2>
+                    <p>Il modulo restituisce il <strong>resto della divisione</strong>. Molto utile in pratica:</p>
+                    <pre><code class="language-python"># Verificare la divisibilità
+n: int = 42
+print(n % 2 == 0)   # True → n è pari
+
+# Ciclare tra valori (0, 1, 2, 0, 1, 2, ...)
+for i in range(9):
+    print(i % 3, end=" ")  # 0 1 2 0 1 2 0 1 2
+
+# Estrarre l'ultima cifra
+print(1234 % 10)    # 4</code></pre>
+                    <aside class="notes">Il modulo è uno degli operatori meno intuitivi per chi inizia, ma diventa indispensabile. Usato tantissimo per verificare parità, ciclicità, e estrazione di cifre.</aside>
+                </section>
+
+                <!-- SLIDE 7: Operatori di confronto -->
+                <section>
+                    <h2>Operatori di confronto</h2>
+                    <pre><code class="language-python">x: int = 10
+y: int = 20
+
+print(x == y)   # False — uguaglianza (valore)
+print(x != y)   # True  — diverso
+print(x < y)    # True  — minore
+print(x > y)    # False — maggiore
+print(x <= y)   # True  — minore o uguale
+print(x >= y)   # False — maggiore o uguale</code></pre>
+                    <div class="box box-blue">
+                        Tutti gli operatori di confronto restituiscono un <code>bool</code> (<code>True</code> o <code>False</code>).
+                    </div>
+                </section>
+
+                <!-- SLIDE 8: == vs is -->
+                <section>
+                    <h2><code>==</code> vs <code>is</code></h2>
+                    <pre><code class="language-python">a: list[int] = [1, 2, 3]
+b: list[int] = [1, 2, 3]
+c: list[int] = a
+
+print(a == b)   # True  — stesso VALORE
+print(a is b)   # False — oggetti DIVERSI in memoria
+print(a is c)   # True  — stesso OGGETTO (c è un alias di a)</code></pre>
+                    <div class="columns" style="margin-top: 0.8em;">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <strong><code>==</code></strong> confronta il <strong>valore</strong>:<br>"contengono la stessa cosa?"
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <strong><code>is</code></strong> confronta l'<strong>identità</strong>:<br>"sono lo stesso oggetto in memoria?"
+                            </div>
+                        </div>
+                    </div>
+                    <p class="fragment" style="margin-top: 0.6em;">Unica eccezione idiomatica: <code>if x is None:</code> (non <code>if x == None:</code>)</p>
+                </section>
+
+                <!-- SLIDE 9: Operatori logici -->
+                <section>
+                    <h2>Operatori logici</h2>
+                    <pre><code class="language-python">eta: int = 20
+reddito: float = 15000.0
+
+print(eta >= 18 and reddito < 20000)   # True — entrambe vere
+print(eta < 18 or reddito > 50000)     # False — nessuna vera
+print(not (eta >= 18))                 # False — negazione</code></pre>
+                    <table>
+                        <tr><th>Operatore</th><th>Significato</th><th>Vero quando...</th></tr>
+                        <tr><td><code>and</code></td><td>congiunzione</td><td>entrambe le condizioni sono vere</td></tr>
+                        <tr><td><code>or</code></td><td>disgiunzione</td><td>almeno una condizione è vera</td></tr>
+                        <tr><td><code>not</code></td><td>negazione</td><td>la condizione è falsa</td></tr>
+                    </table>
+                    <div class="box box-blue fragment">
+                        Sono gli stessi AND, OR, NOT dell'algebra booleana (Lezione 2), applicati al codice.
+                    </div>
+                </section>
+
+                <!-- SLIDE 10: Short-circuit -->
+                <section>
+                    <h2>Short-circuit evaluation</h2>
+                    <p>Python è "pigro": smette di valutare appena conosce il risultato.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <h3><code>and</code></h3>
+                            <p>Se la prima condizione è <code>False</code>, il risultato è <code>False</code> &mdash; la seconda <strong>non viene valutata</strong>.</p>
+                        </div>
+                        <div class="col">
+                            <h3><code>or</code></h3>
+                            <p>Se la prima condizione è <code>True</code>, il risultato è <code>True</code> &mdash; la seconda <strong>non viene valutata</strong>.</p>
+                        </div>
+                    </div>
+                    <pre><code class="language-python"># Garanzia di sicurezza: la divisione per zero NON viene eseguita
+x: int = 0
+if x != 0 and 10 / x > 2:
+    print("OK")</code></pre>
+                    <div class="box box-green fragment">
+                        Non è solo un'ottimizzazione &mdash; è una <strong>garanzia di sicurezza</strong> che potete sfruttare.
+                    </div>
+                </section>
+
+                <!-- SLIDE 11: Operatori di appartenenza -->
+                <section>
+                    <h2>Operatori di appartenenza: <code>in</code></h2>
+                    <pre><code class="language-python">vocali: str = "aeiou"
+print("a" in vocali)       # True
+print("b" not in vocali)   # True
+
+numeri: list[int] = [1, 2, 3, 4, 5]
+print(3 in numeri)          # True</code></pre>
+                    <div class="box box-blue">
+                        <code>in</code> funziona con: <strong>stringhe</strong>, <strong>liste</strong>, <strong>tuple</strong>, <strong>set</strong>, <strong>dizionari</strong>.
+                    </div>
+                    <aside class="notes">Operatore potentissimo che useremo costantemente nel corso.</aside>
+                </section>
+
+                <!-- SLIDE 12: Precedenza operatori -->
+                <section>
+                    <h2>Precedenza degli operatori</h2>
+                    <table>
+                        <tr><th>Priorità</th><th>Operatori</th><th>Esempio</th></tr>
+                        <tr><td>1 (massima)</td><td><code>**</code></td><td><code>2 ** 3</code></td></tr>
+                        <tr><td>2</td><td><code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></td><td><code>5 * 2</code></td></tr>
+                        <tr><td>3</td><td><code>+</code>, <code>-</code></td><td><code>3 + 10</code></td></tr>
+                        <tr><td>4</td><td><code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td><td><code>13 &gt; 10</code></td></tr>
+                        <tr><td>5</td><td><code>not</code></td><td><code>not False</code></td></tr>
+                        <tr><td>6</td><td><code>and</code></td><td><code>True and True</code></td></tr>
+                        <tr><td>7 (minima)</td><td><code>or</code></td><td><code>False or True</code></td></tr>
+                    </table>
+                    <pre><code class="language-python">risultato: bool = 3 + 5 * 2 > 10 and not False
+# Equivale a: ((3 + (5 * 2)) > 10) and (not False)
+# Cioè:       (13 > 10) and True → True</code></pre>
+                </section>
+
+                <!-- SLIDE 13: Best practice parentesi -->
+                <section>
+                    <h2>Usate le parentesi!</h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python"># Ambiguo: devi ricordare
+# la precedenza
+risultato = 3 + 5 * 2 > 10 and not False</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python"># Chiaro: le parentesi
+# esplicitano l'ordine
+risultato = ((3 + (5 * 2)) > 10) and (not False)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green" style="margin-top: 1em;">
+                        <strong>Best practice:</strong> non affidatevi alla memorizzazione della precedenza. Usate le parentesi per rendere esplicite le vostre intenzioni.
+                    </div>
+                </section>
+
+            </section>
+            <!-- Fine sezione Operatori -->
+
+            <!-- ========== SEZIONE: INPUT/OUTPUT ========== -->
+            <section>
+
+                <!-- SLIDE 14: Sezione I/O -->
+                <section class="section-slide">
+                    <h2>Input e Output</h2>
+                    <p>Comunicare con l'utente</p>
+                </section>
+
+                <!-- SLIDE 15: print() -->
+                <section>
+                    <h2><code>print()</code>: comunicare con l'utente</h2>
+                    <pre><code class="language-python">nome: str = "Anna"
+eta: int = 22
+
+# Argomenti multipli (separati da spazio per default)
+print("Nome:", nome, "Età:", eta)  # Nome: Anna Età: 22
+
+# Cambiare il separatore
+print("2024", "01", "15", sep="-")  # 2024-01-15
+
+# Cambiare il carattere finale (default: a capo)
+print("Caricamento", end="...")
+print("fatto!")  # Caricamento...fatto!</code></pre>
+                    <table class="fragment">
+                        <tr><th>Parametro</th><th>Default</th><th>Funzione</th></tr>
+                        <tr><td><code>sep</code></td><td><code>" "</code></td><td>Separatore tra argomenti</td></tr>
+                        <tr><td><code>end</code></td><td><code>"\n"</code></td><td>Carattere finale</td></tr>
+                    </table>
+                </section>
+
+                <!-- SLIDE 16: f-string base -->
+                <section>
+                    <h2>f-string: formattazione moderna</h2>
+                    <p>Introdotte in Python 3.6, le <strong>f-string</strong> sono il modo più leggibile di formattare l'output:</p>
+                    <pre><code class="language-python">nome: str = "Anna"
+media: float = 28.6667
+esami: int = 12
+
+# Sintassi base: f"testo {espressione}"
+print(f"Studentessa: {nome}")
+print(f"Media: {media}")
+print(f"Esami sostenuti: {esami}")
+
+# Espressioni dentro le graffe
+eta: int = 22
+print(f"Il doppio è {eta * 2}")
+print(f"Tra 5 anni avrà {eta + 5} anni")</code></pre>
+                    <div class="box box-green fragment">
+                        Preferite le f-string a <code>.format()</code> e all'operatore <code>%</code>.
+                    </div>
+                </section>
+
+                <!-- SLIDE 17: f-string formattazione avanzata -->
+                <section>
+                    <h2>f-string: formattazione dei numeri</h2>
+                    <pre><code class="language-python">media: float = 28.6667
+
+# Decimali
+print(f"Media: {media:.2f}")        # 28.67 (2 decimali)
+print(f"Media: {media:.1f}")        # 28.7  (1 decimale)
+
+# Percentuali
+print(f"Percentuale: {0.856:.1%}")  # 85.6%
+
+# Allineamento
+print(f"{'Nome':<15}{'Voto':>5}")   # allineato sx/dx
+print(f"{'Anna':<15}{28:>5}")
+print(f"{'Marco':<15}{30:>5}")</code></pre>
+                    <table class="fragment">
+                        <tr><th>Formato</th><th>Significato</th><th>Esempio</th></tr>
+                        <tr><td><code>:.2f</code></td><td>2 cifre decimali</td><td><code>28.67</code></td></tr>
+                        <tr><td><code>:.1%</code></td><td>percentuale, 1 decimale</td><td><code>85.6%</code></td></tr>
+                        <tr><td><code>:&lt;15</code></td><td>allinea a sinistra in 15 caratteri</td><td><code>Anna&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code></td></tr>
+                        <tr><td><code>:&gt;5</code></td><td>allinea a destra in 5 caratteri</td><td><code>&nbsp;&nbsp;&nbsp;28</code></td></tr>
+                    </table>
+                </section>
+
+                <!-- SLIDE 18: input() -->
+                <section>
+                    <h2><code>input()</code>: leggere dall'utente</h2>
+                    <pre><code class="language-python">nome: str = input("Come ti chiami? ")
+print(f"Ciao, {nome}!")</code></pre>
+                    <div class="box box-red" style="margin-top: 0.8em;">
+                        <strong>Attenzione fondamentale:</strong> <code>input()</code> restituisce <strong>sempre una stringa</strong>, anche se l'utente inserisce un numero.
+                    </div>
+                    <div class="compare fragment" style="margin-top: 0.8em;">
+                        <div class="bad">
+                            <pre><code class="language-python"># ERRORE!
+eta = input("Anni? ")
+print(eta + 1)
+# TypeError! "25" + 1</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python"># CORRETTO
+eta: int = int(input("Anni? "))
+print(eta + 1)
+# 26</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 19: input e conversione -->
+                <section>
+                    <h2>Conversione dell'input</h2>
+                    <div class="diagram">
+                        input("Quanti anni hai? ") &rarr; <strong>"25"</strong> (stringa)<br>
+                        &darr;<br>
+                        int("25") &rarr; <strong>25</strong> (intero)<br>
+                        &darr;<br>
+                        25 + 1 &rarr; <strong>26</strong>
+                    </div>
+                    <div class="box box-yellow fragment" style="margin-top: 0.8em;">
+                        <strong>Attenzione:</strong> la conversione può fallire!
+                        <pre><code class="language-python">eta: int = int(input("Quanti anni hai? "))
+# Se l'utente scrive "venticinque" → ValueError!</code></pre>
+                        Impareremo a gestire questi errori con <code>try/except</code> più avanti.
+                    </div>
+                </section>
+
+            </section>
+            <!-- Fine sezione I/O -->
+
+            <!-- ========== SEZIONE: CONDIZIONALI ========== -->
+            <section>
+
+                <!-- SLIDE 20: Sezione condizionali -->
+                <section class="section-slide">
+                    <h2>Strutture condizionali</h2>
+                    <p>Decidere in base ai dati</p>
+                </section>
+
+                <!-- SLIDE 21: Flusso sequenziale vs decisioni -->
+                <section>
+                    <h2>Dal flusso sequenziale alle decisioni</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Flusso sequenziale</h3>
+                            <div class="diagram">
+                                istruzione 1<br>&darr;<br>istruzione 2<br>&darr;<br>istruzione 3
+                            </div>
+                            <p style="font-size: 0.85em;">Dall'alto verso il basso, sempre.</p>
+                        </div>
+                        <div class="col">
+                            <h3>Flusso condizionale</h3>
+                            <div class="diagram">
+                                condizione?<br>
+                                &swarr; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &searr;<br>
+                                blocco A &nbsp;&nbsp; blocco B
+                            </div>
+                            <p style="font-size: 0.85em;">Una delle due strade, in base alla condizione.</p>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        I programmi reali devono <strong>prendere decisioni</strong>. L'istruzione <code>if</code> permette di eseguire codice solo se una condizione è vera.
+                    </div>
+                </section>
+
+                <!-- SLIDE 22: if -->
+                <section>
+                    <h2><code>if</code></h2>
+                    <pre><code class="language-python">voto: int = 25
+
+if voto >= 18:
+    print("Esame superato!")</code></pre>
+                    <p>La struttura:</p>
+                    <ol>
+                        <li class="fragment">La parola chiave <code>if</code></li>
+                        <li class="fragment">Una <strong>condizione</strong> (espressione che produce un <code>bool</code>)</li>
+                        <li class="fragment">I due punti <code>:</code></li>
+                        <li class="fragment">Il <strong>corpo</strong> (istruzioni <strong>indentate</strong> eseguite se la condizione è vera)</li>
+                    </ol>
+                    <aside class="notes">L'indentazione non è opzionale in Python: definisce il blocco di codice.</aside>
+                </section>
+
+                <!-- SLIDE 23: if/else -->
+                <section>
+                    <h2><code>if / else</code></h2>
+                    <pre><code class="language-python">voto: int = 15
+
+if voto >= 18:
+    print("Esame superato!")
+else:
+    print("Esame non superato.")</code></pre>
+                    <div class="diagram fragment">
+                        voto &gt;= 18 ?<br>
+                        &swarr; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &searr;<br>
+                        <span style="color: var(--success);">True</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: var(--danger);">False</span><br>
+                        &darr; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &darr;<br>
+                        "Superato!" &nbsp;&nbsp; "Non superato."
+                    </div>
+                    <p class="fragment" style="margin-top: 0.5em;">Due strade: una sola viene percorsa. <strong>Mai entrambe.</strong></p>
+                </section>
+
+                <!-- SLIDE 24: if/elif/else -->
+                <section>
+                    <h2><code>if / elif / else</code></h2>
+                    <pre><code class="language-python">def valuta_voto(voto: int) -> str:
+    """Restituisce una valutazione testuale del voto."""
+    if voto >= 28:
+        return "Ottimo"
+    elif voto >= 24:
+        return "Buono"
+    elif voto >= 18:
+        return "Sufficiente"
+    else:
+        return "Insufficiente"</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong><code>elif</code></strong> (<em>else if</em>): le condizioni vengono valutate <strong>in ordine</strong>. Si esegue il blocco della <strong>prima</strong> condizione vera. Se nessuna è vera, si esegue <code>else</code>.
+                    </div>
+                </section>
+
+                <!-- SLIDE 25: elif vs if multipli -->
+                <section>
+                    <h2>Perché <code>elif</code> e non <code>if</code> multipli?</h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python"># if multipli: OGNI condizione
+# viene valutata sempre
+if voto >= 28:
+    print("Ottimo")
+if voto >= 24:
+    print("Buono")
+if voto >= 18:
+    print("Sufficiente")
+# voto=29 → stampa TUTTE e tre!</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python"># elif: condizioni mutuamente
+# esclusive, si ferma alla prima
+if voto >= 28:
+    print("Ottimo")
+elif voto >= 24:
+    print("Buono")
+elif voto >= 18:
+    print("Sufficiente")
+# voto=29 → stampa solo "Ottimo"</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment" style="margin-top: 0.5em;">
+                        Con <code>elif</code>, appena una condizione è vera, le altre <strong>non vengono nemmeno valutate</strong>.
+                    </div>
+                </section>
+
+                <!-- SLIDE 26: Operatore ternario -->
+                <section>
+                    <h2>L'operatore ternario</h2>
+                    <p>Per condizioni semplici con assegnamento:</p>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Forma estesa</h3>
+                            <pre><code class="language-python">if voto >= 18:
+    esito: str = "Promosso"
+else:
+    esito = "Bocciato"</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3>Forma compatta</h3>
+                            <pre><code class="language-python">esito: str = "Promosso" if voto >= 18 else "Bocciato"</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment" style="margin-top: 0.8em;">
+                        <strong>Regola:</strong> usatelo solo quando rende il codice <strong>più leggibile</strong>, non per ogni <code>if/else</code>. Se la logica è complessa, preferite la forma estesa.
+                    </div>
+                </section>
+
+                <!-- SLIDE 27: Condizioni composte -->
+                <section>
+                    <h2>Condizioni composte</h2>
+                    <pre><code class="language-python">eta: int = 25
+reddito: float = 18000.0
+residente: bool = True
+
+# AND: entrambe devono essere vere
+if eta >= 18 and reddito < 20000:
+    print("Ha diritto alla borsa di studio")
+
+# OR: almeno una deve essere vera
+if eta < 18 or not residente:
+    print("Non può iscriversi")</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Condizioni concatenate</strong> &mdash; Python le supporta nativamente:
+                        <pre><code class="language-python">voto: int = 25
+if 18 <= voto <= 30:  # elegante!
+    print("Voto valido")
+# In altri linguaggi: voto >= 18 and voto <= 30</code></pre>
+                    </div>
+                </section>
+
+            </section>
+            <!-- Fine sezione condizionali -->
+
+            <!-- ========== SEZIONE: BEST PRACTICE ========== -->
+            <section>
+
+                <!-- SLIDE 28: Sezione best practice -->
+                <section class="section-slide">
+                    <h2>Best practice</h2>
+                    <p>Scrivere condizioni in modo pythonic</p>
+                </section>
+
+                <!-- SLIDE 29: Truthy e falsy -->
+                <section>
+                    <h2>Truthy e falsy</h2>
+                    <p>In Python, molti valori possono essere interpretati come <code>True</code> o <code>False</code>:</p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-red">
+                                <h3>Falsy (valutati come <code>False</code>)</h3>
+                                <ul>
+                                    <li><code>False</code></li>
+                                    <li><code>0</code>, <code>0.0</code></li>
+                                    <li><code>""</code> <em>(stringa vuota)</em></li>
+                                    <li><code>[]</code>, <code>()</code>, <code>{}</code>, <code>set()</code></li>
+                                    <li><code>None</code></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Truthy (valutati come <code>True</code>)</h3>
+                                <p><strong>Tutto il resto!</strong></p>
+                                <ul>
+                                    <li><code>True</code></li>
+                                    <li>Numeri diversi da 0</li>
+                                    <li>Stringhe non vuote</li>
+                                    <li>Collezioni non vuote</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 30: Truthy/falsy in pratica -->
+                <section>
+                    <h2>Truthy e falsy in pratica</h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python"># Confronto esplicito inutile
+if len(lista) == 0:
+    print("Lista vuota")
+
+if attivo == True:
+    print("È attivo")
+
+if attivo == False:
+    print("Non è attivo")</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python"># Pythonic: sfrutta truthy/falsy
+if not lista:
+    print("Lista vuota")
+
+if attivo:
+    print("È attivo")
+
+if not attivo:
+    print("Non è attivo")</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 31: Early return -->
+                <section>
+                    <h2>Early return</h2>
+                    <p>Gestite i casi anomali all'inizio e uscite subito:</p>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python"># Nesting profondo
+def calcola_media(voti):
+    if len(voti) > 0:
+        if all(0 <= v <= 30
+               for v in voti):
+            return sum(voti) / len(voti)
+        else:
+            raise ValueError("Non validi")
+    else:
+        raise ValueError("Lista vuota")</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python"># Logica piatta
+def calcola_media(voti):
+    if not voti:
+        raise ValueError("Lista vuota")
+    if not all(0 <= v <= 30
+               for v in voti):
+        raise ValueError("Non validi")
+    return sum(voti) / len(voti)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment" style="margin-top: 0.5em;">
+                        <strong>Principio:</strong> prima i casi anomali (con uscita immediata), poi la logica principale senza indentazione extra.
+                    </div>
+                </section>
+
+                <!-- SLIDE 32: Validazione input -->
+                <section>
+                    <h2>Validazione dell'input</h2>
+                    <div class="box box-red">
+                        <strong>Regola d'oro:</strong> non fidatevi mai dei dati che vengono dall'esterno.
+                    </div>
+                    <pre><code class="language-python"># Validazione semplice
+eta_str: str = input("Età: ")
+if not eta_str.isdigit():
+    print("Errore: inserisci un numero intero positivo")
+else:
+    eta: int = int(eta_str)
+    if eta < 0 or eta > 150:
+        print("Errore: età non realistica")
+    else:
+        print(f"Hai {eta} anni")</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong>Strategia:</strong> verificate il <strong>tipo</strong> (è un numero?), poi il <strong>range</strong> (è nel dominio valido?), infine procedete con la logica.
+                    </div>
+                </section>
+
+            </section>
+            <!-- Fine sezione best practice -->
+
+            <!-- ========== SLIDE 33: Riepilogo ========== -->
+            <section>
+                <h2>Riepilogo</h2>
+                <p>Oggi abbiamo aggiunto tre capacità fondamentali:</p>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-blue">
+                            <h3>Calcolare</h3>
+                            <p>Operatori aritmetici, di confronto, logici e di appartenenza</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-green">
+                            <h3>Comunicare</h3>
+                            <p><code>print()</code>, f-string, <code>input()</code> e conversione dei tipi</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-yellow">
+                            <h3>Decidere</h3>
+                            <p><code>if</code>, <code>elif</code>, <code>else</code>, operatore ternario, condizioni composte</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 1em;">
+                    <p><strong>Best practice:</strong> truthy/falsy, early return, validazione dell'input &mdash; risultato di decenni di esperienza collettiva.</p>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 34: Prossima lezione ========== -->
+            <section>
+                <h2>Prossima lezione</h2>
+                <div class="box box-blue" style="font-size: 1.1em;">
+                    <p><strong>I cicli <code>for</code> e <code>while</code></strong></p>
+                    <p>Con variabili, condizioni e cicli, avrete i tre mattoni fondamentali di qualsiasi programma.</p>
+                </div>
+                <div class="diagram" style="margin-top: 1em;">
+                    Variabili &rarr; Operatori &rarr; I/O &rarr; Condizioni &rarr; <strong>Cicli</strong> &rarr; ...<br>
+                    <span style="color: var(--accent);">(lezioni precedenti)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: var(--text-muted);">(T08)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: var(--success);">(prossima)</span>
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T07_primi_passi_python.html" style="color: var(--accent);">&larr; T07: Primi passi in Python</a></div><div><a href="T09_cicli.html" style="color: var(--accent);">T09: Cicli &rarr;</a></div><div><a href="../dispense/frontali/T08_operatori_io_condizionali.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/T08_operatori_io/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — T08</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

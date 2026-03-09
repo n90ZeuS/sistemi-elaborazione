@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T09 — Cicli</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>Cicli</h1>
+                <div class="subtitle">Ripetere operazioni con <code>for</code> e <code>while</code></div>
+                <div class="course-info">
+                    Sistemi di Elaborazione — Lezione 9<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment">Il ciclo <code>for</code> e le funzioni <code>range()</code>, <code>enumerate()</code>, <code>zip()</code></li>
+                    <li class="fragment">Il ciclo <code>while</code></li>
+                    <li class="fragment"><code>break</code> e <code>continue</code></li>
+                    <li class="fragment">Cicli annidati</li>
+                    <li class="fragment">Pattern comuni: accumulatore, contatore, ricerca, filtro, min/max</li>
+                    <li class="fragment">Esempio completo: statistiche descrittive</li>
+                </ol>
+                <aside class="notes">Questa lezione completa i tre pilastri della programmazione imperativa: sequenza, selezione (condizionali) e iterazione (cicli).</aside>
+            </section>
+
+            <!-- ========== SEZIONE: INTRODUZIONE ========== -->
+            <section>
+                <h2>Perch&eacute; i cicli?</h2>
+                <p>Abbiamo variabili, operatori e condizionali. Manca un ingrediente fondamentale: la <strong>ripetizione</strong>.</p>
+                <div class="box box-blue">
+                    <p>Gran parte del lavoro in statistica consiste nel fare la stessa operazione su molti dati: calcolare la media di mille osservazioni, cercare un valore anomalo, applicare una trasformazione a ogni riga.</p>
+                </div>
+                <p class="fragment">I cicli permettono di <strong>ripetere un blocco di codice</strong> senza doverlo riscrivere.</p>
+                <div class="box box-green fragment">
+                    <strong>Variabili + Condizioni + Cicli</strong> = i tre pilastri della programmazione imperativa.<br>
+                    Tutto il resto &egrave; costruito su questi.
+                </div>
+            </section>
+
+            <!-- ========== SEZIONE: IL CICLO FOR ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>Il ciclo <code>for</code></h2>
+                    <p><em>Iterare sugli elementi di una sequenza</em></p>
+                </section>
+
+                <!-- for base -->
+                <section>
+                    <h2>Il ciclo <code>for</code>: sintassi base</h2>
+                    <p>Il <code>for</code> scorre gli elementi di una sequenza, uno alla volta:</p>
+                    <pre><code class="language-python">voti: list[int] = [28, 30, 25, 27, 22]
+
+for voto in voti:
+    print(f"Voto: {voto}")</code></pre>
+                    <div class="diagram fragment">
+                        lista: [28, 30, 25, 27, 22]<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;voto = 28 &rarr; esegui blocco<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;voto = 30 &rarr; esegui blocco<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;voto = 25 &rarr; esegui blocco<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;... fino alla fine
+                    </div>
+                    <aside class="notes">La variabile voto assume il valore dell'elemento successivo ad ogni iterazione. Quando gli elementi finiscono, il ciclo termina.</aside>
+                </section>
+
+                <!-- range() -->
+                <section>
+                    <h2><code>range()</code>: generare sequenze</h2>
+                    <pre><code class="language-python"># range(stop): da 0 a stop-1
+for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4
+
+# range(start, stop): da start a stop-1
+for i in range(1, 6):
+    print(i)  # 1, 2, 3, 4, 5
+
+# range(start, stop, step): con passo
+for i in range(0, 10, 2):
+    print(i)  # 0, 2, 4, 6, 8</code></pre>
+                    <aside class="notes">range() genera numeri pigramente (lazy evaluation), non crea una lista in memoria.</aside>
+                </section>
+
+                <!-- range con step negativo -->
+                <section>
+                    <h2><code>range()</code>: contare all'indietro</h2>
+                    <pre><code class="language-python"># Contare all'indietro
+for i in range(10, 0, -1):
+    print(i)  # 10, 9, 8, ..., 1</code></pre>
+                    <table>
+                        <thead>
+                            <tr><th>Forma</th><th>Parametri</th><th>Risultato</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>range(5)</code></td><td>solo stop</td><td>0, 1, 2, 3, 4</td></tr>
+                            <tr><td><code>range(1, 6)</code></td><td>start, stop</td><td>1, 2, 3, 4, 5</td></tr>
+                            <tr><td><code>range(0, 10, 2)</code></td><td>start, stop, step</td><td>0, 2, 4, 6, 8</td></tr>
+                            <tr><td><code>range(10, 0, -1)</code></td><td>step negativo</td><td>10, 9, 8, ..., 1</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Perché stop escluso -->
+                <section>
+                    <h2>Perch&eacute; <code>stop</code> &egrave; escluso?</h2>
+                    <p>Intervallo semiaperto: <strong>[start, stop)</strong></p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Coerenza con indice 0</h3>
+                                <p><code>range(n)</code> produce esattamente <strong>n</strong> elementi (da 0 a n-1), come gli indici di una lista di lunghezza n.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Intervalli concatenabili</h3>
+                                <p><code>range(0, 5)</code> + <code>range(5, 10)</code> = <code>range(0, 10)</code><br>Nessuna sovrapposizione.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="fragment"><em>Sembra innaturale all'inizio, ma diventa rapidamente intuitivo.</em></p>
+                </section>
+
+                <!-- enumerate -->
+                <section>
+                    <h2><code>enumerate()</code>: indice e valore</h2>
+                    <p>Spesso serve sia l'<strong>indice</strong> che il <strong>valore</strong>.</p>
+                    <div class="compare">
+                        <div class="bad">
+<pre><code class="language-python"># Anti-pattern C-style
+nomi = ["Anna", "Marco", "Luca"]
+for i in range(len(nomi)):
+    print(f"{i}: {nomi[i]}")</code></pre>
+                        </div>
+                        <div class="good">
+<pre><code class="language-python"># Modo pythonic
+nomi = ["Anna", "Marco", "Luca"]
+for i, nome in enumerate(nomi):
+    print(f"{i}: {nome}")</code></pre>
+                        </div>
+                    </div>
+                    <div class="fragment box box-yellow">
+                        Si pu&ograve; specificare un indice iniziale: <code>enumerate(nomi, start=1)</code>
+                    </div>
+                </section>
+
+                <!-- zip -->
+                <section>
+                    <h2><code>zip()</code>: iterare in parallelo</h2>
+                    <p>Iterare su pi&ugrave; sequenze contemporaneamente:</p>
+                    <pre><code class="language-python">nomi: list[str] = ["Anna", "Marco", "Luca"]
+voti: list[int] = [28, 30, 25]
+
+for nome, voto in zip(nomi, voti):
+    print(f"{nome}: {voto}")
+# Anna: 28
+# Marco: 30
+# Luca: 25</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Attenzione:</strong> <code>zip()</code> si ferma alla sequenza pi&ugrave; corta. Per non perdere dati con lunghezze diverse, usate <code>itertools.zip_longest</code>.
+                    </div>
+                    <aside class="notes">zip prende il nome dalla cerniera: unisce due sequenze elemento per elemento.</aside>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: IL CICLO WHILE ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Il ciclo <code>while</code></h2>
+                    <p><em>Ripetere finch&eacute; una condizione &egrave; vera</em></p>
+                </section>
+
+                <!-- while base -->
+                <section>
+                    <h2><code>while</code>: sintassi base</h2>
+                    <p>Si usa quando <strong>non si sa in anticipo</strong> quante iterazioni servono:</p>
+                    <pre><code class="language-python">risposta: str = ""
+while risposta != "esci":
+    risposta = input("Inserisci un comando (o 'esci'): ")
+    print(f"Hai scritto: {risposta}")</code></pre>
+                    <div class="diagram fragment">
+                        condizione vera? &rarr; S&igrave; &rarr; esegui blocco &rarr; torna a controllare<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr; No<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esci dal ciclo
+                    </div>
+                </section>
+
+                <!-- ciclo infinito -->
+                <section>
+                    <h2>Il pericolo del ciclo infinito</h2>
+                    <p>Se la condizione non diventa <strong>mai falsa</strong>, il ciclo non termina mai:</p>
+                    <pre><code class="language-python"># ATTENZIONE: ciclo infinito!
+x: int = 1
+while x > 0:
+    x += 1  # x cresce sempre, la condizione è sempre vera</code></pre>
+                    <div class="box box-red fragment">
+                        <strong>Per interrompere:</strong> <code>Ctrl+C</code> nel terminale.<br>
+                        <strong>Per prevenire:</strong> progettate correttamente la condizione di uscita.
+                    </div>
+                    <aside class="notes">Un errore molto comune per i principianti. Suggerire di verificare mentalmente che la variabile nella condizione venga modificata nel corpo del ciclo in modo da portare la condizione a False.</aside>
+                </section>
+
+                <!-- for vs while -->
+                <section>
+                    <h2><code>for</code> vs <code>while</code></h2>
+                    <table>
+                        <thead>
+                            <tr><th></th><th><code>for</code></th><th><code>while</code></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Quando</strong></td>
+                                <td>Iterate su una collezione o sapete quante iterazioni</td>
+                                <td>La terminazione dipende da una condizione dinamica</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Esempi</strong></td>
+                                <td>Scorrere liste, stringhe, range</td>
+                                <td>Input utente, convergenza algoritmo, ricerca</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Frequenza</strong></td>
+                                <td><span class="badge badge-green">~90% dei casi</span></td>
+                                <td><span class="badge badge-yellow">~10% dei casi</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        <strong>Regola pratica:</strong> nel dubbio, provate prima con <code>for</code>.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: BREAK E CONTINUE ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2><code>break</code> e <code>continue</code></h2>
+                    <p><em>Controllare il flusso dentro un ciclo</em></p>
+                </section>
+
+                <!-- break -->
+                <section>
+                    <h2><code>break</code>: uscire dal ciclo</h2>
+                    <p><code>break</code> esce <strong>immediatamente</strong> dal ciclo:</p>
+                    <pre><code class="language-python"># Cercare un valore
+dati: list[int] = [4, 7, 2, 9, 1, 8]
+obiettivo: int = 9
+
+for dato in dati:
+    if dato == obiettivo:
+        print(f"Trovato: {dato}")
+        break</code></pre>
+                    <div class="diagram fragment">
+                        4 &rarr; no | 7 &rarr; no | 2 &rarr; no | <strong>9 &rarr; trovato! break</strong> | 1, 8 mai visitati
+                    </div>
+                </section>
+
+                <!-- continue -->
+                <section>
+                    <h2><code>continue</code>: saltare un'iterazione</h2>
+                    <p><code>continue</code> salta il resto del corpo e passa all'iterazione successiva:</p>
+                    <pre><code class="language-python"># Elaborare solo i valori positivi
+valori: list[float] = [3.5, -1.2, 4.0, -0.5, 2.1]
+
+for valore in valori:
+    if valore < 0:
+        continue  # salta i negativi
+    print(f"Elaboro: {valore}")</code></pre>
+                    <div class="diagram fragment">
+                        3.5 &rarr; elaboro | <strong>-1.2 &rarr; skip</strong> | 4.0 &rarr; elaboro | <strong>-0.5 &rarr; skip</strong> | 2.1 &rarr; elaboro
+                    </div>
+                </section>
+
+                <!-- while True + break -->
+                <section>
+                    <h2>Pattern <code>while True</code> + <code>break</code></h2>
+                    <p>Quando la condizione di uscita &egrave; <strong>nel mezzo</strong> del ciclo, non all'inizio:</p>
+                    <pre><code class="language-python">while True:
+    risposta: str = input("Inserisci un numero positivo (0 per uscire): ")
+    numero: int = int(risposta)
+    if numero == 0:
+        break
+    print(f"Il quadrato è {numero ** 2}")</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Struttura:</strong> ciclo infinito con uscita controllata via <code>break</code>. Utile quando servono operazioni sia prima che dopo il controllo di uscita.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: CICLI ANNIDATI ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Cicli annidati</h2>
+                    <p><em>Un ciclo dentro un altro ciclo</em></p>
+                </section>
+
+                <section>
+                    <h2>Cicli annidati: esempio</h2>
+                    <pre><code class="language-python"># Tavola pitagorica
+for i in range(1, 11):
+    for j in range(1, 11):
+        print(f"{i*j:4d}", end="")
+    print()  # a capo dopo ogni riga</code></pre>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <strong>Uso tipico:</strong> strutture bidimensionali (matrici, tabelle).
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-red">
+                                <strong>Attenzione alla complessit&agrave;:</strong><br>
+                                1 ciclo: <strong>n</strong> operazioni<br>
+                                2 cicli annidati: <strong>n&sup2;</strong> operazioni<br>
+                                3 cicli annidati: <strong>n&sup3;</strong> operazioni
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">Se n = 1000, un ciclo annidato esegue un milione di operazioni. Con tre cicli, un miliardo. Questo concetto sarà fondamentale quando parleremo di complessità.</aside>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: PATTERN COMUNI ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Pattern comuni</h2>
+                    <p><em>Mattoni ricorrenti per risolvere problemi con i cicli</em></p>
+                </section>
+
+                <!-- Accumulatore -->
+                <section>
+                    <h2>Pattern: Accumulatore</h2>
+                    <p>Accumulare un valore (somma, prodotto, concatenazione):</p>
+                    <pre><code class="language-python">voti: list[int] = [28, 30, 25, 27, 22]
+
+somma: int = 0           # inizializza l'accumulatore
+for voto in voti:
+    somma += voto         # aggiorna ad ogni iterazione
+
+media: float = somma / len(voti)
+print(f"Media: {media:.2f}")</code></pre>
+                    <div class="diagram fragment">
+                        somma: 0 &rarr; +28 = 28 &rarr; +30 = 58 &rarr; +25 = 83 &rarr; +27 = 110 &rarr; +22 = 132
+                    </div>
+                    <aside class="notes">Schema: inizializzare, iterare aggiornando, usare il risultato alla fine.</aside>
+                </section>
+
+                <!-- Contatore -->
+                <section>
+                    <h2>Pattern: Contatore</h2>
+                    <p>Contare gli elementi che soddisfano una condizione:</p>
+                    <pre><code class="language-python">voti: list[int] = [28, 30, 25, 27, 22, 15, 12]
+
+sufficienze: int = 0
+for voto in voti:
+    if voto >= 18:
+        sufficienze += 1
+
+print(f"Sufficienze: {sufficienze} su {len(voti)}")</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong>Struttura:</strong> come l'accumulatore, ma l'aggiornamento avviene solo quando la condizione &egrave; vera. L'incremento &egrave; sempre +1.
+                    </div>
+                </section>
+
+                <!-- Ricerca -->
+                <section>
+                    <h2>Pattern: Ricerca</h2>
+                    <p>Trovare un elemento specifico:</p>
+                    <pre><code class="language-python">def contiene(lista: list[int], obiettivo: int) -> bool:
+    """Verifica se obiettivo è presente nella lista."""
+    for elemento in lista:
+        if elemento == obiettivo:
+            return True
+    return False</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Chiave:</strong> il <code>return True</code> &egrave; dentro il ciclo (uscita anticipata), il <code>return False</code> &egrave; fuori (solo se nessun elemento corrisponde).
+                    </div>
+                </section>
+
+                <!-- Filtro -->
+                <section>
+                    <h2>Pattern: Filtro</h2>
+                    <p>Selezionare gli elementi che soddisfano un criterio:</p>
+                    <pre><code class="language-python">voti: list[int] = [28, 30, 25, 27, 22, 15, 12]
+
+sufficienti: list[int] = []     # lista vuota
+for voto in voti:
+    if voto >= 18:
+        sufficienti.append(voto)
+
+print(f"Voti sufficienti: {sufficienti}")
+# [28, 30, 25, 27, 22]</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong>Struttura:</strong> lista vuota + ciclo con condizione + <code>append()</code>.
+                    </div>
+                </section>
+
+                <!-- Min/Max -->
+                <section>
+                    <h2>Pattern: Min/Max</h2>
+                    <pre><code class="language-python">def trova_massimo(valori: list[float]) -> float:
+    """Trova il valore massimo nella lista."""
+    if not valori:
+        raise ValueError("Lista vuota")
+
+    massimo: float = valori[0]  # inizializza col primo elemento
+    for valore in valori[1:]:   # scorre dal secondo in poi
+        if valore > massimo:
+            massimo = valore
+    return massimo</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Perch&eacute; inizializzare con <code>valori[0]</code> e non con <code>0</code>?</strong><br>
+                        Se tutti i valori fossero negativi (es. [-3, -7, -1]), inizializzando con 0 otterremmo un massimo errato.
+                    </div>
+                    <aside class="notes">Python ha max() e min() built-in, ma è istruttivo capire come funzionano internamente.</aside>
+                </section>
+
+                <!-- Riepilogo pattern -->
+                <section>
+                    <h2>Riepilogo dei pattern</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Pattern</th><th>Inizializzazione</th><th>Aggiornamento</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-blue">Accumulatore</span></td>
+                                <td><code>somma = 0</code></td>
+                                <td><code>somma += valore</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-green">Contatore</span></td>
+                                <td><code>conta = 0</code></td>
+                                <td><code>if cond: conta += 1</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-yellow">Ricerca</span></td>
+                                <td><em>(nessuna)</em></td>
+                                <td><code>if trovato: return</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-blue">Filtro</span></td>
+                                <td><code>risultato = []</code></td>
+                                <td><code>if cond: .append()</code></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-red">Min/Max</span></td>
+                                <td><code>best = lista[0]</code></td>
+                                <td><code>if migliore: best = v</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-green fragment">
+                        <strong>Consiglio:</strong> quando affrontate un problema, chiedetevi &ldquo;quale pattern serve qui?&rdquo;
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: ESEMPIO COMPLETO ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Esempio completo</h2>
+                    <p><em>Statistiche descrittive con i cicli</em></p>
+                </section>
+
+                <!-- Statistiche parte 1 -->
+                <section>
+                    <h2>Statistiche descrittive (1/2)</h2>
+                    <pre><code class="language-python">def statistiche(valori: list[float]) -> dict[str, float]:
+    """Calcola statistiche descrittive base."""
+    n: int = len(valori)
+    if n == 0:
+        raise ValueError("Lista vuota")
+
+    # Media (pattern accumulatore)
+    somma: float = 0.0
+    for v in valori:
+        somma += v
+    media: float = somma / n
+
+    # Varianza (pattern accumulatore)
+    somma_scarti_quadrati: float = 0.0
+    for v in valori:
+        somma_scarti_quadrati += (v - media) ** 2
+    varianza: float = somma_scarti_quadrati / n</code></pre>
+                </section>
+
+                <!-- Statistiche parte 2 -->
+                <section>
+                    <h2>Statistiche descrittive (2/2)</h2>
+                    <pre><code class="language-python">    # Min e max (pattern min/max)
+    minimo: float = valori[0]
+    massimo: float = valori[0]
+    for v in valori[1:]:
+        if v < minimo:
+            minimo = v
+        if v > massimo:
+            massimo = v
+
+    return {
+        "n": n, "media": media, "varianza": varianza,
+        "minimo": minimo, "massimo": massimo
+    }</code></pre>
+                    <pre class="fragment"><code class="language-python"># Test
+dati: list[float] = [23.5, 21.0, 25.3, 19.8, 22.1]
+risultati = statistiche(dati)
+for chiave, valore in risultati.items():
+    print(f"{chiave}: {valore:.2f}")</code></pre>
+                </section>
+
+                <!-- Pattern usati -->
+                <section>
+                    <h2>I pattern nella funzione <code>statistiche()</code></h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Media</h3>
+                                <p><span class="badge badge-blue">Accumulatore</span><br>somma += v</p>
+                            </div>
+                            <div class="box box-blue">
+                                <h3>Varianza</h3>
+                                <p><span class="badge badge-blue">Accumulatore</span><br>somma_scarti += (v - media)&sup2;</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <h3>Min e Max</h3>
+                                <p><span class="badge badge-red">Min/Max</span><br>Inizializza con valori[0], confronta ogni elemento</p>
+                            </div>
+                            <div class="box box-green fragment">
+                                <h3>Prossimamente...</h3>
+                                <p>NumPy far&agrave; tutto in una riga: <code>np.mean()</code>, <code>np.var()</code>, <code>np.min()</code>, <code>np.max()</code>. Ma ora <strong>sapete cosa c'&egrave; dentro</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: BÖHM-JACOPINI ========== -->
+            <section>
+                <h2>Teorema di B&ouml;hm-Jacopini (1966)</h2>
+                <div class="diagram">
+                    SEQUENZA&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;SELEZIONE&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;ITERAZIONE<br>
+                    (istruzioni)&nbsp;&nbsp;&nbsp;&nbsp;(if/else)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(for/while)<br><br>
+                    = sufficienti per esprimere <strong>qualsiasi algoritmo</strong>
+                </div>
+                <div class="columns fragment">
+                    <div class="col">
+                        <div class="box box-blue">
+                            <h3>Sequenza</h3>
+                            <p>Eseguire istruzioni una dopo l'altra</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-green">
+                            <h3>Selezione</h3>
+                            <p>Scegliere quale ramo eseguire (<code>if</code>/<code>else</code>)</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-yellow">
+                            <h3>Iterazione</h3>
+                            <p>Ripetere un blocco (<code>for</code>/<code>while</code>)</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">Risultato teorico fondamentale: con questi tre costrutti di controllo del flusso si può esprimere qualsiasi programma calcolabile.</aside>
+            </section>
+
+            <!-- ========== SEZIONE: CONSIGLI ========== -->
+            <section>
+                <h2>Lezioni pratiche</h2>
+                <ol>
+                    <li class="fragment">
+                        <strong>Riconoscete i pattern.</strong><br>
+                        Accumulatore, contatore, ricerca, filtro, min/max &mdash; sono mattoni ricorrenti. Quando affrontate un problema, chiedetevi: &ldquo;quale pattern serve qui?&rdquo;
+                    </li>
+                    <li class="fragment">
+                        <strong>Capite cosa c'&egrave; sotto.</strong><br>
+                        La funzione <code>statistiche()</code> usa solo cicli e condizioni, eppure calcola media, varianza, minimo e massimo. Non &egrave; magia: &egrave; un ciclo con un accumulatore.
+                    </li>
+                </ol>
+                <div class="box box-blue fragment">
+                    <strong>Prossima lezione:</strong> comprehension (un modo elegante di esprimere filtro e trasformazione) e stringhe come struttura dati.
+                </div>
+            </section>
+
+            <!-- ========== SLIDE FINALE: DOMANDE ========== -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol>
+                    <li class="fragment">Qual &egrave; la differenza tra <code>for</code> e <code>while</code>?</li>
+                    <li class="fragment">Perch&eacute; <code>range(5)</code> produce i numeri da 0 a 4?</li>
+                    <li class="fragment">Cos'&egrave; <code>enumerate()</code> e perch&eacute; &egrave; preferibile a <code>range(len(lista))</code>?</li>
+                    <li class="fragment">Cosa fanno <code>break</code> e <code>continue</code>?</li>
+                    <li class="fragment">Cos'&egrave; un ciclo infinito? Come si previene?</li>
+                    <li class="fragment">Perch&eacute; nel pattern min/max si inizializza con <code>valori[0]</code> e non con <code>0</code>?</li>
+                </ol>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T08_operatori_io_condizionali.html" style="color: var(--accent);">&larr; T08: Operatori, I/O e condizionali</a></div><div><a href="T10_comprehension_stringhe.html" style="color: var(--accent);">T10: Comprehension e stringhe &rarr;</a></div><div><a href="../dispense/frontali/T09_cicli.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/T09_cicli/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; T09</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

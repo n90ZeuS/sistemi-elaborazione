@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logica Booleana e Storia del Calcolo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>Logica Booleana e<br>Storia del Calcolo</h1>
+                <div class="subtitle">Dai numeri alla logica, dall'abaco ai microprocessori</div>
+                <div class="course-info">
+                    <p><strong>Sistemi di Elaborazione</strong> — Lezione 2</p>
+                    <p>Corso di Laurea in Scienze Statistiche</p>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment"><strong>George Boole</strong> e l'algebra della logica</li>
+                    <li class="fragment"><strong>Operatori booleani</strong> fondamentali: AND, OR, NOT</li>
+                    <li class="fragment"><strong>Operatori derivati</strong>: NAND, NOR, XOR</li>
+                    <li class="fragment"><strong>Claude Shannon</strong> e il ponte logica-circuiti</li>
+                    <li class="fragment"><strong>Espressioni booleane</strong> e semplificazione</li>
+                    <li class="fragment"><strong>Dai transistor ai chip</strong>: la catena fisica</li>
+                    <li class="fragment"><strong>Storia del calcolo</strong>: dall'abaco al microprocessore</li>
+                </ol>
+            </section>
+
+            <!-- ========== SEZIONE: GEORGE BOOLE ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>George Boole<br><small style="color: var(--text-muted); font-weight: 400;">e la nascita dell'algebra della logica</small></h2>
+                </section>
+
+                <!-- SLIDE: Boole biografia -->
+                <section>
+                    <h2>George Boole (1815-1864)</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <ul>
+                                <li class="fragment">Figlio di un calzolaio di Lincoln, Inghilterra</li>
+                                <li class="fragment">Quasi interamente <strong>autodidatta</strong>: latino, greco, francese, tedesco</li>
+                                <li class="fragment">A 16 anni gia insegnava; a 20 apri una scuola propria</li>
+                                <li class="fragment">Studiava Lagrange e Laplace nei ritagli di tempo</li>
+                            </ul>
+                        </div>
+                        <div class="col-40">
+                            <div class="box box-blue">
+                                <h3>Opere principali</h3>
+                                <p><em>The Mathematical Analysis of Logic</em> (1847)</p>
+                                <p><em>An Investigation of the Laws of Thought</em> (1854)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">Boole e un esempio straordinario di mobilita sociale attraverso lo studio. Sottolineare il contesto vittoriano.</aside>
+                </section>
+
+                <!-- SLIDE: L'idea rivoluzionaria -->
+                <section>
+                    <h2>L'idea rivoluzionaria</h2>
+                    <div class="box box-green">
+                        <h3>La logica puo essere trattata come un'algebra</h3>
+                        <p>Le proposizioni logiche (vero/falso) si manipolano con operazioni simili a quelle dell'algebra ordinaria.</p>
+                    </div>
+                    <ul>
+                        <li class="fragment">Invece di numeri &rarr; <strong>valori di verita</strong></li>
+                        <li class="fragment">Invece di addizione e moltiplicazione &rarr; <strong>operazioni logiche</strong></li>
+                        <li class="fragment">Solo due valori possibili: <strong>Vero (1)</strong> e <strong>Falso (0)</strong></li>
+                    </ul>
+                    <div class="fragment box box-yellow">
+                        <p>1 e 0: gli stessi simboli del sistema binario. Il ponte tra logica astratta e circuiti elettronici &mdash; ma Boole non poteva saperlo. I computer sarebbero arrivati quasi un secolo dopo.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: OPERATORI FONDAMENTALI ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Operatori Booleani<br><small style="color: var(--text-muted); font-weight: 400;">AND, OR, NOT</small></h2>
+                </section>
+
+                <!-- SLIDE: AND -->
+                <section>
+                    <h2>AND &mdash; Congiunzione logica</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p>Restituisce Vero solo quando <strong>entrambi</strong> gli operandi sono Veri.</p>
+                            <p><em>Notazione: A AND B = A &middot; B = A &and; B</em></p>
+                            <table>
+                                <tr><th>A</th><th>B</th><th>A AND B</th></tr>
+                                <tr><td>0</td><td>0</td><td>0</td></tr>
+                                <tr><td>0</td><td>1</td><td>0</td></tr>
+                                <tr><td>1</td><td>0</td><td>0</td></tr>
+                                <tr><td>1</td><td>1</td><td><strong>1</strong></td></tr>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Esempio quotidiano</h3>
+                                <p>"Supero l'esame SE studio <strong>E</strong> sono presente all'appello."</p>
+                            </div>
+                            <div class="fragment box box-green">
+                                <h3>Per statistici</h3>
+                                <p>Filtrare un dataset: righe dove <code>eta > 30 AND reddito > 50000</code></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: OR -->
+                <section>
+                    <h2>OR &mdash; Disgiunzione logica</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p>Restituisce Vero quando <strong>almeno uno</strong> degli operandi e Vero.</p>
+                            <p><em>Notazione: A OR B = A + B = A &or; B</em></p>
+                            <table>
+                                <tr><th>A</th><th>B</th><th>A OR B</th></tr>
+                                <tr><td>0</td><td>0</td><td>0</td></tr>
+                                <tr><td>0</td><td>1</td><td><strong>1</strong></td></tr>
+                                <tr><td>1</td><td>0</td><td><strong>1</strong></td></tr>
+                                <tr><td>1</td><td>1</td><td><strong>1</strong></td></tr>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <h3>Attenzione</h3>
+                                <p>E un OR <strong>inclusivo</strong>: vero anche quando entrambi sono veri. Diverso dal "o" italiano, spesso usato in senso esclusivo.</p>
+                            </div>
+                            <div class="fragment box box-green">
+                                <h3>Per statistici</h3>
+                                <p><code>regione = 'Lazio' OR regione = 'Toscana'</code></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: NOT -->
+                <section>
+                    <h2>NOT &mdash; Negazione</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p>Inverte il valore di verita. Operatore <strong>unario</strong>.</p>
+                            <p><em>Notazione: NOT A = &not;A = <span style="text-decoration: overline;">A</span></em></p>
+                            <table style="width: 60%;">
+                                <tr><th>A</th><th>NOT A</th></tr>
+                                <tr><td>0</td><td><strong>1</strong></td></tr>
+                                <tr><td>1</td><td><strong>0</strong></td></tr>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Esempio</h3>
+                                <p>"Se <strong>NON</strong> piove, esco senza ombrello."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fragment box box-green" style="margin-top: 0.8em;">
+                        <p>Con solo <strong>AND</strong>, <strong>OR</strong> e <strong>NOT</strong> si puo esprimere <strong>qualsiasi funzione logica</strong>. Sono la base di tutto.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: OPERATORI DERIVATI ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Operatori Derivati<br><small style="color: var(--text-muted); font-weight: 400;">NAND, NOR, XOR</small></h2>
+                </section>
+
+                <!-- SLIDE: NAND -->
+                <section>
+                    <h2>NAND &mdash; NOT AND</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p>Negazione dell'AND: Falso <strong>solo</strong> quando entrambi gli input sono Veri.</p>
+                            <table>
+                                <tr><th>A</th><th>B</th><th>A NAND B</th></tr>
+                                <tr><td>0</td><td>0</td><td><strong>1</strong></td></tr>
+                                <tr><td>0</td><td>1</td><td><strong>1</strong></td></tr>
+                                <tr><td>1</td><td>0</td><td><strong>1</strong></td></tr>
+                                <tr><td>1</td><td>1</td><td>0</td></tr>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="box box-red">
+                                <h3>Operatore universale</h3>
+                                <p><strong>Qualsiasi</strong> funzione logica si puo costruire usando <strong>solo</strong> porte NAND.</p>
+                            </div>
+                            <div class="fragment box box-blue">
+                                <p>Le memorie flash dei vostri smartphone e SSD si chiamano <strong>"NAND flash"</strong> proprio per questo motivo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: NAND come universale -->
+                <section>
+                    <h2>NAND: costruire tutto da uno</h2>
+                    <p>Tutti gli operatori base ricostruiti con sole porte NAND:</p>
+                    <div class="diagram">
+                        <strong>NOT A</strong> = A NAND A<br><br>
+                        <strong>A AND B</strong> = (A NAND B) NAND (A NAND B)<br><br>
+                        <strong>A OR B</strong> = (A NAND A) NAND (B NAND B)
+                    </div>
+                    <div class="fragment box box-yellow">
+                        <p>I transistor piu semplici ed economici da fabbricare formano naturalmente porte NAND. L'intera industria dei semiconduttori sfrutta questo fatto.</p>
+                    </div>
+                </section>
+
+                <!-- SLIDE: NOR -->
+                <section>
+                    <h2>NOR &mdash; NOT OR</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p>Vero <strong>solo</strong> quando entrambi gli input sono Falsi. Anche il NOR e un operatore <strong>universale</strong>.</p>
+                            <table>
+                                <tr><th>A</th><th>B</th><th>A NOR B</th></tr>
+                                <tr><td>0</td><td>0</td><td><strong>1</strong></td></tr>
+                                <tr><td>0</td><td>1</td><td>0</td></tr>
+                                <tr><td>1</td><td>0</td><td>0</td></tr>
+                                <tr><td>1</td><td>1</td><td>0</td></tr>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="box box-blue">
+                                <p>Sia NAND che NOR sono <strong>universali</strong>: ognuno basta da solo a costruire qualsiasi circuito logico.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: XOR -->
+                <section>
+                    <h2>XOR &mdash; OR Esclusivo</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p>Vero quando gli input sono <strong>diversi</strong> tra loro.</p>
+                            <p><em>"O l'uno o l'altro, ma non entrambi."</em></p>
+                            <table>
+                                <tr><th>A</th><th>B</th><th>A XOR B</th></tr>
+                                <tr><td>0</td><td>0</td><td>0</td></tr>
+                                <tr><td>0</td><td>1</td><td><strong>1</strong></td></tr>
+                                <tr><td>1</td><td>0</td><td><strong>1</strong></td></tr>
+                                <tr><td>1</td><td>1</td><td>0</td></tr>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Applicazioni</h3>
+                                <ul>
+                                    <li class="fragment">Cuore del <strong>circuito sommatore</strong> binario</li>
+                                    <li class="fragment">Fondamentale in <strong>crittografia</strong></li>
+                                    <li class="fragment">XOR applicato due volte restituisce il dato originale: <code>A XOR B XOR B = A</code></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Riepilogo operatori -->
+                <section>
+                    <h2>Riepilogo operatori</h2>
+                    <table style="font-size: 0.82em;">
+                        <tr>
+                            <th>A</th><th>B</th><th>AND</th><th>OR</th><th>NAND</th><th>NOR</th><th>XOR</th>
+                        </tr>
+                        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                        <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                        <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                    </table>
+                    <div class="box box-blue" style="margin-top: 0.6em;">
+                        <p><strong>AND</strong> = tutti veri | <strong>OR</strong> = almeno uno vero | <strong>XOR</strong> = esattamente uno vero (con 2 input)</p>
+                        <p><strong>NAND</strong> = NOT AND | <strong>NOR</strong> = NOT OR</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: SHANNON ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Claude Shannon<br><small style="color: var(--text-muted); font-weight: 400;">e i circuiti elettrici (1937)</small></h2>
+                </section>
+
+                <!-- SLIDE: Shannon 1937 -->
+                <section>
+                    <h2>Il ponte tra logica e circuiti</h2>
+                    <p><strong>Claude Shannon</strong>, 21 anni, studente al MIT, scrive la sua tesi di master:</p>
+                    <div class="box box-green">
+                        <p><em>"A Symbolic Analysis of Relay and Switching Circuits"</em> (1937)</p>
+                        <p>Dimostro che <strong>l'algebra di Boole descrive perfettamente il comportamento dei circuiti elettrici a rele</strong>.</p>
+                    </div>
+                    <div class="fragment">
+                        <p>Definita <em>"la piu importante tesi di master del XX secolo"</em>.</p>
+                    </div>
+                    <aside class="notes">Lo stesso Shannon della teoria dell'informazione (1948), ma 11 anni prima. Due contributi fondamentali di una sola persona.</aside>
+                </section>
+
+                <!-- SLIDE: Rele e logica -->
+                <section>
+                    <h2>Rele come porte logiche</h2>
+                    <p>Un rele e un interruttore controllato elettricamente: aperto (0) o chiuso (1).</p>
+                    <div class="diagram">
+                        Due rele in <strong>SERIE</strong> &rarr; AND (corrente passa solo se entrambi chiusi)<br><br>
+                        Due rele in <strong>PARALLELO</strong> &rarr; OR (corrente passa se almeno uno chiuso)<br><br>
+                        Rele <strong>normalmente chiuso</strong> &rarr; NOT (si apre quando riceve segnale)
+                    </div>
+                    <div class="fragment box box-yellow">
+                        <p>Shannon non invento i rele, ne scopri Boole. Il suo genio fu nel <strong>vedere il collegamento</strong>: un ponte tra la matematica pura del XIX secolo e l'ingegneria elettrica del XX.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: ESPRESSIONI BOOLEANE ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Espressioni Booleane<br><small style="color: var(--text-muted); font-weight: 400;">e semplificazione</small></h2>
+                </section>
+
+                <!-- SLIDE: Regole fondamentali -->
+                <section>
+                    <h2>Regole dell'algebra booleana</h2>
+                    <table style="font-size: 0.8em;">
+                        <tr><th>Regola</th><th>AND</th><th>OR</th></tr>
+                        <tr><td><strong>Identita</strong></td><td>A AND 1 = A</td><td>A OR 0 = A</td></tr>
+                        <tr><td><strong>Annullamento</strong></td><td>A AND 0 = 0</td><td>A OR 1 = 1</td></tr>
+                        <tr><td><strong>Idempotenza</strong></td><td>A AND A = A</td><td>A OR A = A</td></tr>
+                        <tr><td><strong>Complemento</strong></td><td>A AND (NOT A) = 0</td><td>A OR (NOT A) = 1</td></tr>
+                    </table>
+                </section>
+
+                <!-- SLIDE: De Morgan -->
+                <section>
+                    <h2>Leggi di De Morgan</h2>
+                    <div class="box box-red">
+                        <p><strong>NOT(A AND B) = (NOT A) OR (NOT B)</strong></p>
+                        <p><strong>NOT(A OR B) = (NOT A) AND (NOT B)</strong></p>
+                    </div>
+                    <div class="fragment">
+                        <h3>Esempio nel linguaggio naturale</h3>
+                        <div class="columns">
+                            <div class="col">
+                                <div class="box box-blue">
+                                    <p>"Non e vero che piove <strong>e</strong> fa freddo."</p>
+                                </div>
+                            </div>
+                            <div class="col" style="display: flex; align-items: center; justify-content: center; flex: 0.2;">
+                                <strong>=</strong>
+                            </div>
+                            <div class="col">
+                                <div class="box box-blue">
+                                    <p>"<strong>Non</strong> piove <strong>oppure non</strong> fa freddo."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">Fate verificare agli studenti con la tabella di verita: i risultati coincidono per tutte le combinazioni di A e B.</aside>
+                </section>
+
+                <!-- SLIDE: Esempio semplificazione -->
+                <section>
+                    <h2>Esempio di semplificazione</h2>
+                    <pre><code class="language-text">F = (A AND B) OR (A AND NOT B)
+  = A AND (B OR NOT B)          [raccogliendo A]
+  = A AND 1                     [complemento: B OR NOT B = 1]
+  = A                           [identita]</code></pre>
+                    <div class="fragment compare">
+                        <div class="bad">
+                            <p>Espressione originale:<br><strong>4 porte logiche</strong></p>
+                        </div>
+                        <div class="good">
+                            <p>Espressione semplificata:<br><strong>0 porte</strong> (solo il segnale A)</p>
+                        </div>
+                    </div>
+                    <div class="fragment box box-yellow">
+                        <p>Con miliardi di transistor per chip, queste semplificazioni fanno la differenza tra un chip che funziona e uno che si surriscalda.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: DAI TRANSISTOR AI CHIP ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Dai Transistor ai Circuiti Integrati<br><small style="color: var(--text-muted); font-weight: 400;">La catena dalla logica al silicio</small></h2>
+                </section>
+
+                <!-- SLIDE: La catena -->
+                <section>
+                    <h2>Dalla logica al silicio</h2>
+                    <div class="diagram">
+                        <strong>Transistor</strong> (interruttore microscopico)<br>
+                        &darr;<br>
+                        <strong>Porta logica</strong> (pochi transistor &rarr; AND, OR, NOT, NAND...)<br>
+                        &darr;<br>
+                        <strong>Circuito combinatorio</strong> (rete di porte logiche &rarr; sommatore, comparatore...)<br>
+                        &darr;<br>
+                        <strong>Circuito integrato</strong> (miliardi di transistor su una piastrina di silicio)
+                    </div>
+                    <div class="fragment box box-blue">
+                        <p>Una porta NAND a 2 input richiede tipicamente <strong>4 transistor</strong>. Un moderno processore contiene <strong>decine di miliardi</strong> di transistor.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: STORIA DEL CALCOLO ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Storia del Calcolo<br><small style="color: var(--text-muted); font-weight: 400;">Dalle origini meccaniche ai computer elettronici</small></h2>
+                </section>
+
+                <!-- SLIDE: Abaco -->
+                <section>
+                    <h2>L'abaco (circa 2400 a.C.)</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <ul>
+                                <li>Primo strumento progettato per <strong>assistere il calcolo</strong></li>
+                                <li class="fragment">Operazioni aritmetiche spostando palline lungo aste</li>
+                                <li class="fragment">Sviluppato indipendentemente: Mesopotamia, Cina, Giappone, Roma</li>
+                                <li class="fragment">Il <em>suanpan</em> cinese e il <em>soroban</em> giapponese sono ancora usati oggi</li>
+                            </ul>
+                        </div>
+                        <div class="col-40">
+                            <div class="box box-yellow">
+                                <p>L'abaco non "calcola" da solo: e l'operatore umano che esegue i passaggi. Ma e il primo esempio di <strong>strumento dedicato al calcolo</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Pascal -->
+                <section>
+                    <h2>Blaise Pascal e la Pascalina (1642)</h2>
+                    <ul>
+                        <li><strong>Blaise Pascal</strong> (1623-1662): matematico, fisico e filosofo francese</li>
+                        <li class="fragment">A soli 19 anni costrui la prima <strong>calcolatrice meccanica</strong></li>
+                        <li class="fragment">Motivazione: alleviare il lavoro di suo padre, esattore delle tasse</li>
+                    </ul>
+                    <div class="fragment box box-blue">
+                        <h3>Come funzionava</h3>
+                        <p>Sistema di <strong>ruote dentate</strong>: completando un giro (da 9 a 0), un meccanismo a scatto faceva avanzare la ruota successiva &rarr; <strong>riporto automatico</strong>.</p>
+                        <p>Eseguiva somme e sottrazioni. Circa 50 esemplari costruiti.</p>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Leibniz -->
+                <section>
+                    <h2>Leibniz: macchina e sistema binario</h2>
+                    <p><strong>Gottfried Wilhelm Leibniz</strong> (1646-1716)</p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Stepped Reckoner (1694)</h3>
+                                <p>Macchina per le <strong>quattro operazioni</strong> aritmetiche, con meccanismo a tamburo scanalato.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Sistema binario (1703)</h3>
+                                <p><em>"Explication de l'Arithmetique Binaire"</em>: tutti i numeri si esprimono con sole due cifre, <strong>0 e 1</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fragment box box-yellow">
+                        <p>Leibniz fu affascinato dal parallelismo con l'<strong>I Ching</strong> cinese: linee intere (yang) e spezzate (yin) &mdash; un sistema binario ante litteram vecchio di 3000 anni. Ci vollero quasi <strong>250 anni</strong> perche il binario trovasse applicazione nei circuiti elettronici.</p>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Babbage -->
+                <section>
+                    <h2>Charles Babbage (1791-1871)</h2>
+                    <p><em>"Il padre del computer"</em></p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Macchina Differenziale (1822)</h3>
+                                <p>Dispositivo meccanico per calcolare tabelle matematiche eliminando errori umani.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Macchina Analitica (1837)</h3>
+                                <p>Mai completata, ma anticipo tutte le componenti di un computer moderno.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Macchina Analitica dettaglio -->
+                <section>
+                    <h2>La Macchina Analitica</h2>
+                    <p>Componenti che anticipano il computer moderno:</p>
+                    <table>
+                        <tr><th>Componente di Babbage</th><th>Equivalente moderno</th></tr>
+                        <tr><td><strong>Mulino</strong> (<em>mill</em>)</td><td>Unita Aritmetico-Logica (ALU)</td></tr>
+                        <tr><td><strong>Magazzino</strong> (<em>store</em>)</td><td>Memoria</td></tr>
+                        <tr><td><strong>Schede perforate</strong></td><td>Programma / Input</td></tr>
+                        <tr><td><strong>Salti condizionali</strong></td><td>Istruzioni di controllo (if/goto)</td></tr>
+                    </table>
+                    <aside class="notes">Babbage, irascibile e perfezionista, non riusci mai a costruirla con la tecnologia dell'epoca.</aside>
+                </section>
+
+                <!-- SLIDE: Ada Lovelace -->
+                <section>
+                    <h2>Ada Lovelace (1815-1852)</h2>
+                    <p><strong>Augusta Ada King, contessa di Lovelace</strong> &mdash; figlia del poeta Lord Byron.</p>
+                    <ul>
+                        <li class="fragment">Tradusse un articolo sulla Macchina Analitica (di Luigi Menabrea), aggiungendo note <strong>tre volte piu lunghe</strong> dell'originale</li>
+                        <li class="fragment">Descrisse un algoritmo per calcolare i numeri di Bernoulli: il <strong>primo programma della storia</strong></li>
+                    </ul>
+                    <div class="fragment box box-green">
+                        <h3>L'intuizione fondamentale</h3>
+                        <p>La macchina non era solo un calcolatore: poteva manipolare <strong>qualsiasi tipo di simbolo</strong> &mdash; note musicali, lettere, concetti &mdash; purche codificabili in numeri. Un'intuizione che anticipo di un secolo il <em>general-purpose computer</em>.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: TURING ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Alan Turing<br><small style="color: var(--text-muted); font-weight: 400;">e la nascita dell'informatica teorica</small></h2>
+                </section>
+
+                <!-- SLIDE: Turing e la macchina -->
+                <section>
+                    <h2>La Macchina di Turing (1936)</h2>
+                    <p><strong>Alan Turing</strong> (1912-1954), a 24 anni, pubblica <em>"On Computable Numbers"</em>.</p>
+                    <div class="box box-blue">
+                        <h3>Componenti della Macchina di Turing</h3>
+                        <ul>
+                            <li>Un <strong>nastro</strong> infinito diviso in celle (contenenti 0 o 1)</li>
+                            <li>Una <strong>testina</strong> che legge, scrive e si sposta</li>
+                            <li>Un <strong>insieme finito di stati</strong> e una <strong>tabella di transizione</strong></li>
+                        </ul>
+                    </div>
+                    <div class="fragment box box-green">
+                        <p><strong>Tesi di Church-Turing</strong>: qualsiasi algoritmo, per quanto complesso, puo essere eseguito da una Macchina di Turing. E uno dei pilastri dell'informatica teorica.</p>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Halting problem -->
+                <section>
+                    <h2>Il problema della fermata</h2>
+                    <p>Turing dimostro anche un risultato negativo fondamentale:</p>
+                    <div class="box box-red">
+                        <h3>Halting Problem</h3>
+                        <p>Non esiste un algoritmo generale che, dato un programma qualsiasi, possa determinare se quel programma <strong>terminera</strong> o <strong>girera all'infinito</strong>.</p>
+                    </div>
+                    <p class="fragment">Esistono problemi che <strong>nessuna macchina</strong> puo risolvere &mdash; un limite intrinseco del calcolo.</p>
+                </section>
+
+                <!-- SLIDE: Bletchley Park -->
+                <section>
+                    <h2>Bletchley Park e Enigma</h2>
+                    <ul>
+                        <li>Durante la Seconda Guerra Mondiale, Turing fu reclutato a <strong>Bletchley Park</strong></li>
+                        <li class="fragment">Lavoro alla decrittazione di <strong>Enigma</strong>, la macchina cifrante della marina tedesca</li>
+                        <li class="fragment">Progetto la <strong>Bombe</strong>: macchina elettromeccanica per la ricerca automatica delle chiavi</li>
+                        <li class="fragment">Si stima che il lavoro di Bletchley Park abbia <strong>accorciato la guerra di almeno due anni</strong></li>
+                    </ul>
+                    <div class="fragment box box-yellow">
+                        <p>La storia personale di Turing e tragica: condannato nel 1952 per omosessualita, sottoposto a castrazione chimica, mori nel 1954. Grazia postuma solo nel 2013.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: PRIMI COMPUTER ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>I Primi Computer Elettronici<br><small style="color: var(--text-muted); font-weight: 400;">Z3, ENIAC e la rivoluzione elettronica</small></h2>
+                </section>
+
+                <!-- SLIDE: Zuse Z3 -->
+                <section>
+                    <h2>Konrad Zuse e lo Z3 (1941)</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <ul>
+                                <li><strong>Konrad Zuse</strong> (1910-1995), ingegnere civile tedesco</li>
+                                <li class="fragment">Costrui computer nel <strong>salotto di casa</strong> dei genitori a Berlino</li>
+                                <li class="fragment">Lo <strong>Z3</strong>: primo computer programmabile funzionante</li>
+                                <li class="fragment">Elettromeccanico (rele telefonici), operava in binario</li>
+                                <li class="fragment">Lavoro in quasi completo isolamento; non conosceva Turing</li>
+                            </ul>
+                        </div>
+                        <div class="col-40">
+                            <div class="box box-yellow">
+                                <p>I suoi computer furono <strong>distrutti dai bombardamenti</strong> alleati. Solo decenni dopo ricevette il riconoscimento che meritava.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE: ENIAC -->
+                <section>
+                    <h2>ENIAC (1945)</h2>
+                    <p>Primo computer <strong>elettronico</strong> general-purpose.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <table>
+                                <tr><th>Caratteristica</th><th>Valore</th></tr>
+                                <tr><td>Valvole</td><td>~18.000</td></tr>
+                                <tr><td>Peso</td><td>27 tonnellate</td></tr>
+                                <tr><td>Consumo</td><td>150 kW</td></tr>
+                                <tr><td>Velocita</td><td>5.000 addizioni/sec</td></tr>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="fragment box box-green">
+                                <h3>Le prime programmatrici</h3>
+                                <p>La programmazione era affidata a <strong>sei donne matematiche</strong> (Kay McNulty, Betty Jennings, Betty Snyder, Marlyn Meltzer, Fran Bilas, Ruth Lichterman) che collegavano fisicamente cavi e impostavano interruttori. Il loro contributo fu a lungo ignorato.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: LA GRANDE TRANSIZIONE ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>La Grande Transizione<br><small style="color: var(--text-muted); font-weight: 400;">Dalle valvole ai microprocessori</small></h2>
+                </section>
+
+                <!-- SLIDE: Valvole -->
+                <section>
+                    <h2>Valvole termoioniche (anni '40)</h2>
+                    <p>I primi computer usavano <strong>valvole termoioniche</strong> (<em>vacuum tubes</em>).</p>
+                    <div class="box box-red">
+                        <h3>Problemi</h3>
+                        <ul>
+                            <li>Enormi e fragili</li>
+                            <li>Alto consumo energetico</li>
+                            <li>Si bruciavano continuamente</li>
+                            <li>L'ENIAC sostituiva in media <strong>una valvola ogni due giorni</strong></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Transistor -->
+                <section>
+                    <h2>Il transistor (1947)</h2>
+                    <p>23 dicembre 1947, <strong>Bell Labs</strong>, New Jersey.</p>
+                    <p><strong>John Bardeen</strong>, <strong>Walter Brattain</strong> e <strong>William Shockley</strong> dimostrano il primo transistor funzionante. <span class="badge badge-yellow">Nobel 1956</span></p>
+                    <div class="fragment compare">
+                        <div class="bad">
+                            <h3>Valvola</h3>
+                            <ul>
+                                <li>Grande</li>
+                                <li>Fragile</li>
+                                <li>Alto consumo</li>
+                                <li>Costosa</li>
+                            </ul>
+                        </div>
+                        <div class="good">
+                            <h3>Transistor</h3>
+                            <ul>
+                                <li>Piccolo</li>
+                                <li>Affidabile</li>
+                                <li>Basso consumo</li>
+                                <li>Economico</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="fragment box box-green">
+                        <p>Definito <em>"la piu grande invenzione del XX secolo"</em>. Senza di esso, niente computer, smartphone, internet.</p>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Circuiti integrati -->
+                <section>
+                    <h2>Circuiti integrati (1958)</h2>
+                    <ul>
+                        <li><strong>Jack Kilby</strong> (Texas Instruments, 1958) <span class="badge badge-yellow">Nobel 2000</span></li>
+                        <li><strong>Robert Noyce</strong> (Fairchild Semiconductor, 1959) &mdash; co-fondatore di Intel</li>
+                    </ul>
+                    <div class="box box-blue">
+                        <h3>L'idea</h3>
+                        <p>Realizzare <strong>piu transistor, resistenze e condensatori su un unico pezzo di semiconduttore</strong> (silicio). Niente piu saldature manuali di migliaia di componenti.</p>
+                    </div>
+                    <p class="fragment">Apri la strada alla <strong>miniaturizzazione</strong> che ha definito l'era digitale.</p>
+                </section>
+
+                <!-- SLIDE: Microprocessore -->
+                <section>
+                    <h2>Il microprocessore: Intel 4004 (1971)</h2>
+                    <p>Team guidato da <strong>Federico Faggin</strong> (un italiano!).</p>
+                    <p>Primo microprocessore commerciale: un'intera CPU su un singolo chip.</p>
+                    <div class="fragment">
+                        <table>
+                            <tr><th></th><th>Intel 4004 (1971)</th><th>Apple M3 (2023)</th></tr>
+                            <tr><td><strong>Transistor</strong></td><td>2.300</td><td>~25 miliardi</td></tr>
+                            <tr><td><strong>Frequenza</strong></td><td>740 kHz</td><td>diversi GHz</td></tr>
+                        </table>
+                    </div>
+                    <div class="fragment box box-yellow">
+                        <p>Un fattore di crescita di oltre <strong>10 milioni</strong> nel numero di transistor in poco piu di 50 anni.</p>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Legge di Moore -->
+                <section>
+                    <h2>La legge di Moore</h2>
+                    <p><strong>Gordon Moore</strong> (co-fondatore Intel), 1965:</p>
+                    <div class="box box-green">
+                        <p>Il numero di transistor su un circuito integrato <strong>raddoppia circa ogni due anni</strong>.</p>
+                    </div>
+                    <ul>
+                        <li class="fragment">Non e una legge fisica, ma una <strong>profezia autoavverante</strong></li>
+                        <li class="fragment">Accurata per oltre <strong>50 anni</strong></li>
+                        <li class="fragment">Sta rallentando: transistor larghi pochi nanometri, effetti quantistici (<em>tunneling</em>) rendono il comportamento imprevedibile</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: CRONOLOGIA ========== -->
+            <section>
+                <h2>Cronologia riassuntiva</h2>
+                <table style="font-size: 0.75em;">
+                    <tr><th>Anno</th><th>Protagonista</th><th>Contributo</th></tr>
+                    <tr><td>~2400 a.C.</td><td>Mesopotamia</td><td>Abaco</td></tr>
+                    <tr><td>1642</td><td>Blaise Pascal</td><td>Pascalina (calcolatrice meccanica)</td></tr>
+                    <tr><td>1703</td><td>Leibniz</td><td>Formalizzazione del sistema binario</td></tr>
+                    <tr><td>1837</td><td>Babbage / Lovelace</td><td>Macchina Analitica e primo programma</td></tr>
+                    <tr><td>1854</td><td>George Boole</td><td>Algebra della logica</td></tr>
+                    <tr><td>1936</td><td>Alan Turing</td><td>Macchina di Turing</td></tr>
+                    <tr><td>1937</td><td>Claude Shannon</td><td>Ponte logica-circuiti</td></tr>
+                    <tr><td>1941</td><td>Konrad Zuse</td><td>Z3: primo computer programmabile</td></tr>
+                    <tr><td>1945</td><td>Eckert &amp; Mauchly</td><td>ENIAC: primo computer elettronico</td></tr>
+                    <tr><td>1947</td><td>Bardeen, Brattain, Shockley</td><td>Transistor</td></tr>
+                    <tr><td>1958</td><td>Kilby / Noyce</td><td>Circuito integrato</td></tr>
+                    <tr><td>1971</td><td>Federico Faggin</td><td>Microprocessore Intel 4004</td></tr>
+                </table>
+            </section>
+
+            <!-- ========== SEZIONE: CONCLUSIONE ========== -->
+            <section>
+                <section>
+                    <h2>Il filo rosso</h2>
+                    <div class="box box-blue">
+                        <p>Le idee astratte, quando trovano il contesto giusto, diventano <strong>tecnologie concrete che cambiano il mondo</strong>.</p>
+                    </div>
+                    <ul>
+                        <li class="fragment">L'algebra di Boole dormi per quasi <strong>un secolo</strong> prima che Shannon la svegliasse</li>
+                        <li class="fragment">Il binario di Leibniz attese <strong>250 anni</strong> prima di incontrare i transistor</li>
+                        <li class="fragment">La Macchina Analitica di Babbage anticipo i computer di <strong>un secolo</strong></li>
+                    </ul>
+                    <p class="fragment">Il progresso non e lineare: e fatto di intuizioni geniali che aspettano le condizioni materiali per realizzarsi.</p>
+                </section>
+
+                <section>
+                    <h2>Perche conta per voi</h2>
+                    <div class="box box-green">
+                        <h3>Per futuri statistici</h3>
+                        <p>La logica booleana e il linguaggio con cui scriverete:</p>
+                        <ul>
+                            <li>Le <strong>condizioni</strong> nei vostri programmi: <code>if</code>, <code>and</code>, <code>or</code>, <code>not</code></li>
+                            <li>I <strong>filtri</strong> sui dati</li>
+                            <li>Le <strong>query</strong> sui database</li>
+                        </ul>
+                    </div>
+                    <div class="fragment box box-blue">
+                        <h3>Prossima lezione</h3>
+                        <p>Entreremo dentro la macchina: come sono fatte le componenti di un computer moderno, come collaborano, e perche la loro architettura &mdash; basata sulle idee di <strong>von Neumann</strong> (1945) &mdash; determina le prestazioni dei vostri calcoli statistici.</p>
+                    </div>
+                </section>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T01_informazione_bit_numerazione.html" style="color: var(--accent);">&larr; T01: Informazione, bit e numerazione</a></div><div><a href="T03_architettura_elaboratori.html" style="color: var(--accent);">T03: Architettura degli elaboratori &rarr;</a></div><div><a href="../dispense/frontali/T02_logica_booleana_storia.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — T02</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

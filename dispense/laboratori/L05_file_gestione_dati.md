@@ -1,6 +1,6 @@
 # Laboratorio 5 --- File e gestione dati
 
-**Prerequisiti**: Frontale F15 (File, dati e gestione degli errori)
+**Prerequisiti**: Frontale T15 (File, dati e gestione degli errori)
 
 **Obiettivo**: mettere in pratica la lettura e scrittura di file di testo, CSV e JSON, la costruzione di percorsi con `pathlib` e la gestione degli errori con `try`/`except`.
 

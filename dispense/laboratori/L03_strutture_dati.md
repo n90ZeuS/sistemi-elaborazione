@@ -2,7 +2,7 @@
 
 ## Informazioni
 
-- **Prerequisiti:** Lezioni frontali F11 (Liste e tuple) e F12 (Dizionari e insiemi)
+- **Prerequisiti:** Lezioni frontali T11 (Liste e tuple) e T12 (Dizionari e insiemi)
 - **Durata stimata:** 2 ore
 - **Obiettivi:** Saper creare, modificare e interrogare liste, tuple, dizionari e set. Capire la differenza tra alias e copia. Usare `Counter` per analisi di frequenza.
 

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduzione al corso</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>Sistemi di Elaborazione 1</h1>
+                <div class="subtitle">Lavorare con i dati nel mondo digitale</div>
+                <div class="course-info">
+                    <p><strong>Scienze Statistiche</strong> &mdash; Primo Anno</p>
+                    <p>Introduzione al corso</p>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment"><strong>Perche questo corso</strong> &mdash; il legame tra statistica e informatica</li>
+                    <li class="fragment"><strong>Struttura del corso</strong> &mdash; lezioni, laboratori, mappa degli argomenti</li>
+                    <li class="fragment"><strong>Modalita d'esame</strong> &mdash; scritto al PC + orale obbligatorio</li>
+                    <li class="fragment"><strong>Strumenti</strong> &mdash; cosa installare e dove scaricarlo</li>
+                    <li class="fragment"><strong>Risorse e consigli</strong> &mdash; come studiare e dove trovare aiuto</li>
+                </ol>
+            </section>
+
+            <!-- ========== SEZIONE: PERCHE QUESTO CORSO ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Perche questo corso</h2>
+                    <p><em>Il legame tra statistica e informatica</em></p>
+                </section>
+
+                <section>
+                    <h2>Statistici e computer</h2>
+                    <p>La statistica moderna si fa con macchine che elaborano <strong>milioni di osservazioni</strong> in frazioni di secondo.</p>
+                    <div class="box box-blue fragment">
+                        <strong>Analogia:</strong> Uno statistico che non capisce come funziona un elaboratore e come un chirurgo che non conosce l'anatomia &mdash; puo seguire le procedure, ma quando qualcosa va storto non sa dove guardare.
+                    </div>
+                    <div class="fragment">
+                        <h3>Situazioni reali</h3>
+                        <ul>
+                            <li>Il dataset da 10 milioni di righe blocca il programma &mdash; <em>quanta memoria serve?</em></li>
+                            <li>Due computer danno risultati diversi &mdash; <em>precisione in virgola mobile</em></li>
+                            <li>Analisi settimanale da ripetere a mano &mdash; <em>uno script Python la fa in un secondo</em></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Capacita acquisite</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Dati e sistemi</h3>
+                                <ul>
+                                    <li>Raccogliere, archiviare, gestire dati</li>
+                                    <li>Capire il funzionamento degli elaboratori</li>
+                                    <li>Organizzare i dati per ottenerne informazione</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Coding e Python</h3>
+                                <ul>
+                                    <li>Pensiero algoritmico</li>
+                                    <li>Scrivere programmi Python</li>
+                                    <li>Imparare nuovi linguaggi in autonomia</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: STRUTTURA DEL CORSO ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Struttura del corso</h2>
+                    <p><em>17 lezioni frontali + 8 laboratori = 25 incontri &mdash; 6 CFU</em></p>
+                </section>
+
+                <section>
+                    <h2>Mappa delle lezioni</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3><span class="badge badge-blue">Parte 1</span> Fondamenti</h3>
+                            <table>
+                                <tbody>
+                                    <tr><td><strong>T01</strong></td><td>Informazione, bit e numerazione</td></tr>
+                                    <tr><td><strong>T02</strong></td><td>Logica booleana e storia del calcolo</td></tr>
+                                    <tr><td><strong>T03</strong></td><td>Architettura degli elaboratori</td></tr>
+                                    <tr><td><strong>T04</strong></td><td>Sistemi operativi</td></tr>
+                                </tbody>
+                            </table>
+                            <h3 class="fragment"><span class="badge badge-yellow">Ponte</span> Dalla teoria alla pratica</h3>
+                            <table class="fragment">
+                                <tbody>
+                                    <tr><td><strong>T05</strong></td><td>Rappresentazione dei dati</td></tr>
+                                    <tr><td><strong>T06</strong></td><td>Dal problema al programma</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col fragment">
+                            <h3><span class="badge badge-green">Parte 2</span> Python</h3>
+                            <table>
+                                <tbody>
+                                    <tr><td><strong>T07</strong></td><td>Primi passi in Python</td></tr>
+                                    <tr><td><strong>T08</strong></td><td>Operatori, I/O e condizionali</td></tr>
+                                    <tr><td><strong>T09</strong></td><td>Cicli</td></tr>
+                                    <tr><td><strong>T10</strong></td><td>Comprehension e stringhe</td></tr>
+                                    <tr><td><strong>T11</strong></td><td>Liste e tuple</td></tr>
+                                    <tr><td><strong>T12</strong></td><td>Dizionari, set e mutabilita</td></tr>
+                                    <tr><td><strong>T13-14</strong></td><td>Funzioni (base + avanzate)</td></tr>
+                                    <tr><td><strong>T15</strong></td><td>File, dati e gestione errori</td></tr>
+                                    <tr><td><strong>T16</strong></td><td>Programmazione a oggetti</td></tr>
+                                    <tr><td><strong>T17</strong></td><td>NumPy, Pandas e visualizzazione</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Laboratori</h2>
+                    <p>8 sessioni pratiche che seguono le lezioni frontali</p>
+                    <table>
+                        <thead>
+                            <tr><th>#</th><th>Argomento</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>L01</strong></td><td>Ambiente, variabili e condizionali</td></tr>
+                            <tr><td><strong>L02</strong></td><td>Cicli, comprehension e stringhe</td></tr>
+                            <tr><td><strong>L03</strong></td><td>Strutture dati</td></tr>
+                            <tr><td><strong>L04</strong></td><td>Funzioni e modularita</td></tr>
+                            <tr><td><strong>L05</strong></td><td>File e gestione dati</td></tr>
+                            <tr><td><strong>L06</strong></td><td>Classi e oggetti</td></tr>
+                            <tr><td><strong>L07</strong></td><td>NumPy e Pandas</td></tr>
+                            <tr><td><strong>L08</strong></td><td>Visualizzazione e progetto</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-yellow fragment">
+                        <strong>Corsi collegati:</strong> Strutture dati e algoritmi (I anno, II sem.) &mdash; Sistemi di elaborazione 2 (III anno, I sem.)
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: ESAME ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Modalita d'esame</h2>
+                    <p><em>Scritto al PC + orale obbligatorio</em></p>
+                </section>
+
+                <section>
+                    <h2>Prova scritta al PC</h2>
+                    <table>
+                        <tbody>
+                            <tr><td><strong>Durata</strong></td><td>90 minuti</td></tr>
+                            <tr><td><strong>Contenuto</strong></td><td>Esercizi di programmazione in Python</td></tr>
+                            <tr><td><strong>Dove</strong></td><td>Laboratorio informatico (NO PC personale)</td></tr>
+                            <tr><td><strong>Consentiti</strong></td><td>Appunti, libri, file personali</td></tr>
+                            <tr><td><strong>Non consentiti</strong></td><td>Chat, intelligenza artificiale, internet</td></tr>
+                            <tr><td><strong>Appelli</strong></td><td>5 nel corso dell'anno accademico</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-red fragment">
+                        <strong>Attenzione:</strong> L'uso di internet e AI durante la prova non e consentito.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Prova orale</h2>
+                    <table>
+                        <tbody>
+                            <tr><td><strong>Requisito</strong></td><td>Scritto superato con almeno <strong>17/30</strong></td></tr>
+                            <tr><td><strong>Durata</strong></td><td>Circa 10-15 minuti</td></tr>
+                            <tr><td><strong>Contenuto</strong></td><td>Domande di teoria e/o esercizi Python</td></tr>
+                            <tr><td><strong>Punteggio</strong></td><td><strong>&pm;3 punti</strong> rispetto al voto dello scritto</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="fragment">
+                        <h3>Criteri di valutazione dello scritto</h3>
+                        <div class="columns">
+                            <div class="col">
+                                <ul>
+                                    <li><strong>Correttezza</strong> &mdash; output atteso?</li>
+                                    <li><strong>Completezza</strong> &mdash; tutti i casi gestiti?</li>
+                                </ul>
+                            </div>
+                            <div class="col">
+                                <ul>
+                                    <li><strong>Stile</strong> &mdash; codice leggibile e organizzato?</li>
+                                    <li><strong>Efficienza</strong> &mdash; soluzione ragionevole?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: STRUMENTI ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Strumenti</h2>
+                    <p><em>Cosa installare per seguire il corso</em></p>
+                </section>
+
+                <section>
+                    <h2>Python 3 + VS Code</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Python 3</h3>
+                                <p>Scaricate da <strong>python.org/downloads</strong></p>
+                                <p>Versione 3.12 o successiva</p>
+                                <p>Su Windows: spuntate <strong>"Add Python to PATH"</strong></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Visual Studio Code</h3>
+                                <p>Scaricate da <strong>code.visualstudio.com</strong></p>
+                                <p>Aggiungete l'estensione <strong>Python</strong> (Microsoft)</p>
+                                <p>Evidenziazione, completamento, terminale integrato</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <strong>Terminale:</strong> Lo userete per eseguire i programmi. Windows: PowerShell &mdash; macOS: Terminale &mdash; Linux: Ctrl+Alt+T. Lo vedrete in dettaglio nel primo laboratorio.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Riferimenti</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Contatti</h3>
+                                <ul>
+                                    <li><strong>Email:</strong> nicola.salmaso@unipd.it</li>
+                                    <li><strong>Ricevimento:</strong> unipd.zoom.us/my/nicola.salmaso</li>
+                                </ul>
+                            </div>
+                            <div class="box box-green fragment">
+                                <h3>Moodle</h3>
+                                <p>Lezioni, materiale e annunci:<br>stem.elearning.unipd.it</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <h3>Libro di testo</h3>
+                                <p>Horstmann, Necaise, Dalpasso<br><em>Concetti di informatica e fondamenti di Python</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ========== SEZIONE: RISORSE E CONSIGLI ========== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Risorse e consigli</h2>
+                    <p><em>Come studiare e dove trovare aiuto</em></p>
+                </section>
+
+                <section>
+                    <h2>Il portale del corso</h2>
+                    <p>Tutto il materiale organizzato per lezione:</p>
+                    <div class="columns">
+                        <div class="col">
+                            <ul>
+                                <li><strong>Presentazioni</strong> &mdash; slides navigabili</li>
+                                <li><strong>Dispense</strong> &mdash; versione narrativa approfondita</li>
+                                <li><strong>Codice</strong> &mdash; esempi ed esercizi Python</li>
+                                <li><strong>Autovalutazione</strong> &mdash; quiz di verifica</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul>
+                                <li><strong>Errori comuni</strong> &mdash; le trappole piu frequenti</li>
+                                <li><strong>Schede</strong> &mdash; tabelle riassuntive</li>
+                                <li><strong>Mini-progetti</strong> &mdash; esercizi integrati</li>
+                                <li><strong>Glossario</strong> + <strong>Cheatsheet</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Consigli per lo studio</h2>
+                    <ul>
+                        <li class="fragment">
+                            <strong>Programmate ogni giorno</strong> &mdash; anche solo 20-30 minuti battono una maratona pre-esame
+                        </li>
+                        <li class="fragment">
+                            <strong>Non copiate</strong> &mdash; leggete codice altrui, ma poi riscrivetelo da soli
+                        </li>
+                        <li class="fragment">
+                            <strong>Sbagliare e normale</strong> &mdash; gli errori sono il meccanismo fondamentale dell'apprendimento
+                        </li>
+                        <li class="fragment">
+                            <strong>Usate le risorse</strong> &mdash; dispense, esercizi, autovalutazioni: sono fatti per voi
+                        </li>
+                        <li class="fragment">
+                            <strong>Fate domande</strong> &mdash; a lezione, in lab, via email, al ricevimento
+                        </li>
+                    </ul>
+                    <div class="box box-blue fragment">
+                        <strong>Prossima lezione (T01):</strong> Informazione, bit e sistemi di numerazione &mdash; le fondamenta teoriche dell'informatica.
+                    </div>
+                </section>
+            </section>
+
+
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T01_informazione_bit_numerazione.html" style="color: var(--accent);">T01: Informazione, bit e numerazione &rarr;</a></div><div><a href="../dispense/frontali/T00_introduzione_corso.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; T00</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T06 — Dal problema al programma — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="T05_rappresentazione_dati.html">← T05</a> &bull; <a href="T07_primi_passi_python.html">T07 →</a> &bull; <a href="../../presentazioni/T06_dal_problema_al_programma.html">Presentazione</a></nav>
+<h1>T06 — Dal problema al programma</h1>
+
+<h1>Lezione 6 — Dal problema al programma</h1>
+<h2>Introduzione</h2>
+<p>Nelle prime cinque lezioni abbiamo costruito una comprensione dal basso verso l'alto: bit, logica, circuiti, architettura, sistema operativo, rappresentazione dei dati. Sapete come funziona la macchina. Oggi facciamo il salto dall'altra parte: <strong>come si dice alla macchina cosa fare?</strong></p>
+<p>Questa lezione è il cuore concettuale del corso. È il ponte tra capire il computer e usarlo per risolvere problemi. Parleremo di algoritmi, programmi, processi, pensiero computazionale, linguaggi di programmazione e infine di Python — lo strumento che useremo per il resto del corso.</p>
+<hr>
+<h2>L'algoritmo</h2>
+<h3>Definizione</h3>
+<p>Un <strong>algoritmo</strong> è una sequenza finita e non ambigua di passi che, a partire da un insieme di dati in ingresso, produce un risultato in un tempo finito.</p>
+<p>La definizione è semplice, ma ogni parola conta:</p>
+<ul>
+<li><strong>Sequenza finita:</strong> l'algoritmo deve avere un numero finito di passi. Un procedimento che non termina mai non è un algoritmo.</li>
+<li><strong>Non ambigua:</strong> ogni passo deve essere definito in modo preciso. Non ci possono essere istruzioni vaghe come "fai la cosa giusta".</li>
+<li><strong>Dati in ingresso (input):</strong> l'algoritmo riceve dei dati su cui operare.</li>
+<li><strong>Risultato (output):</strong> l'algoritmo produce un risultato.</li>
+</ul>
+<h3>Etimologia e storia</h3>
+<p>La parola "algoritmo" ha un'origine affascinante. Deriva dal nome latinizzato di <strong>Muhammad ibn Musa al-Khwarizmi</strong> (circa 780-850), matematico, astronomo e geografo persiano che lavorò nella Casa della Saggezza (<em>Bayt al-Hikma</em>) a Baghdad. Il suo trattato sull'algebra — <em>Al-Kitab al-mukhtasar fi hisab al-jabr wal-muqabala</em> — diede il nome all'algebra stessa (<em>al-jabr</em>) e la traduzione latina del suo nome (<em>Algoritmi</em>) diede origine alla parola "algoritmo".</p>
+<p>Al-Khwarizmi non scrisse algoritmi nel senso informatico moderno, ma descrisse procedure sistematiche e non ambigue per risolvere equazioni — lo spirito è lo stesso.</p>
+<p>Il concetto fu formalizzato rigorosamente solo nel XX secolo, quando <strong>Alan Turing</strong> (1936) e <strong>Alonzo Church</strong> definirono matematicamente cosa significa "calcolare". La Macchina di Turing — un modello teorico estremamente semplice — mostrò che qualsiasi calcolo che un essere umano può fare seguendo regole fisse può essere eseguito da questa macchina. E, sorprendentemente, dimostrò anche che <strong>esistono problemi che nessun algoritmo può risolvere</strong> (il <em>problema della fermata</em>: è impossibile scrivere un programma che, dato un qualsiasi altro programma, determini se quest'ultimo terminerà o andrà in loop infinito).</p>
+<h3>Le proprietà fondamentali</h3>
+<p>Un algoritmo deve possedere cinque proprietà:</p>
+<ol>
+<li><strong>Finitezza:</strong> deve terminare dopo un numero finito di passi.</li>
+<li><strong>Determinismo:</strong> ogni passo è definito senza ambiguità; dato lo stesso input, produce sempre lo stesso output.</li>
+<li><strong>Input:</strong> riceve zero o più dati in ingresso.</li>
+<li><strong>Output:</strong> produce uno o più risultati.</li>
+<li><strong>Efficacia (o effettività):</strong> ogni operazione deve essere concretamente eseguibile in un tempo finito.</li>
+</ol>
+<p>A queste se ne aggiunge spesso una sesta, meno formale ma altrettanto importante:</p>
+<ol>
+<li><strong>Generalità:</strong> un buon algoritmo risolve una <em>classe</em> di problemi, non un singolo caso. L'algoritmo per calcolare la media deve funzionare per qualsiasi lista di numeri, non solo per una lista specifica.</li>
+</ol>
+<h3>Esempi classici</h3>
+<p><strong>L'algoritmo di Euclide</strong> per il massimo comun divisore (MCD) è uno dei più antichi algoritmi conosciuti (~300 a.C.):</p>
+<pre><code>Dati due numeri a e b (con a <span class="op">&gt;</span> b <span class="op">&gt;</span> <span class="mi">0</span>):
+<span class="mi">1.</span> Calcola r <span class="op">=</span> resto della divisione di a per b
+<span class="mi">2.</span> Se r <span class="op">=</span> <span class="mi">0</span>, il MCD è b. FINE.
+<span class="mi">3.</span> Altrimenti, poni a <span class="op">=</span> b e b <span class="op">=</span> r, e torna al passo <span class="mi">1.</span></code></pre>
+<p>Questo algoritmo ha tutte le proprietà: è finito (a ogni passo i numeri diminuiscono), deterministico, riceve input, produce output, ed è generale (funziona per qualsiasi coppia di interi positivi).</p>
+<hr>
+<h2>Programma e processo</h2>
+<h3>Il programma</h3>
+<p>Un <strong>programma</strong> è un algoritmo espresso in un linguaggio che il computer può comprendere (direttamente o tramite traduzione). È un <strong>testo statico</strong>: un file che esiste sul disco anche quando nessuno lo esegue.</p>
+<p>Il grande informatico svizzero <strong>Niklaus Wirth</strong> (1934-2024), creatore del linguaggio Pascal, sintetizzò questo concetto in una formula celebre, titolo del suo libro del 1976:</p>
+<blockquote>
+<p><strong>Algoritmi + Strutture Dati = Programmi</strong></p>
+</blockquote>
+<p>Un programma non è solo una sequenza di istruzioni: è la combinazione di un procedimento risolutivo (l'algoritmo) con un modo di organizzare i dati su cui opera (le strutture dati). La scelta della struttura dati giusta è tanto importante quanto la scelta dell'algoritmo giusto.</p>
+<h3>Il processo</h3>
+<p>Un <strong>processo</strong> è un programma in esecuzione. È un'entità <strong>dinamica</strong>: ha uno stato che evolve nel tempo, occupa memoria, usa la CPU, interagisce con il sistema operativo.</p>
+<p>La distinzione è fondamentale:</p>
+<ul>
+<li>Un programma è come una ricetta scritta su un foglio (testo statico).</li>
+<li>Un processo è come la preparazione effettiva del piatto (azione dinamica): servono ingredienti (dati in memoria), strumenti (CPU), tempo, e lo stato cambia continuamente (le patate sono crude, poi bollite, poi schiacciate...).</li>
+</ul>
+<p>Lo stesso programma può generare più processi: se aprite due terminali ed eseguite lo stesso script Python, avete un programma e due processi.</p>
+<h3>Il percorso completo</h3>
+<p>Il cammino da un problema alla sua soluzione attraversa quattro stadi:</p>
+<pre><code>PROBLEMA → ALGORITMO → PROGRAMMA → PROCESSO
+ (reale)    (astratto)   (statico)   (dinamico)</code></pre>
+<p>"Come calcolo la media dei voti?" → Procedimento: somma tutti i voti e dividi per il numero di voti → Codice Python in un file <code>.py</code> → Esecuzione del file con l'interprete Python.</p>
+<hr>
+<h2>Pensiero computazionale</h2>
+<h3>L'idea</h3>
+<p>Nel 2006, la scienziata informatica <strong>Jeannette Wing</strong> pubblicò un articolo influente in cui sosteneva che il <strong>pensiero computazionale</strong> (<em>computational thinking</em>) è una competenza fondamentale per tutti, non solo per gli informatici, al pari del leggere, scrivere e far di conto.</p>
+<p>Pensare computazionalmente non significa "pensare come un computer" — i computer non pensano. Significa <strong>usare concetti e strategie dell'informatica per affrontare problemi complessi</strong>, in qualsiasi campo.</p>
+<h3>I quattro pilastri</h3>
+<p><strong>1. Decomposizione:</strong> spezzare un problema complesso in sotto-problemi più piccoli e gestibili.</p>
+<p>Uno statistico lo fa naturalmente: un'analisi di dati si scompone in raccolta, pulizia, esplorazione, modellazione e interpretazione. Un programma complesso si scompone in funzioni, ciascuna con un compito specifico.</p>
+<p><strong>2. Riconoscimento di pattern (pattern recognition):</strong> individuare regolarità, somiglianze e strutture ricorrenti.</p>
+<p>Questo è il cuore della statistica! Cercare pattern nei dati è esattamente ciò che fate. In programmazione, riconoscere pattern significa identificare strutture che si ripetono e astrarre soluzioni riutilizzabili.</p>
+<p><strong>3. Astrazione:</strong> ignorare i dettagli irrilevanti per concentrarsi sull'essenza del problema.</p>
+<p>Un modello statistico è un'astrazione: ignora la complessità infinita della realtà per catturare le relazioni fondamentali. In informatica, un'interfaccia è un'astrazione: <code>open("file.csv")</code> nasconde migliaia di righe di codice di gestione del file system.</p>
+<p><strong>4. Progettazione algoritmica:</strong> definire una sequenza precisa di passi per arrivare alla soluzione.</p>
+<h3>Problem solving strutturato</h3>
+<p>Il pensiero computazionale si traduce in un metodo di lavoro strutturato:</p>
+<ol>
+<li><strong>Comprendere il problema.</strong> Cosa mi viene chiesto? Quali sono gli input? Qual è l'output atteso? Quali sono i vincoli? — Non saltate questo passo. La tentazione di iniziare subito a scrivere codice è forte, ma la maggior parte del tempo perso in programmazione è dovuta a una comprensione insufficiente del problema.</li>
+</ol>
+<ol>
+<li><strong>Pianificare la soluzione.</strong> Scegliere l'approccio, scomporre in passi. Usare pseudocodice o diagrammi di flusso.</li>
+</ol>
+<ol>
+<li><strong>Implementare.</strong> Scrivere il codice, un pezzo alla volta.</li>
+</ol>
+<ol>
+<li><strong>Verificare.</strong> Testare con casi noti, casi limite, casi patologici.</li>
+</ol>
+<ol>
+<li><strong>Riflettere.</strong> Il codice è chiaro? Efficiente? Robusto? Si può migliorare?</li>
+</ol>
+<p>Questa sequenza ricalca il <strong>metodo scientifico</strong> (osservazione → ipotesi → esperimento → analisi → conclusione) — e non è un caso. Entrambi sono approcci sistematici alla soluzione di problemi.</p>
+<hr>
+<h2>Strumenti di progettazione</h2>
+<h3>Pseudocodice</h3>
+<p>Il <strong>pseudocodice</strong> è una descrizione dell'algoritmo in linguaggio naturale strutturato, a metà strada tra il pensiero e il codice. Non ha una sintassi rigida, ma segue convenzioni che lo rendono non ambiguo:</p>
+<pre><code>FUNZIONE calcolaMedia(voti)
+    SE la lista è vuota
+        RESTITUISCI errore <span class="st">&quot;lista vuota&quot;</span>
+
+    somma ← <span class="mi">0</span>
+    PER OGNI voto IN voti
+        somma ← somma <span class="op">+</span> voto
+
+    media ← somma <span class="op">/</span> lunghezza(voti)
+    RESTITUISCI media</code></pre>
+<p>Il vantaggio dello pseudocodice è che è <strong>indipendente dal linguaggio</strong>: concentra l'attenzione sulla logica, non sulla sintassi. Quando il problema è complesso, scrivere prima lo pseudocodice e poi tradurlo in Python è una strategia vincente.</p>
+<h3>Diagrammi di flusso (flowchart)</h3>
+<p>I diagrammi di flusso rappresentano l'algoritmo graficamente:</p>
+<ul>
+<li><strong>Rettangolo:</strong> operazione/istruzione</li>
+<li><strong>Rombo:</strong> decisione (condizione con rami sì/no)</li>
+<li><strong>Parallelogramma:</strong> input/output</li>
+<li><strong>Ovale:</strong> inizio/fine</li>
+<li><strong>Frecce:</strong> flusso di esecuzione</li>
+</ul>
+<p>Sono utili per algoritmi semplici e per comunicare la logica a persone non tecniche. Diventano controproducenti per algoritmi complessi (il diagramma diventa un groviglio di frecce).</p>
+<h3>Top-down vs bottom-up</h3>
+<p><strong>Top-down:</strong> si parte dal problema complessivo e si scompone in sotto-problemi, poi ogni sotto-problema in sotto-sotto-problemi, fino ad arrivare a operazioni elementari. È l'approccio naturale del pensiero.</p>
+<p><strong>Bottom-up:</strong> si costruiscono prima i "mattoni" elementari (funzioni di base) e poi si assemblano in strutture più complesse. È spesso l'approccio naturale della costruzione.</p>
+<p>Nella pratica, si usa un <strong>mix di entrambi</strong>: si pensa top-down (scomponi il problema) e si costruisce bottom-up (scrivi prima le funzioni semplici, poi componi).</p>
+<h3>Il debugging come metodo scientifico</h3>
+<p>Il debugging — la ricerca e correzione degli errori nel codice — non è "provare a caso". È un'indagine sistematica:</p>
+<ol>
+<li><strong>Osserva</strong> il sintomo (cosa va storto? Qual è il messaggio di errore?)</li>
+<li><strong>Formula un'ipotesi</strong> (cosa potrebbe causarlo?)</li>
+<li><strong>Progetta un esperimento</strong> (come verifico l'ipotesi? Quale print o test devo inserire?)</li>
+<li><strong>Verifica</strong> i risultati e correggi</li>
+<li>Se l'ipotesi era sbagliata, formulane un'altra</li>
+</ol>
+<p>Questo è il metodo scientifico applicato al codice. Per studenti di statistica, dovrebbe suonare familiare.</p>
+<hr>
+<h2>Linguaggi di programmazione</h2>
+<h3>L'evoluzione: dal codice macchina a Python</h3>
+<p><strong>Codice macchina:</strong> sequenze di 0 e 1, l'unica cosa che la CPU capisce davvero. Ogni operazione è codificata come un numero binario. Scrivere in codice macchina è come parlare la lingua nativa della macchina — potente ma disumano:</p>
+<pre><code><span class="mi">10110000</span> <span class="mi">01100001</span>  (carica il valore <span class="mi">97</span> nel registro AL, architettura x86)</code></pre>
+<p><strong>Assembly (anni '50):</strong> sostituisce i numeri con <strong>mnemonici</strong> leggibili: <code>MOV AL, 97</code>. Ogni istruzione assembly corrisponde direttamente a un'istruzione macchina. Resta legato alla specifica architettura: il codice assembly x86 non funziona su ARM.</p>
+<p><strong>Linguaggi ad alto livello (anni '50-'60):</strong> finalmente si scrive in un modo più vicino al pensiero umano. Ogni istruzione ad alto livello viene tradotta in molte istruzioni macchina.</p>
+<p>La storia dei linguaggi ad alto livello è ricca:</p>
+<ul>
+<li><strong>Fortran</strong> (1957, IBM, John Backus): <em>FORmula TRANslation</em>. Il primo linguaggio ad alto livello, nato per il calcolo scientifico. Ancora usato oggi nei supercomputer per simulazioni meteorologiche, fluidodinamica, fisica nucleare. La sua longevità è straordinaria.</li>
+</ul>
+<ul>
+<li><strong>COBOL</strong> (1959, Grace Hopper): pensato per il business. Grace Hopper, matematica e ammiraglio della Marina americana, fu una delle prime programmatrici al mondo (lavorò sull'Harvard Mark I). COBOL è ancora in esecuzione nel 95% dei sistemi bancari mondiali — miliardi di transazioni al giorno.</li>
+</ul>
+<ul>
+<li><strong>C</strong> (1972, Dennis Ritchie, Bell Labs): il linguaggio che ha costruito il mondo moderno. Unix è scritto in C. Linux è scritto in C. Il kernel di Windows è scritto in C. I database (MySQL, PostgreSQL), i linguaggi stessi (Python è scritto in C!), i sistemi embedded — tutto passa per C.</li>
+</ul>
+<ul>
+<li><strong>Python</strong> (1991, Guido van Rossum): ma di questo parleremo tra poco.</li>
+</ul>
+<h3>Livelli di astrazione</h3>
+<p>Ogni livello nasconde la complessità del livello sottostante:</p>
+<pre><code>Python:       media <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+C:            <span class="nb">float</span> media <span class="op">=</span> <span class="mi">0</span>; <span class="kw">for</span>(<span class="nb">int</span> i<span class="op">=</span><span class="mi">0</span>; i<span class="op">&lt;</span>n; i<span class="op">+</span><span class="op">+</span>) media <span class="op">+</span><span class="op">=</span> voti[i]; media <span class="op">/</span><span class="op">=</span> n;
+Assembly:     MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI<span class="op">+</span>ECX<span class="op">*</span><span class="mi">4</span>]; ...
+Macchina:     <span class="mi">10001011</span> <span class="mi">00000100</span> <span class="mi">10001110</span> ...</code></pre>
+<p>Non esiste "il linguaggio migliore" in assoluto. Esiste il linguaggio più adatto al <strong>contesto</strong>: C per i sistemi operativi (serve controllo fine sull'hardware), Python per l'analisi dei dati (serve produttività e leggibilità), JavaScript per il web.</p>
+<h3>Paradigmi di programmazione</h3>
+<p>I linguaggi si distinguono anche per il <strong>paradigma</strong> — il modo in cui strutturano la soluzione:</p>
+<ul>
+<li><strong>Imperativo:</strong> si descrivono i passi da eseguire, uno dopo l'altro. "Fai questo, poi fai quello." Il più intuitivo.</li>
+<li><strong>Procedurale:</strong> imperativo + organizzazione in procedure/funzioni. C, Pascal.</li>
+<li><strong>Orientato agli oggetti (OOP):</strong> si modella il mondo come oggetti con proprietà e comportamenti. Java, C++, Python.</li>
+<li><strong>Funzionale:</strong> si descrivono trasformazioni di dati senza effetti collaterali. Haskell, Lisp; elementi funzionali in Python.</li>
+</ul>
+<p><strong>Python è multi-paradigma:</strong> supporta tutti questi approcci, lasciando al programmatore la libertà di scegliere lo stile più adatto al problema.</p>
+<hr>
+<h2>Compilazione e interpretazione</h2>
+<h3>Compilazione</h3>
+<p>Un <strong>compilatore</strong> traduce l'intero codice sorgente in codice macchina <strong>prima</strong> dell'esecuzione. Il risultato è un file eseguibile autonomo.</p>
+<pre><code>Sorgente (.c) → [Compilatore] → Eseguibile (.exe) → [CPU] → Risultato</code></pre>
+<p><strong>Vantaggi:</strong> il programma compilato è veloce (codice macchina nativo), gli errori di tipo vengono scoperti prima dell'esecuzione.</p>
+<p><strong>Svantaggi:</strong> il ciclo edit-compile-run è più lungo; l'eseguibile è specifico per la piattaforma (un .exe di Windows non gira su macOS).</p>
+<p>Esempi: C, C++, Rust, Go, Fortran.</p>
+<h3>Interpretazione</h3>
+<p>Un <strong>interprete</strong> traduce e esegue il codice <strong>istruzione per istruzione</strong>, al momento dell'esecuzione.</p>
+<pre><code>Sorgente (.py) → [Interprete] → Risultato (passo per passo)</code></pre>
+<p><strong>Vantaggi:</strong> interattività (REPL), portabilità (lo stesso codice gira ovunque ci sia l'interprete), ciclo di sviluppo rapidissimo.</p>
+<p><strong>Svantaggi:</strong> più lento in esecuzione, gli errori vengono scoperti solo quando la riga problematica viene raggiunta.</p>
+<h3>La realtà è sfumata</h3>
+<p>Molti linguaggi moderni usano approcci <strong>ibridi</strong>:</p>
+<ul>
+<li><strong>Java:</strong> il codice viene compilato in <em>bytecode</em> (intermedio), che viene eseguito dalla JVM (<em>Java Virtual Machine</em>). La JVM a sua volta usa la compilazione <strong>JIT</strong> (<em>Just-In-Time</em>): traduce al volo in codice macchina le parti di bytecode più eseguite.</li>
+</ul>
+<ul>
+<li><strong>Python:</strong> non è puramente interpretato...</li>
+</ul>
+<hr>
+<h2>L'interprete Python: CPython</h2>
+<h3>Come funziona realmente</h3>
+<p><strong>CPython</strong> è l'implementazione di riferimento di Python, scritta in C. Quando si dice "Python" si intende quasi sempre CPython.</p>
+<p>L'esecuzione di un programma Python avviene in tre fasi:</p>
+<p><strong>1. Parsing (analisi sintattica).</strong> Il codice sorgente <code>.py</code> viene analizzato e trasformato in un <strong>AST</strong> (<em>Abstract Syntax Tree</em>), una rappresentazione ad albero della struttura del programma.</p>
+<p><strong>2. Compilazione in bytecode.</strong> L'AST viene compilato in <strong>bytecode</strong>, un linguaggio intermedio per la Python Virtual Machine. Il bytecode viene salvato in file <code>.pyc</code> nella cartella <code><em>_pycache</em>_/</code>. Questa compilazione è automatica e trasparente.</p>
+<p><strong>3. Esecuzione sulla PVM.</strong> La Python Virtual Machine (PVM) interpreta il bytecode istruzione per istruzione.</p>
+<p>Python è quindi un linguaggio <strong>semi-compilato</strong>: compilazione in bytecode (automatica) + interpretazione del bytecode. È un compromesso che bilancia velocità di sviluppo e prestazioni ragionevoli.</p>
+<h3>Il GIL (Global Interpreter Lock)</h3>
+<p>CPython ha una particolarità importante: il <strong>GIL</strong>, un blocco globale che impedisce a più thread Python di eseguire bytecode contemporaneamente. Il GIL semplifica enormemente la gestione della memoria interna di CPython ma limita il parallelismo. Per aggirarlo: <code>multiprocessing</code> (processi separati), programmazione asincrona (<code>asyncio</code>), o librerie che rilasciano il GIL (NumPy, quando esegue codice C).</p>
+<h3>Implementazioni alternative</h3>
+<ul>
+<li><strong>PyPy:</strong> interprete Python scritto in Python, con compilazione JIT. Spesso 5-10x più veloce di CPython per codice Python puro.</li>
+<li><strong>MicroPython:</strong> Python per microcontrollori (Arduino, ESP32) — programmare dispositivi embedded in Python.</li>
+<li><strong>Cython:</strong> permette di scrivere codice simil-Python che viene compilato in C. Usato internamente da molte librerie scientifiche.</li>
+</ul>
+<h3>Perché Python è "lento" (e perché spesso non importa)</h3>
+<p>Python è circa 10-100 volte più lento di C per il calcolo puro. Ma nella pratica:</p>
+<ol>
+<li>Il <strong>collo di bottiglia è la produttività del programmatore</strong>, non la velocità del programma. Scrivere un'analisi in Python richiede ore; in C, giorni.</li>
+<li>Per la parte computazionalmente intensiva, Python chiama <strong>librerie scritte in C e Fortran</strong> (NumPy, Pandas, SciPy). Il codice "lento" è solo il collante.</li>
+<li>La maggior parte del tempo di un programma è spesa <strong>aspettando</strong> (I/O su disco, rete, input utente), non calcolando.</li>
+</ol>
+<h3>Modalità di utilizzo</h3>
+<ul>
+<li><strong>REPL (Read-Eval-Print Loop):</strong> l'interprete interattivo. Si scrive un comando, Python lo esegue subito e mostra il risultato. Perfetto per esplorare e provare.</li>
+<li><strong>Script (.py):</strong> il programma scritto in un file, eseguito con <code>python nome_script.py</code>. Per codice completo e riutilizzabile.</li>
+<li><strong>Jupyter Notebook (.ipynb):</strong> celle di codice, testo e visualizzazioni insieme. Nato dal progetto IPython (Fernando Pérez, 2001), evoluto in Jupyter (2014, il nome omaggia <strong>Ju</strong>lia, <strong>Py</strong>thon e <strong>R</strong>). È diventato lo standard nella data science.</li>
+</ul>
+<h3>Python: chi è e da dove viene</h3>
+<p><strong>Guido van Rossum</strong>, programmatore olandese, iniziò a sviluppare Python durante le vacanze di <strong>Natale 1989</strong> ad Amsterdam, come progetto personale. Il nome non viene dal serpente ma dai <strong>Monty Python</strong>, il gruppo comico britannico che van Rossum adorava.</p>
+<p>Python fu progettato con una filosofia chiara, codificata nello <strong>Zen of Python</strong> (provate: <code>import this</code> nell'interprete):</p>
+<blockquote>
+<p><em>Beautiful is better than ugly.</em></p>
+<p><em>Explicit is better than implicit.</em></p>
+<p><em>Simple is better than complex.</em></p>
+<p><em>Readability counts.</em></p>
+</blockquote>
+<p>Python è: alto livello, multi-paradigma, interpretato (semi-compilato), tipizzato dinamicamente (ma con supporto per type hints volontari), garbage collected (la memoria viene gestita automaticamente).</p>
+<p><strong>Perché Python per la statistica:</strong></p>
+<ul>
+<li>Leggibilità: il codice si legge quasi come l'inglese</li>
+<li>Ecosistema scientifico maturo: NumPy, Pandas, SciPy, scikit-learn, matplotlib</li>
+<li>Comunità enorme: qualsiasi problema sia già stato risolto da qualcuno</li>
+<li>Curva di apprendimento dolce: si può essere produttivi rapidamente</li>
+<li>Versatile: dallo scripting al web development, dal machine learning all'automazione</li>
+</ul>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li><strong>Quali sono le cinque proprietà fondamentali di un algoritmo?</strong> Spiegate ciascuna con un esempio.</li>
+</ol>
+<ol>
+<li><strong>Qual è la differenza tra programma e processo?</strong> Fate un'analogia con un concetto della vita quotidiana.</li>
+</ol>
+<ol>
+<li><strong>Cosa intende Jeannette Wing per "pensiero computazionale"?</strong> Elencate e spiegate i quattro pilastri.</li>
+</ol>
+<ol>
+<li><strong>Perché esistono tanti linguaggi di programmazione?</strong> Non basterebbe uno solo?</li>
+</ol>
+<ol>
+<li><strong>Qual è la differenza fondamentale tra compilazione e interpretazione?</strong> Quali sono i vantaggi e gli svantaggi di ciascun approccio?</li>
+</ol>
+<ol>
+<li><strong>Python è un linguaggio compilato o interpretato?</strong> La risposta corretta è più sfumata di quanto sembri — spiegatela.</li>
+</ol>
+<ol>
+<li><strong>Cos'è il GIL e perché è rilevante per la programmazione parallela in Python?</strong></li>
+</ol>
+<ol>
+<li><strong>"Programma = algoritmo + strutture dati" (Wirth). Cosa significa questa formula?</strong></li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Scrivete in <strong>pseudocodice</strong> un algoritmo che, data una lista di numeri, trova il valore massimo.</li>
+</ol>
+<ol>
+<li>Disegnate il <strong>diagramma di flusso</strong> per un algoritmo che determina se un numero è pari o dispari.</li>
+</ol>
+<ol>
+<li>Aprite il REPL di Python e digitate <code>import this</code>. Leggete lo Zen of Python e scegliete i tre principi che vi sembrano più importanti. Motivate la scelta.</li>
+</ol>
+<h3>Intermedio</h3>
+<ol>
+<li>Scrivete in pseudocodice un algoritmo che, data una lista di voti (numeri interi tra 0 e 30), calcola:</li>
+</ol>
+<ul>
+<li>La media</li>
+<li>Il voto massimo</li>
+<li>Il voto minimo</li>
+<li>Il numero di sufficienze (voto ≥ 18)</li>
+</ul>
+<ol>
+<li>Lo stesso algoritmo dell'esercizio 4, tradotto in Python:</li>
+</ol>
+<pre><code>   voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">22</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">15</span>, <span class="mi">25</span>, <span class="mi">27</span>]
+   <span class="cm"># Completate il programma...</span></code></pre>
+<ol>
+<li>Spiegate, con un esempio concreto, la differenza tra l'approccio top-down e l'approccio bottom-up nella progettazione di un programma che analizza i dati di un questionario.</li>
+</ol>
+<h3>Avanzato</h3>
+<ol>
+<li>L'<strong>algoritmo di Euclide</strong> per il MCD, descritto nel testo, termina sempre? Dimostrate informalmente che sì, argomentando sul fatto che il resto della divisione è sempre strettamente minore del divisore.</li>
+</ol>
+<ol>
+<li>Scrivete in Python l'algoritmo di Euclide e verificatelo su diverse coppie di numeri:</li>
+</ol>
+<pre><code>   <span class="kw">def</span> <span class="fn">mcd</span>(<span class="fn">a</span>: <span class="nb">int</span>, b: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+       <span class="st">&quot;&quot;&quot;Calcola il MCD di a e b con l&#x27;algoritmo di Euclide.&quot;&quot;&quot;</span>
+       <span class="cm"># Completate...</span>
+
+   <span class="cm"># Test</span>
+   <span class="kw">assert</span> mcd(<span class="mi">48</span>, <span class="mi">18</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>
+   <span class="kw">assert</span> mcd(<span class="mi">100</span>, <span class="mi">75</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">25</span>
+   <span class="kw">assert</span> mcd(<span class="mi">17</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span></code></pre>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Questa lezione ha costruito il ponte tra le due parti del corso. Avete visto:</p>
+<ul>
+<li><strong>L'algoritmo</strong> come concetto astratto, indipendente da qualsiasi macchina o linguaggio — un'idea tanto antica da precedere i computer di mille anni.</li>
+<li><strong>Il programma</strong> come traduzione concreta dell'algoritmo in un linguaggio formale.</li>
+<li><strong>Il processo</strong> come il programma che prende vita nella macchina.</li>
+<li><strong>Il pensiero computazionale</strong> come un modo di ragionare che trascende l'informatica e si applica a qualsiasi disciplina — e che ha un legame profondo con il metodo statistico.</li>
+<li><strong>I linguaggi di programmazione</strong> come strumenti con filosofie e punti di forza diversi, nati per risolvere problemi diversi.</li>
+<li><strong>Python</strong> come il nostro strumento scelto: leggibile, potente, adatto alla statistica, con un interprete che bilancia elegantemente compilazione e interpretazione.</li>
+</ul>
+<p>Da qui in poi, programmiamo. Nella prossima lezione scriveremo il nostro primo codice Python: variabili, tipi, espressioni. Ma ricordate: prima di scrivere codice, <strong>pensate</strong>. Capite il problema, progettate la soluzione, poi implementatela. Il codice è l'ultimo passo, non il primo.</p>
+<blockquote>
+<p><em>"Weeks of coding can save you hours of planning."</em> — Detto popolare tra i programmatori</p>
+</blockquote>
+<nav class="bottom-nav"><span><a href="T05_rappresentazione_dati.html">← T05</a></span><span><a href="../../index.html">Home</a></span><span><a href="T07_primi_passi_python.html">T07 →</a></span></nav>
+</body>
+</html>

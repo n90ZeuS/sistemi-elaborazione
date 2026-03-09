@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errori comuni — T13: Funzioni: fondamenti — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/T13_funzioni_fondamenti.html">Dispensa</a> &bull; <a href="../autovalutazione/T13_autovalutazione.html">Autovalutazione</a></nav>
+<h1>Errori comuni — T13: Funzioni: fondamenti</h1>
+
+<h1>Errori comuni — T13: Funzioni: fondamenti</h1>
+<p>Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione T13.</p>
+<p>Ogni errore include il codice sbagliato, la spiegazione e la correzione.</p>
+<hr>
+<h3>Errore 1: Argomento default mutabile <code>def f(x=[])</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">aggiungi_elemento</span>(<span class="fn">elemento</span>, lista<span class="op">=</span>[]):
+    lista.append(elemento)
+    <span class="kw">return</span> lista
+
+<span class="nb">print</span>(aggiungi_elemento(<span class="mi">1</span>))
+<span class="nb">print</span>(aggiungi_elemento(<span class="mi">2</span>))
+<span class="nb">print</span>(aggiungi_elemento(<span class="mi">3</span>))</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>[<span class="mi">1</span>]
+[<span class="mi">1</span>, <span class="mi">2</span>]
+[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]</code></pre>
+<p>Lo studente si aspettava tre liste separate <code>[1]</code>, <code>[2]</code>, <code>[3]</code>.</p>
+<p><strong>Perché è sbagliato:</strong> La lista <code>[]</code> usata come valore default viene creata una sola volta, al momento della definizione della funzione. Ogni chiamata successiva lavora sulla stessa lista, che accumula tutti gli elementi. Questo è uno dei tranelli più insidiosi di Python.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">aggiungi_elemento</span>(<span class="fn">elemento</span>, lista<span class="op">=</span><span class="kw">None</span>):
+    <span class="kw">if</span> lista <span class="kw">is</span> <span class="kw">None</span>:
+        lista <span class="op">=</span> []
+    lista.append(elemento)
+    <span class="kw">return</span> lista
+
+<span class="nb">print</span>(aggiungi_elemento(<span class="mi">1</span>))  <span class="cm"># [1]</span>
+<span class="nb">print</span>(aggiungi_elemento(<span class="mi">2</span>))  <span class="cm"># [2]</span>
+<span class="nb">print</span>(aggiungi_elemento(<span class="mi">3</span>))  <span class="cm"># [3]</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Non usare mai oggetti mutabili (<code>[]</code>, <code>{}</code>, <code>set()</code>) come valori default dei parametri: usa <code>None</code> e crea l'oggetto dentro la funzione.</p>
+<hr>
+<h3>Errore 2: Variabile locale che nasconde (shadow) una variabile globale</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>contatore <span class="op">=</span> <span class="mi">10</span>
+
+<span class="kw">def</span> <span class="fn">incrementa</span>():
+    contatore <span class="op">=</span> contatore <span class="op">+</span> <span class="mi">1</span>  <span class="cm"># sembra che usi la variabile globale</span>
+    <span class="kw">return</span> contatore
+
+<span class="nb">print</span>(incrementa())</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>UnboundLocalError: cannot access local variable <span class="st">&#x27;contatore&#x27;</span> where it <span class="kw">is</span> <span class="kw">not</span> associated <span class="kw">with</span> a value</code></pre>
+<p><strong>Perché è sbagliato:</strong> Quando Python vede un assegnamento a <code>contatore</code> dentro la funzione, tratta <code>contatore</code> come variabile locale. Ma a destra di <code>=</code> si cerca di leggere <code>contatore</code> prima che le sia stato assegnato un valore locale, causando l'errore. La variabile globale è "nascosta" da quella locale.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>contatore <span class="op">=</span> <span class="mi">10</span>
+
+<span class="kw">def</span> <span class="fn">incrementa</span>(<span class="fn">valore</span>):
+    <span class="kw">return</span> valore <span class="op">+</span> <span class="mi">1</span>
+
+contatore <span class="op">=</span> incrementa(contatore)
+<span class="nb">print</span>(contatore)  <span class="cm"># 11</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Non modificare variabili globali dentro le funzioni: passa il valore come argomento e restituisci il risultato.</p>
+<hr>
+<h3>Errore 3: Dimenticare l'istruzione <code>return</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">voti</span>):
+    media <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+    <span class="cm"># manca il return!</span>
+
+risultato <span class="op">=</span> calcola_media([<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>])
+<span class="nb">print</span>(<span class="st">f&quot;La media è: {risultato}&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>La media è: <span class="kw">None</span></code></pre>
+<p>Nessun errore, ma il risultato è <code>None</code> invece del valore calcolato.</p>
+<p><strong>Perché è sbagliato:</strong> Se una funzione non contiene un'istruzione <code>return</code>, Python restituisce automaticamente <code>None</code>. Il calcolo viene eseguito correttamente, ma il risultato viene perso perché non viene restituito al chiamante.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">voti</span>):
+    media <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+    <span class="kw">return</span> media
+
+risultato <span class="op">=</span> calcola_media([<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>])
+<span class="nb">print</span>(<span class="st">f&quot;La media è: {risultato}&quot;</span>)  <span class="cm"># La media è: 27.5</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Se la funzione deve produrre un risultato, aggiungi sempre <code>return valore</code> alla fine: senza <code>return</code>, la funzione restituisce <code>None</code>.</p>
+<hr>
+<h3>Errore 4: Credere che i type hints impongano il tipo</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">somma</span>(<span class="fn">a</span>: <span class="nb">int</span>, b: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="kw">return</span> a <span class="op">+</span> b
+
+<span class="cm"># Lo studente pensa che questo dia errore</span>
+risultato <span class="op">=</span> somma(<span class="st">&quot;ciao&quot;</span>, <span class="st">&quot;mondo&quot;</span>)
+<span class="nb">print</span>(risultato)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>ciaomondo</code></pre>
+<p>Nessun errore: Python esegue la concatenazione di stringhe senza protestare.</p>
+<p><strong>Perché è sbagliato:</strong> I type hints in Python sono solo annotazioni informative: servono come documentazione e per strumenti di analisi statica (come <code>mypy</code>), ma Python non li controlla a runtime. Si possono passare argomenti di qualsiasi tipo e Python non genererà errori basandosi sui type hints.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">somma</span>(<span class="fn">a</span>: <span class="nb">int</span>, b: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Somma due numeri interi.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> a <span class="op">+</span> b
+
+<span class="cm"># I type hints documentano l&#x27;uso previsto, ma tocca a noi rispettarli</span>
+risultato <span class="op">=</span> somma(<span class="mi">3</span>, <span class="mi">5</span>)
+<span class="nb">print</span>(risultato)  <span class="cm"># 8</span>
+
+<span class="cm"># Per un controllo esplicito:</span>
+<span class="kw">def</span> <span class="fn">somma_sicura</span>(<span class="fn">a</span>: <span class="nb">int</span>, b: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(a, (<span class="nb">int</span>, <span class="nb">float</span>)) <span class="kw">or</span> <span class="kw">not</span> <span class="nb">isinstance</span>(b, (<span class="nb">int</span>, <span class="nb">float</span>)):
+        <span class="kw">raise</span> <span class="nb">TypeError</span>(<span class="st">&quot;I parametri devono essere numerici&quot;</span>)
+    <span class="kw">return</span> a <span class="op">+</span> b</code></pre>
+<p><strong>Regola da ricordare:</strong> I type hints sono solo suggerimenti per il programmatore e gli strumenti di analisi: Python non li verifica durante l'esecuzione.</p>
+<hr>
+<h3>Errore 5: Numero di argomenti sbagliato nella chiamata</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_bmi</span>(<span class="fn">peso</span>, altezza):
+    <span class="kw">return</span> peso <span class="op">/</span> (altezza <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+<span class="cm"># Chiamata con un solo argomento</span>
+risultato <span class="op">=</span> calcola_bmi(<span class="mi">75</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="nb">TypeError</span>: calcola_bmi() missing <span class="mi">1</span> required positional argument: <span class="st">&#x27;altezza&#x27;</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> La funzione <code>calcola_bmi</code> richiede esattamente due argomenti posizionali (<code>peso</code> e <code>altezza</code>). Passarne uno solo o tre causa un <code>TypeError</code>. Python è rigoroso: il numero di argomenti nella chiamata deve corrispondere alla definizione.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_bmi</span>(<span class="fn">peso</span>, altezza):
+    <span class="kw">return</span> peso <span class="op">/</span> (altezza <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+risultato <span class="op">=</span> calcola_bmi(<span class="mi">75</span>, <span class="mi">1.80</span>)
+<span class="nb">print</span>(<span class="st">f&quot;BMI: {risultato:.1f}&quot;</span>)  <span class="cm"># BMI: 23.1</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Controlla sempre la definizione della funzione per passare esattamente il numero e il tipo di argomenti richiesti.</p>
+<hr>
+<h3>Errore 6: Confondere <code>print()</code> e <code>return</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">quadrato</span>(<span class="fn">n</span>):
+    <span class="nb">print</span>(n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)  <span class="cm"># stampa il risultato, ma non lo restituisce</span>
+
+<span class="cm"># Lo studente prova a usare il risultato</span>
+risultato <span class="op">=</span> quadrato(<span class="mi">5</span>)
+doppio <span class="op">=</span> risultato <span class="op">*</span> <span class="mi">2</span></code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="mi">25</span>
+<span class="nb">TypeError</span>: unsupported operand <span class="nb">type</span>(s) <span class="kw">for</span> <span class="op">*</span>: <span class="st">&#x27;NoneType&#x27;</span> <span class="kw">and</span> <span class="st">&#x27;int&#x27;</span></code></pre>
+<p>Il <code>25</code> viene stampato, ma <code>risultato</code> è <code>None</code> e non si può moltiplicare.</p>
+<p><strong>Perché è sbagliato:</strong> <code>print()</code> mostra un valore sullo schermo ma non lo restituisce alla funzione chiamante. La funzione <code>quadrato</code> stampa <code>25</code> ma restituisce <code>None</code> (perché non ha <code>return</code>). Quando si prova a fare <code>None * 2</code>, Python solleva un errore.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">quadrato</span>(<span class="fn">n</span>):
+    <span class="kw">return</span> n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>  <span class="cm"># restituisce il risultato</span>
+
+risultato <span class="op">=</span> quadrato(<span class="mi">5</span>)
+<span class="nb">print</span>(risultato)    <span class="cm"># 25</span>
+doppio <span class="op">=</span> risultato <span class="op">*</span> <span class="mi">2</span>
+<span class="nb">print</span>(doppio)       <span class="cm"># 50</span></code></pre>
+<p><strong>Regola da ricordare:</strong> <code>print()</code> mostra un valore a schermo, <code>return</code> lo restituisce al chiamante: per riutilizzare il risultato di una funzione serve <code>return</code>.</p>
+<hr>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

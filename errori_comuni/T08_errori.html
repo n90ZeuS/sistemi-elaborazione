@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errori comuni — T08: Operatori, I/O e condizionali — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/T08_operatori_io_condizionali.html">Dispensa</a> &bull; <a href="../autovalutazione/T08_autovalutazione.html">Autovalutazione</a></nav>
+<h1>Errori comuni — T08: Operatori, I/O e condizionali</h1>
+
+<h1>Errori comuni — T08: Operatori, I/O e condizionali</h1>
+<p>Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione T08.</p>
+<p>Ogni errore include il codice sbagliato, la spiegazione e la correzione.</p>
+<hr>
+<h3>Errore 1: Confondere divisione vera (<code>/</code>) e divisione intera (<code>//</code>)</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Lo studente vuole calcolare la media di 3 voti</span>
+media <span class="op">=</span> (<span class="mi">28</span> <span class="op">+</span> <span class="mi">30</span> <span class="op">+</span> <span class="mi">25</span>) <span class="op">/</span><span class="op">/</span> <span class="mi">3</span>
+<span class="nb">print</span>(media)  <span class="cm"># Output: 27</span></code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="mi">27</span></code></pre>
+<p>Il risultato è 27 invece di 27.666..., perché <code>//</code> tronca la parte decimale.</p>
+<p><strong>Perché è sbagliato:</strong> L'operatore <code>//</code> esegue la divisione intera, cioè restituisce solo la parte intera del risultato, scartando i decimali. Per ottenere il risultato completo (con la parte decimale), bisogna usare <code>/</code>. Per calcoli statistici come la media, quasi sempre serve la divisione vera <code>/</code>.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>media <span class="op">=</span> (<span class="mi">28</span> <span class="op">+</span> <span class="mi">30</span> <span class="op">+</span> <span class="mi">25</span>) <span class="op">/</span> <span class="mi">3</span>
+<span class="nb">print</span>(media)  <span class="cm"># Output: 27.666666666666668</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Usa <code>/</code> per la divisione con decimali (la più comune) e <code>//</code> solo quando vuoi esplicitamente scartare la parte decimale.</p>
+<hr>
+<h3>Errore 2: Usare <code>and</code>/<code>or</code> con valori non booleani senza capire il risultato</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Lo studente vuole verificare se x è 5 oppure 10</span>
+x <span class="op">=</span> <span class="mi">7</span>
+<span class="kw">if</span> x <span class="op">=</span><span class="op">=</span> <span class="mi">5</span> <span class="kw">or</span> <span class="mi">10</span>:
+    <span class="nb">print</span>(<span class="st">&quot;x è 5 oppure 10&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>x è <span class="mi">5</span> oppure <span class="mi">10</span></code></pre>
+<p>Il messaggio viene stampato anche se <code>x</code> vale 7, perché la condizione è sempre vera.</p>
+<p><strong>Perché è sbagliato:</strong> L'espressione <code>x == 5 or 10</code> non significa "x è uguale a 5 oppure a 10". Python la interpreta come <code>(x == 5) or (10)</code>, cioè: "x è uguale a 5, oppure il valore 10". Siccome il numero <code>10</code> è considerato "vero" (ogni numero diverso da 0 è vero in Python), la condizione complessiva è sempre vera.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>x <span class="op">=</span> <span class="mi">7</span>
+<span class="kw">if</span> x <span class="op">=</span><span class="op">=</span> <span class="mi">5</span> <span class="kw">or</span> x <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>:
+    <span class="nb">print</span>(<span class="st">&quot;x è 5 oppure 10&quot;</span>)
+
+<span class="cm"># Alternativa più elegante:</span>
+<span class="kw">if</span> x <span class="kw">in</span> (<span class="mi">5</span>, <span class="mi">10</span>):
+    <span class="nb">print</span>(<span class="st">&quot;x è 5 oppure 10&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> Dopo <code>or</code> e <code>and</code> serve sempre una condizione completa — scrivi <code>x == 5 or x == 10</code>, mai <code>x == 5 or 10</code>.</p>
+<hr>
+<h3>Errore 3: Dimenticare che <code>input()</code> restituisce sempre una stringa</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>eta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Quanti anni hai? &quot;</span>)
+anno_nascita <span class="op">=</span> <span class="mi">2026</span> <span class="op">-</span> eta
+<span class="nb">print</span>(<span class="st">f&quot;Sei nato nel {anno_nascita}&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="nb">TypeError</span>: unsupported operand <span class="nb">type</span>(s) <span class="kw">for</span> <span class="op">-</span>: <span class="st">&#x27;int&#x27;</span> <span class="kw">and</span> <span class="st">&#x27;str&#x27;</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> La funzione <code>input()</code> restituisce sempre una stringa, anche se l'utente digita un numero. Quando lo studente scrive <code>20</code>, Python lo memorizza come la stringa <code>"20"</code>, non come il numero <code>20</code>. Non è possibile sottrarre una stringa da un intero: bisogna prima convertire il risultato di <code>input()</code> in un numero con <code>int()</code> o <code>float()</code>.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>eta <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Quanti anni hai? &quot;</span>))
+anno_nascita <span class="op">=</span> <span class="mi">2026</span> <span class="op">-</span> eta
+<span class="nb">print</span>(<span class="st">f&quot;Sei nato nel {anno_nascita}&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> <code>input()</code> restituisce sempre una stringa: se ti serve un numero, usa <code>int(input(...))</code> o <code>float(input(...))</code>.</p>
+<hr>
+<h3>Errore 4: Usare <code>=</code> invece di <code>==</code> nella condizione di un <code>if</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>risposta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Vuoi continuare? (s/n) &quot;</span>)
+<span class="kw">if</span> risposta <span class="op">=</span> <span class="st">&quot;s&quot;</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Continuiamo!&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>SyntaxError: invalid syntax</code></pre>
+<p><strong>Perché è sbagliato:</strong> All'interno di una condizione <code>if</code> bisogna usare l'operatore di confronto <code>==</code> (doppio uguale), non l'operatore di assegnamento <code>=</code> (uguale singolo). Python non permette l'assegnamento dentro un <code>if</code> e segnala un errore di sintassi. È uno degli errori più comuni per chi inizia a programmare.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>risposta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Vuoi continuare? (s/n) &quot;</span>)
+<span class="kw">if</span> risposta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;s&quot;</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Continuiamo!&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> Nelle condizioni <code>if</code>, <code>while</code> e simili si usa sempre <code>==</code> per confrontare, mai <code>=</code>.</p>
+<hr>
+<h3>Errore 5: Indentazione sbagliata in <code>if</code>/<code>elif</code>/<code>else</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>voto <span class="op">=</span> <span class="mi">28</span>
+<span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">30</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Ottimo!&quot;</span>)
+    <span class="kw">elif</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">24</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Buono&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Sufficiente&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>IndentationError: unexpected indent</code></pre>
+<p><strong>Perché è sbagliato:</strong> Le parole chiave <code>if</code>, <code>elif</code> e <code>else</code> devono trovarsi tutte allo stesso livello di indentazione. Nel codice errato, <code>elif</code> è indentato come se fosse dentro il blocco <code>if</code>, ma deve essere allineato con <code>if</code> ed <code>else</code>. Solo le istruzioni all'interno di ciascun blocco vanno indentate.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>voto <span class="op">=</span> <span class="mi">28</span>
+<span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">30</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Ottimo!&quot;</span>)
+<span class="kw">elif</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">24</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Buono&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Sufficiente&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> <code>if</code>, <code>elif</code> e <code>else</code> devono essere allineati alla stessa colonna; solo il codice dentro ciascun blocco va indentato di un livello.</p>
+<hr>
+<h3>Errore 6: Confronto tra tipi diversi che non dà errore ma produce risultati inattesi</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>eta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Quanti anni hai? &quot;</span>)  <span class="cm"># L&#x27;utente digita 18</span>
+<span class="kw">if</span> eta <span class="op">&gt;</span> <span class="mi">17</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Maggiorenne&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Minorenne&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="nb">TypeError</span>: <span class="st">&#x27;&gt;&#x27;</span> <span class="kw">not</span> supported between instances of <span class="st">&#x27;str&#x27;</span> <span class="kw">and</span> <span class="st">&#x27;int&#x27;</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> Siccome <code>input()</code> restituisce una stringa, <code>eta</code> contiene la stringa <code>"18"</code>, non il numero <code>18</code>. Python 3 non permette confronti diretti tra stringhe e numeri interi con <code>></code>, <code><</code> e simili, e genera un <code>TypeError</code>. Lo studente deve prima convertire il valore in un intero con <code>int()</code>.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>eta <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Quanti anni hai? &quot;</span>))
+<span class="kw">if</span> eta <span class="op">&gt;</span> <span class="mi">17</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Maggiorenne&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Minorenne&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> Prima di confrontare un valore numerico, assicurati che sia effettivamente un numero e non una stringa — converti sempre il risultato di <code>input()</code>.</p>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

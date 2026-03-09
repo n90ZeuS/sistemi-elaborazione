@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T05 — Rappresentazione dei dati — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="T04_sistemi_operativi.html">← T04</a> &bull; <a href="T06_dal_problema_al_programma.html">T06 →</a> &bull; <a href="../../presentazioni/T05_rappresentazione_dati.html">Presentazione</a></nav>
+<h1>T05 — Rappresentazione dei dati</h1>
+
+<h1>Lezione 5 — Rappresentazione dei dati</h1>
+<h2>Introduzione</h2>
+<p>Ogni dato con cui lavorerete nella vostra carriera di statistici — un reddito, un nome, una temperatura, un'immagine medica, un tracciato audio — all'interno del computer è una sequenza di bit. Ma come si passa da un numero reale a una sequenza di 0 e 1? E soprattutto: <strong>cosa si perde in questa traduzione?</strong></p>
+<p>Questa lezione è forse la più importante per uno statistico che vuole capire le macchine. Non perché i dettagli tecnici delle codifiche siano affascinanti in sé (anche se lo sono), ma perché le scelte di rappresentazione hanno conseguenze concrete e talvolta devastanti: razzi che esplodono, missili che mancano il bersaglio, geni umani rinominati per errore. Comprendere come il computer rappresenta i dati vi proteggerà da errori che altrimenti sarebbero invisibili.</p>
+<hr>
+<h2>Numeri interi</h2>
+<h3>Rappresentazione in binario</h3>
+<p>I numeri interi positivi si rappresentano in binario nel modo naturale che abbiamo visto nella prima lezione: il numero 42 in base 10 diventa 101010 in base 2. Con <em>n</em> bit si possono rappresentare i numeri da 0 a 2ⁿ − 1: con 8 bit, da 0 a 255; con 32 bit, da 0 a circa 4,3 miliardi.</p>
+<h3>Il problema dei numeri negativi</h3>
+<p>Ma come rappresentare i numeri negativi? Servono le stesse sequenze di bit per codificare sia positivi che negativi. Nel corso della storia sono state proposte diverse soluzioni.</p>
+<p><strong>Modulo e segno:</strong> il primo bit indica il segno (0 = positivo, 1 = negativo) e i restanti bit il valore assoluto. Semplice da capire, ma problematico: esistono due rappresentazioni dello zero (+0 e -0) e la sottrazione richiede circuiti speciali.</p>
+<p><strong>Complemento a uno:</strong> per ottenere il negativo di un numero, si invertono tutti i bit. Anche qui, due zeri e complicazioni aritmetiche.</p>
+<p><strong>Complemento a due:</strong> la soluzione elegante adottata universalmente. Per ottenere il negativo di un numero: si invertono tutti i bit e si aggiunge 1. La proprietà geniale del complemento a due è che <strong>la sottrazione diventa un'addizione</strong>: per calcolare A − B, basta calcolare A + (−B), usando lo stesso circuito sommatore. Con un unico circuito si eseguono sia somme che sottrazioni. Inoltre, esiste un solo zero.</p>
+<p>Con <em>n</em> bit in complemento a due si rappresentano i numeri da −2ⁿ⁻¹ a 2ⁿ⁻¹ − 1. Con 32 bit: da −2.147.483.648 a 2.147.483.647 (circa ±2,1 miliardi).</p>
+<h3>Overflow: quando i numeri "traboccano"</h3>
+<p>Cosa succede quando il risultato di un'operazione è troppo grande per la rappresentazione? Si verifica un <strong>overflow</strong>: i bit in eccesso vengono persi e il risultato è sbagliato, spesso silenziosamente (senza messaggi di errore).</p>
+<p>Due casi celebri mostrano la gravità del problema:</p>
+<p><strong>Il bug dell'anno 2038.</strong> Molti sistemi Unix rappresentano il tempo come il numero di secondi trascorsi dal 1° gennaio 1970 (il cosiddetto <em>Unix epoch</em>), memorizzato come un intero con segno a 32 bit. Il 19 gennaio 2038 alle ore 03:14:07 UTC, questo contatore raggiungerà il valore massimo (2.147.483.647) e andrà in overflow, tornando a un valore negativo. I sistemi che non saranno aggiornati interpreteranno la data come il 13 dicembre 1901. La soluzione: passare a interi a 64 bit (già in corso nei sistemi moderni).</p>
+<p><strong>L'esplosione dell'Ariane 5 (1996).</strong> Il razzo europeo Ariane 5 esplose 37 secondi dopo il lancio. La causa: un software ereditato dal predecessore Ariane 4 convertiva un valore di velocità orizzontale da un numero in virgola mobile a 64 bit in un intero con segno a 16 bit. L'Ariane 5, più veloce dell'Ariane 4, generava un valore che non stava in 16 bit: overflow, errore di navigazione, autodistruzione. Danni: 370 milioni di dollari. Un bug di conversione di tipo.</p>
+<h3>Python e gli interi a precisione arbitraria</h3>
+<p>Python ha una caratteristica unica tra i linguaggi più diffusi: i suoi interi hanno <strong>precisione arbitraria</strong>. Non c'è limite alla dimensione di un numero intero in Python: internamente, Python alloca dinamicamente la memoria necessaria per rappresentarlo.</p>
+<pre><code><span class="cm"># In C, questo causerebbe overflow con un int a 32 bit:</span>
+risultato: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span> <span class="op">*</span><span class="op">*</span> <span class="mi">100</span>
+<span class="nb">print</span>(risultato)  <span class="cm"># 1267650600228229401496703205376</span>
+
+<span class="cm"># Python gestisce numeri arbitrariamente grandi:</span>
+fattoriale_100: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">101</span>):
+    fattoriale_100 <span class="op">*</span><span class="op">=</span> i
+<span class="nb">print</span>(fattoriale_100)  <span class="cm"># un numero con 158 cifre!</span></code></pre>
+<p>Il prezzo di questa comodità è una leggera penalità di prestazioni: le operazioni su interi grandi sono più lente che in linguaggi con interi a dimensione fissa. Ma per la maggior parte delle applicazioni statistiche, la correttezza è più importante della velocità.</p>
+<hr>
+<h2>Numeri in virgola mobile (floating point)</h2>
+<h3>Il problema fondamentale</h3>
+<p>Come rappresentare i numeri reali — che sono infiniti e continui — con un numero finito di bit — che sono discreti? La risposta è: <strong>non perfettamente</strong>. La rappresentazione in virgola mobile è un'approssimazione, e comprenderne i limiti è essenziale per chiunque lavori con dati numerici.</p>
+<h3>Lo standard IEEE 754</h3>
+<p>Nel 1985, l'IEEE (<em>Institute of Electrical and Electronics Engineers</em>) pubblicò lo standard <strong>IEEE 754</strong>, che definisce come i numeri in virgola mobile devono essere rappresentati e manipolati. Prima di questo standard, ogni produttore di computer usava la propria rappresentazione, con risultati diversi per gli stessi calcoli.</p>
+<p>L'idea è una versione binaria della <strong>notazione scientifica</strong>. Così come scriviamo 6,022 × 10²³ in base 10, in IEEE 754 un numero è rappresentato come:</p>
+<p><strong>(-1)ˢ × 1,mantissa × 2^(esponente-bias)</strong></p>
+<p>dove:</p>
+<ul>
+<li><strong>s</strong> è il bit di segno (0 = positivo, 1 = negativo)</li>
+<li><strong>mantissa</strong> (o significando) contiene le cifre significative</li>
+<li><strong>esponente</strong> determina l'ordine di grandezza</li>
+</ul>
+<p>Esistono due formati principali:</p>
+<table>
+<thead><tr>
+<th>Formato</th>
+<th>Bit totali</th>
+<th>Bit segno</th>
+<th>Bit esponente</th>
+<th>Bit mantissa</th>
+<th>Cifre decimali significative</th>
+</tr></thead><tbody>
+<tr>
+<td>Single precision</td>
+<td>32</td>
+<td>1</td>
+<td>8</td>
+<td>23</td>
+<td>~7</td>
+</tr>
+<tr>
+<td>Double precision</td>
+<td>64</td>
+<td>1</td>
+<td>11</td>
+<td>52</td>
+<td>~15-16</td>
+</tr>
+</tbody></table>
+<p>Python usa la <strong>double precision</strong> per i suoi <code>float</code>: 64 bit, con circa 15-16 cifre decimali di precisione.</p>
+<p>Lo standard definisce anche valori speciali:</p>
+<ul>
+<li><strong>+∞ e −∞:</strong> risultato di divisioni come <code>1.0 / 0.0</code> (in Python: <code>float('inf')</code>)</li>
+<li><strong>NaN</strong> (<em>Not a Number</em>): risultato di operazioni indeterminate come <code>0.0 / 0.0</code> o <code>float('inf') - float('inf')</code>. NaN ha la proprietà unica che <code>NaN != NaN</code> è <code>True</code> — è l'unico valore non uguale a se stesso.</li>
+</ul>
+<h3>Perché 0.1 + 0.2 ≠ 0.3</h3>
+<p>Questo è il momento della verità. Aprite un qualsiasi interprete Python e digitate:</p>
+<pre><code><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="mi">0.1</span> <span class="op">+</span> <span class="mi">0.2</span>
+<span class="mi">0.30000000000000004</span></code></pre>
+<p>Non è un bug di Python. Succede in <strong>qualsiasi</strong> linguaggio di programmazione che usa IEEE 754 (cioè praticamente tutti). Il motivo è fondamentale: il numero 0,1 in base 10 è un <strong>numero periodico</strong> in base 2, esattamente come 1/3 = 0,333... è periodico in base 10.</p>
+<p>Non potendo rappresentare esattamente 0,1 in binario, il computer memorizza l'approssimazione più vicina possibile a 64 bit. Lo stesso per 0,2. La somma di queste due approssimazioni produce un risultato che è <em>quasi</em> 0,3, ma non esattamente.</p>
+<h3>Implicazioni per la statistica</h3>
+<p>Questo ha conseguenze importanti:</p>
+<p><strong>Mai confrontare float con <code>==</code>.</strong> Il codice <code>if media == 0.3:</code> potrebbe non funzionare come vi aspettate. Usate invece:</p>
+<pre><code><span class="kw">import</span> math
+<span class="kw">if</span> math.isclose(media, <span class="mi">0.3</span>, rel_tol<span class="op">=</span><span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>):
+    <span class="nb">print</span>(<span class="st">&quot;Approssimativamente uguale&quot;</span>)</code></pre>
+<p><strong>Errori di accumulazione.</strong> Se sommate milioni di piccoli numeri, gli errori di arrotondamento si accumulano. In statistica, questo può distorcere medie, varianze e test statistici su grandi campioni. Algoritmi numericamente stabili (come l'algoritmo di Kahan per la somma) mitigano il problema.</p>
+<p><strong>Il modulo <code>decimal</code>.</strong> Per calcoli finanziari o dove la precisione decimale esatta è cruciale, Python offre il modulo <code>decimal</code>:</p>
+<pre><code><span class="kw">from</span> decimal <span class="kw">import</span> Decimal
+<span class="nb">print</span>(Decimal(<span class="st">&#x27;0.1&#x27;</span>) <span class="op">+</span> Decimal(<span class="st">&#x27;0.2&#x27;</span>))  <span class="cm"># 0.3 (esatto!)</span></code></pre>
+<p><strong>Pandas e NaN.</strong> In Pandas, i valori mancanti nelle colonne numeriche sono rappresentati come <code>NaN</code> (Not a Number) IEEE 754. Comprendere la natura di NaN — che non è uguale a nulla, nemmeno a se stesso — è essenziale per la pulizia dei dati.</p>
+<h3>Il disastro del Patriot (1991)</h3>
+<p>Il 25 febbraio 1991, durante la Guerra del Golfo, una batteria di missili Patriot a Dhahran, Arabia Saudita, non intercettò un missile Scud iracheno, che colpì una caserma uccidendo 28 soldati americani.</p>
+<p>La causa: il sistema del Patriot misurava il tempo in decimi di secondo usando un registro a 24 bit. Il numero 0,1 in binario è periodico, e l'errore di troncamento, piccolissimo a ogni singolo tick (circa 0,000000095 secondi), si <strong>accumulava</strong> nel tempo. Dopo 100 ore di funzionamento continuo, l'errore cumulato era di circa 0,34 secondi — sufficiente perché il Patriot cercasse lo Scud in una posizione sbagliata di oltre 600 metri.</p>
+<p>Un errore di arrotondamento floating point ha causato la morte di 28 persone. Ecco perché questa lezione è importante.</p>
+<hr>
+<h2>Testo e codifiche</h2>
+<h3>Il problema</h3>
+<p>Come rappresentare lettere, cifre e simboli con sequenze di bit? La risposta sembra semplice: assegnare un numero a ogni carattere. Ma <em>quale</em> numero a <em>quale</em> carattere? E quanti bit per carattere?</p>
+<h3>ASCII (1963)</h3>
+<p>Lo standard <strong>ASCII</strong> (<em>American Standard Code for Information Interchange</em>) fu pubblicato nel 1963. Usa 7 bit per carattere, codificando 128 simboli:</p>
+<ul>
+<li>26 lettere maiuscole (A-Z): codici 65-90</li>
+<li>26 lettere minuscole (a-z): codici 97-122</li>
+<li>10 cifre (0-9): codici 48-57</li>
+<li>Simboli di punteggiatura e speciali: <code>! @ # $ % ...</code></li>
+<li>Caratteri di controllo: a capo, tabulazione, ecc.</li>
+</ul>
+<p>ASCII funzionava perfettamente — per l'inglese. Ma non prevedeva lettere accentate (à, è, ù), la ñ spagnola, l'ü tedesca, per non parlare del cirillico, del giapponese o dell'arabo.</p>
+<h3>Il caos delle estensioni</h3>
+<p>Negli anni successivi, ogni paese e produttore creò le proprie estensioni di ASCII a 8 bit (256 caratteri):</p>
+<ul>
+<li><strong>ISO 8859-1</strong> (Latin-1): per le lingue dell'Europa occidentale (include à, è, ù, ñ, ü)</li>
+<li><strong>ISO 8859-5</strong>: per il cirillico</li>
+<li><strong>Shift-JIS</strong>: per il giapponese</li>
+<li><strong>GB2312</strong>: per il cinese semplificato</li>
+</ul>
+<p>Il risultato fu il caos: lo stesso byte poteva rappresentare un carattere diverso a seconda della codifica. Un file scritto in Shift-JIS e aperto come Latin-1 mostra un'accozzaglia di simboli senza senso. Questo fenomeno ha un nome giapponese: <strong>mojibake</strong> (文字化け, "caratteri trasformati").</p>
+<p>Se avete mai aperto un CSV e visto "caffÃ¨" al posto di "caffè", avete sperimentato il mojibake — la codifica del file non corrispondeva alla codifica usata per leggerlo.</p>
+<h3>Unicode e UTF-8</h3>
+<p><strong>Unicode</strong> (1991-oggi) è il progetto ambizioso di codificare <strong>ogni carattere di ogni sistema di scrittura umano</strong> (e non solo: emoji, simboli matematici, note musicali, scritture antiche). Ad oggi include oltre 150.000 caratteri da 161 scritture diverse.</p>
+<p>Unicode assegna a ogni carattere un <strong>code point</strong> univoco, scritto come U+XXXX. Ad esempio: A = U+0041, à = U+00E0, 你 = U+4F60, 🎓 = U+1F393.</p>
+<p>Ma Unicode è un <em>catalogo</em>, non una codifica. Come si memorizzano concretamente questi code point in byte? Esistono diverse codifiche:</p>
+<p><strong>UTF-8</strong> è la codifica che ha vinto. Fu inventata nel 1992 da <strong>Ken Thompson</strong> (il co-creatore di Unix) e <strong>Rob Pike</strong>, su una tovaglietta di carta durante una cena in un ristorante di New Jersey. Le sue proprietà sono geniali:</p>
+<ul>
+<li><strong>Compatibile con ASCII:</strong> i primi 128 caratteri sono identici ad ASCII, usando un solo byte. Questo significa che qualsiasi file ASCII è automaticamente un file UTF-8 valido.</li>
+<li><strong>Lunghezza variabile:</strong> i caratteri comuni (latini) usano 1 byte, i caratteri meno comuni (cinese, giapponese, arabo) usano 2-4 byte. Efficiente senza sprecare spazio.</li>
+<li><strong>Auto-sincronizzante:</strong> è impossibile confondere un byte iniziale con un byte di continuazione, rendendo la decodifica robusta.</li>
+</ul>
+<p>Oggi, oltre il 97% delle pagine web usa UTF-8. È lo standard de facto di internet.</p>
+<h3>Python 3 e Unicode</h3>
+<p>Python 3 ha fatto una scelta radicale: le stringhe (<code>str</code>) sono Unicode nativamente. Ogni stringa Python è una sequenza di caratteri Unicode, indipendentemente dalla lingua:</p>
+<pre><code>nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;François&quot;</span>
+citta: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;東京&quot;</span>       <span class="cm"># Tokyo in giapponese</span>
+saluto: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Ciao 👋&quot;</span>  <span class="cm"># con emoji</span>
+<span class="nb">print</span>(<span class="nb">len</span>(saluto))        <span class="cm"># 6 (emoji conta come 1 carattere)</span></code></pre>
+<p>Il temuto <code>UnicodeDecodeError</code> si verifica quando tentate di leggere un file con la codifica sbagliata:</p>
+<pre><code><span class="cm"># Se il file è codificato in Latin-1 ma provate a leggerlo come UTF-8:</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.csv&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    f.read()  <span class="cm"># UnicodeDecodeError!</span>
+
+<span class="cm"># Soluzione: specificare la codifica corretta</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.csv&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;latin-1&quot;</span>) <span class="kw">as</span> f:
+    f.read()  <span class="cm"># Funziona!</span></code></pre>
+<p><strong>Consiglio pratico:</strong> salvate sempre i vostri file in UTF-8. Quando leggete file di terze parti e ottenete errori di codifica, provate <code>encoding="latin-1"</code> o <code>encoding="cp1252"</code> (la codifica di Windows per l'Europa occidentale).</p>
+<hr>
+<h2>Immagini, audio e video</h2>
+<h3>Immagini digitali</h3>
+<p>Un'immagine digitale è una griglia di <strong>pixel</strong> (<em>picture element</em>). Ogni pixel ha un colore, e il colore è rappresentato da numeri.</p>
+<p>Il modello di colore più comune è <strong>RGB</strong> (<em>Red, Green, Blue</em>): ogni pixel è definito da tre valori, uno per l'intensità di rosso, verde e blu. Con 8 bit per canale (256 livelli), un pixel richiede 24 bit (3 byte) e può assumere 256³ = 16.777.216 colori diversi.</p>
+<ul>
+<li><strong>Risoluzione:</strong> il numero di pixel (es: 1920×1080 = circa 2 milioni di pixel = 2 megapixel).</li>
+<li><strong>Profondità di colore:</strong> il numero di bit per canale (8, 16, 32 bit).</li>
+</ul>
+<p><strong>L'intuizione fondamentale:</strong> un'immagine è una <strong>matrice di numeri</strong>. Un'immagine RGB 1920×1080 è un array tridimensionale di dimensione 1080 × 1920 × 3. Questo è esattamente il tipo di dato che NumPy gestisce in modo nativo. L'analisi di immagini è, in fondo, algebra lineare applicata.</p>
+<p>I formati più comuni:</p>
+<ul>
+<li><strong>BMP:</strong> non compresso. Un'immagine 1920×1080 a 24 bit occupa circa 6 MB.</li>
+<li><strong>JPEG:</strong> compressione <strong>con perdita</strong> (<em>lossy</em>). Riduce drasticamente la dimensione scartando dettagli impercettibili all'occhio umano. Ma ogni salvataggio perde qualità: non salvate ripetutamente in JPEG un'immagine su cui state lavorando.</li>
+<li><strong>PNG:</strong> compressione <strong>senza perdita</strong> (<em>lossless</em>). Il file è più piccolo del BMP ma identico all'originale. Supporta la trasparenza.</li>
+</ul>
+<h3>Audio digitale</h3>
+<p>Un suono è un'onda continua. Per digitalizzarlo, lo si <strong>campiona</strong>: si misura l'ampiezza dell'onda a intervalli regolari.</p>
+<p>Il <strong>teorema di Nyquist-Shannon</strong> stabilisce che per catturare fedelmente un suono, bisogna campionarlo ad almeno <strong>il doppio della sua frequenza massima</strong>. L'orecchio umano percepisce suoni fino a circa 20.000 Hz, quindi servono almeno 40.000 campioni al secondo. Il CD audio usa 44.100 Hz e 16 bit per campione — ecco perché questi numeri non sono arbitrari.</p>
+<h3>Video digitale</h3>
+<p>Un video è una sequenza di immagini (frame) accompagnata da una traccia audio. A 30 frame al secondo, un video Full HD non compresso richiederebbe circa 6 MB × 30 = 180 MB al secondo, cioè circa 650 GB per un'ora. La <strong>compressione video</strong> (codec H.264, H.265, AV1) sfrutta la ridondanza tra frame consecutivi per ridurre enormemente la dimensione.</p>
+<h3>Perché è rilevante per la statistica</h3>
+<p>I dati statistici moderni non sono solo tabelle di numeri. L'analisi di immagini mediche (radiografie, risonanze), i dati satellitari, l'analisi del parlato, il riconoscimento di pattern in video — tutto questo richiede che uno statistico comprenda la natura digitale di questi dati.</p>
+<hr>
+<h2>Formati di dati strutturati</h2>
+<h3>CSV (Comma-Separated Values)</h3>
+<p>Il formato più semplice e più usato in statistica: un file di testo dove ogni riga è un record e i campi sono separati da un delimitatore (tipicamente la virgola).</p>
+<pre><code>nome,cognome,voto,data_esame
+Mario,Rossi,<span class="mi">28</span>,<span class="mi">2024</span><span class="op">-</span><span class="mi">01</span><span class="op">-</span><span class="mi">15</span>
+Anna,Bianchi,<span class="mi">30</span>,<span class="mi">2024</span><span class="op">-</span><span class="mi">01</span><span class="op">-</span><span class="mi">15</span></code></pre>
+<p><strong>Vantaggi:</strong> universale, leggibile, supportato da qualsiasi software.</p>
+<p><strong>Problemi:</strong> nessun tipo di dato (tutto è testo), ambiguità con i separatori (cosa succede se un campo contiene una virgola?), nessuno standard rigido sui dettagli.</p>
+<p><strong>La trappola europea:</strong> in Italia e in molti paesi europei, il separatore decimale è la virgola (3,14 non 3.14). Per evitare conflitti con il separatore CSV, si usa il <strong>punto e virgola</strong> come separatore di campo. Quando leggete un CSV e vedete dati illeggibili, verificate sempre il separatore.</p>
+<h3>JSON (JavaScript Object Notation)</h3>
+<p>Formato per dati strutturati gerarchicamente, nato dal mondo JavaScript ma ormai universale. È il formato standard delle API web.</p>
+<pre><code>{
+    &quot;nome&quot;: &quot;Mario&quot;,
+    &quot;cognome&quot;: &quot;Rossi&quot;,
+    &quot;voti&quot;: [28, 30, 27],
+    &quot;indirizzo&quot;: {
+        &quot;citta&quot;: &quot;Milano&quot;,
+        &quot;cap&quot;: &quot;20100&quot;
+    }
+}</code></pre>
+<p>JSON supporta tipi di dato: stringhe, numeri, booleani, null, array e oggetti annidati. È leggibile da umani e facile da elaborare per le macchine.</p>
+<h3>XML (eXtensible Markup Language)</h3>
+<p>Più verboso di JSON ma più espressivo, ancora diffuso nei contesti istituzionali:</p>
+<pre><code>&lt;studente&gt;
+    &lt;nome&gt;Mario&lt;/nome&gt;
+    &lt;cognome&gt;Rossi&lt;/cognome&gt;
+    &lt;voto&gt;28&lt;/voto&gt;
+&lt;/studente&gt;</code></pre>
+<p>Lo troverete nei dati della pubblica amministrazione, nei servizi web SOAP, nei file di configurazione.</p>
+<h3>Excel (.xlsx)</h3>
+<p>Onnipresente nel mondo aziendale e spesso usato (impropriamente) come formato di scambio dati. I problemi per l'uso scientifico sono seri:</p>
+<ul>
+<li><strong>Conversioni automatiche non richieste:</strong> il caso più famoso riguarda la genetica. Excel convertiva automaticamente nomi di geni come MARCH1 e SEPT2 in date (1 marzo, 2 settembre). Il problema era così diffuso che nel 2020 l'organizzazione HUGO Gene Nomenclature Committee <strong>ha rinominato 27 geni umani</strong> per evitare le conversioni di Excel. Un software ha costretto la scienza a cambiare i nomi dei geni.</li>
+<li>Formattazione che si perde nel trasferimento.</li>
+<li>Limiti sul numero di righe (1.048.576).</li>
+<li>Formato binario proprietario.</li>
+</ul>
+<h3>Formati binari per grandi dataset</h3>
+<p>Quando i dataset diventano grandi (milioni di righe, gigabyte), i formati testuali come CSV diventano lenti. Esistono formati binari ottimizzati:</p>
+<ul>
+<li><strong>Parquet:</strong> formato colonnare (memorizza i dati per colonna anziché per riga), compressione efficiente, tipi nativi. Ideale per l'analisi di grandi dataset con Pandas.</li>
+<li><strong>HDF5:</strong> formato gerarchico per dati scientifici, usato in fisica, astronomia, bioinformatica.</li>
+<li><strong>Feather:</strong> formato ottimizzato per lo scambio veloce di DataFrame tra Python e R.</li>
+</ul>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li><strong>Cos'è il complemento a due e perché è stato scelto come rappresentazione standard per gli interi negativi?</strong></li>
+</ol>
+<ol>
+<li><strong>Perché <code>0.1 + 0.2</code> non è esattamente <code>0.3</code> in Python?</strong> È un bug di Python?</li>
+</ol>
+<ol>
+<li><strong>Cosa sono overflow e underflow?</strong> Descrivete un caso reale in cui l'overflow ha avuto conseguenze gravi.</li>
+</ol>
+<ol>
+<li><strong>Cos'è il mojibake e perché si verifica?</strong> Come si risolve?</li>
+</ol>
+<ol>
+<li><strong>Perché UTF-8 ha vinto sulle altre codifiche?</strong> Elencate le sue proprietà chiave.</li>
+</ol>
+<ol>
+<li><strong>Perché non si dovrebbero confrontare due float con <code>==</code>?</strong> Quale alternativa offre Python?</li>
+</ol>
+<ol>
+<li><strong>Un'immagine RGB 800×600 a 8 bit per canale quanti byte occupa senza compressione?</strong> Quale formato usereste per salvarla senza perdita di qualità?</li>
+</ol>
+<ol>
+<li><strong>Perché Excel è problematico come formato per dati scientifici?</strong> Descrivete il caso dei geni rinominati.</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Rappresentate il numero −13 in complemento a due usando 8 bit. Verificate sommandolo a +13: il risultato deve essere 0 (ignorando il bit di riporto).</li>
+</ol>
+<ol>
+<li>In Python, calcolate:</li>
+</ol>
+<pre><code>   <span class="nb">print</span>(<span class="mi">0.1</span> <span class="op">+</span> <span class="mi">0.2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0.3</span>)
+   <span class="nb">print</span>(<span class="mi">0.1</span> <span class="op">+</span> <span class="mi">0.2</span>)</code></pre>
+<p>Spiegate il risultato. Poi riscrivete il confronto usando <code>math.isclose()</code>.</p>
+<ol>
+<li>Quanti caratteri ASCII esistono? Perché ASCII non è sufficiente per l'italiano?</li>
+</ol>
+<h3>Intermedio</h3>
+<ol>
+<li>Un'immagine ha risoluzione 3840×2160 (4K) con 24 bit per pixel. Calcolate:</li>
+</ol>
+<ul>
+<li>La dimensione non compressa in MB.</li>
+<li>Quante immagini di questo tipo stanno in 1 GB di RAM.</li>
+<li>La dimensione approssimativa in JPEG con rapporto di compressione 10:1.</li>
+</ul>
+<ol>
+<li>Scrivete un breve programma Python che dimostra che gli interi Python hanno precisione arbitraria, calcolando 2¹⁰⁰⁰. Poi mostrate che i float hanno precisione limitata calcolando <code>float(2**1000)</code>.</li>
+</ol>
+<ol>
+<li>Aprite un file di testo in Python prima con <code>encoding="utf-8"</code>, poi con <code>encoding="latin-1"</code>. Se il file contiene caratteri accentati, osservate le differenze. Cosa succede con l'encoding sbagliato?</li>
+</ol>
+<h3>Avanzato</h3>
+<ol>
+<li>Scrivete un programma Python che simula l'errore cumulativo del sistema Patriot: partite dal valore 0,1 e sommatelo a se stesso 1.000.000 di volte. Confrontate il risultato con 100.000 (il risultato matematicamente corretto). Quanto è grande l'errore? Poi ripetete usando il modulo <code>decimal</code>.</li>
+</ol>
+<ol>
+<li>Un collega vi invia un file CSV che quando aperto mostra <code>"caffÃ¨"</code> al posto di <code>"caffè"</code> e <code>"â‚¬"</code> al posto di <code>"€"</code>. Spiegate tecnicamente cosa è successo (quale codifica è stata usata per scrivere e quale per leggere). Come risolvereste il problema in Python?</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Questa lezione ci ha insegnato una verità fondamentale: <strong>la rappresentazione digitale dei dati è sempre un'approssimazione</strong>. I numeri interi possono traboccare, i numeri reali perdono precisione, i testi possono essere fraintesi, le immagini perdono dettagli nella compressione. Nessun dato digitale è perfetto.</p>
+<p>Per uno statistico, questa consapevolezza è particolarmente importante:</p>
+<ol>
+<li><strong>Non fidatevi ciecamente dei numeri.</strong> Quando calcolate una media con 15 cifre decimali, solo le prime 15-16 sono significative. L'illusione di precisione può essere pericolosa.</li>
+</ol>
+<ol>
+<li><strong>Conoscete i vostri dati.</strong> Prima di analizzare un dataset, chiedetevi: come sono codificati i numeri? Qual è l'encoding del testo? Ci sono valori mancanti rappresentati come NaN? Ci sono conversioni implicite?</li>
+</ol>
+<ol>
+<li><strong>Scegliete il formato giusto.</strong> CSV per la semplicità e la portabilità. Parquet per le prestazioni su grandi dataset. JSON per i dati gerarchici. Mai Excel per il lavoro scientifico serio.</li>
+</ol>
+<p>Nella prossima lezione faremo il grande salto dalla macchina al pensiero: parleremo di algoritmi, programmi, processi e del pensiero computazionale — il ponte tra capire il computer e dirgli cosa fare.</p>
+<nav class="bottom-nav"><span><a href="T04_sistemi_operativi.html">← T04</a></span><span><a href="../../index.html">Home</a></span><span><a href="T06_dal_problema_al_programma.html">T06 →</a></span></nav>
+</body>
+</html>

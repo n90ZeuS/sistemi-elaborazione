@@ -1,6 +1,6 @@
 # Laboratorio 6 --- Classi e oggetti
 
-**Prerequisiti**: Frontale F16 (Classi e programmazione orientata agli oggetti)
+**Prerequisiti**: Frontale T16 (Classi e programmazione orientata agli oggetti)
 
 **Obiettivo**: mettere in pratica la definizione di classi in Python, con attributi, metodi, metodi speciali (`__str__`, `__repr__`, `__eq__`, `__lt__`), validazione dei dati e composizione di oggetti.
 

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T11_liste_tuple/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T11_liste_tuple.html">Dispensa</a> &bull; <a href="../../presentazioni/T11_liste_tuple.html">Presentazione</a> &bull; <a href="esempi.html">Esempi</a></nav>
+<h1>T11_liste_tuple/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F11 — Liste e tuple</span>
+<span class="cm"># Esercizi per la lezione frontale 11</span>
+<span class="cm"># Rimozione duplicati, merge liste ordinate, record studenti, media mobile</span>
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 1: Rimuovi duplicati preservando l&#x27;ordine</span>
+<span class="cm"># Data una lista, restituire una nuova lista senza duplicati</span>
+<span class="cm"># mantenendo l&#x27;ordine di prima apparizione.</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Rimuovi duplicati (ordine preservato) ---&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">rimuovi_duplicati</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Rimuove i duplicati da una lista preservando l&#x27;ordine di prima apparizione.
+    Usa un set per tenere traccia degli elementi gia&#x27; visti (O(n)).
+    &quot;&quot;&quot;</span>
+    visti: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">set</span>()
+    risultato: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+    <span class="kw">for</span> elem <span class="kw">in</span> lista:
+        <span class="kw">if</span> elem <span class="kw">not</span> <span class="kw">in</span> visti:
+            visti.add(elem)
+            risultato.append(elem)
+    <span class="kw">return</span> risultato
+
+
+<span class="cm"># Test base</span>
+<span class="kw">assert</span> rimuovi_duplicati([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">3</span>, <span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+<span class="kw">assert</span> rimuovi_duplicati([]) <span class="op">=</span><span class="op">=</span> []
+<span class="kw">assert</span> rimuovi_duplicati([<span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">1</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>]
+<span class="kw">assert</span> rimuovi_duplicati([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]  <span class="cm"># Nessun duplicato</span>
+
+<span class="cm"># Test ordine preservato</span>
+<span class="kw">assert</span> rimuovi_duplicati([<span class="mi">5</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">5</span>, <span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">2</span>]
+
+<span class="cm"># Confronto con set() (che NON preserva l&#x27;ordine di inserimento garantito)</span>
+originale: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">4</span>, <span class="mi">2</span>, <span class="mi">7</span>, <span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">1</span>, <span class="mi">7</span>, <span class="mi">3</span>]
+senza_dup: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> rimuovi_duplicati(originale)
+<span class="kw">assert</span> <span class="nb">len</span>(senza_dup) <span class="op">=</span><span class="op">=</span> <span class="nb">len</span>(<span class="nb">set</span>(originale))
+<span class="kw">assert</span> senza_dup <span class="op">=</span><span class="op">=</span> [<span class="mi">4</span>, <span class="mi">2</span>, <span class="mi">7</span>, <span class="mi">1</span>, <span class="mi">3</span>]
+
+<span class="nb">print</span>(<span class="st">f&quot;  Originale:     {originale}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Senza duplicati: {senza_dup}&quot;</span>)
+
+<span class="cm"># Test con dati realistici: codici studenti con duplicati</span>
+codici: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1001</span>, <span class="mi">1003</span>, <span class="mi">1001</span>, <span class="mi">1005</span>, <span class="mi">1003</span>, <span class="mi">1007</span>, <span class="mi">1005</span>, <span class="mi">1009</span>]
+codici_unici: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> rimuovi_duplicati(codici)
+<span class="kw">assert</span> codici_unici <span class="op">=</span><span class="op">=</span> [<span class="mi">1001</span>, <span class="mi">1003</span>, <span class="mi">1005</span>, <span class="mi">1007</span>, <span class="mi">1009</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Codici: {codici}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Unici:  {codici_unici}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 1 superato!\n&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 2: Merge di due liste ordinate</span>
+<span class="cm"># Date due liste ordinate, produrne una terza ordinata (come merge sort).</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Merge liste ordinate ---&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">merge_ordinate</span>(<span class="fn">lista_a</span>: <span class="nb">list</span>[<span class="nb">int</span>], lista_b: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Unisce due liste gia&#x27; ordinate in una singola lista ordinata.
+    Algoritmo: due puntatori, complessita&#x27; O(n + m).
+    &quot;&quot;&quot;</span>
+    risultato: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+    i: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>  <span class="cm"># Indice per lista_a</span>
+    j: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>  <span class="cm"># Indice per lista_b</span>
+
+    <span class="cm"># Confrontiamo elemento per elemento</span>
+    <span class="kw">while</span> i <span class="op">&lt;</span> <span class="nb">len</span>(lista_a) <span class="kw">and</span> j <span class="op">&lt;</span> <span class="nb">len</span>(lista_b):
+        <span class="kw">if</span> lista_a[i] <span class="op">&lt;</span><span class="op">=</span> lista_b[j]:
+            risultato.append(lista_a[i])
+            i <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        <span class="kw">else</span>:
+            risultato.append(lista_b[j])
+            j <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+    <span class="cm"># Aggiungiamo gli eventuali elementi rimanenti</span>
+    risultato.extend(lista_a[i:])
+    risultato.extend(lista_b[j:])
+
+    <span class="kw">return</span> risultato
+
+
+<span class="cm"># Test base</span>
+<span class="kw">assert</span> merge_ordinate([<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>], [<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+<span class="kw">assert</span> merge_ordinate([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+<span class="kw">assert</span> merge_ordinate([], [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+<span class="kw">assert</span> merge_ordinate([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], []) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+<span class="kw">assert</span> merge_ordinate([], []) <span class="op">=</span><span class="op">=</span> []
+
+<span class="cm"># Test con duplicati</span>
+<span class="kw">assert</span> merge_ordinate([<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">5</span>], [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+
+<span class="cm"># Test con liste di lunghezza molto diversa</span>
+<span class="kw">assert</span> merge_ordinate([<span class="mi">1</span>], [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>]
+
+<span class="cm"># Verifica che il risultato sia effettivamente ordinato</span>
+a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">2</span>, <span class="mi">5</span>, <span class="mi">11</span>, <span class="mi">23</span>, <span class="mi">45</span>]
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">8</span>, <span class="mi">12</span>, <span class="mi">30</span>, <span class="mi">50</span>, <span class="mi">55</span>]
+merged: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> merge_ordinate(a, b)
+<span class="kw">assert</span> merged <span class="op">=</span><span class="op">=</span> <span class="nb">sorted</span>(a <span class="op">+</span> b)  <span class="cm"># Deve coincidere con il sort nativo</span>
+<span class="kw">for</span> k <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(merged) <span class="op">-</span> <span class="mi">1</span>):
+    <span class="kw">assert</span> merged[k] <span class="op">&lt;</span><span class="op">=</span> merged[k <span class="op">+</span> <span class="mi">1</span>], <span class="st">&quot;Il risultato deve essere ordinato&quot;</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  Lista A: {a}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Lista B: {b}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Merge:   {merged}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 2 superato!\n&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 3: Record studenti con tuple</span>
+<span class="cm"># Gestire un registro studenti usando liste di tuple (nome, matricola, voti).</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Record studenti con tuple ---&quot;</span>)
+
+<span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+
+<span class="cm"># Definiamo il tipo Studente come named tuple</span>
+Studente <span class="op">=</span> namedtuple(<span class="st">&quot;Studente&quot;</span>, [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;matricola&quot;</span>, <span class="st">&quot;voti&quot;</span>])
+
+<span class="cm"># Database degli studenti</span>
+studenti: <span class="nb">list</span>[Studente] <span class="op">=</span> [
+    Studente(<span class="st">&quot;Alice Rossi&quot;</span>, <span class="st">&quot;MAT001&quot;</span>, (<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">30</span>)),
+    Studente(<span class="st">&quot;Bob Bianchi&quot;</span>, <span class="st">&quot;MAT002&quot;</span>, (<span class="mi">22</span>, <span class="mi">18</span>, <span class="mi">20</span>, <span class="mi">24</span>, <span class="mi">19</span>)),
+    Studente(<span class="st">&quot;Carla Verdi&quot;</span>, <span class="st">&quot;MAT003&quot;</span>, (<span class="mi">30</span>, <span class="mi">30</span>, <span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">29</span>)),
+    Studente(<span class="st">&quot;Davide Neri&quot;</span>, <span class="st">&quot;MAT004&quot;</span>, (<span class="mi">18</span>, <span class="mi">20</span>, <span class="mi">15</span>, <span class="mi">22</span>, <span class="mi">19</span>)),
+    Studente(<span class="st">&quot;Elena Gialli&quot;</span>, <span class="st">&quot;MAT005&quot;</span>, (<span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">26</span>, <span class="mi">28</span>, <span class="mi">24</span>)),
+]
+
+
+<span class="kw">def</span> <span class="fn">media_studente</span>(<span class="fn">studente</span>: Studente) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media dei voti di uno studente.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">round</span>(<span class="nb">sum</span>(studente.voti) <span class="op">/</span> <span class="nb">len</span>(studente.voti), <span class="mi">2</span>)
+
+
+<span class="kw">def</span> <span class="fn">trova_per_matricola</span>(
+    registro: <span class="nb">list</span>[Studente], matricola: <span class="nb">str</span>
+) <span class="op">-</span><span class="op">&gt;</span> Studente <span class="op">|</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Cerca uno studente per matricola.&quot;&quot;&quot;</span>
+    <span class="kw">for</span> s <span class="kw">in</span> registro:
+        <span class="kw">if</span> s.matricola <span class="op">=</span><span class="op">=</span> matricola:
+            <span class="kw">return</span> s
+    <span class="kw">return</span> <span class="kw">None</span>
+
+
+<span class="kw">def</span> <span class="fn">classifica_studenti</span>(
+    registro: <span class="nb">list</span>[Studente],
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">float</span>]]:
+    <span class="st">&quot;&quot;&quot;Restituisce la classifica degli studenti per media (decrescente).&quot;&quot;&quot;</span>
+    classifiche: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">float</span>]] <span class="op">=</span> [
+        (s.nome, media_studente(s)) <span class="kw">for</span> s <span class="kw">in</span> registro
+    ]
+    classifiche.sort(key<span class="op">=</span><span class="kw">lambda</span> coppia: coppia[<span class="mi">1</span>], reverse<span class="op">=</span><span class="kw">True</span>)
+    <span class="kw">return</span> classifiche
+
+
+<span class="kw">def</span> <span class="fn">studenti_sopra_media</span>(
+    registro: <span class="nb">list</span>[Studente], soglia: <span class="nb">float</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce i nomi degli studenti con media &gt;= soglia.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [s.nome <span class="kw">for</span> s <span class="kw">in</span> registro <span class="kw">if</span> media_studente(s) <span class="op">&gt;</span><span class="op">=</span> soglia]
+
+
+<span class="cm"># Test media</span>
+<span class="kw">assert</span> media_studente(studenti[<span class="mi">0</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">28.0</span>   <span class="cm"># Alice: (28+30+25+27+30)/5 = 28</span>
+<span class="kw">assert</span> media_studente(studenti[<span class="mi">1</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">20.6</span>   <span class="cm"># Bob: (22+18+20+24+19)/5 = 20.6</span>
+
+<span class="cm"># Test ricerca</span>
+alice: Studente <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> trova_per_matricola(studenti, <span class="st">&quot;MAT001&quot;</span>)
+<span class="kw">assert</span> alice <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>
+<span class="kw">assert</span> alice.nome <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Alice Rossi&quot;</span>
+<span class="kw">assert</span> trova_per_matricola(studenti, <span class="st">&quot;MAT999&quot;</span>) <span class="kw">is</span> <span class="kw">None</span>
+
+<span class="cm"># Test classifica</span>
+classifica: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">float</span>]] <span class="op">=</span> classifica_studenti(studenti)
+<span class="kw">assert</span> classifica[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Carla Verdi&quot;</span>  <span class="cm"># Media piu&#x27; alta</span>
+<span class="kw">assert</span> classifica[<span class="mi">0</span>][<span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">29.4</span>
+
+<span class="cm"># Test filtro</span>
+bravi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> studenti_sopra_media(studenti, <span class="mi">25.0</span>)
+<span class="kw">assert</span> <span class="st">&quot;Alice Rossi&quot;</span> <span class="kw">in</span> bravi
+<span class="kw">assert</span> <span class="st">&quot;Carla Verdi&quot;</span> <span class="kw">in</span> bravi
+<span class="kw">assert</span> <span class="st">&quot;Elena Gialli&quot;</span> <span class="kw">in</span> bravi
+<span class="kw">assert</span> <span class="st">&quot;Bob Bianchi&quot;</span> <span class="kw">not</span> <span class="kw">in</span> bravi
+
+<span class="cm"># Stampa risultati</span>
+<span class="nb">print</span>(<span class="st">f&quot;  {&#x27;Nome&#x27;:&lt;18}{&#x27;Matricola&#x27;:&lt;12}{&#x27;Media&#x27;:&gt;6}{&#x27;Voti&#x27;}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  {&#x27;-&#x27; * 60}&quot;</span>)
+<span class="kw">for</span> s <span class="kw">in</span> studenti:
+    med: <span class="nb">float</span> <span class="op">=</span> media_studente(s)
+    <span class="nb">print</span>(<span class="st">f&quot;  {s.nome:&lt;18}{s.matricola:&lt;12}{med:&gt;6.2f}  {list(s.voti)}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;\n  Classifica:&quot;</span>)
+<span class="kw">for</span> pos, (nome, media) <span class="kw">in</span> <span class="nb">enumerate</span>(classifica, start<span class="op">=</span><span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;    {pos}. {nome:&lt;18} media: {media:.2f}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;\n  Studenti con media &gt;= 25: {bravi}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 3 superato!\n&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 4: Media mobile (running average)</span>
+<span class="cm"># Calcolare la media mobile di una serie di dati con finestra di dimensione k.</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Media mobile (running average) ---&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">media_mobile</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>], finestra: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la media mobile di una serie di dati.
+    Per ogni posizione i (da finestra-1 in poi), la media mobile e&#x27;
+    la media degli ultimi &#x27;finestra&#x27; valori: dati[i-finestra+1 : i+1].
+    Restituisce una lista di medie, piu&#x27; corta di len(dati) - finestra + 1.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> finestra <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La finestra deve essere positiva&quot;</span>)
+    <span class="kw">if</span> finestra <span class="op">&gt;</span> <span class="nb">len</span>(dati):
+        <span class="kw">return</span> []
+
+    medie: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(finestra <span class="op">-</span> <span class="mi">1</span>, <span class="nb">len</span>(dati)):
+        sottoinsieme: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> dati[i <span class="op">-</span> finestra <span class="op">+</span> <span class="mi">1</span>: i <span class="op">+</span> <span class="mi">1</span>]
+        media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(sottoinsieme) <span class="op">/</span> finestra
+        medie.append(<span class="nb">round</span>(media, <span class="mi">2</span>))
+    <span class="kw">return</span> medie
+
+
+<span class="kw">def</span> <span class="fn">media_mobile_cumulativa</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la media cumulativa: ad ogni punto, la media di tutti
+    i dati visti fino a quel momento.
+    &quot;&quot;&quot;</span>
+    medie: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+    somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+    <span class="kw">for</span> i, valore <span class="kw">in</span> <span class="nb">enumerate</span>(dati):
+        somma <span class="op">+</span><span class="op">=</span> valore
+        medie.append(<span class="nb">round</span>(somma <span class="op">/</span> (i <span class="op">+</span> <span class="mi">1</span>), <span class="mi">2</span>))
+    <span class="kw">return</span> medie
+
+
+<span class="cm"># Test media mobile con finestra 3</span>
+dati_test: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">6.0</span>, <span class="mi">7.0</span>]
+mm3: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> media_mobile(dati_test, <span class="mi">3</span>)
+<span class="cm"># Finestra 3: [1,2,3]=2.0, [2,3,4]=3.0, [3,4,5]=4.0, [4,5,6]=5.0, [5,6,7]=6.0</span>
+<span class="kw">assert</span> mm3 <span class="op">=</span><span class="op">=</span> [<span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">6.0</span>]
+<span class="kw">assert</span> <span class="nb">len</span>(mm3) <span class="op">=</span><span class="op">=</span> <span class="nb">len</span>(dati_test) <span class="op">-</span> <span class="mi">3</span> <span class="op">+</span> <span class="mi">1</span>
+
+<span class="cm"># Test con finestra 1 (nessun smoothing)</span>
+mm1: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> media_mobile(dati_test, <span class="mi">1</span>)
+<span class="kw">assert</span> mm1 <span class="op">=</span><span class="op">=</span> dati_test
+
+<span class="cm"># Test con finestra uguale alla lunghezza dei dati</span>
+mm_tutto: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> media_mobile(dati_test, <span class="nb">len</span>(dati_test))
+<span class="kw">assert</span> mm_tutto <span class="op">=</span><span class="op">=</span> [<span class="mi">4.0</span>]  <span class="cm"># Media di tutti</span>
+
+<span class="cm"># Test finestra troppo grande</span>
+<span class="kw">assert</span> media_mobile([<span class="mi">1.0</span>, <span class="mi">2.0</span>], <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> []
+
+<span class="cm"># Test media cumulativa</span>
+mc: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> media_mobile_cumulativa([<span class="mi">10.0</span>, <span class="mi">20.0</span>, <span class="mi">30.0</span>, <span class="mi">40.0</span>])
+<span class="kw">assert</span> mc <span class="op">=</span><span class="op">=</span> [<span class="mi">10.0</span>, <span class="mi">15.0</span>, <span class="mi">20.0</span>, <span class="mi">25.0</span>]
+
+<span class="cm"># Esempio realistico: temperature giornaliere (una settimana)</span>
+temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [
+    <span class="mi">15.2</span>, <span class="mi">16.1</span>, <span class="mi">14.8</span>, <span class="mi">17.3</span>, <span class="mi">18.5</span>, <span class="mi">16.9</span>, <span class="mi">15.7</span>,
+    <span class="mi">14.2</span>, <span class="mi">13.8</span>, <span class="mi">16.4</span>, <span class="mi">17.8</span>, <span class="mi">19.1</span>, <span class="mi">18.3</span>, <span class="mi">17.5</span>,
+]
+
+mm_3giorni: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> media_mobile(temperature, <span class="mi">3</span>)
+mm_5giorni: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> media_mobile(temperature, <span class="mi">5</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;  Temperature giornaliere: {temperature}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Media mobile (3 giorni): {mm_3giorni}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Media mobile (5 giorni): {mm_5giorni}&quot;</span>)
+
+<span class="cm"># Verifica che la media mobile &quot;liscia&quot; i dati</span>
+<span class="cm"># La varianza della media mobile deve essere minore di quella dei dati originali</span>
+<span class="kw">def</span> <span class="fn">varianza</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la varianza di una lista di numeri.&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(dati)
+    med: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(dati) <span class="op">/</span> n
+    <span class="kw">return</span> <span class="nb">sum</span>((x <span class="op">-</span> med) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> dati) <span class="op">/</span> n
+
+var_originale: <span class="nb">float</span> <span class="op">=</span> varianza(temperature)
+var_mm3: <span class="nb">float</span> <span class="op">=</span> varianza(mm_3giorni)
+var_mm5: <span class="nb">float</span> <span class="op">=</span> varianza(mm_5giorni)
+
+<span class="kw">assert</span> var_mm3 <span class="op">&lt;</span> var_originale  <span class="cm"># La media mobile riduce la varianza</span>
+<span class="kw">assert</span> var_mm5 <span class="op">&lt;</span> var_mm3        <span class="cm"># Finestra piu&#x27; grande = piu&#x27; smoothing</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;\n  Varianza originale: {var_originale:.4f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Varianza MM(3):    {var_mm3:.4f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Varianza MM(5):    {var_mm5:.4f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  (la media mobile riduce la varianza, finestra piu&#x27; grande = piu&#x27; liscia)&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;  Esercizio 4 superato!\n&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">&quot;Tutti gli esercizi F11 completati con successo!&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

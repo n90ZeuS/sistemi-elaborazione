@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errori comuni — T15: File, dati e gestione errori — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/T15_file_dati_errori.html">Dispensa</a> &bull; <a href="../autovalutazione/T15_autovalutazione.html">Autovalutazione</a></nav>
+<h1>Errori comuni — T15: File, dati e gestione errori</h1>
+
+<h1>Errori comuni — T15: File, dati e gestione errori</h1>
+<p>Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione T15.</p>
+<p>Ogni errore include il codice sbagliato, la spiegazione e la correzione.</p>
+<hr>
+<h3>Errore 1: File non chiuso senza il costrutto <code>with</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>f <span class="op">=</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>)
+contenuto <span class="op">=</span> f.read()
+<span class="cm"># lo studente dimentica f.close()</span>
+<span class="cm"># se si verifica un errore prima di close(), il file resta aperto</span></code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Nessun errore immediato, ma il file resta aperto <span class="kw">in</span> memoria. Con molti file aperti
+contemporaneamente si rischia: ResourceWarning: unclosed file <span class="op">&lt;</span>_io.TextIOWrapper ...<span class="op">&gt;</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> Se non si chiude il file con <code>f.close()</code>, le risorse del sistema operativo non vengono rilasciate. Peggio ancora, se si verifica un'eccezione tra <code>open()</code> e <code>close()</code>, il file non verrà mai chiuso. Il costrutto <code>with</code> garantisce la chiusura automatica anche in caso di errore.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+    contenuto <span class="op">=</span> f.read()
+<span class="cm"># il file viene chiuso automaticamente all&#x27;uscita dal blocco with</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Usa sempre <code>with open(...) as f:</code> per aprire i file: garantisce la chiusura automatica anche in caso di errore.</p>
+<hr>
+<h3>Errore 2: Encoding sbagliato nella lettura di un file</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati_italiani.csv&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+    contenuto <span class="op">=</span> f.read()
+    <span class="nb">print</span>(contenuto)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>UnicodeDecodeError: <span class="st">&#x27;utf-8&#x27;</span> codec can<span class="st">&#x27;t decode byte 0xe0 in position 42: invalid continuation byte</span></code></pre>
+<p>Oppure i caratteri accentati (à, è, ù) appaiono come simboli incomprensibili.</p>
+<p><strong>Perché è sbagliato:</strong> Molti file creati su Windows con programmi italiani usano la codifica <code>latin-1</code> (ISO-8859-1) o <code>cp1252</code>, non <code>utf-8</code>. Se non si specifica l'encoding corretto, Python (che usa <code>utf-8</code> di default) non riesce a decodificare i byte dei caratteri accentati.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="cm"># Specifica l&#x27;encoding corretto</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati_italiani.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    contenuto <span class="op">=</span> f.read()
+
+<span class="cm"># Se il file è stato creato su Windows con Excel:</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati_italiani.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;latin-1&quot;</span>) <span class="kw">as</span> f:
+    contenuto <span class="op">=</span> f.read()
+
+<span class="cm"># Se non si conosce l&#x27;encoding, si può provare:</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati_italiani.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, errors<span class="op">=</span><span class="st">&quot;replace&quot;</span>) <span class="kw">as</span> f:
+    contenuto <span class="op">=</span> f.read()  <span class="cm"># i caratteri non decodificabili diventano &#x27;�&#x27;</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Specifica sempre <code>encoding="utf-8"</code> (o l'encoding appropriato) quando apri un file di testo, soprattutto con caratteri accentati.</p>
+<hr>
+<h3>Errore 3: Leggere un file inesistente senza gestire l'errore</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;risultati_esame.csv&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+    dati <span class="op">=</span> f.read()</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="nb">FileNotFoundError</span>: [Errno <span class="mi">2</span>] No such file <span class="kw">or</span> directory: <span class="st">&#x27;risultati_esame.csv&#x27;</span></code></pre>
+<p>Il programma si interrompe bruscamente.</p>
+<p><strong>Perché è sbagliato:</strong> Se il file non esiste (nome sbagliato, percorso errato, file non ancora creato), Python solleva un <code>FileNotFoundError</code>. In un programma reale bisogna prevedere questa eventualità e gestirla con un blocco <code>try/except</code>, dando un messaggio utile all'utente.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">import</span> os
+
+<span class="cm"># Opzione 1: try/except</span>
+<span class="kw">try</span>:
+    <span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;risultati_esame.csv&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+        dati <span class="op">=</span> f.read()
+<span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Errore: il file &#x27;risultati_esame.csv&#x27; non è stato trovato.&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;Verifica che il nome e il percorso siano corretti.&quot;</span>)
+    dati <span class="op">=</span> <span class="st">&quot;&quot;</span>
+
+<span class="cm"># Opzione 2: controllo preventivo</span>
+percorso <span class="op">=</span> <span class="st">&quot;risultati_esame.csv&quot;</span>
+<span class="kw">if</span> os.path.exists(percorso):
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+        dati <span class="op">=</span> f.read()
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Il file &#x27;{percorso}&#x27; non esiste.&quot;</span>)
+    dati <span class="op">=</span> <span class="st">&quot;&quot;</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Proteggi sempre la lettura di file con <code>try/except FileNotFoundError</code> per evitare che il programma si blocchi se il file non esiste.</p>
+<hr>
+<h3>Errore 4: CSV con separatore sbagliato</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">import</span> csv
+
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.csv&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+    lettore <span class="op">=</span> csv.reader(f)
+    <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+        <span class="nb">print</span>(riga)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>[<span class="st">&#x27;Nome;Cognome;Voto;Data&#x27;</span>]
+[<span class="st">&#x27;Luca;Rossi;28;15/01/2025&#x27;</span>]
+[<span class="st">&#x27;Anna;Bianchi;30;16/01/2025&#x27;</span>]</code></pre>
+<p>Ogni riga è una lista con un solo elemento (la riga intera come stringa) invece di essere separata nei singoli campi.</p>
+<p><strong>Perché è sbagliato:</strong> <code>csv.reader</code> usa la virgola <code>,</code> come separatore di default, ma molti file CSV italiani (soprattutto quelli esportati da Excel in Italia) usano il punto e virgola <code>;</code> come separatore, perché la virgola è già usata come separatore decimale nei numeri.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">import</span> csv
+
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.csv&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+    lettore <span class="op">=</span> csv.reader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>)
+    <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+        <span class="nb">print</span>(riga)
+<span class="cm"># [&#x27;Nome&#x27;, &#x27;Cognome&#x27;, &#x27;Voto&#x27;, &#x27;Data&#x27;]</span>
+<span class="cm"># [&#x27;Luca&#x27;, &#x27;Rossi&#x27;, &#x27;28&#x27;, &#x27;15/01/2025&#x27;]</span>
+<span class="cm"># [&#x27;Anna&#x27;, &#x27;Bianchi&#x27;, &#x27;30&#x27;, &#x27;16/01/2025&#x27;]</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Controlla quale separatore usa il file CSV (virgola, punto e virgola, tabulazione) e specificalo con <code>delimiter=";"</code> nel <code>csv.reader</code>.</p>
+<hr>
+<h3>Errore 5: Leggere un file già consumato senza <code>seek()</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+    prima_lettura <span class="op">=</span> f.read()
+    <span class="nb">print</span>(<span class="st">f&quot;Lunghezza: {len(prima_lettura)}&quot;</span>)
+
+    seconda_lettura <span class="op">=</span> f.read()
+    <span class="nb">print</span>(<span class="st">f&quot;Contenuto: {seconda_lettura}&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Lunghezza: <span class="mi">150</span>
+Contenuto:</code></pre>
+<p>La seconda lettura restituisce una stringa vuota, anche se il file contiene dati.</p>
+<p><strong>Perché è sbagliato:</strong> Un file aperto ha un "cursore" che indica la posizione corrente di lettura. Dopo <code>f.read()</code>, il cursore è alla fine del file. Una seconda chiamata a <code>f.read()</code> parte dalla posizione attuale (la fine) e non trova più nulla da leggere. Bisogna riportare il cursore all'inizio con <code>f.seek(0)</code>.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+    prima_lettura <span class="op">=</span> f.read()
+    <span class="nb">print</span>(<span class="st">f&quot;Lunghezza: {len(prima_lettura)}&quot;</span>)
+
+    f.seek(<span class="mi">0</span>)  <span class="cm"># riporta il cursore all&#x27;inizio del file</span>
+    seconda_lettura <span class="op">=</span> f.read()
+    <span class="nb">print</span>(<span class="st">f&quot;Contenuto: {seconda_lettura}&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> Dopo aver letto un file con <code>.read()</code>, il cursore è alla fine: usa <code>f.seek(0)</code> per riportarlo all'inizio prima di leggere di nuovo.</p>
+<hr>
+<h3>Errore 6: Blocco <code>except</code> troppo generico</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">try</span>:
+    valore <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Inserisci un numero: &quot;</span>))
+    risultato <span class="op">=</span> <span class="mi">100</span> <span class="op">/</span> valore
+    <span class="nb">print</span>(<span class="st">f&quot;Risultato: {risultato}&quot;</span>)
+<span class="kw">except</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Si è verificato un errore&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Si è verificato un errore</code></pre>
+<p>Il messaggio non aiuta a capire cosa è andato storto: era un input non numerico? Una divisione per zero? Un altro problema? Inoltre, un <code>except</code> generico cattura anche errori di programmazione come <code>NameError</code> o <code>KeyboardInterrupt</code>, nascondendo bug.</p>
+<p><strong>Perché è sbagliato:</strong> Un blocco <code>except:</code> senza specificare il tipo di eccezione cattura tutto, inclusi errori che non ci si aspetta. Questo rende impossibile distinguere tra errori diversi (input sbagliato, divisione per zero, errore di sistema) e nasconde bug nel codice che andrebbero corretti.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="kw">try</span>:
+    valore <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Inserisci un numero: &quot;</span>))
+    risultato <span class="op">=</span> <span class="mi">100</span> <span class="op">/</span> valore
+    <span class="nb">print</span>(<span class="st">f&quot;Risultato: {risultato}&quot;</span>)
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Errore: devi inserire un numero intero valido.&quot;</span>)
+<span class="kw">except</span> <span class="nb">ZeroDivisionError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Errore: non puoi dividere per zero.&quot;</span>)
+<span class="kw">except</span> <span class="nb">Exception</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;Errore imprevisto: {e}&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> Specifica sempre il tipo di eccezione nel blocco <code>except</code> (es. <code>except ValueError:</code>) per gestire ogni errore in modo appropriato e non nascondere bug.</p>
+<hr>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

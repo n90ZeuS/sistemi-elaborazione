@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T14_funzioni_avanzate/esempi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T14_funzioni_avanzate_moduli.html">Dispensa</a> &bull; <a href="../../presentazioni/T14_funzioni_avanzate_moduli.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>T14_funzioni_avanzate/esempi.py</h1>
+<a class="download-link" href="esempi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F14 — Funzioni avanzate, moduli</span>
+<span class="cm"># Esempi per la lezione frontale 14</span>
+
+<span class="kw">import</span> time
+<span class="kw">import</span> math
+<span class="kw">import</span> random
+<span class="kw">import</span> statistics
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+<span class="kw">from</span> typing <span class="kw">import</span> Callable, TypeVar
+
+T <span class="op">=</span> TypeVar(<span class="st">&quot;T&quot;</span>)
+R <span class="op">=</span> TypeVar(<span class="st">&quot;R&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 1. FUNZIONI COME OGGETTI DI PRIMA CLASSE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Funzioni come oggetti di prima classe ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">quadrato</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce il quadrato di x.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+
+
+<span class="kw">def</span> <span class="fn">cubo</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce il cubo di x.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> x <span class="op">*</span><span class="op">*</span> <span class="mi">3</span>
+
+
+<span class="cm"># Le funzioni sono oggetti: possiamo assegnarle a variabili</span>
+operazione: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> quadrato
+<span class="kw">assert</span> operazione(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">25</span>
+<span class="nb">print</span>(<span class="st">f&quot;operazione(5) = {operazione(5)}&quot;</span>)
+
+operazione <span class="op">=</span> cubo
+<span class="kw">assert</span> operazione(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">125</span>
+<span class="nb">print</span>(<span class="st">f&quot;operazione(5) = {operazione(5)}&quot;</span>)
+
+<span class="cm"># Le funzioni possono stare in una lista</span>
+operazioni: <span class="nb">list</span>[Callable[[<span class="nb">float</span>], <span class="nb">float</span>]] <span class="op">=</span> [quadrato, cubo, <span class="nb">abs</span>]
+<span class="kw">for</span> op <span class="kw">in</span> operazioni:
+    <span class="nb">print</span>(<span class="st">f&quot;  {op.__name__}(3) = {op(3)}&quot;</span>)
+
+<span class="cm"># Le funzioni possono stare in un dizionario</span>
+calcolatrice: <span class="nb">dict</span>[<span class="nb">str</span>, Callable[[<span class="nb">float</span>, <span class="nb">float</span>], <span class="nb">float</span>]] <span class="op">=</span> {
+    <span class="st">&quot;+&quot;</span>: <span class="kw">lambda</span> a, b: a <span class="op">+</span> b,
+    <span class="st">&quot;-&quot;</span>: <span class="kw">lambda</span> a, b: a <span class="op">-</span> b,
+    <span class="st">&quot;*&quot;</span>: <span class="kw">lambda</span> a, b: a <span class="op">*</span> b,
+    <span class="st">&quot;/&quot;</span>: <span class="kw">lambda</span> a, b: a <span class="op">/</span> b,
+}
+<span class="kw">assert</span> calcolatrice[<span class="st">&quot;+&quot;</span>](<span class="mi">10</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">13</span>
+<span class="kw">assert</span> calcolatrice[<span class="st">&quot;*&quot;</span>](<span class="mi">4</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">20</span>
+<span class="nb">print</span>(<span class="st">f&quot;10 + 3 = {calcolatrice[&#x27;+&#x27;](10, 3)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;4 * 5 = {calcolatrice[&#x27;*&#x27;](4, 5)}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 2. FUNZIONI DI ORDINE SUPERIORE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Funzioni di ordine superiore ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">applica</span>(<span class="fn">funzione</span>: Callable[[<span class="nb">float</span>], <span class="nb">float</span>], valore: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Applica una funzione a un valore.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> funzione(valore)
+
+
+<span class="kw">assert</span> applica(quadrato, <span class="mi">4</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">16</span>
+<span class="kw">assert</span> applica(math.sqrt, <span class="mi">16</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">4.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;applica(quadrato, 4) = {applica(quadrato, 4)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;applica(sqrt, 16) = {applica(math.sqrt, 16)}&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">applica_a_lista</span>(
+    funzione: Callable[[<span class="nb">float</span>], <span class="nb">float</span>],
+    valori: <span class="nb">list</span>[<span class="nb">float</span>]
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Applica una funzione a ogni elemento di una lista.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [funzione(v) <span class="kw">for</span> v <span class="kw">in</span> valori]
+
+
+numeri: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">4.0</span>, <span class="mi">9.0</span>, <span class="mi">16.0</span>, <span class="mi">25.0</span>]
+radici: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> applica_a_lista(math.sqrt, numeri)
+<span class="kw">assert</span> radici <span class="op">=</span><span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Radici quadrate: {radici}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 3. LAMBDA</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Lambda ===&quot;</span>)
+
+<span class="cm"># Lambda: funzioni anonime per espressioni semplici</span>
+doppio: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span> <span class="mi">2</span>
+<span class="kw">assert</span> doppio(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+<span class="nb">print</span>(<span class="st">f&quot;doppio(5) = {doppio(5)}&quot;</span>)
+
+<span class="cm"># Lambda con più parametri</span>
+somma: Callable[[<span class="nb">float</span>, <span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> <span class="kw">lambda</span> a, b: a <span class="op">+</span> b
+<span class="kw">assert</span> somma(<span class="mi">3</span>, <span class="mi">4</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
+
+<span class="cm"># Lambda utile negli argomenti</span>
+numeri_int: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="op">-</span><span class="mi">5</span>, <span class="op">-</span><span class="mi">2</span>, <span class="mi">0</span>, <span class="mi">3</span>, <span class="mi">7</span>, <span class="op">-</span><span class="mi">1</span>, <span class="mi">4</span>]
+ordinati_per_valore_assoluto: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">sorted</span>(numeri_int, key<span class="op">=</span><span class="kw">lambda</span> x: <span class="nb">abs</span>(x))
+<span class="kw">assert</span> ordinati_per_valore_assoluto <span class="op">=</span><span class="op">=</span> [<span class="mi">0</span>, <span class="op">-</span><span class="mi">1</span>, <span class="op">-</span><span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="op">-</span><span class="mi">5</span>, <span class="mi">7</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Ordinati per |x|: {ordinati_per_valore_assoluto}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 4. map(), filter(), sorted() con key</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== map, filter, sorted ===&quot;</span>)
+
+<span class="cm"># map — applica una funzione a ogni elemento</span>
+valori: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">list</span>(<span class="nb">map</span>(<span class="kw">lambda</span> x: x<span class="op">*</span><span class="op">*</span><span class="mi">2</span>, valori))
+<span class="kw">assert</span> quadrati <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">9</span>, <span class="mi">16</span>, <span class="mi">25</span>]
+<span class="nb">print</span>(<span class="st">f&quot;map(x²): {quadrati}&quot;</span>)
+
+<span class="cm"># filter — filtra gli elementi che soddisfano una condizione</span>
+pari: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">list</span>(<span class="nb">filter</span>(<span class="kw">lambda</span> x: x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>, <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">11</span>)))
+<span class="kw">assert</span> pari <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>, <span class="mi">10</span>]
+<span class="nb">print</span>(<span class="st">f&quot;filter(pari): {pari}&quot;</span>)
+
+<span class="cm"># sorted con key</span>
+studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">float</span>]] <span class="op">=</span> [
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;media&quot;</span>: <span class="mi">27.5</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Laura&quot;</span>, <span class="st">&quot;media&quot;</span>: <span class="mi">29.0</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;media&quot;</span>: <span class="mi">28.3</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Paolo&quot;</span>, <span class="st">&quot;media&quot;</span>: <span class="mi">25.0</span>},
+]
+
+<span class="cm"># Ordina per media (crescente)</span>
+per_media: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">float</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
+    studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;media&quot;</span>]
+)
+<span class="nb">print</span>(<span class="st">&quot;Ordinati per media:&quot;</span>)
+<span class="kw">for</span> s <span class="kw">in</span> per_media:
+    <span class="nb">print</span>(<span class="st">f&quot;  {s[&#x27;nome&#x27;]}: {s[&#x27;media&#x27;]}&quot;</span>)
+
+<span class="cm"># Ordina per media (decrescente)</span>
+top: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">float</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
+    studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;media&quot;</span>], reverse<span class="op">=</span><span class="kw">True</span>
+)
+<span class="kw">assert</span> top[<span class="mi">0</span>][<span class="st">&quot;nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Laura&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Migliore studente: {top[0][&#x27;nome&#x27;]} ({top[0][&#x27;media&#x27;]})&quot;</span>)
+
+<span class="cm"># Combinazione di map e filter</span>
+<span class="cm"># Trova i quadrati dei numeri pari da 1 a 10</span>
+quadrati_pari: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">list</span>(<span class="nb">map</span>(<span class="kw">lambda</span> x: x<span class="op">*</span><span class="op">*</span><span class="mi">2</span>, <span class="nb">filter</span>(<span class="kw">lambda</span> x: x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>, <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">11</span>))))
+<span class="kw">assert</span> quadrati_pari <span class="op">=</span><span class="op">=</span> [<span class="mi">4</span>, <span class="mi">16</span>, <span class="mi">36</span>, <span class="mi">64</span>, <span class="mi">100</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Quadrati dei pari: {quadrati_pari}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 5. CLOSURES</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Closures ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">crea_moltiplicatore</span>(<span class="fn">fattore</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> Callable[[<span class="nb">float</span>], <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Crea una funzione che moltiplica per un fattore fisso.&quot;&quot;&quot;</span>
+    <span class="kw">def</span> <span class="fn">moltiplica</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> x <span class="op">*</span> fattore  <span class="cm"># &#x27;fattore&#x27; viene &quot;catturato&quot; dalla closure</span>
+    <span class="kw">return</span> moltiplica
+
+
+doppio_fn: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> crea_moltiplicatore(<span class="mi">2</span>)
+triplo_fn: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> crea_moltiplicatore(<span class="mi">3</span>)
+
+<span class="kw">assert</span> doppio_fn(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+<span class="kw">assert</span> triplo_fn(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">15</span>
+<span class="nb">print</span>(<span class="st">f&quot;doppio(5) = {doppio_fn(5)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;triplo(5) = {triplo_fn(5)}&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">crea_contatore</span>(<span class="fn">inizio</span>: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>) <span class="op">-</span><span class="op">&gt;</span> Callable[[], <span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Crea un contatore che si incrementa ad ogni chiamata.&quot;&quot;&quot;</span>
+    conteggio: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [inizio]  <span class="cm"># lista per poter modificare nella closure</span>
+
+    <span class="kw">def</span> <span class="fn">incrementa</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        conteggio[<span class="mi">0</span>] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        <span class="kw">return</span> conteggio[<span class="mi">0</span>]
+    <span class="kw">return</span> incrementa
+
+
+conta: Callable[[], <span class="nb">int</span>] <span class="op">=</span> crea_contatore(<span class="mi">0</span>)
+<span class="kw">assert</span> conta() <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">assert</span> conta() <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> conta() <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="nb">print</span>(<span class="st">f&quot;Contatore: {conta()}, {conta()}, {conta()}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 6. DECORATORI (base)</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Decoratori ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">log_chiamata</span>(<span class="fn">func</span>: Callable) <span class="op">-</span><span class="op">&gt;</span> Callable:
+    <span class="st">&quot;&quot;&quot;Decoratore che stampa quando una funzione viene chiamata.&quot;&quot;&quot;</span>
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span><span class="fn">args</span>, <span class="op">*</span><span class="op">*</span>kwargs):
+        <span class="nb">print</span>(<span class="st">f&quot;  [LOG] Chiamata a {func.__name__} con args={args}&quot;</span>)
+        risultato <span class="op">=</span> func(<span class="op">*</span>args, <span class="op">*</span><span class="op">*</span>kwargs)
+        <span class="nb">print</span>(<span class="st">f&quot;  [LOG] {func.__name__} ha restituito {risultato}&quot;</span>)
+        <span class="kw">return</span> risultato
+    wrapper.__name__ <span class="op">=</span> func.__name__
+    <span class="kw">return</span> wrapper
+
+
+<span class="dc">@log_chiamata</span>
+<span class="kw">def</span> <span class="fn">fattoriale</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Calcola il fattoriale di n.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> n <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> <span class="mi">1</span>
+    risultato: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, n <span class="op">+</span> <span class="mi">1</span>):
+        risultato <span class="op">*</span><span class="op">=</span> i
+    <span class="kw">return</span> risultato
+
+
+<span class="cm"># La decorazione equivale a: fattoriale = log_chiamata(fattoriale)</span>
+risultato_fatt: <span class="nb">int</span> <span class="op">=</span> fattoriale(<span class="mi">5</span>)
+<span class="kw">assert</span> risultato_fatt <span class="op">=</span><span class="op">=</span> <span class="mi">120</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 7. DECORATORE PER MISURARE IL TEMPO</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Decoratore timing ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">misura_tempo</span>(<span class="fn">func</span>: Callable) <span class="op">-</span><span class="op">&gt;</span> Callable:
+    <span class="st">&quot;&quot;&quot;Decoratore che misura il tempo di esecuzione.&quot;&quot;&quot;</span>
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span><span class="fn">args</span>, <span class="op">*</span><span class="op">*</span>kwargs):
+        inizio: <span class="nb">float</span> <span class="op">=</span> time.perf_counter()
+        risultato <span class="op">=</span> func(<span class="op">*</span>args, <span class="op">*</span><span class="op">*</span>kwargs)
+        fine: <span class="nb">float</span> <span class="op">=</span> time.perf_counter()
+        durata: <span class="nb">float</span> <span class="op">=</span> fine <span class="op">-</span> inizio
+        <span class="nb">print</span>(<span class="st">f&quot;  {func.__name__} eseguita in {durata:.6f} secondi&quot;</span>)
+        <span class="kw">return</span> risultato
+    wrapper.__name__ <span class="op">=</span> func.__name__
+    <span class="kw">return</span> wrapper
+
+
+<span class="dc">@misura_tempo</span>
+<span class="kw">def</span> <span class="fn">somma_grande</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Somma i primi n numeri.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(<span class="nb">range</span>(n <span class="op">+</span> <span class="mi">1</span>))
+
+
+risultato_somma: <span class="nb">int</span> <span class="op">=</span> somma_grande(<span class="mi">1_000_000</span>)
+<span class="kw">assert</span> risultato_somma <span class="op">=</span><span class="op">=</span> <span class="mi">500_000_500_000</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 8. MODULI E IMPORT</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Moduli e standard library ===&quot;</span>)
+
+<span class="cm"># math — funzioni matematiche</span>
+<span class="nb">print</span>(<span class="st">f&quot;pi = {math.pi}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;e = {math.e}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;sqrt(2) = {math.sqrt(2):.6f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;log(e) = {math.log(math.e):.6f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;sin(pi/2) = {math.sin(math.pi / 2):.6f}&quot;</span>)
+
+<span class="cm"># random — numeri casuali (con seed per riproducibilità)</span>
+random.seed(<span class="mi">42</span>)
+numeri_casuali: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [random.randint(<span class="mi">1</span>, <span class="mi">100</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>)]
+<span class="nb">print</span>(<span class="st">f&quot;\nNumeri casuali (seed 42): {numeri_casuali}&quot;</span>)
+
+campione: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> random.sample(<span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">91</span>), <span class="mi">5</span>)  <span class="cm"># 5 numeri unici da 1 a 90</span>
+<span class="nb">print</span>(<span class="st">f&quot;Campione casuale: {campione}&quot;</span>)
+
+<span class="cm"># statistics — funzioni statistiche</span>
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">2.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">5.0</span>, <span class="mi">7.0</span>, <span class="mi">9.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;\nstatistics.mean: {statistics.mean(dati)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;statistics.median: {statistics.median(dati)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;statistics.stdev: {statistics.stdev(dati):.4f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;statistics.variance: {statistics.variance(dati):.4f}&quot;</span>)
+
+<span class="cm"># collections — strutture dati utili</span>
+<span class="nb">print</span>(<span class="st">&quot;\ncollections.Counter:&quot;</span>)
+parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="st">&quot;il gatto e il cane e il topo&quot;</span>.split()
+contatore: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(parole)
+<span class="nb">print</span>(<span class="st">f&quot;  Conteggio: {dict(contatore)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Più comuni: {contatore.most_common(2)}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\ncollections.defaultdict:&quot;</span>)
+raggruppamento: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">str</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+studenti_dati: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Marco&quot;</span>),
+    (<span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Laura&quot;</span>),
+    (<span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Giulia&quot;</span>),
+    (<span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Paolo&quot;</span>),
+]
+<span class="kw">for</span> corso, nome <span class="kw">in</span> studenti_dati:
+    raggruppamento[corso].append(nome)
+<span class="nb">print</span>(<span class="st">f&quot;  Raggruppamento: {dict(raggruppamento)}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 9. __name__ == &quot;__main__&quot;</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== __name__ == &#x27;__main__&#x27; ===&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Il valore di __name__ in questo file è: {__name__!r}&quot;</span>)
+<span class="cm"># Quando eseguiamo direttamente questo file, __name__ è &#x27;__main__&#x27;.</span>
+<span class="cm"># Quando viene importato da un altro modulo, __name__ è il nome del modulo.</span>
+
+<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Questo codice viene eseguito solo se il file è lanciato direttamente.&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\n=== Fine esempi F14 ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

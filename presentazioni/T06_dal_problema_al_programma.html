@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dal problema al programma: la sezione ponte</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>Dal problema al programma</h1>
+                <div class="subtitle">La sezione ponte</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione &mdash; Lezione 6<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+                <aside class="notes">Questa lezione collega la parte hardware/architettura con la parte di programmazione. E' il cuore concettuale del corso.</aside>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment"><strong>L'algoritmo</strong> &mdash; definizione, storia, proprieta</li>
+                    <li class="fragment"><strong>Programma e processo</strong> &mdash; dal testo statico all'esecuzione</li>
+                    <li class="fragment"><strong>Pensiero computazionale</strong> &mdash; i quattro pilastri</li>
+                    <li class="fragment"><strong>Strumenti di progettazione</strong> &mdash; pseudocodice, diagrammi, debugging</li>
+                    <li class="fragment"><strong>Linguaggi di programmazione</strong> &mdash; evoluzione e paradigmi</li>
+                    <li class="fragment"><strong>Compilazione e interpretazione</strong></li>
+                    <li class="fragment"><strong>Python</strong> &mdash; il nostro strumento</li>
+                </ol>
+                <aside class="notes">Panoramica dei temi della lezione. Oggi facciamo il salto: dalla macchina alla programmazione.</aside>
+            </section>
+
+            <!-- ========== SEZIONE: ALGORITMO ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>L'algoritmo</h2>
+                    <p><em>Una sequenza finita di passi per risolvere un problema</em></p>
+                </section>
+
+                <!-- Definizione -->
+                <section>
+                    <h2>Definizione di algoritmo</h2>
+                    <div class="box box-blue">
+                        Un <strong>algoritmo</strong> e una sequenza finita e non ambigua di passi che, a partire da un insieme di dati in ingresso, produce un risultato in un tempo finito.
+                    </div>
+                    <p>Ogni parola conta:</p>
+                    <ul>
+                        <li class="fragment"><strong>Sequenza finita</strong> &mdash; deve avere un numero finito di passi</li>
+                        <li class="fragment"><strong>Non ambigua</strong> &mdash; ogni passo definito in modo preciso</li>
+                        <li class="fragment"><strong>Input</strong> &mdash; riceve dati su cui operare</li>
+                        <li class="fragment"><strong>Output</strong> &mdash; produce un risultato</li>
+                    </ul>
+                </section>
+
+                <!-- Etimologia -->
+                <section>
+                    <h2>Etimologia e storia</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <p>La parola deriva da <strong>Muhammad ibn Musa al-Khwarizmi</strong> (ca. 780-850), matematico persiano della Casa della Saggezza a Baghdad.</p>
+                            <ul>
+                                <li class="fragment">Il suo trattato diede il nome all'<strong>algebra</strong> (<em>al-jabr</em>)</li>
+                                <li class="fragment">La traduzione latina del suo nome (<em>Algoritmi</em>) origino la parola <strong>algoritmo</strong></li>
+                                <li class="fragment">Descrisse procedure sistematiche e non ambigue per risolvere equazioni</li>
+                            </ul>
+                        </div>
+                        <div class="col-40">
+                            <div class="box box-yellow">
+                                <h3>Formalizzazione moderna</h3>
+                                <p><strong>Alan Turing</strong> (1936) e <strong>Alonzo Church</strong> definirono matematicamente cosa significa "calcolare".</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Turing e il problema della fermata -->
+                <section>
+                    <h2>Turing e i limiti del calcolo</h2>
+                    <p>La <strong>Macchina di Turing</strong>: un modello teorico che mostra che qualsiasi calcolo eseguibile da un essere umano seguendo regole fisse puo essere eseguito da questa macchina.</p>
+                    <div class="box box-red">
+                        <h3>Il problema della fermata</h3>
+                        <p>Turing dimostro che <strong>esistono problemi che nessun algoritmo puo risolvere</strong>: e impossibile scrivere un programma che, dato un qualsiasi altro programma, determini se quest'ultimo terminera o andra in loop infinito.</p>
+                    </div>
+                    <aside class="notes">Questo risultato e fondamentale: mostra che ci sono limiti intrinseci a cio che si puo calcolare, indipendentemente dalla potenza del computer.</aside>
+                </section>
+
+                <!-- Cinque proprieta -->
+                <section>
+                    <h2>Le cinque proprieta fondamentali</h2>
+                    <table>
+                        <thead>
+                            <tr><th>#</th><th>Proprieta</th><th>Significato</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="fragment"><td>1</td><td><strong>Finitezza</strong></td><td>Deve terminare dopo un numero finito di passi</td></tr>
+                            <tr class="fragment"><td>2</td><td><strong>Determinismo</strong></td><td>Stesso input &rarr; stesso output, senza ambiguita</td></tr>
+                            <tr class="fragment"><td>3</td><td><strong>Input</strong></td><td>Riceve zero o piu dati in ingresso</td></tr>
+                            <tr class="fragment"><td>4</td><td><strong>Output</strong></td><td>Produce uno o piu risultati</td></tr>
+                            <tr class="fragment"><td>5</td><td><strong>Efficacia</strong></td><td>Ogni operazione e concretamente eseguibile in tempo finito</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="fragment box box-green">
+                        <strong>+ Generalita:</strong> un buon algoritmo risolve una <em>classe</em> di problemi, non un singolo caso.
+                    </div>
+                </section>
+
+                <!-- Algoritmo di Euclide -->
+                <section>
+                    <h2>Esempio: l'algoritmo di Euclide</h2>
+                    <p>Calcolo del <strong>Massimo Comun Divisore</strong> (MCD) &mdash; uno dei piu antichi algoritmi conosciuti (~300 a.C.)</p>
+                    <pre><code class="language-plaintext">Dati due numeri a e b (con a > b > 0):
+1. Calcola r = resto della divisione di a per b
+2. Se r = 0, il MCD e b. FINE.
+3. Altrimenti, poni a = b e b = r, e torna al passo 1.</code></pre>
+                    <div class="fragment box box-green">
+                        Verifica delle proprieta: <strong>finito</strong> (i numeri diminuiscono a ogni passo), <strong>deterministico</strong>, riceve <strong>input</strong>, produce <strong>output</strong>, <strong>generale</strong> (funziona per qualsiasi coppia di interi positivi).
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: PROGRAMMA E PROCESSO ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Programma e processo</h2>
+                    <p><em>Dal testo statico all'esecuzione dinamica</em></p>
+                </section>
+
+                <!-- Programma -->
+                <section>
+                    <h2>Il programma</h2>
+                    <div class="box box-blue">
+                        Un <strong>programma</strong> e un algoritmo espresso in un linguaggio comprensibile al computer. E un <strong>testo statico</strong>: un file che esiste sul disco anche quando nessuno lo esegue.
+                    </div>
+                    <div class="fragment" style="margin-top: 1em;">
+                        <h3>La formula di Wirth (1976)</h3>
+                        <div class="diagram" style="font-size: 1.2em;">
+                            <strong>Algoritmi + Strutture Dati = Programmi</strong>
+                        </div>
+                        <p style="margin-top: 0.5em;"><em>Niklaus Wirth (1934-2024), creatore del linguaggio Pascal</em></p>
+                    </div>
+                    <aside class="notes">La scelta della struttura dati giusta e tanto importante quanto la scelta dell'algoritmo giusto.</aside>
+                </section>
+
+                <!-- Processo -->
+                <section>
+                    <h2>Il processo</h2>
+                    <div class="box box-blue">
+                        Un <strong>processo</strong> e un programma in esecuzione. E un'entita <strong>dinamica</strong>: ha uno stato che evolve nel tempo, occupa memoria, usa la CPU.
+                    </div>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <h3>Programma = Ricetta</h3>
+                                <p>Testo statico scritto su un foglio</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Processo = Preparazione</h3>
+                                <p>Servono ingredienti (dati), strumenti (CPU), tempo, e lo stato cambia continuamente</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="fragment">Lo stesso programma puo generare <strong>piu processi</strong>: due terminali che eseguono lo stesso script = un programma, due processi.</p>
+                </section>
+
+                <!-- Il percorso completo -->
+                <section>
+                    <h2>Il percorso completo</h2>
+                    <div class="diagram">
+                        PROBLEMA &rarr; ALGORITMO &rarr; PROGRAMMA &rarr; PROCESSO<br>
+                        <em>(reale) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (astratto) &nbsp;&nbsp;&nbsp;&nbsp; (statico) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (dinamico)</em>
+                    </div>
+                    <div class="fragment box box-blue" style="margin-top: 1em;">
+                        <h3>Esempio concreto</h3>
+                        <table>
+                            <tr><td><strong>Problema</strong></td><td>"Come calcolo la media dei voti?"</td></tr>
+                            <tr><td><strong>Algoritmo</strong></td><td>Somma tutti i voti, dividi per il numero di voti</td></tr>
+                            <tr><td><strong>Programma</strong></td><td>Codice Python in un file <code>.py</code></td></tr>
+                            <tr><td><strong>Processo</strong></td><td>Esecuzione del file con l'interprete Python</td></tr>
+                        </table>
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: PENSIERO COMPUTAZIONALE ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Pensiero computazionale</h2>
+                    <p><em>Usare strategie dell'informatica per affrontare problemi complessi</em></p>
+                </section>
+
+                <!-- L'idea -->
+                <section>
+                    <h2>L'idea di Jeannette Wing</h2>
+                    <p><strong>Jeannette Wing</strong> (2006): il <strong>pensiero computazionale</strong> e una competenza fondamentale per tutti, al pari del leggere, scrivere e far di conto.</p>
+                    <div class="box box-yellow">
+                        Pensare computazionalmente <strong>non</strong> significa "pensare come un computer" &mdash; i computer non pensano.<br>
+                        Significa <strong>usare concetti e strategie dell'informatica</strong> per affrontare problemi complessi, in qualsiasi campo.
+                    </div>
+                </section>
+
+                <!-- I quattro pilastri -->
+                <section>
+                    <h2>I quattro pilastri</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="fragment box box-blue">
+                                <h3>1. Decomposizione</h3>
+                                <p>Spezzare un problema complesso in sotto-problemi piu piccoli e gestibili</p>
+                            </div>
+                            <div class="fragment box box-green">
+                                <h3>2. Pattern recognition</h3>
+                                <p>Individuare regolarita, somiglianze e strutture ricorrenti</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="fragment box box-yellow">
+                                <h3>3. Astrazione</h3>
+                                <p>Ignorare i dettagli irrilevanti per concentrarsi sull'essenza</p>
+                            </div>
+                            <div class="fragment box box-red">
+                                <h3>4. Progettazione algoritmica</h3>
+                                <p>Definire una sequenza precisa di passi per la soluzione</p>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">Per studenti di statistica: la decomposizione e il pattern recognition sono gia nel loro DNA. Un'analisi di dati si scompone in raccolta, pulizia, esplorazione, modellazione.</aside>
+                </section>
+
+                <!-- Problem solving strutturato -->
+                <section>
+                    <h2>Problem solving strutturato</h2>
+                    <ol>
+                        <li class="fragment"><strong>Comprendere il problema.</strong> Cosa mi viene chiesto? Quali input/output? Quali vincoli?</li>
+                        <li class="fragment"><strong>Pianificare la soluzione.</strong> Scegliere l'approccio, scomporre in passi.</li>
+                        <li class="fragment"><strong>Implementare.</strong> Scrivere il codice, un pezzo alla volta.</li>
+                        <li class="fragment"><strong>Verificare.</strong> Testare con casi noti, casi limite, casi patologici.</li>
+                        <li class="fragment"><strong>Riflettere.</strong> Il codice e chiaro? Efficiente? Si puo migliorare?</li>
+                    </ol>
+                    <div class="fragment box box-green">
+                        Questa sequenza ricalca il <strong>metodo scientifico</strong>: osservazione &rarr; ipotesi &rarr; esperimento &rarr; analisi &rarr; conclusione.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: STRUMENTI DI PROGETTAZIONE ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Strumenti di progettazione</h2>
+                    <p><em>Pseudocodice, diagrammi e debugging</em></p>
+                </section>
+
+                <!-- Pseudocodice -->
+                <section>
+                    <h2>Pseudocodice</h2>
+                    <p>Descrizione dell'algoritmo in linguaggio naturale strutturato, a meta strada tra il pensiero e il codice.</p>
+                    <pre><code class="language-plaintext">FUNZIONE calcolaMedia(voti)
+    SE la lista e vuota
+        RESTITUISCI errore "lista vuota"
+
+    somma &larr; 0
+    PER OGNI voto IN voti
+        somma &larr; somma + voto
+
+    media &larr; somma / lunghezza(voti)
+    RESTITUISCI media</code></pre>
+                    <div class="fragment box box-green">
+                        <strong>Vantaggio:</strong> e <strong>indipendente dal linguaggio</strong>. Concentra l'attenzione sulla logica, non sulla sintassi.
+                    </div>
+                </section>
+
+                <!-- Diagrammi di flusso -->
+                <section>
+                    <h2>Diagrammi di flusso</h2>
+                    <p>Rappresentazione grafica dell'algoritmo con simboli standard:</p>
+                    <div class="columns">
+                        <div class="col">
+                            <table>
+                                <thead><tr><th>Simbolo</th><th>Significato</th></tr></thead>
+                                <tbody>
+                                    <tr><td><strong>Rettangolo</strong></td><td>Operazione / istruzione</td></tr>
+                                    <tr><td><strong>Rombo</strong></td><td>Decisione (si/no)</td></tr>
+                                    <tr><td><strong>Parallelogramma</strong></td><td>Input / output</td></tr>
+                                    <tr><td><strong>Ovale</strong></td><td>Inizio / fine</td></tr>
+                                    <tr><td><strong>Frecce</strong></td><td>Flusso di esecuzione</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <p>Utili per algoritmi semplici e per comunicare a persone non tecniche.</p>
+                                <p>Diventano <strong>controproducenti</strong> per algoritmi complessi (groviglio di frecce).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Top-down vs bottom-up -->
+                <section>
+                    <h2>Top-down vs bottom-up</h2>
+                    <div class="compare">
+                        <div class="good">
+                            <h3>Top-down</h3>
+                            <p>Si parte dal problema complessivo e si <strong>scompone</strong> in sotto-problemi, fino ad arrivare a operazioni elementari.</p>
+                            <p><em>L'approccio naturale del pensiero.</em></p>
+                        </div>
+                        <div class="good">
+                            <h3>Bottom-up</h3>
+                            <p>Si costruiscono prima i <strong>"mattoni" elementari</strong> (funzioni di base) e poi si assemblano in strutture piu complesse.</p>
+                            <p><em>L'approccio naturale della costruzione.</em></p>
+                        </div>
+                    </div>
+                    <div class="fragment box box-blue" style="margin-top: 0.8em;">
+                        Nella pratica si usa un <strong>mix di entrambi</strong>: si pensa top-down (scomponi il problema) e si costruisce bottom-up (scrivi prima le funzioni semplici, poi componi).
+                    </div>
+                </section>
+
+                <!-- Debugging -->
+                <section>
+                    <h2>Il debugging come metodo scientifico</h2>
+                    <p>La ricerca e correzione degli errori non e "provare a caso". E un'indagine sistematica:</p>
+                    <ol>
+                        <li class="fragment"><strong>Osserva</strong> il sintomo &mdash; cosa va storto? Qual e il messaggio di errore?</li>
+                        <li class="fragment"><strong>Formula un'ipotesi</strong> &mdash; cosa potrebbe causarlo?</li>
+                        <li class="fragment"><strong>Progetta un esperimento</strong> &mdash; quale <code>print</code> o test devo inserire?</li>
+                        <li class="fragment"><strong>Verifica</strong> i risultati e correggi</li>
+                        <li class="fragment">Se l'ipotesi era sbagliata, <strong>formulane un'altra</strong></li>
+                    </ol>
+                    <div class="fragment box box-green">
+                        Per studenti di statistica, questo dovrebbe suonare familiare: e il <strong>metodo scientifico</strong> applicato al codice.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: LINGUAGGI DI PROGRAMMAZIONE ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Linguaggi di programmazione</h2>
+                    <p><em>Dal codice macchina a Python</em></p>
+                </section>
+
+                <!-- Codice macchina e Assembly -->
+                <section>
+                    <h2>I livelli piu bassi</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-red">
+                                <h3>Codice macchina</h3>
+                                <p>Sequenze di 0 e 1, l'unica cosa che la CPU capisce davvero.</p>
+                                <pre><code class="language-plaintext">10110000 01100001</code></pre>
+                                <p><em>Carica il valore 97 nel registro AL (x86)</em></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <h3>Assembly (anni '50)</h3>
+                                <p>Mnemonici leggibili al posto dei numeri.</p>
+                                <pre><code class="language-plaintext">MOV AL, 97</code></pre>
+                                <p><em>Legato alla specifica architettura: x86 &ne; ARM</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Linguaggi ad alto livello -->
+                <section>
+                    <h2>Linguaggi ad alto livello</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Linguaggio</th><th>Anno</th><th>Creatore</th><th>Ambito</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="fragment"><td><strong>Fortran</strong></td><td>1957</td><td>John Backus (IBM)</td><td>Calcolo scientifico. Ancora usato nei supercomputer.</td></tr>
+                            <tr class="fragment"><td><strong>COBOL</strong></td><td>1959</td><td>Grace Hopper</td><td>Business. Nel 95% dei sistemi bancari mondiali.</td></tr>
+                            <tr class="fragment"><td><strong>C</strong></td><td>1972</td><td>Dennis Ritchie</td><td>Sistemi operativi. Unix, Linux, Python stesso sono scritti in C.</td></tr>
+                            <tr class="fragment"><td><strong>Python</strong></td><td>1991</td><td>Guido van Rossum</td><td>Generale. Dominante in data science e ML.</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Livelli di astrazione -->
+                <section>
+                    <h2>Livelli di astrazione a confronto</h2>
+                    <p>La stessa operazione &mdash; calcolo della media &mdash; a diversi livelli:</p>
+                    <pre><code class="language-python"># Python
+media = sum(voti) / len(voti)</code></pre>
+                    <pre><code class="language-c">// C
+float media = 0;
+for(int i=0; i&lt;n; i++) media += voti[i];
+media /= n;</code></pre>
+                    <pre><code class="language-plaintext">; Assembly
+MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
+                    <pre><code class="language-plaintext">; Macchina
+10001011 00000100 10001110 ...</code></pre>
+                    <div class="fragment box box-blue">
+                        Non esiste "il linguaggio migliore": esiste il linguaggio piu adatto al <strong>contesto</strong>.
+                    </div>
+                </section>
+
+                <!-- Paradigmi -->
+                <section>
+                    <h2>Paradigmi di programmazione</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Paradigma</th><th>Idea</th><th>Esempi</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Imperativo</strong></td><td>"Fai questo, poi fai quello"</td><td>Il piu intuitivo</td></tr>
+                            <tr><td><strong>Procedurale</strong></td><td>Imperativo + procedure/funzioni</td><td>C, Pascal</td></tr>
+                            <tr><td><strong>Orientato a oggetti</strong></td><td>Oggetti con proprieta e comportamenti</td><td>Java, C++, Python</td></tr>
+                            <tr><td><strong>Funzionale</strong></td><td>Trasformazioni di dati senza effetti collaterali</td><td>Haskell, Lisp</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="fragment box box-green">
+                        <strong>Python e multi-paradigma:</strong> supporta tutti questi approcci, lasciando liberta di scegliere lo stile piu adatto.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: COMPILAZIONE E INTERPRETAZIONE ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Compilazione e interpretazione</h2>
+                    <p><em>Due strategie per tradurre il codice</em></p>
+                </section>
+
+                <!-- Compilazione -->
+                <section>
+                    <h2>Compilazione</h2>
+                    <p>Il <strong>compilatore</strong> traduce l'intero codice sorgente in codice macchina <strong>prima</strong> dell'esecuzione.</p>
+                    <div class="diagram">
+                        Sorgente (.c) &rarr; [ Compilatore ] &rarr; Eseguibile (.exe) &rarr; [ CPU ] &rarr; Risultato
+                    </div>
+                    <div class="columns fragment" style="margin-top: 1em;">
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Vantaggi</h3>
+                                <ul>
+                                    <li>Programma veloce (codice nativo)</li>
+                                    <li>Errori di tipo scoperti prima</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-red">
+                                <h3>Svantaggi</h3>
+                                <ul>
+                                    <li>Ciclo edit-compile-run piu lungo</li>
+                                    <li>Eseguibile specifico per piattaforma</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="fragment"><em>Esempi: C, C++, Rust, Go, Fortran</em></p>
+                </section>
+
+                <!-- Interpretazione -->
+                <section>
+                    <h2>Interpretazione</h2>
+                    <p>L'<strong>interprete</strong> traduce e esegue il codice <strong>istruzione per istruzione</strong>, al momento dell'esecuzione.</p>
+                    <div class="diagram">
+                        Sorgente (.py) &rarr; [ Interprete ] &rarr; Risultato (passo per passo)
+                    </div>
+                    <div class="columns fragment" style="margin-top: 1em;">
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Vantaggi</h3>
+                                <ul>
+                                    <li>Interattivita (REPL)</li>
+                                    <li>Portabilita</li>
+                                    <li>Ciclo di sviluppo rapido</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-red">
+                                <h3>Svantaggi</h3>
+                                <ul>
+                                    <li>Piu lento in esecuzione</li>
+                                    <li>Errori scoperti solo a runtime</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Approcci ibridi -->
+                <section>
+                    <h2>La realta e sfumata</h2>
+                    <p>Molti linguaggi moderni usano approcci <strong>ibridi</strong>:</p>
+                    <div class="box box-blue">
+                        <h3>Java</h3>
+                        <p>Codice &rarr; <strong>bytecode</strong> (compilazione) &rarr; <strong>JVM</strong> (interpretazione) + compilazione <strong>JIT</strong> al volo delle parti piu eseguite.</p>
+                    </div>
+                    <div class="fragment box box-yellow">
+                        <h3>Python (CPython)</h3>
+                        <p>Codice .py &rarr; <strong>bytecode</strong> .pyc (compilazione automatica) &rarr; <strong>PVM</strong> (interpretazione del bytecode).</p>
+                        <p>Python e un linguaggio <strong>semi-compilato</strong>.</p>
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: PYTHON ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Python</h2>
+                    <p><em>Il nostro strumento per il resto del corso</em></p>
+                </section>
+
+                <!-- Origini -->
+                <section>
+                    <h2>Chi e e da dove viene</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <ul>
+                                <li><strong>Guido van Rossum</strong>, programmatore olandese</li>
+                                <li class="fragment">Inizio lo sviluppo durante le vacanze di <strong>Natale 1989</strong> ad Amsterdam</li>
+                                <li class="fragment">Il nome non viene dal serpente ma dai <strong>Monty Python</strong>, il gruppo comico britannico</li>
+                                <li class="fragment">Prima release pubblica: <strong>1991</strong></li>
+                            </ul>
+                        </div>
+                        <div class="col-40">
+                            <div class="box box-blue">
+                                <h3>Zen of Python</h3>
+                                <p><em>Beautiful is better than ugly.</em></p>
+                                <p><em>Explicit is better than implicit.</em></p>
+                                <p><em>Simple is better than complex.</em></p>
+                                <p><em>Readability counts.</em></p>
+                                <p style="margin-top: 0.5em;"><code>import this</code></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CPython: come funziona -->
+                <section>
+                    <h2>CPython: come funziona</h2>
+                    <p><strong>CPython</strong> e l'implementazione di riferimento, scritta in C.</p>
+                    <p>L'esecuzione avviene in tre fasi:</p>
+                    <div class="diagram">
+                        Codice .py &rarr; <strong>1. Parsing</strong> (AST) &rarr; <strong>2. Compilazione</strong> (bytecode .pyc) &rarr; <strong>3. PVM</strong> (esecuzione)
+                    </div>
+                    <div style="margin-top: 0.8em;">
+                        <ol>
+                            <li class="fragment"><strong>Parsing:</strong> analisi sintattica &rarr; Abstract Syntax Tree (AST)</li>
+                            <li class="fragment"><strong>Compilazione in bytecode:</strong> AST &rarr; file <code>.pyc</code> in <code>__pycache__/</code></li>
+                            <li class="fragment"><strong>Esecuzione sulla PVM:</strong> la Python Virtual Machine interpreta il bytecode</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- GIL -->
+                <section>
+                    <h2>Il GIL (Global Interpreter Lock)</h2>
+                    <div class="box box-yellow">
+                        Il <strong>GIL</strong> e un blocco globale che impedisce a piu thread Python di eseguire bytecode contemporaneamente.
+                    </div>
+                    <p class="fragment">Semplifica la gestione della memoria, ma <strong>limita il parallelismo</strong>.</p>
+                    <h3 class="fragment">Come aggirarlo:</h3>
+                    <ul>
+                        <li class="fragment"><code>multiprocessing</code> &mdash; processi separati</li>
+                        <li class="fragment"><code>asyncio</code> &mdash; programmazione asincrona</li>
+                        <li class="fragment">Librerie che rilasciano il GIL (es. <strong>NumPy</strong>, quando esegue codice C)</li>
+                    </ul>
+                </section>
+
+                <!-- Implementazioni alternative -->
+                <section>
+                    <h2>Implementazioni alternative</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Implementazione</th><th>Caratteristica</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>CPython</strong> <span class="badge badge-blue">riferimento</span></td><td>Implementazione standard, scritta in C</td></tr>
+                            <tr><td><strong>PyPy</strong> <span class="badge badge-green">veloce</span></td><td>Con compilazione JIT, spesso 5-10x piu veloce</td></tr>
+                            <tr><td><strong>MicroPython</strong> <span class="badge badge-yellow">embedded</span></td><td>Python per microcontrollori (Arduino, ESP32)</td></tr>
+                            <tr><td><strong>Cython</strong> <span class="badge badge-red">ibrido</span></td><td>Codice simil-Python compilato in C</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Perche Python e lento -->
+                <section>
+                    <h2>Python e "lento" &mdash; e spesso non importa</h2>
+                    <p>Python e circa 10-100x piu lento di C per il calcolo puro. Ma nella pratica:</p>
+                    <ol>
+                        <li class="fragment">Il <strong>collo di bottiglia e la produttivita</strong> del programmatore, non la velocita del programma</li>
+                        <li class="fragment">Le parti intensive chiamano <strong>librerie C/Fortran</strong> (NumPy, Pandas, SciPy). Il codice Python e solo il collante.</li>
+                        <li class="fragment">La maggior parte del tempo si spende <strong>aspettando</strong> (I/O, rete, input utente), non calcolando</li>
+                    </ol>
+                    <div class="fragment box box-green">
+                        Scrivere un'analisi in Python: <strong>ore</strong>. In C: <strong>giorni</strong>.
+                    </div>
+                </section>
+
+                <!-- Modalita di utilizzo -->
+                <section>
+                    <h2>Modalita di utilizzo</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>REPL</h3>
+                                <p><em>Read-Eval-Print Loop</em></p>
+                                <p>Interprete interattivo. Perfetto per esplorare e provare.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Script (.py)</h3>
+                                <p>Programma in un file, eseguito con <code>python script.py</code></p>
+                                <p>Per codice completo e riutilizzabile.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <h3>Jupyter Notebook</h3>
+                                <p>Celle di codice, testo e visualizzazioni. Lo standard nella data science.</p>
+                                <p><em>Ju-lia + Py-thon + R</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Perche Python per la statistica -->
+                <section>
+                    <h2>Perche Python per la statistica?</h2>
+                    <ul>
+                        <li class="fragment"><strong>Leggibilita:</strong> il codice si legge quasi come l'inglese</li>
+                        <li class="fragment"><strong>Ecosistema scientifico maturo:</strong> NumPy, Pandas, SciPy, scikit-learn, matplotlib</li>
+                        <li class="fragment"><strong>Comunita enorme:</strong> qualsiasi problema e gia stato risolto</li>
+                        <li class="fragment"><strong>Curva di apprendimento dolce:</strong> si e produttivi rapidamente</li>
+                        <li class="fragment"><strong>Versatile:</strong> dallo scripting al web, dal machine learning all'automazione</li>
+                    </ul>
+                    <div class="fragment box box-blue">
+                        Python e: alto livello, multi-paradigma, interpretato (semi-compilato), tipizzato dinamicamente, garbage collected.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SLIDE: RIEPILOGO ========== -->
+            <section>
+                <h2>Riepilogo</h2>
+                <div class="diagram" style="font-size: 0.9em; line-height: 2;">
+                    PROBLEMA &rarr; ALGORITMO &rarr; PROGRAMMA &rarr; PROCESSO
+                </div>
+                <div class="columns" style="margin-top: 0.8em;">
+                    <div class="col">
+                        <ul style="font-size: 0.85em;">
+                            <li><strong>Algoritmo:</strong> sequenza finita di passi non ambigui</li>
+                            <li><strong>Programma:</strong> algoritmo + strutture dati</li>
+                            <li><strong>Processo:</strong> programma in esecuzione</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <ul style="font-size: 0.85em;">
+                            <li><strong>Pensiero computazionale:</strong> decomposizione, pattern, astrazione, algoritmo</li>
+                            <li><strong>Python:</strong> semi-compilato, multi-paradigma, ideale per la statistica</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE: CITAZIONE FINALE ========== -->
+            <section class="section-slide">
+                <h2>Da qui in poi, programmiamo.</h2>
+                <p style="margin-top: 1em;">Ma ricordate: prima di scrivere codice, <strong>pensate</strong>.</p>
+                <p>Il codice e l'ultimo passo, non il primo.</p>
+                <div class="box box-blue" style="display: inline-block; margin-top: 1.5em; text-align: center;">
+                    <em>"Weeks of coding can save you hours of planning."</em><br>
+                    <span style="font-size: 0.8em;">&mdash; Detto popolare tra i programmatori</span>
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T05_rappresentazione_dati.html" style="color: var(--accent);">&larr; T05: Rappresentazione dei dati</a></div><div><a href="T07_primi_passi_python.html" style="color: var(--accent);">T07: Primi passi in Python &rarr;</a></div><div><a href="../dispense/frontali/T06_dal_problema_al_programma.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; T06</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errori comuni — T10: Comprehension e stringhe — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/T10_comprehension_stringhe.html">Dispensa</a> &bull; <a href="../autovalutazione/T10_autovalutazione.html">Autovalutazione</a></nav>
+<h1>Errori comuni — T10: Comprehension e stringhe</h1>
+
+<h1>Errori comuni — T10: Comprehension e stringhe</h1>
+<p>Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione T10.</p>
+<p>Ogni errore include il codice sbagliato, la spiegazione e la correzione.</p>
+<hr>
+<h3>Errore 1: Comprehension troppo complesse — sacrificare la leggibilità</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Trovare la somma dei quadrati dei numeri pari in una matrice</span>
+matrice <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>], [<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]]
+risultato <span class="op">=</span> <span class="nb">sum</span>([x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="kw">for</span> riga <span class="kw">in</span> matrice <span class="kw">for</span> x <span class="kw">in</span> riga <span class="kw">if</span> x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>])
+<span class="nb">print</span>(risultato)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="mi">120</span></code></pre>
+<p>Il risultato è corretto, ma il codice è difficile da leggere e da correggere in caso di errore.</p>
+<p><strong>Perché è sbagliato:</strong> Anche se Python permette comprehension con più cicli e condizioni, una comprehension troppo complessa diventa illeggibile. Per studenti alle prime armi è facile confondere l'ordine dei <code>for</code> e delle condizioni <code>if</code>. Quando una comprehension richiede più di un <code>for</code> o diventa lunga, è meglio usare cicli espliciti che sono più chiari.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="cm"># Versione chiara con cicli espliciti</span>
+matrice <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>], [<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]]
+somma <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> riga <span class="kw">in</span> matrice:
+    <span class="kw">for</span> x <span class="kw">in</span> riga:
+        <span class="kw">if</span> x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            somma <span class="op">+</span><span class="op">=</span> x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+<span class="nb">print</span>(somma)  <span class="cm"># 120</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Se una list comprehension richiede più di un <code>for</code> o non si capisce al primo sguardo, riscrivila con cicli espliciti.</p>
+<hr>
+<h3>Errore 2: Comportamento inatteso di <code>.split()</code> su stringa vuota</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Lo studente si aspetta una lista con un elemento vuoto</span>
+testo <span class="op">=</span> <span class="st">&quot;&quot;</span>
+parole <span class="op">=</span> testo.split()
+<span class="nb">print</span>(parole)
+<span class="nb">print</span>(<span class="nb">len</span>(parole))  <span class="cm"># Lo studente si aspetta 1</span></code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>[]
+<span class="mi">0</span></code></pre>
+<p>La lista è vuota, non contiene una stringa vuota.</p>
+<p><strong>Perché è sbagliato:</strong> Il metodo <code>.split()</code> senza argomenti divide per spazi bianchi e rimuove automaticamente le stringhe vuote dal risultato. Chiamato su una stringa vuota, restituisce una lista vuota <code>[]</code>, non <code>[""]</code>. Questo è diverso da <code>.split(",")</code> con un separatore esplicito, che su una stringa vuota restituisce <code>[""]</code>. La differenza è sottile ma importante quando si contano le parole di un testo.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="cm"># Se vuoi gestire il caso di stringa vuota</span>
+testo <span class="op">=</span> <span class="st">&quot;&quot;</span>
+<span class="kw">if</span> testo:
+    parole <span class="op">=</span> testo.split()
+    <span class="nb">print</span>(<span class="st">f&quot;Ci sono {len(parole)} parole&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Il testo è vuoto, 0 parole&quot;</span>)
+
+<span class="cm"># Nota la differenza con un separatore esplicito:</span>
+<span class="nb">print</span>(<span class="st">&quot;&quot;</span>.split())     <span class="cm"># []    — lista vuota</span>
+<span class="nb">print</span>(<span class="st">&quot;&quot;</span>.split(<span class="st">&quot;,&quot;</span>))  <span class="cm"># [&#x27;&#x27;]  — lista con una stringa vuota</span></code></pre>
+<p><strong>Regola da ricordare:</strong> <code>.split()</code> senza argomenti su stringa vuota restituisce <code>[]</code> (lista vuota), non <code>[""]</code> — controlla sempre se la stringa è vuota prima di contare le parole.</p>
+<hr>
+<h3>Errore 3: Confondere <code>in</code> su stringa e <code>in</code> su lista</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Lo studente vuole cercare la parola &quot;anno&quot; nel testo</span>
+testo <span class="op">=</span> <span class="st">&quot;il mio compleanno è domani&quot;</span>
+<span class="kw">if</span> <span class="st">&quot;anno&quot;</span> <span class="kw">in</span> testo:
+    <span class="nb">print</span>(<span class="st">&quot;Trovata la parola &#x27;anno&#x27;!&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Trovata la parola <span class="st">&#x27;anno&#x27;</span><span class="op">!</span></code></pre>
+<p>Il messaggio viene stampato, ma la parola "anno" come parola a sé non è nel testo: è contenuta dentro "compleanno".</p>
+<p><strong>Perché è sbagliato:</strong> L'operatore <code>in</code> su una stringa cerca una sottostringa, non una parola intera. <code>"anno" in "compleanno"</code> è <code>True</code> perché i caratteri "anno" appaiono dentro "compleanno". Se si vogliono cercare parole intere, bisogna prima dividere il testo in parole con <code>.split()</code> e cercare nella lista risultante.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="cm"># Cercare una parola intera nel testo</span>
+testo <span class="op">=</span> <span class="st">&quot;il mio compleanno è domani&quot;</span>
+
+<span class="cm"># Metodo corretto: cercare nella lista di parole</span>
+parole <span class="op">=</span> testo.split()
+<span class="kw">if</span> <span class="st">&quot;anno&quot;</span> <span class="kw">in</span> parole:
+    <span class="nb">print</span>(<span class="st">&quot;Trovata la parola &#x27;anno&#x27;!&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;La parola &#x27;anno&#x27; non è presente&quot;</span>)
+<span class="cm"># Output: La parola &#x27;anno&#x27; non è presente</span></code></pre>
+<p><strong>Regola da ricordare:</strong> <code>in</code> su una stringa cerca sottostringhe, <code>in</code> su una lista cerca elementi esatti — per cercare parole intere, usa <code>.split()</code> e cerca nella lista.</p>
+<hr>
+<h3>Errore 4: Tentare di modificare una stringa tramite indice</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>nome <span class="op">=</span> <span class="st">&quot;Marko&quot;</span>
+nome[<span class="mi">3</span>] <span class="op">=</span> <span class="st">&quot;c&quot;</span>  <span class="cm"># Correggere il typo: Marko → Marco</span>
+<span class="nb">print</span>(nome)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="nb">TypeError</span>: <span class="st">&#x27;str&#x27;</span> <span class="nb">object</span> does <span class="kw">not</span> support item assignment</code></pre>
+<p><strong>Perché è sbagliato:</strong> In Python le stringhe sono immutabili: una volta create, non si possono modificare i singoli caratteri. Non è possibile assegnare un nuovo valore a una posizione specifica della stringa come si farebbe con una lista. Per "modificare" una stringa, bisogna crearne una nuova usando metodi come <code>.replace()</code> o lo slicing.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>nome <span class="op">=</span> <span class="st">&quot;Marko&quot;</span>
+
+<span class="cm"># Metodo 1: usare .replace()</span>
+nome <span class="op">=</span> nome.replace(<span class="st">&quot;k&quot;</span>, <span class="st">&quot;c&quot;</span>)
+<span class="nb">print</span>(nome)  <span class="cm"># Marco</span>
+
+<span class="cm"># Metodo 2: usare lo slicing</span>
+nome <span class="op">=</span> <span class="st">&quot;Marko&quot;</span>
+nome <span class="op">=</span> nome[:<span class="mi">3</span>] <span class="op">+</span> <span class="st">&quot;c&quot;</span> <span class="op">+</span> nome[<span class="mi">4</span>:]
+<span class="nb">print</span>(nome)  <span class="cm"># Marco</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Le stringhe in Python sono immutabili: per modificarle devi crearne una nuova, ad esempio con <code>.replace()</code> o con lo slicing.</p>
+<hr>
+<h3>Errore 5: Errori con le espressioni dentro le f-string</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+<span class="nb">print</span>(<span class="st">f&quot;La media è: {sum(voti) / len(voti):.2f}&quot;</span>)
+<span class="cm"># Fin qui tutto bene, ma poi:</span>
+
+studente <span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>}
+<span class="nb">print</span>(<span class="st">f&quot;Voto di {studente[&quot;</span>nome<span class="st">&quot;]}&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>SyntaxError: f<span class="op">-</span>string: unmatched <span class="st">&#x27;[&#x27;</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> Dentro le parentesi graffe di una f-string delimitata da virgolette doppie <code>"</code>, non si possono usare altre virgolette doppie <code>"</code> per le chiavi del dizionario. Python si confonde perché la seconda <code>"</code> chiude la f-string. Bisogna usare virgolette di tipo diverso all'interno (singole) rispetto a quelle esterne (doppie), oppure viceversa.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>studente <span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>}
+
+<span class="cm"># Soluzione 1: virgolette singole dentro la f-string</span>
+<span class="nb">print</span>(<span class="st">f&quot;Voto di {studente[&#x27;nome&#x27;]}&quot;</span>)
+
+<span class="cm"># Soluzione 2: variabile di appoggio</span>
+nome <span class="op">=</span> studente[<span class="st">&quot;nome&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Voto di {nome}&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> Dentro una f-string, usa virgolette di tipo diverso da quelle che delimitano la stringa — se la stringa è tra <code>"..."</code>, usa <code>'...'</code> all'interno delle graffe.</p>
+<hr>
+<h3>Errore 6: Pensare che <code>.replace()</code> modifichi la stringa originale</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>frase <span class="op">=</span> <span class="st">&quot;Ciao Mondo Ciao&quot;</span>
+frase.replace(<span class="st">&quot;Ciao&quot;</span>, <span class="st">&quot;Salve&quot;</span>)
+<span class="nb">print</span>(frase)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Ciao Mondo Ciao</code></pre>
+<p>La stringa non è cambiata.</p>
+<p><strong>Perché è sbagliato:</strong> Il metodo <code>.replace()</code> non modifica la stringa originale (le stringhe sono immutabili). Restituisce invece una nuova stringa con le sostituzioni applicate. Se non si assegna il risultato a una variabile, la nuova stringa viene creata e immediatamente persa. È un errore che non genera eccezioni, il che lo rende difficile da individuare.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>frase <span class="op">=</span> <span class="st">&quot;Ciao Mondo Ciao&quot;</span>
+frase <span class="op">=</span> frase.replace(<span class="st">&quot;Ciao&quot;</span>, <span class="st">&quot;Salve&quot;</span>)  <span class="cm"># Riassegna il risultato</span>
+<span class="nb">print</span>(frase)  <span class="cm"># Salve Mondo Salve</span></code></pre>
+<p><strong>Regola da ricordare:</strong> I metodi delle stringhe (<code>.replace()</code>, <code>.upper()</code>, <code>.strip()</code>, ecc.) restituiscono una nuova stringa — assegna sempre il risultato a una variabile.</p>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

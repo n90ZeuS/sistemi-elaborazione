@@ -1,6 +1,6 @@
 # Laboratorio 8 — Visualizzazione e progetto riepilogativo
 
-**Prerequisiti:** Frontale F17 (NumPy, Pandas, analisi dati), Laboratorio 7
+**Prerequisiti:** Frontale T17 (NumPy, Pandas, analisi dati), Laboratorio 7
 
 ---
 

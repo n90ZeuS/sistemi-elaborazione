@@ -17,23 +17,24 @@ from pathlib import Path
 BASE: Path = Path(__file__).parent
 
 LEZIONI_FRONTALI: list[tuple[str, str]] = [
-    ("F01", "Informazione, bit e numerazione"),
-    ("F02", "Logica booleana e storia del calcolo"),
-    ("F03", "Architettura degli elaboratori"),
-    ("F04", "Sistemi operativi"),
-    ("F05", "Rappresentazione dei dati"),
-    ("F06", "Dal problema al programma"),
-    ("F07", "Primi passi in Python"),
-    ("F08", "Operatori, I/O e condizionali"),
-    ("F09", "Cicli"),
-    ("F10", "Comprehension e stringhe"),
-    ("F11", "Liste e tuple"),
-    ("F12", "Dizionari, set e mutabilità"),
-    ("F13", "Funzioni: fondamenti"),
-    ("F14", "Funzioni avanzate e moduli"),
-    ("F15", "File, dati e gestione errori"),
-    ("F16", "Programmazione a oggetti"),
-    ("F17", "NumPy, Pandas e visualizzazione"),
+    ("T00", "Introduzione al corso"),
+    ("T01", "Informazione, bit e numerazione"),
+    ("T02", "Logica booleana e storia del calcolo"),
+    ("T03", "Architettura degli elaboratori"),
+    ("T04", "Sistemi operativi"),
+    ("T05", "Rappresentazione dei dati"),
+    ("T06", "Dal problema al programma"),
+    ("T07", "Primi passi in Python"),
+    ("T08", "Operatori, I/O e condizionali"),
+    ("T09", "Cicli"),
+    ("T10", "Comprehension e stringhe"),
+    ("T11", "Liste e tuple"),
+    ("T12", "Dizionari, set e mutabilità"),
+    ("T13", "Funzioni: fondamenti"),
+    ("T14", "Funzioni avanzate e moduli"),
+    ("T15", "File, dati e gestione errori"),
+    ("T16", "Programmazione a oggetti"),
+    ("T17", "NumPy, Pandas e visualizzazione"),
 ]
 
 LEZIONI_LAB: list[tuple[str, str]] = [
@@ -615,7 +616,7 @@ def get_nav_links(code: str, kind: str, base_path: str = "../../") -> dict[str, 
             prev_code: str = all_codes[idx - 1]
             prev_title: str = ALL_LEZIONI[idx - 1][1]
             if kind == "dispensa":
-                subdir: str = "frontali" if prev_code.startswith("F") else "laboratori"
+                subdir: str = "frontali" if prev_code.startswith("T") else "laboratori"
                 prev_file: str = DISP_FILES.get(prev_code, "")
                 if prev_file:
                     nav[f"← {prev_code}"] = f"{base_path}dispense/{prev_file}.html"
@@ -628,7 +629,7 @@ def get_nav_links(code: str, kind: str, base_path: str = "../../") -> dict[str, 
             next_code: str = all_codes[idx + 1]
             next_title: str = ALL_LEZIONI[idx + 1][1]
             if kind == "dispensa":
-                subdir = "frontali" if next_code.startswith("F") else "laboratori"
+                subdir = "frontali" if next_code.startswith("T") else "laboratori"
                 next_file: str = DISP_FILES.get(next_code, "")
                 if next_file:
                     nav[f"{next_code} →"] = f"{base_path}dispense/{next_file}.html"
@@ -670,7 +671,7 @@ def convert_dispense() -> None:
                     prev_file: str = DISP_FILES.get(prev_code, "")
                     if prev_file:
                         # Same directory or cross-directory
-                        prev_subdir: str = "frontali" if prev_code.startswith("F") else "laboratori"
+                        prev_subdir: str = "frontali" if prev_code.startswith("T") else "laboratori"
                         if prev_subdir == subdir:
                             nav[f"← {prev_code}"] = f"{Path(DISP_FILES[prev_code]).name}.html"
                         else:
@@ -679,7 +680,7 @@ def convert_dispense() -> None:
                     next_code: str = all_codes[idx + 1]
                     next_file: str = DISP_FILES.get(next_code, "")
                     if next_file:
-                        next_subdir: str = "frontali" if next_code.startswith("F") else "laboratori"
+                        next_subdir: str = "frontali" if next_code.startswith("T") else "laboratori"
                         if next_subdir == subdir:
                             nav[f"{next_code} →"] = f"{Path(DISP_FILES[next_code]).name}.html"
                         else:

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T00 — Introduzione al corso — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="T01_informazione_bit_numerazione.html">T01 →</a> &bull; <a href="../../presentazioni/T00_introduzione_corso.html">Presentazione</a></nav>
+<h1>T00 — Introduzione al corso</h1>
+
+<h1>Introduzione al corso</h1>
+<h2>Benvenuto</h2>
+<p>Benvenuti al corso di <strong>Sistemi di Elaborazione 1</strong>, rivolto agli studenti del primo anno di Scienze Statistiche. Questo documento presenta il corso nella sua interezza: cosa imparerete, come si svolge, come viene valutato, e quali strumenti vi serviranno.</p>
+<p>Prima di entrare nel merito tecnico, vale la pena rispondere alla domanda che probabilmente vi state ponendo: <em>perche devo studiare informatica se ho scelto statistica?</em></p>
+<hr>
+<h2>Perche informatica per statistici</h2>
+<p>La statistica moderna non si fa piu con carta, penna e tavole dei logaritmi. Si fa con macchine che elaborano milioni di osservazioni in frazioni di secondo. Un futuro statistico che non capisce come funziona un elaboratore e come un chirurgo che non conosce l'anatomia: puo seguire le procedure, ma quando qualcosa va storto — e qualcosa va sempre storto — non sa dove guardare.</p>
+<h3>Esempi concreti</h3>
+<p>Pensate a queste situazioni, tutte reali e frequenti:</p>
+<ul>
+<li>State analizzando un dataset con 10 milioni di righe e il programma si blocca. Perche? Forse i dati non stanno in memoria. Ma quanta memoria serve? Come si calcola? Lo vedrete studiando la rappresentazione dei dati e l'architettura degli elaboratori.</li>
+</ul>
+<ul>
+<li>Un calcolo statistico produce un risultato leggermente diverso su due computer. Non e un bug: e un problema di precisione numerica in virgola mobile. Lo capirete studiando come i numeri vengono rappresentati in binario.</li>
+</ul>
+<ul>
+<li>Dovete automatizzare un'analisi che fate ogni settimana su dati aggiornati. Senza saper programmare, la rifate a mano ogni volta. Con Python, scrivete uno script una volta e lo eseguite in un secondo.</li>
+</ul>
+<ul>
+<li>Dovete pulire e trasformare dati provenienti da fonti diverse (CSV, JSON, database). La capacita di scrivere codice per manipolare dati e una competenza fondamentale che nessun foglio di calcolo puo sostituire completamente.</li>
+</ul>
+<h3>Cosa imparerete</h3>
+<p>Al termine del corso sarete in grado di:</p>
+<ul>
+<li><strong>Comprendere</strong> come raccogliere, archiviare, gestire ed elaborare dati di diversa natura</li>
+<li><strong>Comprendere</strong> il funzionamento dei moderni sistemi di elaborazione</li>
+<li><strong>Sviluppare</strong> un pensiero algoritmico: scomporre un problema complesso in passi elementari e risolvibili</li>
+<li><strong>Scrivere</strong> programmi Python in grado di risolvere problemi di varia natura</li>
+<li><strong>Organizzare</strong> i dati a seconda dell'esigenza per ottenerne informazione</li>
+<li><strong>Apprendere</strong> nuovi linguaggi di programmazione in autonomia, partendo dalle basi solide acquisite qui</li>
+</ul>
+<hr>
+<h2>Struttura del corso</h2>
+<p>Il corso si articola in <strong>17 lezioni frontali</strong> e <strong>8 laboratori di programmazione</strong>, per un totale di <strong>25 incontri</strong> e <strong>6 CFU</strong>. Questa lezione introduttiva (T00) non rientra nel conteggio ufficiale.</p>
+<h3>Parte 1 — Fondamenti (T01-T06)</h3>
+<p>Le prime sei lezioni costruiscono le basi teoriche dell'informatica:</p>
+<table>
+<thead><tr>
+<th>Lezione</th>
+<th>Argomento</th>
+</tr></thead><tbody>
+<tr>
+<td>T01</td>
+<td>Informazione, bit e numerazione</td>
+</tr>
+<tr>
+<td>T02</td>
+<td>Logica booleana e storia del calcolo</td>
+</tr>
+<tr>
+<td>T03</td>
+<td>Architettura degli elaboratori</td>
+</tr>
+<tr>
+<td>T04</td>
+<td>Sistemi operativi</td>
+</tr>
+<tr>
+<td>T05</td>
+<td>Rappresentazione dei dati</td>
+</tr>
+<tr>
+<td>T06</td>
+<td>Dal problema al programma</td>
+</tr>
+</tbody></table>
+<p>Qui imparerete come funziona un computer "sotto il cofano": come rappresenta l'informazione, come ragiona (logica booleana), come è fatto fisicamente (CPU, memoria, bus), come il sistema operativo gestisce il tutto, come i dati vengono codificati in binario e come si passa da un problema a una soluzione algoritmica.</p>
+<h3>Parte 2 — Python (T07-T17)</h3>
+<p>Il cuore pratico del corso: imparare a programmare in Python.</p>
+<table>
+<thead><tr>
+<th>Lezione</th>
+<th>Argomento</th>
+</tr></thead><tbody>
+<tr>
+<td>T07</td>
+<td>Primi passi in Python</td>
+</tr>
+<tr>
+<td>T08</td>
+<td>Operatori, I/O e condizionali</td>
+</tr>
+<tr>
+<td>T09</td>
+<td>Cicli</td>
+</tr>
+<tr>
+<td>T10</td>
+<td>Comprehension e stringhe</td>
+</tr>
+<tr>
+<td>T11</td>
+<td>Liste e tuple</td>
+</tr>
+<tr>
+<td>T12</td>
+<td>Dizionari, set e mutabilita</td>
+</tr>
+<tr>
+<td>T13</td>
+<td>Funzioni: fondamenti</td>
+</tr>
+<tr>
+<td>T14</td>
+<td>Funzioni avanzate e moduli</td>
+</tr>
+<tr>
+<td>T15</td>
+<td>File, dati e gestione errori</td>
+</tr>
+<tr>
+<td>T16</td>
+<td>Programmazione a oggetti</td>
+</tr>
+<tr>
+<td>T17</td>
+<td>NumPy, Pandas e visualizzazione</td>
+</tr>
+</tbody></table>
+<p>Si parte dalle basi assolute (variabili, tipi, stampa a schermo) e si arriva fino alle librerie scientifiche che userete per tutto il percorso universitario.</p>
+<h3>Laboratori (L01-L08)</h3>
+<p>Otto sessioni pratiche in cui mettete le mani sulla tastiera:</p>
+<table>
+<thead><tr>
+<th>Laboratorio</th>
+<th>Argomento</th>
+</tr></thead><tbody>
+<tr>
+<td>L01</td>
+<td>Ambiente, variabili e condizionali</td>
+</tr>
+<tr>
+<td>L02</td>
+<td>Cicli, comprehension e stringhe</td>
+</tr>
+<tr>
+<td>L03</td>
+<td>Strutture dati</td>
+</tr>
+<tr>
+<td>L04</td>
+<td>Funzioni e modularita</td>
+</tr>
+<tr>
+<td>L05</td>
+<td>File e gestione dati</td>
+</tr>
+<tr>
+<td>L06</td>
+<td>Classi e oggetti</td>
+</tr>
+<tr>
+<td>L07</td>
+<td>NumPy e Pandas</td>
+</tr>
+<tr>
+<td>L08</td>
+<td>Visualizzazione e progetto</td>
+</tr>
+</tbody></table>
+<p>I laboratori seguono le lezioni frontali e vi permettono di consolidare ogni argomento con esercizi guidati.</p>
+<h3>Corsi collegati</h3>
+<p>Questo corso e il primo di un percorso che prosegue negli anni successivi:</p>
+<ul>
+<li><strong>Strutture dati e algoritmi</strong> — I Anno, II Semestre (6 CFU)</li>
+<li><strong>Sistemi di elaborazione 2</strong> — III Anno, I Semestre (9 CFU)</li>
+</ul>
+<hr>
+<h2>Modalita d'esame</h2>
+<p>L'esame si compone di due prove, entrambe <strong>obbligatorie</strong>.</p>
+<h3>Prova scritta al PC</h3>
+<ul>
+<li><strong>Durata</strong>: 90 minuti</li>
+<li><strong>Contenuto</strong>: esercizi di programmazione in Python</li>
+<li><strong>Modalita</strong>: si svolge in laboratorio informatico (non si usa il proprio PC)</li>
+<li><strong>Consentiti</strong>: appunti, libri, file personali</li>
+<li><strong>Non consentiti</strong>: chat, intelligenza artificiale, internet</li>
+<li><strong>Voto minimo per accedere all'orale</strong>: 17/30</li>
+<li><strong>Appelli disponibili</strong>: 5 nel corso dell'anno accademico</li>
+</ul>
+<p>La prova scritta verifica la vostra capacita di scrivere codice Python funzionante per risolvere problemi concreti. Non si tratta di domande teoriche a risposta multipla, ma di esercizi in cui dovete produrre programmi che vengono poi eseguiti e valutati.</p>
+<h3>Prova orale</h3>
+<ul>
+<li><strong>Requisito</strong>: aver superato lo scritto con almeno 17/30</li>
+<li><strong>Durata</strong>: circa 10-15 minuti</li>
+<li><strong>Contenuto</strong>: domande di teoria e/o esercizi Python</li>
+<li><strong>Modalita</strong>: frontale, con eventuale uso di computer</li>
+<li><strong>Punteggio</strong>: puo modificare il voto dello scritto di <strong>+/- 3 punti</strong></li>
+</ul>
+<p>L'orale serve a verificare la comprensione profonda degli argomenti. Non basta saper scrivere codice: dovete anche saper spiegare <em>perche</em> funziona e <em>come</em> ragionate.</p>
+<h3>Criteri di valutazione</h3>
+<p>Nello scritto si valutano:</p>
+<ul>
+<li><strong>Correttezza</strong>: il programma produce l'output atteso?</li>
+<li><strong>Completezza</strong>: tutti i casi sono gestiti?</li>
+<li><strong>Stile</strong>: il codice e leggibile, ben organizzato, con nomi di variabili sensati?</li>
+<li><strong>Efficienza</strong>: la soluzione e ragionevolmente efficiente? (non si richiede ottimizzazione estrema, ma neanche soluzioni inutilmente lente)</li>
+</ul>
+<hr>
+<h2>Strumenti necessari</h2>
+<p>Per seguire il corso e fare pratica avrete bisogno di tre strumenti, tutti gratuiti.</p>
+<h3>Python 3</h3>
+<p>Il linguaggio di programmazione che useremo. Scaricatelo dal sito ufficiale:</p>
+<ul>
+<li><strong>Windows/macOS</strong>: https://www.python.org/downloads/ — scaricate l'ultima versione stabile (3.12 o successiva)</li>
+<li><strong>Linux</strong>: di solito e gia installato; verificate con <code>python3 --version</code> nel terminale</li>
+</ul>
+<p>Durante l'installazione su Windows, <strong>spuntate la casella "Add Python to PATH"</strong>: e fondamentale.</p>
+<h3>Editor di codice</h3>
+<p>Vi consiglio <strong>Visual Studio Code</strong> (VS Code), un editor gratuito, potente e molto diffuso:</p>
+<ul>
+<li><strong>Download</strong>: https://code.visualstudio.com/</li>
+<li>Dopo l'installazione, aggiungete l'estensione <strong>Python</strong> di Microsoft (la trovate nel marketplace delle estensioni)</li>
+</ul>
+<p>VS Code vi offre: evidenziazione della sintassi, completamento automatico, esecuzione del codice con un clic, e un terminale integrato. Potete usare anche altri editor (PyCharm, Sublime Text, IDLE), ma le istruzioni del corso faranno riferimento a VS Code.</p>
+<h3>Terminale</h3>
+<p>Il terminale (o "riga di comando") e l'interfaccia testuale del sistema operativo. Lo userete per eseguire i vostri programmi Python.</p>
+<ul>
+<li><strong>Windows</strong>: cercate "Terminale" o "PowerShell" nel menu Start</li>
+<li><strong>macOS</strong>: aprite l'applicazione "Terminale" (in Utility)</li>
+<li><strong>Linux</strong>: di solito si apre con Ctrl+Alt+T</li>
+</ul>
+<p>Non preoccupatevi se non avete mai usato un terminale: lo vedrete in dettaglio nel primo laboratorio.</p>
+<hr>
+<h2>Riferimenti e risorse</h2>
+<h3>Contatti del docente</h3>
+<ul>
+<li><strong>Email</strong>: nicola.salmaso@unipd.it</li>
+<li><strong>Ricevimento</strong>: https://unipd.zoom.us/my/nicola.salmaso</li>
+</ul>
+<h3>Piattaforma del corso</h3>
+<p>Lezioni, materiale e annunci sono pubblicati su Moodle:</p>
+<ul>
+<li>https://stem.elearning.unipd.it/course/view.php?id=12908</li>
+</ul>
+<h3>Libro di testo</h3>
+<ul>
+<li>Horstmann, Cay; Necaise, Rance D.; Dalpasso, Marcello — <em>Concetti di informatica e fondamenti di Python</em></li>
+</ul>
+<h3>Portale web del corso</h3>
+<p>Su questo portale trovate tutto il materiale organizzato per lezione:</p>
+<ul>
+<li><strong>Presentazioni</strong> (slides): le stesse usate a lezione, navigabili nel browser</li>
+<li><strong>Dispense</strong>: versione narrativa e approfondita di ogni lezione</li>
+<li><strong>Codice</strong>: esempi ed esercizi Python scaricabili</li>
+<li><strong>Autovalutazione</strong>: quiz per verificare la propria comprensione</li>
+<li><strong>Errori comuni</strong>: raccolta degli errori piu frequenti con spiegazioni</li>
+<li><strong>Schede di confronto</strong>: tabelle riassuntive su strutture dati, operatori, ecc.</li>
+<li><strong>Mini-progetti guidati</strong>: progetti completi per mettere insieme piu argomenti</li>
+<li><strong>Glossario</strong>: definizioni dei termini tecnici usati nel corso</li>
+<li><strong>Cheatsheet Python</strong>: riferimento rapido della sintassi</li>
+</ul>
+<hr>
+<h2>Consigli pratici per lo studio</h2>
+<p>Programmare e un'abilita pratica, come suonare uno strumento o imparare una lingua. Non si impara solo leggendo o guardando: si impara <strong>facendo</strong>. Ecco alcuni consigli basati sull'esperienza.</p>
+<h3>Programmate ogni giorno</h3>
+<p>Anche solo 20-30 minuti al giorno sono piu efficaci di una maratona di 8 ore il giorno prima dell'esame. La programmazione richiede che certi schemi mentali diventino automatici, e questo avviene solo con la pratica regolare.</p>
+<h3>Non copiate</h3>
+<p>Copiare codice da un compagno o da internet senza capirlo e il modo piu sicuro per fallire l'esame. Potete (e dovete) leggere codice altrui, studiare soluzioni, chiedere aiuto — ma poi dovete essere in grado di riscrivere la soluzione da soli, senza guardare.</p>
+<h3>Sbagliare e normale</h3>
+<p>Nessun programmatore, nemmeno il piu esperto, scrive codice corretto al primo tentativo. Gli errori non sono un segno di incapacita: sono il meccanismo fondamentale dell'apprendimento. Quando il programma non funziona, leggete il messaggio di errore con attenzione: Python e piuttosto bravo a dirvi cosa e andato storto e dove.</p>
+<h3>Usate le risorse del corso</h3>
+<p>Le dispense, gli esercizi, le autovalutazioni e gli errori comuni sono stati progettati per accompagnarvi passo dopo passo. Non saltate gli esercizi pensando "questo lo so gia fare": provatelo davvero, e verificate che il vostro codice produca il risultato corretto.</p>
+<h3>Fate domande</h3>
+<p>Se qualcosa non e chiaro, chiedete. A lezione, in laboratorio, via email, al ricevimento. Non esiste una domanda stupida — esiste solo il rischio di restare indietro in silenzio.</p>
+<hr>
+<h2>Prossimi passi</h2>
+<p>Nella prossima lezione (T01) entreremo nel vivo del corso, partendo dalle fondamenta teoriche: cos'e l'informazione, come si misura, e come i computer rappresentano i numeri. Preparatevi installando Python e VS Code, cosi al primo laboratorio sarete gia pronti per scrivere il vostro primo programma.</p>
+<p>Buon corso a tutti!</p>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span><a href="T01_informazione_bit_numerazione.html">T01 →</a></span></nav>
+</body>
+</html>

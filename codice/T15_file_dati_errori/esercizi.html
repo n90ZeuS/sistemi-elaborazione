@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T15_file_dati_errori/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T15_file_dati_errori.html">Dispensa</a> &bull; <a href="../../presentazioni/T15_file_dati_errori.html">Presentazione</a> &bull; <a href="esempi.html">Esempi</a></nav>
+<h1>T15_file_dati_errori/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F15 — File, dati, errori</span>
+<span class="cm"># Esercizi per la lezione frontale 15</span>
+
+<span class="kw">import</span> csv
+<span class="kw">import</span> json
+<span class="kw">import</span> tempfile
+<span class="kw">import</span> shutil
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+<span class="kw">from</span> typing <span class="kw">import</span> Any
+
+<span class="cm"># Creiamo una directory temporanea per tutti gli esercizi</span>
+DIR_TEMP: <span class="nb">str</span> <span class="op">=</span> tempfile.mkdtemp(prefix<span class="op">=</span><span class="st">&quot;f15_esercizi_&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Directory temporanea: {DIR_TEMP}\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 1: Calcolatore di statistiche da CSV</span>
+<span class="cm"># Creare un file CSV programmaticamente, poi leggere i dati e</span>
+<span class="cm"># calcolare statistiche.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 1: Statistiche da CSV ===&quot;</span>)
+
+<span class="cm"># --- Creazione dati di test ---</span>
+percorso_voti: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;voti_esame.csv&quot;</span>
+
+dati_voti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span>]] <span class="op">=</span> [
+    {<span class="st">&quot;studente&quot;</span>: <span class="st">&quot;Marco Rossi&quot;</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;fisica&quot;</span>: <span class="mi">25</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">30</span>},
+    {<span class="st">&quot;studente&quot;</span>: <span class="st">&quot;Laura Bianchi&quot;</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;fisica&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">29</span>},
+    {<span class="st">&quot;studente&quot;</span>: <span class="st">&quot;Giulia Verdi&quot;</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">24</span>, <span class="st">&quot;fisica&quot;</span>: <span class="mi">22</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">26</span>},
+    {<span class="st">&quot;studente&quot;</span>: <span class="st">&quot;Paolo Neri&quot;</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">27</span>, <span class="st">&quot;fisica&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">27</span>},
+    {<span class="st">&quot;studente&quot;</span>: <span class="st">&quot;Anna Gialli&quot;</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;fisica&quot;</span>: <span class="mi">29</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">30</span>},
+    {<span class="st">&quot;studente&quot;</span>: <span class="st">&quot;Luca Blu&quot;</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">22</span>, <span class="st">&quot;fisica&quot;</span>: <span class="mi">20</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">24</span>},
+    {<span class="st">&quot;studente&quot;</span>: <span class="st">&quot;Sara Rosa&quot;</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">26</span>, <span class="st">&quot;fisica&quot;</span>: <span class="mi">27</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">28</span>},
+]
+
+campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;studente&quot;</span>, <span class="st">&quot;matematica&quot;</span>, <span class="st">&quot;fisica&quot;</span>, <span class="st">&quot;informatica&quot;</span>]
+<span class="kw">with</span> <span class="nb">open</span>(percorso_voti, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+    writer: csv.DictWriter <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span>campi)
+    writer.writeheader()
+    writer.writerows(dati_voti)
+
+
+<span class="cm"># --- Funzioni di analisi ---</span>
+<span class="kw">def</span> <span class="fn">leggi_csv</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]:
+    <span class="st">&quot;&quot;&quot;Legge un file CSV e restituisce una lista di dizionari.&quot;&quot;&quot;</span>
+    risultato: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        reader: csv.DictReader <span class="op">=</span> csv.DictReader(f)
+        <span class="kw">for</span> riga <span class="kw">in</span> reader:
+            risultato.append(<span class="nb">dict</span>(riga))
+    <span class="kw">return</span> risultato
+
+
+<span class="kw">def</span> <span class="fn">statistiche_colonna</span>(
+    dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]], colonna: <span class="nb">str</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Calcola statistiche per una colonna numerica.&quot;&quot;&quot;</span>
+    valori: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="nb">float</span>(riga[colonna]) <span class="kw">for</span> riga <span class="kw">in</span> dati]
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    varianza: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori) <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)
+    <span class="kw">return</span> {
+        <span class="st">&quot;media&quot;</span>: media,
+        <span class="st">&quot;minimo&quot;</span>: <span class="nb">min</span>(valori),
+        <span class="st">&quot;massimo&quot;</span>: <span class="nb">max</span>(valori),
+        <span class="st">&quot;varianza&quot;</span>: varianza,
+        <span class="st">&quot;dev_standard&quot;</span>: varianza <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>,
+    }
+
+
+<span class="kw">def</span> <span class="fn">media_studente</span>(<span class="fn">riga</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>], materie: <span class="nb">list</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media dei voti di uno studente.&quot;&quot;&quot;</span>
+    voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="nb">float</span>(riga[m]) <span class="kw">for</span> m <span class="kw">in</span> materie]
+    <span class="kw">return</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+
+
+<span class="cm"># --- Esecuzione ---</span>
+dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> leggi_csv(percorso_voti)
+<span class="kw">assert</span> <span class="nb">len</span>(dati) <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
+
+materie: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;matematica&quot;</span>, <span class="st">&quot;fisica&quot;</span>, <span class="st">&quot;informatica&quot;</span>]
+
+<span class="nb">print</span>(<span class="st">f&quot;{&#x27;Materia&#x27;:&lt;15} {&#x27;Media&#x27;:&gt;7} {&#x27;Min&#x27;:&gt;5} {&#x27;Max&#x27;:&gt;5} {&#x27;Dev.Std&#x27;:&gt;8}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">42</span>)
+<span class="kw">for</span> materia <span class="kw">in</span> materie:
+    stats: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> statistiche_colonna(dati, materia)
+    <span class="nb">print</span>(<span class="st">f&quot;{materia:&lt;15} {stats[&#x27;media&#x27;]:&gt;7.2f} {stats[&#x27;minimo&#x27;]:&gt;5.0f} &quot;</span>
+          <span class="st">f&quot;{stats[&#x27;massimo&#x27;]:&gt;5.0f} {stats[&#x27;dev_standard&#x27;]:&gt;8.2f}&quot;</span>)
+
+<span class="cm"># Verifica</span>
+stats_mat: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> statistiche_colonna(dati, <span class="st">&quot;matematica&quot;</span>)
+<span class="kw">assert</span> stats_mat[<span class="st">&quot;minimo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">22.0</span>
+<span class="kw">assert</span> stats_mat[<span class="st">&quot;massimo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">30.0</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;\n{&#x27;Studente&#x27;:&lt;20} {&#x27;Media&#x27;:&gt;7}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">29</span>)
+<span class="kw">for</span> riga <span class="kw">in</span> dati:
+    m: <span class="nb">float</span> <span class="op">=</span> media_studente(riga, materie)
+    <span class="nb">print</span>(<span class="st">f&quot;{riga[&#x27;studente&#x27;]:&lt;20} {m:&gt;7.2f}&quot;</span>)
+
+<span class="cm"># Migliore studente</span>
+migliore: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> <span class="nb">max</span>(dati, key<span class="op">=</span><span class="kw">lambda</span> r: media_studente(r, materie))
+<span class="kw">assert</span> migliore[<span class="st">&quot;studente&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Laura Bianchi&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;\nMigliore studente: {migliore[&#x27;studente&#x27;]} &quot;</span>
+      <span class="st">f&quot;(media: {media_studente(migliore, materie):.2f})&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 2: Parser di file di log</span>
+<span class="cm"># Creare un file di log programmaticamente, poi analizzarlo.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 2: Parser di log ===&quot;</span>)
+
+<span class="cm"># --- Creazione dati di test ---</span>
+percorso_log: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;applicazione.log&quot;</span>
+
+righe_log: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
+    <span class="st">&quot;2024-01-15 08:30:00 INFO Applicazione avviata&quot;</span>,
+    <span class="st">&quot;2024-01-15 08:30:05 INFO Utente marco ha effettuato il login&quot;</span>,
+    <span class="st">&quot;2024-01-15 08:31:10 WARNING Memoria oltre l&#x27;80%&quot;</span>,
+    <span class="st">&quot;2024-01-15 08:32:00 ERROR Connessione al database fallita&quot;</span>,
+    <span class="st">&quot;2024-01-15 08:32:05 INFO Riconnessione al database riuscita&quot;</span>,
+    <span class="st">&quot;2024-01-15 08:45:00 INFO Utente laura ha effettuato il login&quot;</span>,
+    <span class="st">&quot;2024-01-15 09:00:00 WARNING CPU oltre il 90%&quot;</span>,
+    <span class="st">&quot;2024-01-15 09:15:00 ERROR Timeout nella richiesta API&quot;</span>,
+    <span class="st">&quot;2024-01-15 09:15:05 INFO Richiesta API riprovata con successo&quot;</span>,
+    <span class="st">&quot;2024-01-15 09:30:00 INFO Utente marco ha effettuato il logout&quot;</span>,
+    <span class="st">&quot;2024-01-15 10:00:00 ERROR Disco quasi pieno&quot;</span>,
+    <span class="st">&quot;2024-01-15 10:00:05 WARNING Pulizia automatica avviata&quot;</span>,
+    <span class="st">&quot;2024-01-15 10:05:00 INFO Pulizia completata&quot;</span>,
+]
+
+<span class="kw">with</span> <span class="nb">open</span>(percorso_log, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> riga <span class="kw">in</span> righe_log:
+        f.write(riga <span class="op">+</span> <span class="st">&quot;\n&quot;</span>)
+
+
+<span class="cm"># --- Funzioni di analisi ---</span>
+<span class="kw">def</span> <span class="fn">parse_riga_log</span>(<span class="fn">riga</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Analizza una riga di log nel formato:
+    &#x27;DATA ORA LIVELLO MESSAGGIO&#x27;
+    &quot;&quot;&quot;</span>
+    parti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.strip().split(<span class="st">&quot; &quot;</span>, <span class="mi">3</span>)
+    <span class="kw">return</span> {
+        <span class="st">&quot;data&quot;</span>: parti[<span class="mi">0</span>],
+        <span class="st">&quot;ora&quot;</span>: parti[<span class="mi">1</span>],
+        <span class="st">&quot;livello&quot;</span>: parti[<span class="mi">2</span>],
+        <span class="st">&quot;messaggio&quot;</span>: parti[<span class="mi">3</span>] <span class="kw">if</span> <span class="nb">len</span>(parti) <span class="op">&gt;</span> <span class="mi">3</span> <span class="kw">else</span> <span class="st">&quot;&quot;</span>,
+    }
+
+
+<span class="kw">def</span> <span class="fn">analizza_log</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, Any]:
+    <span class="st">&quot;&quot;&quot;Analizza un file di log e produce un riepilogo.&quot;&quot;&quot;</span>
+    conteggio_livelli: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
+    eventi: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
+
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> f:
+            riga <span class="op">=</span> riga.strip()
+            <span class="kw">if</span> <span class="kw">not</span> riga:
+                <span class="kw">continue</span>
+            evento: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> parse_riga_log(riga)
+            eventi.append(evento)
+            livello: <span class="nb">str</span> <span class="op">=</span> evento[<span class="st">&quot;livello&quot;</span>]
+            conteggio_livelli[livello] <span class="op">=</span> conteggio_livelli.get(livello, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+
+    errori: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> [e <span class="kw">for</span> e <span class="kw">in</span> eventi <span class="kw">if</span> e[<span class="st">&quot;livello&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;ERROR&quot;</span>]
+    warnings: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> [e <span class="kw">for</span> e <span class="kw">in</span> eventi <span class="kw">if</span> e[<span class="st">&quot;livello&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;WARNING&quot;</span>]
+
+    <span class="kw">return</span> {
+        <span class="st">&quot;totale_eventi&quot;</span>: <span class="nb">len</span>(eventi),
+        <span class="st">&quot;conteggio_livelli&quot;</span>: conteggio_livelli,
+        <span class="st">&quot;errori&quot;</span>: errori,
+        <span class="st">&quot;warnings&quot;</span>: warnings,
+    }
+
+
+<span class="cm"># --- Esecuzione ---</span>
+analisi: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> analizza_log(percorso_log)
+
+<span class="kw">assert</span> analisi[<span class="st">&quot;totale_eventi&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">13</span>
+<span class="kw">assert</span> analisi[<span class="st">&quot;conteggio_livelli&quot;</span>][<span class="st">&quot;INFO&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
+<span class="kw">assert</span> analisi[<span class="st">&quot;conteggio_livelli&quot;</span>][<span class="st">&quot;WARNING&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> analisi[<span class="st">&quot;conteggio_livelli&quot;</span>][<span class="st">&quot;ERROR&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;Totale eventi: {analisi[&#x27;totale_eventi&#x27;]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Conteggio per livello:&quot;</span>)
+<span class="kw">for</span> livello, conteggio <span class="kw">in</span> analisi[<span class="st">&quot;conteggio_livelli&quot;</span>].items():
+    <span class="nb">print</span>(<span class="st">f&quot;  {livello}: {conteggio}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\nErrori trovati:&quot;</span>)
+<span class="kw">for</span> errore <span class="kw">in</span> analisi[<span class="st">&quot;errori&quot;</span>]:
+    <span class="nb">print</span>(<span class="st">f&quot;  [{errore[&#x27;ora&#x27;]}] {errore[&#x27;messaggio&#x27;]}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 3: Pipeline di pulizia dati</span>
+<span class="cm"># Leggere dati JSON &quot;sporchi&quot;, pulirli, e salvarli come CSV pulito.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 3: Pipeline di pulizia dati ===&quot;</span>)
+
+<span class="cm"># --- Creazione dati di test (JSON con dati &quot;sporchi&quot;) ---</span>
+percorso_json_sporco: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;dati_sporchi.json&quot;</span>
+
+dati_sporchi: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, Any]] <span class="op">=</span> [
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">22</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;marco@uni.it&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;  Laura  &quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="op">-</span><span class="mi">5</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;laura@uni.it&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">21</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">35</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;giulia@uni.it&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">23</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">27</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;anonimo@uni.it&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Paolo&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">25</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">20</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;anna@uni.it&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="kw">None</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;luca@uni.it&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">22</span>, <span class="st">&quot;voto&quot;</span>: <span class="kw">None</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;sara@uni.it&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">22</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;email&quot;</span>: <span class="st">&quot;marco@uni.it&quot;</span>},  <span class="cm"># duplicato</span>
+]
+
+<span class="kw">with</span> <span class="nb">open</span>(percorso_json_sporco, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    json.dump(dati_sporchi, f, indent<span class="op">=</span><span class="mi">2</span>, ensure_ascii<span class="op">=</span><span class="kw">False</span>)
+
+
+<span class="cm"># --- Funzioni di pulizia ---</span>
+<span class="kw">class</span> <span class="fn">DatoPulitoError</span>(<span class="nb">Exception</span>):
+    <span class="st">&quot;&quot;&quot;Eccezione per dati che non possono essere puliti.&quot;&quot;&quot;</span>
+    <span class="kw">pass</span>
+
+
+<span class="kw">def</span> <span class="fn">pulisci_stringa</span>(<span class="fn">valore</span>: <span class="nb">str</span> <span class="op">|</span> <span class="kw">None</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Rimuove spazi e verifica che la stringa non sia vuota.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> valore <span class="kw">is</span> <span class="kw">None</span>:
+        <span class="kw">raise</span> DatoPulitoError(<span class="st">&quot;Valore nullo&quot;</span>)
+    pulito: <span class="nb">str</span> <span class="op">=</span> valore.strip()
+    <span class="kw">if</span> <span class="kw">not</span> pulito:
+        <span class="kw">raise</span> DatoPulitoError(<span class="st">&quot;Stringa vuota dopo la pulizia&quot;</span>)
+    <span class="kw">return</span> pulito
+
+
+<span class="kw">def</span> <span class="fn">valida_eta</span>(<span class="fn">eta</span>: <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Valida che l&#x27;età sia un intero positivo ragionevole.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> eta <span class="kw">is</span> <span class="kw">None</span>:
+        <span class="kw">raise</span> DatoPulitoError(<span class="st">&quot;Età mancante&quot;</span>)
+    <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(eta, <span class="nb">int</span>) <span class="kw">or</span> eta <span class="op">&lt;</span> <span class="mi">16</span> <span class="kw">or</span> eta <span class="op">&gt;</span> <span class="mi">100</span>:
+        <span class="kw">raise</span> DatoPulitoError(<span class="st">f&quot;Età non valida: {eta}&quot;</span>)
+    <span class="kw">return</span> eta
+
+
+<span class="kw">def</span> <span class="fn">valida_voto</span>(<span class="fn">voto</span>: <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Valida che il voto sia nel range 18-30.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> voto <span class="kw">is</span> <span class="kw">None</span>:
+        <span class="kw">raise</span> DatoPulitoError(<span class="st">&quot;Voto mancante&quot;</span>)
+    <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(voto, <span class="nb">int</span>) <span class="kw">or</span> voto <span class="op">&lt;</span> <span class="mi">18</span> <span class="kw">or</span> voto <span class="op">&gt;</span> <span class="mi">30</span>:
+        <span class="kw">raise</span> DatoPulitoError(<span class="st">f&quot;Voto non valido: {voto}&quot;</span>)
+    <span class="kw">return</span> voto
+
+
+<span class="kw">def</span> <span class="fn">pipeline_pulizia</span>(
+    dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, Any]]
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, Any]], <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]]:
+    <span class="st">&quot;&quot;&quot;
+    Pulisce i dati e restituisce (dati_puliti, log_errori).
+    Rimuove anche i duplicati.
+    &quot;&quot;&quot;</span>
+    puliti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, Any]] <span class="op">=</span> []
+    errori: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
+    visti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>()  <span class="cm"># per deduplicazione</span>
+
+    <span class="kw">for</span> i, record <span class="kw">in</span> <span class="nb">enumerate</span>(dati):
+        <span class="kw">try</span>:
+            nome: <span class="nb">str</span> <span class="op">=</span> pulisci_stringa(record.get(<span class="st">&quot;nome&quot;</span>))
+            eta: <span class="nb">int</span> <span class="op">=</span> valida_eta(record.get(<span class="st">&quot;eta&quot;</span>))
+            voto: <span class="nb">int</span> <span class="op">=</span> valida_voto(record.get(<span class="st">&quot;voto&quot;</span>))
+            email: <span class="nb">str</span> <span class="op">=</span> pulisci_stringa(record.get(<span class="st">&quot;email&quot;</span>))
+
+            <span class="cm"># Deduplicazione basata su nome + email</span>
+            chiave: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;{nome.lower()}_{email.lower()}&quot;</span>
+            <span class="kw">if</span> chiave <span class="kw">in</span> visti:
+                errori.append({
+                    <span class="st">&quot;riga&quot;</span>: <span class="nb">str</span>(i),
+                    <span class="st">&quot;errore&quot;</span>: <span class="st">f&quot;Duplicato: {nome}&quot;</span>,
+                })
+                <span class="kw">continue</span>
+            visti.add(chiave)
+
+            puliti.append({
+                <span class="st">&quot;nome&quot;</span>: nome,
+                <span class="st">&quot;eta&quot;</span>: eta,
+                <span class="st">&quot;voto&quot;</span>: voto,
+                <span class="st">&quot;email&quot;</span>: email,
+            })
+        <span class="kw">except</span> DatoPulitoError <span class="kw">as</span> e:
+            errori.append({
+                <span class="st">&quot;riga&quot;</span>: <span class="nb">str</span>(i),
+                <span class="st">&quot;errore&quot;</span>: <span class="nb">str</span>(e),
+            })
+
+    <span class="kw">return</span> puliti, errori
+
+
+<span class="cm"># --- Esecuzione ---</span>
+
+<span class="cm"># Leggi JSON</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso_json_sporco, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    dati_letti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, Any]] <span class="op">=</span> json.load(f)
+
+<span class="kw">assert</span> <span class="nb">len</span>(dati_letti) <span class="op">=</span><span class="op">=</span> <span class="mi">9</span>
+
+<span class="cm"># Pulizia</span>
+dati_puliti, log_errori <span class="op">=</span> pipeline_pulizia(dati_letti)
+
+<span class="nb">print</span>(<span class="st">f&quot;Record originali: {len(dati_letti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Record puliti: {len(dati_puliti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Record scartati: {len(log_errori)}&quot;</span>)
+
+<span class="kw">assert</span> <span class="nb">len</span>(dati_puliti) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>  <span class="cm"># Marco(22,28) e Anna(20,30) sono gli unici puliti</span>
+
+<span class="nb">print</span>(<span class="st">&quot;\nRecord puliti:&quot;</span>)
+<span class="kw">for</span> record <span class="kw">in</span> dati_puliti:
+    <span class="nb">print</span>(<span class="st">f&quot;  {record}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\nErrori di pulizia:&quot;</span>)
+<span class="kw">for</span> errore <span class="kw">in</span> log_errori:
+    <span class="nb">print</span>(<span class="st">f&quot;  Riga {errore[&#x27;riga&#x27;]}: {errore[&#x27;errore&#x27;]}&quot;</span>)
+
+<span class="cm"># Salva come CSV pulito</span>
+percorso_csv_pulito: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;dati_puliti.csv&quot;</span>
+<span class="kw">if</span> dati_puliti:
+    <span class="kw">with</span> <span class="nb">open</span>(percorso_csv_pulito, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+        writer <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span><span class="nb">list</span>(dati_puliti[<span class="mi">0</span>].keys()))
+        writer.writeheader()
+        writer.writerows(dati_puliti)
+    <span class="nb">print</span>(<span class="st">f&quot;\nCSV pulito salvato: {percorso_csv_pulito}&quot;</span>)
+
+<span class="cm"># Salva log errori</span>
+percorso_log_errori: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;errori_pulizia.json&quot;</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso_log_errori, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    json.dump(log_errori, f, indent<span class="op">=</span><span class="mi">2</span>, ensure_ascii<span class="op">=</span><span class="kw">False</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Log errori salvato: {percorso_log_errori}&quot;</span>)
+
+<span class="cm"># Verifica che i dati puliti siano validi</span>
+<span class="kw">for</span> record <span class="kw">in</span> dati_puliti:
+    <span class="kw">assert</span> <span class="nb">isinstance</span>(record[<span class="st">&quot;nome&quot;</span>], <span class="nb">str</span>) <span class="kw">and</span> <span class="nb">len</span>(record[<span class="st">&quot;nome&quot;</span>]) <span class="op">&gt;</span> <span class="mi">0</span>
+    <span class="kw">assert</span> <span class="nb">isinstance</span>(record[<span class="st">&quot;eta&quot;</span>], <span class="nb">int</span>) <span class="kw">and</span> <span class="mi">16</span> <span class="op">&lt;</span><span class="op">=</span> record[<span class="st">&quot;eta&quot;</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="mi">100</span>
+    <span class="kw">assert</span> <span class="nb">isinstance</span>(record[<span class="st">&quot;voto&quot;</span>], <span class="nb">int</span>) <span class="kw">and</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> record[<span class="st">&quot;voto&quot;</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>
+    <span class="kw">assert</span> <span class="nb">isinstance</span>(record[<span class="st">&quot;email&quot;</span>], <span class="nb">str</span>) <span class="kw">and</span> <span class="nb">len</span>(record[<span class="st">&quot;email&quot;</span>]) <span class="op">&gt;</span> <span class="mi">0</span>
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 3 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># Pulizia directory temporanea</span>
+<span class="cm"># ============================================================</span>
+shutil.rmtree(DIR_TEMP)
+<span class="nb">print</span>(<span class="st">f&quot;Directory temporanea rimossa: {DIR_TEMP}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;\n=== Tutti gli esercizi F15 completati! ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

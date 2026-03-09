@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T10 — Comprehension e stringhe — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="T09_cicli.html">← T09</a> &bull; <a href="T11_liste_tuple.html">T11 →</a> &bull; <a href="../../presentazioni/T10_comprehension_stringhe.html">Presentazione</a></nav>
+<h1>T10 — Comprehension e stringhe</h1>
+
+<h1>Lezione 10 — Comprehension e stringhe</h1>
+<h2>Introduzione</h2>
+<p>Nella lezione precedente abbiamo visto i cicli <code>for</code> e <code>while</code>, e abbiamo identificato una serie di pattern ricorrenti: accumulatore, contatore, filtro, trasformazione. Se li guardate con attenzione, noterete che molti di questi pattern condividono la stessa struttura: scorrere una sequenza, applicare una trasformazione o un filtro, e raccogliere i risultati in una nuova collezione.</p>
+<p>Python offre una sintassi dedicata per esprimere questi pattern in modo compatto e dichiarativo: le <strong>comprehension</strong>. Invece di dire <em>come</em> costruire la lista passo per passo (approccio imperativo), con una comprehension descrivete <em>cosa</em> deve contenere la lista (approccio dichiarativo). Il risultato e un codice piu leggibile, piu breve e spesso piu efficiente.</p>
+<p>Nella seconda parte della lezione ci occuperemo delle <strong>stringhe</strong> come struttura dati. Finora le abbiamo usate soprattutto per stampare messaggi, ma le stringhe sono sequenze a tutti gli effetti: si indicizzano, si affettano, si iterano. In statistica, lavorare con dati testuali e una necessita quotidiana: nomi di variabili, etichette di categorie, dati importati da file CSV che arrivano "sporchi" e vanno ripuliti. Conoscere i metodi delle stringhe vi risparmiera ore di lavoro.</p>
+<hr>
+<h2>List comprehension</h2>
+<h3>Sintassi di base</h3>
+<p>Una list comprehension ha questa forma:</p>
+<pre><code>[espressione <span class="kw">for</span> variabile <span class="kw">in</span> iterabile]</code></pre>
+<p>Dove <code>espressione</code> e il valore che finisce nella lista risultante, <code>variabile</code> assume a turno ogni valore dell'<code>iterabile</code>. Vediamo un esempio concreto. Supponiamo di voler calcolare il quadrato di ogni numero in una lista:</p>
+<pre><code>numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri]
+<span class="nb">print</span>(quadrati)  <span class="cm"># [1, 4, 9, 16, 25]</span></code></pre>
+<p>Confrontiamo con il ciclo <code>for</code> equivalente:</p>
+<pre><code>numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">for</span> n <span class="kw">in</span> numeri:
+    quadrati.append(n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+<span class="nb">print</span>(quadrati)  <span class="cm"># [1, 4, 9, 16, 25]</span></code></pre>
+<p>Il risultato e identico. La comprehension comprime quattro righe in una, rendendo immediatamente visibile l'intenzione: "voglio una lista dei quadrati di <code>numeri</code>". Il ciclo <code>for</code>, invece, richiede di leggere il corpo per capire cosa sta accadendo.</p>
+<h3>Comprehension con filtro</h3>
+<p>Si puo aggiungere una clausola <code>if</code> per selezionare solo alcuni elementi:</p>
+<pre><code>[espressione <span class="kw">for</span> variabile <span class="kw">in</span> iterabile <span class="kw">if</span> condizione]</code></pre>
+<p>Esempio: dai voti, estrarre solo quelli sufficienti e convertirli in trentesimi normalizzati:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">15</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">12</span>, <span class="mi">27</span>, <span class="mi">18</span>]
+sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+<span class="nb">print</span>(sufficienti)  <span class="cm"># [28, 30, 22, 27, 18]</span></code></pre>
+<p>L'equivalente con ciclo <code>for</code>:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">15</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">12</span>, <span class="mi">27</span>, <span class="mi">18</span>]
+sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">for</span> v <span class="kw">in</span> voti:
+    <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        sufficienti.append(v)</code></pre>
+<p>Anche qui, la comprehension esprime lo stesso concetto in modo piu diretto: "prendi i voti che sono >= 18".</p>
+<h3>Trasformazione e filtro insieme</h3>
+<p>Si possono combinare trasformazione e filtro nella stessa comprehension:</p>
+<pre><code>temperature_fahrenheit: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">32.0</span>, <span class="mi">68.0</span>, <span class="mi">95.0</span>, <span class="mi">14.0</span>, <span class="mi">77.0</span>, <span class="mi">50.0</span>]
+
+<span class="cm"># Converti in Celsius solo le temperature sopra lo zero Fahrenheit,</span>
+<span class="cm"># arrotondando a una cifra decimale</span>
+temperature_celsius: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [
+    <span class="nb">round</span>((f <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>, <span class="mi">1</span>)
+    <span class="kw">for</span> f <span class="kw">in</span> temperature_fahrenheit
+    <span class="kw">if</span> f <span class="op">&gt;</span> <span class="mi">0</span>
+]
+<span class="nb">print</span>(temperature_celsius)  <span class="cm"># [0.0, 20.0, 35.0, -10.0, 25.0, 10.0]</span></code></pre>
+<h3>Perche le comprehension esistono</h3>
+<p>Le comprehension non sono solo "zucchero sintattico" (un modo piu breve di scrivere la stessa cosa). Esistono perche rendono esplicito un pattern che altrimenti sarebbe nascosto nel corpo di un ciclo. Quando un programmatore legge <code>[f(x) for x in lista if p(x)]</code>, riconosce immediatamente: "si sta costruendo una nuova lista applicando <code>f</code> agli elementi di <code>lista</code> che soddisfano <code>p</code>". Con un ciclo <code>for</code>, deve leggere tre o quattro righe per arrivare alla stessa conclusione.</p>
+<p>In termini di prestazioni, le list comprehension sono generalmente piu veloci del ciclo equivalente, perche Python ottimizza internamente l'operazione di append.</p>
+<hr>
+<h2>Dict comprehension</h2>
+<p>La stessa idea si applica ai dizionari. La sintassi e:</p>
+<pre><code>{chiave: valore <span class="kw">for</span> variabile <span class="kw">in</span> iterabile}</code></pre>
+<p>Esempio: creare un dizionario che associa ogni nome alla sua lunghezza:</p>
+<pre><code>nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Francesca&quot;</span>]
+lunghezze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {nome: <span class="nb">len</span>(nome) <span class="kw">for</span> nome <span class="kw">in</span> nomi}
+<span class="nb">print</span>(lunghezze)  <span class="cm"># {&#x27;Anna&#x27;: 4, &#x27;Marco&#x27;: 5, &#x27;Luca&#x27;: 4, &#x27;Francesca&#x27;: 9}</span></code></pre>
+<p>Si puo anche partire da coppie chiave-valore. Supponiamo di avere un dizionario di voti e di voler tenere solo quelli sufficienti:</p>
+<pre><code>registro: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {
+    <span class="st">&quot;Anna&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;Marco&quot;</span>: <span class="mi">15</span>, <span class="st">&quot;Luca&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;Sara&quot;</span>: <span class="mi">12</span>, <span class="st">&quot;Paolo&quot;</span>: <span class="mi">22</span>
+}
+
+promossi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {
+    nome: voto <span class="kw">for</span> nome, voto <span class="kw">in</span> registro.items() <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>
+}
+<span class="nb">print</span>(promossi)  <span class="cm"># {&#x27;Anna&#x27;: 28, &#x27;Luca&#x27;: 30, &#x27;Paolo&#x27;: 22}</span></code></pre>
+<p>Un altro uso comune: invertire un dizionario (scambiare chiavi e valori):</p>
+<pre><code>codici: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;Milano&quot;</span>: <span class="mi">2</span>, <span class="st">&quot;Roma&quot;</span>: <span class="mi">6</span>, <span class="st">&quot;Napoli&quot;</span>: <span class="mi">81</span>}
+inverso: <span class="nb">dict</span>[<span class="nb">int</span>, <span class="nb">str</span>] <span class="op">=</span> {v: k <span class="kw">for</span> k, v <span class="kw">in</span> codici.items()}
+<span class="nb">print</span>(inverso)  <span class="cm"># {2: &#x27;Milano&#x27;, 6: &#x27;Roma&#x27;, 81: &#x27;Napoli&#x27;}</span></code></pre>
+<hr>
+<h2>Set comprehension</h2>
+<p>I set (insiemi) supportano la stessa sintassi, con le parentesi graffe ma senza la struttura chiave-valore:</p>
+<pre><code>{espressione <span class="kw">for</span> variabile <span class="kw">in</span> iterabile}</code></pre>
+<p>Esempio: estrarre i valori unici delle prime lettere di una lista di nomi:</p>
+<pre><code>nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Andrea&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Maria&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+iniziali: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {nome[<span class="mi">0</span>] <span class="kw">for</span> nome <span class="kw">in</span> nomi}
+<span class="nb">print</span>(iniziali)  <span class="cm"># {&#x27;A&#x27;, &#x27;M&#x27;, &#x27;L&#x27;}</span></code></pre>
+<p>Le set comprehension sono utili quando volete eliminare i duplicati dal risultato di una trasformazione.</p>
+<hr>
+<h2>Generator expression</h2>
+<p>Le generator expression hanno la stessa sintassi delle list comprehension, ma con parentesi tonde:</p>
+<pre><code>(espressione <span class="kw">for</span> variabile <span class="kw">in</span> iterabile)</code></pre>
+<p>La differenza fondamentale e che un generatore <strong>non costruisce tutta la lista in memoria</strong>. Produce i valori uno alla volta, su richiesta. Questo si chiama <strong>lazy evaluation</strong> (valutazione pigra): il lavoro viene fatto solo quando il risultato serve davvero.</p>
+<pre><code>numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+
+<span class="cm"># List comprehension: crea tutta la lista in memoria</span>
+quadrati_lista: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri]
+
+<span class="cm"># Generator expression: non crea nulla finché non lo chiedi</span>
+quadrati_gen <span class="op">=</span> (n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri)
+<span class="nb">print</span>(<span class="nb">type</span>(quadrati_gen))  <span class="cm"># &lt;class &#x27;generator&#x27;&gt;</span></code></pre>
+<p>Il generatore si consuma iterandolo:</p>
+<pre><code><span class="kw">for</span> q <span class="kw">in</span> quadrati_gen:
+    <span class="nb">print</span>(q)  <span class="cm"># 1, 4, 9, 16, 25</span></code></pre>
+<h3>Quando usare i generatori</h3>
+<p>I generatori brillano quando lavorate con grandi quantita di dati e non avete bisogno di tutti i risultati contemporaneamente. Ad esempio, per sommare i quadrati di un milione di numeri:</p>
+<pre><code><span class="cm"># MALE: crea una lista di 1 milione di elementi solo per sommarla</span>
+totale: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>([n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1_000_000</span>)])
+
+<span class="cm"># BENE: il generatore produce i valori uno alla volta, senza occupare memoria</span>
+totale: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1_000_000</span>))</code></pre>
+<p>Nota: quando una generator expression e l'unico argomento di una funzione, si possono omettere le parentesi esterne. Quindi <code>sum((n <strong> 2 for n in range(1<em>000</em>000)))</code> si semplifica in <code>sum(n </strong> 2 for n in range(1<em>000</em>000))</code>.</p>
+<p>Funzioni come <code>sum()</code>, <code>min()</code>, <code>max()</code>, <code>any()</code>, <code>all()</code> accettano tutte un iterabile, e i generatori sono perfetti per questo scopo.</p>
+<hr>
+<h2>Best practice sulle comprehension</h2>
+<h3>Quando usarle</h3>
+<p>Le comprehension sono ideali per:</p>
+<ul>
+<li><strong>Trasformazioni semplici</strong>: <code>[f(x) for x in lista]</code></li>
+<li><strong>Filtri semplici</strong>: <code>[x for x in lista if condizione]</code></li>
+<li><strong>Combinazione trasformazione + filtro</strong>: <code>[f(x) for x in lista if condizione]</code></li>
+</ul>
+<h3>Quando evitarle</h3>
+<p><strong>Comprehension annidate complesse.</strong> Tecnicamente Python permette comprehension dentro comprehension, ma il risultato e spesso illeggibile:</p>
+<pre><code><span class="cm"># MALE: difficile da leggere</span>
+matrice: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>], [<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]]
+piatta: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [x <span class="kw">for</span> riga <span class="kw">in</span> matrice <span class="kw">for</span> x <span class="kw">in</span> riga]
+<span class="cm"># Funziona, ma chi legge deve fermarsi a pensare</span></code></pre>
+<p>Meglio un ciclo esplicito o una funzione dedicata quando la logica diventa complessa.</p>
+<p><strong>Mai per side effect.</strong> Una comprehension deve <em>produrre un valore</em>, non <em>fare qualcosa</em>. Questo e un anti-pattern grave:</p>
+<pre><code><span class="cm"># MALE: comprehension usata per side effect</span>
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+[<span class="nb">print</span>(nome) <span class="kw">for</span> nome <span class="kw">in</span> nomi]  <span class="cm"># crea una lista di None inutile!</span></code></pre>
+<p>Si sta costruendo una lista di valori <code>None</code> (il valore di ritorno di <code>print()</code>) solo per il side effect della stampa. Usate un ciclo <code>for</code> normale:</p>
+<pre><code><span class="cm"># BENE: ciclo for per side effect</span>
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+<span class="kw">for</span> nome <span class="kw">in</span> nomi:
+    <span class="nb">print</span>(nome)</code></pre>
+<p>La regola e: <strong>se il risultato della comprehension non vi interessa, non usate una comprehension</strong>.</p>
+<hr>
+<h2>Stringhe come struttura dati</h2>
+<h3>Sequenze immutabili di caratteri</h3>
+<p>Le stringhe in Python sono <strong>sequenze immutabili di caratteri</strong>. "Sequenza" significa che supportano indicizzazione e slicing, esattamente come le liste. "Immutabile" significa che, una volta creata, una stringa non puo essere modificata: ogni operazione che sembra "modificare" una stringa in realta ne crea una nuova.</p>
+<pre><code>testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Statistica&quot;</span>
+
+<span class="cm"># Indicizzazione</span>
+<span class="nb">print</span>(testo[<span class="mi">0</span>])    <span class="cm"># &#x27;S&#x27;</span>
+<span class="nb">print</span>(testo[<span class="op">-</span><span class="mi">1</span>])   <span class="cm"># &#x27;a&#x27;</span>
+
+<span class="cm"># Slicing</span>
+<span class="nb">print</span>(testo[<span class="mi">0</span>:<span class="mi">4</span>])  <span class="cm"># &#x27;Stat&#x27;</span>
+<span class="nb">print</span>(testo[<span class="mi">4</span>:])   <span class="cm"># &#x27;istica&#x27;</span>
+<span class="nb">print</span>(testo[::<span class="op">-</span><span class="mi">1</span>]) <span class="cm"># &#x27;acitsitats&#x27; (stringa al contrario)</span>
+
+<span class="cm"># Iterazione</span>
+<span class="kw">for</span> carattere <span class="kw">in</span> testo:
+    <span class="nb">print</span>(carattere, end<span class="op">=</span><span class="st">&quot; &quot;</span>)  <span class="cm"># S t a t i s t i c a</span>
+
+<span class="cm"># Lunghezza</span>
+<span class="nb">print</span>(<span class="nb">len</span>(testo))  <span class="cm"># 10</span>
+
+<span class="cm"># Appartenenza</span>
+<span class="nb">print</span>(<span class="st">&quot;ist&quot;</span> <span class="kw">in</span> testo)  <span class="cm"># True</span></code></pre>
+<p>L'immutabilita significa che questo e un errore:</p>
+<pre><code>testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Statistica&quot;</span>
+testo[<span class="mi">0</span>] <span class="op">=</span> <span class="st">&quot;s&quot;</span>  <span class="cm"># TypeError: &#x27;str&#x27; object does not support item assignment</span></code></pre>
+<p>Per "modificare" una stringa, dovete crearne una nuova:</p>
+<pre><code>testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Statistica&quot;</span>
+testo_minuscolo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;s&quot;</span> <span class="op">+</span> testo[<span class="mi">1</span>:]
+<span class="nb">print</span>(testo_minuscolo)  <span class="cm"># &quot;statistica&quot;</span></code></pre>
+<hr>
+<h2>Metodi fondamentali delle stringhe</h2>
+<p>Ogni metodo delle stringhe <strong>restituisce una nuova stringa</strong> (o un altro valore), senza modificare l'originale. Questo e una conseguenza dell'immutabilita.</p>
+<h3><code>strip()</code>, <code>lstrip()</code>, <code>rstrip()</code> — rimozione spazi</h3>
+<pre><code>dato: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;  42.5  \n&quot;</span>
+pulito: <span class="nb">str</span> <span class="op">=</span> dato.strip()
+<span class="nb">print</span>(<span class="nb">repr</span>(pulito))  <span class="cm"># &#x27;42.5&#x27;</span>
+
+<span class="cm"># strip() rimuove spazi, tab, newline da entrambi i lati</span>
+<span class="cm"># lstrip() solo a sinistra, rstrip() solo a destra</span></code></pre>
+<p>Nella pulizia di dati importati da file, <code>strip()</code> e quasi sempre il primo metodo da chiamare.</p>
+<h3><code>split()</code> e <code>join()</code> — dividere e ricomporre</h3>
+<p><code>split()</code> divide una stringa in una lista di sottostringhe, usando un separatore:</p>
+<pre><code>riga: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Anna,28,Economia&quot;</span>
+campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.split(<span class="st">&quot;,&quot;</span>)
+<span class="nb">print</span>(campi)  <span class="cm"># [&#x27;Anna&#x27;, &#x27;28&#x27;, &#x27;Economia&#x27;]</span>
+
+<span class="cm"># Senza argomento, split() divide su qualsiasi spazio bianco</span>
+frase: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;la  statistica   e   bella&quot;</span>
+parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> frase.split()
+<span class="nb">print</span>(parole)  <span class="cm"># [&#x27;la&#x27;, &#x27;statistica&#x27;, &#x27;e&#x27;, &#x27;bella&#x27;]</span></code></pre>
+<p><code>join()</code> fa l'operazione inversa — unisce una lista di stringhe con un separatore:</p>
+<pre><code>parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;media&quot;</span>, <span class="st">&quot;varianza&quot;</span>, <span class="st">&quot;deviazione&quot;</span>]
+risultato: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;, &quot;</span>.join(parole)
+<span class="nb">print</span>(risultato)  <span class="cm"># &#x27;media, varianza, deviazione&#x27;</span>
+
+<span class="cm"># Il separatore puo essere qualsiasi stringa</span>
+percorso: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;/&quot;</span>.join([<span class="st">&quot;home&quot;</span>, <span class="st">&quot;utente&quot;</span>, <span class="st">&quot;dati&quot;</span>])
+<span class="nb">print</span>(percorso)  <span class="cm"># &#x27;home/utente/dati&#x27;</span></code></pre>
+<h3><code>replace()</code> — sostituzione</h3>
+<pre><code>testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;valore: N/A&quot;</span>
+pulito: <span class="nb">str</span> <span class="op">=</span> testo.replace(<span class="st">&quot;N/A&quot;</span>, <span class="st">&quot;0&quot;</span>)
+<span class="nb">print</span>(pulito)  <span class="cm"># &#x27;valore: 0&#x27;</span>
+
+<span class="cm"># Sostituisce TUTTE le occorrenze</span>
+dati: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;1,2,,4,,6&quot;</span>
+dati_puliti: <span class="nb">str</span> <span class="op">=</span> dati.replace(<span class="st">&quot;,,&quot;</span>, <span class="st">&quot;,0,&quot;</span>)
+<span class="nb">print</span>(dati_puliti)  <span class="cm"># &#x27;1,2,0,4,0,6&#x27;</span></code></pre>
+<h3><code>find()</code> e <code>index()</code> — ricerca</h3>
+<pre><code>testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;La media campionaria&quot;</span>
+
+<span class="cm"># find() restituisce la posizione, o -1 se non trovato</span>
+pos: <span class="nb">int</span> <span class="op">=</span> testo.find(<span class="st">&quot;media&quot;</span>)
+<span class="nb">print</span>(pos)  <span class="cm"># 3</span>
+
+pos_assente: <span class="nb">int</span> <span class="op">=</span> testo.find(<span class="st">&quot;varianza&quot;</span>)
+<span class="nb">print</span>(pos_assente)  <span class="cm"># -1</span>
+
+<span class="cm"># index() fa lo stesso, ma lancia ValueError se non trovato</span>
+<span class="cm"># pos: int = testo.index(&quot;varianza&quot;)  # ValueError!</span></code></pre>
+<h3><code>startswith()</code> e <code>endswith()</code> — prefisso e suffisso</h3>
+<pre><code>nome_file: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;dati_2024.csv&quot;</span>
+
+<span class="nb">print</span>(nome_file.startswith(<span class="st">&quot;dati&quot;</span>))  <span class="cm"># True</span>
+<span class="nb">print</span>(nome_file.endswith(<span class="st">&quot;.csv&quot;</span>))    <span class="cm"># True</span>
+<span class="nb">print</span>(nome_file.endswith(<span class="st">&quot;.xlsx&quot;</span>))   <span class="cm"># False</span></code></pre>
+<p>Utile per filtrare nomi di file, controllare formati, validare input.</p>
+<h3><code>upper()</code>, <code>lower()</code>, <code>title()</code>, <code>capitalize()</code> — maiuscole e minuscole</h3>
+<pre><code>testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;statistica Descrittiva&quot;</span>
+
+<span class="nb">print</span>(testo.upper())       <span class="cm"># &#x27;STATISTICA DESCRITTIVA&#x27;</span>
+<span class="nb">print</span>(testo.lower())       <span class="cm"># &#x27;statistica descrittiva&#x27;</span>
+<span class="nb">print</span>(testo.title())       <span class="cm"># &#x27;Statistica Descrittiva&#x27;</span>
+<span class="nb">print</span>(testo.capitalize())  <span class="cm"># &#x27;Statistica descrittiva&#x27;</span></code></pre>
+<p>La conversione a <code>lower()</code> e fondamentale per confronti case-insensitive:</p>
+<pre><code>risposta: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Si&quot;</span>
+<span class="kw">if</span> risposta.lower() <span class="op">=</span><span class="op">=</span> <span class="st">&quot;si&quot;</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Confermato&quot;</span>)</code></pre>
+<h3><code>isdigit()</code>, <code>isalpha()</code>, <code>isalnum()</code> — test sul contenuto</h3>
+<pre><code><span class="nb">print</span>(<span class="st">&quot;42&quot;</span>.isdigit())      <span class="cm"># True</span>
+<span class="nb">print</span>(<span class="st">&quot;3.14&quot;</span>.isdigit())    <span class="cm"># False (il punto non e una cifra)</span>
+<span class="nb">print</span>(<span class="st">&quot;abc&quot;</span>.isalpha())     <span class="cm"># True</span>
+<span class="nb">print</span>(<span class="st">&quot;abc123&quot;</span>.isalnum())  <span class="cm"># True</span>
+<span class="nb">print</span>(<span class="st">&quot;abc 123&quot;</span>.isalnum()) <span class="cm"># False (lo spazio non e alfanumerico)</span></code></pre>
+<p>Questi metodi sono utili per validare l'input dell'utente prima di convertirlo.</p>
+<hr>
+<h2>Pattern di pulizia dati: split + strip</h2>
+<p>Un pattern estremamente comune in statistica e il parsing manuale di righe CSV. I dati arrivano spesso con spazi extra, newline a fine riga, campi vuoti:</p>
+<pre><code>riga_grezza: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;  Anna , 28 , Economia , 105  \n&quot;</span>
+
+<span class="cm"># Step 1: strip della riga intera</span>
+riga: <span class="nb">str</span> <span class="op">=</span> riga_grezza.strip()
+
+<span class="cm"># Step 2: split sul separatore</span>
+campi_grezzi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.split(<span class="st">&quot;,&quot;</span>)
+<span class="cm"># [&#x27;  Anna &#x27;, &#x27; 28 &#x27;, &#x27; Economia &#x27;, &#x27; 105  &#x27;]</span>
+
+<span class="cm"># Step 3: strip di ogni campo — ecco la comprehension!</span>
+campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [campo.strip() <span class="kw">for</span> campo <span class="kw">in</span> campi_grezzi]
+<span class="cm"># [&#x27;Anna&#x27;, &#x27;28&#x27;, &#x27;Economia&#x27;, &#x27;105&#x27;]</span></code></pre>
+<p>In una riga sola:</p>
+<pre><code>campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> riga_grezza.strip().split(<span class="st">&quot;,&quot;</span>)]</code></pre>
+<p>Questo pattern combina tutto cio che abbiamo visto: metodi delle stringhe e list comprehension. Vedrete una variante di questo codice ogni volta che lavorerete con dati testuali.</p>
+<p>Un esempio piu completo — leggere un "mini-CSV" e convertirlo in una lista di dizionari:</p>
+<pre><code>righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
+    <span class="st">&quot;nome, eta, voto&quot;</span>,
+    <span class="st">&quot;Anna, 22, 28&quot;</span>,
+    <span class="st">&quot;Marco, 21, 25&quot;</span>,
+    <span class="st">&quot;Sara, 23, 30&quot;</span>,
+]
+
+intestazione: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> righe[<span class="mi">0</span>].split(<span class="st">&quot;,&quot;</span>)]
+dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
+
+<span class="kw">for</span> riga <span class="kw">in</span> righe[<span class="mi">1</span>:]:
+    valori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> riga.split(<span class="st">&quot;,&quot;</span>)]
+    record: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> {
+        intestazione[i]: valori[i] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(intestazione))
+    }
+    dati.append(record)
+
+<span class="nb">print</span>(dati)
+<span class="cm"># [{&#x27;nome&#x27;: &#x27;Anna&#x27;, &#x27;eta&#x27;: &#x27;22&#x27;, &#x27;voto&#x27;: &#x27;28&#x27;},</span>
+<span class="cm">#  {&#x27;nome&#x27;: &#x27;Marco&#x27;, &#x27;eta&#x27;: &#x27;21&#x27;, &#x27;voto&#x27;: &#x27;25&#x27;},</span>
+<span class="cm">#  {&#x27;nome&#x27;: &#x27;Sara&#x27;, &#x27;eta&#x27;: &#x27;23&#x27;, &#x27;voto&#x27;: &#x27;30&#x27;}]</span></code></pre>
+<hr>
+<h2>f-string avanzate</h2>
+<p>Abbiamo gia usato le f-string per inserire variabili nelle stringhe. Ma le f-string supportano anche la <strong>formattazione avanzata</strong> tramite un mini-linguaggio dopo i due punti <code>:</code>.</p>
+<h3>Formattazione di numeri</h3>
+<pre><code>pi: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.141592653589793</span>
+
+<span class="cm"># Cifre decimali</span>
+<span class="nb">print</span>(<span class="st">f&quot;Pi greco: {pi:.2f}&quot;</span>)    <span class="cm"># Pi greco: 3.14</span>
+<span class="nb">print</span>(<span class="st">f&quot;Pi greco: {pi:.4f}&quot;</span>)    <span class="cm"># Pi greco: 3.1416</span>
+
+<span class="cm"># Notazione scientifica</span>
+grande: <span class="nb">float</span> <span class="op">=</span> <span class="mi">6.022e23</span>
+<span class="nb">print</span>(<span class="st">f&quot;Avogadro: {grande:.2e}&quot;</span>)  <span class="cm"># Avogadro: 6.02e+23</span>
+
+<span class="cm"># Percentuale</span>
+tasso: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0325</span>
+<span class="nb">print</span>(<span class="st">f&quot;Tasso: {tasso:.1%}&quot;</span>)  <span class="cm"># Tasso: 3.2%</span>
+
+<span class="cm"># Separatore delle migliaia</span>
+popolazione: <span class="nb">int</span> <span class="op">=</span> <span class="mi">59_641_488</span>
+<span class="nb">print</span>(<span class="st">f&quot;Popolazione: {popolazione:,}&quot;</span>)  <span class="cm"># Popolazione: 59,641,488</span>
+<span class="cm"># Con separatore italiano (punto):</span>
+<span class="nb">print</span>(<span class="st">f&quot;Popolazione: {popolazione:_}&quot;</span>.replace(<span class="st">&quot;_&quot;</span>, <span class="st">&quot;.&quot;</span>))</code></pre>
+<h3>Allineamento e larghezza</h3>
+<pre><code><span class="cm"># Allineamento a destra (default per numeri)</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">13</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;Mese {i:2d}: {&#x27;*&#x27; * i}&quot;</span>)
+<span class="cm"># Mese  1: *</span>
+<span class="cm"># Mese  2: **</span>
+<span class="cm"># ...</span>
+<span class="cm"># Mese 12: ************</span>
+
+<span class="cm"># Allineamento esplicito</span>
+nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Anna&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;|{nome:&lt;15}|&quot;</span>)  <span class="cm"># |Anna           |  (sinistra)</span>
+<span class="nb">print</span>(<span class="st">f&quot;|{nome:&gt;15}|&quot;</span>)  <span class="cm"># |           Anna|  (destra)</span>
+<span class="nb">print</span>(<span class="st">f&quot;|{nome:^15}|&quot;</span>)  <span class="cm"># |     Anna      |  (centro)</span>
+
+<span class="cm"># Tabella formattata</span>
+studenti: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Anna&quot;</span>, <span class="mi">28</span>), (<span class="st">&quot;Marco&quot;</span>, <span class="mi">30</span>), (<span class="st">&quot;Francesca&quot;</span>, <span class="mi">25</span>)
+]
+<span class="nb">print</span>(<span class="st">f&quot;{&#x27;Nome&#x27;:&lt;15} {&#x27;Voto&#x27;:&gt;5}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">21</span>)
+<span class="kw">for</span> nome, voto <span class="kw">in</span> studenti:
+    <span class="nb">print</span>(<span class="st">f&quot;{nome:&lt;15} {voto:&gt;5d}&quot;</span>)
+<span class="cm"># Nome              Voto</span>
+<span class="cm"># ---------------------</span>
+<span class="cm"># Anna                28</span>
+<span class="cm"># Marco               30</span>
+<span class="cm"># Francesca           25</span></code></pre>
+<p>Le f-string formattate sono indispensabili per produrre output leggibili: tabelle di statistiche, report, log.</p>
+<hr>
+<h2>Cenni su espressioni regolari</h2>
+<p>Le espressioni regolari (regex) sono un linguaggio per descrivere <strong>pattern</strong> nelle stringhe. Python le supporta tramite il modulo <code>re</code> della libreria standard. Non le tratteremo in dettaglio, ma e utile sapere che esistono e vedere un paio di esempi.</p>
+<pre><code><span class="kw">import</span> re
+
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Il reddito medio e 32.500 euro, con deviazione standard 8.200 euro.&quot;</span>
+
+<span class="cm"># Trovare tutti i numeri (anche con punto separatore)</span>
+numeri: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> re.findall(<span class="st">r&quot;\d+\.?\d*&quot;</span>, testo)
+<span class="nb">print</span>(numeri)  <span class="cm"># [&#x27;32.500&#x27;, &#x27;8.200&#x27;]</span>
+
+<span class="cm"># Verificare se una stringa e un codice fiscale valido (pattern semplificato)</span>
+cf: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;RSSMRA85M01H501Z&quot;</span>
+<span class="kw">if</span> re.match(<span class="st">r&quot;^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$&quot;</span>, cf):
+    <span class="nb">print</span>(<span class="st">&quot;Formato codice fiscale valido&quot;</span>)</code></pre>
+<p>I simboli principali:</p>
+<ul>
+<li><code>\d</code> = una cifra, <code>\w</code> = un carattere alfanumerico, <code>\s</code> = uno spazio</li>
+<li><code>+</code> = una o piu ripetizioni, <code>*</code> = zero o piu, <code>?</code> = zero o una</li>
+<li><code>^</code> = inizio stringa, <code>$</code> = fine stringa</li>
+<li><code>[A-Z]</code> = un carattere nell'intervallo A-Z</li>
+</ul>
+<p>Le regex sono potenti ma complesse. Per la pulizia di dati semplice, i metodi <code>split()</code>, <code>strip()</code>, <code>replace()</code> sono sufficienti. Le regex diventano necessarie quando i pattern sono variabili o complessi (estrarre date in formati diversi, validare email, analizzare log).</p>
+<p>Il consiglio e: <strong>sapete che esistono</strong>, e quando i metodi stringa non bastano, cercate "python regex" e troverete la soluzione.</p>
+<hr>
+<h2>Applicazioni statistiche: pulizia di dati testuali</h2>
+<p>Nella pratica statistica, i dati raramente arrivano puliti. Ecco alcuni scenari comuni e come affrontarli con gli strumenti di questa lezione.</p>
+<h3>Normalizzazione di categorie</h3>
+<pre><code>risposte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
+    <span class="st">&quot;si&quot;</span>, <span class="st">&quot;Si&quot;</span>, <span class="st">&quot;SI&quot;</span>, <span class="st">&quot; si &quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;No&quot;</span>, <span class="st">&quot;  NO&quot;</span>, <span class="st">&quot;forse&quot;</span>
+]
+
+<span class="cm"># Normalizzare: strip + lower</span>
+normalizzate: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [r.strip().lower() <span class="kw">for</span> r <span class="kw">in</span> risposte]
+<span class="nb">print</span>(normalizzate)
+<span class="cm"># [&#x27;si&#x27;, &#x27;si&#x27;, &#x27;si&#x27;, &#x27;si&#x27;, &#x27;no&#x27;, &#x27;no&#x27;, &#x27;no&#x27;, &#x27;forse&#x27;]</span>
+
+<span class="cm"># Contare le frequenze con una dict comprehension</span>
+valori_unici: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>(normalizzate)
+frequenze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {
+    valore: normalizzate.count(valore) <span class="kw">for</span> valore <span class="kw">in</span> valori_unici
+}
+<span class="nb">print</span>(frequenze)  <span class="cm"># {&#x27;si&#x27;: 4, &#x27;no&#x27;: 3, &#x27;forse&#x27;: 1}</span></code></pre>
+<h3>Estrazione di valori numerici da testo</h3>
+<pre><code>celle: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;42&quot;</span>, <span class="st">&quot;  38.5 &quot;</span>, <span class="st">&quot;N/A&quot;</span>, <span class="st">&quot;27&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;31.2&quot;</span>, <span class="st">&quot;-&quot;</span>]
+
+valori_validi: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+<span class="kw">for</span> cella <span class="kw">in</span> celle:
+    pulita: <span class="nb">str</span> <span class="op">=</span> cella.strip()
+    <span class="cm"># Proviamo a verificare se e un numero</span>
+    <span class="kw">try</span>:
+        valori_validi.append(<span class="nb">float</span>(pulita))
+    <span class="kw">except</span> <span class="nb">ValueError</span>:
+        <span class="kw">pass</span>  <span class="cm"># saltiamo i valori non numerici</span>
+
+<span class="nb">print</span>(valori_validi)  <span class="cm"># [42.0, 38.5, 27.0, 31.2]</span></code></pre>
+<h3>Costruire un report formattato</h3>
+<pre><code><span class="kw">def</span> <span class="fn">report_statistiche</span>(<span class="fn">nome_variabile</span>: <span class="nb">str</span>, valori: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Genera un report testuale per una variabile numerica.&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(valori)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(valori)
+
+    righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
+        <span class="st">f&quot;{&#x27;=&#x27; * 40}&quot;</span>,
+        <span class="st">f&quot;{&#x27;Statistiche descrittive&#x27;:^40}&quot;</span>,
+        <span class="st">f&quot;{&#x27;=&#x27; * 40}&quot;</span>,
+        <span class="st">f&quot;{&#x27;Variabile:&#x27;:&lt;20} {nome_variabile}&quot;</span>,
+        <span class="st">f&quot;{&#x27;N. osservazioni:&#x27;:&lt;20} {n}&quot;</span>,
+        <span class="st">f&quot;{&#x27;Media:&#x27;:&lt;20} {media:&gt;10.2f}&quot;</span>,
+        <span class="st">f&quot;{&#x27;Minimo:&#x27;:&lt;20} {minimo:&gt;10.2f}&quot;</span>,
+        <span class="st">f&quot;{&#x27;Massimo:&#x27;:&lt;20} {massimo:&gt;10.2f}&quot;</span>,
+        <span class="st">f&quot;{&#x27;=&#x27; * 40}&quot;</span>,
+    ]
+    <span class="kw">return</span> <span class="st">&quot;\n&quot;</span>.join(righe)
+
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">23.5</span>, <span class="mi">21.0</span>, <span class="mi">25.3</span>, <span class="mi">19.8</span>, <span class="mi">22.1</span>, <span class="mi">24.7</span>, <span class="mi">20.5</span>]
+<span class="nb">print</span>(report_statistiche(<span class="st">&quot;Temperatura&quot;</span>, dati))</code></pre>
+<p>Output:</p>
+<pre><code><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span>
+         Statistiche descrittive
+<span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span>
+Variabile:           Temperatura
+N. osservazioni:     <span class="mi">7</span>
+Media:                    <span class="mi">22.41</span>
+Minimo:                   <span class="mi">19.80</span>
+Massimo:                  <span class="mi">25.30</span>
+<span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span><span class="op">=</span></code></pre>
+<p>Questo esempio combina <code>join()</code>, f-string con allineamento, e una funzione che restituisce una stringa — tutti strumenti di questa lezione.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li><strong>Qual e la differenza tra una list comprehension e un ciclo <code>for</code> con <code>append()</code>?</strong> Il risultato e diverso o solo la forma?</li>
+</ol>
+<ol>
+<li><strong>Scrivete la list comprehension equivalente al seguente codice:</strong></li>
+</ol>
+<pre><code>   risultato: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+   <span class="kw">for</span> nome <span class="kw">in</span> nomi:
+       <span class="kw">if</span> <span class="nb">len</span>(nome) <span class="op">&gt;</span> <span class="mi">4</span>:
+           risultato.append(nome.upper())</code></pre>
+<ol>
+<li><strong>Qual e la differenza tra una list comprehension <code>[...]</code> e una generator expression <code>(...)</code>?</strong> Quando conviene usare l'una o l'altra?</li>
+</ol>
+<ol>
+<li><strong>Perche <code>[print(x) for x in lista]</code> e considerato un anti-pattern?</strong> Cosa c'e di sbagliato?</li>
+</ol>
+<ol>
+<li><strong>Cosa significa che le stringhe sono "immutabili"?</strong> Cosa succede quando chiamate <code>testo.upper()</code>?</li>
+</ol>
+<ol>
+<li><strong>Spiegate la differenza tra <code>find()</code> e <code>index()</code> applicati a una stringa.</strong></li>
+</ol>
+<ol>
+<li><strong>Descrivete il pattern "split + strip" per la pulizia di dati testuali.</strong> Perche e utile?</li>
+</ol>
+<ol>
+<li><strong>Cosa fa l'espressione <code>f"{valore:.2%}"</code>?</strong> Che output produce se <code>valore</code> e <code>0.1573</code>?</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Data la lista <code>numeri: list[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</code>, scrivete una list comprehension che produca la lista dei numeri pari moltiplicati per 3. Risultato atteso: <code>[6, 12, 18, 24, 30]</code>.</li>
+</ol>
+<ol>
+<li>Data la lista <code>parole: list[str] = ["casa", "albero", "sole", "mare", "acqua"]</code>, create una dict comprehension che associ ogni parola al numero di vocali che contiene. (Suggerimento: usate <code>sum()</code> con una generator expression per contare le vocali.)</li>
+</ol>
+<ol>
+<li>Data la stringa <code>riga: str = "  Mario Rossi , 25 , Roma  "</code>, usate <code>strip()</code> e <code>split(",")</code> per estrarre i tre campi puliti in una lista.</li>
+</ol>
+<ol>
+<li>Scrivete un programma che chiede all'utente un nome di file e stampa <code>True</code> se il nome finisce con <code>.csv</code> o <code>.txt</code>, <code>False</code> altrimenti.</li>
+</ol>
+<h3>Intermedio</h3>
+<ol>
+<li>Data una lista di stringhe che rappresentano righe CSV:</li>
+</ol>
+<pre><code>   righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
+       <span class="st">&quot;prodotto, prezzo, quantita&quot;</span>,
+       <span class="st">&quot; Mele, 2.50, 100 &quot;</span>,
+       <span class="st">&quot;Banane , 1.80 , 150&quot;</span>,
+       <span class="st">&quot; Arance,  3.20, 80 &quot;</span>,
+   ]</code></pre>
+<p>Scrivete un programma che le converte in una lista di dizionari con chiavi dall'intestazione e valori puliti (stringhe senza spazi). Poi calcolate il ricavo totale (prezzo * quantita) per ogni prodotto.</p>
+<ol>
+<li>Scrivete una funzione <code>conta_frequenze(testo: str) -> dict[str, int]</code> che, dato un testo, restituisce un dizionario con la frequenza di ogni parola (convertita in minuscolo). Usate <code>split()</code>, <code>lower()</code> e una dict comprehension o un ciclo.</li>
+</ol>
+<ol>
+<li>Scrivete una funzione <code>formatta_tabella(intestazioni: list[str], righe: list[list[str]]) -> str</code> che produce una tabella formattata con colonne allineate. La larghezza di ogni colonna deve adattarsi al contenuto piu lungo.</li>
+</ol>
+<h3>Avanzato</h3>
+<ol>
+<li>Scrivete una funzione <code>pulisci_dataset(righe: list[str], separatore: str = ",") -> list[dict[str, float]]</code> che:</li>
+</ol>
+<ul>
+<li>prende una lista di righe CSV (la prima e l'intestazione);</li>
+<li>pulisce ogni campo con strip;</li>
+<li>converte i valori numerici in <code>float</code>, sostituendo i valori non convertibili con <code>0.0</code>;</li>
+<li>restituisce una lista di dizionari.</li>
+</ul>
+<p>Testatela con dati che contengono spazi, valori mancanti e valori non numerici.</p>
+<ol>
+<li>Usando le espressioni regolari (<code>re.findall()</code>), scrivete una funzione <code>estrai_numeri(testo: str) -> list[float]</code> che estrae tutti i numeri (interi e decimali, anche negativi) da una stringa di testo e li restituisce come lista di float.</li>
+</ol>
+<pre><code>   testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;La temperatura e variata da -3.5 a 12.8 gradi in 24 ore.&quot;</span>
+   <span class="nb">print</span>(estrai_numeri(testo))  <span class="cm"># [-3.5, 12.8, 24.0]</span></code></pre>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questa lezione abbiamo introdotto due strumenti che lavorano in sinergia. Le <strong>comprehension</strong> forniscono un modo dichiarativo per trasformare e filtrare dati: sono piu concise di un ciclo <code>for</code> equivalente e rendono immediatamente leggibile l'intenzione del codice. Le <strong>stringhe</strong>, con i loro metodi, sono lo strumento fondamentale per manipolare dati testuali — e nel lavoro statistico, una quantita sorprendente di tempo viene spesa a pulire, formattare e interpretare testo.</p>
+<p>Tre punti da ricordare:</p>
+<ol>
+<li><strong>Comprehension semplici, cicli per il resto.</strong> Se una comprehension diventa difficile da leggere, tornate al ciclo <code>for</code>. Non c'e nulla di sbagliato in un ciclo esplicito — la leggibilita e piu importante della concisione.</li>
+</ol>
+<ol>
+<li><strong>Le stringhe sono immutabili.</strong> Ogni metodo (<code>strip()</code>, <code>replace()</code>, <code>upper()</code>, ...) restituisce una <strong>nuova</strong> stringa. L'originale non viene mai modificata. Questo e un principio che ritroverete in molte strutture dati di Python e delle librerie scientifiche.</li>
+</ol>
+<ol>
+<li><strong>Il pattern split + strip e il vostro coltellino svizzero.</strong> Quando lavorerete con dati reali — CSV mal formattati, log di sistema, output di strumenti esterni — la combinazione di <code>split()</code>, <code>strip()</code> e list comprehension risolvera la maggior parte dei problemi di parsing. Per i casi piu complessi, le espressioni regolari vi aspettano.</li>
+</ol>
+<p>Nella prossima lezione introdurremo le <strong>funzioni</strong> in modo piu approfondito: come definirle, come organizzare il codice, e il concetto di scope delle variabili.</p>
+<nav class="bottom-nav"><span><a href="T09_cicli.html">← T09</a></span><span><a href="../../index.html">Home</a></span><span><a href="T11_liste_tuple.html">T11 →</a></span></nav>
+</body>
+</html>

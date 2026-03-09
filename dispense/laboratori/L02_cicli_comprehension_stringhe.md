@@ -1,6 +1,6 @@
 # Laboratorio 2 — Cicli, comprehension e stringhe
 
-**Prerequisiti:** Lezioni frontali F9 (*Cicli*) e F10 (*Comprehension e stringhe*).
+**Prerequisiti:** Lezioni frontali F9 (*Cicli*) e T10 (*Comprehension e stringhe*).
 
 **Obiettivo:** padroneggiare i cicli `for` e `while` con i pattern fondamentali (accumulatore, contatore, min/max), riscrivere cicli come comprehension, manipolare dati testuali con i metodi delle stringhe.
 

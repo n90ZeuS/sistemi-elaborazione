@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T09 — Cicli — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="T08_operatori_io_condizionali.html">← T08</a> &bull; <a href="T10_comprehension_stringhe.html">T10 →</a> &bull; <a href="../../presentazioni/T09_cicli.html">Presentazione</a></nav>
+<h1>T09 — Cicli</h1>
+
+<h1>Lezione 9 — Cicli</h1>
+<h2>Introduzione</h2>
+<p>Con variabili, operatori e condizionali, i vostri programmi sanno memorizzare dati, calcolare e decidere. Ma manca ancora un ingrediente fondamentale: la <strong>ripetizione</strong>. Gran parte del lavoro in statistica consiste nel fare la stessa operazione su molti dati: calcolare la media di mille osservazioni, cercare un valore anomalo in un dataset, applicare una trasformazione a ogni riga di una tabella.</p>
+<p>I cicli permettono di ripetere un blocco di codice senza doverlo riscrivere. Con variabili, condizioni e cicli avete i tre pilastri della programmazione imperativa — tutto il resto è costruito su questi.</p>
+<hr>
+<h2>Il ciclo <code>for</code></h2>
+<p>Il <code>for</code> in Python è un <strong>ciclo di iterazione</strong>: scorre gli elementi di una sequenza (lista, stringa, range, qualsiasi <em>iterabile</em>), uno alla volta, eseguendo un blocco di codice per ciascun elemento.</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="nb">print</span>(<span class="st">f&quot;Voto: {voto}&quot;</span>)</code></pre>
+<p>Ad ogni iterazione, la variabile <code>voto</code> assume il valore dell'elemento successivo della lista. Quando gli elementi finiscono, il ciclo termina.</p>
+<h3><code>range()</code>: generare sequenze di numeri</h3>
+<p>Quando serve un ciclo che si ripete un certo numero di volte, si usa <code>range()</code>:</p>
+<pre><code><span class="cm"># range(stop): da 0 a stop-1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):
+    <span class="nb">print</span>(i)  <span class="cm"># 0, 1, 2, 3, 4</span>
+
+<span class="cm"># range(start, stop): da start a stop-1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">6</span>):
+    <span class="nb">print</span>(i)  <span class="cm"># 1, 2, 3, 4, 5</span>
+
+<span class="cm"># range(start, stop, step): con passo</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">0</span>, <span class="mi">10</span>, <span class="mi">2</span>):
+    <span class="nb">print</span>(i)  <span class="cm"># 0, 2, 4, 6, 8</span>
+
+<span class="cm"># Contare all&#x27;indietro</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">10</span>, <span class="mi">0</span>, <span class="op">-</span><span class="mi">1</span>):
+    <span class="nb">print</span>(i)  <span class="cm"># 10, 9, 8, ..., 1</span></code></pre>
+<p><strong>Perché <code>stop</code> è escluso?</strong> Per due motivi:</p>
+<ol>
+<li><strong>Coerenza con l'indicizzazione da 0:</strong> <code>range(n)</code> produce esattamente <code>n</code> elementi (da 0 a n-1), come gli indici di una lista di lunghezza <code>n</code>.</li>
+<li><strong>Intervalli concatenabili:</strong> <code>range(0, 5)</code> e <code>range(5, 10)</code> coprono insieme <code>range(0, 10)</code> senza sovrapposizioni.</li>
+</ol>
+<p>È una convenzione matematica (intervallo semiaperto [start, stop)) che all'inizio sembra innaturale, ma diventa rapidamente intuitiva.</p>
+<h3><code>enumerate()</code>: indice e valore insieme</h3>
+<p>Spesso serve sia l'indice che il valore. Il modo sbagliato:</p>
+<pre><code><span class="cm"># MALE: anti-pattern C-style</span>
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(nomi)):
+    <span class="nb">print</span>(<span class="st">f&quot;{i}: {nomi[i]}&quot;</span>)</code></pre>
+<p>Il modo pythonic:</p>
+<pre><code><span class="cm"># BENE: enumerate</span>
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+<span class="kw">for</span> i, nome <span class="kw">in</span> <span class="nb">enumerate</span>(nomi):
+    <span class="nb">print</span>(<span class="st">f&quot;{i}: {nome}&quot;</span>)
+
+<span class="cm"># Con indice iniziale diverso</span>
+<span class="kw">for</span> i, nome <span class="kw">in</span> <span class="nb">enumerate</span>(nomi, start<span class="op">=</span><span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{i}. {nome}&quot;</span>)  <span class="cm"># 1. Anna, 2. Marco, 3. Luca</span></code></pre>
+<h3><code>zip()</code>: iterare su più sequenze in parallelo</h3>
+<pre><code>nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+
+<span class="kw">for</span> nome, voto <span class="kw">in</span> <span class="nb">zip</span>(nomi, voti):
+    <span class="nb">print</span>(<span class="st">f&quot;{nome}: {voto}&quot;</span>)
+<span class="cm"># Anna: 28</span>
+<span class="cm"># Marco: 30</span>
+<span class="cm"># Luca: 25</span></code></pre>
+<p><code>zip()</code> si ferma alla sequenza più corta. Se le lunghezze sono diverse e non volete perdere dati, usate <code>itertools.zip_longest</code>.</p>
+<hr>
+<h2>Il ciclo <code>while</code></h2>
+<p>Il <code>while</code> ripete un blocco <strong>finché una condizione è vera</strong>. Si usa quando non si sa in anticipo quante iterazioni servono.</p>
+<pre><code>risposta: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
+<span class="kw">while</span> risposta <span class="op">!</span><span class="op">=</span> <span class="st">&quot;esci&quot;</span>:
+    risposta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Inserisci un comando (o &#x27;esci&#x27;): &quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Hai scritto: {risposta}&quot;</span>)</code></pre>
+<h3>Il pericolo del ciclo infinito</h3>
+<p>Se la condizione non diventa mai falsa, il ciclo non termina mai:</p>
+<pre><code><span class="cm"># ATTENZIONE: ciclo infinito!</span>
+x: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+<span class="kw">while</span> x <span class="op">&gt;</span> <span class="mi">0</span>:
+    x <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>  <span class="cm"># x cresce sempre, la condizione è sempre vera</span></code></pre>
+<p>Per interrompere un ciclo infinito: <code>Ctrl+C</code> nel terminale. Ma meglio: progettate correttamente la condizione di uscita.</p>
+<h3><code>break</code> e <code>continue</code></h3>
+<p><strong><code>break</code></strong>: esce immediatamente dal ciclo.</p>
+<pre><code><span class="cm"># Cercare un valore</span>
+dati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">4</span>, <span class="mi">7</span>, <span class="mi">2</span>, <span class="mi">9</span>, <span class="mi">1</span>, <span class="mi">8</span>]
+obiettivo: <span class="nb">int</span> <span class="op">=</span> <span class="mi">9</span>
+
+<span class="kw">for</span> dato <span class="kw">in</span> dati:
+    <span class="kw">if</span> dato <span class="op">=</span><span class="op">=</span> obiettivo:
+        <span class="nb">print</span>(<span class="st">f&quot;Trovato: {dato}&quot;</span>)
+        <span class="kw">break</span></code></pre>
+<p><strong><code>continue</code></strong>: salta il resto del corpo e passa all'iterazione successiva.</p>
+<pre><code><span class="cm"># Elaborare solo i valori positivi</span>
+valori: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">3.5</span>, <span class="op">-</span><span class="mi">1.2</span>, <span class="mi">4.0</span>, <span class="op">-</span><span class="mi">0.5</span>, <span class="mi">2.1</span>]
+
+<span class="kw">for</span> valore <span class="kw">in</span> valori:
+    <span class="kw">if</span> valore <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">continue</span>  <span class="cm"># salta i negativi</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Elaboro: {valore}&quot;</span>)</code></pre>
+<h3>Il pattern <code>while True + break</code></h3>
+<p>Quando la condizione di uscita è nel mezzo del ciclo, non all'inizio:</p>
+<pre><code><span class="kw">while</span> <span class="kw">True</span>:
+    risposta: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Inserisci un numero positivo (0 per uscire): &quot;</span>)
+    numero: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(risposta)
+    <span class="kw">if</span> numero <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">break</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Il quadrato è {numero ** 2}&quot;</span>)</code></pre>
+<h3><code>for</code> vs <code>while</code>: quando usare quale</h3>
+<ul>
+<li><strong><code>for</code></strong>: quando iterate su una collezione (lista, stringa, range) o sapete quante iterazioni servono. Nel <strong>90% dei casi</strong> in Python, <code>for</code> è la scelta giusta.</li>
+<li><strong><code>while</code></strong>: quando la terminazione dipende da una condizione che cambia durante l'esecuzione (input utente, convergenza di un algoritmo, ricerca).</li>
+</ul>
+<hr>
+<h2>Cicli annidati</h2>
+<p>Un ciclo dentro un altro ciclo:</p>
+<pre><code><span class="cm"># Tavola pitagorica</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">11</span>):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">11</span>):
+        <span class="nb">print</span>(<span class="st">f&quot;{i*j:4d}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+    <span class="nb">print</span>()  <span class="cm"># a capo dopo ogni riga</span></code></pre>
+<p>I cicli annidati sono necessari per lavorare con strutture bidimensionali (matrici, tabelle). Ma <strong>attenzione alla complessità</strong>: un ciclo annidato con n iterazioni ciascuno esegue n² operazioni. Con tre cicli, n³. Se n è grande, il tempo di esecuzione esplode.</p>
+<hr>
+<h2>Pattern comuni</h2>
+<h3>Pattern accumulatore</h3>
+<p>Accumulare un valore (somma, prodotto, concatenazione):</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+
+somma: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    somma <span class="op">+</span><span class="op">=</span> voto
+
+media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> <span class="nb">len</span>(voti)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media:.2f}&quot;</span>)</code></pre>
+<h3>Pattern contatore</h3>
+<p>Contare gli elementi che soddisfano una condizione:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>, <span class="mi">15</span>, <span class="mi">12</span>]
+
+sufficienze: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        sufficienze <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;Sufficienze: {sufficienze} su {len(voti)}&quot;</span>)</code></pre>
+<h3>Pattern ricerca</h3>
+<p>Trovare un elemento specifico:</p>
+<pre><code><span class="kw">def</span> <span class="fn">contiene</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>], obiettivo: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+    <span class="st">&quot;&quot;&quot;Verifica se obiettivo è presente nella lista.&quot;&quot;&quot;</span>
+    <span class="kw">for</span> elemento <span class="kw">in</span> lista:
+        <span class="kw">if</span> elemento <span class="op">=</span><span class="op">=</span> obiettivo:
+            <span class="kw">return</span> <span class="kw">True</span>
+    <span class="kw">return</span> <span class="kw">False</span></code></pre>
+<h3>Pattern filtro</h3>
+<p>Selezionare gli elementi che soddisfano un criterio:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>, <span class="mi">15</span>, <span class="mi">12</span>]
+
+sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        sufficienti.append(voto)
+
+<span class="nb">print</span>(<span class="st">f&quot;Voti sufficienti: {sufficienti}&quot;</span>)</code></pre>
+<h3>Pattern min/max</h3>
+<p>Trovare il minimo o il massimo:</p>
+<pre><code><span class="kw">def</span> <span class="fn">trova_massimo</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Trova il valore massimo nella lista.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+
+    massimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]  <span class="cm"># inizializza col primo elemento</span>
+    <span class="kw">for</span> valore <span class="kw">in</span> valori[<span class="mi">1</span>:]:   <span class="cm"># scorre dal secondo in poi</span>
+        <span class="kw">if</span> valore <span class="op">&gt;</span> massimo:
+            massimo <span class="op">=</span> valore
+    <span class="kw">return</span> massimo</code></pre>
+<p>(Python ha <code>max()</code> e <code>min()</code> built-in, ma è istruttivo capire come funzionano.)</p>
+<h3>Esempio completo: statistiche descrittive</h3>
+<pre><code><span class="kw">def</span> <span class="fn">statistiche</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Calcola statistiche descrittive base.&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    <span class="kw">if</span> n <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+
+    <span class="cm"># Media</span>
+    somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+    <span class="kw">for</span> v <span class="kw">in</span> valori:
+        somma <span class="op">+</span><span class="op">=</span> v
+    media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
+
+    <span class="cm"># Varianza</span>
+    somma_scarti_quadrati: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+    <span class="kw">for</span> v <span class="kw">in</span> valori:
+        somma_scarti_quadrati <span class="op">+</span><span class="op">=</span> (v <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+    varianza: <span class="nb">float</span> <span class="op">=</span> somma_scarti_quadrati <span class="op">/</span> n
+
+    <span class="cm"># Min e max</span>
+    minimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]
+    massimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]
+    <span class="kw">for</span> v <span class="kw">in</span> valori[<span class="mi">1</span>:]:
+        <span class="kw">if</span> v <span class="op">&lt;</span> minimo:
+            minimo <span class="op">=</span> v
+        <span class="kw">if</span> v <span class="op">&gt;</span> massimo:
+            massimo <span class="op">=</span> v
+
+    <span class="kw">return</span> {
+        <span class="st">&quot;n&quot;</span>: n,
+        <span class="st">&quot;media&quot;</span>: media,
+        <span class="st">&quot;varianza&quot;</span>: varianza,
+        <span class="st">&quot;minimo&quot;</span>: minimo,
+        <span class="st">&quot;massimo&quot;</span>: massimo
+    }
+
+<span class="cm"># Test</span>
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">23.5</span>, <span class="mi">21.0</span>, <span class="mi">25.3</span>, <span class="mi">19.8</span>, <span class="mi">22.1</span>]
+risultati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> statistiche(dati)
+<span class="kw">for</span> chiave, valore <span class="kw">in</span> risultati.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{chiave}: {valore:.2f}&quot;</span>)</code></pre>
+<p>Più avanti vedremo che NumPy fa tutto questo in una riga (<code>np.mean()</code>, <code>np.var()</code>, ecc.) — ma è fondamentale capire cosa succede <em>sotto</em>.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li><strong>Qual è la differenza tra <code>for</code> e <code>while</code>?</strong> Quando usare l'uno o l'altro?</li>
+</ol>
+<ol>
+<li><strong>Perché <code>range(5)</code> produce i numeri da 0 a 4 e non da 0 a 5?</strong></li>
+</ol>
+<ol>
+<li><strong>Cos'è <code>enumerate()</code> e perché è preferibile a <code>range(len(lista))</code>?</strong></li>
+</ol>
+<ol>
+<li><strong>Cosa fanno <code>break</code> e <code>continue</code>?</strong> Quale interrompe il ciclo e quale salta un'iterazione?</li>
+</ol>
+<ol>
+<li><strong>Cos'è un ciclo infinito?</strong> Come si evita? Come si interrompe se si verifica?</li>
+</ol>
+<ol>
+<li><strong>Spiegate il pattern accumulatore con un esempio diverso da quelli del testo.</strong></li>
+</ol>
+<ol>
+<li><strong>Perché i cicli annidati possono essere un "segnale di allarme"?</strong></li>
+</ol>
+<ol>
+<li><strong>Nell'esempio della funzione <code>statistiche()</code>, perché si inizializza <code>minimo</code> con <code>valori[0]</code> e non con <code>0</code>?</strong></li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Scrivete un programma che stampa i numeri da 1 a 100. Accanto a ogni multiplo di 3, stampate "Fizz"; accanto a ogni multiplo di 5, "Buzz"; accanto a ogni multiplo di 15, "FizzBuzz".</li>
+</ol>
+<ol>
+<li>Scrivete un programma che legge numeri dall'utente (con <code>while</code>) fino a quando l'utente inserisce 0, e poi stampa la somma di tutti i numeri inseriti.</li>
+</ol>
+<ol>
+<li>Usate <code>enumerate()</code> per stampare una lista di nomi numerata:</li>
+</ol>
+<pre><code>   <span class="mi">1.</span> Anna
+   <span class="mi">2.</span> Marco
+   <span class="mi">3.</span> Luca</code></pre>
+<h3>Intermedio</h3>
+<ol>
+<li>Scrivete una funzione <code>calcola<em>media</em>mobile(valori: list[float], finestra: int) -> list[float]</code> che calcola la media mobile di una lista con una data finestra temporale.</li>
+</ol>
+<ol>
+<li>Scrivete un programma che legge voti dall'utente uno alla volta (0 per terminare) e alla fine stampa: media, voto massimo, voto minimo, numero di sufficienze.</li>
+</ol>
+<ol>
+<li>Scrivete una funzione che, data una lista di numeri, restituisce una nuova lista contenente solo i numeri primi presenti nella lista originale. (Suggerimento: scrivete prima una funzione <code>e_primo(n: int) -> bool</code>.)</li>
+</ol>
+<h3>Avanzato</h3>
+<ol>
+<li>Scrivete una funzione <code>varianza_campionaria(valori: list[float]) -> float</code> che calcola la varianza campionaria (con n-1 al denominatore) senza usare funzioni built-in diverse da <code>len()</code>.</li>
+</ol>
+<ol>
+<li>Implementate la <strong>ricerca binaria</strong>: data una lista <strong>ordinata</strong> e un valore obiettivo, trovate la posizione dell'obiettivo. Se non è presente, restituite -1. (Suggerimento: usate un <code>while</code> che dimezza lo spazio di ricerca ad ogni passo.)</li>
+</ol>
+<pre><code>   <span class="kw">def</span> <span class="fn">ricerca_binaria</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>], obiettivo: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+       <span class="st">&quot;&quot;&quot;Trova la posizione di obiettivo nella lista ordinata. Restituisce -1 se assente.&quot;&quot;&quot;</span>
+       <span class="cm"># Completate...</span>
+
+   <span class="cm"># Test</span>
+   dati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">2</span>, <span class="mi">5</span>, <span class="mi">8</span>, <span class="mi">12</span>, <span class="mi">16</span>, <span class="mi">23</span>, <span class="mi">38</span>, <span class="mi">56</span>, <span class="mi">72</span>, <span class="mi">91</span>]
+   <span class="kw">assert</span> ricerca_binaria(dati, <span class="mi">23</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+   <span class="kw">assert</span> ricerca_binaria(dati, <span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span></code></pre>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>I cicli completano il trio fondamentale: <strong>sequenza</strong>, <strong>selezione</strong> (condizionali), <strong>iterazione</strong> (cicli). Questi tre costrutti, combinati con le variabili, sono sufficienti per esprimere qualsiasi algoritmo — è un risultato teorico noto come <strong>teorema di Böhm-Jacopini</strong> (1966).</p>
+<p>Due lezioni pratiche:</p>
+<ol>
+<li><strong>Riconoscete i pattern.</strong> Accumulatore, contatore, ricerca, filtro, min/max — sono mattoni ricorrenti. Quando affrontate un problema, chiedetevi: "quale pattern serve qui?"</li>
+</ol>
+<ol>
+<li><strong>La funzione <code>statistiche()</code> che abbiamo scritto</strong> usa solo cicli e condizioni, eppure calcola media, varianza, minimo e massimo. Tra qualche lezione, vedremo che NumPy fa lo stesso con <code>np.mean()</code>, <code>np.var()</code>, <code>np.min()</code>, <code>np.max()</code>. Ma ora <strong>capite cosa c'è dentro</strong> quelle funzioni — non è magia, è un ciclo con un accumulatore.</li>
+</ol>
+<p>Nella prossima lezione vedremo le <strong>comprehension</strong> — un modo elegante e conciso di esprimere i pattern filtro e trasformazione — e le <strong>stringhe</strong> come struttura dati.</p>
+<nav class="bottom-nav"><span><a href="T08_operatori_io_condizionali.html">← T08</a></span><span><a href="../../index.html">Home</a></span><span><a href="T10_comprehension_stringhe.html">T10 →</a></span></nav>
+</body>
+</html>

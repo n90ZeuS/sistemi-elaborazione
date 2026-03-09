@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File, dati e gestione degli errori</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>File, dati e gestione degli errori</h1>
+                <div class="subtitle">Leggere, scrivere e proteggersi dal mondo reale</div>
+                <div class="course-info">
+                    <p>Sistemi di Elaborazione &mdash; Lezione 15</p>
+                    <p>Corso di Laurea in Scienze Statistiche</p>
+                </div>
+                <aside class="notes">Lezione dedicata all'interazione con il filesystem: lettura/scrittura file, formati CSV e JSON, gestione degli errori con le eccezioni.</aside>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment"><strong>Aprire e chiudere file</strong> &mdash; <code>open()</code> e il context manager <code>with</code></li>
+                    <li class="fragment"><strong>Leggere file di testo</strong> &mdash; <code>read()</code>, <code>readline()</code>, iterazione</li>
+                    <li class="fragment"><strong>Scrivere file di testo</strong> &mdash; <code>write()</code>, <code>writelines()</code>, append</li>
+                    <li class="fragment"><strong><code>pathlib</code></strong> &mdash; percorsi cross-platform moderni</li>
+                    <li class="fragment"><strong>File CSV</strong> &mdash; <code>csv.reader</code>, <code>DictReader</code>, scrittura</li>
+                    <li class="fragment"><strong>File JSON</strong> &mdash; <code>json.load</code>, <code>json.dump</code> e varianti</li>
+                    <li class="fragment"><strong>Eccezioni</strong> &mdash; <code>try</code>/<code>except</code>, gerarchia, <code>raise</code>, EAFP</li>
+                    <li class="fragment"><strong>Esempio completo</strong> &mdash; CSV problematico con gestione errori</li>
+                </ol>
+            </section>
+
+            <!-- ========== SEZIONE 1: APRIRE E CHIUDERE FILE ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>1. Aprire e chiudere file</h2>
+                    <p><code>open()</code> e il context manager <code>with</code></p>
+                </section>
+
+                <section>
+                    <h2>Il programma incontra il mondo reale</h2>
+                    <p>Finora abbiamo lavorato con dati <strong>definiti nel codice</strong>.</p>
+                    <p>Nella pratica, i dati arrivano <em>da fuori</em>:</p>
+                    <ul>
+                        <li class="fragment">File CSV esportati da un database</li>
+                        <li class="fragment">File JSON restituiti da un'API</li>
+                        <li class="fragment">Fogli di calcolo salvati da un collega</li>
+                    </ul>
+                    <div class="box box-yellow fragment">
+                        <strong>Problema:</strong> il mondo reale e' disordinato. File inesistenti, encoding sbagliati, righe malformate, colonne mancanti. Un programma robusto deve <strong>gestire gli errori</strong>.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>La funzione <code>open()</code></h2>
+                    <p>Per lavorare con un file, il primo passo e' <strong>aprirlo</strong>:</p>
+                    <pre><code class="language-python"># Apertura base — NON fare cosi' (spiegheremo perche')
+f = open("dati.txt", "r", encoding="utf-8")
+contenuto: str = f.read()
+f.close()</code></pre>
+                    <table class="fragment">
+                        <thead>
+                            <tr><th>Parametro</th><th>Significato</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>file</code></td><td>Percorso del file (stringa o <code>Path</code>)</td></tr>
+                            <tr><td><code>mode</code></td><td>Modalita' di apertura</td></tr>
+                            <tr><td><code>encoding</code></td><td>Codifica del testo (quasi sempre <code>"utf-8"</code>)</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Modalita' di apertura</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Modalita'</th><th>Significato</th><th>Il file deve esistere?</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>"r"</code></td><td>Lettura (read) &mdash; default</td><td>Si'</td></tr>
+                            <tr><td><code>"w"</code></td><td>Scrittura (write) &mdash; <strong>sovrascrive</strong></td><td>No (lo crea)</td></tr>
+                            <tr><td><code>"a"</code></td><td>Aggiunta (append) &mdash; scrive in fondo</td><td>No (lo crea)</td></tr>
+                            <tr><td><code>"x"</code></td><td>Creazione esclusiva &mdash; errore se esiste</td><td>No (lo crea)</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        Si puo' aggiungere <code>"b"</code> per la modalita' binaria (<code>"rb"</code>, <code>"wb"</code>), utile per immagini e file compressi.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Perche' specificare sempre <code>encoding="utf-8"</code></h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p>L'encoding predefinito <strong>dipende dal sistema operativo</strong>:</p>
+                            <ul>
+                                <li><strong>Windows:</strong> spesso <code>"cp1252"</code></li>
+                                <li><strong>macOS / Linux:</strong> <code>"utf-8"</code></li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <div class="box box-red">
+                                Un programma che funziona su macOS potrebbe produrre <strong>caratteri incomprensibili</strong> su Windows.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        <strong>Regola:</strong> specificare esplicitamente <code>encoding="utf-8"</code> rende il codice <strong>portabile</strong> e prevedibile.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Il context manager <code>with</code></h2>
+                    <p>Il codice con <code>open()</code>/<code>close()</code> ha un difetto grave:</p>
+                    <div class="box box-red fragment">
+                        Se si verifica un errore tra <code>open()</code> e <code>close()</code>, il file resta aperto. I file aperti consumano risorse del sistema operativo.
+                    </div>
+                    <div class="compare fragment">
+                        <div class="bad">
+<pre><code class="language-python"># NON fare cosi'
+f = open("dati.txt", "r",
+         encoding="utf-8")
+contenuto = f.read()
+f.close()  # Mai raggiunto se errore!</code></pre>
+                        </div>
+                        <div class="good">
+<pre><code class="language-python"># Il modo CORRETTO
+with open("dati.txt", "r",
+          encoding="utf-8") as f:
+    contenuto = f.read()
+# File chiuso automaticamente</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        <strong>Regola senza eccezioni:</strong> usate sempre <code>with</code> per aprire i file.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 2: LEGGERE FILE DI TESTO ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>2. Leggere file di testo</h2>
+                    <p>Diversi modi per accedere al contenuto</p>
+                </section>
+
+                <section>
+                    <h2><code>read()</code> &mdash; tutto in una volta</h2>
+                    <pre><code class="language-python">with open("romanzo.txt", "r", encoding="utf-8") as f:
+    testo: str = f.read()
+
+print(len(testo))  # Numero di caratteri</code></pre>
+                    <div class="box box-yellow">
+                        <strong>Attenzione:</strong> comodo per file piccoli, ma pericoloso per file grandi. Se il file pesa 4 GB, Python cerchera' di caricare 4 GB in memoria.
+                    </div>
+                </section>
+
+                <section>
+                    <h2><code>readline()</code> e <code>readlines()</code></h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3><code>readline()</code></h3>
+                            <p>Una riga alla volta:</p>
+                            <pre><code class="language-python">with open("dati.txt", "r",
+         encoding="utf-8") as f:
+    prima = f.readline()
+    seconda = f.readline()
+# Ogni riga include '\n'</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3><code>readlines()</code></h3>
+                            <p>Tutte le righe in una lista:</p>
+                            <pre><code class="language-python">with open("dati.txt", "r",
+         encoding="utf-8") as f:
+    righe = f.readlines()
+
+# .strip() rimuove '\n'
+print(righe[0].strip())</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Iterazione riga per riga <span class="badge badge-green">Modo migliore</span></h2>
+                    <p>Per file di <strong>qualsiasi dimensione</strong>, il modo piu' efficiente e idiomatico:</p>
+                    <pre><code class="language-python">def conta_righe_non_vuote(percorso: str) -> int:
+    """Conta le righe che contengono almeno un carattere non-spazio."""
+    conteggio: int = 0
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in f:
+            if riga.strip():
+                conteggio += 1
+    return conteggio</code></pre>
+                    <div class="box box-blue">
+                        Questo approccio legge <strong>una riga alla volta</strong> dalla memoria, quindi funziona anche su file enormi.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 3: SCRIVERE FILE DI TESTO ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>3. Scrivere file di testo</h2>
+                    <p><code>write()</code>, <code>writelines()</code> e append</p>
+                </section>
+
+                <section>
+                    <h2><code>write()</code> &mdash; scrivere una stringa</h2>
+                    <pre><code class="language-python">def salva_risultato(percorso: str, media: float, n: int) -> None:
+    """Salva un riepilogo statistico su file."""
+    with open(percorso, "w", encoding="utf-8") as f:
+        f.write(f"Numero osservazioni: {n}\n")
+        f.write(f"Media: {media:.4f}\n")</code></pre>
+                    <div class="box box-yellow">
+                        <strong>Nota:</strong> <code>write()</code> <strong>non</strong> aggiunge automaticamente <code>\n</code>. Dovete inserirlo voi.
+                    </div>
+                </section>
+
+                <section>
+                    <h2><code>writelines()</code> e modalita' append</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3><code>writelines()</code></h3>
+                            <pre><code class="language-python">def salva_nomi(percorso: str,
+               nomi: list[str]) -> None:
+    righe = [nome + "\n"
+             for nome in nomi]
+    with open(percorso, "w",
+              encoding="utf-8") as f:
+        f.writelines(righe)</code></pre>
+                            <p><em>Anche <code>writelines()</code> non aggiunge <code>\n</code></em></p>
+                        </div>
+                        <div class="col">
+                            <h3>Append (<code>"a"</code>)</h3>
+                            <pre><code class="language-python">def registra_evento(
+    percorso: str,
+    evento: str
+) -> None:
+    """Aggiunge un evento al log."""
+    with open(percorso, "a",
+              encoding="utf-8") as f:
+        f.write(f"{evento}\n")</code></pre>
+                            <p><em>Non cancella il contenuto esistente</em></p>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 4: PATHLIB ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>4. <code>pathlib</code></h2>
+                    <p>Percorsi cross-platform moderni</p>
+                </section>
+
+                <section>
+                    <h2>Il problema dei percorsi come stringhe</h2>
+                    <div class="compare">
+                        <div class="bad">
+<pre><code class="language-python"># Funziona solo su Unix,
+# si rompe su Windows
+percorso = "dati" + "/" + "2024" \
+         + "/" + "risultati.csv"</code></pre>
+                        </div>
+                        <div class="good">
+<pre><code class="language-python">from pathlib import Path
+
+# L'operatore / costruisce percorsi
+# in modo cross-platform
+percorso = Path("dati") / "2024" \
+         / "risultati.csv"</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <code>pathlib</code>, introdotto in Python 3.4, offre un'alternativa elegante e sicura alla concatenazione di stringhe per i percorsi.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Operazioni comuni con <code>Path</code></h2>
+                    <pre><code class="language-python">from pathlib import Path
+
+p: Path = Path("dati") / "esperimento" / "misure.csv"
+
+# Informazioni sul percorso
+p.name       # "misure.csv"
+p.stem       # "misure"
+p.suffix     # ".csv"
+p.parent     # dati/esperimento
+
+# Verifica esistenza
+p.exists()   # True / False
+p.is_file()  # True se e' un file (non una directory)
+
+# Creare directory (anche annidate)
+cartella = Path("output") / "grafici"
+cartella.mkdir(parents=True, exist_ok=True)
+
+# Elencare file in una directory
+for file_csv in Path("dati").glob("*.csv"):
+    print(file_csv.name)</code></pre>
+                </section>
+
+                <section>
+                    <h2><code>Path</code> e <code>open()</code></h2>
+                    <p>Gli oggetti <code>Path</code> funzionano direttamente con <code>open()</code>:</p>
+                    <pre><code class="language-python">from pathlib import Path
+
+percorso: Path = Path("dati") / "studenti.csv"
+with open(percorso, "r", encoding="utf-8") as f:
+    contenuto: str = f.read()</code></pre>
+                    <p class="fragment">Oppure, ancora piu' conciso:</p>
+                    <pre class="fragment"><code class="language-python">from pathlib import Path
+
+percorso: Path = Path("dati") / "studenti.csv"
+contenuto: str = percorso.read_text(encoding="utf-8")</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Regola:</strong> usate <code>pathlib</code> in ogni progetto. Rende il codice piu' leggibile e portabile.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 5: FILE CSV ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>5. Lavorare con file CSV</h2>
+                    <p>Il formato standard per i dati tabulari</p>
+                </section>
+
+                <section>
+                    <h2>Il formato CSV</h2>
+                    <p><strong>CSV</strong> = <em>Comma-Separated Values</em>. Ogni riga e' un record, ogni campo e' separato da un delimitatore.</p>
+                    <pre><code class="language-python">nome,cognome,voto
+Anna,Rossi,28
+Marco,Bianchi,25</code></pre>
+                    <h3 class="fragment">Leggere con <code>csv.reader</code></h3>
+                    <pre class="fragment"><code class="language-python">import csv
+
+def leggi_voti(percorso: str) -> list[tuple[str, str, int]]:
+    """Legge un CSV di studenti e restituisce una lista di tuple."""
+    risultati: list[tuple[str, str, int]] = []
+    with open(percorso, "r", encoding="utf-8") as f:
+        lettore = csv.reader(f)
+        intestazione = next(lettore)  # Salta l'intestazione
+        for riga in lettore:
+            nome, cognome = riga[0], riga[1]
+            voto: int = int(riga[2])
+            risultati.append((nome, cognome, voto))
+    return risultati</code></pre>
+                </section>
+
+                <section>
+                    <h2><code>csv.DictReader</code> <span class="badge badge-green">Piu' leggibile</span></h2>
+                    <p>Usa la prima riga come chiavi, restituisce ogni riga come dizionario:</p>
+                    <pre><code class="language-python">import csv
+
+def leggi_voti_dict(percorso: str) -> list[dict[str, str]]:
+    """Legge un CSV e restituisce una lista di dizionari."""
+    with open(percorso, "r", encoding="utf-8") as f:
+        lettore = csv.DictReader(f)
+        return list(lettore)
+
+# Uso:
+studenti = leggi_voti_dict("voti.csv")
+for s in studenti:
+    print(f"{s['nome']} {s['cognome']}: {s['voto']}")</code></pre>
+                    <div class="box box-blue fragment">
+                        <code>DictReader</code> rende il codice piu' leggibile: si accede ai campi per <strong>nome</strong> anziche' per indice numerico.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Il problema del separatore europeo</h2>
+                    <p>In Italia la virgola e' il <strong>separatore decimale</strong>. I CSV esportati da Excel in italiano usano il <strong>punto e virgola</strong>:</p>
+                    <pre><code class="language-python">nome;cognome;voto
+Anna;Rossi;28
+Marco;Bianchi;25</code></pre>
+                    <p class="fragment">Soluzione: specificare il parametro <code>delimiter</code>:</p>
+                    <pre class="fragment"><code class="language-python">import csv
+
+with open("dati_italiani.csv", "r", encoding="utf-8") as f:
+    lettore = csv.DictReader(f, delimiter=";")
+    for riga in lettore:
+        print(riga)</code></pre>
+                </section>
+
+                <section>
+                    <h2>Scrivere CSV</h2>
+                    <pre><code class="language-python">import csv
+
+def salva_risultati(percorso: str,
+                    dati: list[dict[str, str | float]]) -> None:
+    """Salva una lista di dizionari come CSV."""
+    if not dati:
+        return
+    campi: list[str] = list(dati[0].keys())
+    with open(percorso, "w", encoding="utf-8", newline="") as f:
+        scrittore = csv.DictWriter(f, fieldnames=campi)
+        scrittore.writeheader()
+        scrittore.writerows(dati)</code></pre>
+                    <div class="box box-yellow">
+                        Il parametro <code>newline=""</code> e' importante su Windows per evitare <strong>righe vuote extra</strong> nel file.
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>Anticipazione:</strong> con Pandas (Lezione 17), caricare un CSV sara' una singola riga: <code>pd.read_csv("file.csv")</code>. Ma capire il meccanismo e' essenziale per diagnosticare problemi.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 6: FILE JSON ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>6. Lavorare con file JSON</h2>
+                    <p>Il formato standard per i dati strutturati</p>
+                </section>
+
+                <section>
+                    <h2>Corrispondenza tipi JSON / Python</h2>
+                    <p><strong>JSON</strong> = <em>JavaScript Object Notation</em>. Standard per lo scambio dati, specialmente con API web.</p>
+                    <table>
+                        <thead>
+                            <tr><th>JSON</th><th>Python</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>object</code> <code>{...}</code></td><td><code>dict</code></td></tr>
+                            <tr><td><code>array</code> <code>[...]</code></td><td><code>list</code></td></tr>
+                            <tr><td><code>string</code> <code>"..."</code></td><td><code>str</code></td></tr>
+                            <tr><td><code>number</code> (intero)</td><td><code>int</code></td></tr>
+                            <tr><td><code>number</code> (decimale)</td><td><code>float</code></td></tr>
+                            <tr><td><code>true</code> / <code>false</code></td><td><code>True</code> / <code>False</code></td></tr>
+                            <tr><td><code>null</code></td><td><code>None</code></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Le quattro funzioni del modulo <code>json</code></h2>
+                    <table>
+                        <thead>
+                            <tr><th>Funzione</th><th>Input</th><th>Output</th><th>Uso</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>json.load(f)</code></td><td>File</td><td>Oggetto Python</td><td>Leggere da file</td></tr>
+                            <tr><td><code>json.dump(obj, f)</code></td><td>Oggetto Python</td><td>File</td><td>Scrivere su file</td></tr>
+                            <tr><td><code>json.loads(s)</code></td><td>Stringa</td><td>Oggetto Python</td><td>Parsare stringa</td></tr>
+                            <tr><td><code>json.dumps(obj)</code></td><td>Oggetto Python</td><td>Stringa</td><td>Serializzare a stringa</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        <strong>Trucco mnemonico:</strong> la <code>s</code> finale sta per <em>string</em>.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Leggere e scrivere JSON</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Leggere da file</h3>
+                            <pre><code class="language-python">import json
+from pathlib import Path
+
+def carica_config(
+    percorso: Path
+) -> dict:
+    with open(percorso, "r",
+              encoding="utf-8") as f:
+        return json.load(f)</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3>Scrivere su file</h3>
+                            <pre><code class="language-python">import json
+from pathlib import Path
+
+def salva_json(
+    percorso: Path,
+    dati: dict
+) -> None:
+    with open(percorso, "w",
+              encoding="utf-8") as f:
+        json.dump(dati, f,
+                  indent=2,
+                  ensure_ascii=False)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <code>indent=2</code> produce JSON leggibile. <code>ensure_ascii=False</code> permette caratteri accentati senza escape.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>JSON da stringa &mdash; utile con le API</h2>
+                    <p>Quando si ricevono dati da un'API web, la risposta e' tipicamente una <strong>stringa JSON</strong>:</p>
+                    <pre><code class="language-python">import json
+
+risposta_api: str = '{"temperatura": 22.5, "citta": "Roma", "umidita": 65}'
+dati: dict = json.loads(risposta_api)
+print(f"A {dati['citta']} ci sono {dati['temperatura']}°C")
+# A Roma ci sono 22.5°C</code></pre>
+                    <div class="diagram fragment">
+                        Stringa JSON &rarr; <code>json.loads()</code> &rarr; Oggetto Python<br>
+                        Oggetto Python &rarr; <code>json.dumps()</code> &rarr; Stringa JSON<br><br>
+                        File JSON &rarr; <code>json.load()</code> &rarr; Oggetto Python<br>
+                        Oggetto Python &rarr; <code>json.dump()</code> &rarr; File JSON
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 7: ECCEZIONI ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>7. Eccezioni e gestione degli errori</h2>
+                    <p><code>try</code> / <code>except</code> / <code>else</code> / <code>finally</code></p>
+                </section>
+
+                <section>
+                    <h2>Il problema</h2>
+                    <pre><code class="language-python">valore: int = int(input("Inserisci un numero: "))</code></pre>
+                    <p class="fragment">Cosa succede se l'utente scrive <code>"ciao"</code>?</p>
+                    <div class="box box-red fragment">
+                        Python solleva un <code>ValueError</code> e il programma <strong>termina bruscamente</strong>.
+                    </div>
+                    <p class="fragment">In un programma che analizza migliaia di righe di dati, un singolo valore malformato <strong>non dovrebbe far crollare tutto</strong>.</p>
+                </section>
+
+                <section>
+                    <h2><code>try</code> / <code>except</code></h2>
+                    <pre><code class="language-python">def leggi_intero(prompt: str) -> int:
+    """Chiede un intero all'utente, ripetendo in caso di errore."""
+    while True:
+        try:
+            return int(input(prompt))
+        except ValueError:
+            print("Non e' un numero valido. Riprova.")</code></pre>
+                    <div class="diagram fragment">
+                        1. Python esegue il codice nel blocco <code>try</code><br>
+                        2. Se <strong>nessun errore</strong> &rarr; il blocco <code>except</code> viene saltato<br>
+                        3. Se si verifica l'eccezione specificata &rarr; il controllo passa a <code>except</code>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>La gerarchia delle eccezioni</h2>
+                    <div class="diagram">
+<pre style="text-align: left; display: inline-block; font-size: 0.85em;">BaseException
+├── KeyboardInterrupt      # Ctrl+C
+├── SystemExit             # sys.exit()
+└── Exception
+    ├── ValueError          # Valore sbagliato ("abc" per int())
+    ├── TypeError           # Tipo sbagliato (1 + "a")
+    ├── KeyError            # Chiave mancante in un dict
+    ├── IndexError          # Indice fuori range
+    ├── FileNotFoundError   # File non trovato
+    ├── PermissionError     # Permessi insufficienti
+    ├── ZeroDivisionError   # Divisione per zero
+    ├── OSError             # Errori del sistema operativo
+    └── ...</pre>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <code>KeyboardInterrupt</code> e <code>SystemExit</code> <strong>non</strong> ereditano da <code>Exception</code>. Catturare <code>Exception</code> non blocca Ctrl+C.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Catturare eccezioni specifiche</h2>
+                    <div class="compare">
+                        <div class="bad">
+<pre><code class="language-python"># Cattura TUTTO, anche errori
+# che non vi aspettavate
+try:
+    risultato = calcola(dati)
+except Exception:
+    print("Qualcosa e' andato storto")
+    # Ma cosa?!</code></pre>
+                        </div>
+                        <div class="good">
+<pre><code class="language-python"># Cattura solo gli errori
+# prevedibili
+try:
+    risultato = calcola(dati)
+except ValueError as e:
+    print(f"Valore non valido: {e}")
+except ZeroDivisionError:
+    print("Divisione per zero")</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        <strong>Regola:</strong> catturate <strong>solo le eccezioni che sapete gestire</strong>. Catturare eccezioni troppo generiche nasconde i bug.
+                    </div>
+                </section>
+
+                <section>
+                    <h2><code>else</code> e <code>finally</code></h2>
+                    <pre><code class="language-python">def leggi_dati_sicuro(percorso: str) -> list[str]:
+    try:
+        f = open(percorso, "r", encoding="utf-8")
+    except FileNotFoundError:
+        print(f"File non trovato: {percorso}")
+        return []
+    except PermissionError:
+        print(f"Permessi insufficienti per: {percorso}")
+        return []
+    else:
+        # Eseguito SOLO se try e' andato a buon fine
+        contenuto: list[str] = f.readlines()
+        return contenuto
+    finally:
+        # Eseguito SEMPRE, errore o no
+        print("Tentativo di lettura completato.")</code></pre>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <div class="box box-blue"><strong><code>else</code></strong> &mdash; eseguito solo se <code>try</code> non ha generato eccezioni</div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow"><strong><code>finally</code></strong> &mdash; eseguito <em>sempre</em>, utile per cleanup</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2><code>raise</code> &mdash; sollevare eccezioni</h2>
+                    <p>A volte siete <strong>voi</strong> a dover segnalare un errore:</p>
+                    <pre><code class="language-python">def calcola_media(voti: list[int]) -> float:
+    """Calcola la media aritmetica dei voti.
+
+    Raises:
+        ValueError: Se la lista e' vuota o contiene voti fuori range.
+    """
+    if not voti:
+        raise ValueError("Impossibile calcolare la media "
+                         "di una lista vuota")
+    for voto in voti:
+        if not 0 <= voto <= 30:
+            raise ValueError(f"Voto fuori range: {voto}")
+    return sum(voti) / len(voti)</code></pre>
+                    <div class="box box-green fragment">
+                        Sollevare eccezioni con messaggi chiari e' un atto di gentilezza verso chi usera' il vostro codice (incluso il vostro se' futuro).
+                    </div>
+                </section>
+
+                <section>
+                    <h2>EAFP vs LBYL</h2>
+                    <p>Python adotta la filosofia <strong>EAFP</strong> (<em>Easier to Ask Forgiveness than Permission</em>):</p>
+                    <div class="compare">
+                        <div class="bad">
+                            <h3>LBYL <span class="badge badge-red">Non pythonic</span></h3>
+<pre><code class="language-python"># Look Before You Leap
+def ottieni_valore(dati, chiave):
+    if chiave in dati:
+        return dati[chiave]
+    else:
+        return None</code></pre>
+                        </div>
+                        <div class="good">
+                            <h3>EAFP <span class="badge badge-green">Pythonic</span></h3>
+<pre><code class="language-python"># Ask Forgiveness
+def ottieni_valore(dati, chiave):
+    try:
+        return dati[chiave]
+    except KeyError:
+        return None</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>Perche' EAFP?</strong> Evita <em>race condition</em> (il dato potrebbe cambiare tra controllo e accesso) e il caso "normale" (nessun errore) e' piu' veloce.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 8: ESEMPIO COMPLETO ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>8. Esempio completo</h2>
+                    <p>Leggere un CSV problematico</p>
+                </section>
+
+                <section>
+                    <h2>Lo scenario</h2>
+                    <p>Ricevete un file CSV di risposte a un questionario. Il file ha diversi problemi:</p>
+                    <ul>
+                        <li class="fragment">Potrebbe <strong>non esistere</strong></li>
+                        <li class="fragment">Potrebbe usare il separatore <code>;</code> (CSV europeo)</li>
+                        <li class="fragment">Alcune righe hanno <strong>campi mancanti</strong></li>
+                        <li class="fragment">Il campo "eta'" contiene a volte <strong>valori non numerici</strong></li>
+                    </ul>
+                    <div class="box box-yellow fragment">
+                        Questo e' il tipo di problema che si incontra <strong>quotidianamente</strong> nell'analisi dati.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Soluzione (1/2): apertura e rilevamento</h2>
+                    <pre><code class="language-python">import csv
+from pathlib import Path
+
+def carica_risposte(percorso: Path) -> list[dict]:
+    risposte: list[dict] = []
+    righe_problematiche: int = 0
+
+    try:
+        with open(percorso, "r", encoding="utf-8") as f:
+            # Rileva il dialetto (separatore) automaticamente
+            campione: str = f.read(1024)
+            f.seek(0)  # Torna all'inizio
+
+            try:
+                dialetto = csv.Sniffer().sniff(
+                    campione, delimiters=",;\t"
+                )
+            except csv.Error:
+                dialetto = csv.excel  # Fallback: virgola
+
+            lettore = csv.DictReader(f, dialect=dialetto)
+            # ... continua nella slide successiva</code></pre>
+                </section>
+
+                <section>
+                    <h2>Soluzione (2/2): elaborazione righe</h2>
+                    <pre><code class="language-python">            for numero_riga, riga in enumerate(lettore, start=2):
+                try:
+                    risposta = {
+                        "nome": riga.get("nome", "").strip(),
+                        "cognome": riga.get("cognome", "").strip(),
+                    }
+                    # Gestione del campo eta'
+                    eta_raw = riga.get("eta", riga.get("età"))
+                    if eta_raw and eta_raw.strip():
+                        try:
+                            risposta["eta"] = int(eta_raw.strip())
+                        except ValueError:
+                            risposta["eta"] = None  # Non numerico
+                    else:
+                        risposta["eta"] = None
+
+                    if not risposta["nome"]:  # Scarta senza nome
+                        righe_problematiche += 1
+                        continue
+                    risposte.append(risposta)
+
+                except Exception as e:
+                    righe_problematiche += 1</code></pre>
+                </section>
+
+                <section>
+                    <h2>Gestione errori di alto livello</h2>
+                    <pre><code class="language-python">    except FileNotFoundError:
+        print(f"File non trovato: {percorso}")
+        raise
+    except UnicodeDecodeError:
+        print(f"Errore di encoding in {percorso}. "
+              f"Provare con encoding diverso (es. 'latin-1').")
+        raise
+
+    print(f"Caricate {len(risposte)} risposte valide, "
+          f"{righe_problematiche} righe scartate.")
+    return risposte</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Pattern:</strong> provare, catturare l'errore specifico, gestirlo o rilanciarlo con <code>raise</code>.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SLIDE RIEPILOGO ========== -->
+            <section>
+                <h2>Le tre regole da portare con se'</h2>
+                <div class="box box-green" style="font-size: 1.1em;">
+                    <ol>
+                        <li class="fragment"><strong>Usate sempre <code>with</code></strong> per aprire i file</li>
+                        <li class="fragment"><strong>Catturate eccezioni specifiche</strong>, mai generiche</li>
+                        <li class="fragment"><strong>Usate <code>pathlib</code></strong> per i percorsi: piu' sicuro, leggibile e portabile</li>
+                    </ol>
+                </div>
+                <div class="diagram fragment" style="margin-top: 1em;">
+                    <code>open()</code> + <code>with</code> &rarr; Lettura/Scrittura sicura<br>
+                    <code>csv</code> / <code>json</code> &rarr; Formati dati standard<br>
+                    <code>try</code> / <code>except</code> &rarr; Programmi robusti<br>
+                    <code>pathlib</code> &rarr; Percorsi portabili
+                </div>
+                <aside class="notes">Riepilogare le tre regole chiave. Queste si applicano a qualsiasi progetto Python che interagisce con il filesystem.</aside>
+            </section>
+
+            <!-- ========== SLIDE PROSSIMA LEZIONE ========== -->
+            <section>
+                <h2>Prossima lezione</h2>
+                <p>Dalla programmazione <strong>procedurale</strong> alla programmazione <strong>orientata agli oggetti</strong>.</p>
+                <div class="box box-blue" style="font-size: 1.05em;">
+                    <p>Scoprirete che molte delle cose usate finora &mdash; stringhe, liste, dizionari, file &mdash; sono gia' <strong>oggetti</strong>.</p>
+                    <p>La Lezione 16 vi dara' gli strumenti per <strong>creare i vostri</strong>.</p>
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T14_funzioni_avanzate_moduli.html" style="color: var(--accent);">&larr; T14: Funzioni avanzate e moduli</a></div><div><a href="T16_programmazione_oggetti.html" style="color: var(--accent);">T16: Programmazione a oggetti &rarr;</a></div><div><a href="../dispense/frontali/T15_file_dati_errori.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/T15_file_dati_errori/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; T15</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>
