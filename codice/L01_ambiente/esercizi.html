@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L01_ambiente/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L01_ambiente_variabili_condizionali.html">Dispensa</a> &bull; <a href="../../presentazioni/L01_ambiente_variabili_condizionali.html">Presentazione</a></nav>
+<h1>L01_ambiente/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># L01 — Ambiente, variabili, condizionali</span>
+<span class="cm"># Esercizi per il laboratorio 01</span>
+<span class="cm">#</span>
+<span class="cm"># Esercizi pratici su variabili, tipi, casting, operatori e condizionali.</span>
+<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 1: Conversione di temperature</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># Scrivi funzioni per convertire tra Celsius, Fahrenheit e Kelvin.</span>
+
+<span class="kw">def</span> <span class="fn">celsius_to_fahrenheit</span>(<span class="fn">celsius</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Celsius in Fahrenheit: F = C * 9/5 + 32.&quot;&quot;&quot;</span>
+    fahrenheit: <span class="nb">float</span> <span class="op">=</span> celsius <span class="op">*</span> <span class="mi">9.0</span> <span class="op">/</span> <span class="mi">5.0</span> <span class="op">+</span> <span class="mi">32.0</span>
+    <span class="kw">return</span> fahrenheit
+
+
+<span class="kw">def</span> <span class="fn">fahrenheit_to_celsius</span>(<span class="fn">fahrenheit</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Fahrenheit in Celsius: C = (F - 32) * 5/9.&quot;&quot;&quot;</span>
+    celsius: <span class="nb">float</span> <span class="op">=</span> (fahrenheit <span class="op">-</span> <span class="mi">32.0</span>) <span class="op">*</span> <span class="mi">5.0</span> <span class="op">/</span> <span class="mi">9.0</span>
+    <span class="kw">return</span> celsius
+
+
+<span class="kw">def</span> <span class="fn">celsius_to_kelvin</span>(<span class="fn">celsius</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Celsius in Kelvin: K = C + 273.15.&quot;&quot;&quot;</span>
+    kelvin: <span class="nb">float</span> <span class="op">=</span> celsius <span class="op">+</span> <span class="mi">273.15</span>
+    <span class="kw">return</span> kelvin
+
+
+<span class="kw">def</span> <span class="fn">kelvin_to_celsius</span>(<span class="fn">kelvin</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Kelvin in Celsius: C = K - 273.15.&quot;&quot;&quot;</span>
+    celsius: <span class="nb">float</span> <span class="op">=</span> kelvin <span class="op">-</span> <span class="mi">273.15</span>
+    <span class="kw">return</span> celsius
+
+
+<span class="cm"># --- Test conversioni ---</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(celsius_to_fahrenheit(<span class="mi">0.0</span>) <span class="op">-</span> <span class="mi">32.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>, <span class="st">&quot;0°C deve essere 32°F&quot;</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(celsius_to_fahrenheit(<span class="mi">100.0</span>) <span class="op">-</span> <span class="mi">212.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>, <span class="st">&quot;100°C deve essere 212°F&quot;</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(fahrenheit_to_celsius(<span class="mi">32.0</span>) <span class="op">-</span> <span class="mi">0.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>, <span class="st">&quot;32°F deve essere 0°C&quot;</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(fahrenheit_to_celsius(<span class="mi">212.0</span>) <span class="op">-</span> <span class="mi">100.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>, <span class="st">&quot;212°F deve essere 100°C&quot;</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(celsius_to_kelvin(<span class="mi">0.0</span>) <span class="op">-</span> <span class="mi">273.15</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>, <span class="st">&quot;0°C deve essere 273.15K&quot;</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(kelvin_to_celsius(<span class="mi">273.15</span>) <span class="op">-</span> <span class="mi">0.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>, <span class="st">&quot;273.15K deve essere 0°C&quot;</span>
+
+<span class="cm"># Verifica che le conversioni siano inverse l&#x27;una dell&#x27;altra</span>
+temp_originale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">37.5</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(fahrenheit_to_celsius(celsius_to_fahrenheit(temp_originale)) <span class="op">-</span> temp_originale) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(kelvin_to_celsius(celsius_to_kelvin(temp_originale)) <span class="op">-</span> temp_originale) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Conversione temperature): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 2: Calcolo dell&#x27;interesse composto</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># Formula: A = P * (1 + r/n)^(n*t)</span>
+<span class="cm"># P = capitale iniziale, r = tasso annuo, n = composizioni/anno, t = anni</span>
+
+<span class="kw">def</span> <span class="fn">interesse_composto</span>(
+    capitale: <span class="nb">float</span>,
+    tasso_annuo: <span class="nb">float</span>,
+    composizioni_anno: <span class="nb">int</span>,
+    anni: <span class="nb">int</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola il montante con interesse composto.
+
+    Parametri:
+        capitale: il capitale iniziale (P)
+        tasso_annuo: il tasso di interesse annuo come decimale (es. 0.05 per 5%)
+        composizioni_anno: numero di volte che l&#x27;interesse viene composto per anno (n)
+        anni: durata dell&#x27;investimento in anni (t)
+
+    Ritorna:
+        Il montante finale (A)
+    &quot;&quot;&quot;</span>
+    montante: <span class="nb">float</span> <span class="op">=</span> capitale <span class="op">*</span> (<span class="mi">1</span> <span class="op">+</span> tasso_annuo <span class="op">/</span> composizioni_anno) <span class="op">*</span><span class="op">*</span> (composizioni_anno <span class="op">*</span> anni)
+    <span class="kw">return</span> <span class="nb">round</span>(montante, <span class="mi">2</span>)
+
+
+<span class="kw">def</span> <span class="fn">interesse_guadagnato</span>(
+    capitale: <span class="nb">float</span>,
+    tasso_annuo: <span class="nb">float</span>,
+    composizioni_anno: <span class="nb">int</span>,
+    anni: <span class="nb">int</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola solo l&#x27;interesse guadagnato (montante - capitale).&quot;&quot;&quot;</span>
+    guadagno: <span class="nb">float</span> <span class="op">=</span> interesse_composto(capitale, tasso_annuo, composizioni_anno, anni) <span class="op">-</span> capitale
+    <span class="kw">return</span> <span class="nb">round</span>(guadagno, <span class="mi">2</span>)
+
+
+<span class="cm"># --- Test interesse composto ---</span>
+<span class="cm"># 1000 EUR al 5% annuo, composto annualmente, per 10 anni</span>
+montante_1: <span class="nb">float</span> <span class="op">=</span> interesse_composto(<span class="mi">1000.0</span>, <span class="mi">0.05</span>, <span class="mi">1</span>, <span class="mi">10</span>)
+<span class="kw">assert</span> montante_1 <span class="op">=</span><span class="op">=</span> <span class="mi">1628.89</span>, <span class="st">f&quot;Atteso 1628.89, ottenuto {montante_1}&quot;</span>
+
+<span class="cm"># 1000 EUR al 5% annuo, composto mensilmente, per 10 anni</span>
+montante_2: <span class="nb">float</span> <span class="op">=</span> interesse_composto(<span class="mi">1000.0</span>, <span class="mi">0.05</span>, <span class="mi">12</span>, <span class="mi">10</span>)
+<span class="kw">assert</span> montante_2 <span class="op">=</span><span class="op">=</span> <span class="mi">1647.01</span>, <span class="st">f&quot;Atteso 1647.01, ottenuto {montante_2}&quot;</span>
+
+<span class="cm"># Interesse guadagnato</span>
+guadagno: <span class="nb">float</span> <span class="op">=</span> interesse_guadagnato(<span class="mi">1000.0</span>, <span class="mi">0.05</span>, <span class="mi">12</span>, <span class="mi">10</span>)
+<span class="kw">assert</span> guadagno <span class="op">=</span><span class="op">=</span> <span class="mi">647.01</span>, <span class="st">f&quot;Atteso 647.01, ottenuto {guadagno}&quot;</span>
+
+<span class="cm"># Con tasso zero il montante deve essere uguale al capitale</span>
+<span class="kw">assert</span> interesse_composto(<span class="mi">5000.0</span>, <span class="mi">0.0</span>, <span class="mi">12</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">5000.0</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Interesse composto): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 3: Classificazione di un triangolo per lati</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># Dato un triangolo con lati a, b, c:</span>
+<span class="cm"># - Equilatero: tutti i lati uguali</span>
+<span class="cm"># - Isoscele: esattamente due lati uguali</span>
+<span class="cm"># - Scaleno: tutti i lati diversi</span>
+<span class="cm"># - Non valido: la somma di due lati qualsiasi deve essere &gt; del terzo</span>
+
+<span class="kw">def</span> <span class="fn">classifica_triangolo</span>(<span class="fn">a</span>: <span class="nb">float</span>, b: <span class="nb">float</span>, c: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;
+    Classifica un triangolo in base ai suoi lati.
+
+    Ritorna una stringa: &#x27;equilatero&#x27;, &#x27;isoscele&#x27;, &#x27;scaleno&#x27;, oppure
+    &#x27;non valido&#x27; se i lati non formano un triangolo.
+    &quot;&quot;&quot;</span>
+    <span class="cm"># Verifica che i lati siano positivi</span>
+    <span class="kw">if</span> a <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> b <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> c <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">return</span> <span class="st">&quot;non valido&quot;</span>
+
+    <span class="cm"># Disuguaglianza triangolare: ogni lato deve essere minore della somma degli altri due</span>
+    <span class="kw">if</span> a <span class="op">+</span> b <span class="op">&lt;</span><span class="op">=</span> c <span class="kw">or</span> a <span class="op">+</span> c <span class="op">&lt;</span><span class="op">=</span> b <span class="kw">or</span> b <span class="op">+</span> c <span class="op">&lt;</span><span class="op">=</span> a:
+        <span class="kw">return</span> <span class="st">&quot;non valido&quot;</span>
+
+    <span class="cm"># Classificazione</span>
+    <span class="kw">if</span> a <span class="op">=</span><span class="op">=</span> b <span class="op">=</span><span class="op">=</span> c:
+        <span class="kw">return</span> <span class="st">&quot;equilatero&quot;</span>
+    <span class="kw">elif</span> a <span class="op">=</span><span class="op">=</span> b <span class="kw">or</span> b <span class="op">=</span><span class="op">=</span> c <span class="kw">or</span> a <span class="op">=</span><span class="op">=</span> c:
+        <span class="kw">return</span> <span class="st">&quot;isoscele&quot;</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="st">&quot;scaleno&quot;</span>
+
+
+<span class="cm"># --- Test classificazione triangolo ---</span>
+<span class="kw">assert</span> classifica_triangolo(<span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;equilatero&quot;</span>
+<span class="kw">assert</span> classifica_triangolo(<span class="mi">5</span>, <span class="mi">5</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;isoscele&quot;</span>
+<span class="kw">assert</span> classifica_triangolo(<span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;scaleno&quot;</span>
+<span class="kw">assert</span> classifica_triangolo(<span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;non valido&quot;</span>    <span class="cm"># viola disuguaglianza</span>
+<span class="kw">assert</span> classifica_triangolo(<span class="mi">0</span>, <span class="mi">4</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;non valido&quot;</span>    <span class="cm"># lato zero</span>
+<span class="kw">assert</span> classifica_triangolo(<span class="op">-</span><span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;non valido&quot;</span>   <span class="cm"># lato negativo</span>
+<span class="kw">assert</span> classifica_triangolo(<span class="mi">5</span>, <span class="mi">3</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;isoscele&quot;</span>      <span class="cm"># lati non consecutivi uguali</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (Classificazione triangolo): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 4: Calcolatore BMI con categorie</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># BMI = peso (kg) / altezza (m)^2</span>
+<span class="cm"># Categorie OMS:</span>
+<span class="cm">#   BMI &lt; 18.5       -&gt; &quot;sottopeso&quot;</span>
+<span class="cm">#   18.5 &lt;= BMI &lt; 25  -&gt; &quot;normopeso&quot;</span>
+<span class="cm">#   25 &lt;= BMI &lt; 30    -&gt; &quot;sovrappeso&quot;</span>
+<span class="cm">#   BMI &gt;= 30         -&gt; &quot;obesità&quot;</span>
+
+<span class="kw">def</span> <span class="fn">calcola_bmi</span>(<span class="fn">peso_kg</span>: <span class="nb">float</span>, altezza_m: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola il BMI dato peso in kg e altezza in metri.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> altezza_m <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> peso_kg <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Peso e altezza devono essere positivi&quot;</span>)
+    bmi: <span class="nb">float</span> <span class="op">=</span> peso_kg <span class="op">/</span> (altezza_m <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+    <span class="kw">return</span> <span class="nb">round</span>(bmi, <span class="mi">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">categoria_bmi</span>(<span class="fn">bmi</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce la categoria OMS corrispondente al BMI.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> bmi <span class="op">&lt;</span> <span class="mi">18.5</span>:
+        <span class="kw">return</span> <span class="st">&quot;sottopeso&quot;</span>
+    <span class="kw">elif</span> bmi <span class="op">&lt;</span> <span class="mi">25.0</span>:
+        <span class="kw">return</span> <span class="st">&quot;normopeso&quot;</span>
+    <span class="kw">elif</span> bmi <span class="op">&lt;</span> <span class="mi">30.0</span>:
+        <span class="kw">return</span> <span class="st">&quot;sovrappeso&quot;</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="st">&quot;obesità&quot;</span>
+
+
+<span class="kw">def</span> <span class="fn">report_bmi</span>(<span class="fn">peso_kg</span>: <span class="nb">float</span>, altezza_m: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Genera un report completo del BMI.
+
+    Ritorna un dizionario con: peso, altezza, bmi, categoria.
+    &quot;&quot;&quot;</span>
+    bmi: <span class="nb">float</span> <span class="op">=</span> calcola_bmi(peso_kg, altezza_m)
+    cat: <span class="nb">str</span> <span class="op">=</span> categoria_bmi(bmi)
+    report: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> {
+        <span class="st">&quot;peso_kg&quot;</span>: peso_kg,
+        <span class="st">&quot;altezza_m&quot;</span>: altezza_m,
+        <span class="st">&quot;bmi&quot;</span>: bmi,
+        <span class="st">&quot;categoria&quot;</span>: cat,
+    }
+    <span class="kw">return</span> report
+
+
+<span class="cm"># --- Test BMI ---</span>
+<span class="kw">assert</span> calcola_bmi(<span class="mi">70</span>, <span class="mi">1.75</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">22.9</span>
+<span class="kw">assert</span> categoria_bmi(<span class="mi">17.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;sottopeso&quot;</span>
+<span class="kw">assert</span> categoria_bmi(<span class="mi">22.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;normopeso&quot;</span>
+<span class="kw">assert</span> categoria_bmi(<span class="mi">27.5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;sovrappeso&quot;</span>
+<span class="kw">assert</span> categoria_bmi(<span class="mi">35.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;obesità&quot;</span>
+
+<span class="cm"># Test ai confini delle categorie</span>
+<span class="kw">assert</span> categoria_bmi(<span class="mi">18.5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;normopeso&quot;</span>
+<span class="kw">assert</span> categoria_bmi(<span class="mi">25.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;sovrappeso&quot;</span>
+<span class="kw">assert</span> categoria_bmi(<span class="mi">30.0</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;obesità&quot;</span>
+
+<span class="cm"># Test report completo</span>
+report: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> report_bmi(<span class="mi">80</span>, <span class="mi">1.80</span>)
+<span class="kw">assert</span> report[<span class="st">&quot;categoria&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;normopeso&quot;</span>
+<span class="kw">assert</span> report[<span class="st">&quot;bmi&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">24.7</span>
+
+<span class="cm"># Test errore per valori non validi</span>
+errore_catturato: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+<span class="kw">try</span>:
+    calcola_bmi(<span class="mi">70</span>, <span class="mi">0</span>)
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    errore_catturato <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">assert</span> errore_catturato, <span class="st">&quot;Dovrebbe sollevare ValueError per altezza zero&quot;</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (BMI): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 5: Calcolatore di tasse semplificato (a scaglioni)</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># Sistema a scaglioni IRPEF semplificato:</span>
+<span class="cm">#   Fino a 15.000      -&gt; 23%</span>
+<span class="cm">#   15.001 - 28.000    -&gt; 25%</span>
+<span class="cm">#   28.001 - 50.000    -&gt; 35%</span>
+<span class="cm">#   Oltre 50.000       -&gt; 43%</span>
+<span class="cm">#</span>
+<span class="cm"># Ogni scaglione si applica SOLO alla parte di reddito che rientra in quello scaglione.</span>
+
+<span class="kw">def</span> <span class="fn">calcola_irpef</span>(<span class="fn">reddito</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola l&#x27;IRPEF con il sistema a scaglioni progressivi.
+
+    Il calcolo e&#x27; progressivo: ogni aliquota si applica solo alla porzione
+    di reddito che ricade nello scaglione corrispondente.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> reddito <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">return</span> <span class="mi">0.0</span>
+
+    <span class="cm"># Definizione degli scaglioni: (limite superiore, aliquota)</span>
+    scaglioni: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]] <span class="op">=</span> [
+        (<span class="mi">15_000.0</span>, <span class="mi">0.23</span>),
+        (<span class="mi">28_000.0</span>, <span class="mi">0.25</span>),
+        (<span class="mi">50_000.0</span>, <span class="mi">0.35</span>),
+        (<span class="nb">float</span>(<span class="st">&#x27;inf&#x27;</span>), <span class="mi">0.43</span>),
+    ]
+
+    tassa_totale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+    limite_precedente: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+
+    <span class="kw">for</span> limite, aliquota <span class="kw">in</span> scaglioni:
+        <span class="kw">if</span> reddito <span class="op">&lt;</span><span class="op">=</span> limite_precedente:
+            <span class="kw">break</span>
+        <span class="cm"># La porzione tassabile in questo scaglione</span>
+        porzione: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(reddito, limite) <span class="op">-</span> limite_precedente
+        tassa_totale <span class="op">+</span><span class="op">=</span> porzione <span class="op">*</span> aliquota
+        limite_precedente <span class="op">=</span> limite
+
+    <span class="kw">return</span> <span class="nb">round</span>(tassa_totale, <span class="mi">2</span>)
+
+
+<span class="kw">def</span> <span class="fn">aliquota_effettiva</span>(<span class="fn">reddito</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;aliquota effettiva (tassa / reddito) in percentuale.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> reddito <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">return</span> <span class="mi">0.0</span>
+    tassa: <span class="nb">float</span> <span class="op">=</span> calcola_irpef(reddito)
+    <span class="kw">return</span> <span class="nb">round</span>(tassa <span class="op">/</span> reddito <span class="op">*</span> <span class="mi">100</span>, <span class="mi">2</span>)
+
+
+<span class="cm"># --- Test IRPEF ---</span>
+<span class="cm"># Reddito interamente nel primo scaglione</span>
+<span class="kw">assert</span> calcola_irpef(<span class="mi">10_000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2_300.0</span>, <span class="st">f&quot;Atteso 2300, ottenuto {calcola_irpef(10_000)}&quot;</span>
+
+<span class="cm"># Reddito esattamente al limite del primo scaglione</span>
+<span class="kw">assert</span> calcola_irpef(<span class="mi">15_000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3_450.0</span>
+
+<span class="cm"># Reddito che copre due scaglioni: 15000*0.23 + 5000*0.25 = 3450 + 1250 = 4700</span>
+<span class="kw">assert</span> calcola_irpef(<span class="mi">20_000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">4_700.0</span>
+
+<span class="cm"># Reddito che copre tre scaglioni: 3450 + 3250 + 2000*0.35 = 3450 + 3250 + 700 = 7400</span>
+<span class="kw">assert</span> calcola_irpef(<span class="mi">30_000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">7_400.0</span>
+
+<span class="cm"># Reddito che copre tutti e quattro gli scaglioni:</span>
+<span class="cm"># 15000*0.23 + 13000*0.25 + 22000*0.35 + 10000*0.43</span>
+<span class="cm"># = 3450 + 3250 + 7700 + 4300 = 18700</span>
+<span class="kw">assert</span> calcola_irpef(<span class="mi">60_000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">18_700.0</span>
+
+<span class="cm"># Reddito zero o negativo</span>
+<span class="kw">assert</span> calcola_irpef(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0.0</span>
+<span class="kw">assert</span> calcola_irpef(<span class="op">-</span><span class="mi">1000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0.0</span>
+
+<span class="cm"># Aliquota effettiva</span>
+<span class="kw">assert</span> aliquota_effettiva(<span class="mi">15_000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">23.0</span>
+<span class="kw">assert</span> aliquota_effettiva(<span class="mi">60_000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">31.17</span>  <span class="cm"># 18700/60000*100</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 5 (IRPEF): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 01 SUPERATI!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

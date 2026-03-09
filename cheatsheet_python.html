@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheatsheet Python — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="index.html">Home</a></nav>
+<h1>Cheatsheet Python</h1>
+
+<h1>Python Cheatsheet — Sistemi di Elaborazione</h1>
+<blockquote>
+<p><strong>Come usare questo documento:</strong> ogni sezione corrisponde a una lezione frontale. Dopo la lezione <em>N</em>, avete a disposizione tutte le sezioni dalla 7 alla <em>N</em>. All'esame potete consultare l'intero cheatsheet (versione finale).</p>
+</blockquote>
+<hr>
+<h2>Indice progressivo</h2>
+<table>
+<thead><tr>
+<th>Dopo la lezione</th>
+<th>Sezioni disponibili</th>
+</tr></thead><tbody>
+<tr>
+<td>F07</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F08</td>
+<td>1–2</td>
+</tr>
+<tr>
+<td>F09</td>
+<td>1–3</td>
+</tr>
+<tr>
+<td>F10</td>
+<td>1–4</td>
+</tr>
+<tr>
+<td>F11</td>
+<td>1–5</td>
+</tr>
+<tr>
+<td>F12</td>
+<td>1–6</td>
+</tr>
+<tr>
+<td>F13</td>
+<td>1–7</td>
+</tr>
+<tr>
+<td>F14</td>
+<td>1–8</td>
+</tr>
+<tr>
+<td>F15</td>
+<td>1–9</td>
+</tr>
+<tr>
+<td>F16</td>
+<td>1–10</td>
+</tr>
+<tr>
+<td>F17</td>
+<td>1–11 (versione completa)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>1. Variabili, tipi e conversioni (F07)</h2>
+<h3>Tipi fondamentali e type hints</h3>
+<pre><code>eta: <span class="nb">int</span> <span class="op">=</span> <span class="mi">25</span>
+altezza: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1.75</span>
+nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Anna&quot;</span>
+iscritto: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+risultato: <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span></code></pre>
+<h3>Verificare il tipo</h3>
+<pre><code><span class="nb">print</span>(<span class="nb">type</span>(<span class="mi">42</span>))         <span class="cm"># &lt;class &#x27;int&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="mi">3.14</span>))       <span class="cm"># &lt;class &#x27;float&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="st">&quot;ciao&quot;</span>))     <span class="cm"># &lt;class &#x27;str&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="kw">True</span>))       <span class="cm"># &lt;class &#x27;bool&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="kw">None</span>))       <span class="cm"># &lt;class &#x27;NoneType&#x27;&gt;</span></code></pre>
+<h3>Conversioni di tipo (casting)</h3>
+<pre><code>eta: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="st">&quot;25&quot;</span>)
+altezza: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="st">&quot;1.75&quot;</span>)
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="nb">str</span>(<span class="mi">42</span>)
+y: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="mi">3.99</span>)       <span class="cm"># 3 (tronca, non arrotonda!)</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="mi">0</span>))            <span class="cm"># False</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="st">&quot;&quot;</span>))           <span class="cm"># False</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="mi">42</span>))           <span class="cm"># True</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="st">&quot;ciao&quot;</span>))       <span class="cm"># True</span></code></pre>
+<h3>Assegnamento e operatori composti</h3>
+<pre><code>contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+contatore <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>    <span class="cm"># contatore = contatore + 1</span>
+totale <span class="op">-</span><span class="op">=</span> <span class="mi">10</span>      <span class="cm"># totale = totale - 10</span>
+prodotto <span class="op">*</span><span class="op">=</span> <span class="mi">2</span>     <span class="cm"># prodotto = prodotto * 2</span></code></pre>
+<h3>Unpacking e scambio</h3>
+<pre><code>a, b, c <span class="op">=</span> <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>
+a, b <span class="op">=</span> b, a          <span class="cm"># scambio di variabili</span></code></pre>
+<h3>Notazioni numeriche</h3>
+<pre><code>popolazione: <span class="nb">int</span> <span class="op">=</span> <span class="mi">59_000_000</span>       <span class="cm"># underscore come separatore</span>
+grande: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span> <span class="op">*</span><span class="op">*</span> <span class="mi">100</span>              <span class="cm"># precisione arbitraria</span>
+notazione: <span class="nb">float</span> <span class="op">=</span> <span class="mi">6.022e23</span>         <span class="cm"># notazione scientifica</span></code></pre>
+<h3>Metodi su oggetti</h3>
+<pre><code><span class="nb">print</span>((<span class="mi">42</span>).bit_length())     <span class="cm"># 6</span>
+<span class="nb">print</span>(<span class="st">&quot;ciao&quot;</span>.upper())        <span class="cm"># &quot;CIAO&quot;</span></code></pre>
+<hr>
+<h2>2. Operatori, I/O e condizionali (F08)</h2>
+<h3>Operatori aritmetici</h3>
+<pre><code>a <span class="op">+</span> b       <span class="cm"># somma</span>
+a <span class="op">-</span> b       <span class="cm"># sottrazione</span>
+a <span class="op">*</span> b       <span class="cm"># moltiplicazione</span>
+a <span class="op">/</span> b       <span class="cm"># divisione (sempre float)</span>
+a <span class="op">/</span><span class="op">/</span> b      <span class="cm"># divisione intera</span>
+a <span class="op">%</span> b       <span class="cm"># modulo (resto)</span>
+a <span class="op">*</span><span class="op">*</span> b      <span class="cm"># potenza</span></code></pre>
+<h3>Operatori di confronto</h3>
+<pre><code>a <span class="op">=</span><span class="op">=</span> b      <span class="cm"># uguale</span>
+a <span class="op">!</span><span class="op">=</span> b      <span class="cm"># diverso</span>
+a <span class="op">&lt;</span> b       <span class="cm"># minore</span>
+a <span class="op">&lt;</span><span class="op">=</span> b      <span class="cm"># minore o uguale</span>
+a <span class="op">&gt;</span> b       <span class="cm"># maggiore</span>
+a <span class="op">&gt;</span><span class="op">=</span> b      <span class="cm"># maggiore o uguale</span></code></pre>
+<h3>Operatori logici</h3>
+<pre><code>a <span class="kw">and</span> b     <span class="cm"># vero se entrambi veri</span>
+a <span class="kw">or</span> b      <span class="cm"># vero se almeno uno vero</span>
+<span class="kw">not</span> a       <span class="cm"># negazione</span></code></pre>
+<h3>Input e output</h3>
+<pre><code>nome: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Come ti chiami? &quot;</span>)
+eta: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Quanti anni hai? &quot;</span>))</code></pre>
+<h3>f-string</h3>
+<pre><code><span class="nb">print</span>(<span class="st">f&quot;Ciao, {nome}! Hai {eta} anni.&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Pi greco: {3.14159:.2f}&quot;</span>)      <span class="cm"># 3.14</span></code></pre>
+<h3>Condizionali</h3>
+<pre><code><span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Ottimo&quot;</span>)
+<span class="kw">elif</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Sufficiente&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Insufficiente&quot;</span>)</code></pre>
+<h3>Operatore ternario</h3>
+<pre><code>esito: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;promosso&quot;</span> <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span> <span class="kw">else</span> <span class="st">&quot;bocciato&quot;</span></code></pre>
+<h3>Confronti concatenati</h3>
+<pre><code><span class="kw">if</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Voto valido&quot;</span>)</code></pre>
+<hr>
+<h2>3. Cicli (F09)</h2>
+<h3>Ciclo <code>for</code></h3>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="nb">print</span>(<span class="st">f&quot;Voto: {voto}&quot;</span>)</code></pre>
+<h3><code>range()</code></h3>
+<pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):            <span class="cm"># 0, 1, 2, 3, 4</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">6</span>):         <span class="cm"># 1, 2, 3, 4, 5</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">0</span>, <span class="mi">10</span>, <span class="mi">2</span>):     <span class="cm"># 0, 2, 4, 6, 8</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">10</span>, <span class="mi">0</span>, <span class="op">-</span><span class="mi">1</span>):    <span class="cm"># 10, 9, ..., 1</span></code></pre>
+<h3><code>enumerate()</code> — indice e valore</h3>
+<pre><code>nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+<span class="kw">for</span> i, nome <span class="kw">in</span> <span class="nb">enumerate</span>(nomi):
+    <span class="nb">print</span>(<span class="st">f&quot;{i}: {nome}&quot;</span>)
+
+<span class="kw">for</span> i, nome <span class="kw">in</span> <span class="nb">enumerate</span>(nomi, start<span class="op">=</span><span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{i}. {nome}&quot;</span>)</code></pre>
+<h3><code>zip()</code> — iterare in parallelo</h3>
+<pre><code>nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+<span class="kw">for</span> nome, voto <span class="kw">in</span> <span class="nb">zip</span>(nomi, voti):
+    <span class="nb">print</span>(<span class="st">f&quot;{nome}: {voto}&quot;</span>)</code></pre>
+<h3>Ciclo <code>while</code></h3>
+<pre><code>risposta: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
+<span class="kw">while</span> risposta <span class="op">!</span><span class="op">=</span> <span class="st">&quot;esci&quot;</span>:
+    risposta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Comando: &quot;</span>)</code></pre>
+<h3><code>break</code> e <code>continue</code></h3>
+<pre><code><span class="cm"># break: esce dal ciclo</span>
+<span class="kw">for</span> dato <span class="kw">in</span> dati:
+    <span class="kw">if</span> dato <span class="op">=</span><span class="op">=</span> obiettivo:
+        <span class="nb">print</span>(<span class="st">f&quot;Trovato: {dato}&quot;</span>)
+        <span class="kw">break</span>
+
+<span class="cm"># continue: salta al prossimo ciclo</span>
+<span class="kw">for</span> valore <span class="kw">in</span> valori:
+    <span class="kw">if</span> valore <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">continue</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Elaboro: {valore}&quot;</span>)</code></pre>
+<h3>Pattern <code>while True + break</code></h3>
+<pre><code><span class="kw">while</span> <span class="kw">True</span>:
+    risposta: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Numero (0 per uscire): &quot;</span>)
+    numero: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(risposta)
+    <span class="kw">if</span> numero <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">break</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Il quadrato è {numero ** 2}&quot;</span>)</code></pre>
+<h3>Pattern accumulatore</h3>
+<pre><code>somma: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    somma <span class="op">+</span><span class="op">=</span> voto
+media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> <span class="nb">len</span>(voti)</code></pre>
+<h3>Pattern contatore</h3>
+<pre><code>sufficienze: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        sufficienze <span class="op">+</span><span class="op">=</span> <span class="mi">1</span></code></pre>
+<h3>Pattern ricerca</h3>
+<pre><code><span class="kw">def</span> <span class="fn">contiene</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>], obiettivo: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+    <span class="kw">for</span> elemento <span class="kw">in</span> lista:
+        <span class="kw">if</span> elemento <span class="op">=</span><span class="op">=</span> obiettivo:
+            <span class="kw">return</span> <span class="kw">True</span>
+    <span class="kw">return</span> <span class="kw">False</span></code></pre>
+<h3>Pattern filtro</h3>
+<pre><code>sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        sufficienti.append(voto)</code></pre>
+<h3>Pattern min/max</h3>
+<pre><code>massimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]
+<span class="kw">for</span> valore <span class="kw">in</span> valori[<span class="mi">1</span>:]:
+    <span class="kw">if</span> valore <span class="op">&gt;</span> massimo:
+        massimo <span class="op">=</span> valore</code></pre>
+<h3>Statistiche descrittive (esempio completo)</h3>
+<pre><code><span class="kw">def</span> <span class="fn">statistiche</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]:
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    somma: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(v <span class="kw">for</span> v <span class="kw">in</span> valori)
+    media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
+    somma_scarti: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((v <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> v <span class="kw">in</span> valori)
+    varianza: <span class="nb">float</span> <span class="op">=</span> somma_scarti <span class="op">/</span> n
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(valori)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(valori)
+    <span class="kw">return</span> {<span class="st">&quot;n&quot;</span>: n, <span class="st">&quot;media&quot;</span>: media, <span class="st">&quot;varianza&quot;</span>: varianza,
+            <span class="st">&quot;minimo&quot;</span>: minimo, <span class="st">&quot;massimo&quot;</span>: massimo}</code></pre>
+<hr>
+<h2>4. Comprehension, stringhe e formattazione (F10)</h2>
+<h3>List comprehension</h3>
+<pre><code><span class="cm"># Sintassi base</span>
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri]
+
+<span class="cm"># Con filtro</span>
+sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+
+<span class="cm"># Trasformazione + filtro</span>
+celsius: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="nb">round</span>((f <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>, <span class="mi">1</span>)
+                        <span class="kw">for</span> f <span class="kw">in</span> fahrenheit <span class="kw">if</span> f <span class="op">&gt;</span> <span class="mi">0</span>]</code></pre>
+<h3>Dict comprehension</h3>
+<pre><code>lunghezze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {nome: <span class="nb">len</span>(nome) <span class="kw">for</span> nome <span class="kw">in</span> nomi}
+
+<span class="cm"># Filtrare un dizionario</span>
+promossi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {n: v <span class="kw">for</span> n, v <span class="kw">in</span> registro.items() <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>}
+
+<span class="cm"># Invertire un dizionario</span>
+inverso: <span class="nb">dict</span>[<span class="nb">int</span>, <span class="nb">str</span>] <span class="op">=</span> {v: k <span class="kw">for</span> k, v <span class="kw">in</span> codici.items()}</code></pre>
+<h3>Set comprehension</h3>
+<pre><code>iniziali: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {nome[<span class="mi">0</span>] <span class="kw">for</span> nome <span class="kw">in</span> nomi}</code></pre>
+<h3>Generator expression (memoria efficiente)</h3>
+<pre><code>totale: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1_000_000</span>))</code></pre>
+<h3>Stringhe — indicizzazione e slicing</h3>
+<pre><code>testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Statistica&quot;</span>
+testo[<span class="mi">0</span>]       <span class="cm"># &#x27;S&#x27;</span>
+testo[<span class="op">-</span><span class="mi">1</span>]      <span class="cm"># &#x27;a&#x27;</span>
+testo[<span class="mi">0</span>:<span class="mi">4</span>]     <span class="cm"># &#x27;Stat&#x27;</span>
+testo[<span class="mi">4</span>:]      <span class="cm"># &#x27;istica&#x27;</span>
+testo[::<span class="op">-</span><span class="mi">1</span>]    <span class="cm"># &#x27;acitsitats&#x27; (invertita)</span>
+<span class="nb">len</span>(testo)     <span class="cm"># 10</span>
+<span class="st">&quot;ist&quot;</span> <span class="kw">in</span> testo <span class="cm"># True</span></code></pre>
+<h3>Metodi stringa principali</h3>
+<pre><code><span class="cm"># Pulizia</span>
+<span class="st">&quot; 42.5 \n&quot;</span>.strip()          <span class="cm"># &#x27;42.5&#x27;</span>
+
+<span class="cm"># Divisione e unione</span>
+<span class="st">&quot;Anna,28,Eco&quot;</span>.split(<span class="st">&quot;,&quot;</span>)    <span class="cm"># [&#x27;Anna&#x27;, &#x27;28&#x27;, &#x27;Eco&#x27;]</span>
+<span class="st">&quot;, &quot;</span>.join([<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>])  <span class="cm"># &#x27;a, b, c&#x27;</span>
+
+<span class="cm"># Sostituzione</span>
+<span class="st">&quot;N/A&quot;</span>.replace(<span class="st">&quot;N/A&quot;</span>, <span class="st">&quot;0&quot;</span>)   <span class="cm"># &#x27;0&#x27;</span>
+
+<span class="cm"># Ricerca</span>
+testo.find(<span class="st">&quot;media&quot;</span>)          <span class="cm"># posizione o -1</span>
+testo.startswith(<span class="st">&quot;dati&quot;</span>)     <span class="cm"># True/False</span>
+testo.endswith(<span class="st">&quot;.csv&quot;</span>)       <span class="cm"># True/False</span>
+
+<span class="cm"># Maiuscole/minuscole</span>
+testo.upper()                <span class="cm"># tutto maiuscolo</span>
+testo.lower()                <span class="cm"># tutto minuscolo</span>
+testo.title()                <span class="cm"># Prima Lettera Maiuscola</span>
+testo.capitalize()           <span class="cm"># Solo prima maiuscola</span>
+
+<span class="cm"># Test contenuto</span>
+<span class="st">&quot;42&quot;</span>.isdigit()               <span class="cm"># True</span>
+<span class="st">&quot;abc&quot;</span>.isalpha()              <span class="cm"># True</span>
+<span class="st">&quot;abc123&quot;</span>.isalnum()           <span class="cm"># True</span></code></pre>
+<h3>Pattern pulizia dati stringa</h3>
+<pre><code>campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> riga.strip().split(<span class="st">&quot;,&quot;</span>)]</code></pre>
+<h3>f-string — formattazione avanzata</h3>
+<pre><code><span class="cm"># Decimali</span>
+<span class="st">f&quot;{pi:.2f}&quot;</span>                  <span class="cm"># &#x27;3.14&#x27;</span>
+<span class="st">f&quot;{pi:.4f}&quot;</span>                  <span class="cm"># &#x27;3.1416&#x27;</span>
+
+<span class="cm"># Notazione scientifica</span>
+<span class="st">f&quot;{6.022e23:.2e}&quot;</span>            <span class="cm"># &#x27;6.02e+23&#x27;</span>
+
+<span class="cm"># Percentuale</span>
+<span class="st">f&quot;{0.0325:.1%}&quot;</span>              <span class="cm"># &#x27;3.2%&#x27;</span>
+
+<span class="cm"># Separatore migliaia</span>
+<span class="st">f&quot;{59_641_488:,}&quot;</span>            <span class="cm"># &#x27;59,641,488&#x27;</span>
+
+<span class="cm"># Allineamento</span>
+<span class="st">f&quot;|{&#x27;Anna&#x27;:&lt;15}|&quot;</span>            <span class="cm"># &#x27;|Anna           |&#x27;  (sinistra)</span>
+<span class="st">f&quot;|{&#x27;Anna&#x27;:&gt;15}|&quot;</span>            <span class="cm"># &#x27;|           Anna|&#x27;  (destra)</span>
+<span class="st">f&quot;|{&#x27;Anna&#x27;:^15}|&quot;</span>            <span class="cm"># &#x27;|     Anna      |&#x27;  (centro)</span>
+
+<span class="cm"># Numeri allineati</span>
+<span class="st">f&quot;{voto:&gt;5d}&quot;</span>                <span class="cm"># allinea a destra su 5 caratteri</span></code></pre>
+<h3>Espressioni regolari (cenni)</h3>
+<pre><code><span class="kw">import</span> re
+
+numeri: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> re.findall(<span class="st">r&quot;\d+\.?\d*&quot;</span>, testo)
+<span class="kw">if</span> re.match(<span class="st">r&quot;^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$&quot;</span>, cf):
+    <span class="nb">print</span>(<span class="st">&quot;Codice fiscale valido&quot;</span>)</code></pre>
+<hr>
+<h2>5. Liste e tuple (F11)</h2>
+<h3>Creare liste</h3>
+<pre><code>temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">21.3</span>, <span class="mi">19.7</span>]
+vuota: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []</code></pre>
+<h3>Indicizzazione e slicing</h3>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+voti[<span class="mi">0</span>]        <span class="cm"># 28 (primo)</span>
+voti[<span class="op">-</span><span class="mi">1</span>]       <span class="cm"># 22 (ultimo)</span>
+voti[<span class="mi">2</span>:<span class="mi">5</span>]      <span class="cm"># [25, 27, 22]</span>
+voti[:<span class="mi">3</span>]       <span class="cm"># [28, 30, 25]</span>
+voti[::<span class="mi">2</span>]      <span class="cm"># [28, 25, 22]</span>
+voti[::<span class="op">-</span><span class="mi">1</span>]     <span class="cm"># [22, 27, 25, 30, 28]</span></code></pre>
+<h3>Operazioni su liste</h3>
+<pre><code>a <span class="op">+</span> b          <span class="cm"># concatenazione</span>
+a <span class="op">*</span> <span class="mi">3</span>          <span class="cm"># ripetizione</span>
+<span class="mi">30</span> <span class="kw">in</span> voti     <span class="cm"># appartenenza → True</span>
+<span class="nb">len</span>(voti)      <span class="cm"># lunghezza → 5</span></code></pre>
+<h3>Metodi lista — aggiungere</h3>
+<pre><code>voti.append(<span class="mi">27</span>)          <span class="cm"># aggiunge in fondo</span>
+voti.insert(<span class="mi">1</span>, <span class="mi">29</span>)       <span class="cm"># inserisce alla posizione 1</span>
+voti.extend([<span class="mi">22</span>, <span class="mi">24</span>])    <span class="cm"># aggiunge più elementi</span></code></pre>
+<h3>Metodi lista — rimuovere</h3>
+<pre><code>voti.remove(<span class="mi">30</span>)          <span class="cm"># rimuove la prima occorrenza</span>
+ultimo: <span class="nb">int</span> <span class="op">=</span> voti.pop()       <span class="cm"># rimuove e restituisce l&#x27;ultimo</span>
+secondo: <span class="nb">int</span> <span class="op">=</span> voti.pop(<span class="mi">1</span>)     <span class="cm"># rimuove e restituisce alla posizione 1</span></code></pre>
+<h3>Metodi lista — ordinare e cercare</h3>
+<pre><code>voti.sort()                    <span class="cm"># ordina in place (crescente)</span>
+voti.sort(reverse<span class="op">=</span><span class="kw">True</span>)        <span class="cm"># ordina in place (decrescente)</span>
+voti_ord: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">sorted</span>(voti)  <span class="cm"># restituisce nuova lista ordinata</span>
+voti.reverse()                 <span class="cm"># inverte in place</span>
+voti.index(<span class="mi">30</span>)                 <span class="cm"># posizione della prima occorrenza</span>
+voti.count(<span class="mi">30</span>)                 <span class="cm"># quante volte appare</span></code></pre>
+<h3>Alias vs copia</h3>
+<pre><code><span class="cm"># ALIAS (stesso oggetto!)</span>
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a              <span class="cm"># b e a puntano alla stessa lista</span>
+
+<span class="cm"># COPIA SUPERFICIALE (shallow copy)</span>
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a.copy()       <span class="cm"># oppure a[:] oppure list(a)</span>
+
+<span class="cm"># COPIA PROFONDA (per liste annidate)</span>
+<span class="kw">import</span> copy
+b: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> copy.deepcopy(a)</code></pre>
+<h3>Tuple</h3>
+<pre><code>coordinate: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">45.4642</span>, <span class="mi">9.1900</span>)
+giorni: <span class="nb">tuple</span>[<span class="nb">str</span>, ...] <span class="op">=</span> (<span class="st">&quot;lun&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;mer&quot;</span>, <span class="st">&quot;gio&quot;</span>, <span class="st">&quot;ven&quot;</span>)
+singolo: <span class="nb">tuple</span>[<span class="nb">int</span>] <span class="op">=</span> (<span class="mi">42</span>,)    <span class="cm"># virgola obbligatoria!</span></code></pre>
+<h3>Unpacking</h3>
+<pre><code>lat, lon <span class="op">=</span> coordinate
+a, b <span class="op">=</span> b, a                   <span class="cm"># scambio</span>
+
+<span class="cm"># Return multipli da funzione</span>
+<span class="kw">def</span> <span class="fn">stats</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori), <span class="nb">min</span>(valori), <span class="nb">max</span>(valori)
+
+media, minimo, massimo <span class="op">=</span> stats(dati)</code></pre>
+<h3>Tuple come chiavi di dizionario</h3>
+<pre><code>posizioni: <span class="nb">dict</span>[<span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>], <span class="nb">str</span>] <span class="op">=</span> {
+    (<span class="mi">0</span>, <span class="mi">0</span>): <span class="st">&quot;origine&quot;</span>,
+    (<span class="mi">1</span>, <span class="mi">0</span>): <span class="st">&quot;destra&quot;</span>,
+}</code></pre>
+<h3>Named tuple</h3>
+<pre><code><span class="kw">from</span> typing <span class="kw">import</span> NamedTuple
+
+<span class="kw">class</span> <span class="fn">Osservazione</span>(<span class="fn">NamedTuple</span>):
+    valore: <span class="nb">float</span>
+    unita: <span class="nb">str</span>
+    timestamp: <span class="nb">str</span>
+
+o: Osservazione <span class="op">=</span> Osservazione(valore<span class="op">=</span><span class="mi">23.5</span>, unita<span class="op">=</span><span class="st">&quot;°C&quot;</span>, timestamp<span class="op">=</span><span class="st">&quot;2025-01-15&quot;</span>)
+<span class="nb">print</span>(o.valore)    <span class="cm"># 23.5</span></code></pre>
+<h3>Calcolo della mediana</h3>
+<pre><code>campione_ordinato: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(campione)
+n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(campione_ordinato)
+<span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+    mediana: <span class="nb">float</span> <span class="op">=</span> campione_ordinato[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]
+<span class="kw">else</span>:
+    mediana <span class="op">=</span> (campione_ordinato[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> campione_ordinato[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]) <span class="op">/</span> <span class="mi">2</span></code></pre>
+<hr>
+<h2>6. Dizionari, set e mutabilità (F12)</h2>
+<h3>Creare dizionari</h3>
+<pre><code>voti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;analisi&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;informatica&quot;</span>: <span class="mi">30</span>}
+vuoto: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> {}
+config: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> <span class="nb">dict</span>(larghezza<span class="op">=</span><span class="mi">800</span>, altezza<span class="op">=</span><span class="mi">600</span>)
+da_coppie: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> <span class="nb">dict</span>([(<span class="st">&quot;a&quot;</span>, <span class="mi">1</span>), (<span class="st">&quot;b&quot;</span>, <span class="mi">2</span>)])</code></pre>
+<h3>Accesso, modifica, aggiunta, rimozione</h3>
+<pre><code>voti[<span class="st">&quot;analisi&quot;</span>]            <span class="cm"># 28 (accesso)</span>
+voti[<span class="st">&quot;analisi&quot;</span>] <span class="op">=</span> <span class="mi">29</span>       <span class="cm"># modifica</span>
+voti[<span class="st">&quot;statistica&quot;</span>] <span class="op">=</span> <span class="mi">27</span>    <span class="cm"># aggiunta</span>
+<span class="kw">del</span> voti[<span class="st">&quot;informatica&quot;</span>]    <span class="cm"># rimozione</span></code></pre>
+<h3>Accesso sicuro con <code>get()</code></h3>
+<pre><code>voto: <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> voti.get(<span class="st">&quot;algebra&quot;</span>)         <span class="cm"># None se assente</span>
+voto: <span class="nb">int</span> <span class="op">=</span> voti.get(<span class="st">&quot;algebra&quot;</span>, <span class="mi">0</span>)              <span class="cm"># 0 se assente</span></code></pre>
+<h3>Pattern conteggio con <code>get()</code></h3>
+<pre><code>conteggi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
+<span class="kw">for</span> parola <span class="kw">in</span> parole:
+    conteggi[parola] <span class="op">=</span> conteggi.get(parola, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span></code></pre>
+<h3>Iterare su un dizionario</h3>
+<pre><code><span class="kw">for</span> chiave <span class="kw">in</span> diz:                    <span class="cm"># solo chiavi</span>
+<span class="kw">for</span> chiave, valore <span class="kw">in</span> diz.items():    <span class="cm"># chiave e valore</span>
+<span class="nb">list</span>(diz.keys())                      <span class="cm"># lista delle chiavi</span>
+<span class="nb">list</span>(diz.values())                    <span class="cm"># lista dei valori</span></code></pre>
+<h3>Metodi dizionario</h3>
+<pre><code>base.update(nuovi)                    <span class="cm"># aggiorna/unisce</span>
+unione: <span class="nb">dict</span> <span class="op">=</span> base <span class="op">|</span> nuovi           <span class="cm"># unione (Python 3.9+)</span>
+rimosso: <span class="nb">int</span> <span class="op">=</span> voti.pop(<span class="st">&quot;info&quot;</span>)       <span class="cm"># rimuove e restituisce</span>
+assente: <span class="nb">int</span> <span class="op">=</span> voti.pop(<span class="st">&quot;alg&quot;</span>, <span class="op">-</span><span class="mi">1</span>)    <span class="cm"># con default se assente</span></code></pre>
+<h3><code>Counter</code> — contare frequenze</h3>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+frequenze: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(parole)
+<span class="nb">print</span>(frequenze[<span class="st">&quot;casa&quot;</span>])           <span class="cm"># 3</span>
+<span class="nb">print</span>(frequenze[<span class="st">&quot;drago&quot;</span>])          <span class="cm"># 0 (nessun errore)</span>
+<span class="nb">print</span>(frequenze.most_common(<span class="mi">2</span>))    <span class="cm"># [(&quot;casa&quot;, 3), (&quot;albero&quot;, 2)]</span></code></pre>
+<h3><code>defaultdict</code> — dizionario con default</h3>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+
+conteggi: defaultdict[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> defaultdict(<span class="nb">int</span>)       <span class="cm"># default: 0</span>
+gruppi: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">str</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)  <span class="cm"># default: []</span>
+
+<span class="kw">for</span> parola <span class="kw">in</span> parole:
+    conteggi[parola] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="kw">for</span> cognome, corso <span class="kw">in</span> studenti:
+    gruppi[corso].append(cognome)</code></pre>
+<h3>Set — creare e operare</h3>
+<pre><code>numeri: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>}
+vuoto: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">set</span>()                <span class="cm"># {} crea un dict!</span>
+unici: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>(lista)           <span class="cm"># rimuove duplicati</span></code></pre>
+<h3>Operazioni insiemistiche</h3>
+<pre><code>a <span class="op">|</span> b      <span class="cm"># unione</span>
+a <span class="op">&amp;</span> b      <span class="cm"># intersezione</span>
+a <span class="op">-</span> b      <span class="cm"># differenza</span>
+a <span class="op">^</span> b      <span class="cm"># differenza simmetrica</span>
+a <span class="op">&lt;</span><span class="op">=</span> b     <span class="cm"># sottoinsieme</span></code></pre>
+<h3>Metodi set</h3>
+<pre><code>colori.add(<span class="st">&quot;giallo&quot;</span>)       <span class="cm"># aggiunge</span>
+colori.discard(<span class="st">&quot;verde&quot;</span>)    <span class="cm"># rimuove (nessun errore se assente)</span>
+colori.remove(<span class="st">&quot;rosso&quot;</span>)     <span class="cm"># rimuove (KeyError se assente)</span></code></pre>
+<h3>Appartenenza — set vs lista</h3>
+<pre><code><span class="cm"># Set: O(1) — praticamente istantaneo</span>
+<span class="mi">999_999</span> <span class="kw">in</span> grande_set
+
+<span class="cm"># Lista: O(n) — lento per grandi collezioni</span>
+<span class="mi">999_999</span> <span class="kw">in</span> grande_lista</code></pre>
+<h3>Tabella mutabilità</h3>
+<table>
+<thead><tr>
+<th>Tipo</th>
+<th>Mutabile</th>
+<th>Hashable</th>
+<th>Uso come chiave dict</th>
+</tr></thead><tbody>
+<tr>
+<td><code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code></td>
+<td>No</td>
+<td>Sì</td>
+<td>Sì</td>
+</tr>
+<tr>
+<td><code>tuple</code></td>
+<td>No</td>
+<td>Sì*</td>
+<td>Sì*</td>
+</tr>
+<tr>
+<td><code>frozenset</code></td>
+<td>No</td>
+<td>Sì</td>
+<td>Sì</td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td>Sì</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>dict</code></td>
+<td>Sì</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>set</code></td>
+<td>Sì</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody></table>
+<p>*Solo se contiene elementi hashable.</p>
+<h3>Alias e copie — effetti collaterali</h3>
+<pre><code><span class="cm"># Alias: modifica condivisa!</span>
+lista_b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> lista_a
+lista_a.append(<span class="mi">4</span>)    <span class="cm"># lista_b è cambiata!</span>
+
+<span class="cm"># Copia: indipendente</span>
+lista_c: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> lista_a.copy()
+lista_a.append(<span class="mi">5</span>)    <span class="cm"># lista_c NON è cambiata</span></code></pre>
+<hr>
+<h2>7. Funzioni — fondamenti (F13)</h2>
+<h3>Definire e chiamare una funzione</h3>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+media: <span class="nb">float</span> <span class="op">=</span> calcola_media([<span class="mi">28.0</span>, <span class="mi">30.0</span>, <span class="mi">25.0</span>])</code></pre>
+<h3>Funzione che restituisce <code>None</code></h3>
+<pre><code><span class="kw">def</span> <span class="fn">stampa_report</span>(<span class="fn">titolo</span>: <span class="nb">str</span>, dati: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;=== {titolo} ===&quot;</span>)
+    <span class="kw">for</span> valore <span class="kw">in</span> dati:
+        <span class="nb">print</span>(<span class="st">f&quot;  {valore:.2f}&quot;</span>)</code></pre>
+<h3>Return multipli con tuple</h3>
+<pre><code><span class="kw">def</span> <span class="fn">statistiche_base</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori), <span class="nb">min</span>(valori), <span class="nb">max</span>(valori)
+
+media, minimo, massimo <span class="op">=</span> statistiche_base(dati)</code></pre>
+<h3>Parametri con valori di default</h3>
+<pre><code><span class="kw">def</span> <span class="fn">formatta</span>(<span class="fn">valore</span>: <span class="nb">float</span>, decimali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>, prefisso: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="kw">return</span> <span class="st">f&quot;{prefisso}{valore:.{decimali}f}&quot;</span>
+
+formatta(<span class="mi">3.14</span>)                 <span class="cm"># &quot;3.14&quot;</span>
+formatta(<span class="mi">3.14</span>, <span class="mi">4</span>)              <span class="cm"># &quot;3.1416&quot;</span>
+formatta(<span class="mi">3.14</span>, <span class="mi">3</span>, <span class="st">&quot;€&quot;</span>)        <span class="cm"># &quot;€3.142&quot;</span></code></pre>
+<h3>Argomenti keyword</h3>
+<pre><code>formatta(valore<span class="op">=</span><span class="mi">3.14</span>, prefisso<span class="op">=</span><span class="st">&quot;€&quot;</span>, decimali<span class="op">=</span><span class="mi">3</span>)
+deviazione_standard(dati, campione<span class="op">=</span><span class="kw">True</span>)    <span class="cm"># più leggibile</span></code></pre>
+<h3><code><em>args</code> e <code></em>*kwargs</code></h3>
+<pre><code><span class="kw">def</span> <span class="fn">somma_tutti</span>(<span class="op">*</span><span class="fn">args</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    totale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+    <span class="kw">for</span> valore <span class="kw">in</span> args:
+        totale <span class="op">+</span><span class="op">=</span> valore
+    <span class="kw">return</span> totale
+
+<span class="kw">def</span> <span class="fn">stampa_info</span>(<span class="fn">nome</span>: <span class="nb">str</span>, <span class="op">*</span><span class="op">*</span>kwargs: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Nome: {nome}&quot;</span>)
+    <span class="kw">for</span> chiave, valore <span class="kw">in</span> kwargs.items():
+        <span class="nb">print</span>(<span class="st">f&quot;  {chiave}: {valore}&quot;</span>)</code></pre>
+<h3>Default mutabile — il problema e la soluzione</h3>
+<pre><code><span class="cm"># MALE: il default mutabile è condiviso tra le chiamate!</span>
+<span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">voto</span>: <span class="nb">int</span>, lista: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:  <span class="cm"># BUG!</span>
+    lista.append(voto)
+    <span class="kw">return</span> lista
+
+<span class="cm"># BENE: usare None come default</span>
+<span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">voto</span>: <span class="nb">int</span>, lista: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
+    <span class="kw">if</span> lista <span class="kw">is</span> <span class="kw">None</span>:
+        lista <span class="op">=</span> []
+    lista.append(voto)
+    <span class="kw">return</span> lista</code></pre>
+<h3>Scope — regole fondamentali</h3>
+<pre><code>PI: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.14159265</span>  <span class="cm"># variabile globale: leggibile ovunque</span>
+
+<span class="kw">def</span> <span class="fn">area_cerchio</span>(<span class="fn">raggio</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> PI <span class="op">*</span> raggio <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>     <span class="cm"># OK: legge la globale</span>
+
+<span class="cm"># Per modificare una globale (SCONSIGLIATO):</span>
+<span class="cm"># global contatore</span></code></pre>
+<h3>Docstring — formato Google</h3>
+<pre><code><span class="kw">def</span> <span class="fn">deviazione_standard</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>], campione: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la deviazione standard.
+
+    Args:
+        valori: lista di valori numerici (almeno 2).
+        campione: se True usa n-1, se False usa n.
+
+    Returns:
+        La deviazione standard come float.
+
+    Raises:
+        ValueError: se la lista contiene meno di 2 elementi.
+    &quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Servono almeno 2 valori&quot;</span>)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori]
+    divisore: <span class="nb">int</span> <span class="op">=</span> n <span class="op">-</span> <span class="mi">1</span> <span class="kw">if</span> campione <span class="kw">else</span> n
+    <span class="kw">return</span> (<span class="nb">sum</span>(scarti) <span class="op">/</span> divisore) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span></code></pre>
+<hr>
+<h2>8. Funzioni avanzate e moduli (F14)</h2>
+<h3>Funzioni come oggetti</h3>
+<pre><code>operazione <span class="op">=</span> quadrato     <span class="cm"># assegnare una funzione a una variabile</span>
+<span class="nb">print</span>(operazione(<span class="mi">5</span>))      <span class="cm"># 25</span></code></pre>
+<h3>Lambda</h3>
+<pre><code>quadrato <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+somma <span class="op">=</span> <span class="kw">lambda</span> a, b: a <span class="op">+</span> b</code></pre>
+<h3><code>sorted()</code> con <code>key=</code></h3>
+<pre><code><span class="cm"># Ordinare per lunghezza</span>
+<span class="nb">sorted</span>(parole, key<span class="op">=</span><span class="kw">lambda</span> s: <span class="nb">len</span>(s))
+
+<span class="cm"># Ordinare dizionari per un campo</span>
+<span class="nb">sorted</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;media&quot;</span>])
+<span class="nb">sorted</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;media&quot;</span>], reverse<span class="op">=</span><span class="kw">True</span>)
+
+<span class="cm"># Ordinare per più criteri</span>
+<span class="nb">sorted</span>(esami, key<span class="op">=</span><span class="kw">lambda</span> e: (<span class="op">-</span>e[<span class="st">&quot;voto&quot;</span>], e[<span class="st">&quot;data&quot;</span>]))
+
+<span class="cm"># min/max con key</span>
+migliore: <span class="nb">dict</span> <span class="op">=</span> <span class="nb">max</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;media&quot;</span>])</code></pre>
+<h3><code>map()</code> e <code>filter()</code> vs comprehension</h3>
+<pre><code><span class="cm"># map: applica funzione a ogni elemento</span>
+<span class="nb">list</span>(<span class="nb">map</span>(<span class="nb">int</span>, [<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>]))          <span class="cm"># [1, 2, 3]</span>
+[<span class="nb">int</span>(s) <span class="kw">for</span> s <span class="kw">in</span> [<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>]]        <span class="cm"># equivalente</span>
+
+<span class="cm"># filter: seleziona elementi</span>
+<span class="nb">list</span>(<span class="nb">filter</span>(<span class="kw">lambda</span> v: v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>, voti))    <span class="cm"># solo sufficienti</span>
+[v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]              <span class="cm"># equivalente (preferito)</span></code></pre>
+<h3>Importare moduli</h3>
+<pre><code><span class="kw">import</span> statistiche                        <span class="cm"># modulo intero</span>
+<span class="kw">from</span> statistiche <span class="kw">import</span> media, varianza   <span class="cm"># nomi specifici</span>
+<span class="kw">import</span> statistiche <span class="kw">as</span> stat                <span class="cm"># con alias</span></code></pre>
+<h3>Libreria standard — <code>math</code></h3>
+<pre><code><span class="kw">import</span> math
+
+math.sqrt(<span class="mi">16</span>)          <span class="cm"># 4.0</span>
+math.log(<span class="mi">100</span>, <span class="mi">10</span>)      <span class="cm"># 2.0</span>
+math.log(math.e)       <span class="cm"># 1.0</span>
+math.pi                <span class="cm"># 3.14159...</span>
+math.factorial(<span class="mi">5</span>)      <span class="cm"># 120</span>
+math.ceil(<span class="mi">3.2</span>)         <span class="cm"># 4</span>
+math.floor(<span class="mi">3.8</span>)        <span class="cm"># 3</span></code></pre>
+<h3>Libreria standard — <code>statistics</code></h3>
+<pre><code><span class="kw">import</span> statistics
+
+statistics.mean(dati)       <span class="cm"># media</span>
+statistics.median(dati)     <span class="cm"># mediana</span>
+statistics.stdev(dati)      <span class="cm"># deviazione standard campionaria</span>
+statistics.variance(dati)   <span class="cm"># varianza campionaria</span>
+statistics.mode(dati)       <span class="cm"># moda</span></code></pre>
+<h3>Libreria standard — <code>random</code></h3>
+<pre><code><span class="kw">import</span> random
+
+random.seed(<span class="mi">42</span>)                   <span class="cm"># riproducibilità</span>
+random.random()                   <span class="cm"># float in [0, 1)</span>
+random.randint(<span class="mi">1</span>, <span class="mi">100</span>)            <span class="cm"># intero in [1, 100]</span>
+random.uniform(<span class="mi">0.0</span>, <span class="mi">10.0</span>)        <span class="cm"># float in [0, 10]</span>
+random.choice(lista)              <span class="cm"># elemento casuale</span>
+random.sample(lista, <span class="mi">2</span>)           <span class="cm"># 2 elementi senza ripetizione</span>
+random.shuffle(lista)             <span class="cm"># mescola in-place</span></code></pre>
+<h3>Libreria standard — <code>json</code></h3>
+<pre><code><span class="kw">import</span> json
+
+dati: <span class="nb">dict</span> <span class="op">=</span> json.loads(<span class="st">&#x27;{&quot;nome&quot;: &quot;Anna&quot;}&#x27;</span>)  <span class="cm"># da stringa JSON a dict</span>
+testo: <span class="nb">str</span> <span class="op">=</span> json.dumps(dati, indent<span class="op">=</span><span class="mi">2</span>)      <span class="cm"># da dict a stringa JSON</span></code></pre>
+<h3>Libreria standard — <code>datetime</code></h3>
+<pre><code><span class="kw">from</span> datetime <span class="kw">import</span> date, timedelta
+
+oggi: date <span class="op">=</span> date.today()
+tra_7_giorni: date <span class="op">=</span> oggi <span class="op">+</span> timedelta(days<span class="op">=</span><span class="mi">7</span>)
+nascita: date <span class="op">=</span> date(<span class="mi">2005</span>, <span class="mi">6</span>, <span class="mi">15</span>)
+eta_giorni: <span class="nb">int</span> <span class="op">=</span> (oggi <span class="op">-</span> nascita).days</code></pre>
+<h3>Ordine degli import (PEP 8)</h3>
+<pre><code><span class="cm"># 1. Libreria standard</span>
+<span class="kw">import</span> math
+<span class="kw">import</span> statistics
+
+<span class="cm"># 2. Pacchetti terze parti</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># 3. Moduli propri</span>
+<span class="kw">from</span> mio_progetto.utils <span class="kw">import</span> pulisci_dati</code></pre>
+<hr>
+<h2>9. File, dati e gestione errori (F15)</h2>
+<h3>Leggere un file di testo</h3>
+<pre><code><span class="cm"># Leggere tutto il contenuto</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    contenuto: <span class="nb">str</span> <span class="op">=</span> f.read()
+
+<span class="cm"># Leggere riga per riga (memoria efficiente)</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> riga <span class="kw">in</span> f:
+        <span class="nb">print</span>(riga.strip())
+
+<span class="cm"># Leggere tutte le righe in una lista</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> f.readlines()</code></pre>
+<h3>Scrivere un file di testo</h3>
+<pre><code><span class="cm"># Scrittura (sovrascrive)</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;output.txt&quot;</span>, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">f&quot;Media: {media:.4f}\n&quot;</span>)
+
+<span class="cm"># Append (aggiunge in fondo)</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;log.txt&quot;</span>, <span class="st">&quot;a&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">f&quot;{evento}\n&quot;</span>)</code></pre>
+<h3><code>pathlib</code> — gestione percorsi</h3>
+<pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+percorso: Path <span class="op">=</span> Path(<span class="st">&quot;dati&quot;</span>) <span class="op">/</span> <span class="st">&quot;2024&quot;</span> <span class="op">/</span> <span class="st">&quot;risultati.csv&quot;</span>
+<span class="nb">print</span>(percorso.name)       <span class="cm"># &quot;risultati.csv&quot;</span>
+<span class="nb">print</span>(percorso.stem)       <span class="cm"># &quot;risultati&quot;</span>
+<span class="nb">print</span>(percorso.suffix)     <span class="cm"># &quot;.csv&quot;</span>
+<span class="nb">print</span>(percorso.parent)     <span class="cm"># dati/2024</span>
+
+percorso.exists()          <span class="cm"># True/False</span>
+percorso.is_file()         <span class="cm"># True/False</span>
+
+<span class="cm"># Creare directory</span>
+Path(<span class="st">&quot;output/grafici&quot;</span>).mkdir(parents<span class="op">=</span><span class="kw">True</span>, exist_ok<span class="op">=</span><span class="kw">True</span>)
+
+<span class="cm"># Elencare file</span>
+<span class="kw">for</span> f <span class="kw">in</span> Path(<span class="st">&quot;dati&quot;</span>).glob(<span class="st">&quot;*.csv&quot;</span>):
+    <span class="nb">print</span>(f.name)
+
+<span class="cm"># Leggere direttamente</span>
+contenuto: <span class="nb">str</span> <span class="op">=</span> percorso.read_text(encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>)</code></pre>
+<h3>Leggere CSV</h3>
+<pre><code><span class="kw">import</span> csv
+
+<span class="cm"># Con csv.reader</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;voti.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    lettore <span class="op">=</span> csv.reader(f)
+    intestazione <span class="op">=</span> <span class="nb">next</span>(lettore)     <span class="cm"># salta l&#x27;intestazione</span>
+    <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+        nome, voto <span class="op">=</span> riga[<span class="mi">0</span>], <span class="nb">int</span>(riga[<span class="mi">2</span>])
+
+<span class="cm"># Con csv.DictReader (più leggibile)</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;voti.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    lettore <span class="op">=</span> csv.DictReader(f)
+    <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+        <span class="nb">print</span>(<span class="st">f&quot;{riga[&#x27;nome&#x27;]}: {riga[&#x27;voto&#x27;]}&quot;</span>)
+
+<span class="cm"># Separatore europeo (punto e virgola)</span>
+csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>)</code></pre>
+<h3>Scrivere CSV</h3>
+<pre><code><span class="kw">import</span> csv
+
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;output.csv&quot;</span>, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+    scrittore <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span>[<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;voto&quot;</span>])
+    scrittore.writeheader()
+    scrittore.writerows(dati)</code></pre>
+<h3>Leggere e scrivere JSON</h3>
+<pre><code><span class="kw">import</span> json
+
+<span class="cm"># Leggere</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;config.json&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    config: <span class="nb">dict</span> <span class="op">=</span> json.load(f)
+
+<span class="cm"># Scrivere</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;risultati.json&quot;</span>, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    json.dump(risultati, f, indent<span class="op">=</span><span class="mi">2</span>, ensure_ascii<span class="op">=</span><span class="kw">False</span>)</code></pre>
+<h3>Gestione eccezioni — <code>try/except</code></h3>
+<pre><code><span class="kw">try</span>:
+    valore: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Numero: &quot;</span>))
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Non è un numero valido&quot;</span>)</code></pre>
+<h3>Catturare eccezioni specifiche</h3>
+<pre><code><span class="kw">try</span>:
+    risultato <span class="op">=</span> operazione(dati)
+<span class="kw">except</span> <span class="nb">ValueError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;Valore non valido: {e}&quot;</span>)
+<span class="kw">except</span> <span class="nb">ZeroDivisionError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Divisione per zero&quot;</span>)
+<span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;File non trovato&quot;</span>)</code></pre>
+<h3><code>else</code> e <code>finally</code></h3>
+<pre><code><span class="kw">try</span>:
+    f <span class="op">=</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>)
+<span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;File non trovato&quot;</span>)
+<span class="kw">else</span>:
+    contenuto <span class="op">=</span> f.readlines()    <span class="cm"># eseguito solo se try ha successo</span>
+<span class="kw">finally</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Operazione completata&quot;</span>)  <span class="cm"># eseguito SEMPRE</span></code></pre>
+<h3>Sollevare eccezioni con <code>raise</code></h3>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">voti</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">if</span> <span class="kw">not</span> voti:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    <span class="kw">for</span> voto <span class="kw">in</span> voti:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="mi">0</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto fuori range: {voto}&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)</code></pre>
+<hr>
+<h2>10. Programmazione a oggetti (F16)</h2>
+<h3>Definire una classe</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta un punto nel piano cartesiano.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.x: <span class="nb">float</span> <span class="op">=</span> x
+        self.y: <span class="nb">float</span> <span class="op">=</span> y</code></pre>
+<h3>Classe completa con metodi</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
+    universita: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Università degli Studi&quot;</span>  <span class="cm"># attributo di classe</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, cognome: <span class="nb">str</span>, matricola: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self.cognome: <span class="nb">str</span> <span class="op">=</span> cognome
+        self.matricola: <span class="nb">int</span> <span class="op">=</span> matricola
+        self.voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">self</span>, voto: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto {voto} fuori range&quot;</span>)
+        self.voti.append(voto)
+
+    <span class="kw">def</span> <span class="fn">media</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">if</span> <span class="kw">not</span> self.voti:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Nessun voto&quot;</span>)
+        <span class="kw">return</span> <span class="nb">sum</span>(self.voti) <span class="op">/</span> <span class="nb">len</span>(self.voti)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;{self.nome} {self.cognome} (mat. {self.matricola})&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Studente({self.nome!r}, {self.cognome!r}, {self.matricola})&quot;</span></code></pre>
+<h3>Usare una classe</h3>
+<pre><code>anna: Studente <span class="op">=</span> Studente(<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Rossi&quot;</span>, <span class="mi">12345</span>)
+anna.aggiungi_voto(<span class="mi">28</span>)
+anna.aggiungi_voto(<span class="mi">30</span>)
+<span class="nb">print</span>(anna.media())    <span class="cm"># 29.0</span>
+<span class="nb">print</span>(anna)            <span class="cm"># Anna Rossi (mat. 12345)</span></code></pre>
+<h3>Metodi speciali (dunder methods)</h3>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Invocato da</th>
+<th>Scopo</th>
+</tr></thead><tbody>
+<tr>
+<td><code><em>_init</em>_</code></td>
+<td><code>Classe(...)</code></td>
+<td>Inizializzazione</td>
+</tr>
+<tr>
+<td><code><em>_str</em>_</code></td>
+<td><code>str(obj)</code>, <code>print(obj)</code></td>
+<td>Rappresentazione leggibile</td>
+</tr>
+<tr>
+<td><code><em>_repr</em>_</code></td>
+<td><code>repr(obj)</code></td>
+<td>Rappresentazione tecnica</td>
+</tr>
+<tr>
+<td><code><em>_len</em>_</code></td>
+<td><code>len(obj)</code></td>
+<td>Lunghezza</td>
+</tr>
+<tr>
+<td><code><em>_eq</em>_</code></td>
+<td><code>obj1 == obj2</code></td>
+<td>Uguaglianza</td>
+</tr>
+<tr>
+<td><code><em>_lt</em>_</code></td>
+<td><code>obj1 < obj2</code></td>
+<td>Confronto "minore di"</td>
+</tr>
+<tr>
+<td><code><em>_getitem</em>_</code></td>
+<td><code>obj[i]</code></td>
+<td>Accesso per indice</td>
+</tr>
+<tr>
+<td><code><em>_contains</em>_</code></td>
+<td><code>x in obj</code></td>
+<td>Appartenenza</td>
+</tr>
+</tbody></table>
+<h3><code><em>_eq</em><em></code> e <code></em><em>lt</em>_</code></h3>
+<pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.x, self.y <span class="op">=</span> x, y
+
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="fn">self</span>, altro: <span class="nb">object</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(altro, Punto):
+            <span class="kw">return</span> NotImplemented
+        <span class="kw">return</span> self.x <span class="op">=</span><span class="op">=</span> altro.x <span class="kw">and</span> self.y <span class="op">=</span><span class="op">=</span> altro.y
+
+    <span class="kw">def</span> <span class="fn">__lt__</span>(<span class="fn">self</span>, altro: <span class="st">&quot;Punto&quot;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">return</span> (self.x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="op">+</span> self.y<span class="op">*</span><span class="op">*</span><span class="mi">2</span>) <span class="op">&lt;</span> (altro.x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="op">+</span> altro.y<span class="op">*</span><span class="op">*</span><span class="mi">2</span>)</code></pre>
+<h3>Ereditarietà</h3>
+<pre><code><span class="kw">class</span> <span class="fn">StudenteLavoratore</span>(<span class="fn">Studente</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, cognome: <span class="nb">str</span>, matricola: <span class="nb">int</span>,
+                 azienda: <span class="nb">str</span>, ore: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="nb">super</span>().__init__(nome, cognome, matricola)
+        self.azienda: <span class="nb">str</span> <span class="op">=</span> azienda
+        self.ore: <span class="nb">int</span> <span class="op">=</span> ore
+
+    <span class="kw">def</span> <span class="fn">è_part_time</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">return</span> self.ore <span class="op">&lt;</span> <span class="mi">20</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;{super().__str__()} — {self.azienda} ({self.ore}h/sett.)&quot;</span></code></pre>
+<h3><code>@property</code> — accesso controllato</h3>
+<pre><code><span class="kw">class</span> <span class="fn">ContoBancario</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, titolare: <span class="nb">str</span>, saldo: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.titolare: <span class="nb">str</span> <span class="op">=</span> titolare
+        self._saldo: <span class="nb">float</span> <span class="op">=</span> saldo       <span class="cm"># convenzione: uso interno</span>
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">saldo</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> self._saldo               <span class="cm"># sola lettura</span>
+
+    <span class="kw">def</span> <span class="fn">deposita</span>(<span class="fn">self</span>, importo: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> importo <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Importo deve essere positivo&quot;</span>)
+        self._saldo <span class="op">+</span><span class="op">=</span> importo
+
+conto: ContoBancario <span class="op">=</span> ContoBancario(<span class="st">&quot;Anna&quot;</span>, <span class="mi">1000.0</span>)
+<span class="nb">print</span>(conto.saldo)       <span class="cm"># 1000.0 (sembra attributo, è un metodo)</span>
+<span class="cm"># conto.saldo = 9999     # AttributeError!</span></code></pre>
+<h3>Composizione (HA-un)</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Dipartimento</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self.docenti: <span class="nb">list</span>[Docente] <span class="op">=</span> []    <span class="cm"># composizione</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi_docente</span>(<span class="fn">self</span>, docente: Docente) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.docenti.append(docente)
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> <span class="nb">len</span>(self.docenti)</code></pre>
+<hr>
+<h2>11. NumPy, Pandas e visualizzazione (F17)</h2>
+<h3>NumPy — creare array</h3>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+array: np.ndarray <span class="op">=</span> np.array([<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>])
+matrice: np.ndarray <span class="op">=</span> np.array([[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]])
+
+np.zeros(<span class="mi">10</span>)                    <span class="cm"># 10 zeri</span>
+np.zeros((<span class="mi">3</span>, <span class="mi">4</span>))                <span class="cm"># matrice 3×4 di zeri</span>
+np.ones(<span class="mi">5</span>)                      <span class="cm"># 5 uno</span>
+np.arange(<span class="mi">0</span>, <span class="mi">10</span>, <span class="mi">0.5</span>)           <span class="cm"># sequenza con passo 0.5</span>
+np.linspace(<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">100</span>)          <span class="cm"># 100 punti equidistanti tra 0 e 1</span></code></pre>
+<h3>NumPy — attributi array</h3>
+<pre><code>dati.shape      <span class="cm"># (righe, colonne)</span>
+dati.dtype      <span class="cm"># tipo degli elementi (es. float64)</span>
+dati.ndim       <span class="cm"># numero di dimensioni</span>
+dati.size       <span class="cm"># numero totale di elementi</span></code></pre>
+<h3>NumPy — operazioni vettorizzate</h3>
+<pre><code>a: np.ndarray <span class="op">=</span> np.array([<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>])
+b: np.ndarray <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+
+a <span class="op">+</span> b           <span class="cm"># [11, 22, 33]</span>
+a <span class="op">*</span> b           <span class="cm"># [10, 40, 90]</span>
+a <span class="op">/</span> b           <span class="cm"># [10.0, 10.0, 10.0]</span>
+a <span class="op">&gt;</span> <span class="mi">15</span>          <span class="cm"># [False, True, True]</span>
+a <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>          <span class="cm"># [100, 400, 900]</span></code></pre>
+<h3>NumPy — boolean indexing (filtro)</h3>
+<pre><code>temperature: np.ndarray <span class="op">=</span> np.array([<span class="mi">15.2</span>, <span class="mi">22.1</span>, <span class="mi">31.5</span>, <span class="mi">18.7</span>])
+calde: np.ndarray <span class="op">=</span> temperature[temperature <span class="op">&gt;</span> <span class="mi">25</span>]    <span class="cm"># [31.5]</span></code></pre>
+<h3>NumPy — statistiche</h3>
+<pre><code>np.mean(voti)              <span class="cm"># media</span>
+np.median(voti)            <span class="cm"># mediana</span>
+np.std(voti)               <span class="cm"># deviazione standard (popolazione)</span>
+np.std(voti, ddof<span class="op">=</span><span class="mi">1</span>)       <span class="cm"># deviazione standard campionaria</span>
+np.var(voti)               <span class="cm"># varianza (popolazione)</span>
+np.<span class="nb">sum</span>(voti)               <span class="cm"># somma</span>
+np.<span class="nb">min</span>(voti)               <span class="cm"># minimo</span>
+np.<span class="nb">max</span>(voti)               <span class="cm"># massimo</span></code></pre>
+<h3>NumPy — broadcasting e standardizzazione</h3>
+<pre><code><span class="cm"># Standardizzazione (z-score)</span>
+z_scores: np.ndarray <span class="op">=</span> (dati <span class="op">-</span> np.mean(dati)) <span class="op">/</span> np.std(dati, ddof<span class="op">=</span><span class="mi">1</span>)
+
+<span class="cm"># Media per colonna di una matrice</span>
+medie_colonne: np.ndarray <span class="op">=</span> np.mean(matrice, axis<span class="op">=</span><span class="mi">0</span>)
+centrata: np.ndarray <span class="op">=</span> matrice <span class="op">-</span> medie_colonne</code></pre>
+<h3>NumPy — numeri casuali</h3>
+<pre><code>rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+
+rng.uniform(<span class="mi">0.0</span>, <span class="mi">1.0</span>, size<span class="op">=</span><span class="mi">1000</span>)        <span class="cm"># uniforme</span>
+rng.normal(loc<span class="op">=</span><span class="mi">0</span>, scale<span class="op">=</span><span class="mi">1</span>, size<span class="op">=</span><span class="mi">1000</span>)    <span class="cm"># normale</span>
+rng.binomial(n<span class="op">=</span><span class="mi">10</span>, p<span class="op">=</span><span class="mi">0.5</span>, size<span class="op">=</span><span class="mi">1000</span>)     <span class="cm"># binomiale</span>
+rng.integers(low<span class="op">=</span><span class="mi">1</span>, high<span class="op">=</span><span class="mi">7</span>, size<span class="op">=</span><span class="mi">100</span>)    <span class="cm"># interi casuali</span>
+rng.permutation(<span class="mi">10</span>)                      <span class="cm"># permutazione</span></code></pre>
+<h3>Pandas — creare Series e DataFrame</h3>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Series</span>
+voti: pd.Series <span class="op">=</span> pd.Series([<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>], index<span class="op">=</span>[<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>])
+
+<span class="cm"># DataFrame</span>
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>],
+    <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>],
+    <span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Stat I&quot;</span>, <span class="st">&quot;Stat I&quot;</span>, <span class="st">&quot;Stat II&quot;</span>]
+})</code></pre>
+<h3>Pandas — leggere CSV</h3>
+<pre><code>df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati.csv&quot;</span>)
+
+<span class="cm"># Con opzioni</span>
+df <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>,
+                  decimal<span class="op">=</span><span class="st">&quot;,&quot;</span>, na_values<span class="op">=</span>[<span class="st">&quot;&quot;</span>, <span class="st">&quot;NA&quot;</span>, <span class="st">&quot;?&quot;</span>])</code></pre>
+<h3>Pandas — esplorazione iniziale</h3>
+<pre><code>df.head()           <span class="cm"># prime 5 righe</span>
+df.tail()           <span class="cm"># ultime 5 righe</span>
+df.info()           <span class="cm"># struttura e tipi</span>
+df.describe()       <span class="cm"># statistiche descrittive</span>
+df.shape            <span class="cm"># (righe, colonne)</span>
+df.columns          <span class="cm"># nomi colonne</span>
+df[<span class="st">&quot;corso&quot;</span>].value_counts()              <span class="cm"># frequenze assolute</span>
+df[<span class="st">&quot;corso&quot;</span>].value_counts(normalize<span class="op">=</span><span class="kw">True</span>) <span class="cm"># frequenze relative</span></code></pre>
+<h3>Pandas — selezione e filtro</h3>
+<pre><code><span class="cm"># Una colonna → Series</span>
+voti: pd.Series <span class="op">=</span> df[<span class="st">&quot;voto&quot;</span>]
+
+<span class="cm"># Più colonne → DataFrame</span>
+sotto: pd.DataFrame <span class="op">=</span> df[[<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;voto&quot;</span>]]
+
+<span class="cm"># Filtro booleano</span>
+promossi: pd.DataFrame <span class="op">=</span> df[df[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+eccellenti: pd.DataFrame <span class="op">=</span> df[(df[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>) <span class="op">&amp;</span> (df[<span class="st">&quot;corso&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Stat I&quot;</span>)]
+
+<span class="cm"># loc (per etichetta) e iloc (per posizione)</span>
+df.loc[<span class="mi">0</span>, <span class="st">&quot;nome&quot;</span>]           <span class="cm"># riga 0, colonna &quot;nome&quot;</span>
+df.iloc[:<span class="mi">3</span>]                 <span class="cm"># prime 3 righe</span></code></pre>
+<h3>Pandas — valori mancanti</h3>
+<pre><code>df.isna().<span class="nb">sum</span>()                         <span class="cm"># contare mancanti per colonna</span>
+df.dropna()                             <span class="cm"># rimuovere righe con mancanti</span>
+df.dropna(subset<span class="op">=</span>[<span class="st">&quot;voto&quot;</span>])              <span class="cm"># solo se manca il voto</span>
+df.fillna({<span class="st">&quot;voto&quot;</span>: <span class="mi">0</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;?&quot;</span>})    <span class="cm"># sostituire con valori</span>
+df[<span class="st">&quot;voto&quot;</span>].fillna(df[<span class="st">&quot;voto&quot;</span>].mean())    <span class="cm"># sostituire con la media</span></code></pre>
+<h3>Pandas — duplicati</h3>
+<pre><code>df.duplicated().<span class="nb">sum</span>()                   <span class="cm"># contare duplicati</span>
+df.drop_duplicates()                    <span class="cm"># rimuovere duplicati</span>
+df.drop_duplicates(subset<span class="op">=</span>[<span class="st">&quot;nome&quot;</span>])     <span class="cm"># su colonne specifiche</span></code></pre>
+<h3>Pandas — aggregazione con <code>groupby</code></h3>
+<pre><code>df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>].mean()                  <span class="cm"># media per gruppo</span>
+df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>].agg([<span class="st">&quot;mean&quot;</span>, <span class="st">&quot;std&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;count&quot;</span>])
+df.groupby([<span class="st">&quot;corso&quot;</span>, <span class="st">&quot;anno&quot;</span>])[<span class="st">&quot;voto&quot;</span>].mean()         <span class="cm"># gruppi multipli</span></code></pre>
+<h3>Pandas — merge (join)</h3>
+<pre><code>risultato: pd.DataFrame <span class="op">=</span> pd.merge(esami, anagrafica, on<span class="op">=</span><span class="st">&quot;studente_id&quot;</span>)
+risultato_left: pd.DataFrame <span class="op">=</span> pd.merge(esami, anagrafica,
+                                         on<span class="op">=</span><span class="st">&quot;studente_id&quot;</span>, how<span class="op">=</span><span class="st">&quot;left&quot;</span>)</code></pre>
+<h3>Pandas — method chaining</h3>
+<pre><code>risultato <span class="op">=</span> (
+    df
+    .dropna(subset<span class="op">=</span>[<span class="st">&quot;voto&quot;</span>])
+    .query(<span class="st">&quot;voto &gt;= 18&quot;</span>)
+    .groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>]
+    .mean()
+    .reset_index()
+    .rename(columns<span class="op">=</span>{<span class="st">&quot;voto&quot;</span>: <span class="st">&quot;media_voto&quot;</span>})
+)</code></pre>
+<h3>Matplotlib — grafico a linee</h3>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">4</span>))
+plt.plot(x, y, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, linewidth<span class="op">=</span><span class="mi">1.5</span>, label<span class="op">=</span><span class="st">&quot;sin(x)&quot;</span>)
+plt.title(<span class="st">&quot;Titolo&quot;</span>)
+plt.xlabel(<span class="st">&quot;Asse X&quot;</span>)
+plt.ylabel(<span class="st">&quot;Asse Y&quot;</span>)
+plt.legend()
+plt.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;grafico.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<h3>Matplotlib — istogramma</h3>
+<pre><code>plt.figure(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">4</span>))
+plt.hist(dati, bins<span class="op">=</span><span class="mi">25</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>, alpha<span class="op">=</span><span class="mi">0.8</span>)
+plt.axvline(np.mean(dati), color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, label<span class="op">=</span><span class="st">&quot;Media&quot;</span>)
+plt.title(<span class="st">&quot;Distribuzione&quot;</span>)
+plt.xlabel(<span class="st">&quot;Valore&quot;</span>)
+plt.ylabel(<span class="st">&quot;Frequenza&quot;</span>)
+plt.legend()
+plt.tight_layout()
+plt.show()</code></pre>
+<h3>Matplotlib — scatter plot</h3>
+<pre><code>plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">5</span>))
+plt.scatter(x, y, alpha<span class="op">=</span><span class="mi">0.6</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolors<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+plt.title(<span class="st">&quot;Relazione tra X e Y&quot;</span>)
+plt.xlabel(<span class="st">&quot;X&quot;</span>)
+plt.ylabel(<span class="st">&quot;Y&quot;</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+<h3>Matplotlib — barre e boxplot</h3>
+<pre><code><span class="cm"># Barre</span>
+plt.bar(categorie, valori, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+
+<span class="cm"># Boxplot</span>
+plt.boxplot([gruppo1, gruppo2, gruppo3], labels<span class="op">=</span>[<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>],
+            patch_artist<span class="op">=</span><span class="kw">True</span>, boxprops<span class="op">=</span><span class="nb">dict</span>(facecolor<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, alpha<span class="op">=</span><span class="mi">0.5</span>))</code></pre>
+<h3>Matplotlib — stile minimale</h3>
+<pre><code>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+ax.hist(dati, bins<span class="op">=</span><span class="mi">30</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+ax.spines[<span class="st">&quot;top&quot;</span>].set_visible(<span class="kw">False</span>)
+ax.spines[<span class="st">&quot;right&quot;</span>].set_visible(<span class="kw">False</span>)
+ax.grid(axis<span class="op">=</span><span class="st">&quot;y&quot;</span>, alpha<span class="op">=</span><span class="mi">0.2</span>)
+fig.tight_layout()
+plt.show()</code></pre>
+<h3>Seaborn — grafici statistici</h3>
+<pre><code><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+
+<span class="cm"># Boxplot per gruppi</span>
+sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">&quot;corso&quot;</span>, y<span class="op">=</span><span class="st">&quot;voto&quot;</span>, palette<span class="op">=</span><span class="st">&quot;Set2&quot;</span>)
+
+<span class="cm"># Heatmap correlazione</span>
+sns.heatmap(df.corr(), annot<span class="op">=</span><span class="kw">True</span>, fmt<span class="op">=</span><span class="st">&quot;.2f&quot;</span>, cmap<span class="op">=</span><span class="st">&quot;coolwarm&quot;</span>,
+            vmin<span class="op">=</span><span class="op">-</span><span class="mi">1</span>, vmax<span class="op">=</span><span class="mi">1</span>, center<span class="op">=</span><span class="mi">0</span>)
+
+<span class="cm"># Pairplot</span>
+sns.pairplot(df, hue<span class="op">=</span><span class="st">&quot;corso&quot;</span>, palette<span class="op">=</span><span class="st">&quot;Set2&quot;</span>, diag_kind<span class="op">=</span><span class="st">&quot;kde&quot;</span>)</code></pre>
+<h3>SciPy — test statistici</h3>
+<pre><code><span class="kw">from</span> scipy <span class="kw">import</span> stats
+
+<span class="cm"># t-test per un campione</span>
+risultato <span class="op">=</span> stats.ttest_1samp(campione, popmean<span class="op">=</span><span class="mi">100</span>)
+<span class="nb">print</span>(<span class="st">f&quot;t = {risultato.statistic:.3f}, p = {risultato.pvalue:.4f}&quot;</span>)
+
+<span class="cm"># Distribuzione normale</span>
+stats.norm.cdf(<span class="mi">1.96</span>)       <span class="cm"># ~0.975</span>
+stats.norm.ppf(<span class="mi">0.975</span>)      <span class="cm"># ~1.96</span></code></pre>
+<h3>scikit-learn — regressione lineare</h3>
+<pre><code><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression
+
+modello: LinearRegression <span class="op">=</span> LinearRegression()
+modello.fit(X, y)                          <span class="cm"># addestramento</span>
+previsioni: np.ndarray <span class="op">=</span> modello.predict(X_nuovo)
+<span class="nb">print</span>(modello.coef_)                       <span class="cm"># coefficienti</span>
+<span class="nb">print</span>(modello.intercept_)                  <span class="cm"># intercetta</span></code></pre>
+<hr>
+<h2>Appendice — Comandi terminale utili</h2>
+<pre><code># Ambienti virtuali
+python -m venv .venv
+source .venv/bin/activate    # macOS/Linux
+.venv\Scripts\activate       # Windows
+deactivate
+
+# Gestione pacchetti
+pip install numpy pandas matplotlib seaborn scipy scikit-learn
+pip install -r requirements.txt
+pip freeze &gt; requirements.txt
+pip list
+
+# Eseguire script
+python script.py
+
+# Linter e formatter
+ruff check .
+black .
+mypy script.py
+
+# Test
+pytest</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="index.html">Home</a></span><span></span></nav>
+</body>
+</html>

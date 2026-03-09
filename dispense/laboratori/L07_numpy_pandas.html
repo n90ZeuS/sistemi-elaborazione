@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L07 — NumPy e Pandas — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="L06_classi_oggetti.html">← L06</a> &bull; <a href="L08_visualizzazione_progetto.html">L08 →</a> &bull; <a href="../../presentazioni/L07_numpy_pandas.html">Presentazione</a></nav>
+<h1>L07 — NumPy e Pandas</h1>
+
+<h1>Laboratorio 7 — NumPy e Pandas</h1>
+<p><strong>Prerequisiti:</strong> Frontale F17 (NumPy, Pandas, analisi dati)</p>
+<hr>
+<h2>Obiettivo del laboratorio</h2>
+<p>In questo laboratorio imparerete a usare le due librerie fondamentali dell'ecosistema Python per l'analisi dei dati: <strong>NumPy</strong> per il calcolo numerico vettorizzato e <strong>Pandas</strong> per la manipolazione di dati tabulari. Ogni esercizio guidato va eseguito cella per cella, osservando l'output e sperimentando variazioni.</p>
+<hr>
+<h2>Parte 1 — Esercizi guidati</h2>
+<h3>1.1 NumPy: creare array e operazioni vettorizzate</h3>
+<p>NumPy introduce il tipo <code>ndarray</code>, un contenitore di dati omogenei che permette di eseguire operazioni su interi vettori senza scrivere cicli espliciti.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Creare array da liste Python</span>
+voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">24</span>])
+<span class="nb">print</span>(<span class="st">f&quot;Array: {voti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Tipo: {type(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dtype: {voti.dtype}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Shape: {voti.shape}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dimensione: {voti.size}&quot;</span>)
+
+<span class="cm"># Array con funzioni di creazione</span>
+zeri: np.ndarray <span class="op">=</span> np.zeros(<span class="mi">10</span>)
+uni: np.ndarray <span class="op">=</span> np.ones(<span class="mi">5</span>)
+sequenza: np.ndarray <span class="op">=</span> np.arange(<span class="mi">0</span>, <span class="mi">100</span>, <span class="mi">5</span>)        <span class="cm"># da 0 a 95, passo 5</span>
+lineare: np.ndarray <span class="op">=</span> np.linspace(<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">11</span>)         <span class="cm"># 11 punti equispaziati tra 0 e 1</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;Zeri: {zeri}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Uni: {uni}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Sequenza: {sequenza}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Lineare: {lineare}&quot;</span>)</code></pre>
+<p>Le operazioni aritmetiche si applicano <strong>elemento per elemento</strong>, senza bisogno di cicli:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">24</span>])
+
+<span class="cm"># Operazioni vettorizzate</span>
+voti_normalizzati: np.ndarray <span class="op">=</span> voti <span class="op">/</span> <span class="mi">30.0</span>
+voti_scalati: np.ndarray <span class="op">=</span> voti <span class="op">*</span> <span class="mi">10</span> <span class="op">/</span> <span class="mi">3</span>
+voti_bonus: np.ndarray <span class="op">=</span> voti <span class="op">+</span> <span class="mi">2</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;Normalizzati (0-1): {voti_normalizzati}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Scalati (0-100):    {np.round(voti_scalati, 1)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Con bonus +2:       {voti_bonus}&quot;</span>)
+
+<span class="cm"># Operazioni tra array</span>
+pesi: np.ndarray <span class="op">=</span> np.array([<span class="mi">0.1</span>, <span class="mi">0.1</span>, <span class="mi">0.2</span>, <span class="mi">0.1</span>, <span class="mi">0.15</span>, <span class="mi">0.1</span>, <span class="mi">0.15</span>, <span class="mi">0.1</span>])
+media_pesata: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.<span class="nb">sum</span>(voti <span class="op">*</span> pesi))
+<span class="nb">print</span>(<span class="st">f&quot;Media pesata: {media_pesata:.2f}&quot;</span>)
+
+<span class="cm"># Confronti vettorizzati (restituiscono array di bool)</span>
+sufficienti: np.ndarray <span class="op">=</span> voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>
+eccellenti: np.ndarray <span class="op">=</span> voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>
+<span class="nb">print</span>(<span class="st">f&quot;Sufficienti: {sufficienti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Numero eccellenti: {np.sum(eccellenti)}&quot;</span>)
+
+<span class="cm"># Indicizzazione booleana (filtering)</span>
+voti_alti: np.ndarray <span class="op">=</span> voti[voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">27</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Voti &gt;= 27: {voti_alti}&quot;</span>)</code></pre>
+<h3>1.2 Statistiche con NumPy e confronto di prestazioni</h3>
+<p>NumPy fornisce funzioni statistiche ottimizzate. Confrontiamole con l'equivalente Python puro per apprezzare la differenza di velocita.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">24</span>, <span class="mi">26</span>, <span class="mi">29</span>])
+
+<span class="cm"># Statistiche descrittive</span>
+<span class="nb">print</span>(<span class="st">f&quot;Media:              {np.mean(voti):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Mediana:            {np.median(voti):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Deviazione standard:{np.std(voti):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Varianza:           {np.var(voti):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Minimo:             {np.min(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Massimo:            {np.max(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Percentile 25:      {np.percentile(voti, 25):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Percentile 75:      {np.percentile(voti, 75):.2f}&quot;</span>)</code></pre>
+<p>Ora confrontiamo le prestazioni: ciclo Python vs operazione vettorizzata NumPy.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> time
+
+<span class="cm"># Creare un array grande</span>
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1_000_000</span>
+dati_np: np.ndarray <span class="op">=</span> np.random.randn(n)
+dati_lista: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> dati_np.tolist()
+
+<span class="cm"># Calcolo media con ciclo Python</span>
+inizio: <span class="nb">float</span> <span class="op">=</span> time.time()
+somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+<span class="kw">for</span> valore <span class="kw">in</span> dati_lista:
+    somma <span class="op">+</span><span class="op">=</span> valore
+media_ciclo: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
+tempo_ciclo: <span class="nb">float</span> <span class="op">=</span> time.time() <span class="op">-</span> inizio
+
+<span class="cm"># Calcolo media con NumPy</span>
+inizio <span class="op">=</span> time.time()
+media_numpy: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.mean(dati_np))
+tempo_numpy: <span class="nb">float</span> <span class="op">=</span> time.time() <span class="op">-</span> inizio
+
+<span class="nb">print</span>(<span class="st">f&quot;Media (ciclo):  {media_ciclo:.6f}  — tempo: {tempo_ciclo:.4f} s&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media (NumPy):  {media_numpy:.6f}  — tempo: {tempo_numpy:.6f} s&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;NumPy è circa {tempo_ciclo / tempo_numpy:.0f}x più veloce&quot;</span>)</code></pre>
+<p>Il vantaggio di NumPy cresce con la dimensione dei dati: le operazioni sono implementate in C e operano su blocchi contigui di memoria.</p>
+<h3>1.3 NumPy random e simulazione Monte Carlo</h3>
+<p>NumPy offre un generatore di numeri pseudocasuali molto piu efficiente di quello della libreria standard.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Generatore con seed per riproducibilita</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+
+<span class="cm"># Campione da distribuzione uniforme</span>
+uniforme: np.ndarray <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="mi">0.0</span>, high<span class="op">=</span><span class="mi">1.0</span>, size<span class="op">=</span><span class="mi">10</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Uniforme [0,1]: {np.round(uniforme, 3)}&quot;</span>)
+
+<span class="cm"># Campione da distribuzione normale</span>
+normale: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">25.0</span>, scale<span class="op">=</span><span class="mi">3.0</span>, size<span class="op">=</span><span class="mi">10</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Normale (mu=25, sigma=3): {np.round(normale, 2)}&quot;</span>)
+
+<span class="cm"># Campione da distribuzione di Poisson</span>
+poisson: np.ndarray <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="mi">5</span>, size<span class="op">=</span><span class="mi">10</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Poisson (lambda=5): {poisson}&quot;</span>)
+
+<span class="cm"># Statistiche del campione normale grande</span>
+campione: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">170</span>, scale<span class="op">=</span><span class="mi">10</span>, size<span class="op">=</span><span class="mi">10_000</span>)
+<span class="nb">print</span>(<span class="st">f&quot;\nCampione N(170, 10) con n=10000:&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Media campionaria:  {np.mean(campione):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Dev. std campionaria: {np.std(campione):.2f}&quot;</span>)</code></pre>
+<p><strong>Stimare pi greco con il metodo Monte Carlo:</strong> generiamo punti casuali in un quadrato di lato 2 centrato nell'origine e contiamo quanti cadono nel cerchio unitario.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">stima_pi_montecarlo</span>(<span class="fn">n_punti</span>: <span class="nb">int</span>, seed: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Stima pi greco con il metodo Monte Carlo.
+
+    Genera punti casuali nel quadrato [-1,1] x [-1,1] e conta
+    la frazione che cade nel cerchio unitario.
+
+    Args:
+        n_punti: Numero di punti da generare.
+        seed: Seed per la riproducibilita.
+
+    Returns:
+        Stima di pi greco.
+    &quot;&quot;&quot;</span>
+    rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>seed)
+    x: np.ndarray <span class="op">=</span> rng.uniform(<span class="op">-</span><span class="mi">1</span>, <span class="mi">1</span>, size<span class="op">=</span>n_punti)
+    y: np.ndarray <span class="op">=</span> rng.uniform(<span class="op">-</span><span class="mi">1</span>, <span class="mi">1</span>, size<span class="op">=</span>n_punti)
+
+    <span class="cm"># Distanza dall&#x27;origine</span>
+    distanza_quadrata: np.ndarray <span class="op">=</span> x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="op">+</span> y<span class="op">*</span><span class="op">*</span><span class="mi">2</span>
+
+    <span class="cm"># Punti dentro il cerchio unitario</span>
+    dentro: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(np.<span class="nb">sum</span>(distanza_quadrata <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1.0</span>))
+
+    <span class="cm"># Area cerchio / Area quadrato = pi/4</span>
+    pi_stimato: <span class="nb">float</span> <span class="op">=</span> <span class="mi">4.0</span> <span class="op">*</span> dentro <span class="op">/</span> n_punti
+    <span class="kw">return</span> pi_stimato
+
+
+<span class="cm"># Proviamo con dimensioni crescenti</span>
+<span class="kw">for</span> n <span class="kw">in</span> [<span class="mi">100</span>, <span class="mi">1_000</span>, <span class="mi">10_000</span>, <span class="mi">100_000</span>, <span class="mi">1_000_000</span>]:
+    stima: <span class="nb">float</span> <span class="op">=</span> stima_pi_montecarlo(n)
+    errore: <span class="nb">float</span> <span class="op">=</span> <span class="nb">abs</span>(stima <span class="op">-</span> np.pi)
+    <span class="nb">print</span>(<span class="st">f&quot;n = {n:&gt;10,}  -&gt;  pi ≈ {stima:.6f}  (errore: {errore:.6f})&quot;</span>)</code></pre>
+<h3>1.4 Pandas: caricare e esplorare un dataset CSV</h3>
+<p>Passiamo ora a Pandas, la libreria per dati tabulari. Useremo un dataset di esempio che creiamo direttamente.</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Creare un dataset di esempio (simulando un CSV reale)</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">200</span>
+
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;id_studente&quot;</span>: <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>),
+    <span class="st">&quot;nome&quot;</span>: [<span class="st">f&quot;Studente_{i}&quot;</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>)],
+    <span class="st">&quot;corso&quot;</span>: rng.choice(
+        [<span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Economia&quot;</span>, <span class="st">&quot;Sociologia&quot;</span>, <span class="st">&quot;Informatica&quot;</span>],
+        size<span class="op">=</span>n
+    ),
+    <span class="st">&quot;anno&quot;</span>: rng.choice([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], size<span class="op">=</span>n),
+    <span class="st">&quot;voto_medio&quot;</span>: np.<span class="nb">round</span>(rng.normal(<span class="mi">25</span>, <span class="mi">3</span>, size<span class="op">=</span>n).clip(<span class="mi">18</span>, <span class="mi">30</span>), <span class="mi">1</span>),
+    <span class="st">&quot;crediti&quot;</span>: rng.choice([<span class="mi">30</span>, <span class="mi">60</span>, <span class="mi">90</span>, <span class="mi">120</span>, <span class="mi">150</span>, <span class="mi">180</span>], size<span class="op">=</span>n),
+    <span class="st">&quot;regione&quot;</span>: rng.choice(
+        [<span class="st">&quot;Lombardia&quot;</span>, <span class="st">&quot;Lazio&quot;</span>, <span class="st">&quot;Campania&quot;</span>, <span class="st">&quot;Sicilia&quot;</span>,
+         <span class="st">&quot;Veneto&quot;</span>, <span class="st">&quot;Emilia-Romagna&quot;</span>, <span class="st">&quot;Toscana&quot;</span>],
+        size<span class="op">=</span>n
+    ),
+})
+
+<span class="cm"># Salviamo il CSV per usarlo dopo</span>
+df.to_csv(<span class="st">&quot;studenti.csv&quot;</span>, index<span class="op">=</span><span class="kw">False</span>)
+<span class="nb">print</span>(<span class="st">&quot;Dataset salvato come &#x27;studenti.csv&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dimensioni: {df.shape[0]} righe x {df.shape[1]} colonne&quot;</span>)</code></pre>
+<p>Ora esploriamolo con i metodi fondamentali di Pandas:</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Caricare il CSV</span>
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;studenti.csv&quot;</span>)
+
+<span class="cm"># Le prime 5 righe</span>
+<span class="nb">print</span>(<span class="st">&quot;=== HEAD ===&quot;</span>)
+<span class="nb">print</span>(df.head())
+<span class="nb">print</span>()
+
+<span class="cm"># Informazioni sulla struttura</span>
+<span class="nb">print</span>(<span class="st">&quot;=== INFO ===&quot;</span>)
+df.info()
+<span class="nb">print</span>()
+
+<span class="cm"># Statistiche descrittive (solo colonne numeriche)</span>
+<span class="nb">print</span>(<span class="st">&quot;=== DESCRIBE ===&quot;</span>)
+<span class="nb">print</span>(df.describe())
+<span class="nb">print</span>()
+
+<span class="cm"># Conteggio valori per una colonna categoriale</span>
+<span class="nb">print</span>(<span class="st">&quot;=== VALUE COUNTS (corso) ===&quot;</span>)
+<span class="nb">print</span>(df[<span class="st">&quot;corso&quot;</span>].value_counts())
+<span class="nb">print</span>()
+
+<span class="cm"># Conteggio valori per regione</span>
+<span class="nb">print</span>(<span class="st">&quot;=== VALUE COUNTS (regione) ===&quot;</span>)
+<span class="nb">print</span>(df[<span class="st">&quot;regione&quot;</span>].value_counts())</code></pre>
+<h3>1.5 Pandas: gestire valori mancanti, duplicati e tipi sbagliati</h3>
+<p>I dati reali sono quasi sempre "sporchi". Simuliamo un dataset con problemi tipici.</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Dataset con problemi intenzionali</span>
+dati_sporchi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>] <span class="op">=</span> {
+    <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Luca&quot;</span>, <span class="kw">None</span>, <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Elena&quot;</span>],
+    <span class="st">&quot;eta&quot;</span>: [<span class="st">&quot;22&quot;</span>, <span class="st">&quot;25&quot;</span>, <span class="st">&quot;22&quot;</span>, <span class="st">&quot;abc&quot;</span>, <span class="st">&quot;30&quot;</span>, <span class="st">&quot;28&quot;</span>, <span class="st">&quot;25&quot;</span>, <span class="st">&quot;24&quot;</span>],
+    <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">28</span>, <span class="mi">30</span>, np.nan, <span class="mi">22</span>, <span class="mi">25</span>, np.nan],
+    <span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Econ&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Econ&quot;</span>, <span class="st">&quot;stat&quot;</span>, <span class="st">&quot;Econ&quot;</span>, <span class="st">&quot;STAT&quot;</span>],
+}
+
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame(dati_sporchi)
+<span class="nb">print</span>(<span class="st">&quot;=== Dataset originale ===&quot;</span>)
+<span class="nb">print</span>(df)
+<span class="nb">print</span>()
+
+<span class="cm"># 1. Individuare valori mancanti</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Valori mancanti per colonna ===&quot;</span>)
+<span class="nb">print</span>(df.isnull().<span class="nb">sum</span>())
+<span class="nb">print</span>()
+
+<span class="cm"># 2. Rimuovere duplicati</span>
+<span class="nb">print</span>(<span class="st">f&quot;Righe duplicate: {df.duplicated().sum()}&quot;</span>)
+df_no_dup: pd.DataFrame <span class="op">=</span> df.drop_duplicates()
+<span class="nb">print</span>(<span class="st">f&quot;Righe dopo rimozione duplicati: {len(df_no_dup)}&quot;</span>)
+<span class="nb">print</span>()
+
+<span class="cm"># 3. Correggere tipi sbagliati</span>
+<span class="cm"># La colonna &quot;eta&quot; e&#x27; una stringa, deve diventare un intero</span>
+df_pulito: pd.DataFrame <span class="op">=</span> df_no_dup.copy()
+df_pulito[<span class="st">&quot;eta&quot;</span>] <span class="op">=</span> pd.to_numeric(df_pulito[<span class="st">&quot;eta&quot;</span>], errors<span class="op">=</span><span class="st">&quot;coerce&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;=== Eta dopo conversione (errori -&gt; NaN) ===&quot;</span>)
+<span class="nb">print</span>(df_pulito[<span class="st">&quot;eta&quot;</span>])
+<span class="nb">print</span>()
+
+<span class="cm"># 4. Normalizzare stringhe (maiuscole/minuscole inconsistenti)</span>
+df_pulito[<span class="st">&quot;corso&quot;</span>] <span class="op">=</span> df_pulito[<span class="st">&quot;corso&quot;</span>].<span class="nb">str</span>.strip().<span class="nb">str</span>.capitalize()
+<span class="nb">print</span>(<span class="st">&quot;=== Corsi normalizzati ===&quot;</span>)
+<span class="nb">print</span>(df_pulito[<span class="st">&quot;corso&quot;</span>].value_counts())
+<span class="nb">print</span>()
+
+<span class="cm"># 5. Gestire i valori mancanti</span>
+<span class="cm"># Strategia 1: rimuovere righe con nome mancante</span>
+df_pulito <span class="op">=</span> df_pulito.dropna(subset<span class="op">=</span>[<span class="st">&quot;nome&quot;</span>])
+
+<span class="cm"># Strategia 2: riempire voti mancanti con la mediana</span>
+mediana_voto: <span class="nb">float</span> <span class="op">=</span> df_pulito[<span class="st">&quot;voto&quot;</span>].median()
+df_pulito[<span class="st">&quot;voto&quot;</span>] <span class="op">=</span> df_pulito[<span class="st">&quot;voto&quot;</span>].fillna(mediana_voto)
+
+<span class="cm"># Strategia 3: riempire eta mancante con la media</span>
+media_eta: <span class="nb">float</span> <span class="op">=</span> df_pulito[<span class="st">&quot;eta&quot;</span>].mean()
+df_pulito[<span class="st">&quot;eta&quot;</span>] <span class="op">=</span> df_pulito[<span class="st">&quot;eta&quot;</span>].fillna(<span class="nb">round</span>(media_eta))
+
+<span class="nb">print</span>(<span class="st">&quot;=== Dataset pulito ===&quot;</span>)
+<span class="nb">print</span>(df_pulito)
+<span class="nb">print</span>()
+<span class="nb">print</span>(<span class="st">&quot;Valori mancanti residui:&quot;</span>)
+<span class="nb">print</span>(df_pulito.isnull().<span class="nb">sum</span>())</code></pre>
+<h3>1.6 Pandas: groupby per statistiche per categoria</h3>
+<p>Il metodo <code>groupby</code> e lo strumento principale per calcolare statistiche suddivise per gruppi, operazione fondamentale nell'analisi statistica.</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Ricaricare il dataset pulito</span>
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;studenti.csv&quot;</span>)
+
+<span class="cm"># Statistiche per corso</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Media voto per corso ===&quot;</span>)
+media_per_corso: pd.DataFrame <span class="op">=</span> (
+    df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto_medio&quot;</span>]
+    .mean()
+    .<span class="nb">round</span>(<span class="mi">2</span>)
+    .sort_values(ascending<span class="op">=</span><span class="kw">False</span>)
+)
+<span class="nb">print</span>(media_per_corso)
+<span class="nb">print</span>()
+
+<span class="cm"># Statistiche multiple per corso</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Statistiche multiple per corso ===&quot;</span>)
+stats_corso: pd.DataFrame <span class="op">=</span> (
+    df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto_medio&quot;</span>]
+    .agg([<span class="st">&quot;count&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;std&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>])
+    .<span class="nb">round</span>(<span class="mi">2</span>)
+)
+<span class="nb">print</span>(stats_corso)
+<span class="nb">print</span>()
+
+<span class="cm"># Groupby con piu colonne</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Media voto per corso e anno ===&quot;</span>)
+media_corso_anno: pd.DataFrame <span class="op">=</span> (
+    df.groupby([<span class="st">&quot;corso&quot;</span>, <span class="st">&quot;anno&quot;</span>])[<span class="st">&quot;voto_medio&quot;</span>]
+    .mean()
+    .<span class="nb">round</span>(<span class="mi">2</span>)
+    .unstack()
+)
+<span class="nb">print</span>(media_corso_anno)
+<span class="nb">print</span>()
+
+<span class="cm"># Filtro + groupby: media crediti per regione, solo studenti con voto &gt;= 27</span>
+bravi: pd.DataFrame <span class="op">=</span> df[df[<span class="st">&quot;voto_medio&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">27</span>]
+<span class="nb">print</span>(<span class="st">&quot;=== Media crediti studenti con voto &gt;= 27, per regione ===&quot;</span>)
+crediti_regione: pd.Series <span class="op">=</span> (
+    bravi.groupby(<span class="st">&quot;regione&quot;</span>)[<span class="st">&quot;crediti&quot;</span>]
+    .mean()
+    .<span class="nb">round</span>(<span class="mi">1</span>)
+    .sort_values(ascending<span class="op">=</span><span class="kw">False</span>)
+)
+<span class="nb">print</span>(crediti_regione)</code></pre>
+<hr>
+<h2>Parte 2 — Esercizi autonomi</h2>
+<p>Risolvete gli esercizi seguenti senza guardare le soluzioni degli esercizi guidati. Usate sempre type hints.</p>
+<h3>Base</h3>
+<p><strong>Esercizio 1 — Statistiche di un array NumPy</strong></p>
+<p>Create un array NumPy di 1000 valori estratti da una distribuzione normale con media 170 e deviazione standard 8 (simulando altezze in cm). Calcolate e stampate: media, mediana, deviazione standard, minimo, massimo, percentile 5 e percentile 95. Contate quanti valori cadono nell'intervallo [media - 2<em>std, media + 2</em>std] e verificate che la percentuale sia vicina al 95%.</p>
+<p><strong>Esercizio 2 — Selezione e filtro con Pandas</strong></p>
+<p>Caricate il file <code>studenti.csv</code> creato negli esercizi guidati. Eseguite le seguenti operazioni:</p>
+<ul>
+<li>Selezionate solo le colonne <code>nome</code>, <code>corso</code>, <code>voto_medio</code>.</li>
+<li>Filtrate gli studenti del corso "Statistica" con voto medio superiore a 26.</li>
+<li>Ordinate il risultato per voto medio decrescente.</li>
+<li>Stampate le prime 10 righe.</li>
+</ul>
+<p><strong>Esercizio 3 — Nuova colonna calcolata</strong></p>
+<p>Caricate <code>studenti.csv</code> e aggiungete una nuova colonna <code>fascia_voto</code> che vale:</p>
+<ul>
+<li><code>"insufficiente"</code> se il voto medio e' sotto 20</li>
+<li><code>"sufficiente"</code> se e' tra 20 e 24 (inclusi)</li>
+<li><code>"buono"</code> se e' tra 25 e 27 (inclusi)</li>
+<li><code>"ottimo"</code> se e' 28 o superiore</li>
+</ul>
+<p>Stampate il conteggio per ogni fascia con <code>value_counts()</code>.</p>
+<h3>Intermedio</h3>
+<p><strong>Esercizio 4 — Confronto tra gruppi</strong></p>
+<p>Caricate <code>studenti.csv</code> e rispondete alle seguenti domande usando <code>groupby</code>:</p>
+<ul>
+<li>Qual e' il corso con la media voti piu alta?</li>
+<li>Qual e' la regione con il numero medio di crediti piu alto?</li>
+<li>C'e' differenza significativa nella media dei voti tra studenti del primo e del terzo anno?</li>
+</ul>
+<p>Presentate i risultati in modo chiaro, con stampe formattate.</p>
+<p><strong>Esercizio 5 — Merge di DataFrame</strong></p>
+<p>Create due DataFrame:</p>
+<ol>
+<li><code>esami</code>: con colonne <code>id_studente</code>, <code>materia</code>, <code>voto</code>, <code>data</code> (almeno 20 righe).</li>
+<li><code>anagrafica</code>: con colonne <code>id_studente</code>, <code>nome</code>, <code>cognome</code>, <code>corso</code> (almeno 8 studenti, alcuni con piu esami).</li>
+</ol>
+<p>Eseguite un merge (join) tra i due DataFrame sulla colonna <code>id_studente</code>. Poi calcolate la media voti per ogni studente e la media voti per ogni materia.</p>
+<p><strong>Esercizio 6 — Pivot table</strong></p>
+<p>Partendo dal DataFrame unito dell'esercizio precedente, create una pivot table che mostri la media dei voti con:</p>
+<ul>
+<li>righe: <code>corso</code></li>
+<li>colonne: <code>materia</code></li>
+<li>valori: <code>voto</code> (media)</li>
+</ul>
+<p>Usate <code>pd.pivot_table()</code>. Sostituite eventuali <code>NaN</code> con la stringa <code>"-"</code> per la stampa.</p>
+<h3>Avanzato</h3>
+<p><strong>Esercizio 7 — Sfida: analisi completa di un dataset</strong></p>
+<p>Svolgete un'analisi completa seguendo questo schema:</p>
+<ol>
+<li><strong>Creazione del dataset.</strong> Generate un DataFrame di almeno 500 righe che simuli i dati di un'indagine sulla soddisfazione lavorativa, con colonne: <code>id</code>, <code>settore</code> (Tecnologia, Sanita, Istruzione, Finanza, Commercio), <code>anni<em>esperienza</code> (1-40, distribuzione realistica), <code>stipendio</code> (correlato al settore e all'esperienza, con rumore), <code>soddisfazione</code> (scala 1-10), <code>regione</code>, <code>titolo</em>studio</code> (Diploma, Laurea triennale, Laurea magistrale, Dottorato).</li>
+</ol>
+<ol>
+<li><strong>Esplorazione.</strong> Stampate le dimensioni, i tipi, le prime righe, le statistiche descrittive e il conteggio per ogni variabile categoriale.</li>
+</ol>
+<ol>
+<li><strong>Pulizia.</strong> Inserite intenzionalmente il 5% di valori mancanti in <code>stipendio</code> e <code>soddisfazione</code>. Poi gestite i mancanti con strategie appropriate (mediana per stipendio, moda per soddisfazione).</li>
+</ol>
+<ol>
+<li><strong>Analisi per gruppi.</strong> Calcolate:</li>
+</ol>
+<ul>
+<li>Stipendio medio e mediano per settore.</li>
+<li>Soddisfazione media per titolo di studio.</li>
+<li>Correlazione tra anni di esperienza e stipendio (usate <code>np.corrcoef</code> o il metodo <code>.corr()</code> di Pandas).</li>
+</ul>
+<ol>
+<li><strong>Export.</strong> Salvate il dataset pulito come CSV e un riepilogo statistico come secondo CSV.</li>
+</ol>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Qual e' la differenza principale tra una lista Python e un array NumPy? Perche le operazioni NumPy sono piu veloci?</li>
+</ol>
+<ol>
+<li>Cosa fa il metodo <code>np.sum(array > 5)</code>? Perche funziona, dato che il confronto produce booleani?</li>
+</ol>
+<ol>
+<li>Spiegate la differenza tra <code>dropna()</code> e <code>fillna()</code> in Pandas. Quando preferireste l'uno all'altro?</li>
+</ol>
+<ol>
+<li>Qual e' la differenza tra <code>df["colonna"]</code> e <code>df[["colonna"]]</code>? Che tipo restituisce ciascuna?</li>
+</ol>
+<ol>
+<li>Come funziona il metodo <code>groupby</code>? Descrivete il pattern "split-apply-combine" con un esempio.</li>
+</ol>
+<ol>
+<li>Cosa succede se fate un merge tra due DataFrame e una chiave del DataFrame sinistro non ha corrispondenza nel destro? Come cambia il risultato con <code>how="inner"</code> vs <code>how="left"</code>?</li>
+</ol>
+<ol>
+<li>Perche nel metodo Monte Carlo per stimare pi greco l'errore diminuisce aumentando il numero di punti? A quale velocita diminuisce (in termini di n)?</li>
+</ol>
+<ol>
+<li>Cosa fa <code>pd.to_numeric(colonna, errors="coerce")</code>? Perche e' preferibile a un cast diretto come <code>colonna.astype(int)</code>?</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questo laboratorio avete sperimentato due strumenti che trasformano Python da linguaggio di programmazione generico a piattaforma per l'analisi dei dati.</p>
+<p><strong>NumPy</strong> vi ha mostrato il concetto di <em>vettorizzazione</em>: sostituire i cicli espliciti con operazioni su interi array. Non e' solo una questione di comodita sintattica, ma di prestazioni: le operazioni NumPy sono tipicamente 50-100 volte piu veloci dei cicli Python equivalenti. Questo perche NumPy delega il lavoro a codice C ottimizzato che opera su blocchi contigui di memoria, sfruttando le istruzioni SIMD del processore.</p>
+<p><strong>Pandas</strong> vi ha dato gli strumenti per l'intero ciclo di vita dei dati tabulari: caricamento, esplorazione, pulizia, trasformazione e aggregazione. Il metodo <code>groupby</code>, in particolare, implementa il pattern <em>split-apply-combine</em> che e' alla base di gran parte dell'analisi statistica: dividere i dati in gruppi omogenei, applicare una funzione a ciascun gruppo, ricombinare i risultati.</p>
+<p>Un punto importante: in questo laboratorio avete visto che i dati reali sono quasi sempre "sporchi" — valori mancanti, tipi sbagliati, stringhe inconsistenti, duplicati. La pulizia dei dati non e' un passaggio preliminare fastidioso, ma una fase critica dell'analisi. Decisioni prese in questa fase (come riempire un valore mancante con la mediana piuttosto che eliminare la riga) possono influenzare significativamente i risultati finali.</p>
+<p>Nel prossimo laboratorio aggiungeremo la visualizzazione: imparerete a trasformare numeri e tabelle in grafici che comunicano i risultati in modo immediato ed efficace.</p>
+<nav class="bottom-nav"><span><a href="L06_classi_oggetti.html">← L06</a></span><span><a href="../../index.html">Home</a></span><span><a href="L08_visualizzazione_progetto.html">L08 →</a></span></nav>
+</body>
+</html>

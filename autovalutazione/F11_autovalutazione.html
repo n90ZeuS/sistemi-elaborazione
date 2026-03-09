@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autovalutazione — F11: Liste e tuple — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/F11_liste_tuple.html">Dispensa</a> &bull; <a href="../errori_comuni/F11_errori.html">Errori comuni</a></nav>
+<h1>Autovalutazione — F11: Liste e tuple</h1>
+
+<h1>Autovalutazione — F11: Indici, Slicing, Copie e Tuple</h1>
+<p>Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere <strong>prima</strong> di guardare la soluzione.</p>
+<hr>
+<h2>Cosa stampa questo codice?</h2>
+<h3>Esercizio 1</h3>
+<pre><code>frutti <span class="op">=</span> [<span class="st">&quot;mela&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;ciliegia&quot;</span>, <span class="st">&quot;dattero&quot;</span>, <span class="st">&quot;fico&quot;</span>]
+<span class="nb">print</span>(frutti[<span class="op">-</span><span class="mi">1</span>])
+<span class="nb">print</span>(frutti[<span class="op">-</span><span class="mi">2</span>])
+<span class="nb">print</span>(frutti[<span class="mi">1</span>])</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>fico
+dattero
+banana</code></pre>
+<p><strong>Spiegazione:</strong> Gli <strong>indici negativi</strong> contano dalla fine della lista: <code>-1</code> e l'ultimo elemento, <code>-2</code> il penultimo, e cosi via. Quindi <code>frutti[-1]</code> e <code>"fico"</code>, <code>frutti[-2]</code> e <code>"dattero"</code>. L'indice positivo <code>1</code> accede al secondo elemento (si conta da <code>0</code>): <code>"banana"</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 2</h3>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]
+<span class="nb">print</span>(numeri[<span class="mi">2</span>:<span class="mi">5</span>])
+<span class="nb">print</span>(numeri[:<span class="mi">3</span>])
+<span class="nb">print</span>(numeri[<span class="mi">7</span>:])
+<span class="nb">print</span>(numeri[::<span class="mi">2</span>])
+<span class="nb">print</span>(numeri[<span class="mi">1</span>:<span class="mi">8</span>:<span class="mi">3</span>])</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+[<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">2</span>]
+[<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]
+[<span class="mi">0</span>, <span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>]
+[<span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">7</span>]</code></pre>
+<p><strong>Spiegazione:</strong> Lo slicing ha la sintassi <code>lista[start:stop:step]</code>, dove <code>stop</code> e sempre <strong>escluso</strong>.</p>
+<ul>
+<li><code>[2:5]</code> → elementi agli indici 2, 3, 4.</li>
+<li><code>[:3]</code> → dall'inizio fino all'indice 2 (3 escluso).</li>
+<li><code>[7:]</code> → dall'indice 7 fino alla fine.</li>
+<li><code>[::2]</code> → dall'inizio alla fine, con passo 2 (un elemento si e uno no).</li>
+<li><code>[1:8:3]</code> → indici 1, 4, 7 (da 1 a 7, con passo 3).</li>
+</ul>
+<p></details></p>
+<hr>
+<h3>Esercizio 3</h3>
+<pre><code>a <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+b <span class="op">=</span> a
+b.append(<span class="mi">4</span>)
+<span class="nb">print</span>(a)
+<span class="nb">print</span>(b)
+<span class="nb">print</span>(a <span class="kw">is</span> b)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+<span class="kw">True</span></code></pre>
+<p><strong>Spiegazione:</strong> <code>b = a</code> <strong>non crea una copia</strong> della lista. Crea un <strong>alias</strong>: <code>a</code> e <code>b</code> sono due nomi per lo <strong>stesso oggetto</strong> in memoria. Modificare la lista tramite <code>b</code> la modifica anche tramite <code>a</code>, perche e la stessa lista. L'operatore <code>is</code> conferma che sono lo stesso identico oggetto (<code>True</code>).</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 4</h3>
+<pre><code>coordinate <span class="op">=</span> (<span class="mi">10</span>, <span class="mi">20</span>)
+x, y <span class="op">=</span> coordinate
+<span class="nb">print</span>(<span class="st">f&quot;x={x}, y={y}&quot;</span>)
+
+studente <span class="op">=</span> (<span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="mi">27.5</span>)
+nome, corso, media <span class="op">=</span> studente
+<span class="nb">print</span>(<span class="st">f&quot;{nome} — {corso} — media: {media}&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>x<span class="op">=</span><span class="mi">10</span>, y<span class="op">=</span><span class="mi">20</span>
+Luca — Informatica — media: <span class="mi">27.5</span></code></pre>
+<p><strong>Spiegazione:</strong> Il <strong>tuple unpacking</strong> permette di assegnare ogni elemento di una tupla a una variabile separata in un'unica istruzione. Il numero di variabili a sinistra deve corrispondere al numero di elementi nella tupla. E un modo compatto e leggibile per estrarre valori da strutture dati.</p>
+<p></details></p>
+<hr>
+<h2>Trova l'errore</h2>
+<h3>Esercizio 5</h3>
+<p>Il programmatore pensa di lavorare su una copia della lista, ma modifica l'originale.</p>
+<pre><code>originale <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+copia <span class="op">=</span> originale
+copia.append(<span class="mi">6</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Originale: {originale}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Copia: {copia}&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output prodotto:</strong></p>
+<pre><code>Originale: [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+Copia: [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]</code></pre>
+<p><strong>Problema:</strong> <code>copia = originale</code> non crea una copia! Crea solo un secondo nome (alias) per la stessa lista. Ogni modifica a <code>copia</code> si riflette su <code>originale</code> e viceversa.</p>
+<p><strong>Soluzione:</strong></p>
+<pre><code>originale <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+copia <span class="op">=</span> originale[:]         <span class="cm"># slicing crea una NUOVA lista (shallow copy)</span>
+<span class="cm"># oppure: copia = list(originale)</span>
+<span class="cm"># oppure: copia = originale.copy()</span>
+copia.append(<span class="mi">6</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Originale: {originale}&quot;</span>)  <span class="cm"># [1, 2, 3, 4, 5]</span>
+<span class="nb">print</span>(<span class="st">f&quot;Copia: {copia}&quot;</span>)          <span class="cm"># [1, 2, 3, 4, 5, 6]</span></code></pre>
+<p>Per creare una vera copia, usare lo slicing <code>[:]</code>, <code>list()</code> o il metodo <code>.copy()</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 6</h3>
+<p>Il codice dovrebbe ordinare e stampare la lista, ma il risultato e inatteso.</p>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">5</span>, <span class="mi">2</span>, <span class="mi">8</span>, <span class="mi">1</span>, <span class="mi">9</span>]
+ordinati <span class="op">=</span> numeri.sort()
+<span class="nb">print</span>(ordinati)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output prodotto:</strong></p>
+<pre><code><span class="kw">None</span></code></pre>
+<p><strong>Problema:</strong> Il metodo <code>sort()</code> ordina la lista <strong>in-place</strong> (cioe modifica la lista originale) e restituisce <code>None</code>. Quindi <code>ordinati</code> contiene <code>None</code>, non la lista ordinata. Intanto, <code>numeri</code> e stato ordinato ma nessuno lo stampa.</p>
+<p><strong>Soluzione:</strong></p>
+<pre><code><span class="cm"># Opzione 1: usare sort() e poi la lista originale</span>
+numeri <span class="op">=</span> [<span class="mi">5</span>, <span class="mi">2</span>, <span class="mi">8</span>, <span class="mi">1</span>, <span class="mi">9</span>]
+numeri.sort()
+<span class="nb">print</span>(numeri)              <span class="cm"># [1, 2, 5, 8, 9]</span>
+
+<span class="cm"># Opzione 2: usare sorted() che restituisce una NUOVA lista</span>
+numeri <span class="op">=</span> [<span class="mi">5</span>, <span class="mi">2</span>, <span class="mi">8</span>, <span class="mi">1</span>, <span class="mi">9</span>]
+ordinati <span class="op">=</span> <span class="nb">sorted</span>(numeri)
+<span class="nb">print</span>(ordinati)            <span class="cm"># [1, 2, 5, 8, 9]</span>
+<span class="nb">print</span>(numeri)              <span class="cm"># [5, 2, 8, 1, 9] — non modificata</span></code></pre>
+<p><code>sort()</code> modifica e restituisce <code>None</code>; <code>sorted()</code> non modifica e restituisce la nuova lista.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 7</h3>
+<p>Il codice dovrebbe accedere all'ultimo elemento, ma causa un errore.</p>
+<pre><code>voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+ultimo <span class="op">=</span> voti[<span class="mi">3</span>]
+<span class="nb">print</span>(ultimo)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>IndexError: list index out of range</code></p>
+<p><strong>Problema:</strong> La lista ha 3 elementi, con indici <code>0</code>, <code>1</code>, <code>2</code>. L'indice <code>3</code> non esiste. Questo e un classico errore "off-by-one": con 3 elementi, l'ultimo indice valido e <code>2</code> (cioe <code>len(voti) - 1</code>).</p>
+<p><strong>Soluzione:</strong></p>
+<pre><code>voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+ultimo <span class="op">=</span> voti[<span class="mi">2</span>]    <span class="cm"># indice esplicito</span>
+<span class="cm"># oppure, più robusto:</span>
+ultimo <span class="op">=</span> voti[<span class="op">-</span><span class="mi">1</span>]   <span class="cm"># indice negativo: sempre l&#x27;ultimo elemento</span>
+<span class="nb">print</span>(ultimo)       <span class="cm"># stampa: 25</span></code></pre>
+<p>Usare <code>voti[-1]</code> e il modo piu sicuro e pythonico per accedere all'ultimo elemento, perche funziona indipendentemente dalla lunghezza della lista.</p>
+<p></details></p>
+<hr>
+<h2>Completa il codice</h2>
+<h3>Esercizio 8</h3>
+<p>Completa la funzione che inverte una lista usando lo slicing.</p>
+<pre><code><span class="kw">def</span> <span class="fn">inverti_lista</span>(<span class="fn">lista</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce una NUOVA lista con gli elementi in ordine inverso.
+
+    Esempio: inverti_lista([1, 2, 3, 4, 5]) → [5, 4, 3, 2, 1]
+    Non deve modificare la lista originale.
+    &quot;&quot;&quot;</span>
+    <span class="kw">return</span> lista[_______]</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">inverti_lista</span>(<span class="fn">lista</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce una nuova lista con gli elementi in ordine inverso.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> lista[::<span class="op">-</span><span class="mi">1</span>]</code></pre>
+<p><strong>Spiegazione:</strong> Lo slicing <code>[::-1]</code> significa "dall'inizio alla fine, con passo -1", cioe percorrendo la lista al contrario. Questo crea una <strong>nuova</strong> lista (non modifica l'originale). E uno degli idiomi piu usati in Python. Ricorda la sintassi completa: <code>lista[start:stop:step]</code> — quando <code>start</code> e <code>stop</code> sono omessi, si intende tutta la lista.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 9</h3>
+<p>Completa la funzione che usa il tuple unpacking per elaborare dati di studenti.</p>
+<pre><code><span class="kw">def</span> <span class="fn">migliore_studente</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Riceve una lista di tuple (nome, media) e restituisce il nome
+    dello studente con la media più alta.
+
+    Esempio: migliore_studente([(&quot;Alice&quot;, 28.5), (&quot;Bob&quot;, 26.0), (&quot;Carol&quot;, 29.3)])
+    deve restituire &quot;Carol&quot;
+    &quot;&quot;&quot;</span>
+    miglior_nome <span class="op">=</span> ________
+    miglior_media <span class="op">=</span> ________
+
+    <span class="kw">for</span> ________, ________ <span class="kw">in</span> studenti:
+        <span class="kw">if</span> media ______ miglior_media:
+            miglior_nome <span class="op">=</span> ________
+            miglior_media <span class="op">=</span> ________
+
+    <span class="kw">return</span> miglior_nome</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">migliore_studente</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce il nome dello studente con la media più alta.&quot;&quot;&quot;</span>
+    miglior_nome <span class="op">=</span> <span class="st">&quot;&quot;</span>
+    miglior_media <span class="op">=</span> <span class="op">-</span><span class="mi">1</span>
+
+    <span class="kw">for</span> nome, media <span class="kw">in</span> studenti:
+        <span class="kw">if</span> media <span class="op">&gt;</span> miglior_media:
+            miglior_nome <span class="op">=</span> nome
+            miglior_media <span class="op">=</span> media
+
+    <span class="kw">return</span> miglior_nome</code></pre>
+<p><strong>Spiegazione:</strong> Inizializziamo <code>miglior_media</code> a <code>-1</code> (un valore che qualsiasi media reale superera). Nel ciclo <code>for</code>, il <strong>tuple unpacking</strong> <code>nome, media</code> estrae automaticamente i due valori da ogni tupla. A ogni iterazione, se la media corrente e maggiore della migliore trovata finora, aggiorniamo sia il nome che la media. Questo e il <strong>pattern accumulatore</strong> applicato alla ricerca del massimo.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 10</h3>
+<p>Completa la funzione che estrae una sotto-lista e ne crea una copia indipendente.</p>
+<pre><code><span class="kw">def</span> <span class="fn">estrai_centrali</span>(<span class="fn">lista</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce una COPIA degli elementi centrali (esclude il primo e l&#x27;ultimo).
+    La copia deve essere indipendente dalla lista originale.
+
+    Esempio: estrai_centrali([10, 20, 30, 40, 50]) → [20, 30, 40]
+    &quot;&quot;&quot;</span>
+    <span class="kw">return</span> _________________</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">estrai_centrali</span>(<span class="fn">lista</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce una copia degli elementi centrali.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> lista[<span class="mi">1</span>:<span class="op">-</span><span class="mi">1</span>]</code></pre>
+<p><strong>Spiegazione:</strong> Lo slicing <code>[1:-1]</code> prende gli elementi dall'indice <code>1</code> (secondo elemento) fino all'indice <code>-1</code> escluso (cioe esclude l'ultimo). Lo slicing crea sempre una <strong>nuova</strong> lista, quindi il risultato e gia una copia indipendente dall'originale. Modificare la lista restituita non influenzera la lista originale.</p>
+<p></details></p>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

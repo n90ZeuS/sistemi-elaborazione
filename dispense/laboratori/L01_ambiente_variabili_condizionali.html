@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L01 — Ambiente, variabili e condizionali — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../frontali/F17_numpy_pandas_visualizzazione.html">← F17</a> &bull; <a href="L02_cicli_comprehension_stringhe.html">L02 →</a> &bull; <a href="../../presentazioni/L01_ambiente_variabili_condizionali.html">Presentazione</a></nav>
+<h1>L01 — Ambiente, variabili e condizionali</h1>
+
+<h1>Laboratorio 1 — Ambiente Python, variabili, tipi e condizionali</h1>
+<p><strong>Prerequisiti:</strong> Lezioni frontali F7 (<em>Primi passi in Python</em>) e F8 (<em>Operatori, I/O e strutture condizionali</em>).</p>
+<p><strong>Obiettivo:</strong> configurare l'ambiente di lavoro, scrivere programmi con variabili tipizzate, I/O formattato e strutture condizionali.</p>
+<hr>
+<h2>Parte 1 — Setup dell'ambiente</h2>
+<h3>Esercizio guidato 1.1: verifica dell'installazione</h3>
+<p>Aprite un terminale (su macOS: <em>Terminale</em> o <em>iTerm</em>; su Windows: <em>PowerShell</em>) e verificate che Python sia installato:</p>
+<pre><code>python3 --version</code></pre>
+<p>Dovreste vedere qualcosa come <code>Python 3.12.x</code> (o superiore). Se il comando non viene riconosciuto, installate Python da <a href="https://www.python.org/downloads/">python.org</a>.</p>
+<p>Verificate anche che VS Code sia installato:</p>
+<pre><code>code --version</code></pre>
+<p>Se VS Code non si apre da terminale, aprite VS Code, premete <code>Cmd+Shift+P</code> (macOS) o <code>Ctrl+Shift+P</code> (Windows/Linux), cercate "Shell Command: Install 'code' command in PATH" e confermate.</p>
+<h3>Esercizio guidato 1.2: il REPL</h3>
+<p>Avviate il REPL (Read-Eval-Print Loop) di Python digitando:</p>
+<pre><code>python3</code></pre>
+<p>Il prompt cambia in <code>>>></code>. Siete dentro l'interprete interattivo. Provate:</p>
+<pre><code><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="mi">2</span> <span class="op">+</span> <span class="mi">3</span>
+<span class="mi">5</span>
+<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="st">&quot;ciao&quot;</span> <span class="op">*</span> <span class="mi">3</span>
+<span class="st">&#x27;ciaociaociao&#x27;</span>
+<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="nb">type</span>(<span class="mi">42</span>)
+<span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#x27;int&#x27;</span><span class="op">&gt;</span>
+<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> exit()</code></pre>
+<p>Il REPL e utile per esperimenti rapidi. Per programmi veri, useremo file <code>.py</code>.</p>
+<h3>Esercizio guidato 1.3: il primo file Python</h3>
+<p>Create una cartella per il laboratorio e apritela in VS Code:</p>
+<pre><code>mkdir -p ~/lab_python/lab01
+code ~/lab_python/lab01</code></pre>
+<p>Create un file <code>saluto.py</code> con il seguente contenuto:</p>
+<pre><code><span class="cm"># saluto.py — Il mio primo programma Python</span>
+nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Mondo&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Ciao, {nome}!&quot;</span>)</code></pre>
+<p>Eseguitelo dal terminale integrato di VS Code (<code>Ctrl+ò</code> o <code>Ctrl+</code>` per aprirlo):</p>
+<pre><code>python3 saluto.py</code></pre>
+<p>Output atteso:</p>
+<pre><code>Ciao, Mondo<span class="op">!</span></code></pre>
+<hr>
+<h2>Parte 2 — Variabili tipizzate e operatori</h2>
+<h3>Esercizio guidato 2.1: variabili, type hints e <code>type()</code></h3>
+<p>Create un file <code>variabili.py</code>:</p>
+<pre><code><span class="cm"># variabili.py — Esplorazione dei tipi fondamentali</span>
+
+<span class="cm"># Dichiarazione con type hints</span>
+nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Maria&quot;</span>
+eta: <span class="nb">int</span> <span class="op">=</span> <span class="mi">21</span>
+altezza: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1.68</span>
+iscritta: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+
+<span class="cm"># Verifica dei tipi</span>
+<span class="nb">print</span>(<span class="st">f&quot;nome     = {nome!r:&gt;15}  tipo: {type(nome).__name__}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;eta      = {eta!r:&gt;15}  tipo: {type(eta).__name__}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;altezza  = {altezza!r:&gt;15}  tipo: {type(altezza).__name__}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;iscritta = {iscritta!r:&gt;15}  tipo: {type(iscritta).__name__}&quot;</span>)</code></pre>
+<p>Output atteso:</p>
+<pre><code>nome     <span class="op">=</span>         <span class="st">&#x27;Maria&#x27;</span>  tipo: <span class="nb">str</span>
+eta      <span class="op">=</span>              <span class="mi">21</span>  tipo: <span class="nb">int</span>
+altezza  <span class="op">=</span>            <span class="mi">1.68</span>  tipo: <span class="nb">float</span>
+iscritta <span class="op">=</span>            <span class="kw">True</span>  tipo: <span class="nb">bool</span></code></pre>
+<p>Osservate: <code>!r</code> dentro la f-string mostra la rappresentazione "grezza" del valore (le stringhe appaiono con le virgolette). Il formato <code>>15</code> allinea a destra in 15 caratteri. I type hints (<code>str</code>, <code>int</code>, ecc.) non cambiano il comportamento del programma, ma documentano le vostre intenzioni.</p>
+<h3>Esercizio guidato 2.2: operatori aritmetici</h3>
+<p>Create un file <code>operatori.py</code>:</p>
+<pre><code><span class="cm"># operatori.py — Operatori aritmetici e conversioni</span>
+
+a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">17</span>
+b: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>
+
+<span class="nb">print</span>(<span class="st">&quot;--- Operatori aritmetici ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;{a} + {b}  = {a + b}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;{a} - {b}  = {a - b}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;{a} * {b}  = {a * b}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;{a} / {b}  = {a / b}&quot;</span>)       <span class="cm"># divisione vera -&gt; float</span>
+<span class="nb">print</span>(<span class="st">f&quot;{a} // {b} = {a // b}&quot;</span>)      <span class="cm"># divisione intera</span>
+<span class="nb">print</span>(<span class="st">f&quot;{a} % {b}  = {a % b}&quot;</span>)       <span class="cm"># modulo (resto)</span>
+<span class="nb">print</span>(<span class="st">f&quot;{a} ** {b} = {a ** b}&quot;</span>)      <span class="cm"># potenza</span>
+
+<span class="nb">print</span>(<span class="st">&quot;\n--- Conversioni ---&quot;</span>)
+prezzo_stringa: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;49.99&quot;</span>
+prezzo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(prezzo_stringa)
+iva: <span class="nb">float</span> <span class="op">=</span> prezzo <span class="op">*</span> <span class="mi">0.22</span>
+totale: <span class="nb">float</span> <span class="op">=</span> prezzo <span class="op">+</span> iva
+<span class="nb">print</span>(<span class="st">f&quot;Prezzo: {prezzo:.2f} EUR&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;IVA 22%: {iva:.2f} EUR&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Totale: {totale:.2f} EUR&quot;</span>)</code></pre>
+<p>Eseguite e verificate che l'output corrisponda ai calcoli manuali.</p>
+<hr>
+<h2>Parte 3 — Input/Output formattato</h2>
+<h3>Esercizio guidato 3.1: calcolo interattivo con f-string</h3>
+<p>Create un file <code>area_cerchio.py</code>:</p>
+<pre><code><span class="cm"># area_cerchio.py — Calcolo dell&#x27;area di un cerchio con input utente</span>
+
+<span class="kw">import</span> math
+
+raggio_str: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Inserisci il raggio del cerchio (in cm): &quot;</span>)
+raggio: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(raggio_str)
+
+area: <span class="nb">float</span> <span class="op">=</span> math.pi <span class="op">*</span> raggio <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+circonferenza: <span class="nb">float</span> <span class="op">=</span> <span class="mi">2</span> <span class="op">*</span> math.pi <span class="op">*</span> raggio
+
+<span class="nb">print</span>(<span class="st">f&quot;\n--- Risultati ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Raggio:        {raggio:&gt;10.2f} cm&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Area:          {area:&gt;10.2f} cm²&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Circonferenza: {circonferenza:&gt;10.2f} cm&quot;</span>)</code></pre>
+<p>Esecuzione di esempio:</p>
+<pre><code>Inserisci il raggio <span class="kw">del</span> cerchio (<span class="kw">in</span> cm): <span class="mi">5</span>
+
+<span class="op">-</span><span class="op">-</span><span class="op">-</span> Risultati <span class="op">-</span><span class="op">-</span><span class="op">-</span>
+Raggio:              <span class="mi">5.00</span> cm
+Area:             <span class="mi">78.54</span> cm²
+Circonferenza:       <span class="mi">31.42</span> cm</code></pre>
+<p>Osservate il formato <code>>10.2f</code>: allinea a destra in un campo di 10 caratteri con 2 decimali. Questo rende l'output ordinato e leggibile.</p>
+<hr>
+<h2>Parte 4 — Condizionali</h2>
+<h3>Esercizio guidato 4.1: classificatore fascia ISEE</h3>
+<p>L'ISEE (Indicatore della Situazione Economica Equivalente) determina l'accesso a servizi e agevolazioni. Scrivete un programma che classifica un reddito in fasce.</p>
+<p>Create un file <code>classificatore_isee.py</code>:</p>
+<pre><code><span class="cm"># classificatore_isee.py — Classificazione fascia ISEE</span>
+
+SOGLIA_1: <span class="nb">float</span> <span class="op">=</span> <span class="mi">6_000.00</span>
+SOGLIA_2: <span class="nb">float</span> <span class="op">=</span> <span class="mi">15_000.00</span>
+SOGLIA_3: <span class="nb">float</span> <span class="op">=</span> <span class="mi">25_000.00</span>
+SOGLIA_4: <span class="nb">float</span> <span class="op">=</span> <span class="mi">40_000.00</span>
+
+reddito_str: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Inserisci il reddito ISEE (in euro): &quot;</span>)
+reddito: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(reddito_str)
+
+<span class="kw">if</span> reddito <span class="op">&lt;</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Errore: il reddito non puo essere negativo.&quot;</span>)
+<span class="kw">elif</span> reddito <span class="op">&lt;</span><span class="op">=</span> SOGLIA_1:
+    fascia: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Fascia 1 — Esenzione totale&quot;</span>
+    aliquota: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+<span class="kw">elif</span> reddito <span class="op">&lt;</span><span class="op">=</span> SOGLIA_2:
+    fascia <span class="op">=</span> <span class="st">&quot;Fascia 2 — Agevolazione alta&quot;</span>
+    aliquota <span class="op">=</span> <span class="mi">0.05</span>
+<span class="kw">elif</span> reddito <span class="op">&lt;</span><span class="op">=</span> SOGLIA_3:
+    fascia <span class="op">=</span> <span class="st">&quot;Fascia 3 — Agevolazione media&quot;</span>
+    aliquota <span class="op">=</span> <span class="mi">0.10</span>
+<span class="kw">elif</span> reddito <span class="op">&lt;</span><span class="op">=</span> SOGLIA_4:
+    fascia <span class="op">=</span> <span class="st">&quot;Fascia 4 — Agevolazione ridotta&quot;</span>
+    aliquota <span class="op">=</span> <span class="mi">0.15</span>
+<span class="kw">else</span>:
+    fascia <span class="op">=</span> <span class="st">&quot;Fascia 5 — Nessuna agevolazione&quot;</span>
+    aliquota <span class="op">=</span> <span class="mi">0.22</span>
+
+<span class="kw">if</span> reddito <span class="op">&gt;</span><span class="op">=</span> <span class="mi">0</span>:
+    contributo: <span class="nb">float</span> <span class="op">=</span> reddito <span class="op">*</span> aliquota
+    <span class="nb">print</span>(<span class="st">f&quot;\n--- Risultato ---&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Reddito ISEE:  {reddito:&gt;12,.2f} EUR&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Classificazione: {fascia}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Aliquota:      {aliquota:&gt;12.0%}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Contributo:    {contributo:&gt;12,.2f} EUR&quot;</span>)</code></pre>
+<p>Esecuzione di esempio:</p>
+<pre><code>Inserisci il reddito ISEE (<span class="kw">in</span> euro): <span class="mi">18500</span>
+
+<span class="op">-</span><span class="op">-</span><span class="op">-</span> Risultato <span class="op">-</span><span class="op">-</span><span class="op">-</span>
+Reddito ISEE:    <span class="mi">18</span>,<span class="mi">500.00</span> EUR
+Classificazione: Fascia <span class="mi">3</span> — Agevolazione media
+Aliquota:              <span class="mi">10</span><span class="op">%</span>
+Contributo:      <span class="mi">1</span>,<span class="mi">850.00</span> EUR</code></pre>
+<p>Osservate:</p>
+<ul>
+<li>Le costanti (<code>SOGLIA<em>1</code>, ecc.) sono in <code>UPPER</em>SNAKE_CASE</code>, come richiede PEP 8.</li>
+<li>L'underscore nelle costanti numeriche (<code>6_000.00</code>) migliora la leggibilita senza cambiare il valore.</li>
+<li>Il formato <code>,.2f</code> aggiunge il separatore delle migliaia.</li>
+<li>Il formato <code>.0%</code> mostra il valore come percentuale senza decimali.</li>
+<li>La catena <code>if/elif/else</code> garantisce che ogni reddito cada in una sola fascia.</li>
+</ul>
+<h3>Esercizio guidato 4.2: calcolatrice con scelta operazione</h3>
+<p>Create un file <code>calcolatrice.py</code>:</p>
+<pre><code><span class="cm"># calcolatrice.py — Calcolatrice interattiva con validazione</span>
+
+<span class="nb">print</span>(<span class="st">&quot;=== CALCOLATRICE ===&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Operazioni: +  -  *  /  //  %  **&quot;</span>)
+<span class="nb">print</span>()
+
+primo_str: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Primo numero: &quot;</span>)
+primo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(primo_str)
+
+operazione: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Operazione: &quot;</span>)
+
+secondo_str: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Secondo numero: &quot;</span>)
+secondo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(secondo_str)
+
+errore: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+risultato: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+
+<span class="kw">if</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;+&quot;</span>:
+    risultato <span class="op">=</span> primo <span class="op">+</span> secondo
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;-&quot;</span>:
+    risultato <span class="op">=</span> primo <span class="op">-</span> secondo
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;*&quot;</span>:
+    risultato <span class="op">=</span> primo <span class="op">*</span> secondo
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;/&quot;</span>:
+    <span class="kw">if</span> secondo <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Errore: divisione per zero!&quot;</span>)
+        errore <span class="op">=</span> <span class="kw">True</span>
+    <span class="kw">else</span>:
+        risultato <span class="op">=</span> primo <span class="op">/</span> secondo
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;//&quot;</span>:
+    <span class="kw">if</span> secondo <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Errore: divisione per zero!&quot;</span>)
+        errore <span class="op">=</span> <span class="kw">True</span>
+    <span class="kw">else</span>:
+        risultato <span class="op">=</span> primo <span class="op">/</span><span class="op">/</span> secondo
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;%&quot;</span>:
+    <span class="kw">if</span> secondo <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Errore: divisione per zero!&quot;</span>)
+        errore <span class="op">=</span> <span class="kw">True</span>
+    <span class="kw">else</span>:
+        risultato <span class="op">=</span> primo <span class="op">%</span> secondo
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;**&quot;</span>:
+    risultato <span class="op">=</span> primo <span class="op">*</span><span class="op">*</span> secondo
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Errore: operazione &#x27;{operazione}&#x27; non riconosciuta.&quot;</span>)
+    errore <span class="op">=</span> <span class="kw">True</span>
+
+<span class="kw">if</span> <span class="kw">not</span> errore:
+    <span class="nb">print</span>(<span class="st">f&quot;\n{primo} {operazione} {secondo} = {risultato:.4f}&quot;</span>)</code></pre>
+<p>Provate diversi casi:</p>
+<ul>
+<li><code>10 / 3</code> (verifica decimali)</li>
+<li><code>10 / 0</code> (verifica gestione errore)</li>
+<li><code>2 ** 10</code> (potenza)</li>
+<li><code>17 % 5</code> (modulo)</li>
+<li><code>10 @ 3</code> (operazione non valida)</li>
+</ul>
+<hr>
+<h2>Parte 5 — Esercizi autonomi</h2>
+<p>Svolgete i seguenti esercizi in autonomia. Ogni esercizio ha una traccia con indicazioni, ma <strong>non la soluzione</strong>. Usate type hints in tutte le variabili.</p>
+<h3>Esercizio base: conversione di temperatura</h3>
+<p>Create un file <code>temperatura.py</code>.</p>
+<p><strong>Traccia:</strong> scrivete un programma che chiede all'utente una temperatura in Celsius e la converte in Fahrenheit. La formula e: <code>F = C * 9/5 + 32</code>. Stampate il risultato con una cifra decimale, usando una f-string formattata.</p>
+<p>Esempio di output atteso:</p>
+<pre><code>Temperatura <span class="kw">in</span> Celsius: <span class="mi">25</span>
+<span class="mi">25.0</span>°C <span class="op">=</span> <span class="mi">77.0</span>°F</code></pre>
+<h3>Esercizio intermedio: calcolo IMC con classificazione</h3>
+<p>Create un file <code>imc.py</code>.</p>
+<p><strong>Traccia:</strong> scrivete un programma che:</p>
+<ol>
+<li>Chiede all'utente peso (in kg) e altezza (in metri).</li>
+<li>Calcola l'IMC (Indice di Massa Corporea): <code>peso / altezza ** 2</code>.</li>
+<li>Classifica il risultato secondo le fasce OMS:</li>
+</ol>
+<ul>
+<li>IMC < 18.5: "Sottopeso"</li>
+<li>18.5 <= IMC < 25.0: "Normopeso"</li>
+<li>25.0 <= IMC < 30.0: "Sovrappeso"</li>
+<li>IMC >= 30.0: "Obesita"</li>
+</ul>
+<ol>
+<li>Valida l'input: peso e altezza devono essere positivi; l'altezza non puo superare 2.50 m.</li>
+<li>Stampa il risultato formattato con 1 decimale.</li>
+</ol>
+<p>Esempio di output atteso:</p>
+<pre><code>Peso (kg): <span class="mi">72</span>
+Altezza (m): <span class="mi">1.75</span>
+
+IMC: <span class="mi">23.5</span> — Normopeso</code></pre>
+<h3>Esercizio avanzato: simulazione bancomat</h3>
+<p>Create un file <code>bancomat.py</code>.</p>
+<p><strong>Traccia:</strong> scrivete un programma che simula un'operazione al bancomat:</p>
+<ol>
+<li>Il saldo iniziale e 1000.00 EUR (costante nel codice, non chiesto all'utente).</li>
+<li>Mostra il menu: <code>D</code> = deposito, <code>P</code> = prelievo, <code>S</code> = saldo.</li>
+<li>Chiede all'utente l'operazione (accettate sia maiuscole che minuscole: usate <code>.upper()</code>).</li>
+<li>Per deposito e prelievo, chiede l'importo.</li>
+<li>Gestite i seguenti errori con messaggi appropriati:</li>
+</ol>
+<ul>
+<li>Operazione non riconosciuta.</li>
+<li>Importo negativo o zero.</li>
+<li>Prelievo superiore al saldo disponibile.</li>
+</ul>
+<ol>
+<li>Stampate il saldo aggiornato con 2 decimali e il separatore delle migliaia.</li>
+</ol>
+<p>Esempio di output atteso:</p>
+<pre><code><span class="op">=</span><span class="op">=</span><span class="op">=</span> BANCOMAT <span class="op">=</span><span class="op">=</span><span class="op">=</span>
+Saldo attuale: <span class="mi">1</span>,<span class="mi">000.00</span> EUR
+
+Operazione (D<span class="op">=</span>Deposito, P<span class="op">=</span>Prelievo, S<span class="op">=</span>Saldo): P
+Importo: <span class="mi">250</span>
+
+Prelievo di <span class="mi">250.00</span> EUR effettuato.
+Nuovo saldo: <span class="mi">750.00</span> EUR</code></pre>
+<hr>
+<h2>Parte 6 — Sfida</h2>
+<h3>Sfida: convertitore e classificatore di temperatura</h3>
+<p>Create un file <code>sfida_temperatura.py</code>.</p>
+<p><strong>Traccia:</strong> scrivete un programma che:</p>
+<ol>
+<li>Chiede all'utente una temperatura in gradi Celsius.</li>
+<li>La converte in Fahrenheit (<code>F = C * 9/5 + 32</code>).</li>
+<li>Classifica la percezione secondo questa tabella:</li>
+</ol>
+<table>
+<thead><tr>
+<th>Intervallo Celsius</th>
+<th>Classificazione</th>
+</tr></thead><tbody>
+<tr>
+<td>C <= -10</td>
+<td>Gelido</td>
+</tr>
+<tr>
+<td>-10 < C <= 5</td>
+<td>Freddo</td>
+</tr>
+<tr>
+<td>5 < C <= 18</td>
+<td>Mite</td>
+</tr>
+<tr>
+<td>18 < C <= 30</td>
+<td>Caldo</td>
+</tr>
+<tr>
+<td>C > 30</td>
+<td>Torrido</td>
+</tr>
+</tbody></table>
+<ol>
+<li>Stampa un report formattato come il seguente:</li>
+</ol>
+<pre><code>Temperatura <span class="kw">in</span> Celsius: <span class="mi">22</span>
+
+<span class="op">=</span><span class="op">=</span><span class="op">=</span> REPORT TEMPERATURA <span class="op">=</span><span class="op">=</span><span class="op">=</span>
+Celsius:       <span class="mi">22.0</span>°C
+Fahrenheit:    <span class="mi">71.6</span>°F
+Percezione:    Caldo</code></pre>
+<ol>
+<li>Validazione: se la temperatura e inferiore a -273.15 (zero assoluto), stampate un messaggio di errore e non procedete con la conversione.</li>
+</ol>
+<hr>
+<h2>Domande di verifica</h2>
+<p>Rispondete brevemente a ciascuna domanda.</p>
+<ol>
+<li>Qual e la differenza tra eseguire codice nel REPL e da un file <code>.py</code>? In quali situazioni e preferibile usare l'uno o l'altro?</li>
+</ol>
+<ol>
+<li>Cosa succede se scrivete <code>eta: int = int(input("Eta: "))</code> e l'utente inserisce <code>"venti"</code>? Quale tipo di errore si verifica?</li>
+</ol>
+<ol>
+<li>Nel programma della calcolatrice, perche controlliamo <code>secondo == 0</code> solo per le operazioni <code>/</code>, <code>//</code> e <code>%</code>, ma non per <code>+</code>, <code>-</code>, <code>*</code>?</li>
+</ol>
+<ol>
+<li>Perche usiamo <code>elif</code> invece di una sequenza di <code>if</code> indipendenti nel classificatore ISEE? Cosa cambierebbe se usassimo solo <code>if</code>?</li>
+</ol>
+<ol>
+<li>Spiegate cosa fa il formato <code>{valore:>12,.2f}</code> in una f-string. Cosa significano <code>></code>, <code>12</code>, <code>,</code> e <code>.2f</code>?</li>
+</ol>
+<ol>
+<li>Perche le soglie ISEE sono definite come costanti (<code>SOGLIA_1</code>, ecc.) all'inizio del programma invece che come numeri direttamente nei confronti?</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questo laboratorio avete:</p>
+<ul>
+<li><strong>Configurato l'ambiente di lavoro:</strong> terminale, Python, VS Code. Questi strumenti vi accompagneranno per tutto il corso e oltre. Investire tempo nel padroneggiarli non e un lusso, e una necessita.</li>
+</ul>
+<ul>
+<li><strong>Scritto programmi completi con type hints:</strong> non solo frammenti, ma programmi che leggono input, calcolano e stampano risultati formattati. I type hints sono stati usati ovunque: non rallentano, non complicano, e rendono il codice piu chiaro.</li>
+</ul>
+<ul>
+<li><strong>Praticato le strutture condizionali su problemi reali:</strong> classificare un reddito ISEE, gestire la divisione per zero, validare un input. Queste non sono astrazioni accademiche: ogni programma che scriverete nella vostra carriera dovra gestire dati inattesi e prendere decisioni.</li>
+</ul>
+<p>Un consiglio: riscrivete da zero gli esercizi guidati senza guardare il codice. Se riuscite a ricostruirli dalla memoria e dalla comprensione, avete davvero imparato. Se dovete sbirciare, tornate indietro e rileggete la parte corrispondente.</p>
+<nav class="bottom-nav"><span><a href="../frontali/F17_numpy_pandas_visualizzazione.html">← F17</a></span><span><a href="../../index.html">Home</a></span><span><a href="L02_cicli_comprehension_stringhe.html">L02 →</a></span></nav>
+</body>
+</html>

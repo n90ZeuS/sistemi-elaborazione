@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L04 — Funzioni e modularità — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="L03_strutture_dati.html">← L03</a> &bull; <a href="L05_file_gestione_dati.html">L05 →</a> &bull; <a href="../../presentazioni/L04_funzioni_modularita.html">Presentazione</a></nav>
+<h1>L04 — Funzioni e modularità</h1>
+
+<h1>Laboratorio 4 — Funzioni e modularità</h1>
+<h2>Informazioni</h2>
+<ul>
+<li><strong>Prerequisiti:</strong> Lezioni frontali F13 (Funzioni) e F14 (Modularità e buone pratiche)</li>
+<li><strong>Durata stimata:</strong> 2 ore</li>
+<li><strong>Obiettivi:</strong> Definire funzioni con type hints e docstring. Usare <code>assert</code> per verificare la correttezza. Fare refactoring di codice monolitico. Usare <code>sorted()</code> con <code>key</code>. Creare e importare moduli.</li>
+</ul>
+<hr>
+<h2>Esercizio guidato 1 — Implementare funzioni statistiche</h2>
+<h3>Passo 1: La funzione <code>media()</code></h3>
+<pre><code><span class="kw">def</span> <span class="fn">media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica di una lista di numeri.
+
+    Args:
+        valori: lista non vuota di numeri.
+
+    Returns:
+        La media aritmetica dei valori.
+
+    Raises:
+        ValueError: se la lista è vuota.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Impossibile calcolare la media di una lista vuota&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+<span class="cm"># Test con assert</span>
+<span class="kw">assert</span> media([<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">20.0</span>
+<span class="kw">assert</span> media([<span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">5.0</span>
+<span class="kw">assert</span> media([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">3.0</span>
+<span class="nb">print</span>(<span class="st">&quot;media(): tutti i test superati&quot;</span>)</code></pre>
+<p>Osservate la struttura:</p>
+<ul>
+<li><strong>Type hints</strong> nei parametri (<code>valori: list[float]</code>) e nel valore di ritorno (<code>-> float</code>).</li>
+<li><strong>Docstring</strong> che spiega cosa fa la funzione, cosa accetta e cosa restituisce.</li>
+<li><strong>Validazione</strong> dell'input: se la lista è vuota, solleviamo un errore esplicito.</li>
+<li><strong>Assert</strong> come test: se l'asserzione fallisce, Python solleva <code>AssertionError</code> e sappiamo che qualcosa non funziona.</li>
+</ul>
+<h3>Passo 2: La funzione <code>varianza()</code></h3>
+<p>La varianza misura quanto i dati si disperdono intorno alla media. Usiamo la varianza campionaria (dividiamo per n-1):</p>
+<pre><code><span class="kw">def</span> <span class="fn">varianza</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la varianza campionaria di una lista di numeri.
+
+    Usa il denominatore n-1 (correzione di Bessel).
+
+    Args:
+        valori: lista con almeno 2 elementi.
+
+    Returns:
+        La varianza campionaria.
+
+    Raises:
+        ValueError: se la lista ha meno di 2 elementi.
+    &quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Servono almeno 2 valori per calcolare la varianza&quot;</span>)
+    m: <span class="nb">float</span> <span class="op">=</span> media(valori)  <span class="cm"># riusiamo la funzione definita prima!</span>
+    somma_scarti_quadrati: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori)
+    <span class="kw">return</span> somma_scarti_quadrati <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)
+
+
+<span class="cm"># Test</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(varianza([<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">9</span>]) <span class="op">-</span> <span class="mi">4.571428571428571</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(varianza([<span class="mi">10</span>, <span class="mi">10</span>, <span class="mi">10</span>]) <span class="op">-</span> <span class="mi">0.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>
+<span class="nb">print</span>(<span class="st">&quot;varianza(): tutti i test superati&quot;</span>)</code></pre>
+<p>Notate come <code>varianza()</code> chiama <code>media()</code>: le funzioni si possono comporre, evitando di duplicare codice.</p>
+<h3>Passo 3: La funzione <code>mediana()</code></h3>
+<pre><code><span class="kw">def</span> <span class="fn">mediana</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la mediana di una lista di numeri.
+
+    Args:
+        valori: lista non vuota di numeri.
+
+    Returns:
+        Il valore mediano.
+
+    Raises:
+        ValueError: se la lista è vuota.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Impossibile calcolare la mediana di una lista vuota&quot;</span>)
+    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(ordinati)
+    centro: <span class="nb">int</span> <span class="op">=</span> n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="cm"># Numero dispari di elementi: il mediano è quello centrale</span>
+        <span class="kw">return</span> ordinati[centro]
+    <span class="kw">else</span>:
+        <span class="cm"># Numero pari: media dei due centrali</span>
+        <span class="kw">return</span> (ordinati[centro <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[centro]) <span class="op">/</span> <span class="mi">2</span>
+
+
+<span class="cm"># Test</span>
+<span class="kw">assert</span> mediana([<span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">2</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> mediana([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">2.5</span>
+<span class="kw">assert</span> mediana([<span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+<span class="kw">assert</span> mediana([<span class="mi">7</span>, <span class="mi">1</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">4.0</span>
+<span class="nb">print</span>(<span class="st">&quot;mediana(): tutti i test superati&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizio guidato 2 — Assert come strumento di testing</h2>
+<p>Gli <code>assert</code> non sono solo per controllare i test: servono anche per documentare le aspettative sul codice.</p>
+<h3>Passo 1: Test di casi limite</h3>
+<pre><code><span class="cm"># Testare che le funzioni gestiscano correttamente gli errori</span>
+errore_sollevato: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+<span class="kw">try</span>:
+    media([])
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    errore_sollevato <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">assert</span> errore_sollevato, <span class="st">&quot;media([]) dovrebbe sollevare ValueError&quot;</span>
+
+errore_sollevato <span class="op">=</span> <span class="kw">False</span>
+<span class="kw">try</span>:
+    varianza([<span class="mi">5</span>])
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    errore_sollevato <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">assert</span> errore_sollevato, <span class="st">&quot;varianza([5]) dovrebbe sollevare ValueError&quot;</span>
+
+<span class="nb">print</span>(<span class="st">&quot;Test sui casi limite: tutti superati&quot;</span>)</code></pre>
+<h3>Passo 2: Test con valori noti</h3>
+<p>Quando si testano funzioni numeriche, bisogna fare attenzione ai confronti tra float. Non si scrive <code>assert varianza(dati) == 4.5</code> perché l'aritmetica in virgola mobile può introdurre piccoli errori. Si usa un confronto con tolleranza:</p>
+<pre><code><span class="kw">def</span> <span class="fn">quasi_uguale</span>(<span class="fn">a</span>: <span class="nb">float</span>, b: <span class="nb">float</span>, tolleranza: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+    <span class="st">&quot;&quot;&quot;Verifica se due float sono approssimativamente uguali.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">abs</span>(a <span class="op">-</span> b) <span class="op">&lt;</span> tolleranza
+
+
+<span class="cm"># Test con dataset noto</span>
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">2.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">5.0</span>, <span class="mi">7.0</span>, <span class="mi">9.0</span>]
+<span class="kw">assert</span> quasi_uguale(media(dati), <span class="mi">5.0</span>)
+<span class="kw">assert</span> quasi_uguale(varianza(dati), <span class="mi">4.571428571428571</span>)
+<span class="kw">assert</span> quasi_uguale(mediana(dati), <span class="mi">4.5</span>)
+<span class="nb">print</span>(<span class="st">&quot;Test con valori noti: tutti superati&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizio guidato 3 — Refactoring: da monolitico a modulare</h2>
+<p>Il refactoring consiste nel migliorare la struttura del codice senza cambiarne il comportamento. Partiamo da un blocco di codice tutto in un unico pezzo e lo trasformiamo in funzioni.</p>
+<h3>Il codice monolitico (prima)</h3>
+<pre><code><span class="cm"># Questo codice funziona, ma è un unico blocco non riutilizzabile</span>
+voti_stat: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>, <span class="mi">26</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+voti_anal: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">25</span>, <span class="mi">20</span>, <span class="mi">28</span>, <span class="mi">26</span>, <span class="mi">24</span>]
+
+<span class="cm"># Media statistica</span>
+somma_stat: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> v <span class="kw">in</span> voti_stat:
+    somma_stat <span class="op">+</span><span class="op">=</span> v
+media_stat: <span class="nb">float</span> <span class="op">=</span> somma_stat <span class="op">/</span> <span class="nb">len</span>(voti_stat)
+
+<span class="cm"># Media analisi</span>
+somma_anal: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> v <span class="kw">in</span> voti_anal:
+    somma_anal <span class="op">+</span><span class="op">=</span> v
+media_anal: <span class="nb">float</span> <span class="op">=</span> somma_anal <span class="op">/</span> <span class="nb">len</span>(voti_anal)
+
+<span class="cm"># Trova il voto massimo in statistica</span>
+max_stat: <span class="nb">int</span> <span class="op">=</span> voti_stat[<span class="mi">0</span>]
+<span class="kw">for</span> v <span class="kw">in</span> voti_stat[<span class="mi">1</span>:]:
+    <span class="kw">if</span> v <span class="op">&gt;</span> max_stat:
+        max_stat <span class="op">=</span> v
+
+<span class="cm"># Trova il voto massimo in analisi</span>
+max_anal: <span class="nb">int</span> <span class="op">=</span> voti_anal[<span class="mi">0</span>]
+<span class="kw">for</span> v <span class="kw">in</span> voti_anal[<span class="mi">1</span>:]:
+    <span class="kw">if</span> v <span class="op">&gt;</span> max_anal:
+        max_anal <span class="op">=</span> v
+
+<span class="nb">print</span>(<span class="st">f&quot;Statistica: media={media_stat:.1f}, max={max_stat}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Analisi:    media={media_anal:.1f}, max={max_anal}&quot;</span>)</code></pre>
+<p>Il problema è evidente: il codice per calcolare media e massimo è <strong>duplicato</strong>. Se avessimo dieci corsi, dovremmo copiare e incollare lo stesso blocco dieci volte.</p>
+<h3>Il codice ristrutturato (dopo)</h3>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">voti</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media di una lista di voti.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(voti) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+
+
+<span class="kw">def</span> <span class="fn">trova_massimo</span>(<span class="fn">voti</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Trova il voto massimo in una lista.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(voti) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    massimo: <span class="nb">int</span> <span class="op">=</span> voti[<span class="mi">0</span>]
+    <span class="kw">for</span> v <span class="kw">in</span> voti[<span class="mi">1</span>:]:
+        <span class="kw">if</span> v <span class="op">&gt;</span> massimo:
+            massimo <span class="op">=</span> v
+    <span class="kw">return</span> massimo
+
+
+<span class="kw">def</span> <span class="fn">stampa_report</span>(<span class="fn">nome_corso</span>: <span class="nb">str</span>, voti: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa un report con media e massimo per un corso.&quot;&quot;&quot;</span>
+    m: <span class="nb">float</span> <span class="op">=</span> calcola_media(voti)
+    mx: <span class="nb">int</span> <span class="op">=</span> trova_massimo(voti)
+    <span class="nb">print</span>(<span class="st">f&quot;{nome_corso}: media={m:.1f}, max={mx}&quot;</span>)
+
+
+<span class="cm"># Il codice principale diventa chiarissimo</span>
+corsi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Statistica&quot;</span>: [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>, <span class="mi">26</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">25</span>],
+    <span class="st">&quot;Analisi&quot;</span>:    [<span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">25</span>, <span class="mi">20</span>, <span class="mi">28</span>, <span class="mi">26</span>, <span class="mi">24</span>],
+}
+
+<span class="kw">for</span> nome, voti <span class="kw">in</span> corsi.items():
+    stampa_report(nome, voti)</code></pre>
+<p>Vantaggi del refactoring:</p>
+<ul>
+<li><strong>Nessuna duplicazione:</strong> ogni operazione è definita una volta sola.</li>
+<li><strong>Riutilizzabilità:</strong> possiamo aggiungere un corso con una sola riga.</li>
+<li><strong>Testabilità:</strong> possiamo testare <code>calcola<em>media</code> e <code>trova</em>massimo</code> separatamente.</li>
+<li><strong>Leggibilità:</strong> il codice principale è quasi pseudocodice.</li>
+</ul>
+<hr>
+<h2>Esercizio guidato 4 — <code>sorted()</code> con <code>key=lambda</code></h2>
+<p>La funzione <code>sorted()</code> accetta un parametro <code>key</code> che specifica come confrontare gli elementi. <code>lambda</code> permette di definire piccole funzioni anonime al volo.</p>
+<h3>Passo 1: Ordinare stringhe per lunghezza</h3>
+<pre><code>parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;statistica&quot;</span>, <span class="st">&quot;media&quot;</span>, <span class="st">&quot;varianza&quot;</span>, <span class="st">&quot;moda&quot;</span>, <span class="st">&quot;quartile&quot;</span>]
+
+<span class="cm"># Ordine alfabetico (default)</span>
+<span class="nb">print</span>(<span class="st">f&quot;Alfabetico: {sorted(parole)}&quot;</span>)
+
+<span class="cm"># Per lunghezza</span>
+<span class="nb">print</span>(<span class="st">f&quot;Per lunghezza: {sorted(parole, key=lambda p: len(p))}&quot;</span>)
+
+<span class="cm"># Per lunghezza decrescente</span>
+<span class="nb">print</span>(<span class="st">f&quot;Per lunghezza (desc): {sorted(parole, key=lambda p: -len(p))}&quot;</span>)</code></pre>
+<h3>Passo 2: Ordinare dizionari per un campo</h3>
+<pre><code>studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> [
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,  <span class="st">&quot;media&quot;</span>: <span class="mi">28.5</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;media&quot;</span>: <span class="mi">24.0</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>,  <span class="st">&quot;media&quot;</span>: <span class="mi">29.3</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>,  <span class="st">&quot;media&quot;</span>: <span class="mi">27.1</span>},
+]
+
+<span class="cm"># Ordinare per media decrescente</span>
+classifica: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
+    studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;media&quot;</span>], reverse<span class="op">=</span><span class="kw">True</span>
+)
+
+<span class="nb">print</span>(<span class="st">&quot;Classifica:&quot;</span>)
+<span class="kw">for</span> i, s <span class="kw">in</span> <span class="nb">enumerate</span>(classifica, start<span class="op">=</span><span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;  {i}. {s[&#x27;nome&#x27;]} — media: {s[&#x27;media&#x27;]}&quot;</span>)</code></pre>
+<h3>Passo 3: Ordinare tuple per un elemento specifico</h3>
+<pre><code>risultati: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">float</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Anna&quot;</span>,  <span class="mi">3</span>, <span class="mi">28.5</span>),
+    (<span class="st">&quot;Marco&quot;</span>, <span class="mi">2</span>, <span class="mi">24.0</span>),
+    (<span class="st">&quot;Luca&quot;</span>,  <span class="mi">3</span>, <span class="mi">29.3</span>),
+    (<span class="st">&quot;Sara&quot;</span>,  <span class="mi">2</span>, <span class="mi">27.1</span>),
+]
+
+<span class="cm"># Ordinare per media (terzo elemento, indice 2)</span>
+per_media: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">float</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
+    risultati, key<span class="op">=</span><span class="kw">lambda</span> r: r[<span class="mi">2</span>], reverse<span class="op">=</span><span class="kw">True</span>
+)
+
+<span class="cm"># Ordinare per numero di esami (secondo elemento), poi per media</span>
+per_esami_e_media: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">float</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
+    risultati, key<span class="op">=</span><span class="kw">lambda</span> r: (<span class="op">-</span>r[<span class="mi">1</span>], <span class="op">-</span>r[<span class="mi">2</span>])
+)
+
+<span class="nb">print</span>(<span class="st">&quot;Per media:&quot;</span>)
+<span class="kw">for</span> nome, esami, med <span class="kw">in</span> per_media:
+    <span class="nb">print</span>(<span class="st">f&quot;  {nome}: {esami} esami, media {med}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Per esami (desc) e media (desc):&quot;</span>)
+<span class="kw">for</span> nome, esami, med <span class="kw">in</span> per_esami_e_media:
+    <span class="nb">print</span>(<span class="st">f&quot;  {nome}: {esami} esami, media {med}&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizio guidato 5 — Creare un modulo e importarlo</h2>
+<p>Un modulo è semplicemente un file <code>.py</code> che contiene definizioni di funzioni, variabili e classi. Creare moduli è il primo passo verso il codice riutilizzabile.</p>
+<h3>Passo 1: Creare il file <code>statistiche.py</code></h3>
+<p>Crea un file chiamato <code>statistiche.py</code> nella stessa cartella del tuo script, con il seguente contenuto:</p>
+<pre><code><span class="st">&quot;&quot;&quot;Modulo con funzioni statistiche di base.
+
+Questo modulo fornisce implementazioni semplici di media,
+varianza e mediana per liste di numeri.
+&quot;&quot;&quot;</span>
+
+
+<span class="kw">def</span> <span class="fn">media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+<span class="kw">def</span> <span class="fn">varianza</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la varianza campionaria (denominatore n-1).&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Servono almeno 2 valori&quot;</span>)
+    m: <span class="nb">float</span> <span class="op">=</span> media(valori)
+    <span class="kw">return</span> <span class="nb">sum</span>((x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori) <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">deviazione_standard</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la deviazione standard campionaria.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> varianza(valori) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+
+
+<span class="kw">def</span> <span class="fn">mediana</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la mediana.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(ordinati)
+    centro: <span class="nb">int</span> <span class="op">=</span> n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> ordinati[centro]
+    <span class="kw">return</span> (ordinati[centro <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[centro]) <span class="op">/</span> <span class="mi">2</span></code></pre>
+<h3>Passo 2: Importare e usare il modulo</h3>
+<p>Crea un secondo file, ad esempio <code>analisi.py</code>, nella stessa cartella:</p>
+<pre><code><span class="st">&quot;&quot;&quot;Script che usa il modulo statistiche per analizzare dati.&quot;&quot;&quot;</span>
+<span class="kw">import</span> statistiche
+
+dati_temperatura: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">21.0</span>, <span class="mi">19.3</span>, <span class="mi">22.1</span>, <span class="mi">20.7</span>, <span class="mi">17.9</span>, <span class="mi">23.4</span>]
+
+m: <span class="nb">float</span> <span class="op">=</span> statistiche.media(dati_temperatura)
+v: <span class="nb">float</span> <span class="op">=</span> statistiche.varianza(dati_temperatura)
+ds: <span class="nb">float</span> <span class="op">=</span> statistiche.deviazione_standard(dati_temperatura)
+med: <span class="nb">float</span> <span class="op">=</span> statistiche.mediana(dati_temperatura)
+
+<span class="nb">print</span>(<span class="st">f&quot;Media:     {m:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Varianza:  {v:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dev. std.: {ds:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Mediana:   {med:.2f}&quot;</span>)</code></pre>
+<h3>Passo 3: Importazione selettiva</h3>
+<pre><code><span class="cm"># Importare solo le funzioni che servono</span>
+<span class="kw">from</span> statistiche <span class="kw">import</span> media, mediana
+
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">40</span>, <span class="mi">50</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media(dati)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Mediana: {mediana(dati)}&quot;</span>)</code></pre>
+<h3>Passo 4: Il blocco <code>if <em>_name</em><em> == "</em><em>main</em>_"</code></h3>
+<p>Aggiungi alla fine di <code>statistiche.py</code>:</p>
+<pre><code><span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
+    <span class="cm"># Questo codice viene eseguito SOLO se si lancia direttamente</span>
+    <span class="cm"># statistiche.py, NON quando viene importato come modulo.</span>
+    <span class="nb">print</span>(<span class="st">&quot;=== Test del modulo statistiche ===&quot;</span>)
+
+    dati_test: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">9</span>]
+    <span class="nb">print</span>(<span class="st">f&quot;Dati: {dati_test}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Media:    {media(dati_test):.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Varianza: {varianza(dati_test):.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Dev.std.: {deviazione_standard(dati_test):.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Mediana:  {mediana(dati_test):.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;Test completati.&quot;</span>)</code></pre>
+<p>Se lanci <code>python statistiche.py</code>, vedrai i test. Se lo importi con <code>import statistiche</code>, i test non verranno eseguiti.</p>
+<hr>
+<h2>Esercizi autonomi</h2>
+<p>Per ciascun esercizio, scrivi il codice completo con type hints e docstring. Testa ogni funzione con almeno 3 <code>assert</code>.</p>
+<h3>Esercizio A1 — Funzione moda (base)</h3>
+<p>Implementa una funzione <code>moda()</code> che restituisce il valore piu frequente in una lista.</p>
+<pre><code><span class="kw">def</span> <span class="fn">moda</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    ...</code></pre>
+<p>Specifiche:</p>
+<ol>
+<li>Se la lista e vuota, solleva <code>ValueError</code>.</li>
+<li>Se ci sono piu valori con la stessa frequenza massima, restituisci il primo incontrato.</li>
+<li>Puoi usare <code>Counter</code> oppure risolvere il problema con un dizionario manuale.</li>
+<li>Testa con: <code>moda([1, 2, 2, 3])</code> deve restituire <code>2</code>; <code>moda([5])</code> deve restituire <code>5</code>.</li>
+</ol>
+<h3>Esercizio A2 — Normalizzazione z-score (intermedio)</h3>
+<p>Lo z-score trasforma ogni valore sottraendo la media e dividendo per la deviazione standard: <code>z = (x - media) / dev_std</code>.</p>
+<p>Implementa:</p>
+<pre><code><span class="kw">def</span> <span class="fn">z_score</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    ...</code></pre>
+<p>Specifiche:</p>
+<ol>
+<li>Se la lista ha meno di 2 elementi, solleva <code>ValueError</code>.</li>
+<li>Se la deviazione standard e zero (tutti i valori uguali), solleva <code>ValueError</code> con un messaggio appropriato.</li>
+<li>Riusa le funzioni <code>media()</code> e <code>deviazione_standard()</code> definite in precedenza o nel modulo <code>statistiche</code>.</li>
+<li>Verifica che la media degli z-score sia circa 0 e la deviazione standard sia circa 1.</li>
+</ol>
+<h3>Esercizio A3 — Decoratore timer (avanzato)</h3>
+<p>Un decoratore e una funzione che "avvolge" un'altra funzione per aggiungere comportamento. Implementa un decoratore che misura il tempo di esecuzione:</p>
+<pre><code><span class="kw">import</span> time
+<span class="kw">from</span> typing <span class="kw">import</span> Callable, Any
+
+
+<span class="kw">def</span> <span class="fn">timer</span>(<span class="fn">funzione</span>: Callable) <span class="op">-</span><span class="op">&gt;</span> Callable:
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span><span class="fn">args</span>: Any, <span class="op">*</span><span class="op">*</span>kwargs: Any) <span class="op">-</span><span class="op">&gt;</span> Any:
+        <span class="cm"># Registra il tempo prima dell&#x27;esecuzione</span>
+        <span class="cm"># Chiama la funzione originale</span>
+        <span class="cm"># Registra il tempo dopo l&#x27;esecuzione</span>
+        <span class="cm"># Stampa il tempo impiegato</span>
+        <span class="cm"># Restituisci il risultato della funzione originale</span>
+        ...
+    <span class="kw">return</span> wrapper</code></pre>
+<p>Specifiche:</p>
+<ol>
+<li>Usa <code>time.perf_counter()</code> per misurare il tempo.</li>
+<li>Applica il decoratore alla funzione <code>media()</code> con la sintassi <code>@timer</code>.</li>
+<li>Testa con una lista molto lunga: <code>list(range(1<em>000</em>000))</code>.</li>
+<li>Verifica che il risultato della funzione decorata sia identico a quello della funzione originale.</li>
+</ol>
+<p><strong>Nota:</strong> i decoratori non sono nel programma d'esame, ma capire il concetto aiuta a comprendere come le funzioni siano oggetti di prima classe in Python.</p>
+<hr>
+<h2>Sfida finale — Mini-toolkit statistico completo</h2>
+<p>Crea un modulo <code>toolkit.py</code> che contenga un toolkit statistico completo. Il modulo deve includere tutte le seguenti funzioni, ciascuna con type hints, docstring e validazione dell'input:</p>
+<h3>Funzioni richieste</h3>
+<pre><code><span class="kw">def</span> <span class="fn">media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>: ...
+<span class="kw">def</span> <span class="fn">mediana</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>: ...
+<span class="kw">def</span> <span class="fn">moda</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>: ...
+<span class="kw">def</span> <span class="fn">varianza</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>: ...
+<span class="kw">def</span> <span class="fn">deviazione_standard</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>: ...
+<span class="kw">def</span> <span class="fn">z_score</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]: ...
+<span class="kw">def</span> <span class="fn">riepilogo</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]: ...</code></pre>
+<h3>Requisiti</h3>
+<ol>
+<li><strong>Validazione:</strong> ogni funzione deve controllare che l'input sia valido (lista non vuota, lunghezza sufficiente) e sollevare <code>ValueError</code> con un messaggio chiaro.</li>
+<li><strong>Composizione:</strong> le funzioni devono riutilizzarsi tra loro (la varianza deve usare la media, la deviazione standard deve usare la varianza, e cosi via).</li>
+<li><strong><code>riepilogo()</code></strong> deve restituire un dizionario con tutte le statistiche:</li>
+</ol>
+<pre><code>   {
+       <span class="st">&quot;media&quot;</span>: ...,
+       <span class="st">&quot;mediana&quot;</span>: ...,
+       <span class="st">&quot;moda&quot;</span>: ...,
+       <span class="st">&quot;varianza&quot;</span>: ...,
+       <span class="st">&quot;dev_standard&quot;</span>: ...,
+       <span class="st">&quot;minimo&quot;</span>: ...,
+       <span class="st">&quot;massimo&quot;</span>: ...,
+       <span class="st">&quot;n&quot;</span>: ...,
+   }</code></pre>
+<ol>
+<li><strong>Testing:</strong> aggiungi un blocco <code>if <em>_name</em><em> == "</em><em>main</em>_"</code> con almeno 10 <code>assert</code> che verificano la correttezza di tutte le funzioni.</li>
+<li><strong>Report finale:</strong> nel blocco principale, applica <code>riepilogo()</code> a questo dataset e stampa i risultati formattati:</li>
+</ol>
+<pre><code>   voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>, <span class="mi">26</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">29</span>, <span class="mi">23</span>,
+                         <span class="mi">30</span>, <span class="mi">18</span>, <span class="mi">26</span>, <span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">25</span>, <span class="mi">29</span>]</code></pre>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Qual e la differenza tra parametri e argomenti di una funzione?</li>
+<li>Cosa succede se una funzione non ha un'istruzione <code>return</code>? Quale valore restituisce?</li>
+<li>Perche e importante validare l'input di una funzione invece di lasciare che Python generi un errore generico?</li>
+<li>Che differenza c'e tra <code>import statistiche</code> e <code>from statistiche import media</code>? Quando preferiresti l'uno o l'altro?</li>
+<li>Cosa fa il blocco <code>if <em>_name</em><em> == "</em><em>main</em>_"</code> e perche e utile?</li>
+<li>Nell'espressione <code>sorted(dati, key=lambda x: x["voto"])</code>, cosa rappresenta la lambda? Potresti riscriverla come funzione normale?</li>
+<li>Perche <code>assert</code> e utile durante lo sviluppo ma non deve essere usato per la validazione dell'input in produzione?</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questo laboratorio avete fatto un salto di qualita nel vostro modo di programmare: dal codice come sequenza di istruzioni al codice come <strong>insieme di funzioni componibili e testabili</strong>.</p>
+<p>I tre principi chiave emersi sono:</p>
+<ol>
+<li><strong>DRY (Don't Repeat Yourself):</strong> se copiate e incollate codice, probabilmente vi serve una funzione.</li>
+<li><strong>Testabilita:</strong> una funzione ben scritta puo essere testata in isolamento con <code>assert</code>. Se non riuscite a testarla, probabilmente fa troppe cose.</li>
+<li><strong>Modularita:</strong> separare il codice in moduli rende il progetto gestibile anche quando cresce. Oggi avete un solo modulo con poche funzioni; in un progetto reale potreste averne decine.</li>
+</ol>
+<p>La combinazione di type hints e docstring rende il codice auto-documentante: chi legge la firma della funzione capisce immediatamente cosa entra e cosa esce, senza dover leggere il corpo.</p>
+<p>Nel prossimo laboratorio applicherete queste competenze alla lettura e scrittura di file, lavorando finalmente con dati esterni.</p>
+<nav class="bottom-nav"><span><a href="L03_strutture_dati.html">← L03</a></span><span><a href="../../index.html">Home</a></span><span><a href="L05_file_gestione_dati.html">L05 →</a></span></nav>
+</body>
+</html>

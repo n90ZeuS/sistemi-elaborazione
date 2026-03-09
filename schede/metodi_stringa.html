@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodi Stringa — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a></nav>
+<h1>Metodi Stringa</h1>
+
+<h1>Metodi delle Stringhe in Python</h1>
+<p>Scheda di riferimento rapido con tutti i principali metodi stringa, raggruppati per funzione.</p>
+<blockquote>
+<p>Le stringhe in Python sono <strong>immutabili</strong>: ogni metodo restituisce una <strong>nuova</strong> stringa, l'originale non cambia.</p>
+</blockquote>
+<hr>
+<h2>Ricerca</h2>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Sintassi</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>find</code></td>
+<td><code>s.find(sub[, start, end])</code></td>
+<td>Trova la prima posizione di <code>sub</code>, restituisce -1 se assente</td>
+<td><code>"ciao mondo".find("mondo")</code></td>
+<td><code>5</code></td>
+</tr>
+<tr>
+<td><code>rfind</code></td>
+<td><code>s.rfind(sub)</code></td>
+<td>Come find, ma cerca da destra</td>
+<td><code>"abcabc".rfind("abc")</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>index</code></td>
+<td><code>s.index(sub)</code></td>
+<td>Come find, ma lancia ValueError se assente</td>
+<td><code>"ciao".index("ia")</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>rindex</code></td>
+<td><code>s.rindex(sub)</code></td>
+<td>Come index, ma cerca da destra</td>
+<td><code>"abcabc".rindex("a")</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>count</code></td>
+<td><code>s.count(sub)</code></td>
+<td>Conta le occorrenze non sovrapposte</td>
+<td><code>"banana".count("an")</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>startswith</code></td>
+<td><code>s.startswith(prefix)</code></td>
+<td>Verifica se inizia con il prefisso</td>
+<td><code>"ciao".startswith("ci")</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>endswith</code></td>
+<td><code>s.endswith(suffix)</code></td>
+<td>Verifica se finisce con il suffisso</td>
+<td><code>"dati.csv".endswith(".csv")</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>in</code></td>
+<td><code>sub in s</code></td>
+<td>Verifica se la sottostringa e' presente</td>
+<td><code>"mondo" in "ciao mondo"</code></td>
+<td><code>True</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Trasformazione (maiuscole/minuscole)</h2>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>upper()</code></td>
+<td>Tutto maiuscolo</td>
+<td><code>"ciao".upper()</code></td>
+<td><code>"CIAO"</code></td>
+</tr>
+<tr>
+<td><code>lower()</code></td>
+<td>Tutto minuscolo</td>
+<td><code>"CIAO".lower()</code></td>
+<td><code>"ciao"</code></td>
+</tr>
+<tr>
+<td><code>title()</code></td>
+<td>Iniziale maiuscola per ogni parola</td>
+<td><code>"ciao mondo".title()</code></td>
+<td><code>"Ciao Mondo"</code></td>
+</tr>
+<tr>
+<td><code>capitalize()</code></td>
+<td>Solo la prima lettera maiuscola</td>
+<td><code>"ciao mondo".capitalize()</code></td>
+<td><code>"Ciao mondo"</code></td>
+</tr>
+<tr>
+<td><code>swapcase()</code></td>
+<td>Inverte maiuscole/minuscole</td>
+<td><code>"Ciao".swapcase()</code></td>
+<td><code>"cIAO"</code></td>
+</tr>
+<tr>
+<td><code>casefold()</code></td>
+<td>Minuscolo aggressivo (per confronti)</td>
+<td><code>"Strasse".casefold()</code></td>
+<td><code>"strasse"</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Trasformazione (spazi e caratteri)</h2>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>strip()</code></td>
+<td>Rimuove spazi (e \n, \t) da inizio e fine</td>
+<td><code>"  ciao  \n".strip()</code></td>
+<td><code>"ciao"</code></td>
+</tr>
+<tr>
+<td><code>lstrip()</code></td>
+<td>Rimuove spazi solo a sinistra</td>
+<td><code>"  ciao  ".lstrip()</code></td>
+<td><code>"ciao  "</code></td>
+</tr>
+<tr>
+<td><code>rstrip()</code></td>
+<td>Rimuove spazi solo a destra</td>
+<td><code>"  ciao  ".rstrip()</code></td>
+<td><code>"  ciao"</code></td>
+</tr>
+<tr>
+<td><code>strip(chars)</code></td>
+<td>Rimuove i caratteri specificati</td>
+<td><code>"<strong><em>ciao</em></strong>".strip("*")</code></td>
+<td><code>"ciao"</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Verifica (restituiscono True/False)</h2>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Descrizione</th>
+<th>Esempio <code>True</code></th>
+<th>Esempio <code>False</code></th>
+</tr></thead><tbody>
+<tr>
+<td><code>isalpha()</code></td>
+<td>Solo lettere?</td>
+<td><code>"ciao".isalpha()</code></td>
+<td><code>"ciao2".isalpha()</code></td>
+</tr>
+<tr>
+<td><code>isdigit()</code></td>
+<td>Solo cifre?</td>
+<td><code>"123".isdigit()</code></td>
+<td><code>"12.3".isdigit()</code></td>
+</tr>
+<tr>
+<td><code>isalnum()</code></td>
+<td>Solo lettere e cifre?</td>
+<td><code>"abc123".isalnum()</code></td>
+<td><code>"abc 123".isalnum()</code></td>
+</tr>
+<tr>
+<td><code>isspace()</code></td>
+<td>Solo spazi bianchi?</td>
+<td><code>"  \t\n".isspace()</code></td>
+<td><code>"  a".isspace()</code></td>
+</tr>
+<tr>
+<td><code>isupper()</code></td>
+<td>Tutto maiuscolo?</td>
+<td><code>"CIAO".isupper()</code></td>
+<td><code>"Ciao".isupper()</code></td>
+</tr>
+<tr>
+<td><code>islower()</code></td>
+<td>Tutto minuscolo?</td>
+<td><code>"ciao".islower()</code></td>
+<td><code>"Ciao".islower()</code></td>
+</tr>
+<tr>
+<td><code>isnumeric()</code></td>
+<td>Solo caratteri numerici?</td>
+<td><code>"123".isnumeric()</code></td>
+<td><code>"1.5".isnumeric()</code></td>
+</tr>
+<tr>
+<td><code>isdecimal()</code></td>
+<td>Solo cifre decimali?</td>
+<td><code>"42".isdecimal()</code></td>
+<td><code>"IV".isdecimal()</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Nota per studenti di statistica:</strong> <code>isdigit()</code> e <code>isnumeric()</code> NON funzionano con numeri decimali (<code>"3.14"</code> restituisce <code>False</code>). Per verificare se una stringa rappresenta un numero con la virgola, servono altre strategie.</p>
+</blockquote>
+<hr>
+<h2>Divisione e Unione</h2>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Sintassi</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>split()</code></td>
+<td><code>s.split(sep)</code></td>
+<td>Divide in lista di sottostringhe</td>
+<td><code>"a,b,c".split(",")</code></td>
+<td><code>["a", "b", "c"]</code></td>
+</tr>
+<tr>
+<td><code>split()</code></td>
+<td><code>s.split()</code></td>
+<td>Divide per spazi (qualsiasi quantita')</td>
+<td><code>"ciao   mondo".split()</code></td>
+<td><code>["ciao", "mondo"]</code></td>
+</tr>
+<tr>
+<td><code>rsplit()</code></td>
+<td><code>s.rsplit(sep, maxsplit)</code></td>
+<td>Come split, ma da destra</td>
+<td><code>"a.b.c".rsplit(".", 1)</code></td>
+<td><code>["a.b", "c"]</code></td>
+</tr>
+<tr>
+<td><code>splitlines()</code></td>
+<td><code>s.splitlines()</code></td>
+<td>Divide per righe</td>
+<td><code>"a\nb\nc".splitlines()</code></td>
+<td><code>["a", "b", "c"]</code></td>
+</tr>
+<tr>
+<td><code>join()</code></td>
+<td><code>sep.join(lista)</code></td>
+<td>Unisce una lista con il separatore</td>
+<td><code>", ".join(["a","b","c"])</code></td>
+<td><code>"a, b, c"</code></td>
+</tr>
+<tr>
+<td><code>partition()</code></td>
+<td><code>s.partition(sep)</code></td>
+<td>Divide in 3: prima, sep, dopo</td>
+<td><code>"nome=Luca".partition("=")</code></td>
+<td><code>("nome", "=", "Luca")</code></td>
+</tr>
+<tr>
+<td><code>rpartition()</code></td>
+<td><code>s.rpartition(sep)</code></td>
+<td>Come partition, ma da destra</td>
+<td><code>"a.b.c".rpartition(".")</code></td>
+<td><code>("a.b", ".", "c")</code></td>
+</tr>
+</tbody></table>
+<h3>Esempio pratico: elaborare un CSV semplice</h3>
+<pre><code>riga <span class="op">=</span> <span class="st">&quot;Rossi,Marco,28,Statistica&quot;</span>
+campi <span class="op">=</span> riga.split(<span class="st">&quot;,&quot;</span>)
+<span class="cm"># [&quot;Rossi&quot;, &quot;Marco&quot;, &quot;28&quot;, &quot;Statistica&quot;]</span>
+
+cognome, nome, voto, corso <span class="op">=</span> riga.split(<span class="st">&quot;,&quot;</span>)
+voto <span class="op">=</span> <span class="nb">int</span>(voto)  <span class="cm"># &quot;28&quot; -&gt; 28</span></code></pre>
+<hr>
+<h2>Sostituzione</h2>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Sintassi</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>replace()</code></td>
+<td><code>s.replace(old, new[, count])</code></td>
+<td>Sostituisce tutte le occorrenze</td>
+<td><code>"ciao ciao".replace("ciao", "hello")</code></td>
+<td><code>"hello hello"</code></td>
+</tr>
+<tr>
+<td><code>replace()</code></td>
+<td><code>s.replace(old, new, 1)</code></td>
+<td>Sostituisce solo la prima</td>
+<td><code>"aaa".replace("a", "b", 1)</code></td>
+<td><code>"baa"</code></td>
+</tr>
+<tr>
+<td><code>translate()</code></td>
+<td><code>s.translate(table)</code></td>
+<td>Traduce caratteri secondo una tabella</td>
+<td>vedi sotto</td>
+<td>vedi sotto</td>
+</tr>
+</tbody></table>
+<h3>translate() con maketrans()</h3>
+<pre><code><span class="cm"># Sostituire singoli caratteri (utile per pulizia dati)</span>
+tabella <span class="op">=</span> <span class="nb">str</span>.maketrans(<span class="st">&quot;aeiou&quot;</span>, <span class="st">&quot;AEIOU&quot;</span>)
+<span class="st">&quot;ciao mondo&quot;</span>.translate(tabella)
+<span class="cm"># &quot;cIAO mOndO&quot;</span>
+
+<span class="cm"># Rimuovere caratteri</span>
+tabella <span class="op">=</span> <span class="nb">str</span>.maketrans(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;,.;:!?&quot;</span>)
+<span class="st">&quot;Ciao, come stai?&quot;</span>.translate(tabella)
+<span class="cm"># &quot;Ciao come stai&quot;</span></code></pre>
+<hr>
+<h2>Formattazione</h2>
+<h3>f-string (raccomandato, Python 3.6+)</h3>
+<pre><code>nome <span class="op">=</span> <span class="st">&quot;Luca&quot;</span>
+media <span class="op">=</span> <span class="mi">27.333333</span>
+
+<span class="st">f&quot;Studente: {nome}&quot;</span>                    <span class="cm"># &quot;Studente: Luca&quot;</span>
+<span class="st">f&quot;Media: {media:.2f}&quot;</span>                  <span class="cm"># &quot;Media: 27.33&quot;</span>
+<span class="st">f&quot;Media: {media:.1f}&quot;</span>                  <span class="cm"># &quot;Media: 27.3&quot;</span>
+<span class="st">f&quot;{&#x27;Titolo&#x27;:^20}&quot;</span>                      <span class="cm"># &quot;      Titolo       &quot;  (centrato)</span>
+<span class="st">f&quot;{&#x27;Voto&#x27;:&lt;10}{&#x27;Nome&#x27;:&gt;10}&quot;</span>            <span class="cm"># &quot;Voto            Nome&quot;</span>
+<span class="st">f&quot;Percentuale: {0.856:.1%}&quot;</span>            <span class="cm"># &quot;Percentuale: 85.6%&quot;</span>
+<span class="st">f&quot;Grande: {1000000:,}&quot;</span>                 <span class="cm"># &quot;Grande: 1,000,000&quot;</span>
+<span class="st">f&quot;Binario: {42:b}&quot;</span>                     <span class="cm"># &quot;Binario: 101010&quot;</span></code></pre>
+<h3>Specifiche di formato comuni</h3>
+<table>
+<thead><tr>
+<th>Specifica</th>
+<th>Significato</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>:.2f</code></td>
+<td>2 decimali</td>
+<td><code>f"{3.14159:.2f}"</code></td>
+<td><code>"3.14"</code></td>
+</tr>
+<tr>
+<td><code>:.0f</code></td>
+<td>Nessun decimale</td>
+<td><code>f"{3.7:.0f}"</code></td>
+<td><code>"4"</code></td>
+</tr>
+<tr>
+<td><code>:.1%</code></td>
+<td>Percentuale 1 dec</td>
+<td><code>f"{0.856:.1%}"</code></td>
+<td><code>"85.6%"</code></td>
+</tr>
+<tr>
+<td><code>:>10</code></td>
+<td>Allinea a destra (10 car.)</td>
+<td><code>f"{'abc':>10}"</code></td>
+<td><code>"       abc"</code></td>
+</tr>
+<tr>
+<td><code>:<10</code></td>
+<td>Allinea a sinistra</td>
+<td><code>f"{'abc':<10}"</code></td>
+<td><code>"abc       "</code></td>
+</tr>
+<tr>
+<td><code>:^10</code></td>
+<td>Centra</td>
+<td><code>f"{'abc':^10}"</code></td>
+<td><code>"   abc    "</code></td>
+</tr>
+<tr>
+<td><code>:06</code></td>
+<td>Padding con zeri</td>
+<td><code>f"{42:06}"</code></td>
+<td><code>"000042"</code></td>
+</tr>
+<tr>
+<td><code>:,</code></td>
+<td>Separatore migliaia</td>
+<td><code>f"{1234567:,}"</code></td>
+<td><code>"1,234,567"</code></td>
+</tr>
+<tr>
+<td><code>:+</code></td>
+<td>Mostra sempre segno</td>
+<td><code>f"{42:+}"</code></td>
+<td><code>"+42"</code></td>
+</tr>
+</tbody></table>
+<h3>Metodo format() (alternativa)</h3>
+<pre><code><span class="st">&quot;Studente: {}, Media: {:.2f}&quot;</span>.<span class="nb">format</span>(nome, media)
+<span class="st">&quot;Studente: {nome}, Media: {media:.2f}&quot;</span>.<span class="nb">format</span>(nome<span class="op">=</span><span class="st">&quot;Luca&quot;</span>, media<span class="op">=</span><span class="mi">27.3</span>)</code></pre>
+<h3>Allineamento e riempimento</h3>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>center(n)</code></td>
+<td>Centra in n caratteri</td>
+<td><code>"abc".center(9)</code></td>
+<td><code>"   abc   "</code></td>
+</tr>
+<tr>
+<td><code>center(n, c)</code></td>
+<td>Centra con riempimento</td>
+<td><code>"abc".center(9, "-")</code></td>
+<td><code>"---abc---"</code></td>
+</tr>
+<tr>
+<td><code>ljust(n)</code></td>
+<td>Allinea a sinistra</td>
+<td><code>"abc".ljust(9)</code></td>
+<td><code>"abc      "</code></td>
+</tr>
+<tr>
+<td><code>rjust(n)</code></td>
+<td>Allinea a destra</td>
+<td><code>"abc".rjust(9)</code></td>
+<td><code>"      abc"</code></td>
+</tr>
+<tr>
+<td><code>zfill(n)</code></td>
+<td>Riempie con zeri</td>
+<td><code>"42".zfill(5)</code></td>
+<td><code>"00042"</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Suggerimenti rapidi</h2>
+<pre><code><span class="cm"># Invertire una stringa</span>
+<span class="st">&quot;ciao&quot;</span>[::<span class="op">-</span><span class="mi">1</span>]                    <span class="cm"># &quot;oaic&quot;</span>
+
+<span class="cm"># Ripetere una stringa</span>
+<span class="st">&quot;ab&quot;</span> <span class="op">*</span> <span class="mi">3</span>                        <span class="cm"># &quot;ababab&quot;</span>
+
+<span class="cm"># Controllare se una stringa e&#x27; vuota</span>
+<span class="kw">if</span> <span class="kw">not</span> s:       <span class="cm"># s == &quot;&quot; oppure s e&#x27; vuota</span>
+<span class="kw">if</span> s.strip():   <span class="cm"># contiene qualcosa oltre a spazi</span>
+
+<span class="cm"># Rimuovere newline alla fine</span>
+riga <span class="op">=</span> riga.rstrip(<span class="st">&quot;\n&quot;</span>)
+
+<span class="cm"># Concatenazione efficiente di molte stringhe</span>
+parti <span class="op">=</span> []
+<span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1000</span>):
+    parti.append(<span class="nb">str</span>(x))
+risultato <span class="op">=</span> <span class="st">&quot;,&quot;</span>.join(parti)     <span class="cm"># meglio di += ripetuti</span></code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

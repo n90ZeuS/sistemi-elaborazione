@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L03 — Strutture dati — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="L02_cicli_comprehension_stringhe.html">← L02</a> &bull; <a href="L04_funzioni_modularita.html">L04 →</a> &bull; <a href="../../presentazioni/L03_strutture_dati.html">Presentazione</a></nav>
+<h1>L03 — Strutture dati</h1>
+
+<h1>Laboratorio 3 — Strutture dati</h1>
+<h2>Informazioni</h2>
+<ul>
+<li><strong>Prerequisiti:</strong> Lezioni frontali F11 (Liste e tuple) e F12 (Dizionari e insiemi)</li>
+<li><strong>Durata stimata:</strong> 2 ore</li>
+<li><strong>Obiettivi:</strong> Saper creare, modificare e interrogare liste, tuple, dizionari e set. Capire la differenza tra alias e copia. Usare <code>Counter</code> per analisi di frequenza.</li>
+</ul>
+<hr>
+<h2>Esercizio guidato 1 — Liste: gestire misurazioni</h2>
+<p>Immaginate di raccogliere le temperature giornaliere di una settimana. Le liste sono lo strumento naturale per questo tipo di dato: una sequenza ordinata e modificabile.</p>
+<h3>Passo 1: Creare e popolare una lista</h3>
+<pre><code><span class="cm"># Creiamo una lista vuota e aggiungiamo misurazioni una alla volta</span>
+temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+
+temperature.append(<span class="mi">18.5</span>)
+temperature.append(<span class="mi">21.0</span>)
+temperature.append(<span class="mi">19.3</span>)
+temperature.append(<span class="mi">22.1</span>)
+temperature.append(<span class="mi">20.7</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;Misurazioni raccolte: {temperature}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Numero di misurazioni: {len(temperature)}&quot;</span>)</code></pre>
+<p>Possiamo anche creare la lista direttamente:</p>
+<pre><code>temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">21.0</span>, <span class="mi">19.3</span>, <span class="mi">22.1</span>, <span class="mi">20.7</span>]</code></pre>
+<h3>Passo 2: Leggere (Read)</h3>
+<pre><code><span class="cm"># Accesso per indice</span>
+prima: <span class="nb">float</span> <span class="op">=</span> temperature[<span class="mi">0</span>]
+ultima: <span class="nb">float</span> <span class="op">=</span> temperature[<span class="op">-</span><span class="mi">1</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Prima misurazione: {prima}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ultima misurazione: {ultima}&quot;</span>)
+
+<span class="cm"># Slicing: sottoinsieme di misurazioni</span>
+prime_tre: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> temperature[:<span class="mi">3</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Prime tre: {prime_tre}&quot;</span>)
+
+<span class="cm"># Cercare un valore</span>
+<span class="kw">if</span> <span class="mi">21.0</span> <span class="kw">in</span> temperature:
+    posizione: <span class="nb">int</span> <span class="op">=</span> temperature.index(<span class="mi">21.0</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;21.0 trovato alla posizione {posizione}&quot;</span>)</code></pre>
+<h3>Passo 3: Aggiornare (Update)</h3>
+<pre><code><span class="cm"># Correggere una misurazione errata</span>
+<span class="nb">print</span>(<span class="st">f&quot;Prima della correzione: {temperature}&quot;</span>)
+temperature[<span class="mi">2</span>] <span class="op">=</span> <span class="mi">19.8</span>  <span class="cm"># la terza misurazione era sbagliata</span>
+<span class="nb">print</span>(<span class="st">f&quot;Dopo la correzione:    {temperature}&quot;</span>)
+
+<span class="cm"># Inserire una misurazione dimenticata in posizione specifica</span>
+temperature.insert(<span class="mi">1</span>, <span class="mi">20.0</span>)  <span class="cm"># inserisci 20.0 alla posizione 1</span>
+<span class="nb">print</span>(<span class="st">f&quot;Dopo l&#x27;inserimento:    {temperature}&quot;</span>)</code></pre>
+<h3>Passo 4: Cancellare (Delete)</h3>
+<pre><code><span class="cm"># Rimuovere l&#x27;ultima misurazione</span>
+rimossa: <span class="nb">float</span> <span class="op">=</span> temperature.pop()
+<span class="nb">print</span>(<span class="st">f&quot;Rimossa l&#x27;ultima: {rimossa}, lista: {temperature}&quot;</span>)
+
+<span class="cm"># Rimuovere per valore</span>
+temperature.remove(<span class="mi">20.0</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dopo remove(20.0): {temperature}&quot;</span>)
+
+<span class="cm"># Rimuovere per indice</span>
+<span class="kw">del</span> temperature[<span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Dopo del [0]: {temperature}&quot;</span>)</code></pre>
+<h3>Passo 5: Operazioni statistiche di base</h3>
+<pre><code>temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">21.0</span>, <span class="mi">19.3</span>, <span class="mi">22.1</span>, <span class="mi">20.7</span>, <span class="mi">17.9</span>, <span class="mi">23.4</span>]
+
+media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(temperature) <span class="op">/</span> <span class="nb">len</span>(temperature)
+minima: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(temperature)
+massima: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(temperature)
+
+<span class="nb">print</span>(<span class="st">f&quot;Media:   {media:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Minima:  {minima}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Massima: {massima}&quot;</span>)
+
+<span class="cm"># Ordinamento (crea una nuova lista)</span>
+ordinate: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(temperature)
+<span class="nb">print</span>(<span class="st">f&quot;Ordinate: {ordinate}&quot;</span>)
+
+<span class="cm"># Ordinamento in-place (modifica la lista originale)</span>
+temperature.sort()
+<span class="nb">print</span>(<span class="st">f&quot;Originale dopo sort(): {temperature}&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizio guidato 2 — Alias vs copia: un esperimento fondamentale</h2>
+<p>Questo esperimento chiarisce una delle trappole più comuni per i principianti.</p>
+<h3>Passo 1: Alias (due nomi, stesso oggetto)</h3>
+<pre><code>originale: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+alias: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> originale  <span class="cm"># NON è una copia!</span>
+
+<span class="cm"># Modifichiamo tramite alias</span>
+alias[<span class="mi">0</span>] <span class="op">=</span> <span class="mi">999</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;alias:     {alias}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;originale: {originale}&quot;</span>)  <span class="cm"># Anche originale è cambiato!</span>
+<span class="nb">print</span>(<span class="st">f&quot;Stesso oggetto? {originale is alias}&quot;</span>)  <span class="cm"># True</span></code></pre>
+<p>L'assegnamento <code>alias = originale</code> non crea una nuova lista: entrambi i nomi puntano allo stesso oggetto in memoria. Modificare l'uno significa modificare l'altro.</p>
+<h3>Passo 2: Copia superficiale</h3>
+<pre><code>originale: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+copia: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> originale.copy()  <span class="cm"># oppure list(originale) oppure originale[:]</span>
+
+copia[<span class="mi">0</span>] <span class="op">=</span> <span class="mi">999</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;copia:     {copia}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;originale: {originale}&quot;</span>)  <span class="cm"># Originale NON è cambiato</span>
+<span class="nb">print</span>(<span class="st">f&quot;Stesso oggetto? {originale is copia}&quot;</span>)  <span class="cm"># False</span></code></pre>
+<h3>Passo 3: Attenzione alle liste di liste</h3>
+<pre><code>matrice: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>]]
+copia_superficiale: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> matrice.copy()
+
+copia_superficiale[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">999</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;copia:    {copia_superficiale}&quot;</span>)  <span class="cm"># [[999, 2], [3, 4]]</span>
+<span class="nb">print</span>(<span class="st">f&quot;matrice:  {matrice}&quot;</span>)              <span class="cm"># [[999, 2], [3, 4]] — anche qui!</span></code></pre>
+<p>La copia superficiale copia la lista esterna, ma le liste interne restano condivise. Per una copia completa servono <code>import copy</code> e <code>copy.deepcopy()</code>, ma per ora è sufficiente essere consapevoli del problema.</p>
+<hr>
+<h2>Esercizio guidato 3 — Tuple: punti geografici e distanze</h2>
+<p>Le tuple sono come le liste, ma <strong>immutabili</strong>: una volta create, non si possono modificare. Sono perfette per dati che non devono cambiare, come coordinate geografiche.</p>
+<h3>Passo 1: Creare tuple e fare unpacking</h3>
+<pre><code><span class="kw">import</span> math
+
+<span class="cm"># Una tupla di coordinate (latitudine, longitudine)</span>
+roma: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">41.9028</span>, <span class="mi">12.4964</span>)
+milano: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">45.4642</span>, <span class="mi">9.1900</span>)
+napoli: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">40.8518</span>, <span class="mi">14.2681</span>)
+
+<span class="cm"># Unpacking: estrarre i valori in variabili separate</span>
+lat_roma, lon_roma <span class="op">=</span> roma
+<span class="nb">print</span>(<span class="st">f&quot;Roma: lat={lat_roma}, lon={lon_roma}&quot;</span>)
+
+<span class="cm"># Accesso per indice (come le liste)</span>
+<span class="nb">print</span>(<span class="st">f&quot;Latitudine di Milano: {milano[0]}&quot;</span>)</code></pre>
+<h3>Passo 2: Calcolare la distanza tra due punti</h3>
+<p>Usiamo la formula di Haversine semplificata (distanza in linea d'aria approssimata):</p>
+<pre><code><span class="kw">def</span> <span class="fn">distanza_gradi</span>(<span class="fn">p1</span>: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>], p2: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la distanza euclidea approssimata tra due punti in gradi.&quot;&quot;&quot;</span>
+    lat1, lon1 <span class="op">=</span> p1
+    lat2, lon2 <span class="op">=</span> p2
+    <span class="kw">return</span> math.sqrt((lat2 <span class="op">-</span> lat1) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> (lon2 <span class="op">-</span> lon1) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+
+citta: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]]] <span class="op">=</span> [
+    (<span class="st">&quot;Roma&quot;</span>, roma),
+    (<span class="st">&quot;Milano&quot;</span>, milano),
+    (<span class="st">&quot;Napoli&quot;</span>, napoli),
+]
+
+<span class="cm"># Calcolare le distanze tra tutte le coppie</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(citta)):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(i <span class="op">+</span> <span class="mi">1</span>, <span class="nb">len</span>(citta)):
+        nome_a, coord_a <span class="op">=</span> citta[i]
+        nome_b, coord_b <span class="op">=</span> citta[j]
+        d: <span class="nb">float</span> <span class="op">=</span> distanza_gradi(coord_a, coord_b)
+        <span class="nb">print</span>(<span class="st">f&quot;{nome_a} — {nome_b}: {d:.4f} gradi&quot;</span>)</code></pre>
+<h3>Passo 3: Tuple come chiavi di dizionario</h3>
+<p>Le tuple, essendo immutabili, possono essere usate come chiavi di dizionario (le liste no):</p>
+<pre><code><span class="cm"># Distanze pre-calcolate tra coppie di città</span>
+distanze: <span class="nb">dict</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>], <span class="nb">float</span>] <span class="op">=</span> {}
+distanze[(<span class="st">&quot;Roma&quot;</span>, <span class="st">&quot;Milano&quot;</span>)] <span class="op">=</span> <span class="mi">4.77</span>
+distanze[(<span class="st">&quot;Roma&quot;</span>, <span class="st">&quot;Napoli&quot;</span>)] <span class="op">=</span> <span class="mi">2.10</span>
+distanze[(<span class="st">&quot;Milano&quot;</span>, <span class="st">&quot;Napoli&quot;</span>)] <span class="op">=</span> <span class="mi">6.52</span>
+
+coppia: <span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> (<span class="st">&quot;Roma&quot;</span>, <span class="st">&quot;Milano&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Distanza {coppia[0]}—{coppia[1]}: {distanze[coppia]:.2f} gradi&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizio guidato 4 — Dizionari: registro studenti</h2>
+<p>I dizionari associano <strong>chiavi</strong> a <strong>valori</strong>. Sono la struttura dati più usata quando serve un accesso rapido per nome o identificativo.</p>
+<h3>Passo 1: Creare un registro</h3>
+<pre><code><span class="cm"># Ogni studente è identificato dalla matricola</span>
+registro: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> {
+    <span class="st">&quot;MAT001&quot;</span>: {
+        <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna Rossi&quot;</span>,
+        <span class="st">&quot;anno&quot;</span>: <span class="mi">1</span>,
+        <span class="st">&quot;voti&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>],
+    },
+    <span class="st">&quot;MAT002&quot;</span>: {
+        <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco Bianchi&quot;</span>,
+        <span class="st">&quot;anno&quot;</span>: <span class="mi">1</span>,
+        <span class="st">&quot;voti&quot;</span>: [<span class="mi">24</span>, <span class="mi">27</span>, <span class="mi">30</span>],
+    },
+    <span class="st">&quot;MAT003&quot;</span>: {
+        <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca Verdi&quot;</span>,
+        <span class="st">&quot;anno&quot;</span>: <span class="mi">2</span>,
+        <span class="st">&quot;voti&quot;</span>: [<span class="mi">30</span>, <span class="mi">30</span>, <span class="mi">28</span>],
+    },
+}</code></pre>
+<h3>Passo 2: Accesso e ricerca</h3>
+<pre><code><span class="cm"># Accesso diretto per matricola</span>
+studente: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> registro[<span class="st">&quot;MAT001&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Nome: {studente[&#x27;nome&#x27;]}&quot;</span>)
+
+<span class="cm"># Accesso sicuro con get (nessun errore se la chiave non esiste)</span>
+risultato: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> registro.get(<span class="st">&quot;MAT999&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;MAT999 esiste? {risultato is not None}&quot;</span>)
+
+<span class="cm"># Iterare su tutti gli studenti</span>
+<span class="kw">for</span> matricola, dati <span class="kw">in</span> registro.items():
+    voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> dati[<span class="st">&quot;voti&quot;</span>]
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+    <span class="nb">print</span>(<span class="st">f&quot;{matricola} — {dati[&#x27;nome&#x27;]}: media {media:.1f}&quot;</span>)</code></pre>
+<h3>Passo 3: Inserimento e aggiornamento</h3>
+<pre><code><span class="cm"># Aggiungere un nuovo studente</span>
+registro[<span class="st">&quot;MAT004&quot;</span>] <span class="op">=</span> {
+    <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara Neri&quot;</span>,
+    <span class="st">&quot;anno&quot;</span>: <span class="mi">1</span>,
+    <span class="st">&quot;voti&quot;</span>: [<span class="mi">26</span>, <span class="mi">29</span>],
+}
+
+<span class="cm"># Aggiungere un voto a uno studente esistente</span>
+registro[<span class="st">&quot;MAT001&quot;</span>][<span class="st">&quot;voti&quot;</span>].append(<span class="mi">27</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Voti aggiornati di MAT001: {registro[&#x27;MAT001&#x27;][&#x27;voti&#x27;]}&quot;</span>)
+
+<span class="cm"># Aggiornare l&#x27;anno</span>
+registro[<span class="st">&quot;MAT003&quot;</span>][<span class="st">&quot;anno&quot;</span>] <span class="op">=</span> <span class="mi">3</span></code></pre>
+<h3>Passo 4: Cancellazione</h3>
+<pre><code><span class="cm"># Rimuovere uno studente</span>
+rimosso: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> registro.pop(<span class="st">&quot;MAT004&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Rimosso: {rimosso[&#x27;nome&#x27;]}&quot;</span>)
+
+<span class="cm"># Verificare le chiavi rimaste</span>
+<span class="nb">print</span>(<span class="st">f&quot;Matricole nel registro: {list(registro.keys())}&quot;</span>)</code></pre>
+<h3>Passo 5: Statistiche sul registro</h3>
+<pre><code><span class="cm"># Trovare lo studente con la media più alta</span>
+migliore_matricola: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
+migliore_media: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+
+<span class="kw">for</span> matricola, dati <span class="kw">in</span> registro.items():
+    voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> dati[<span class="st">&quot;voti&quot;</span>]
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+    <span class="kw">if</span> media <span class="op">&gt;</span> migliore_media:
+        migliore_media <span class="op">=</span> media
+        migliore_matricola <span class="op">=</span> matricola
+
+<span class="nb">print</span>(<span class="st">f&quot;Miglior studente: {registro[migliore_matricola][&#x27;nome&#x27;]} &quot;</span>
+      <span class="st">f&quot;(media: {migliore_media:.1f})&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizio guidato 5 — Set: confronto iscritti tra anni accademici</h2>
+<p>I set sono insiemi matematici: collezioni <strong>non ordinate</strong> di elementi <strong>unici</strong>. Sono perfetti per operazioni come unione, intersezione e differenza.</p>
+<h3>Passo 1: Creare set di iscritti</h3>
+<pre><code>iscritti_2024: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;Elena&quot;</span>}
+iscritti_2025: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;Paolo&quot;</span>, <span class="st">&quot;Giulia&quot;</span>}</code></pre>
+<h3>Passo 2: Operazioni insiemistiche</h3>
+<pre><code><span class="cm"># Studenti confermati (presenti in entrambi gli anni)</span>
+confermati: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">&amp;</span> iscritti_2025  <span class="cm"># intersezione</span>
+<span class="nb">print</span>(<span class="st">f&quot;Confermati:  {confermati}&quot;</span>)
+
+<span class="cm"># Nuovi iscritti (presenti nel 2025 ma non nel 2024)</span>
+nuovi: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2025 <span class="op">-</span> iscritti_2024  <span class="cm"># differenza</span>
+<span class="nb">print</span>(<span class="st">f&quot;Nuovi:       {nuovi}&quot;</span>)
+
+<span class="cm"># Abbandoni (presenti nel 2024 ma non nel 2025)</span>
+abbandoni: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">-</span> iscritti_2025  <span class="cm"># differenza</span>
+<span class="nb">print</span>(<span class="st">f&quot;Abbandoni:   {abbandoni}&quot;</span>)
+
+<span class="cm"># Tutti gli studenti che sono passati per il corso</span>
+tutti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">|</span> iscritti_2025  <span class="cm"># unione</span>
+<span class="nb">print</span>(<span class="st">f&quot;Tutti:       {tutti}&quot;</span>)
+
+<span class="cm"># Studenti che hanno cambiato stato (presenti in uno solo dei due anni)</span>
+cambiati: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">^</span> iscritti_2025  <span class="cm"># differenza simmetrica</span>
+<span class="nb">print</span>(<span class="st">f&quot;Cambiati:    {cambiati}&quot;</span>)</code></pre>
+<h3>Passo 3: Verifiche di appartenenza</h3>
+<pre><code><span class="nb">print</span>(<span class="st">f&quot;Marco è iscritto nel 2025? {&#x27;Marco&#x27; in iscritti_2025}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Anna è iscritto nel 2025?  {&#x27;Anna&#x27; in iscritti_2025}&quot;</span>)
+
+<span class="cm"># I confermati sono un sottoinsieme di tutti?</span>
+<span class="nb">print</span>(<span class="st">f&quot;Confermati ⊆ Tutti? {confermati &lt;= tutti}&quot;</span>)  <span class="cm"># True, sempre</span></code></pre>
+<h3>Passo 4: Eliminare duplicati da una lista</h3>
+<pre><code><span class="cm"># Caso pratico: risposte a un sondaggio con duplicati</span>
+risposte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;pizza&quot;</span>, <span class="st">&quot;pasta&quot;</span>, <span class="st">&quot;pizza&quot;</span>, <span class="st">&quot;sushi&quot;</span>, <span class="st">&quot;pasta&quot;</span>, <span class="st">&quot;pizza&quot;</span>, <span class="st">&quot;sushi&quot;</span>]
+piatti_unici: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>(risposte)
+<span class="nb">print</span>(<span class="st">f&quot;Piatti unici: {piatti_unici}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Quanti piatti diversi: {len(piatti_unici)}&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizio guidato 6 — Counter: frequenza delle parole</h2>
+<p><code>Counter</code> del modulo <code>collections</code> è un dizionario specializzato per contare elementi.</p>
+<h3>Passo 1: Contare le parole in un testo</h3>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;&quot;
+La statistica è la scienza che studia i fenomeni collettivi.
+La statistica descrittiva riassume i dati osservati.
+La statistica inferenziale generalizza i risultati al di là dei dati osservati.
+&quot;&quot;&quot;</span>
+
+<span class="cm"># Pulizia e tokenizzazione</span>
+parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> testo.lower().split()
+conteggio: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(parole)
+
+<span class="nb">print</span>(<span class="st">&quot;Tutte le frequenze:&quot;</span>)
+<span class="kw">for</span> parola, freq <span class="kw">in</span> conteggio.most_common():
+    <span class="nb">print</span>(<span class="st">f&quot;  {parola:20s} → {freq}&quot;</span>)</code></pre>
+<h3>Passo 2: Le parole più frequenti</h3>
+<pre><code><span class="cm"># Le 5 parole più comuni</span>
+top_5: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> conteggio.most_common(<span class="mi">5</span>)
+<span class="nb">print</span>(<span class="st">&quot;\nTop 5:&quot;</span>)
+<span class="kw">for</span> parola, freq <span class="kw">in</span> top_5:
+    <span class="nb">print</span>(<span class="st">f&quot;  {parola}: {freq}&quot;</span>)
+
+<span class="cm"># Quante parole uniche?</span>
+<span class="nb">print</span>(<span class="st">f&quot;\nParole totali: {sum(conteggio.values())}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Parole uniche: {len(conteggio)}&quot;</span>)</code></pre>
+<h3>Passo 3: Confronto tra due testi</h3>
+<pre><code>testo_a: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il gatto e il cane giocano nel giardino&quot;</span>
+testo_b: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il cane e il gatto dormono in giardino&quot;</span>
+
+freq_a: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(testo_a.split())
+freq_b: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(testo_b.split())
+
+<span class="cm"># Parole in comune</span>
+comuni: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>(freq_a.keys()) <span class="op">&amp;</span> <span class="nb">set</span>(freq_b.keys())
+<span class="nb">print</span>(<span class="st">f&quot;Parole in comune: {comuni}&quot;</span>)
+
+<span class="cm"># Combinare i conteggi</span>
+combinato: Counter[<span class="nb">str</span>] <span class="op">=</span> freq_a <span class="op">+</span> freq_b
+<span class="nb">print</span>(<span class="st">f&quot;Frequenze combinate: {combinato.most_common()}&quot;</span>)</code></pre>
+<hr>
+<h2>Esercizi autonomi</h2>
+<p>Per ciascun esercizio, scrivi il codice completo con type hints. Non vengono fornite le soluzioni: verifica il funzionamento eseguendo il codice e ragionando sull'output.</p>
+<h3>Esercizio A1 — Rubrica telefonica (base)</h3>
+<p>Crea una rubrica telefonica usando un dizionario che associa nomi (<code>str</code>) a numeri di telefono (<code>str</code>).</p>
+<ol>
+<li>Crea la rubrica con almeno 5 contatti.</li>
+<li>Implementa queste operazioni:</li>
+</ol>
+<ul>
+<li>Cerca un contatto per nome e stampa il numero.</li>
+<li>Aggiungi un nuovo contatto.</li>
+<li>Modifica il numero di un contatto esistente.</li>
+<li>Elimina un contatto.</li>
+<li>Stampa tutti i contatti in ordine alfabetico (usa <code>sorted()</code> sulle chiavi).</li>
+</ul>
+<ol>
+<li>Gestisci il caso in cui si cerca un contatto inesistente (usa <code>.get()</code>).</li>
+</ol>
+<h3>Esercizio A2 — Analisi dataset con lista di dizionari (intermedio)</h3>
+<p>Hai un dataset di studenti rappresentato come lista di dizionari:</p>
+<pre><code>studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> [
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">24</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">26</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">22</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">27</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>},
+]</code></pre>
+<p>Scrivi codice che:</p>
+<ol>
+<li>Calcola la media dei voti per ciascun corso.</li>
+<li>Trova lo studente con la media complessiva più alta.</li>
+<li>Per ogni studente, stampa tutti i voti sostenuti e la media.</li>
+<li>Conta quanti studenti hanno una media superiore a 26.</li>
+</ol>
+<p><strong>Suggerimento:</strong> usa un dizionario per raggruppare i voti per corso, e un altro per raggruppare i voti per studente.</p>
+<h3>Esercizio A3 — Sistema di raccomandazione con set (avanzato)</h3>
+<p>Hai un dizionario che associa ogni utente ai film che ha visto:</p>
+<pre><code>catalogo: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">set</span>[<span class="nb">str</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Alice&quot;</span>: {<span class="st">&quot;Matrix&quot;</span>, <span class="st">&quot;Inception&quot;</span>, <span class="st">&quot;Interstellar&quot;</span>, <span class="st">&quot;Dune&quot;</span>},
+    <span class="st">&quot;Bob&quot;</span>: {<span class="st">&quot;Matrix&quot;</span>, <span class="st">&quot;Inception&quot;</span>, <span class="st">&quot;Avatar&quot;</span>, <span class="st">&quot;Titanic&quot;</span>},
+    <span class="st">&quot;Carla&quot;</span>: {<span class="st">&quot;Interstellar&quot;</span>, <span class="st">&quot;Dune&quot;</span>, <span class="st">&quot;Avatar&quot;</span>, <span class="st">&quot;Arrival&quot;</span>},
+    <span class="st">&quot;David&quot;</span>: {<span class="st">&quot;Matrix&quot;</span>, <span class="st">&quot;Dune&quot;</span>, <span class="st">&quot;Arrival&quot;</span>, <span class="st">&quot;Titanic&quot;</span>},
+}</code></pre>
+<p>Scrivi codice che:</p>
+<ol>
+<li>Dato un utente, trova l'utente con cui ha più film in comune (usa l'intersezione dei set).</li>
+<li>Raccomanda all'utente i film visti dal suo "utente più simile" ma non ancora visti da lui (usa la differenza).</li>
+<li>Trova i film visti da tutti gli utenti (intersezione di tutti i set).</li>
+<li>Trova i film visti da almeno un utente (unione di tutti i set).</li>
+<li>Trova i film "di nicchia" visti da un solo utente.</li>
+</ol>
+<p><strong>Suggerimento per il punto 5:</strong> per ogni film nell'unione totale, conta in quanti set compare.</p>
+<hr>
+<h2>Sfida finale — Analisi completa di un dataset studenti</h2>
+<p>Dato il seguente dataset:</p>
+<pre><code>esami: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> [
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M001&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M001&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">True</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M001&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M002&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">24</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M002&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">27</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M003&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">True</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M003&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M003&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M004&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">26</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M004&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">True</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M005&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">22</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M005&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">20</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M005&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">24</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
+]</code></pre>
+<p>Scrivi un programma completo che:</p>
+<ol>
+<li><strong>Media per corso:</strong> calcola e stampa la media dei voti per ciascun corso.</li>
+<li><strong>Studente migliore per corso:</strong> per ogni corso, identifica lo studente con il voto più alto.</li>
+<li><strong>Classifica generale:</strong> ordina gli studenti per media complessiva decrescente e stampa la classifica.</li>
+<li><strong>Conteggio lodi:</strong> conta quante lodi ha ottenuto ciascuno studente.</li>
+<li><strong>Corsi per studente:</strong> usa un set per mostrare quali corsi ha sostenuto ogni studente e identifica chi non ha ancora sostenuto tutti e tre gli esami.</li>
+</ol>
+<p>Usa <code>Counter</code>, operazioni su dizionari e set, type hints per tutte le variabili. L'output deve essere chiaro e formattato.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Qual è la differenza fondamentale tra una lista e una tupla? In quale situazione preferiresti una tupla?</li>
+<li>Se scrivi <code>b = a</code> dove <code>a</code> è una lista, e poi modifichi <code>b[0]</code>, cosa succede ad <code>a</code>? Perché?</li>
+<li>Cosa restituisce <code>{"a": 1, "b": 2}.get("c", 0)</code>? E <code>{"a": 1, "b": 2}["c"]</code>?</li>
+<li>Date due set <code>A</code> e <code>B</code>, quale operazione produce gli elementi presenti in <code>A</code> ma non in <code>B</code>? E quelli presenti in uno solo dei due?</li>
+<li>Qual è la differenza tra <code>sorted(lista)</code> e <code>lista.sort()</code>? Quale delle due modifica la lista originale?</li>
+<li>Perché una lista non puo essere usata come chiave di un dizionario, ma una tupla si?</li>
+<li>Cosa fa <code>Counter("abracadabra").most_common(3)</code>?</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questo laboratorio avete lavorato con le quattro strutture dati fondamentali di Python: liste, tuple, dizionari e set. La scelta della struttura giusta dipende dal problema:</p>
+<ul>
+<li><strong>Lista</strong> quando l'ordine conta e i dati possono cambiare.</li>
+<li><strong>Tupla</strong> quando i dati sono fissi (coordinate, record immutabili, chiavi composite).</li>
+<li><strong>Dizionario</strong> quando serve accesso rapido per chiave (registri, lookup, conteggi manuali).</li>
+<li><strong>Set</strong> quando servono operazioni insiemistiche o eliminare duplicati.</li>
+</ul>
+<p>L'esperimento su alias e copia e uno dei concetti piu importanti del laboratorio. In statistica, quando passate un dataset a una funzione e quella funzione lo modifica, volete essere certi di sapere se state lavorando sulla copia o sull'originale. Questo tema tornerà nei prossimi laboratori.</p>
+<p><code>Counter</code> meriterà poca attenzione adesso, ma diventerà uno strumento prezioso quando lavorerete con dati testuali o categoriali.</p>
+<p>Nel prossimo laboratorio vedremo come organizzare queste operazioni in <strong>funzioni</strong> riutilizzabili e testabili.</p>
+<nav class="bottom-nav"><span><a href="L02_cicli_comprehension_stringhe.html">← L02</a></span><span><a href="../../index.html">Home</a></span><span><a href="L04_funzioni_modularita.html">L04 →</a></span></nav>
+</body>
+</html>

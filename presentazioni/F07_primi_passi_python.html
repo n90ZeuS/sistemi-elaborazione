@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primi passi in Python</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>Primi passi in Python</h1>
+                <div class="subtitle">Il primo programma, variabili, tipi di dato</div>
+                <div class="course-info">
+                    <p>Sistemi di Elaborazione &mdash; Lezione F07</p>
+                    <p>Corso di Laurea in Scienze Statistiche</p>
+                </div>
+                <aside class="notes">Oggi scriviamo il nostro primo codice Python. Dopo cinque lezioni di fondamenti e una di ponte, gli studenti hanno tutti gli strumenti concettuali per capire non solo come si programma, ma perché le cose funzionano in un certo modo.</aside>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment"><strong>Il primo programma</strong> &mdash; Hello World, indentazione, commenti</li>
+                    <li class="fragment"><strong>Variabili e assegnamento</strong> &mdash; Etichette, non scatole</li>
+                    <li class="fragment"><strong>Naming conventions</strong> &mdash; PEP 8 e nomi significativi</li>
+                    <li class="fragment"><strong>Tipi di dato fondamentali</strong> &mdash; int, float, str, bool, None</li>
+                    <li class="fragment"><strong>Type hints</strong> &mdash; Annotazioni di tipo come disciplina</li>
+                    <li class="fragment"><strong>Conversioni e introspezione</strong> &mdash; Casting, type(), tutto è un oggetto</li>
+                </ol>
+                <aside class="notes">Panoramica della lezione. Ogni sezione costruisce sulla precedente.</aside>
+            </section>
+
+            <!-- ========== SEZIONE: IL PRIMO PROGRAMMA ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>Il primo programma</h2>
+                    <p><em>Da Kernighan &amp; Ritchie (1978) a oggi</em></p>
+                </section>
+
+                <!-- Hello World -->
+                <section>
+                    <h2>Hello, World!</h2>
+                    <pre><code class="language-python">print("Hello, World!")</code></pre>
+                    <p>Una sola riga, ma c'è molto da osservare:</p>
+                    <ul>
+                        <li class="fragment"><code>print</code> è una <strong>funzione built-in</strong>. Le funzioni si chiamano con gli argomenti tra parentesi.</li>
+                        <li class="fragment"><code>"Hello, World!"</code> è una <strong>stringa</strong>: sequenza di caratteri tra virgolette (<code>"</code> o <code>'</code>, equivalenti in Python).</li>
+                        <li class="fragment"><strong>Niente punto e virgola</strong>: ogni istruzione occupa una riga. Meno rumore visivo.</li>
+                    </ul>
+                    <aside class="notes">Tradizione inaugurata da Kernighan e Ritchie nel libro "The C Programming Language" del 1978.</aside>
+                </section>
+
+                <!-- Indentazione -->
+                <section>
+                    <h2>L'indentazione come sintassi</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Altri linguaggi (C, Java...)</h3>
+                            <p>I blocchi sono delimitati da <code>{}</code></p>
+                            <p>L'indentazione è <em>opzionale e cosmetica</em></p>
+                        </div>
+                        <div class="col">
+                            <h3>Python</h3>
+                            <p>L'indentazione <strong>è la sintassi</strong></p>
+                            <p>Se è sbagliata, il programma <strong>non funziona</strong></p>
+                        </div>
+                    </div>
+                    <pre><code class="language-python">if temperatura > 30:
+    print("Fa caldo!")             # dentro l'if
+    print("Accendi il ventilatore")  # dentro l'if
+print("Fine del programma")       # fuori dall'if</code></pre>
+                    <div class="box box-blue">
+                        Convenzione: <strong>4 spazi</strong> per livello di indentazione (mai tabulazioni).
+                    </div>
+                    <aside class="notes">Scelta deliberata di Guido van Rossum: forza tutti a scrivere codice leggibile. Non esiste codice Python funzionante ma illeggibile per l'indentazione.</aside>
+                </section>
+
+                <!-- Commenti -->
+                <section>
+                    <h2>I commenti</h2>
+                    <p>Iniziano con <code>#</code> e vengono ignorati dall'interprete:</p>
+                    <pre><code class="language-python"># Questo è un commento su una riga intera
+temperatura: float = 23.5  # Commento a fine riga</code></pre>
+                    <div class="fragment">
+                        <div class="box box-yellow">
+                            I commenti servono per spiegare il <strong>perché</strong>, non il <strong>cosa</strong>.
+                        </div>
+                    </div>
+                    <div class="compare fragment">
+                        <div class="bad">
+                            <pre><code class="language-python">i = i + 1  # incrementa i di 1</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python">i = i + 1  # salta l'intestazione del CSV</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: VARIABILI E ASSEGNAMENTO ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>Variabili e assegnamento</h2>
+                    <p><em>Etichette, non scatole</em></p>
+                </section>
+
+                <!-- Modello mentale -->
+                <section>
+                    <h2>Il modello mentale giusto</h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <p>"Le variabili sono <strong>scatole</strong> che contengono valori"</p>
+                            <div class="diagram">
+                            x: [ 42 ]
+                            </div>
+                        </div>
+                        <div class="good">
+                            <p>"Le variabili sono <strong>etichette</strong> attaccate a oggetti"</p>
+                            <div class="diagram">
+                            x ---&gt; ( 42 )
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        In Python, l'operatore <code>=</code> non "mette un valore in una scatola" &mdash; <strong>attacca un'etichetta a un oggetto</strong>.
+                    </div>
+                </section>
+
+                <!-- Etichette in azione -->
+                <section>
+                    <h2>Etichette in azione</h2>
+                    <pre><code class="language-python">x: int = 42     # crea l'oggetto 42, attacca l'etichetta x
+y: int = x      # attacca l'etichetta y allo STESSO oggetto</code></pre>
+                    <div class="diagram fragment">
+                        x ---&gt; ( 42 ) &lt;--- y<br>
+                        Stesso oggetto in memoria!
+                    </div>
+                    <pre class="fragment"><code class="language-python">print(x is y)  # True: sono lo stesso oggetto!</code></pre>
+                    <div class="box box-yellow fragment">
+                        Questo modello diventerà cruciale con liste e mutabilità.
+                    </div>
+                    <aside class="notes">Non viene creata una copia: y diventa un'altra etichetta attaccata allo stesso oggetto. Sia x che y puntano al medesimo 42.</aside>
+                </section>
+
+                <!-- Assegnamento -->
+                <section>
+                    <h2>L'operatore di assegnamento</h2>
+                    <p><code>=</code> è l'assegnamento. <strong>Non è l'uguaglianza matematica</strong> (per quella c'è <code>==</code>).</p>
+                    <pre><code class="language-python">contatore: int = 0          # contatore punta a 0
+contatore = contatore + 1   # contatore ora punta a 1
+# In matematica "x = x + 1" è assurdo;
+# in programmazione è normalissimo.</code></pre>
+                    <h3 class="fragment">Operatori di assegnamento composto</h3>
+                    <pre class="fragment"><code class="language-python">contatore += 1   # equivale a: contatore = contatore + 1
+totale -= 10     # equivale a: totale = totale - 10
+prodotto *= 2    # equivale a: prodotto = prodotto * 2</code></pre>
+                </section>
+
+                <!-- Assegnamento multiplo -->
+                <section>
+                    <h2>Assegnamento multiplo e unpacking</h2>
+                    <pre><code class="language-python"># Unpacking: assegnamento parallelo
+a, b, c = 1, 2, 3    # a=1, b=2, c=3</code></pre>
+                    <div class="fragment">
+                        <h3>Scambio di variabili</h3>
+                        <div class="columns">
+                            <div class="col">
+                                <p><em>In altri linguaggi:</em></p>
+                                <pre><code class="language-python">temp = a
+a = b
+b = temp</code></pre>
+                            </div>
+                            <div class="col">
+                                <p><strong>In Python:</strong></p>
+                                <pre><code class="language-python">a, b = b, a  # fatto!</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">Python permette assegnamenti eleganti grazie all'unpacking delle tuple.</aside>
+                </section>
+
+                <!-- Naming conventions -->
+                <section>
+                    <h2>Naming conventions (PEP 8)</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Elemento</th>
+                                <th>Stile</th>
+                                <th>Esempio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Variabili e funzioni</td>
+                                <td><code>snake_case</code></td>
+                                <td><code>media_voti</code>, <code>numero_studenti</code></td>
+                            </tr>
+                            <tr>
+                                <td>Costanti</td>
+                                <td><code>UPPER_SNAKE_CASE</code></td>
+                                <td><code>SOGLIA_SUFFICIENZA</code>, <code>PI_GRECO</code></td>
+                            </tr>
+                            <tr>
+                                <td>Classi</td>
+                                <td><code>PascalCase</code></td>
+                                <td><code>StudenteUniversitario</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-red fragment">
+                        Evitate: <code>l</code> (elle), <code>O</code> (o maiuscola), <code>I</code> (i maiuscola) &mdash; si confondono con 1 e 0.
+                    </div>
+                </section>
+
+                <!-- Nomi significativi -->
+                <section>
+                    <h2>Nomi significativi</h2>
+                    <p>Il nome di una variabile è una forma di <strong>documentazione</strong>:</p>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python">x: float = sum(z) / len(z)</code></pre>
+                            <p><em>Cosa significano x e z?</em></p>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python">media_voti: float = (
+    sum(lista_voti) / len(lista_voti)
+)</code></pre>
+                            <p><em>Il codice si spiega da solo</em></p>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        Eccezioni accettabili: <code>i</code>, <code>j</code>, <code>k</code> per indici di ciclo; <code>n</code> per dimensioni &mdash; dove la convenzione matematica è chiara.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: TIPI DI DATO ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>Tipi di dato fondamentali</h2>
+                    <p><em>Python è tipizzato dinamicamente</em></p>
+                </section>
+
+                <!-- Tipizzazione dinamica -->
+                <section>
+                    <h2>Il tipo appartiene all'oggetto</h2>
+                    <p>In Python, il <strong>tipo appartiene all'oggetto</strong>, non alla variabile:</p>
+                    <pre><code class="language-python">x = 42        # x punta a un int
+x = "ciao"    # ora x punta a una str (perfettamente legale)</code></pre>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <div class="box box-green">
+                                <strong>Vantaggi</strong><br>
+                                Flessibilità, codice conciso, prototipazione rapida
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-red">
+                                <strong>Rischi</strong><br>
+                                Errori nascosti, difficoltà di manutenzione
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        Soluzione: i <strong>type hints</strong> uniscono flessibilità e chiarezza.
+                    </div>
+                </section>
+
+                <!-- Type hints -->
+                <section>
+                    <h2>Type hints: il nostro approccio</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Senza type hints</h3>
+                            <pre><code class="language-python">eta = 25
+nome = "Mario"
+media = 27.5</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3>Con type hints</h3>
+                            <pre><code class="language-python">eta: int = 25
+nome: str = "Mario"
+media: float = 27.5
+iscritto: bool = True</code></pre>
+                        </div>
+                    </div>
+                    <p class="fragment">I type hints <strong>non cambiano il comportamento</strong> del programma, ma:</p>
+                    <ul>
+                        <li class="fragment">Rendono il codice <strong>più leggibile</strong></li>
+                        <li class="fragment">Permettono la verifica con strumenti come <strong>mypy</strong></li>
+                        <li class="fragment">Forzano a <strong>pensare ai tipi</strong> &mdash; una disciplina preziosa</li>
+                    </ul>
+                </section>
+
+                <!-- int -->
+                <section>
+                    <h2><code>int</code> &mdash; Numeri interi</h2>
+                    <pre><code class="language-python">eta: int = 25
+popolazione: int = 59_000_000   # underscore come separatore migliaia
+temperatura: int = -5</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Precisione arbitraria</strong>: nessun overflow, nessun limite di dimensione!
+                    </div>
+                    <pre class="fragment"><code class="language-python">grande: int = 2 ** 100
+print(grande)  # 1267650600228229401496703205376</code></pre>
+                    <aside class="notes">Come visto nella lezione sulla rappresentazione dei dati, gli interi Python non hanno il problema dell'overflow tipico di C o Java.</aside>
+                </section>
+
+                <!-- float -->
+                <section>
+                    <h2><code>float</code> &mdash; Numeri in virgola mobile</h2>
+                    <pre><code class="language-python">altezza: float = 1.75
+pi: float = 3.14159265358979
+temperatura: float = -2.5
+notazione_scientifica: float = 6.022e23  # 6.022 x 10^23</code></pre>
+                    <div class="box box-yellow fragment">
+                        IEEE 754, double precision (64 bit, ~15-16 cifre significative).
+                    </div>
+                    <pre class="fragment"><code class="language-python">print(0.1 + 0.2)       # 0.30000000000000004
+print(0.1 + 0.2 == 0.3)  # False!</code></pre>
+                    <p class="fragment"><em>Ricordate la lezione sulla rappresentazione dei dati?</em></p>
+                </section>
+
+                <!-- str -->
+                <section>
+                    <h2><code>str</code> &mdash; Stringhe</h2>
+                    <pre><code class="language-python">nome: str = "Anna"
+cognome: str = 'Rossi'        # virgolette singole: equivalenti
+messaggio: str = "Ciao, mondo!"
+multilinea: str = """Questa stringa
+occupa più righe"""</code></pre>
+                    <ul>
+                        <li class="fragment">Sequenze <strong>immutabili</strong> di caratteri Unicode</li>
+                        <li class="fragment">Virgolette doppie <code>"</code> e singole <code>'</code> sono equivalenti</li>
+                        <li class="fragment">Triple virgolette <code>"""</code> per stringhe multilinea</li>
+                    </ul>
+                    <div class="box box-blue fragment">
+                        Le approfondiremo in una lezione dedicata.
+                    </div>
+                </section>
+
+                <!-- bool -->
+                <section>
+                    <h2><code>bool</code> &mdash; Booleani</h2>
+                    <pre><code class="language-python">iscritto: bool = True
+esame_superato: bool = False</code></pre>
+                    <p class="fragment"><code>True</code> e <code>False</code> (con la maiuscola!)</p>
+                    <div class="box box-yellow fragment">
+                        Fatto curioso: <code>bool</code> è un <strong>sottotipo di <code>int</code></strong>.
+                        <code>True</code> vale 1, <code>False</code> vale 0.
+                    </div>
+                    <pre class="fragment"><code class="language-python">print(True + True)   # 2
+print(True * 10)     # 10
+print(False + 5)     # 5</code></pre>
+                    <p class="fragment"><em>Perché? Retrocompatibilità e praticità: permette di contare elementi veri con</em> <code>sum()</code>.</p>
+                </section>
+
+                <!-- None -->
+                <section>
+                    <h2><code>None</code> &mdash; L'assenza di valore</h2>
+                    <pre><code class="language-python">risultato: None = None</code></pre>
+                    <p><code>None</code> rappresenta <strong>l'assenza di valore</strong>.</p>
+                    <div class="box box-red fragment">
+                        <code>None</code> NON è:
+                        <ul>
+                            <li>lo zero (<code>0</code>)</li>
+                            <li>la stringa vuota (<code>""</code>)</li>
+                            <li><code>False</code></li>
+                        </ul>
+                        È semplicemente "niente".
+                    </div>
+                    <p class="fragment">Le funzioni che non restituiscono esplicitamente un valore restituiscono <code>None</code>.</p>
+                </section>
+
+                <!-- Riepilogo tipi -->
+                <section>
+                    <h2>Riepilogo dei tipi fondamentali</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descrizione</th>
+                                <th>Esempio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>int</code></td>
+                                <td>Numeri interi (precisione arbitraria)</td>
+                                <td><code>42</code>, <code>-5</code>, <code>59_000_000</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>float</code></td>
+                                <td>Numeri in virgola mobile (64 bit)</td>
+                                <td><code>3.14</code>, <code>-2.5</code>, <code>6.022e23</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>str</code></td>
+                                <td>Stringhe (immutabili, Unicode)</td>
+                                <td><code>"ciao"</code>, <code>'mondo'</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>bool</code></td>
+                                <td>Booleani (sottotipo di int)</td>
+                                <td><code>True</code>, <code>False</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>NoneType</code></td>
+                                <td>Assenza di valore</td>
+                                <td><code>None</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: FUNZIONI DI INTROSPEZIONE E CONVERSIONE ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>Introspezione e conversioni</h2>
+                    <p><em>Conoscere e trasformare i tipi</em></p>
+                </section>
+
+                <!-- type() -->
+                <section>
+                    <h2>La funzione <code>type()</code></h2>
+                    <p>Per verificare il tipo di un oggetto a runtime:</p>
+                    <pre><code class="language-python">print(type(42))         # &lt;class 'int'&gt;
+print(type(3.14))       # &lt;class 'float'&gt;
+print(type("ciao"))     # &lt;class 'str'&gt;
+print(type(True))       # &lt;class 'bool'&gt;
+print(type(None))       # &lt;class 'NoneType'&gt;</code></pre>
+                    <aside class="notes">La funzione type() restituisce il tipo dell'oggetto a cui punta la variabile, non della variabile stessa (che non ha tipo).</aside>
+                </section>
+
+                <!-- Casting -->
+                <section>
+                    <h2>Conversioni di tipo (casting)</h2>
+                    <pre><code class="language-python"># Da stringa a numero
+eta: int = int("25")           # 25
+altezza: float = float("1.75") # 1.75
+
+# Da numero a stringa
+testo: str = str(42)           # "42"
+
+# Da int a float e viceversa
+x: float = float(42)           # 42.0
+y: int = int(3.99)             # 3  (tronca, NON arrotonda!)</code></pre>
+                    <div class="box box-red fragment">
+                        Attenzione: <code>int(3.99)</code> restituisce <strong>3</strong>, non 4. Tronca verso lo zero!
+                    </div>
+                </section>
+
+                <!-- Conversione a bool -->
+                <section>
+                    <h2>Conversione a <code>bool</code></h2>
+                    <p>Ogni tipo ha un valore "falso" e uno "vero":</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Espressione</th>
+                                <th>Risultato</th>
+                                <th>Regola</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>bool(0)</code></td>
+                                <td><code>False</code></td>
+                                <td>Zero è falso</td>
+                            </tr>
+                            <tr>
+                                <td><code>bool(42)</code></td>
+                                <td><code>True</code></td>
+                                <td>Qualsiasi numero diverso da 0</td>
+                            </tr>
+                            <tr>
+                                <td><code>bool("")</code></td>
+                                <td><code>False</code></td>
+                                <td>Stringa vuota è falsa</td>
+                            </tr>
+                            <tr>
+                                <td><code>bool("ciao")</code></td>
+                                <td><code>True</code></td>
+                                <td>Qualsiasi stringa non vuota</td>
+                            </tr>
+                            <tr>
+                                <td><code>bool(None)</code></td>
+                                <td><code>False</code></td>
+                                <td>None è sempre falso</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        Regola generale: <strong>zero, vuoto e None sono falsi</strong>. Tutto il resto è vero.
+                    </div>
+                </section>
+
+                <!-- Tutto è un oggetto -->
+                <section>
+                    <h2>Tutto è un oggetto</h2>
+                    <p>In Python, <strong>tutto è un oggetto</strong> &mdash; anche i numeri:</p>
+                    <pre><code class="language-python">print((42).bit_length())    # 6 (servono 6 bit per 42)
+print((-7).bit_length())    # 3
+print("ciao".upper())       # "CIAO"</code></pre>
+                    <div class="fragment">
+                        <p>Ogni valore ha <strong>attributi</strong> e <strong>metodi</strong> &mdash; funzioni associate all'oggetto.</p>
+                        <div class="box box-blue">
+                            La notazione col punto <code>oggetto.metodo()</code> è fondamentale in Python.
+                        </div>
+                    </div>
+                    <aside class="notes">Questo è diverso da linguaggi come C dove i tipi primitivi non sono oggetti. In Python non esistono "tipi primitivi" nel senso tradizionale.</aside>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE: RICAPITOLAZIONE ========== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>Ricapitolazione</h2>
+                    <p><em>Concetti chiave e domande</em></p>
+                </section>
+
+                <!-- Concetti chiave -->
+                <section>
+                    <h2>Concetti chiave di oggi</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>1. Variabili = etichette</h3>
+                                <p><code>b = a</code> non copia, crea un <strong>alias</strong>. Essenziale per liste e dizionari.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>2. Type hints = disciplina</h3>
+                                <p>Annotare i tipi non è burocrazia &mdash; è pensare con <strong>chiarezza</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment" style="margin-top: 0.8em;">
+                        <strong>Prossima lezione:</strong> operatori, input/output e strutture condizionali &mdash; i programmi inizieranno a prendere decisioni.
+                    </div>
+                </section>
+
+                <!-- Domande di verifica -->
+                <section>
+                    <h2>Domande di verifica</h2>
+                    <ol>
+                        <li class="fragment">Perché in Python l'indentazione non è opzionale?</li>
+                        <li class="fragment">Qual è la differenza tra "variabile come scatola" e "variabile come etichetta"?</li>
+                        <li class="fragment">I type hints cambiano il comportamento del programma?</li>
+                        <li class="fragment">Perché <code>bool</code> è un sottotipo di <code>int</code>?</li>
+                        <li class="fragment">Qual è la differenza tra <code>=</code> e <code>==</code>?</li>
+                        <li class="fragment">Cosa restituisce <code>int(3.99)</code>? Perché non 4?</li>
+                    </ol>
+                </section>
+
+                <!-- Esercizi -->
+                <section>
+                    <h2>Esercizi proposti</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3><span class="badge badge-green">Base</span></h3>
+                            <ul>
+                                <li>Dichiarare variabili con type hints e stamparne il tipo</li>
+                                <li>Calcolare l'area di un rettangolo</li>
+                                <li>Prevedere l'output di assegnamenti tra variabili</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3><span class="badge badge-yellow">Intermedio</span></h3>
+                            <ul>
+                                <li>Convertire Celsius in Fahrenheit</li>
+                                <li>Convertitore di valuta</li>
+                                <li>Esplorare <code>bool</code> come sottotipo di <code>int</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="fragment" style="margin-top: 0.6em;">
+                        <h3><span class="badge badge-red">Avanzato</span></h3>
+                        <ul>
+                            <li>Distanza euclidea tra due punti</li>
+                            <li>Investigare <code>is</code> vs <code>==</code> e l'integer caching</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Esercizio guidato: Celsius to Fahrenheit -->
+                <section>
+                    <h2>Esempio: Celsius &rarr; Fahrenheit</h2>
+                    <pre><code class="language-python">celsius: float = 25.0
+fahrenheit: float = celsius * 9 / 5 + 32
+print(f"{celsius}°C = {fahrenheit:.1f}°F")</code></pre>
+                    <pre class="fragment"><code class="language-python"># Output: 25.0°C = 77.0°F</code></pre>
+                    <div class="box box-blue fragment">
+                        <code>f"..."</code> è una <strong>f-string</strong>: permette di inserire espressioni Python tra <code>{}</code>.<br>
+                        <code>:.1f</code> formatta il float con 1 cifra decimale.
+                    </div>
+                </section>
+
+                <!-- Sfida: is vs == -->
+                <section>
+                    <h2>Sfida: <code>is</code> vs <code>==</code></h2>
+                    <pre><code class="language-python">a: int = 256
+b: int = 256
+print(a == b)   # True  (stesso valore)
+print(a is b)   # True  (stesso oggetto!)
+
+c: int = 257
+d: int = 257
+print(c == d)   # True  (stesso valore)
+print(c is d)   # False (oggetti diversi!)</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Perché?</strong> Python mantiene in cache gli interi da <strong>-5 a 256</strong> (integer caching).
+                        Oltre quel range, crea nuovi oggetti.
+                    </div>
+                    <p class="fragment"><em>Morale: usate sempre</em> <code>==</code> <em>per confrontare valori!</em></p>
+                </section>
+
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="F06_dal_problema_al_programma.html" style="color: var(--accent);">&larr; F06: Dal problema al programma</a></div><div><a href="F08_operatori_io_condizionali.html" style="color: var(--accent);">F08: Operatori, I/O e condizionali &rarr;</a></div><div><a href="../dispense/frontali/F07_primi_passi_python.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/F07_primi_passi/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; F07</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

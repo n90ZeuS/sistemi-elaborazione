@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L08 — Visualizzazione e progetto — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="L07_numpy_pandas.html">← L07</a> &bull; <a href="../../presentazioni/L08_visualizzazione_progetto.html">Presentazione</a></nav>
+<h1>L08 — Visualizzazione e progetto</h1>
+
+<h1>Laboratorio 8 — Visualizzazione e progetto riepilogativo</h1>
+<p><strong>Prerequisiti:</strong> Frontale F17 (NumPy, Pandas, analisi dati), Laboratorio 7</p>
+<hr>
+<h2>Obiettivo del laboratorio</h2>
+<p>Questo laboratorio ha due parti. Nella prima imparerete a creare grafici con <strong>Matplotlib</strong> e <strong>Seaborn</strong>, le librerie di visualizzazione piu usate in Python. Nella seconda, un <strong>mini-progetto riepilogativo</strong> vi chiedera di combinare tutto cio che avete appreso nel corso: funzioni, type hints, strutture dati, file, Pandas e visualizzazione.</p>
+<hr>
+<h2>Parte 1 — Esercizi guidati: visualizzazione</h2>
+<h3>1.1 Matplotlib: istogramma, scatter plot, grafico a barre</h3>
+<p>Matplotlib e la libreria di visualizzazione di riferimento. Il modulo <code>pyplot</code> offre un'interfaccia simile a MATLAB.</p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Generare dati</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+altezze: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">170</span>, scale<span class="op">=</span><span class="mi">10</span>, size<span class="op">=</span><span class="mi">500</span>)
+
+<span class="cm"># --- Istogramma ---</span>
+fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+ax.hist(altezze, bins<span class="op">=</span><span class="mi">25</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>, alpha<span class="op">=</span><span class="mi">0.8</span>)
+ax.set_title(<span class="st">&quot;Distribuzione delle altezze&quot;</span>)
+ax.set_xlabel(<span class="st">&quot;Altezza (cm)&quot;</span>)
+ax.set_ylabel(<span class="st">&quot;Frequenza&quot;</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;istogramma_altezze.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># --- Scatter plot ---</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+ore_studio: np.ndarray <span class="op">=</span> rng.uniform(<span class="mi">2</span>, <span class="mi">40</span>, size<span class="op">=</span><span class="mi">100</span>)
+voti: np.ndarray <span class="op">=</span> <span class="mi">18</span> <span class="op">+</span> <span class="mi">0.3</span> <span class="op">*</span> ore_studio <span class="op">+</span> rng.normal(<span class="mi">0</span>, <span class="mi">2</span>, size<span class="op">=</span><span class="mi">100</span>)
+voti <span class="op">=</span> np.clip(voti, <span class="mi">18</span>, <span class="mi">30</span>)
+
+fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+ax.scatter(ore_studio, voti, alpha<span class="op">=</span><span class="mi">0.6</span>, color<span class="op">=</span><span class="st">&quot;coral&quot;</span>, edgecolors<span class="op">=</span><span class="st">&quot;darkred&quot;</span>, s<span class="op">=</span><span class="mi">40</span>)
+ax.set_title(<span class="st">&quot;Ore di studio vs voto&quot;</span>)
+ax.set_xlabel(<span class="st">&quot;Ore di studio settimanali&quot;</span>)
+ax.set_ylabel(<span class="st">&quot;Voto medio&quot;</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;scatter_studio_voti.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># --- Grafico a barre ---</span>
+corsi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Economia&quot;</span>, <span class="st">&quot;Sociologia&quot;</span>, <span class="st">&quot;Informatica&quot;</span>]
+media_voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">26.3</span>, <span class="mi">24.8</span>, <span class="mi">25.1</span>, <span class="mi">27.2</span>]
+
+fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+colori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;#4C72B0&quot;</span>, <span class="st">&quot;#55A868&quot;</span>, <span class="st">&quot;#C44E52&quot;</span>, <span class="st">&quot;#8172B2&quot;</span>]
+barre <span class="op">=</span> ax.bar(corsi, media_voti, color<span class="op">=</span>colori, edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>, width<span class="op">=</span><span class="mi">0.6</span>)
+
+<span class="cm"># Aggiungere etichette sopra le barre</span>
+<span class="kw">for</span> barra, valore <span class="kw">in</span> <span class="nb">zip</span>(barre, media_voti):
+    ax.text(
+        barra.get_x() <span class="op">+</span> barra.get_width() <span class="op">/</span> <span class="mi">2</span>,
+        barra.get_height() <span class="op">+</span> <span class="mi">0.1</span>,
+        <span class="st">f&quot;{valore:.1f}&quot;</span>,
+        ha<span class="op">=</span><span class="st">&quot;center&quot;</span>, va<span class="op">=</span><span class="st">&quot;bottom&quot;</span>, fontsize<span class="op">=</span><span class="mi">11</span>
+    )
+
+ax.set_title(<span class="st">&quot;Voto medio per corso di laurea&quot;</span>)
+ax.set_ylabel(<span class="st">&quot;Voto medio&quot;</span>)
+ax.set_ylim(<span class="mi">22</span>, <span class="mi">29</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;barre_corsi.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<h3>1.2 Personalizzazione: titoli, etichette, legende, colori, griglia</h3>
+<p>Un grafico senza etichette e un grafico inutile. Vediamo come personalizzare ogni aspetto.</p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+x: np.ndarray <span class="op">=</span> np.linspace(<span class="mi">0</span>, <span class="mi">10</span>, <span class="mi">100</span>)
+y1: np.ndarray <span class="op">=</span> np.sin(x)
+y2: np.ndarray <span class="op">=</span> np.cos(x)
+y3: np.ndarray <span class="op">=</span> np.sin(x) <span class="op">*</span> np.exp(<span class="op">-</span>x <span class="op">/</span> <span class="mi">5</span>)
+
+fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
+
+<span class="cm"># Tre linee con stili diversi</span>
+ax.plot(x, y1, color<span class="op">=</span><span class="st">&quot;#E74C3C&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>, linestyle<span class="op">=</span><span class="st">&quot;-&quot;</span>,
+        label<span class="op">=</span><span class="st">&quot;sin(x)&quot;</span>)
+ax.plot(x, y2, color<span class="op">=</span><span class="st">&quot;#3498DB&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>,
+        label<span class="op">=</span><span class="st">&quot;cos(x)&quot;</span>)
+ax.plot(x, y3, color<span class="op">=</span><span class="st">&quot;#2ECC71&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>, linestyle<span class="op">=</span><span class="st">&quot;-.&quot;</span>,
+        label<span class="op">=</span><span class="st">&quot;sin(x) · e^(-x/5)&quot;</span>)
+
+<span class="cm"># Personalizzazione</span>
+ax.set_title(<span class="st">&quot;Funzioni trigonometriche&quot;</span>, fontsize<span class="op">=</span><span class="mi">16</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
+ax.set_xlabel(<span class="st">&quot;x&quot;</span>, fontsize<span class="op">=</span><span class="mi">13</span>)
+ax.set_ylabel(<span class="st">&quot;f(x)&quot;</span>, fontsize<span class="op">=</span><span class="mi">13</span>)
+ax.legend(fontsize<span class="op">=</span><span class="mi">11</span>, loc<span class="op">=</span><span class="st">&quot;upper right&quot;</span>, framealpha<span class="op">=</span><span class="mi">0.9</span>)
+ax.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>)
+ax.set_xlim(<span class="mi">0</span>, <span class="mi">10</span>)
+ax.set_ylim(<span class="op">-</span><span class="mi">1.5</span>, <span class="mi">1.5</span>)
+ax.axhline(y<span class="op">=</span><span class="mi">0</span>, color<span class="op">=</span><span class="st">&quot;black&quot;</span>, linewidth<span class="op">=</span><span class="mi">0.5</span>)
+ax.tick_params(labelsize<span class="op">=</span><span class="mi">11</span>)
+
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;funzioni_personalizzate.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<h3>1.3 Seaborn: boxplot per confronto gruppi e heatmap</h3>
+<p>Seaborn e costruita sopra Matplotlib e semplifica la creazione di grafici statistici. Lavora direttamente con i DataFrame Pandas.</p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Creare un dataset di esempio</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">300</span>
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;corso&quot;</span>: rng.choice(
+        [<span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Economia&quot;</span>, <span class="st">&quot;Sociologia&quot;</span>, <span class="st">&quot;Informatica&quot;</span>],
+        size<span class="op">=</span>n
+    ),
+    <span class="st">&quot;voto&quot;</span>: np.<span class="nb">round</span>(rng.normal(<span class="mi">25</span>, <span class="mi">3</span>, size<span class="op">=</span>n).clip(<span class="mi">18</span>, <span class="mi">30</span>), <span class="mi">1</span>),
+    <span class="st">&quot;ore_studio&quot;</span>: np.<span class="nb">round</span>(rng.exponential(<span class="mi">15</span>, size<span class="op">=</span>n).clip(<span class="mi">2</span>, <span class="mi">45</span>), <span class="mi">1</span>),
+    <span class="st">&quot;eta&quot;</span>: rng.integers(<span class="mi">19</span>, <span class="mi">35</span>, size<span class="op">=</span>n),
+    <span class="st">&quot;stipendio_atteso&quot;</span>: np.<span class="nb">round</span>(
+        rng.normal(<span class="mi">28000</span>, <span class="mi">5000</span>, size<span class="op">=</span>n).clip(<span class="mi">15000</span>, <span class="mi">50000</span>), <span class="mi">0</span>
+    ),
+})
+
+<span class="cm"># --- Boxplot: confronto voti per corso ---</span>
+fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">9</span>, <span class="mi">5</span>))
+sns.boxplot(
+    data<span class="op">=</span>df,
+    x<span class="op">=</span><span class="st">&quot;corso&quot;</span>,
+    y<span class="op">=</span><span class="st">&quot;voto&quot;</span>,
+    palette<span class="op">=</span><span class="st">&quot;Set2&quot;</span>,
+    ax<span class="op">=</span>ax
+)
+ax.set_title(<span class="st">&quot;Distribuzione dei voti per corso&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>)
+ax.set_xlabel(<span class="st">&quot;Corso di laurea&quot;</span>)
+ax.set_ylabel(<span class="st">&quot;Voto medio&quot;</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;boxplot_voti_corso.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Riutilizziamo il DataFrame df creato sopra (o ricrearlo)</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">300</span>
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;voto&quot;</span>: np.<span class="nb">round</span>(rng.normal(<span class="mi">25</span>, <span class="mi">3</span>, size<span class="op">=</span>n).clip(<span class="mi">18</span>, <span class="mi">30</span>), <span class="mi">1</span>),
+    <span class="st">&quot;ore_studio&quot;</span>: np.<span class="nb">round</span>(rng.exponential(<span class="mi">15</span>, size<span class="op">=</span>n).clip(<span class="mi">2</span>, <span class="mi">45</span>), <span class="mi">1</span>),
+    <span class="st">&quot;eta&quot;</span>: rng.integers(<span class="mi">19</span>, <span class="mi">35</span>, size<span class="op">=</span>n),
+    <span class="st">&quot;stipendio_atteso&quot;</span>: np.<span class="nb">round</span>(
+        rng.normal(<span class="mi">28000</span>, <span class="mi">5000</span>, size<span class="op">=</span>n).clip(<span class="mi">15000</span>, <span class="mi">50000</span>), <span class="mi">0</span>
+    ),
+})
+
+<span class="cm"># --- Heatmap della matrice di correlazione ---</span>
+colonne_numeriche: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;voto&quot;</span>, <span class="st">&quot;ore_studio&quot;</span>, <span class="st">&quot;eta&quot;</span>, <span class="st">&quot;stipendio_atteso&quot;</span>]
+matrice_corr: pd.DataFrame <span class="op">=</span> df[colonne_numeriche].corr()
+
+fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">6</span>))
+sns.heatmap(
+    matrice_corr,
+    annot<span class="op">=</span><span class="kw">True</span>,
+    fmt<span class="op">=</span><span class="st">&quot;.2f&quot;</span>,
+    cmap<span class="op">=</span><span class="st">&quot;coolwarm&quot;</span>,
+    center<span class="op">=</span><span class="mi">0</span>,
+    square<span class="op">=</span><span class="kw">True</span>,
+    linewidths<span class="op">=</span><span class="mi">1</span>,
+    ax<span class="op">=</span>ax
+)
+ax.set_title(<span class="st">&quot;Matrice di correlazione&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;heatmap_correlazione.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<h3>1.4 Subplots: quattro grafici in una figura (dashboard)</h3>
+<p>Combinare piu grafici in una sola figura e essenziale per creare dashboard sintetiche.</p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Generare il dataset</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">400</span>
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;corso&quot;</span>: rng.choice(
+        [<span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Economia&quot;</span>, <span class="st">&quot;Sociologia&quot;</span>, <span class="st">&quot;Informatica&quot;</span>],
+        size<span class="op">=</span>n
+    ),
+    <span class="st">&quot;voto&quot;</span>: np.<span class="nb">round</span>(rng.normal(<span class="mi">25</span>, <span class="mi">3</span>, size<span class="op">=</span>n).clip(<span class="mi">18</span>, <span class="mi">30</span>), <span class="mi">1</span>),
+    <span class="st">&quot;ore_studio&quot;</span>: np.<span class="nb">round</span>(rng.exponential(<span class="mi">15</span>, size<span class="op">=</span>n).clip(<span class="mi">2</span>, <span class="mi">45</span>), <span class="mi">1</span>),
+    <span class="st">&quot;eta&quot;</span>: rng.integers(<span class="mi">19</span>, <span class="mi">35</span>, size<span class="op">=</span>n),
+    <span class="st">&quot;stipendio_atteso&quot;</span>: np.<span class="nb">round</span>(
+        rng.normal(<span class="mi">28000</span>, <span class="mi">5000</span>, size<span class="op">=</span>n).clip(<span class="mi">15000</span>, <span class="mi">50000</span>), <span class="mi">0</span>
+    ),
+})
+
+<span class="cm"># Creare una figura con 4 sottografici (2x2)</span>
+fig, axes <span class="op">=</span> plt.subplots(<span class="mi">2</span>, <span class="mi">2</span>, figsize<span class="op">=</span>(<span class="mi">14</span>, <span class="mi">10</span>))
+fig.suptitle(<span class="st">&quot;Dashboard: analisi studenti universitari&quot;</span>,
+             fontsize<span class="op">=</span><span class="mi">16</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>, y<span class="op">=</span><span class="mi">1.02</span>)
+
+<span class="cm"># Pannello 1: istogramma dei voti</span>
+axes[<span class="mi">0</span>, <span class="mi">0</span>].hist(df[<span class="st">&quot;voto&quot;</span>], bins<span class="op">=</span><span class="mi">20</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>,
+                edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>, alpha<span class="op">=</span><span class="mi">0.8</span>)
+axes[<span class="mi">0</span>, <span class="mi">0</span>].set_title(<span class="st">&quot;Distribuzione dei voti&quot;</span>)
+axes[<span class="mi">0</span>, <span class="mi">0</span>].set_xlabel(<span class="st">&quot;Voto medio&quot;</span>)
+axes[<span class="mi">0</span>, <span class="mi">0</span>].set_ylabel(<span class="st">&quot;Frequenza&quot;</span>)
+axes[<span class="mi">0</span>, <span class="mi">0</span>].axvline(df[<span class="st">&quot;voto&quot;</span>].mean(), color<span class="op">=</span><span class="st">&quot;red&quot;</span>,
+                   linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, label<span class="op">=</span><span class="st">f&quot;Media: {df[&#x27;voto&#x27;].mean():.1f}&quot;</span>)
+axes[<span class="mi">0</span>, <span class="mi">0</span>].legend()
+
+<span class="cm"># Pannello 2: boxplot per corso</span>
+sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">&quot;corso&quot;</span>, y<span class="op">=</span><span class="st">&quot;voto&quot;</span>, palette<span class="op">=</span><span class="st">&quot;Set2&quot;</span>,
+            ax<span class="op">=</span>axes[<span class="mi">0</span>, <span class="mi">1</span>])
+axes[<span class="mi">0</span>, <span class="mi">1</span>].set_title(<span class="st">&quot;Voti per corso&quot;</span>)
+axes[<span class="mi">0</span>, <span class="mi">1</span>].set_xlabel(<span class="st">&quot;&quot;</span>)
+axes[<span class="mi">0</span>, <span class="mi">1</span>].tick_params(axis<span class="op">=</span><span class="st">&quot;x&quot;</span>, rotation<span class="op">=</span><span class="mi">30</span>)
+
+<span class="cm"># Pannello 3: scatter ore studio vs voto</span>
+axes[<span class="mi">1</span>, <span class="mi">0</span>].scatter(df[<span class="st">&quot;ore_studio&quot;</span>], df[<span class="st">&quot;voto&quot;</span>],
+                   alpha<span class="op">=</span><span class="mi">0.4</span>, color<span class="op">=</span><span class="st">&quot;coral&quot;</span>, s<span class="op">=</span><span class="mi">20</span>)
+axes[<span class="mi">1</span>, <span class="mi">0</span>].set_title(<span class="st">&quot;Ore di studio vs voto&quot;</span>)
+axes[<span class="mi">1</span>, <span class="mi">0</span>].set_xlabel(<span class="st">&quot;Ore di studio settimanali&quot;</span>)
+axes[<span class="mi">1</span>, <span class="mi">0</span>].set_ylabel(<span class="st">&quot;Voto medio&quot;</span>)
+
+<span class="cm"># Pannello 4: grafico a barre del conteggio per corso</span>
+conteggi: pd.Series <span class="op">=</span> df[<span class="st">&quot;corso&quot;</span>].value_counts()
+axes[<span class="mi">1</span>, <span class="mi">1</span>].bar(conteggi.index, conteggi.values,
+               color<span class="op">=</span>[<span class="st">&quot;#4C72B0&quot;</span>, <span class="st">&quot;#55A868&quot;</span>, <span class="st">&quot;#C44E52&quot;</span>, <span class="st">&quot;#8172B2&quot;</span>],
+               edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>)
+axes[<span class="mi">1</span>, <span class="mi">1</span>].set_title(<span class="st">&quot;Numero studenti per corso&quot;</span>)
+axes[<span class="mi">1</span>, <span class="mi">1</span>].set_ylabel(<span class="st">&quot;Conteggio&quot;</span>)
+axes[<span class="mi">1</span>, <span class="mi">1</span>].tick_params(axis<span class="op">=</span><span class="st">&quot;x&quot;</span>, rotation<span class="op">=</span><span class="mi">30</span>)
+
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;dashboard_studenti.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)
+plt.show()</code></pre>
+<hr>
+<h2>Parte 2 — Mini-progetto riepilogativo</h2>
+<p>Questo progetto vi chiede di svolgere un'analisi end-to-end di un dataset, integrando tutte le competenze acquisite nel corso. Il codice deve essere organizzato in <strong>funzioni</strong> con <strong>type hints</strong> e <strong>docstring</strong>.</p>
+<h3>Istruzioni</h3>
+<p>Costruite un programma completo che esegue i cinque passi descritti di seguito. Ogni passo deve essere implementato in una o piu funzioni dedicate. Il programma principale (blocco <code>if <em>_name</em><em> == "</em><em>main</em>_"</code>) deve richiamare le funzioni in sequenza.</p>
+<h4>Passo 1 — Generazione e caricamento del dataset</h4>
+<p>Create (o caricate) un dataset CSV che simuli un'indagine su 500 dipendenti di diverse aziende. Il dataset deve contenere almeno le seguenti colonne:</p>
+<table>
+<thead><tr>
+<th>Colonna</th>
+<th>Tipo</th>
+<th>Descrizione</th>
+</tr></thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Identificativo univoco</td>
+</tr>
+<tr>
+<td><code>settore</code></td>
+<td>str</td>
+<td>Tecnologia, Sanita, Istruzione, Finanza, Commercio</td>
+</tr>
+<tr>
+<td><code>ruolo</code></td>
+<td>str</td>
+<td>Junior, Mid, Senior, Manager</td>
+</tr>
+<tr>
+<td><code>anni_esperienza</code></td>
+<td>int</td>
+<td>Da 0 a 35</td>
+</tr>
+<tr>
+<td><code>stipendio</code></td>
+<td>float</td>
+<td>In euro, correlato a settore e esperienza</td>
+</tr>
+<tr>
+<td><code>soddisfazione</code></td>
+<td>int</td>
+<td>Scala 1-10</td>
+</tr>
+<tr>
+<td><code>ore_settimanali</code></td>
+<td>float</td>
+<td>Ore lavorate a settimana</td>
+</tr>
+<tr>
+<td><code>regione</code></td>
+<td>str</td>
+<td>Almeno 5 regioni italiane</td>
+</tr>
+</tbody></table>
+<p>Scrivete una funzione che genera il dataset e lo salva come CSV:</p>
+<pre><code><span class="kw">def</span> <span class="fn">genera_dataset</span>(<span class="fn">n</span>: <span class="nb">int</span>, percorso: <span class="nb">str</span>, seed: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Genera un dataset simulato di dipendenti e lo salva come CSV.
+
+    Args:
+        n: Numero di righe da generare.
+        percorso: Percorso del file CSV di output.
+        seed: Seed per la riproducibilita.
+
+    Returns:
+        Il DataFrame generato.
+    &quot;&quot;&quot;</span>
+    ...</code></pre>
+<p>Scrivete una funzione separata per il caricamento:</p>
+<pre><code><span class="kw">def</span> <span class="fn">carica_dataset</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Carica il dataset da un file CSV.
+
+    Args:
+        percorso: Percorso del file CSV.
+
+    Returns:
+        Il DataFrame caricato.
+    &quot;&quot;&quot;</span>
+    ...</code></pre>
+<h4>Passo 2 — Esplorazione</h4>
+<p>Scrivete una funzione che stampa un riepilogo completo del dataset:</p>
+<pre><code><span class="kw">def</span> <span class="fn">esplora_dataset</span>(<span class="fn">df</span>: pd.DataFrame) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa un riepilogo esplorativo del dataset.
+
+    Mostra: dimensioni, tipi delle colonne, prime righe,
+    statistiche descrittive, conteggio valori per ogni
+    colonna categoriale, conteggio valori mancanti.
+
+    Args:
+        df: Il DataFrame da esplorare.
+    &quot;&quot;&quot;</span>
+    ...</code></pre>
+<h4>Passo 3 — Pulizia</h4>
+<p>Inserite intenzionalmente dei "difetti" nel dataset (5-10% di valori mancanti nello stipendio, qualche valore anomalo nelle ore settimanali, stringhe con capitalizzazione inconsistente nei settori). Poi scrivete una funzione che pulisce il dataset:</p>
+<pre><code><span class="kw">def</span> <span class="fn">pulisci_dataset</span>(<span class="fn">df</span>: pd.DataFrame) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Pulisce il dataset: gestisce mancanti, anomali, inconsistenze.
+
+    Strategia:
+    - Stipendio mancante: sostituito con la mediana del settore.
+    - Ore settimanali &gt; 80 o &lt; 5: sostituite con la mediana.
+    - Stringhe: normalizzate con strip() e capitalize().
+
+    Args:
+        df: Il DataFrame da pulire.
+
+    Returns:
+        Il DataFrame pulito.
+    &quot;&quot;&quot;</span>
+    ...</code></pre>
+<h4>Passo 4 — Analisi per gruppi</h4>
+<p>Scrivete una funzione che produce le statistiche richieste:</p>
+<pre><code><span class="kw">def</span> <span class="fn">analisi_per_gruppi</span>(<span class="fn">df</span>: pd.DataFrame) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, pd.DataFrame]:
+    <span class="st">&quot;&quot;&quot;Calcola statistiche aggregate per diversi raggruppamenti.
+
+    Analisi da produrre:
+    - Stipendio medio e mediano per settore.
+    - Soddisfazione media per ruolo.
+    - Stipendio medio per settore e ruolo (pivot table).
+    - Correlazione tra anni_esperienza, stipendio e soddisfazione.
+
+    Args:
+        df: Il DataFrame pulito.
+
+    Returns:
+        Dizionario con nome analisi -&gt; DataFrame risultato.
+    &quot;&quot;&quot;</span>
+    ...</code></pre>
+<h4>Passo 5 — Visualizzazioni</h4>
+<p>Scrivete una funzione che crea una dashboard con 4 grafici in una singola figura:</p>
+<pre><code><span class="kw">def</span> <span class="fn">crea_dashboard</span>(<span class="fn">df</span>: pd.DataFrame, percorso_output: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Crea una dashboard con 4 grafici e la salva come immagine.
+
+    Grafici:
+    1. Istogramma della distribuzione degli stipendi.
+    2. Boxplot degli stipendi per settore.
+    3. Scatter plot anni_esperienza vs stipendio, colorato per settore.
+    4. Heatmap della correlazione tra variabili numeriche.
+
+    Args:
+        df: Il DataFrame pulito.
+        percorso_output: Percorso del file immagine di output.
+    &quot;&quot;&quot;</span>
+    ...</code></pre>
+<h4>Struttura del programma principale</h4>
+<p>Il programma completo deve avere questa struttura:</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+
+
+<span class="cm"># Le funzioni definite sopra: genera_dataset, carica_dataset,</span>
+<span class="cm"># esplora_dataset, pulisci_dataset, analisi_per_gruppi, crea_dashboard</span>
+
+
+<span class="kw">def</span> <span class="fn">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Funzione principale: esegue l&#x27;analisi completa.&quot;&quot;&quot;</span>
+    <span class="cm"># 1. Generazione</span>
+    percorso_csv: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;dipendenti.csv&quot;</span>
+    df: pd.DataFrame <span class="op">=</span> genera_dataset(<span class="mi">500</span>, percorso_csv)
+
+    <span class="cm"># 2. Caricamento (per dimostrare il ciclo salva/carica)</span>
+    df <span class="op">=</span> carica_dataset(percorso_csv)
+
+    <span class="cm"># 3. Esplorazione</span>
+    esplora_dataset(df)
+
+    <span class="cm"># 4. Pulizia</span>
+    df_pulito: pd.DataFrame <span class="op">=</span> pulisci_dataset(df)
+
+    <span class="cm"># 5. Analisi</span>
+    risultati: <span class="nb">dict</span>[<span class="nb">str</span>, pd.DataFrame] <span class="op">=</span> analisi_per_gruppi(df_pulito)
+    <span class="kw">for</span> nome, tabella <span class="kw">in</span> risultati.items():
+        <span class="nb">print</span>(<span class="st">f&quot;\n{&#x27;=&#x27; * 50}&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  {nome}&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;{&#x27;=&#x27; * 50}&quot;</span>)
+        <span class="nb">print</span>(tabella)
+
+    <span class="cm"># 6. Visualizzazione</span>
+    crea_dashboard(df_pulito, <span class="st">&quot;dashboard_dipendenti.png&quot;</span>)
+
+    <span class="cm"># 7. Export risultati</span>
+    df_pulito.to_csv(<span class="st">&quot;dipendenti_pulito.csv&quot;</span>, index<span class="op">=</span><span class="kw">False</span>)
+    <span class="nb">print</span>(<span class="st">&quot;\nDataset pulito salvato come &#x27;dipendenti_pulito.csv&#x27;&quot;</span>)
+
+
+<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
+    main()</code></pre>
+<h4>Criteri di qualita</h4>
+<p>Il progetto e completo quando:</p>
+<ul>
+<li>[ ] Ogni funzione ha type hints su tutti i parametri e sul valore di ritorno.</li>
+<li>[ ] Ogni funzione ha una docstring che spiega cosa fa, i parametri e il valore restituito.</li>
+<li>[ ] Il dataset generato e realistico (correlazione stipendio-esperienza, stipendi diversi per settore).</li>
+<li>[ ] La pulizia gestisce almeno tre tipi di problema (mancanti, anomali, inconsistenze).</li>
+<li>[ ] L'analisi produce almeno 4 tabelle statistiche di riepilogo.</li>
+<li>[ ] La dashboard contiene 4 grafici diversi, tutti con titolo, etichette e legende.</li>
+<li>[ ] Il programma e eseguibile da terminale senza errori.</li>
+<li>[ ] Il codice non contiene variabili globali: tutto passa attraverso parametri e valori di ritorno.</li>
+</ul>
+<hr>
+<h2>Parte 3 — Interpretazione dei risultati</h2>
+<p>Dopo aver completato il mini-progetto, rispondete per iscritto alle seguenti domande, basandovi sui risultati della vostra analisi:</p>
+<ol>
+<li>Quale settore ha lo stipendio medio piu alto? E' anche quello con la soddisfazione piu alta? Se no, come lo spiegate?</li>
+</ol>
+<ol>
+<li>Osservando lo scatter plot esperienza-stipendio, la relazione vi sembra lineare? Ci sono pattern diversi per settori diversi?</li>
+</ol>
+<ol>
+<li>Dalla heatmap di correlazione, quali coppie di variabili sono piu correlate? Quali sono indipendenti?</li>
+</ol>
+<ol>
+<li>I boxplot mostrano outlier? In quale settore la variabilita degli stipendi e maggiore? Cosa potrebbe significare?</li>
+</ol>
+<ol>
+<li>Se doveste comunicare i risultati a un committente non tecnico, quali due grafici scegliereste e perche?</li>
+</ol>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Qual e' la differenza tra <code>plt.plot()</code> e <code>ax.plot()</code>? Perche l'approccio con <code>fig, ax = plt.subplots()</code> e preferibile?</li>
+</ol>
+<ol>
+<li>Cosa fa il parametro <code>alpha</code> nei grafici? Quando e' utile?</li>
+</ol>
+<ol>
+<li>Spiegate la differenza tra un istogramma e un grafico a barre. Quando si usa l'uno e quando l'altro?</li>
+</ol>
+<ol>
+<li>Perche la heatmap di correlazione ha sempre 1.0 sulla diagonale? Cosa indica un valore vicino a 0?</li>
+</ol>
+<ol>
+<li>In un boxplot, cosa rappresentano la linea centrale, i bordi della scatola, i "baffi" e i punti isolati?</li>
+</ol>
+<ol>
+<li>Qual e' il vantaggio di organizzare il codice in funzioni piuttosto che scriverlo in un unico blocco sequenziale?</li>
+</ol>
+<ol>
+<li>Perche <code>plt.tight_layout()</code> e importante? Cosa succede se non lo usate con i subplots?</li>
+</ol>
+<ol>
+<li>Cosa significa <code>dpi=150</code> in <code>plt.savefig()</code>? Quando usereste un valore piu alto?</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Con questo laboratorio si chiude il percorso pratico del corso. Ripercorriamo la strada fatta.</p>
+<p>Siete partiti dai <strong>primi passi in Python</strong>: variabili, tipi, assegnamenti. Avete poi imparato a far prendere <strong>decisioni</strong> ai programmi con le strutture condizionali, e a <strong>ripetere operazioni</strong> con i cicli. Avete organizzato il codice in <strong>funzioni</strong> riutilizzabili, e avete scoperto le <strong>strutture dati</strong> fondamentali — liste, dizionari, tuple, insiemi — che permettono di modellare informazioni complesse. Avete imparato a far dialogare i programmi con il <strong>filesystem</strong>, leggendo e scrivendo file CSV e JSON, e a proteggervi dagli errori con le <strong>eccezioni</strong>. Infine, in questi ultimi due laboratori, avete usato <strong>NumPy</strong> per il calcolo vettorizzato, <strong>Pandas</strong> per l'analisi tabellare, e <strong>Matplotlib/Seaborn</strong> per la visualizzazione.</p>
+<p>Il mini-progetto di oggi vi ha chiesto di mettere insieme tutti questi pezzi in un programma coerente. Questa capacita di integrazione e esattamente cio che vi servira nella pratica: un'analisi statistica reale non e mai "solo" caricare un file, o "solo" fare un grafico. E un flusso che parte dai dati grezzi e arriva a risultati interpretabili, passando per pulizia, trasformazione, calcolo e comunicazione visiva.</p>
+<p>Tre lezioni da portare con se:</p>
+<ol>
+<li><strong>I dati vanno sempre esplorati prima di analizzarli.</strong> Un <code>head()</code>, un <code>describe()</code>, un istogramma: bastano pochi secondi per evitare ore di lavoro su dati sbagliati.</li>
+</ol>
+<ol>
+<li><strong>Il codice deve essere organizzato in funzioni con interfacce chiare.</strong> Type hints e docstring non sono un lusso: sono il modo in cui il codice comunica le proprie intenzioni a chi lo legge (incluso il vostro se futuro).</li>
+</ol>
+<ol>
+<li><strong>Un grafico senza etichette e un grafico inutile.</strong> Titolo, assi, legenda, unita di misura: ogni grafico deve essere comprensibile anche senza leggere il codice che lo ha generato.</li>
+</ol>
+<p>Il linguaggio e le librerie sono strumenti. La vera competenza e saper formulare la domanda giusta, scegliere l'analisi appropriata e comunicare il risultato in modo onesto e chiaro. Buon lavoro.</p>
+<nav class="bottom-nav"><span><a href="L07_numpy_pandas.html">← L07</a></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

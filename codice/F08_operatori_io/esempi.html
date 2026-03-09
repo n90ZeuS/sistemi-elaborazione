@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F08_operatori_io/esempi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/F08_operatori_io_condizionali.html">Dispensa</a> &bull; <a href="../../presentazioni/F08_operatori_io_condizionali.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>F08_operatori_io/esempi.py</h1>
+<a class="download-link" href="esempi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F08 — Operatori, I/O e condizionali</span>
+<span class="cm"># Esempi per la lezione frontale 8</span>
+<span class="cm"># Operatori aritmetici, confronto, logici, condizionali, operatore ternario</span>
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 1. Operatori aritmetici</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- 1. Operatori aritmetici ---&quot;</span>)
+
+a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">17</span>
+b: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>
+
+somma: <span class="nb">int</span> <span class="op">=</span> a <span class="op">+</span> b
+differenza: <span class="nb">int</span> <span class="op">=</span> a <span class="op">-</span> b
+prodotto: <span class="nb">int</span> <span class="op">=</span> a <span class="op">*</span> b
+divisione: <span class="nb">float</span> <span class="op">=</span> a <span class="op">/</span> b          <span class="cm"># Divisione reale (sempre float)</span>
+divisione_intera: <span class="nb">int</span> <span class="op">=</span> a <span class="op">/</span><span class="op">/</span> b    <span class="cm"># Divisione intera (troncamento verso -inf)</span>
+resto: <span class="nb">int</span> <span class="op">=</span> a <span class="op">%</span> b                <span class="cm"># Modulo (resto della divisione)</span>
+potenza: <span class="nb">int</span> <span class="op">=</span> a <span class="op">*</span><span class="op">*</span> b             <span class="cm"># Elevamento a potenza</span>
+
+<span class="kw">assert</span> somma <span class="op">=</span><span class="op">=</span> <span class="mi">22</span>
+<span class="kw">assert</span> differenza <span class="op">=</span><span class="op">=</span> <span class="mi">12</span>
+<span class="kw">assert</span> prodotto <span class="op">=</span><span class="op">=</span> <span class="mi">85</span>
+<span class="kw">assert</span> divisione <span class="op">=</span><span class="op">=</span> <span class="mi">3.4</span>
+<span class="kw">assert</span> divisione_intera <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> resto <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> potenza <span class="op">=</span><span class="op">=</span> <span class="mi">1419857</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  a = {a}, b = {b}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  a + b  = {somma}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  a - b  = {differenza}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  a * b  = {prodotto}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  a / b  = {divisione}   (divisione reale, sempre float)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  a // b = {divisione_intera}     (divisione intera)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  a % b  = {resto}     (modulo)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  a ** b = {potenza} (potenza)&quot;</span>)
+
+<span class="cm"># Attenzione alla divisione intera con numeri negativi</span>
+<span class="kw">assert</span> <span class="op">-</span><span class="mi">17</span> <span class="op">/</span><span class="op">/</span> <span class="mi">5</span> <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">4</span>   <span class="cm"># Tronca verso -infinito, NON verso zero!</span>
+<span class="kw">assert</span> <span class="op">-</span><span class="mi">17</span> <span class="op">%</span> <span class="mi">5</span> <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>     <span class="cm"># Il resto segue la regola: a == (a // b) * b + (a % b)</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  -17 // 5 = {-17 // 5}  (tronca verso -inf)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  -17 % 5  = {-17 % 5}   (coerente: -17 == -4 * 5 + 3)&quot;</span>)
+
+<span class="cm"># Operatori di assegnamento composto</span>
+contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+contatore <span class="op">+</span><span class="op">=</span> <span class="mi">10</span>   <span class="cm"># equivale a contatore = contatore + 10</span>
+<span class="kw">assert</span> contatore <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+contatore <span class="op">-</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> contatore <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
+contatore <span class="op">*</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> contatore <span class="op">=</span><span class="op">=</span> <span class="mi">14</span>
+contatore <span class="op">/</span><span class="op">/</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> contatore <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
+contatore <span class="op">*</span><span class="op">*</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> contatore <span class="op">=</span><span class="op">=</span> <span class="mi">16</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  Operatori composti: contatore finale = {contatore}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 2. Operatori di confronto</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 2. Operatori di confronto ---&quot;</span>)
+
+x: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
+y: <span class="nb">int</span> <span class="op">=</span> <span class="mi">20</span>
+
+<span class="kw">assert</span> (x <span class="op">=</span><span class="op">=</span> y) <span class="kw">is</span> <span class="kw">False</span>
+<span class="kw">assert</span> (x <span class="op">!</span><span class="op">=</span> y) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> (x <span class="op">&lt;</span> y) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> (x <span class="op">&gt;</span> y) <span class="kw">is</span> <span class="kw">False</span>
+<span class="kw">assert</span> (x <span class="op">&lt;</span><span class="op">=</span> y) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> (x <span class="op">&gt;</span><span class="op">=</span> y) <span class="kw">is</span> <span class="kw">False</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  x = {x}, y = {y}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  x == y → {x == y}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  x != y → {x != y}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  x &lt;  y → {x &lt; y}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  x &gt;  y → {x &gt; y}&quot;</span>)
+
+<span class="cm"># Confronto a catena (peculiarita&#x27; di Python)</span>
+voto: <span class="nb">int</span> <span class="op">=</span> <span class="mi">25</span>
+<span class="kw">assert</span> (<span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>) <span class="kw">is</span> <span class="kw">True</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  voto = {voto}: 18 &lt;= voto &lt;= 30 → {18 &lt;= voto &lt;= 30}&quot;</span>)
+
+<span class="cm"># == confronta il valore, &#x27;is&#x27; confronta l&#x27;identita&#x27; (oggetto in memoria)</span>
+lista1: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+lista2: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+<span class="kw">assert</span> lista1 <span class="op">=</span><span class="op">=</span> lista2       <span class="cm"># Stesso valore</span>
+<span class="kw">assert</span> lista1 <span class="kw">is</span> <span class="kw">not</span> lista2   <span class="cm"># Oggetti diversi in memoria</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  [1,2,3] == [1,2,3] → {lista1 == lista2}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  [1,2,3] is [1,2,3] → {lista1 is lista2}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 3. Operatori logici e short-circuit</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 3. Operatori logici e short-circuit ---&quot;</span>)
+
+p: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+q: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+
+<span class="kw">assert</span> (p <span class="kw">and</span> q) <span class="kw">is</span> <span class="kw">False</span>
+<span class="kw">assert</span> (p <span class="kw">or</span> q) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> (<span class="kw">not</span> p) <span class="kw">is</span> <span class="kw">False</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  p = {p}, q = {q}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  p and q → {p and q}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  p or  q → {p or q}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  not p   → {not p}&quot;</span>)
+
+<span class="cm"># Tavola di verita&#x27; completa</span>
+<span class="nb">print</span>(<span class="st">&quot;\n  Tavola di verita&#x27;:&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  {&#x27;A&#x27;:&lt;6}{&#x27;B&#x27;:&lt;6}{&#x27;A and B&#x27;:&lt;10}{&#x27;A or B&#x27;:&lt;10}{&#x27;not A&#x27;:&lt;8}&quot;</span>)
+<span class="kw">for</span> a_val <span class="kw">in</span> [<span class="kw">True</span>, <span class="kw">False</span>]:
+    <span class="kw">for</span> b_val <span class="kw">in</span> [<span class="kw">True</span>, <span class="kw">False</span>]:
+        <span class="nb">print</span>(<span class="st">f&quot;  {str(a_val):&lt;6}{str(b_val):&lt;6}{str(a_val and b_val):&lt;10}&quot;</span>
+              <span class="st">f&quot;{str(a_val or b_val):&lt;10}{str(not a_val):&lt;8}&quot;</span>)
+
+<span class="cm"># Short-circuit evaluation</span>
+<span class="cm"># &#x27;and&#x27; restituisce il primo valore falsy, oppure l&#x27;ultimo se tutti truthy</span>
+<span class="cm"># &#x27;or&#x27;  restituisce il primo valore truthy, oppure l&#x27;ultimo se tutti falsy</span>
+<span class="kw">assert</span> (<span class="mi">0</span> <span class="kw">and</span> <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>          <span class="cm"># 0 e&#x27; falsy, si ferma subito</span>
+<span class="kw">assert</span> (<span class="mi">3</span> <span class="kw">and</span> <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>          <span class="cm"># 3 e&#x27; truthy, valuta e restituisce 5</span>
+<span class="kw">assert</span> (<span class="mi">0</span> <span class="kw">or</span> <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>           <span class="cm"># 0 e&#x27; falsy, prosegue e restituisce 5</span>
+<span class="kw">assert</span> (<span class="st">&quot;&quot;</span> <span class="kw">or</span> <span class="st">&quot;default&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;default&quot;</span>  <span class="cm"># Utile per valori di default!</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;\n  Short-circuit:&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  0 and 5        → {0 and 5}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  3 and 5        → {3 and 5}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  0 or 5         → {0 or 5}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  &#x27;&#x27; or &#x27;default&#x27; → {&#x27;&#x27; or &#x27;default&#x27;}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 4. Condizionali: if / elif / else</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 4. Condizionali ---&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">classifica_voto</span>(<span class="fn">voto</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Classifica un voto universitario in una categoria.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> voto <span class="op">&lt;</span> <span class="mi">18</span>:
+        giudizio: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Insufficiente&quot;</span>
+    <span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">22</span>:
+        giudizio <span class="op">=</span> <span class="st">&quot;Sufficiente&quot;</span>
+    <span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">26</span>:
+        giudizio <span class="op">=</span> <span class="st">&quot;Discreto&quot;</span>
+    <span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">29</span>:
+        giudizio <span class="op">=</span> <span class="st">&quot;Buono&quot;</span>
+    <span class="kw">elif</span> voto <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>:
+        giudizio <span class="op">=</span> <span class="st">&quot;Ottimo&quot;</span>
+    <span class="kw">else</span>:
+        giudizio <span class="op">=</span> <span class="st">&quot;Molto buono&quot;</span>
+    <span class="kw">return</span> giudizio
+
+
+<span class="kw">assert</span> classifica_voto(<span class="mi">15</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Insufficiente&quot;</span>
+<span class="kw">assert</span> classifica_voto(<span class="mi">18</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Sufficiente&quot;</span>
+<span class="kw">assert</span> classifica_voto(<span class="mi">24</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Discreto&quot;</span>
+<span class="kw">assert</span> classifica_voto(<span class="mi">27</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Buono&quot;</span>
+<span class="kw">assert</span> classifica_voto(<span class="mi">29</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Molto buono&quot;</span>
+<span class="kw">assert</span> classifica_voto(<span class="mi">30</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Ottimo&quot;</span>
+
+voti_test: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">15</span>, <span class="mi">18</span>, <span class="mi">22</span>, <span class="mi">26</span>, <span class="mi">29</span>, <span class="mi">30</span>]
+<span class="kw">for</span> v <span class="kw">in</span> voti_test:
+    <span class="nb">print</span>(<span class="st">f&quot;  Voto {v:&gt;2} → {classifica_voto(v)}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 5. Operatore ternario (espressione condizionale)</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 5. Operatore ternario ---&quot;</span>)
+
+<span class="cm"># Sintassi: valore_se_vero if condizione else valore_se_falso</span>
+eta_studente: <span class="nb">int</span> <span class="op">=</span> <span class="mi">20</span>
+stato: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;maggiorenne&quot;</span> <span class="kw">if</span> eta_studente <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span> <span class="kw">else</span> <span class="st">&quot;minorenne&quot;</span>
+<span class="kw">assert</span> stato <span class="op">=</span><span class="op">=</span> <span class="st">&quot;maggiorenne&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Eta&#x27; {eta_studente}: {stato}&quot;</span>)
+
+<span class="cm"># Utile per assegnamenti concisi</span>
+temperatura: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span><span class="mi">5.0</span>
+stato_acqua: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;ghiaccio&quot;</span> <span class="kw">if</span> temperatura <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">else</span> <span class="st">&quot;liquida&quot;</span>
+<span class="kw">assert</span> stato_acqua <span class="op">=</span><span class="op">=</span> <span class="st">&quot;ghiaccio&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Temperatura {temperatura}°C: acqua {stato_acqua}&quot;</span>)
+
+<span class="cm"># Equivalente con if/else classico (piu&#x27; lungo ma piu&#x27; leggibile per casi complessi)</span>
+numero: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
+parita: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;pari&quot;</span> <span class="kw">if</span> numero <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">else</span> <span class="st">&quot;dispari&quot;</span>
+<span class="kw">assert</span> parita <span class="op">=</span><span class="op">=</span> <span class="st">&quot;pari&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  {numero} e&#x27; {parita}&quot;</span>)
+
+<span class="cm"># Ternario annidato (sconsigliato: poco leggibile!)</span>
+x_val: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+segno: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;positivo&quot;</span> <span class="kw">if</span> x_val <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">else</span> (<span class="st">&quot;negativo&quot;</span> <span class="kw">if</span> x_val <span class="op">&lt;</span> <span class="mi">0</span> <span class="kw">else</span> <span class="st">&quot;zero&quot;</span>)
+<span class="kw">assert</span> segno <span class="op">=</span><span class="op">=</span> <span class="st">&quot;zero&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  {x_val} e&#x27; {segno}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 6. Esempio integrato: simulazione di input con variabili</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 6. Esempio integrato: parsificazione dati ---&quot;</span>)
+
+<span class="cm"># Simuliamo l&#x27;input di un utente (senza usare input())</span>
+input_simulato: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;  42.5  &quot;</span>
+
+<span class="cm"># Pulizia e conversione</span>
+valore_pulito: <span class="nb">str</span> <span class="op">=</span> input_simulato.strip()
+valore_numerico: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(valore_pulito)
+valore_intero: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(valore_numerico)
+
+<span class="kw">assert</span> valore_pulito <span class="op">=</span><span class="op">=</span> <span class="st">&quot;42.5&quot;</span>
+<span class="kw">assert</span> valore_numerico <span class="op">=</span><span class="op">=</span> <span class="mi">42.5</span>
+<span class="kw">assert</span> valore_intero <span class="op">=</span><span class="op">=</span> <span class="mi">42</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  Input grezzo:    &#x27;{input_simulato}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Dopo strip():    &#x27;{valore_pulito}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Come float:      {valore_numerico}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Come int (troncato): {valore_intero}&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">&quot;\nTutti gli assert passati — esempi F08 completati con successo!&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

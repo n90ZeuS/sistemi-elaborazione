@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F15_file_dati_errori/esempi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/F15_file_dati_errori.html">Dispensa</a> &bull; <a href="../../presentazioni/F15_file_dati_errori.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>F15_file_dati_errori/esempi.py</h1>
+<a class="download-link" href="esempi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F15 — File, dati, errori</span>
+<span class="cm"># Esempi per la lezione frontale 15</span>
+
+<span class="kw">import</span> os
+<span class="kw">import</span> csv
+<span class="kw">import</span> json
+<span class="kw">import</span> tempfile
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="cm"># Creiamo una directory temporanea per tutti gli esempi</span>
+DIR_TEMP: <span class="nb">str</span> <span class="op">=</span> tempfile.mkdtemp(prefix<span class="op">=</span><span class="st">&quot;f15_esempi_&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Directory temporanea: {DIR_TEMP}\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 1. OPEN() CON CONTEXT MANAGER (with)</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== open() con context manager ===&quot;</span>)
+
+<span class="cm"># Scrittura di un file di testo</span>
+percorso_testo: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;saluto.txt&quot;</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso_testo, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">&quot;Ciao, mondo!\n&quot;</span>)
+    f.write(<span class="st">&quot;Questa è la seconda riga.\n&quot;</span>)
+    f.write(<span class="st">&quot;E questa è la terza.\n&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;File scritto: {percorso_testo}&quot;</span>)
+
+<span class="cm"># Lettura completa</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso_testo, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    contenuto: <span class="nb">str</span> <span class="op">=</span> f.read()
+
+<span class="kw">assert</span> <span class="st">&quot;Ciao, mondo!&quot;</span> <span class="kw">in</span> contenuto
+<span class="nb">print</span>(<span class="st">f&quot;Contenuto:\n{contenuto}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 2. MODALITÀ DI APERTURA: read, write, append</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Modalità di apertura ===&quot;</span>)
+
+<span class="cm"># Append — aggiunge alla fine del file</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso_testo, <span class="st">&quot;a&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">&quot;Riga aggiunta con append.\n&quot;</span>)
+
+<span class="kw">with</span> <span class="nb">open</span>(percorso_testo, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> f.readlines()
+
+<span class="kw">assert</span> <span class="nb">len</span>(righe) <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
+<span class="nb">print</span>(<span class="st">f&quot;Numero di righe dopo append: {len(righe)}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 3. LETTURA RIGA PER RIGA</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Lettura riga per riga ===&quot;</span>)
+
+<span class="cm"># Metodo 1: iterazione diretta sul file (più efficiente per file grandi)</span>
+<span class="nb">print</span>(<span class="st">&quot;Metodo 1 — iterazione diretta:&quot;</span>)
+<span class="kw">with</span> <span class="nb">open</span>(percorso_testo, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> numero, riga <span class="kw">in</span> <span class="nb">enumerate</span>(f, start<span class="op">=</span><span class="mi">1</span>):
+        <span class="nb">print</span>(<span class="st">f&quot;  Riga {numero}: {riga.rstrip()}&quot;</span>)
+
+<span class="cm"># Metodo 2: readline()</span>
+<span class="nb">print</span>(<span class="st">&quot;Metodo 2 — readline():&quot;</span>)
+<span class="kw">with</span> <span class="nb">open</span>(percorso_testo, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    prima_riga: <span class="nb">str</span> <span class="op">=</span> f.readline().rstrip()
+    seconda_riga: <span class="nb">str</span> <span class="op">=</span> f.readline().rstrip()
+    <span class="nb">print</span>(<span class="st">f&quot;  Prima: {prima_riga}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  Seconda: {seconda_riga}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 4. SCRITTURA E LETTURA CSV</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== CSV: scrittura e lettura ===&quot;</span>)
+
+<span class="cm"># Creiamo un file CSV con dati di studenti</span>
+percorso_csv: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;studenti.csv&quot;</span>
+
+studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span>]] <span class="op">=</span> [
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;cognome&quot;</span>: <span class="st">&quot;Rossi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Laura&quot;</span>, <span class="st">&quot;cognome&quot;</span>: <span class="st">&quot;Bianchi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Matematica&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;cognome&quot;</span>: <span class="st">&quot;Verdi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Paolo&quot;</span>, <span class="st">&quot;cognome&quot;</span>: <span class="st">&quot;Neri&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">27</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Fisica&quot;</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;cognome&quot;</span>: <span class="st">&quot;Gialli&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Matematica&quot;</span>},
+]
+
+<span class="cm"># Scrittura CSV con DictWriter</span>
+intestazioni: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;cognome&quot;</span>, <span class="st">&quot;voto&quot;</span>, <span class="st">&quot;corso&quot;</span>]
+<span class="kw">with</span> <span class="nb">open</span>(percorso_csv, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+    writer: csv.DictWriter <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span>intestazioni)
+    writer.writeheader()
+    writer.writerows(studenti)
+
+<span class="nb">print</span>(<span class="st">f&quot;CSV scritto: {percorso_csv}&quot;</span>)
+
+<span class="cm"># Lettura CSV con DictReader</span>
+studenti_letti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
+<span class="kw">with</span> <span class="nb">open</span>(percorso_csv, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    reader: csv.DictReader <span class="op">=</span> csv.DictReader(f)
+    <span class="kw">for</span> riga <span class="kw">in</span> reader:
+        studenti_letti.append(<span class="nb">dict</span>(riga))
+
+<span class="kw">assert</span> <span class="nb">len</span>(studenti_letti) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+<span class="kw">assert</span> studenti_letti[<span class="mi">0</span>][<span class="st">&quot;nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Marco&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Studenti letti dal CSV: {len(studenti_letti)}&quot;</span>)
+<span class="kw">for</span> s <span class="kw">in</span> studenti_letti:
+    <span class="nb">print</span>(<span class="st">f&quot;  {s[&#x27;nome&#x27;]} {s[&#x27;cognome&#x27;]}: voto={s[&#x27;voto&#x27;]}, corso={s[&#x27;corso&#x27;]}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 5. JSON: LETTURA E SCRITTURA</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== JSON: scrittura e lettura ===&quot;</span>)
+
+<span class="cm"># Dati da salvare in JSON</span>
+configurazione: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">|</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">bool</span>]] <span class="op">=</span> {
+    <span class="st">&quot;app_nome&quot;</span>: <span class="st">&quot;StudenteManager&quot;</span>,
+    <span class="st">&quot;versione&quot;</span>: <span class="mi">1</span>,
+    <span class="st">&quot;lingue&quot;</span>: [<span class="st">&quot;italiano&quot;</span>, <span class="st">&quot;inglese&quot;</span>],
+    <span class="st">&quot;opzioni&quot;</span>: {
+        <span class="st">&quot;debug&quot;</span>: <span class="kw">False</span>,
+        <span class="st">&quot;verbose&quot;</span>: <span class="kw">True</span>,
+    },
+}
+
+percorso_json: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;config.json&quot;</span>
+
+<span class="cm"># Scrittura JSON</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso_json, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    json.dump(configurazione, f, indent<span class="op">=</span><span class="mi">2</span>, ensure_ascii<span class="op">=</span><span class="kw">False</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;JSON scritto: {percorso_json}&quot;</span>)
+
+<span class="cm"># Lettura JSON</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso_json, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    config_letta: <span class="nb">dict</span> <span class="op">=</span> json.load(f)
+
+<span class="kw">assert</span> config_letta[<span class="st">&quot;app_nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;StudenteManager&quot;</span>
+<span class="kw">assert</span> config_letta[<span class="st">&quot;versione&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">assert</span> <span class="st">&quot;italiano&quot;</span> <span class="kw">in</span> config_letta[<span class="st">&quot;lingue&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Configurazione letta: {json.dumps(config_letta, indent=2, ensure_ascii=False)}&quot;</span>)
+
+<span class="cm"># JSON da/a stringa</span>
+dati_json: <span class="nb">str</span> <span class="op">=</span> json.dumps({<span class="st">&quot;pi&quot;</span>: <span class="mi">3.14159</span>, <span class="st">&quot;e&quot;</span>: <span class="mi">2.71828</span>}, indent<span class="op">=</span><span class="mi">2</span>)
+<span class="nb">print</span>(<span class="st">f&quot;\nJSON come stringa:\n{dati_json}&quot;</span>)
+dati_parsed: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> json.loads(dati_json)
+<span class="kw">assert</span> <span class="nb">abs</span>(dati_parsed[<span class="st">&quot;pi&quot;</span>] <span class="op">-</span> <span class="mi">3.14159</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">5</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 6. TRY/EXCEPT/ELSE/FINALLY</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== try/except/else/finally ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">dividi</span>(<span class="fn">a</span>: <span class="nb">float</span>, b: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Divide a per b con gestione degli errori.&quot;&quot;&quot;</span>
+    <span class="kw">try</span>:
+        risultato: <span class="nb">float</span> <span class="op">=</span> a <span class="op">/</span> b
+    <span class="kw">except</span> <span class="nb">ZeroDivisionError</span>:
+        <span class="nb">print</span>(<span class="st">&quot;  ERRORE: divisione per zero!&quot;</span>)
+        <span class="kw">return</span> <span class="mi">0.0</span>
+    <span class="kw">except</span> <span class="nb">TypeError</span> <span class="kw">as</span> e:
+        <span class="nb">print</span>(<span class="st">f&quot;  ERRORE: tipo non valido — {e}&quot;</span>)
+        <span class="kw">return</span> <span class="mi">0.0</span>
+    <span class="kw">else</span>:
+        <span class="cm"># Eseguito solo se NON ci sono eccezioni</span>
+        <span class="nb">print</span>(<span class="st">f&quot;  {a} / {b} = {risultato}&quot;</span>)
+        <span class="kw">return</span> risultato
+    <span class="kw">finally</span>:
+        <span class="cm"># Eseguito SEMPRE</span>
+        <span class="nb">print</span>(<span class="st">&quot;  (blocco finally eseguito)&quot;</span>)
+
+
+r1: <span class="nb">float</span> <span class="op">=</span> dividi(<span class="mi">10</span>, <span class="mi">3</span>)
+<span class="kw">assert</span> <span class="nb">abs</span>(r1 <span class="op">-</span> <span class="mi">10</span> <span class="op">/</span> <span class="mi">3</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+r2: <span class="nb">float</span> <span class="op">=</span> dividi(<span class="mi">10</span>, <span class="mi">0</span>)
+<span class="kw">assert</span> r2 <span class="op">=</span><span class="op">=</span> <span class="mi">0.0</span>
+
+<span class="cm"># Gestione di file non trovato</span>
+<span class="nb">print</span>(<span class="st">&quot;\nGestione FileNotFoundError:&quot;</span>)
+<span class="kw">try</span>:
+    <span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;/percorso/inesistente.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="kw">as</span> f:
+        contenuto <span class="op">=</span> f.read()
+<span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;  File non trovato — gestito correttamente!&quot;</span>)
+
+<span class="cm"># Gestione multipla</span>
+<span class="nb">print</span>(<span class="st">&quot;\nGestione multipla:&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">converti_a_intero</span>(<span class="fn">valore</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Converte una stringa in intero, restituisce None se impossibile.&quot;&quot;&quot;</span>
+    <span class="kw">try</span>:
+        <span class="kw">return</span> <span class="nb">int</span>(valore)
+    <span class="kw">except</span> <span class="nb">ValueError</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;  &#x27;{valore}&#x27; non è un intero valido&quot;</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+
+<span class="kw">assert</span> converti_a_intero(<span class="st">&quot;42&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">42</span>
+<span class="kw">assert</span> converti_a_intero(<span class="st">&quot;abc&quot;</span>) <span class="kw">is</span> <span class="kw">None</span>
+<span class="kw">assert</span> converti_a_intero(<span class="st">&quot;3.14&quot;</span>) <span class="kw">is</span> <span class="kw">None</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 7. ECCEZIONI PERSONALIZZATE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Eccezioni personalizzate ===&quot;</span>)
+
+
+<span class="kw">class</span> <span class="fn">VotoNonValidoError</span>(<span class="nb">Exception</span>):
+    <span class="st">&quot;&quot;&quot;Eccezione per voti non validi (fuori range 18-30).&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, voto: <span class="nb">int</span>, messaggio: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>):
+        self.voto: <span class="nb">int</span> <span class="op">=</span> voto
+        <span class="kw">if</span> <span class="kw">not</span> messaggio:
+            messaggio <span class="op">=</span> <span class="st">f&quot;Voto {voto} non valido (deve essere tra 18 e 30)&quot;</span>
+        <span class="nb">super</span>().__init__(messaggio)
+
+
+<span class="kw">def</span> <span class="fn">registra_voto</span>(<span class="fn">studente</span>: <span class="nb">str</span>, voto: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Registra un voto, validandolo.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+        <span class="kw">raise</span> VotoNonValidoError(voto)
+    <span class="kw">return</span> <span class="st">f&quot;Voto {voto} registrato per {studente}&quot;</span>
+
+
+<span class="cm"># Test: voto valido</span>
+msg: <span class="nb">str</span> <span class="op">=</span> registra_voto(<span class="st">&quot;Marco&quot;</span>, <span class="mi">28</span>)
+<span class="kw">assert</span> <span class="st">&quot;28&quot;</span> <span class="kw">in</span> msg
+<span class="nb">print</span>(<span class="st">f&quot;  {msg}&quot;</span>)
+
+<span class="cm"># Test: voto non valido</span>
+<span class="kw">try</span>:
+    registra_voto(<span class="st">&quot;Laura&quot;</span>, <span class="mi">15</span>)
+<span class="kw">except</span> VotoNonValidoError <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;  Errore catturato: {e}&quot;</span>)
+    <span class="kw">assert</span> e.voto <span class="op">=</span><span class="op">=</span> <span class="mi">15</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 8. PATHLIB — BASI</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== pathlib ===&quot;</span>)
+
+<span class="cm"># Creazione di percorsi</span>
+home: Path <span class="op">=</span> Path.home()
+<span class="nb">print</span>(<span class="st">f&quot;Home: {home}&quot;</span>)
+
+percorso: Path <span class="op">=</span> Path(DIR_TEMP) <span class="op">/</span> <span class="st">&quot;sottocartella&quot;</span> <span class="op">/</span> <span class="st">&quot;file.txt&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Percorso composto: {percorso}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Nome file: {percorso.name}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Estensione: {percorso.suffix}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Directory padre: {percorso.parent}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Esiste? {percorso.exists()}&quot;</span>)
+
+<span class="cm"># Creazione directory con parents=True</span>
+percorso.parent.mkdir(parents<span class="op">=</span><span class="kw">True</span>, exist_ok<span class="op">=</span><span class="kw">True</span>)
+percorso.write_text(<span class="st">&quot;Contenuto scritto con pathlib.\n&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>)
+<span class="kw">assert</span> percorso.exists()
+<span class="kw">assert</span> percorso.read_text(encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Contenuto scritto con pathlib.\n&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  File creato e verificato con pathlib!&quot;</span>)
+
+<span class="cm"># Elenco file nella directory temporanea</span>
+<span class="nb">print</span>(<span class="st">f&quot;\nFile in {DIR_TEMP}:&quot;</span>)
+<span class="kw">for</span> file_path <span class="kw">in</span> Path(DIR_TEMP).rglob(<span class="st">&quot;*&quot;</span>):
+    <span class="kw">if</span> file_path.is_file():
+        dimensione: <span class="nb">int</span> <span class="op">=</span> file_path.stat().st_size
+        <span class="nb">print</span>(<span class="st">f&quot;  {file_path.name} ({dimensione} bytes)&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># Pulizia</span>
+<span class="cm"># ============================================================</span>
+<span class="kw">import</span> shutil
+shutil.rmtree(DIR_TEMP)
+<span class="nb">print</span>(<span class="st">f&quot;\nDirectory temporanea rimossa: {DIR_TEMP}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\n=== Fine esempi F15 ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

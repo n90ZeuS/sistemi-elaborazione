@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strutture dati</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titolo -->
+            <section class="title-slide">
+                <h1>Strutture dati</h1>
+                <div class="subtitle">Laboratorio 3</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li><strong>Liste</strong> &mdash; gestire misurazioni (CRUD)</li>
+                    <li><strong>Alias vs copia</strong> &mdash; un esperimento fondamentale</li>
+                    <li><strong>Tuple</strong> &mdash; punti geografici e distanze</li>
+                    <li><strong>Dizionari</strong> &mdash; registro studenti</li>
+                    <li><strong>Set</strong> &mdash; confronto iscritti tra anni</li>
+                    <li><strong>Counter</strong> &mdash; frequenza delle parole</li>
+                    <li><strong>Esercizi autonomi</strong></li>
+                </ol>
+                <div class="box box-blue">
+                    <strong>Prerequisiti:</strong> Lezioni F11 (Liste e tuple) e F12 (Dizionari e insiemi)
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Panoramica strutture dati -->
+            <section>
+                <h2>Le quattro strutture dati fondamentali</h2>
+                <table>
+                    <tr>
+                        <th>Struttura</th>
+                        <th>Ordinata</th>
+                        <th>Mutabile</th>
+                        <th>Duplicati</th>
+                        <th>Caso d'uso</th>
+                    </tr>
+                    <tr>
+                        <td><code>list</code></td>
+                        <td>Si</td>
+                        <td>Si</td>
+                        <td>Si</td>
+                        <td>Sequenze modificabili</td>
+                    </tr>
+                    <tr>
+                        <td><code>tuple</code></td>
+                        <td>Si</td>
+                        <td>No</td>
+                        <td>Si</td>
+                        <td>Dati fissi, chiavi composite</td>
+                    </tr>
+                    <tr>
+                        <td><code>dict</code></td>
+                        <td>Inserimento</td>
+                        <td>Si</td>
+                        <td>No (chiavi)</td>
+                        <td>Accesso rapido per chiave</td>
+                    </tr>
+                    <tr>
+                        <td><code>set</code></td>
+                        <td>No</td>
+                        <td>Si</td>
+                        <td>No</td>
+                        <td>Operazioni insiemistiche</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- SLIDE 4: Sezione Liste -->
+            <section class="section-slide">
+                <h2>Liste: gestire misurazioni</h2>
+                <p><em>Esercizio guidato 1</em></p>
+            </section>
+
+            <!-- SLIDE 5: Liste — Creare e popolare -->
+            <section>
+                <h2>Liste &mdash; Creare e popolare</h2>
+                <p>Le liste sono lo strumento naturale per sequenze ordinate e modificabili.</p>
+                <div class="columns">
+                    <div class="col">
+                        <h3>Con <code>append</code></h3>
+<pre><code class="language-python">temperature: list[float] = []
+
+temperature.append(18.5)
+temperature.append(21.0)
+temperature.append(19.3)
+temperature.append(22.1)
+temperature.append(20.7)
+
+print(f"Misurazioni: {temperature}")
+print(f"Numero: {len(temperature)}")
+</code></pre>
+                    </div>
+                    <div class="col">
+                        <h3>Direttamente</h3>
+<pre><code class="language-python">temperature: list[float] = [
+    18.5, 21.0, 19.3, 22.1, 20.7
+]
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Liste — Read -->
+            <section>
+                <h2>Liste &mdash; Leggere (Read)</h2>
+<pre><code class="language-python"># Accesso per indice
+prima: float = temperature[0]
+ultima: float = temperature[-1]
+print(f"Prima misurazione: {prima}")
+print(f"Ultima misurazione: {ultima}")
+
+# Slicing: sottoinsieme di misurazioni
+prime_tre: list[float] = temperature[:3]
+print(f"Prime tre: {prime_tre}")
+
+# Cercare un valore
+if 21.0 in temperature:
+    posizione: int = temperature.index(21.0)
+    print(f"21.0 trovato alla posizione {posizione}")
+</code></pre>
+            </section>
+
+            <!-- SLIDE 7: Liste — Update -->
+            <section>
+                <h2>Liste &mdash; Aggiornare (Update)</h2>
+<pre><code class="language-python"># Correggere una misurazione errata
+print(f"Prima della correzione: {temperature}")
+temperature[2] = 19.8  # la terza misurazione era sbagliata
+print(f"Dopo la correzione:    {temperature}")
+
+# Inserire una misurazione dimenticata in posizione specifica
+temperature.insert(1, 20.0)  # inserisci 20.0 alla posizione 1
+print(f"Dopo l'inserimento:    {temperature}")
+</code></pre>
+                <div class="box box-yellow">
+                    <strong>Nota:</strong> <code>insert(i, x)</code> sposta tutti gli elementi successivi. Per liste molto lunghe, valutare alternative.
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Liste — Delete -->
+            <section>
+                <h2>Liste &mdash; Cancellare (Delete)</h2>
+<pre><code class="language-python"># Rimuovere l'ultima misurazione
+rimossa: float = temperature.pop()
+print(f"Rimossa l'ultima: {rimossa}, lista: {temperature}")
+
+# Rimuovere per valore
+temperature.remove(20.0)
+print(f"Dopo remove(20.0): {temperature}")
+
+# Rimuovere per indice
+del temperature[0]
+print(f"Dopo del [0]: {temperature}")
+</code></pre>
+                <div class="box box-blue">
+                    <strong>Riepilogo:</strong>
+                    <code>pop()</code> rimuove e restituisce |
+                    <code>remove(x)</code> cerca e rimuove |
+                    <code>del</code> rimuove per indice
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Liste — Statistiche -->
+            <section>
+                <h2>Liste &mdash; Operazioni statistiche</h2>
+<pre><code class="language-python">temperature: list[float] = [18.5, 21.0, 19.3, 22.1, 20.7, 17.9, 23.4]
+
+media: float = sum(temperature) / len(temperature)
+minima: float = min(temperature)
+massima: float = max(temperature)
+
+print(f"Media:   {media:.2f}")
+print(f"Minima:  {minima}")
+print(f"Massima: {massima}")
+
+# Ordinamento (crea una nuova lista)
+ordinate: list[float] = sorted(temperature)
+print(f"Ordinate: {ordinate}")
+
+# Ordinamento in-place (modifica la lista originale)
+temperature.sort()
+print(f"Originale dopo sort(): {temperature}")
+</code></pre>
+            </section>
+
+            <!-- SLIDE 10: Sezione Alias vs Copia -->
+            <section class="section-slide">
+                <h2>Alias vs copia</h2>
+                <p><em>Esercizio guidato 2 &mdash; Un esperimento fondamentale</em></p>
+            </section>
+
+            <!-- SLIDE 11: Alias -->
+            <section>
+                <h2>Alias: due nomi, stesso oggetto</h2>
+<pre><code class="language-python">originale: list[int] = [1, 2, 3, 4, 5]
+alias: list[int] = originale  # NON è una copia!
+
+# Modifichiamo tramite alias
+alias[0] = 999
+
+print(f"alias:     {alias}")
+print(f"originale: {originale}")  # Anche originale è cambiato!
+print(f"Stesso oggetto? {originale is alias}")  # True
+</code></pre>
+                <div class="diagram">
+                    originale &rarr; [999, 2, 3, 4, 5] &larr; alias<br>
+                    (stesso oggetto in memoria)
+                </div>
+                <div class="box box-red">
+                    L'assegnamento <code>alias = originale</code> <strong>non crea una nuova lista</strong>: entrambi i nomi puntano allo stesso oggetto.
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Copia -->
+            <section>
+                <h2>Copia superficiale</h2>
+<pre><code class="language-python">originale: list[int] = [1, 2, 3, 4, 5]
+copia: list[int] = originale.copy()  # oppure list(originale) oppure originale[:]
+
+copia[0] = 999
+
+print(f"copia:     {copia}")
+print(f"originale: {originale}")  # Originale NON è cambiato
+print(f"Stesso oggetto? {originale is copia}")  # False
+</code></pre>
+                <div class="box box-yellow">
+                    <strong>Attenzione con liste di liste:</strong> la copia superficiale copia la lista esterna, ma le liste interne restano condivise.
+                </div>
+<pre><code class="language-python">matrice: list[list[int]] = [[1, 2], [3, 4]]
+copia_superficiale: list[list[int]] = matrice.copy()
+
+copia_superficiale[0][0] = 999
+print(f"matrice: {matrice}")  # [[999, 2], [3, 4]] — anche qui!
+</code></pre>
+            </section>
+
+            <!-- SLIDE 13: Sezione Tuple -->
+            <section class="section-slide">
+                <h2>Tuple: dati immutabili</h2>
+                <p><em>Esercizio guidato 3 &mdash; Punti geografici e distanze</em></p>
+            </section>
+
+            <!-- SLIDE 14: Tuple — Creare e unpacking -->
+            <section>
+                <h2>Tuple &mdash; Creare e fare unpacking</h2>
+                <p>Le tuple sono come le liste, ma <strong>immutabili</strong>: perfette per dati che non devono cambiare.</p>
+<pre><code class="language-python">import math
+
+# Una tupla di coordinate (latitudine, longitudine)
+roma: tuple[float, float] = (41.9028, 12.4964)
+milano: tuple[float, float] = (45.4642, 9.1900)
+napoli: tuple[float, float] = (40.8518, 14.2681)
+
+# Unpacking: estrarre i valori in variabili separate
+lat_roma, lon_roma = roma
+print(f"Roma: lat={lat_roma}, lon={lon_roma}")
+
+# Accesso per indice (come le liste)
+print(f"Latitudine di Milano: {milano[0]}")
+</code></pre>
+            </section>
+
+            <!-- SLIDE 15: Tuple — Calcolo distanze -->
+            <section>
+                <h2>Tuple &mdash; Calcolo distanze</h2>
+<pre><code class="language-python">def distanza_gradi(p1: tuple[float, float], p2: tuple[float, float]) -> float:
+    """Calcola la distanza euclidea approssimata tra due punti in gradi."""
+    lat1, lon1 = p1
+    lat2, lon2 = p2
+    return math.sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
+
+citta: list[tuple[str, tuple[float, float]]] = [
+    ("Roma", roma), ("Milano", milano), ("Napoli", napoli),
+]
+
+# Calcolare le distanze tra tutte le coppie
+for i in range(len(citta)):
+    for j in range(i + 1, len(citta)):
+        nome_a, coord_a = citta[i]
+        nome_b, coord_b = citta[j]
+        d: float = distanza_gradi(coord_a, coord_b)
+        print(f"{nome_a} — {nome_b}: {d:.4f} gradi")
+</code></pre>
+            </section>
+
+            <!-- SLIDE 16: Tuple come chiavi -->
+            <section>
+                <h2>Tuple come chiavi di dizionario</h2>
+                <p>Le tuple, essendo immutabili, possono essere usate come <strong>chiavi di dizionario</strong> (le liste no).</p>
+<pre><code class="language-python"># Distanze pre-calcolate tra coppie di città
+distanze: dict[tuple[str, str], float] = {}
+distanze[("Roma", "Milano")] = 4.77
+distanze[("Roma", "Napoli")] = 2.10
+distanze[("Milano", "Napoli")] = 6.52
+
+coppia: tuple[str, str] = ("Roma", "Milano")
+print(f"Distanza {coppia[0]}—{coppia[1]}: {distanze[coppia]:.2f} gradi")
+</code></pre>
+                <div class="box box-green">
+                    <strong>Regola:</strong> solo i tipi <strong>immutabili</strong> (str, int, float, tuple) possono essere chiavi di dizionario o elementi di set.
+                </div>
+            </section>
+
+            <!-- SLIDE 17: Sezione Dizionari -->
+            <section class="section-slide">
+                <h2>Dizionari: accesso per chiave</h2>
+                <p><em>Esercizio guidato 4 &mdash; Registro studenti</em></p>
+            </section>
+
+            <!-- SLIDE 18: Dizionari — Creare -->
+            <section>
+                <h2>Dizionari &mdash; Creare un registro</h2>
+<pre><code class="language-python"># Ogni studente è identificato dalla matricola
+registro: dict[str, dict[str, object]] = {
+    "MAT001": {
+        "nome": "Anna Rossi",
+        "anno": 1,
+        "voti": [28, 30, 25],
+    },
+    "MAT002": {
+        "nome": "Marco Bianchi",
+        "anno": 1,
+        "voti": [24, 27, 30],
+    },
+    "MAT003": {
+        "nome": "Luca Verdi",
+        "anno": 2,
+        "voti": [30, 30, 28],
+    },
+}
+</code></pre>
+            </section>
+
+            <!-- SLIDE 19: Dizionari — Accesso e ricerca -->
+            <section>
+                <h2>Dizionari &mdash; Accesso e ricerca</h2>
+<pre><code class="language-python"># Accesso diretto per matricola
+studente: dict[str, object] = registro["MAT001"]
+print(f"Nome: {studente['nome']}")
+
+# Accesso sicuro con get (nessun errore se la chiave non esiste)
+risultato: dict[str, object] | None = registro.get("MAT999")
+print(f"MAT999 esiste? {risultato is not None}")
+
+# Iterare su tutti gli studenti
+for matricola, dati in registro.items():
+    voti: list[int] = dati["voti"]
+    media: float = sum(voti) / len(voti)
+    print(f"{matricola} — {dati['nome']}: media {media:.1f}")
+</code></pre>
+                <div class="compare">
+                    <div class="good">
+<pre><code class="language-python">registro.get("MAT999")
+# Restituisce None</code></pre>
+                    </div>
+                    <div class="bad">
+<pre><code class="language-python">registro["MAT999"]
+# KeyError!</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 20: Dizionari — Inserimento e aggiornamento -->
+            <section>
+                <h2>Dizionari &mdash; Inserimento e aggiornamento</h2>
+<pre><code class="language-python"># Aggiungere un nuovo studente
+registro["MAT004"] = {
+    "nome": "Sara Neri",
+    "anno": 1,
+    "voti": [26, 29],
+}
+
+# Aggiungere un voto a uno studente esistente
+registro["MAT001"]["voti"].append(27)
+print(f"Voti aggiornati di MAT001: {registro['MAT001']['voti']}")
+
+# Aggiornare l'anno
+registro["MAT003"]["anno"] = 3
+</code></pre>
+            </section>
+
+            <!-- SLIDE 21: Dizionari — Cancellazione e statistiche -->
+            <section>
+                <h2>Dizionari &mdash; Cancellazione e statistiche</h2>
+                <div class="columns">
+                    <div class="col">
+                        <h3>Cancellazione</h3>
+<pre><code class="language-python"># Rimuovere uno studente
+rimosso = registro.pop("MAT004")
+print(f"Rimosso: {rimosso['nome']}")
+
+# Chiavi rimaste
+print(list(registro.keys()))
+</code></pre>
+                    </div>
+                    <div class="col">
+                        <h3>Statistiche</h3>
+<pre><code class="language-python"># Studente con media più alta
+migliore_matricola: str = ""
+migliore_media: float = 0.0
+
+for matr, dati in registro.items():
+    voti = dati["voti"]
+    media = sum(voti) / len(voti)
+    if media > migliore_media:
+        migliore_media = media
+        migliore_matricola = matr
+
+print(f"Migliore: "
+      f"{registro[migliore_matricola]['nome']}"
+      f" (media: {migliore_media:.1f})")
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 22: Sezione Set -->
+            <section class="section-slide">
+                <h2>Set: operazioni insiemistiche</h2>
+                <p><em>Esercizio guidato 5 &mdash; Confronto iscritti tra anni</em></p>
+            </section>
+
+            <!-- SLIDE 23: Set — Creare e operazioni -->
+            <section>
+                <h2>Set &mdash; Operazioni insiemistiche</h2>
+<pre><code class="language-python">iscritti_2024: set[str] = {"Anna", "Marco", "Luca", "Sara", "Elena"}
+iscritti_2025: set[str] = {"Marco", "Sara", "Elena", "Paolo", "Giulia"}
+
+# Studenti confermati (presenti in entrambi gli anni)
+confermati: set[str] = iscritti_2024 & iscritti_2025  # intersezione
+print(f"Confermati:  {confermati}")
+
+# Nuovi iscritti (presenti nel 2025 ma non nel 2024)
+nuovi: set[str] = iscritti_2025 - iscritti_2024  # differenza
+print(f"Nuovi:       {nuovi}")
+
+# Abbandoni (presenti nel 2024 ma non nel 2025)
+abbandoni: set[str] = iscritti_2024 - iscritti_2025
+print(f"Abbandoni:   {abbandoni}")
+</code></pre>
+            </section>
+
+            <!-- SLIDE 24: Set — Altre operazioni -->
+            <section>
+                <h2>Set &mdash; Unione, differenza simmetrica, verifiche</h2>
+<pre><code class="language-python"># Tutti gli studenti che sono passati per il corso
+tutti: set[str] = iscritti_2024 | iscritti_2025  # unione
+print(f"Tutti:       {tutti}")
+
+# Studenti che hanno cambiato stato
+cambiati: set[str] = iscritti_2024 ^ iscritti_2025  # differenza simmetrica
+print(f"Cambiati:    {cambiati}")
+
+# Verifiche di appartenenza
+print(f"Marco iscritto nel 2025? {'Marco' in iscritti_2025}")
+print(f"Confermati sottoinsieme di Tutti? {confermati <= tutti}")
+</code></pre>
+                <div class="box box-green">
+                    <strong>Eliminare duplicati da una lista:</strong>
+<pre><code class="language-python">risposte: list[str] = ["pizza", "pasta", "pizza", "sushi", "pasta"]
+piatti_unici: set[str] = set(risposte)
+print(f"Piatti unici: {piatti_unici}")  # {'pizza', 'pasta', 'sushi'}
+</code></pre>
+                </div>
+            </section>
+
+            <!-- SLIDE 25: Riepilogo operatori set -->
+            <section>
+                <h2>Set &mdash; Riepilogo operatori</h2>
+                <table>
+                    <tr>
+                        <th>Operatore</th>
+                        <th>Metodo</th>
+                        <th>Significato</th>
+                    </tr>
+                    <tr>
+                        <td><code>A & B</code></td>
+                        <td><code>A.intersection(B)</code></td>
+                        <td>Elementi in comune</td>
+                    </tr>
+                    <tr>
+                        <td><code>A | B</code></td>
+                        <td><code>A.union(B)</code></td>
+                        <td>Tutti gli elementi</td>
+                    </tr>
+                    <tr>
+                        <td><code>A - B</code></td>
+                        <td><code>A.difference(B)</code></td>
+                        <td>In A ma non in B</td>
+                    </tr>
+                    <tr>
+                        <td><code>A ^ B</code></td>
+                        <td><code>A.symmetric_difference(B)</code></td>
+                        <td>In uno solo dei due</td>
+                    </tr>
+                    <tr>
+                        <td><code>A <= B</code></td>
+                        <td><code>A.issubset(B)</code></td>
+                        <td>A sottoinsieme di B</td>
+                    </tr>
+                    <tr>
+                        <td><code>x in A</code></td>
+                        <td>&mdash;</td>
+                        <td>Appartenenza</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- SLIDE 26: Sezione Counter -->
+            <section class="section-slide">
+                <h2>Counter: analisi di frequenza</h2>
+                <p><em>Esercizio guidato 6 &mdash; Frequenza delle parole</em></p>
+            </section>
+
+            <!-- SLIDE 27: Counter — Contare parole -->
+            <section>
+                <h2>Counter &mdash; Contare le parole</h2>
+                <p><code>Counter</code> del modulo <code>collections</code> e un dizionario specializzato per contare elementi.</p>
+<pre><code class="language-python">from collections import Counter
+
+testo: str = """
+La statistica è la scienza che studia i fenomeni collettivi.
+La statistica descrittiva riassume i dati osservati.
+La statistica inferenziale generalizza i risultati al di là dei dati osservati.
+"""
+
+# Pulizia e tokenizzazione
+parole: list[str] = testo.lower().split()
+conteggio: Counter[str] = Counter(parole)
+
+# Le 5 parole più comuni
+top_5: list[tuple[str, int]] = conteggio.most_common(5)
+print("Top 5:")
+for parola, freq in top_5:
+    print(f"  {parola}: {freq}")
+
+print(f"\nParole totali: {sum(conteggio.values())}")
+print(f"Parole uniche: {len(conteggio)}")
+</code></pre>
+            </section>
+
+            <!-- SLIDE 28: Counter — Confronto testi -->
+            <section>
+                <h2>Counter &mdash; Confronto tra due testi</h2>
+<pre><code class="language-python">testo_a: str = "il gatto e il cane giocano nel giardino"
+testo_b: str = "il cane e il gatto dormono in giardino"
+
+freq_a: Counter[str] = Counter(testo_a.split())
+freq_b: Counter[str] = Counter(testo_b.split())
+
+# Parole in comune
+comuni: set[str] = set(freq_a.keys()) & set(freq_b.keys())
+print(f"Parole in comune: {comuni}")
+
+# Combinare i conteggi
+combinato: Counter[str] = freq_a + freq_b
+print(f"Frequenze combinate: {combinato.most_common()}")
+</code></pre>
+                <div class="box box-blue">
+                    <strong>Nota:</strong> i <code>Counter</code> supportano addizione (<code>+</code>) e sottrazione (<code>-</code>) tra di loro.
+                </div>
+            </section>
+
+            <!-- SLIDE 29: Esercizi autonomi -->
+            <section>
+                <h2>Esercizi autonomi</h2>
+                <h3>A1 &mdash; Rubrica telefonica <span class="badge badge-green">base</span></h3>
+                <p>Crea una rubrica con un dizionario <code>str &rarr; str</code> (nome &rarr; numero).</p>
+                <ol>
+                    <li>Crea la rubrica con almeno 5 contatti</li>
+                    <li>Implementa: cerca, aggiungi, modifica, elimina</li>
+                    <li>Stampa tutti i contatti in ordine alfabetico (<code>sorted()</code>)</li>
+                    <li>Gestisci il caso di contatto inesistente con <code>.get()</code></li>
+                </ol>
+                <h3>A2 &mdash; Analisi dataset <span class="badge badge-yellow">intermedio</span></h3>
+                <p>Data una lista di dizionari con dati studenti:</p>
+                <ol>
+                    <li>Media dei voti per ciascun corso</li>
+                    <li>Studente con la media complessiva piu alta</li>
+                    <li>Per ogni studente, stampa voti e media</li>
+                    <li>Conta studenti con media superiore a 26</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 30: Esercizio A3 -->
+            <section>
+                <h2>Esercizio A3 &mdash; Sistema di raccomandazione <span class="badge badge-red">avanzato</span></h2>
+                <p>Dato un catalogo di film visti per utente (<code>dict[str, set[str]]</code>):</p>
+<pre><code class="language-python">catalogo: dict[str, set[str]] = {
+    "Alice": {"Matrix", "Inception", "Interstellar", "Dune"},
+    "Bob":   {"Matrix", "Inception", "Avatar", "Titanic"},
+    "Carla": {"Interstellar", "Dune", "Avatar", "Arrival"},
+    "David": {"Matrix", "Dune", "Arrival", "Titanic"},
+}
+</code></pre>
+                <ol>
+                    <li>Trova l'utente piu simile (massima intersezione)</li>
+                    <li>Raccomanda film non ancora visti (differenza)</li>
+                    <li>Film visti da <strong>tutti</strong> (intersezione globale)</li>
+                    <li>Film visti da <strong>almeno uno</strong> (unione globale)</li>
+                    <li>Film "di nicchia" visti da un solo utente</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 31: Sfida finale -->
+            <section>
+                <h2>Sfida finale &mdash; Analisi dataset esami</h2>
+                <p>Dato un dataset di esami (lista di dizionari con matricola, nome, corso, voto, lode):</p>
+                <ol>
+                    <li><strong>Media per corso:</strong> calcola e stampa la media dei voti per ciascun corso</li>
+                    <li><strong>Studente migliore per corso:</strong> identifica lo studente con il voto piu alto</li>
+                    <li><strong>Classifica generale:</strong> ordina gli studenti per media decrescente</li>
+                    <li><strong>Conteggio lodi:</strong> conta quante lodi ha ottenuto ciascuno studente</li>
+                    <li><strong>Corsi per studente:</strong> usa un set per mostrare i corsi sostenuti e identifica chi non ha tutti e tre gli esami</li>
+                </ol>
+                <div class="box box-blue">
+                    Usa <code>Counter</code>, operazioni su dizionari e set, type hints per tutte le variabili.
+                </div>
+            </section>
+
+            <!-- SLIDE 32: Domande di verifica -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol>
+                    <li>Qual e la differenza fondamentale tra una lista e una tupla? Quando preferire una tupla?</li>
+                    <li class="fragment">Se <code>b = a</code> (con <code>a</code> lista) e modifichi <code>b[0]</code>, cosa succede ad <code>a</code>? Perche?</li>
+                    <li class="fragment">Cosa restituisce <code>{"a": 1, "b": 2}.get("c", 0)</code>? E <code>{"a": 1, "b": 2}["c"]</code>?</li>
+                    <li class="fragment">Date due set A e B, quale operazione produce gli elementi in A ma non in B?</li>
+                    <li class="fragment">Differenza tra <code>sorted(lista)</code> e <code>lista.sort()</code>?</li>
+                    <li class="fragment">Perche una lista non puo essere chiave di dizionario, ma una tupla si?</li>
+                    <li class="fragment">Cosa fa <code>Counter("abracadabra").most_common(3)</code>?</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 33: Riepilogo -->
+            <section>
+                <h2>Quale struttura scegliere?</h2>
+                <div class="box box-blue">
+                    <strong>Lista</strong> &mdash; quando l'ordine conta e i dati possono cambiare.
+                </div>
+                <div class="box box-green">
+                    <strong>Tupla</strong> &mdash; quando i dati sono fissi (coordinate, record immutabili, chiavi composite).
+                </div>
+                <div class="box box-yellow">
+                    <strong>Dizionario</strong> &mdash; quando serve accesso rapido per chiave (registri, lookup, conteggi).
+                </div>
+                <div class="box box-red">
+                    <strong>Set</strong> &mdash; quando servono operazioni insiemistiche o eliminare duplicati.
+                </div>
+                <p style="margin-top: 1em;">Nel prossimo laboratorio: organizzare queste operazioni in <strong>funzioni</strong> riutilizzabili e testabili.</p>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L02_cicli_comprehension_stringhe.html" style="color: var(--accent);">&larr; L02: Cicli, comprehension e stringhe</a></div><div><a href="L04_funzioni_modularita.html" style="color: var(--accent);">L04: Funzioni e modularità &rarr;</a></div><div><a href="../dispense/laboratori/L03_strutture_dati.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L03_strutture_dati/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — L03</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

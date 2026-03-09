@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L04 — Funzioni e modularità</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titolo -->
+            <section class="title-slide">
+                <h1>Funzioni e modularit&agrave;</h1>
+                <div class="subtitle">Laboratorio 4</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione &mdash; Corso di Laurea in Scienze Statistiche<br>
+                    Prerequisiti: F13 (Funzioni) e F14 (Modularit&agrave; e buone pratiche)
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li><strong>Funzioni statistiche</strong> &mdash; <code>media()</code>, <code>varianza()</code>, <code>mediana()</code></li>
+                    <li><strong>Assert come testing</strong> &mdash; verificare la correttezza del codice</li>
+                    <li><strong>Refactoring</strong> &mdash; da codice monolitico a modulare</li>
+                    <li><strong><code>sorted()</code> con <code>key</code></strong> &mdash; ordinamenti personalizzati</li>
+                    <li><strong>Moduli</strong> &mdash; creare e importare file <code>.py</code></li>
+                    <li><strong>Esercizi autonomi</strong> &mdash; moda, z-score, decoratori</li>
+                </ol>
+                <div class="box box-blue">
+                    <strong>Obiettivi:</strong> definire funzioni con type hints e docstring, usare <code>assert</code> per verificare la correttezza, fare refactoring di codice monolitico, usare <code>sorted()</code> con <code>key</code>, creare e importare moduli.
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Sezione 1 -->
+            <section class="section-slide">
+                <h2>Parte 1<br>Funzioni statistiche</h2>
+                <p><em>Type hints, docstring e validazione dell'input</em></p>
+            </section>
+
+            <!-- SLIDE 4: Anatomia di una funzione -->
+            <section>
+                <h2>Anatomia di una funzione ben scritta</h2>
+                <p>Una funzione Python ben scritta ha quattro elementi fondamentali:</p>
+                <ul>
+                    <li class="fragment"><strong>Type hints</strong> &mdash; nei parametri e nel valore di ritorno</li>
+                    <li class="fragment"><strong>Docstring</strong> &mdash; spiega cosa fa, cosa accetta, cosa restituisce</li>
+                    <li class="fragment"><strong>Validazione</strong> &mdash; controlla l'input e solleva errori espliciti</li>
+                    <li class="fragment"><strong>Test con <code>assert</code></strong> &mdash; verifica il comportamento atteso</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 5: La funzione media() -->
+            <section>
+                <h2>La funzione <code>media()</code></h2>
+<pre><code class="language-python">def media(valori: list[float]) -> float:
+    """Calcola la media aritmetica di una lista di numeri.
+
+    Args:
+        valori: lista non vuota di numeri.
+
+    Returns:
+        La media aritmetica dei valori.
+
+    Raises:
+        ValueError: se la lista è vuota.
+    """
+    if len(valori) == 0:
+        raise ValueError("Impossibile calcolare la media di una lista vuota")
+    return sum(valori) / len(valori)
+
+
+# Test con assert
+assert media([10, 20, 30]) == 20.0
+assert media([5]) == 5.0
+assert media([1, 2, 3, 4, 5]) == 3.0
+print("media(): tutti i test superati")</code></pre>
+            </section>
+
+            <!-- SLIDE 6: Struttura della funzione media -->
+            <section>
+                <h2>Cosa osservare in <code>media()</code></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Elemento</th>
+                            <th>Esempio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Type hint parametro</td>
+                            <td><code>valori: list[float]</code></td>
+                        </tr>
+                        <tr>
+                            <td>Type hint ritorno</td>
+                            <td><code>-> float</code></td>
+                        </tr>
+                        <tr>
+                            <td>Docstring</td>
+                            <td>Descrive Args, Returns, Raises</td>
+                        </tr>
+                        <tr>
+                            <td>Validazione input</td>
+                            <td><code>if len(valori) == 0: raise ValueError(...)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Test</td>
+                            <td><code>assert media([10, 20, 30]) == 20.0</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- SLIDE 7: La funzione varianza() -->
+            <section>
+                <h2>La funzione <code>varianza()</code></h2>
+<pre><code class="language-python">def varianza(valori: list[float]) -> float:
+    """Calcola la varianza campionaria (denominatore n-1)."""
+    n: int = len(valori)
+    if n < 2:
+        raise ValueError("Servono almeno 2 valori per calcolare la varianza")
+    m: float = media(valori)  # riusiamo la funzione definita prima!
+    somma_scarti_quadrati: float = sum((x - m) ** 2 for x in valori)
+    return somma_scarti_quadrati / (n - 1)
+
+
+# Test
+assert abs(varianza([2, 4, 4, 4, 5, 5, 7, 9]) - 4.571428571428571) < 1e-10
+assert abs(varianza([10, 10, 10]) - 0.0) < 1e-10
+print("varianza(): tutti i test superati")</code></pre>
+                <div class="box box-green">
+                    <strong>Composizione:</strong> <code>varianza()</code> chiama <code>media()</code> &mdash; le funzioni si compongono, evitando di duplicare codice.
+                </div>
+            </section>
+
+            <!-- SLIDE 8: La funzione mediana() -->
+            <section>
+                <h2>La funzione <code>mediana()</code></h2>
+<pre><code class="language-python">def mediana(valori: list[float]) -> float:
+    """Calcola la mediana di una lista di numeri."""
+    if len(valori) == 0:
+        raise ValueError("Impossibile calcolare la mediana di una lista vuota")
+    ordinati: list[float] = sorted(valori)
+    n: int = len(ordinati)
+    centro: int = n // 2
+    if n % 2 == 1:
+        # Numero dispari di elementi: il mediano è quello centrale
+        return ordinati[centro]
+    else:
+        # Numero pari: media dei due centrali
+        return (ordinati[centro - 1] + ordinati[centro]) / 2
+
+
+# Test
+assert mediana([3, 1, 2]) == 2
+assert mediana([1, 2, 3, 4]) == 2.5
+assert mediana([5]) == 5
+assert mediana([7, 1]) == 4.0
+print("mediana(): tutti i test superati")</code></pre>
+            </section>
+
+            <!-- SLIDE 9: Sezione 2 -->
+            <section class="section-slide">
+                <h2>Parte 2<br>Assert come strumento di testing</h2>
+                <p><em>Documentare le aspettative sul codice</em></p>
+            </section>
+
+            <!-- SLIDE 10: Test di casi limite -->
+            <section>
+                <h2>Testare i casi limite</h2>
+                <p>Non basta testare il caso felice: bisogna verificare che gli errori vengano gestiti correttamente.</p>
+<pre><code class="language-python"># Testare che le funzioni gestiscano correttamente gli errori
+errore_sollevato: bool = False
+try:
+    media([])
+except ValueError:
+    errore_sollevato = True
+assert errore_sollevato, "media([]) dovrebbe sollevare ValueError"
+
+errore_sollevato = False
+try:
+    varianza([5])
+except ValueError:
+    errore_sollevato = True
+assert errore_sollevato, "varianza([5]) dovrebbe sollevare ValueError"
+
+print("Test sui casi limite: tutti superati")</code></pre>
+            </section>
+
+            <!-- SLIDE 11: Confronti tra float -->
+            <section>
+                <h2>Attenzione ai confronti tra float</h2>
+                <p>L'aritmetica in virgola mobile pu&ograve; introdurre piccoli errori. Non scrivete <code>assert varianza(dati) == 4.5</code>. Usate una tolleranza:</p>
+<pre><code class="language-python">def quasi_uguale(a: float, b: float, tolleranza: float = 1e-9) -> bool:
+    """Verifica se due float sono approssimativamente uguali."""
+    return abs(a - b) < tolleranza
+
+
+# Test con dataset noto
+dati: list[float] = [2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0]
+assert quasi_uguale(media(dati), 5.0)
+assert quasi_uguale(varianza(dati), 4.571428571428571)
+assert quasi_uguale(mediana(dati), 4.5)
+print("Test con valori noti: tutti superati")</code></pre>
+                <div class="box box-yellow">
+                    <strong>Regola pratica:</strong> per i confronti tra float usate sempre <code>abs(a - b) &lt; tolleranza</code>.
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Sezione 3 -->
+            <section class="section-slide">
+                <h2>Parte 3<br>Refactoring</h2>
+                <p><em>Da codice monolitico a modulare</em></p>
+            </section>
+
+            <!-- SLIDE 13: Codice monolitico (PRIMA) -->
+            <section>
+                <h2>Il codice monolitico <span class="badge badge-red">PRIMA</span></h2>
+<pre><code class="language-python"># Questo codice funziona, ma è un unico blocco non riutilizzabile
+voti_stat: list[int] = [28, 24, 30, 26, 22, 27, 30, 25]
+voti_anal: list[int] = [30, 22, 27, 25, 20, 28, 26, 24]
+
+# Media statistica
+somma_stat: int = 0
+for v in voti_stat:
+    somma_stat += v
+media_stat: float = somma_stat / len(voti_stat)
+
+# Media analisi
+somma_anal: int = 0
+for v in voti_anal:
+    somma_anal += v
+media_anal: float = somma_anal / len(voti_anal)
+
+# Trova il voto massimo in statistica
+max_stat: int = voti_stat[0]
+for v in voti_stat[1:]:
+    if v > max_stat:
+        max_stat = v
+
+# Trova il voto massimo in analisi
+max_anal: int = voti_anal[0]
+for v in voti_anal[1:]:
+    if v > max_anal:
+        max_anal = v
+
+print(f"Statistica: media={media_stat:.1f}, max={max_stat}")
+print(f"Analisi:    media={media_anal:.1f}, max={max_anal}")</code></pre>
+            </section>
+
+            <!-- SLIDE 14: Problema del codice monolitico -->
+            <section>
+                <h2>Cosa c'&egrave; che non va?</h2>
+                <ul>
+                    <li>Il codice per calcolare media e massimo &egrave; <strong>duplicato</strong></li>
+                    <li>Se avessimo 10 corsi, dovremmo copiare e incollare lo stesso blocco 10 volte</li>
+                    <li>Se trovassimo un bug, dovremmo correggerlo in ogni copia</li>
+                    <li>Il codice non &egrave; testabile in isolamento</li>
+                </ul>
+                <div class="diagram">
+                    Codice duplicato = Bug duplicati = Manutenzione impossibile
+                </div>
+            </section>
+
+            <!-- SLIDE 15: Codice ristrutturato (DOPO) -->
+            <section>
+                <h2>Il codice ristrutturato <span class="badge badge-green">DOPO</span></h2>
+<pre><code class="language-python">def calcola_media(voti: list[int]) -> float:
+    """Calcola la media di una lista di voti."""
+    if len(voti) == 0:
+        raise ValueError("Lista vuota")
+    return sum(voti) / len(voti)
+
+
+def trova_massimo(voti: list[int]) -> int:
+    """Trova il voto massimo in una lista."""
+    if len(voti) == 0:
+        raise ValueError("Lista vuota")
+    massimo: int = voti[0]
+    for v in voti[1:]:
+        if v > massimo:
+            massimo = v
+    return massimo
+
+
+def stampa_report(nome_corso: str, voti: list[int]) -> None:
+    """Stampa un report con media e massimo per un corso."""
+    m: float = calcola_media(voti)
+    mx: int = trova_massimo(voti)
+    print(f"{nome_corso}: media={m:.1f}, max={mx}")</code></pre>
+            </section>
+
+            <!-- SLIDE 16: Codice principale dopo refactoring -->
+            <section>
+                <h2>Il codice principale dopo il refactoring</h2>
+<pre><code class="language-python"># Il codice principale diventa chiarissimo
+corsi: dict[str, list[int]] = {
+    "Statistica": [28, 24, 30, 26, 22, 27, 30, 25],
+    "Analisi":    [30, 22, 27, 25, 20, 28, 26, 24],
+}
+
+for nome, voti in corsi.items():
+    stampa_report(nome, voti)</code></pre>
+                <h3>Vantaggi del refactoring</h3>
+                <ul>
+                    <li><strong>Nessuna duplicazione:</strong> ogni operazione &egrave; definita una volta sola</li>
+                    <li><strong>Riutilizzabilit&agrave;:</strong> possiamo aggiungere un corso con una sola riga</li>
+                    <li><strong>Testabilit&agrave;:</strong> possiamo testare ogni funzione separatamente</li>
+                    <li><strong>Leggibilit&agrave;:</strong> il codice principale &egrave; quasi pseudocodice</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 17: Sezione 4 -->
+            <section class="section-slide">
+                <h2>Parte 4<br><code>sorted()</code> con <code>key=lambda</code></h2>
+                <p><em>Ordinamenti personalizzati</em></p>
+            </section>
+
+            <!-- SLIDE 18: Ordinare stringhe per lunghezza -->
+            <section>
+                <h2>Ordinare stringhe per lunghezza</h2>
+                <p><code>sorted()</code> accetta un parametro <code>key</code> che specifica come confrontare gli elementi. <code>lambda</code> permette di definire piccole funzioni anonime al volo.</p>
+<pre><code class="language-python">parole: list[str] = ["statistica", "media", "varianza", "moda", "quartile"]
+
+# Ordine alfabetico (default)
+print(f"Alfabetico: {sorted(parole)}")
+# ['media', 'moda', 'quartile', 'statistica', 'varianza']
+
+# Per lunghezza
+print(f"Per lunghezza: {sorted(parole, key=lambda p: len(p))}")
+# ['moda', 'media', 'varianza', 'quartile', 'statistica']
+
+# Per lunghezza decrescente
+print(f"Per lunghezza (desc): {sorted(parole, key=lambda p: -len(p))}")
+# ['statistica', 'varianza', 'quartile', 'media', 'moda']</code></pre>
+            </section>
+
+            <!-- SLIDE 19: Ordinare dizionari per un campo -->
+            <section>
+                <h2>Ordinare dizionari per un campo</h2>
+<pre><code class="language-python">studenti: list[dict[str, object]] = [
+    {"nome": "Anna",  "media": 28.5},
+    {"nome": "Marco", "media": 24.0},
+    {"nome": "Luca",  "media": 29.3},
+    {"nome": "Sara",  "media": 27.1},
+]
+
+# Ordinare per media decrescente
+classifica: list[dict[str, object]] = sorted(
+    studenti, key=lambda s: s["media"], reverse=True
+)
+
+print("Classifica:")
+for i, s in enumerate(classifica, start=1):
+    print(f"  {i}. {s['nome']} — media: {s['media']}")</code></pre>
+                <div class="box box-blue">
+                    <strong>Output:</strong> 1. Luca &mdash; 29.3, 2. Anna &mdash; 28.5, 3. Sara &mdash; 27.1, 4. Marco &mdash; 24.0
+                </div>
+            </section>
+
+            <!-- SLIDE 20: Ordinare tuple con chiave multipla -->
+            <section>
+                <h2>Ordinamento con chiave multipla</h2>
+<pre><code class="language-python">risultati: list[tuple[str, int, float]] = [
+    ("Anna",  3, 28.5),
+    ("Marco", 2, 24.0),
+    ("Luca",  3, 29.3),
+    ("Sara",  2, 27.1),
+]
+
+# Ordinare per media (terzo elemento, indice 2)
+per_media = sorted(risultati, key=lambda r: r[2], reverse=True)
+
+# Ordinare per numero di esami (desc), poi per media (desc)
+per_esami_e_media = sorted(risultati, key=lambda r: (-r[1], -r[2]))</code></pre>
+                <div class="box box-yellow">
+                    <strong>Trucco:</strong> per ordinare in modo decrescente un campo numerico dentro una <code>lambda</code>, usate il segno meno: <code>-r[1]</code>.
+                </div>
+            </section>
+
+            <!-- SLIDE 21: Sezione 5 -->
+            <section class="section-slide">
+                <h2>Parte 5<br>Creare e importare moduli</h2>
+                <p><em>Il primo passo verso il codice riutilizzabile</em></p>
+            </section>
+
+            <!-- SLIDE 22: Cos'è un modulo -->
+            <section>
+                <h2>Cos'&egrave; un modulo?</h2>
+                <p>Un modulo &egrave; semplicemente un file <code>.py</code> che contiene definizioni di funzioni, variabili e classi.</p>
+                <div class="diagram">
+                    statistiche.py &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analisi.py<br>
+                    ┌──────────────┐ &nbsp;&nbsp;&nbsp;&nbsp; ┌───────────────────┐<br>
+                    │ def media()  │ &nbsp;&larr;&nbsp; │ import statistiche │<br>
+                    │ def varianza()│ &nbsp;&nbsp;&nbsp;&nbsp; │                   │<br>
+                    │ def mediana()│ &nbsp;&nbsp;&nbsp;&nbsp; │ statistiche.media()│<br>
+                    └──────────────┘ &nbsp;&nbsp;&nbsp;&nbsp; └───────────────────┘
+                </div>
+            </section>
+
+            <!-- SLIDE 23: Creare il modulo statistiche.py -->
+            <section>
+                <h2>Creare <code>statistiche.py</code></h2>
+<pre><code class="language-python">"""Modulo con funzioni statistiche di base."""
+
+
+def media(valori: list[float]) -> float:
+    """Calcola la media aritmetica."""
+    if len(valori) == 0:
+        raise ValueError("Lista vuota")
+    return sum(valori) / len(valori)
+
+
+def varianza(valori: list[float]) -> float:
+    """Calcola la varianza campionaria (denominatore n-1)."""
+    n: int = len(valori)
+    if n < 2:
+        raise ValueError("Servono almeno 2 valori")
+    m: float = media(valori)
+    return sum((x - m) ** 2 for x in valori) / (n - 1)
+
+
+def deviazione_standard(valori: list[float]) -> float:
+    """Calcola la deviazione standard campionaria."""
+    return varianza(valori) ** 0.5
+
+
+def mediana(valori: list[float]) -> float:
+    """Calcola la mediana."""
+    if len(valori) == 0:
+        raise ValueError("Lista vuota")
+    ordinati: list[float] = sorted(valori)
+    n: int = len(ordinati)
+    centro: int = n // 2
+    if n % 2 == 1:
+        return ordinati[centro]
+    return (ordinati[centro - 1] + ordinati[centro]) / 2</code></pre>
+            </section>
+
+            <!-- SLIDE 24: Importare e usare il modulo -->
+            <section>
+                <h2>Importare e usare il modulo</h2>
+                <h3>Import completo</h3>
+<pre><code class="language-python">"""Script che usa il modulo statistiche per analizzare dati."""
+import statistiche
+
+dati_temperatura: list[float] = [18.5, 21.0, 19.3, 22.1, 20.7, 17.9, 23.4]
+
+m: float = statistiche.media(dati_temperatura)
+v: float = statistiche.varianza(dati_temperatura)
+ds: float = statistiche.deviazione_standard(dati_temperatura)
+med: float = statistiche.mediana(dati_temperatura)
+
+print(f"Media:     {m:.2f}")
+print(f"Varianza:  {v:.2f}")
+print(f"Dev. std.: {ds:.2f}")
+print(f"Mediana:   {med:.2f}")</code></pre>
+                <h3>Import selettivo</h3>
+<pre><code class="language-python">from statistiche import media, mediana
+
+dati: list[float] = [10, 20, 30, 40, 50]
+print(f"Media: {media(dati)}")      # senza prefisso!
+print(f"Mediana: {mediana(dati)}")</code></pre>
+            </section>
+
+            <!-- SLIDE 25: Il blocco if __name__ -->
+            <section>
+                <h2>Il blocco <code>if __name__ == "__main__"</code></h2>
+                <p>Questo blocco viene eseguito <strong>solo</strong> se si lancia direttamente il file, <strong>non</strong> quando viene importato come modulo.</p>
+<pre><code class="language-python"># Alla fine di statistiche.py
+if __name__ == "__main__":
+    print("=== Test del modulo statistiche ===")
+
+    dati_test: list[float] = [2, 4, 4, 4, 5, 5, 7, 9]
+    print(f"Dati: {dati_test}")
+    print(f"Media:    {media(dati_test):.2f}")
+    print(f"Varianza: {varianza(dati_test):.2f}")
+    print(f"Dev.std.: {deviazione_standard(dati_test):.2f}")
+    print(f"Mediana:  {mediana(dati_test):.2f}")
+    print("Test completati.")</code></pre>
+                <div class="box box-green">
+                    <code>python statistiche.py</code> &rarr; esegue i test<br>
+                    <code>import statistiche</code> &rarr; i test <strong>non</strong> vengono eseguiti
+                </div>
+            </section>
+
+            <!-- SLIDE 26: Sezione esercizi -->
+            <section class="section-slide">
+                <h2>Esercizi autonomi</h2>
+                <p><em>Type hints, docstring e almeno 3 assert per ogni funzione</em></p>
+            </section>
+
+            <!-- SLIDE 27: Esercizio A1 -->
+            <section>
+                <h2>Esercizio A1 &mdash; Funzione moda <span class="badge badge-blue">base</span></h2>
+                <p>Implementa una funzione che restituisce il valore pi&ugrave; frequente in una lista.</p>
+<pre><code class="language-python">def moda(valori: list[float]) -> float:
+    ...</code></pre>
+                <h3>Specifiche</h3>
+                <ol>
+                    <li>Se la lista &egrave; vuota, solleva <code>ValueError</code></li>
+                    <li>Se ci sono pi&ugrave; valori con la stessa frequenza massima, restituisci il primo incontrato</li>
+                    <li>Puoi usare <code>Counter</code> oppure un dizionario manuale</li>
+                </ol>
+                <h3>Test attesi</h3>
+<pre><code class="language-python">assert moda([1, 2, 2, 3]) == 2
+assert moda([5]) == 5</code></pre>
+            </section>
+
+            <!-- SLIDE 28: Esercizio A2 -->
+            <section>
+                <h2>Esercizio A2 &mdash; Normalizzazione z-score <span class="badge badge-yellow">intermedio</span></h2>
+                <p>Lo z-score trasforma ogni valore: <code>z = (x - media) / dev_std</code></p>
+<pre><code class="language-python">def z_score(valori: list[float]) -> list[float]:
+    ...</code></pre>
+                <h3>Specifiche</h3>
+                <ol>
+                    <li>Se la lista ha meno di 2 elementi, solleva <code>ValueError</code></li>
+                    <li>Se la deviazione standard &egrave; zero, solleva <code>ValueError</code></li>
+                    <li>Riusa <code>media()</code> e <code>deviazione_standard()</code></li>
+                </ol>
+                <h3>Verifica</h3>
+<pre><code class="language-python"># La media degli z-score deve essere circa 0
+# La deviazione standard degli z-score deve essere circa 1</code></pre>
+            </section>
+
+            <!-- SLIDE 29: Esercizio A3 -->
+            <section>
+                <h2>Esercizio A3 &mdash; Decoratore timer <span class="badge badge-red">avanzato</span></h2>
+<pre><code class="language-python">import time
+from typing import Callable, Any
+
+
+def timer(funzione: Callable) -> Callable:
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
+        # Registra il tempo prima dell'esecuzione
+        # Chiama la funzione originale
+        # Registra il tempo dopo l'esecuzione
+        # Stampa il tempo impiegato
+        # Restituisci il risultato della funzione originale
+        ...
+    return wrapper</code></pre>
+                <h3>Specifiche</h3>
+                <ol>
+                    <li>Usa <code>time.perf_counter()</code> per misurare il tempo</li>
+                    <li>Applica il decoratore con la sintassi <code>@timer</code></li>
+                    <li>Testa con <code>list(range(1_000_000))</code></li>
+                </ol>
+                <div class="box box-blue">
+                    <strong>Nota:</strong> i decoratori non sono nel programma d'esame, ma aiutano a capire che le funzioni sono oggetti di prima classe in Python.
+                </div>
+            </section>
+
+            <!-- SLIDE 30: Sfida finale -->
+            <section>
+                <h2>Sfida finale &mdash; Mini-toolkit statistico</h2>
+                <p>Crea un modulo <code>toolkit.py</code> con tutte queste funzioni:</p>
+<pre><code class="language-python">def media(valori: list[float]) -> float: ...
+def mediana(valori: list[float]) -> float: ...
+def moda(valori: list[float]) -> float: ...
+def varianza(valori: list[float]) -> float: ...
+def deviazione_standard(valori: list[float]) -> float: ...
+def z_score(valori: list[float]) -> list[float]: ...
+def riepilogo(valori: list[float]) -> dict[str, float]: ...</code></pre>
+                <h3>Requisiti</h3>
+                <ul>
+                    <li><strong>Validazione:</strong> ogni funzione controlla l'input e solleva <code>ValueError</code></li>
+                    <li><strong>Composizione:</strong> le funzioni si riutilizzano tra loro</li>
+                    <li><strong>Testing:</strong> blocco <code>if __name__ == "__main__"</code> con almeno 10 <code>assert</code></li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 31: riepilogo() e dataset -->
+            <section>
+                <h2>Sfida finale &mdash; <code>riepilogo()</code></h2>
+                <p>La funzione <code>riepilogo()</code> deve restituire:</p>
+<pre><code class="language-python">{
+    "media": ...,
+    "mediana": ...,
+    "moda": ...,
+    "varianza": ...,
+    "dev_standard": ...,
+    "minimo": ...,
+    "massimo": ...,
+    "n": ...,
+}</code></pre>
+                <h3>Dataset di prova</h3>
+<pre><code class="language-python">voti: list[float] = [28, 24, 30, 26, 22, 27, 30, 25, 29, 23,
+                      30, 18, 26, 28, 24, 27, 30, 22, 25, 29]</code></pre>
+            </section>
+
+            <!-- SLIDE 32: Domande di verifica -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol>
+                    <li>Qual &egrave; la differenza tra <strong>parametri</strong> e <strong>argomenti</strong> di una funzione?</li>
+                    <li>Cosa succede se una funzione non ha un'istruzione <code>return</code>?</li>
+                    <li>Perch&eacute; &egrave; importante validare l'input invece di lasciare che Python generi un errore generico?</li>
+                    <li>Che differenza c'&egrave; tra <code>import statistiche</code> e <code>from statistiche import media</code>?</li>
+                    <li>Cosa fa il blocco <code>if __name__ == "__main__"</code>?</li>
+                    <li>Nell'espressione <code>sorted(dati, key=lambda x: x["voto"])</code>, cosa rappresenta la lambda?</li>
+                    <li>Perch&eacute; <code>assert</code> non deve essere usato per la validazione dell'input in produzione?</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 33: Tre principi chiave -->
+            <section>
+                <h2>Tre principi chiave</h2>
+                <div class="box box-blue">
+                    <h3>1. DRY &mdash; Don't Repeat Yourself</h3>
+                    <p>Se copiate e incollate codice, probabilmente vi serve una funzione.</p>
+                </div>
+                <div class="box box-green">
+                    <h3>2. Testabilit&agrave;</h3>
+                    <p>Una funzione ben scritta pu&ograve; essere testata in isolamento con <code>assert</code>. Se non riuscite a testarla, probabilmente fa troppe cose.</p>
+                </div>
+                <div class="box box-yellow">
+                    <h3>3. Modularit&agrave;</h3>
+                    <p>Separare il codice in moduli rende il progetto gestibile anche quando cresce.</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 34: Prossimo laboratorio -->
+            <section class="section-slide">
+                <h2>Prossimo laboratorio</h2>
+                <p>Lettura e scrittura di file &mdash; lavorare con dati esterni</p>
+                <br>
+                <p><em>Type hints + docstring rendono il codice auto-documentante:<br>chi legge la firma capisce cosa entra e cosa esce.</em></p>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L03_strutture_dati.html" style="color: var(--accent);">&larr; L03: Strutture dati</a></div><div><a href="L05_file_gestione_dati.html" style="color: var(--accent);">L05: File e gestione dati &rarr;</a></div><div><a href="../dispense/laboratori/L04_funzioni_modularita.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L04_funzioni/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; L04</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

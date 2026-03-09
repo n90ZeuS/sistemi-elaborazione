@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autovalutazione — F10: Comprehension e stringhe — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/F10_comprehension_stringhe.html">Dispensa</a> &bull; <a href="../errori_comuni/F10_errori.html">Errori comuni</a></nav>
+<h1>Autovalutazione — F10: Comprehension e stringhe</h1>
+
+<h1>Autovalutazione — F10: Comprehension, Stringhe e Metodi</h1>
+<p>Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere <strong>prima</strong> di guardare la soluzione.</p>
+<hr>
+<h2>Cosa stampa questo codice?</h2>
+<h3>Esercizio 1</h3>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>]
+pari <span class="op">=</span> [n <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>]
+<span class="nb">print</span>(pari)
+doppi <span class="op">=</span> [n <span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">5</span>]
+<span class="nb">print</span>(doppi)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>]
+[<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>]</code></pre>
+<p><strong>Spiegazione:</strong> La prima list comprehension filtra solo gli elementi pari dalla lista: il risultato e <code>[2, 4, 6, 8]</code>. La seconda seleziona gli elementi minori di 5 (<code>1, 2, 3, 4</code>) e li moltiplica per 2 (<code>2, 4, 6, 8</code>). Notare che i risultati sono uguali per coincidenza, ma i meccanismi sono diversi: la prima filtra, la seconda trasforma e filtra.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 2</h3>
+<pre><code>frase <span class="op">=</span> <span class="st">&quot;Ciao Mondo&quot;</span>
+<span class="nb">print</span>(frase.lower())
+<span class="nb">print</span>(frase.upper())
+<span class="nb">print</span>(frase.replace(<span class="st">&quot;Mondo&quot;</span>, <span class="st">&quot;Python&quot;</span>))
+<span class="nb">print</span>(frase)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>ciao mondo
+CIAO MONDO
+Ciao Python
+Ciao Mondo</code></pre>
+<p><strong>Spiegazione:</strong> I metodi delle stringhe (<code>lower()</code>, <code>upper()</code>, <code>replace()</code>) restituiscono una <strong>nuova stringa</strong> e non modificano l'originale. Le stringhe in Python sono <strong>immutabili</strong>: non possono essere cambiate dopo la creazione. L'ultima riga lo dimostra: <code>frase</code> e ancora <code>"Ciao Mondo"</code> nonostante le operazioni precedenti.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 3</h3>
+<pre><code>dati <span class="op">=</span> <span class="st">&quot;rosso,verde,blu,giallo&quot;</span>
+colori <span class="op">=</span> dati.split(<span class="st">&quot;,&quot;</span>)
+<span class="nb">print</span>(colori)
+<span class="nb">print</span>(<span class="nb">len</span>(colori))
+risultato <span class="op">=</span> <span class="st">&quot; - &quot;</span>.join(colori)
+<span class="nb">print</span>(risultato)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="st">&#x27;rosso&#x27;</span>, <span class="st">&#x27;verde&#x27;</span>, <span class="st">&#x27;blu&#x27;</span>, <span class="st">&#x27;giallo&#x27;</span>]
+<span class="mi">4</span>
+rosso <span class="op">-</span> verde <span class="op">-</span> blu <span class="op">-</span> giallo</code></pre>
+<p><strong>Spiegazione:</strong> <code>split(",")</code> divide la stringa in una lista usando la virgola come separatore. <code>len()</code> conta gli elementi della lista (4 colori). <code>" - ".join(colori)</code> fa l'operazione inversa: unisce gli elementi della lista in un'unica stringa, inserendo <code>" - "</code> tra un elemento e l'altro.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 4</h3>
+<pre><code>parole <span class="op">=</span> [<span class="st">&quot;ciao&quot;</span>, <span class="st">&quot;mondo&quot;</span>, <span class="st">&quot;python&quot;</span>, <span class="st">&quot;è&quot;</span>, <span class="st">&quot;bello&quot;</span>]
+lunghe <span class="op">=</span> [p.upper() <span class="kw">for</span> p <span class="kw">in</span> parole <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span> <span class="mi">3</span>]
+<span class="nb">print</span>(lunghe)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="st">&#x27;CIAO&#x27;</span>, <span class="st">&#x27;MONDO&#x27;</span>, <span class="st">&#x27;PYTHON&#x27;</span>, <span class="st">&#x27;BELLO&#x27;</span>]</code></pre>
+<p><strong>Spiegazione:</strong> La comprehension ha tre parti: (1) trasformazione <code>p.upper()</code>, (2) iterazione <code>for p in parole</code>, (3) filtro <code>if len(p) > 3</code>. Prima si filtrano le parole con piu di 3 caratteri (si esclude <code>"è"</code> che ha 1 carattere), poi si trasformano in maiuscolo. L'ordine di lettura e: "per ogni <code>p</code> in <code>parole</code>, <strong>se</strong> la lunghezza e maggiore di 3, prendi <code>p.upper()</code>".</p>
+<p></details></p>
+<hr>
+<h2>Trova l'errore</h2>
+<h3>Esercizio 5</h3>
+<p>Il codice dovrebbe mettere in maiuscolo la prima lettera di una stringa, ma genera un errore.</p>
+<pre><code>nome <span class="op">=</span> <span class="st">&quot;alice&quot;</span>
+nome[<span class="mi">0</span>] <span class="op">=</span> <span class="st">&quot;A&quot;</span>
+<span class="nb">print</span>(nome)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>TypeError: 'str' object does not support item assignment</code></p>
+<p><strong>Problema:</strong> Le stringhe sono <strong>immutabili</strong> in Python: non si possono modificare i singoli caratteri. L'operazione <code>nome[0] = "A"</code> tenta di cambiare il primo carattere, ma Python non lo permette.</p>
+<p><strong>Soluzione:</strong></p>
+<pre><code>nome <span class="op">=</span> <span class="st">&quot;alice&quot;</span>
+nome <span class="op">=</span> <span class="st">&quot;A&quot;</span> <span class="op">+</span> nome[<span class="mi">1</span>:]     <span class="cm"># creiamo una NUOVA stringa</span>
+<span class="nb">print</span>(nome)                <span class="cm"># stampa: Alice</span>
+
+<span class="cm"># Oppure, più semplice:</span>
+nome <span class="op">=</span> <span class="st">&quot;alice&quot;</span>
+nome <span class="op">=</span> nome.capitalize()   <span class="cm"># metodo che capitalizza la prima lettera</span>
+<span class="nb">print</span>(nome)                <span class="cm"># stampa: Alice</span></code></pre>
+<p>Con le stringhe, si crea sempre una <strong>nuova</strong> stringa invece di modificare quella esistente.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 6</h3>
+<p>Il codice dovrebbe separare nome e cognome, ma il risultato e sbagliato.</p>
+<pre><code>dati <span class="op">=</span> <span class="st">&quot;Rossi;Marco;25&quot;</span>
+parti <span class="op">=</span> dati.split(<span class="st">&quot;,&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Cognome: {parti[0]}, Nome: {parti[1]}&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>IndexError: list index out of range</code></p>
+<p><strong>Problema:</strong> La stringa usa il punto e virgola <code>;</code> come separatore, ma <code>split(",")</code> cerca la virgola <code>,</code>. Siccome non ci sono virgole, <code>split</code> restituisce una lista con un solo elemento: <code>["Rossi;Marco;25"]</code>. Tentare di accedere a <code>parti[1]</code> causa un <code>IndexError</code>.</p>
+<p><strong>Soluzione:</strong></p>
+<pre><code>dati <span class="op">=</span> <span class="st">&quot;Rossi;Marco;25&quot;</span>
+parti <span class="op">=</span> dati.split(<span class="st">&quot;;&quot;</span>)    <span class="cm"># separatore corretto: punto e virgola</span>
+<span class="nb">print</span>(<span class="st">f&quot;Cognome: {parti[0]}, Nome: {parti[1]}&quot;</span>)
+<span class="cm"># stampa: Cognome: Rossi, Nome: Marco</span></code></pre>
+<p>Bisogna sempre verificare quale carattere viene usato come separatore nei dati.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 7</h3>
+<p>Il codice dovrebbe creare una lista di quadrati dei numeri pari, ma ha un errore di sintassi.</p>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+quadrati <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">if</span> n <span class="op">&gt;</span> <span class="mi">3</span>]
+<span class="nb">print</span>(quadrati)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong> <code>[16, 36]</code></p>
+<p><strong>Nota:</strong> In realta questo codice <strong>funziona</strong> in Python (piu <code>if</code> consecutivi sono equivalenti a <code>and</code>), ma e molto poco leggibile e fonte comune di confusione.</p>
+<p><strong>Versione consigliata (piu chiara):</strong></p>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+quadrati <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">and</span> n <span class="op">&gt;</span> <span class="mi">3</span>]
+<span class="nb">print</span>(quadrati)  <span class="cm"># stampa: [16, 36]</span></code></pre>
+<p>Usare <code>and</code> per combinare piu condizioni rende il codice piu leggibile. I numeri che soddisfano entrambe le condizioni (pari <strong>e</strong> maggiori di 3) sono <code>4</code> e <code>6</code>, i cui quadrati sono <code>16</code> e <code>36</code>.</p>
+<p></details></p>
+<hr>
+<h2>Completa il codice</h2>
+<h3>Esercizio 8</h3>
+<p>Completa la funzione che restituisce le parole piu lunghe di <code>n</code> caratteri da una frase.</p>
+<pre><code><span class="kw">def</span> <span class="fn">parole_lunghe</span>(<span class="fn">frase</span>, n):
+    <span class="st">&quot;&quot;&quot;Restituisce la lista delle parole più lunghe di n caratteri.
+
+    Esempio: parole_lunghe(&quot;il gatto dorme sul divano&quot;, 3)
+    deve restituire [&quot;gatto&quot;, &quot;dorme&quot;, &quot;divano&quot;]
+    &quot;&quot;&quot;</span>
+    parole <span class="op">=</span> frase.____________
+    <span class="kw">return</span> [_________ <span class="kw">for</span> p <span class="kw">in</span> _________ <span class="kw">if</span> ___________]</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">parole_lunghe</span>(<span class="fn">frase</span>, n):
+    <span class="st">&quot;&quot;&quot;Restituisce la lista delle parole più lunghe di n caratteri.&quot;&quot;&quot;</span>
+    parole <span class="op">=</span> frase.split()
+    <span class="kw">return</span> [p <span class="kw">for</span> p <span class="kw">in</span> parole <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span> n]</code></pre>
+<p><strong>Spiegazione:</strong> <code>split()</code> senza argomenti divide la stringa per spazi bianchi (spazi, tab, a capo). La comprehension scorre ogni parola <code>p</code> e la include nel risultato solo se la sua lunghezza supera <code>n</code>. Nota: <code>split()</code> senza argomenti gestisce anche spazi multipli, a differenza di <code>split(" ")</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 9</h3>
+<p>Completa la funzione che pulisce e normalizza un testo.</p>
+<pre><code><span class="kw">def</span> <span class="fn">normalizza_testo</span>(<span class="fn">testo</span>):
+    <span class="st">&quot;&quot;&quot;Pulisce un testo: minuscolo, senza spazi extra, senza punteggiatura finale.
+
+    Esempio: normalizza_testo(&quot;  Ciao, MONDO!  &quot;)
+    deve restituire &quot;ciao, mondo!&quot;
+
+    Esempio: normalizza_testo(&quot;  PYTHON   è   BELLO  &quot;)
+    deve restituire &quot;python è bello&quot;
+    &quot;&quot;&quot;</span>
+    testo <span class="op">=</span> testo.____________     <span class="cm"># rimuove spazi iniziali e finali</span>
+    testo <span class="op">=</span> testo.____________     <span class="cm"># converte in minuscolo</span>
+    parole <span class="op">=</span> testo.____________    <span class="cm"># divide in parole</span>
+    <span class="kw">return</span> _________________________  <span class="cm"># riunisce con un singolo spazio</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">normalizza_testo</span>(<span class="fn">testo</span>):
+    <span class="st">&quot;&quot;&quot;Pulisce un testo: minuscolo, senza spazi extra.&quot;&quot;&quot;</span>
+    testo <span class="op">=</span> testo.strip()
+    testo <span class="op">=</span> testo.lower()
+    parole <span class="op">=</span> testo.split()
+    <span class="kw">return</span> <span class="st">&quot; &quot;</span>.join(parole)</code></pre>
+<p><strong>Spiegazione:</strong> La pipeline di pulizia funziona cosi: (1) <code>strip()</code> rimuove gli spazi bianchi all'inizio e alla fine; (2) <code>lower()</code> converte tutto in minuscolo; (3) <code>split()</code> divide per spazi (gestendo anche spazi multipli); (4) <code>" ".join(parole)</code> ricompone il testo con un solo spazio tra le parole, eliminando cosi gli spazi extra interni.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 10</h3>
+<p>Completa la funzione che conta le vocali in una stringa.</p>
+<pre><code><span class="kw">def</span> <span class="fn">conta_vocali</span>(<span class="fn">testo</span>):
+    <span class="st">&quot;&quot;&quot;Conta il numero di vocali (a, e, i, o, u) nel testo.
+
+    Esempio: conta_vocali(&quot;Ciao Mondo&quot;) deve restituire 4
+    &quot;&quot;&quot;</span>
+    vocali <span class="op">=</span> <span class="st">&quot;aeiou&quot;</span>
+    testo_lower <span class="op">=</span> testo.__________
+    <span class="kw">return</span> ____([_____________ <span class="kw">for</span> c <span class="kw">in</span> testo_lower <span class="kw">if</span> ______________])</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">conta_vocali</span>(<span class="fn">testo</span>):
+    <span class="st">&quot;&quot;&quot;Conta il numero di vocali (a, e, i, o, u) nel testo.&quot;&quot;&quot;</span>
+    vocali <span class="op">=</span> <span class="st">&quot;aeiou&quot;</span>
+    testo_lower <span class="op">=</span> testo.lower()
+    <span class="kw">return</span> <span class="nb">len</span>([c <span class="kw">for</span> c <span class="kw">in</span> testo_lower <span class="kw">if</span> c <span class="kw">in</span> vocali])</code></pre>
+<p><strong>Spiegazione:</strong> Prima convertiamo il testo in minuscolo per non doverci preoccupare delle maiuscole. La comprehension <code>[c for c in testo_lower if c in vocali]</code> costruisce una lista con solo i caratteri che sono vocali. Infine, <code>len()</code> conta quanti elementi ha questa lista. In <code>"ciao mondo"</code> le vocali sono <code>i, a, o, o</code> = 4.</p>
+<p></details></p>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

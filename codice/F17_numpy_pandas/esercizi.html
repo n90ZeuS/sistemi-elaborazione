@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F17_numpy_pandas/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/F17_numpy_pandas_visualizzazione.html">Dispensa</a> &bull; <a href="../../presentazioni/F17_numpy_pandas_visualizzazione.html">Presentazione</a> &bull; <a href="esempi.html">Esempi</a></nav>
+<h1>F17_numpy_pandas/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F17 — NumPy, Pandas, visualizzazione</span>
+<span class="cm"># Esercizi per la lezione frontale 17</span>
+
+<span class="kw">from</span> __future__ <span class="kw">import</span> annotations
+<span class="kw">import</span> os
+<span class="kw">import</span> tempfile
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># Importazione condizionale</span>
+<span class="cm"># ============================================================</span>
+<span class="kw">try</span>:
+    <span class="kw">import</span> numpy <span class="kw">as</span> np
+    HAS_NUMPY: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    HAS_NUMPY <span class="op">=</span> <span class="kw">False</span>
+    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: NumPy non installato. Installare con: pip install numpy&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  Gli esercizi NumPy verranno saltati.\n&quot;</span>)
+
+<span class="kw">try</span>:
+    <span class="kw">import</span> pandas <span class="kw">as</span> pd
+    HAS_PANDAS: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    HAS_PANDAS <span class="op">=</span> <span class="kw">False</span>
+    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: Pandas non installato. Installare con: pip install pandas&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  Gli esercizi Pandas verranno saltati.\n&quot;</span>)
+
+<span class="kw">try</span>:
+    <span class="kw">import</span> matplotlib
+    matplotlib.use(<span class="st">&quot;Agg&quot;</span>)  <span class="cm"># backend non interattivo</span>
+    <span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+    HAS_MATPLOTLIB: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    HAS_MATPLOTLIB <span class="op">=</span> <span class="kw">False</span>
+    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: Matplotlib non installato. Installare con: pip install matplotlib&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  I grafici verranno saltati.\n&quot;</span>)
+
+DIR_TEMP: <span class="nb">str</span> <span class="op">=</span> tempfile.mkdtemp(prefix<span class="op">=</span><span class="st">&quot;f17_esercizi_&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 1: Pipeline di analisi dati con NumPy</span>
+<span class="cm"># Analisi statistica completa di un dataset simulato.</span>
+<span class="cm"># ============================================================</span>
+<span class="kw">if</span> HAS_NUMPY:
+    <span class="nb">print</span>(<span class="st">&quot;=== Esercizio 1: Analisi dati con NumPy ===&quot;</span>)
+
+    <span class="cm"># Simulazione dati: voti di 100 studenti in 3 materie</span>
+    np.random.seed(<span class="mi">42</span>)
+    n_studenti: <span class="nb">int</span> <span class="op">=</span> <span class="mi">100</span>
+    n_materie: <span class="nb">int</span> <span class="op">=</span> <span class="mi">3</span>
+
+    <span class="cm"># Genera voti realistici (distribuzione normale troncata tra 18 e 30)</span>
+    voti_raw: np.ndarray <span class="op">=</span> np.random.normal(loc<span class="op">=</span><span class="mi">25</span>, scale<span class="op">=</span><span class="mi">3</span>, size<span class="op">=</span>(n_studenti, n_materie))
+    voti: np.ndarray <span class="op">=</span> np.clip(np.<span class="nb">round</span>(voti_raw), <span class="mi">18</span>, <span class="mi">30</span>).astype(<span class="nb">int</span>)
+    materie: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>]
+
+    <span class="nb">print</span>(<span class="st">f&quot;Dataset: {voti.shape[0]} studenti x {voti.shape[1]} materie&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Prime 5 righe:\n{voti[:5]}\n&quot;</span>)
+
+    <span class="cm"># --- Analisi per materia ---</span>
+    <span class="nb">print</span>(<span class="st">&quot;Statistiche per materia:&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;{&#x27;Materia&#x27;:&lt;15} {&#x27;Media&#x27;:&gt;7} {&#x27;Mediana&#x27;:&gt;8} {&#x27;Std&#x27;:&gt;7} {&#x27;Min&#x27;:&gt;5} {&#x27;Max&#x27;:&gt;5}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">50</span>)
+    <span class="kw">for</span> i, materia <span class="kw">in</span> <span class="nb">enumerate</span>(materie):
+        col: np.ndarray <span class="op">=</span> voti[:, i]
+        media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.mean(col))
+        mediana: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.median(col))
+        std: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.std(col, ddof<span class="op">=</span><span class="mi">1</span>))
+        minimo: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(np.<span class="nb">min</span>(col))
+        massimo: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(np.<span class="nb">max</span>(col))
+        <span class="nb">print</span>(<span class="st">f&quot;{materia:&lt;15} {media:&gt;7.2f} {mediana:&gt;8.1f} {std:&gt;7.2f} {minimo:&gt;5} {massimo:&gt;5}&quot;</span>)
+
+    <span class="cm"># --- Analisi per studente ---</span>
+    medie_studenti: np.ndarray <span class="op">=</span> np.mean(voti, axis<span class="op">=</span><span class="mi">1</span>)
+    <span class="kw">assert</span> medie_studenti.shape <span class="op">=</span><span class="op">=</span> (n_studenti,)
+
+    <span class="nb">print</span>(<span class="st">f&quot;\nMedia delle medie degli studenti: {np.mean(medie_studenti):.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Studente con media più alta: #{np.argmax(medie_studenti)} &quot;</span>
+          <span class="st">f&quot;(media={np.max(medie_studenti):.2f})&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Studente con media più bassa: #{np.argmin(medie_studenti)} &quot;</span>
+          <span class="st">f&quot;(media={np.min(medie_studenti):.2f})&quot;</span>)
+
+    <span class="cm"># --- Correlazione tra materie ---</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nMatrice di correlazione:&quot;</span>)
+    corr: np.ndarray <span class="op">=</span> np.corrcoef(voti.T)
+    <span class="kw">assert</span> corr.shape <span class="op">=</span><span class="op">=</span> (<span class="mi">3</span>, <span class="mi">3</span>)
+    <span class="kw">for</span> i, m1 <span class="kw">in</span> <span class="nb">enumerate</span>(materie):
+        valori_str: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;  &quot;</span>.join(<span class="st">f&quot;{corr[i, j]:&gt;6.3f}&quot;</span> <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(n_materie))
+        <span class="nb">print</span>(<span class="st">f&quot;  {m1:&lt;15} {valori_str}&quot;</span>)
+
+    <span class="cm"># --- Distribuzione voti ---</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nDistribuzione voti (tutte le materie):&quot;</span>)
+    tutti_voti: np.ndarray <span class="op">=</span> voti.flatten()
+    valori_unici: np.ndarray
+    conteggi: np.ndarray
+    valori_unici, conteggi <span class="op">=</span> np.unique(tutti_voti, return_counts<span class="op">=</span><span class="kw">True</span>)
+    <span class="kw">for</span> voto, conteggio <span class="kw">in</span> <span class="nb">zip</span>(valori_unici, conteggi):
+        barra: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;#&quot;</span> <span class="op">*</span> conteggio
+        <span class="nb">print</span>(<span class="st">f&quot;  {voto:&gt;2}: {barra} ({conteggio})&quot;</span>)
+
+    <span class="cm"># --- Percentuale di sufficienze (&gt;= 18) e lodi (30) ---</span>
+    totale_voti: <span class="nb">int</span> <span class="op">=</span> voti.size
+    n_lodi: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(np.<span class="nb">sum</span>(voti <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>))
+    percentuale_lodi: <span class="nb">float</span> <span class="op">=</span> n_lodi <span class="op">/</span> totale_voti <span class="op">*</span> <span class="mi">100</span>
+    <span class="nb">print</span>(<span class="st">f&quot;\nVoti totali: {totale_voti}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Lodi (30): {n_lodi} ({percentuale_lodi:.1f}%)&quot;</span>)
+
+    <span class="cm"># Studenti con tutti 30</span>
+    tutti_trenta: np.ndarray <span class="op">=</span> np.<span class="nb">all</span>(voti <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>, axis<span class="op">=</span><span class="mi">1</span>)
+    n_tutti_trenta: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(np.<span class="nb">sum</span>(tutti_trenta))
+    <span class="nb">print</span>(<span class="st">f&quot;Studenti con tutti 30: {n_tutti_trenta}&quot;</span>)
+
+    <span class="cm"># Verifica: nessun voto fuori range</span>
+    <span class="kw">assert</span> np.<span class="nb">all</span>(voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>)
+    <span class="kw">assert</span> np.<span class="nb">all</span>(voti <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>)
+
+    <span class="nb">print</span>(<span class="st">&quot;\nEsercizio 1 superato!\n&quot;</span>)
+
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;[SKIP] Esercizio 1 saltato (numpy non installato)\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 2: Analisi con Pandas e GroupBy</span>
+<span class="cm"># Creare un DataFrame, analizzare con groupby e aggregazioni.</span>
+<span class="cm"># ============================================================</span>
+<span class="kw">if</span> HAS_PANDAS:
+    <span class="nb">print</span>(<span class="st">&quot;=== Esercizio 2: Pandas GroupBy e aggregazioni ===&quot;</span>)
+
+    <span class="cm"># Creazione dataset</span>
+    dati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>] <span class="op">=</span> {
+        <span class="st">&quot;studente&quot;</span>: [
+            <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Laura&quot;</span>, <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;Paolo&quot;</span>, <span class="st">&quot;Anna&quot;</span>,
+            <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;Davide&quot;</span>, <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;Matteo&quot;</span>,
+            <span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Fabio&quot;</span>, <span class="st">&quot;Valentina&quot;</span>, <span class="st">&quot;Andrea&quot;</span>, <span class="st">&quot;Silvia&quot;</span>,
+        ],
+        <span class="st">&quot;corso&quot;</span>: [
+            <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>,
+            <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>,
+            <span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>,
+        ],
+        <span class="st">&quot;anno&quot;</span>: [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>],
+        <span class="st">&quot;voto_mat&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">24</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">26</span>, <span class="mi">29</span>, <span class="mi">25</span>, <span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">20</span>, <span class="mi">27</span>, <span class="mi">28</span>, <span class="mi">26</span>],
+        <span class="st">&quot;voto_fis&quot;</span>: [<span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">28</span>, <span class="mi">29</span>, <span class="mi">20</span>, <span class="mi">27</span>, <span class="mi">27</span>, <span class="mi">23</span>, <span class="mi">30</span>, <span class="mi">28</span>, <span class="mi">18</span>, <span class="mi">29</span>, <span class="mi">26</span>, <span class="mi">24</span>],
+        <span class="st">&quot;voto_inf&quot;</span>: [<span class="mi">30</span>, <span class="mi">29</span>, <span class="mi">26</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">24</span>, <span class="mi">28</span>, <span class="mi">28</span>, <span class="mi">27</span>, <span class="mi">25</span>, <span class="mi">29</span>, <span class="mi">22</span>, <span class="mi">26</span>, <span class="mi">27</span>, <span class="mi">30</span>],
+    }
+
+    df: pd.DataFrame <span class="op">=</span> pd.DataFrame(dati)
+    <span class="nb">print</span>(<span class="st">f&quot;DataFrame:\n{df}\n&quot;</span>)
+
+    <span class="cm"># --- Colonna media calcolata ---</span>
+    df[<span class="st">&quot;media&quot;</span>] <span class="op">=</span> (df[<span class="st">&quot;voto_mat&quot;</span>] <span class="op">+</span> df[<span class="st">&quot;voto_fis&quot;</span>] <span class="op">+</span> df[<span class="st">&quot;voto_inf&quot;</span>]) <span class="op">/</span> <span class="mi">3</span>
+    df[<span class="st">&quot;media&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;media&quot;</span>].<span class="nb">round</span>(<span class="mi">2</span>)
+
+    <span class="cm"># --- GroupBy per corso ---</span>
+    <span class="nb">print</span>(<span class="st">&quot;=== Statistiche per corso ===&quot;</span>)
+    stats_corso: pd.DataFrame <span class="op">=</span> df.groupby(<span class="st">&quot;corso&quot;</span>).agg(
+        n_studenti<span class="op">=</span>(<span class="st">&quot;studente&quot;</span>, <span class="st">&quot;count&quot;</span>),
+        media_mat<span class="op">=</span>(<span class="st">&quot;voto_mat&quot;</span>, <span class="st">&quot;mean&quot;</span>),
+        media_fis<span class="op">=</span>(<span class="st">&quot;voto_fis&quot;</span>, <span class="st">&quot;mean&quot;</span>),
+        media_inf<span class="op">=</span>(<span class="st">&quot;voto_inf&quot;</span>, <span class="st">&quot;mean&quot;</span>),
+        media_globale<span class="op">=</span>(<span class="st">&quot;media&quot;</span>, <span class="st">&quot;mean&quot;</span>),
+    ).<span class="nb">round</span>(<span class="mi">2</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;{stats_corso}\n&quot;</span>)
+
+    <span class="kw">assert</span> stats_corso.loc[<span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;n_studenti&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>
+    <span class="kw">assert</span> stats_corso.loc[<span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;n_studenti&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+    <span class="kw">assert</span> stats_corso.loc[<span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;n_studenti&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
+
+    <span class="cm"># --- GroupBy per anno ---</span>
+    <span class="nb">print</span>(<span class="st">&quot;=== Statistiche per anno ===&quot;</span>)
+    stats_anno: pd.DataFrame <span class="op">=</span> df.groupby(<span class="st">&quot;anno&quot;</span>).agg(
+        n_studenti<span class="op">=</span>(<span class="st">&quot;studente&quot;</span>, <span class="st">&quot;count&quot;</span>),
+        media_globale<span class="op">=</span>(<span class="st">&quot;media&quot;</span>, <span class="st">&quot;mean&quot;</span>),
+        voto_max<span class="op">=</span>(<span class="st">&quot;media&quot;</span>, <span class="st">&quot;max&quot;</span>),
+        voto_min<span class="op">=</span>(<span class="st">&quot;media&quot;</span>, <span class="st">&quot;min&quot;</span>),
+    ).<span class="nb">round</span>(<span class="mi">2</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;{stats_anno}\n&quot;</span>)
+
+    <span class="cm"># --- GroupBy multiplo (corso x anno) ---</span>
+    <span class="nb">print</span>(<span class="st">&quot;=== Studenti per corso e anno ===&quot;</span>)
+    pivot: pd.DataFrame <span class="op">=</span> df.pivot_table(
+        values<span class="op">=</span><span class="st">&quot;media&quot;</span>,
+        index<span class="op">=</span><span class="st">&quot;corso&quot;</span>,
+        columns<span class="op">=</span><span class="st">&quot;anno&quot;</span>,
+        aggfunc<span class="op">=</span><span class="st">&quot;mean&quot;</span>
+    ).<span class="nb">round</span>(<span class="mi">2</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;{pivot}\n&quot;</span>)
+
+    <span class="cm"># --- Top studenti per corso ---</span>
+    <span class="nb">print</span>(<span class="st">&quot;=== Miglior studente per corso ===&quot;</span>)
+    <span class="kw">for</span> corso, gruppo <span class="kw">in</span> df.groupby(<span class="st">&quot;corso&quot;</span>):
+        migliore: pd.Series <span class="op">=</span> gruppo.loc[gruppo[<span class="st">&quot;media&quot;</span>].idxmax()]
+        <span class="nb">print</span>(<span class="st">f&quot;  {corso}: {migliore[&#x27;studente&#x27;]} (media: {migliore[&#x27;media&#x27;]:.2f})&quot;</span>)
+
+    <span class="cm"># --- Filtri combinati ---</span>
+    eccellenti: pd.DataFrame <span class="op">=</span> df[
+        (df[<span class="st">&quot;media&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>) <span class="op">&amp;</span> (df[<span class="st">&quot;anno&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">2</span>)
+    ].sort_values(<span class="st">&quot;media&quot;</span>, ascending<span class="op">=</span><span class="kw">False</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;\nEccellenti (media &gt;= 28, anno &gt;= 2):&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;{eccellenti[[&#x27;studente&#x27;, &#x27;corso&#x27;, &#x27;anno&#x27;, &#x27;media&#x27;]]}\n&quot;</span>)
+
+    <span class="cm"># --- Esportazione CSV ---</span>
+    csv_output: <span class="nb">str</span> <span class="op">=</span> os.path.join(DIR_TEMP, <span class="st">&quot;analisi_studenti.csv&quot;</span>)
+    df.to_csv(csv_output, index<span class="op">=</span><span class="kw">False</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;CSV esportato: {csv_output}&quot;</span>)
+
+    <span class="cm"># Verifica rileggendo</span>
+    df_riletto: pd.DataFrame <span class="op">=</span> pd.read_csv(csv_output)
+    <span class="kw">assert</span> df_riletto.shape <span class="op">=</span><span class="op">=</span> df.shape
+
+    <span class="nb">print</span>(<span class="st">&quot;\nEsercizio 2 superato!\n&quot;</span>)
+
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;[SKIP] Esercizio 2 saltato (pandas non installato)\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 3: Visualizzazione dati</span>
+<span class="cm"># Creare grafici riepilogativi dei dati analizzati.</span>
+<span class="cm"># ============================================================</span>
+<span class="kw">if</span> HAS_MATPLOTLIB <span class="kw">and</span> HAS_PANDAS <span class="kw">and</span> HAS_NUMPY:
+    <span class="nb">print</span>(<span class="st">&quot;=== Esercizio 3: Visualizzazione ===&quot;</span>)
+
+    <span class="cm"># Usiamo il DataFrame dall&#x27;esercizio 2 (già creato sopra)</span>
+
+    <span class="cm"># --- 3.1 Grafico a barre: media per corso ---</span>
+    fig1, ax1 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+    medie_corso: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;media&quot;</span>].mean()
+    colori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;#4CAF50&quot;</span>, <span class="st">&quot;#2196F3&quot;</span>, <span class="st">&quot;#FF9800&quot;</span>]
+    barre <span class="op">=</span> ax1.bar(medie_corso.index, medie_corso.values, color<span class="op">=</span>colori)
+    ax1.set_ylabel(<span class="st">&quot;Media voto&quot;</span>)
+    ax1.set_title(<span class="st">&quot;Media voti per corso di laurea&quot;</span>)
+    ax1.set_ylim(<span class="mi">20</span>, <span class="mi">31</span>)
+    <span class="kw">for</span> barra, valore <span class="kw">in</span> <span class="nb">zip</span>(barre, medie_corso.values):
+        ax1.text(barra.get_x() <span class="op">+</span> barra.get_width() <span class="op">/</span> <span class="mi">2</span>, barra.get_height() <span class="op">+</span> <span class="mi">0.2</span>,
+                 <span class="st">f&quot;{valore:.1f}&quot;</span>, ha<span class="op">=</span><span class="st">&quot;center&quot;</span>, va<span class="op">=</span><span class="st">&quot;bottom&quot;</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
+
+    path_barre: <span class="nb">str</span> <span class="op">=</span> os.path.join(DIR_TEMP, <span class="st">&quot;media_per_corso.png&quot;</span>)
+    fig1.savefig(path_barre, dpi<span class="op">=</span><span class="mi">100</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)
+    plt.close(fig1)
+    <span class="nb">print</span>(<span class="st">f&quot;Grafico barre salvato: {path_barre}&quot;</span>)
+
+    <span class="cm"># --- 3.2 Box plot: distribuzione voti per materia ---</span>
+    fig2, ax2 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+    dati_box: <span class="nb">list</span>[pd.Series] <span class="op">=</span> [df[<span class="st">&quot;voto_mat&quot;</span>], df[<span class="st">&quot;voto_fis&quot;</span>], df[<span class="st">&quot;voto_inf&quot;</span>]]
+    bp <span class="op">=</span> ax2.boxplot(dati_box, labels<span class="op">=</span>[<span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>],
+                     patch_artist<span class="op">=</span><span class="kw">True</span>)
+    colors_box: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;#81C784&quot;</span>, <span class="st">&quot;#64B5F6&quot;</span>, <span class="st">&quot;#FFB74D&quot;</span>]
+    <span class="kw">for</span> patch, color <span class="kw">in</span> <span class="nb">zip</span>(bp[<span class="st">&quot;boxes&quot;</span>], colors_box):
+        patch.set_facecolor(color)
+    ax2.set_ylabel(<span class="st">&quot;Voto&quot;</span>)
+    ax2.set_title(<span class="st">&quot;Distribuzione voti per materia&quot;</span>)
+    ax2.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>, axis<span class="op">=</span><span class="st">&quot;y&quot;</span>)
+
+    path_box: <span class="nb">str</span> <span class="op">=</span> os.path.join(DIR_TEMP, <span class="st">&quot;boxplot_materie.png&quot;</span>)
+    fig2.savefig(path_box, dpi<span class="op">=</span><span class="mi">100</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)
+    plt.close(fig2)
+    <span class="nb">print</span>(<span class="st">f&quot;Box plot salvato: {path_box}&quot;</span>)
+
+    <span class="cm"># --- 3.3 Scatter: relazione tra voti matematica e informatica ---</span>
+    fig3, ax3 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+    <span class="kw">for</span> corso, gruppo <span class="kw">in</span> df.groupby(<span class="st">&quot;corso&quot;</span>):
+        ax3.scatter(gruppo[<span class="st">&quot;voto_mat&quot;</span>], gruppo[<span class="st">&quot;voto_inf&quot;</span>],
+                    label<span class="op">=</span>corso, alpha<span class="op">=</span><span class="mi">0.7</span>, s<span class="op">=</span><span class="mi">80</span>)
+    ax3.set_xlabel(<span class="st">&quot;Voto Matematica&quot;</span>)
+    ax3.set_ylabel(<span class="st">&quot;Voto Informatica&quot;</span>)
+    ax3.set_title(<span class="st">&quot;Voto Matematica vs Informatica&quot;</span>)
+    ax3.legend()
+    ax3.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+
+    <span class="cm"># Retta di tendenza</span>
+    coeffs: np.ndarray <span class="op">=</span> np.polyfit(df[<span class="st">&quot;voto_mat&quot;</span>].values, df[<span class="st">&quot;voto_inf&quot;</span>].values, <span class="mi">1</span>)
+    x_line: np.ndarray <span class="op">=</span> np.linspace(df[<span class="st">&quot;voto_mat&quot;</span>].<span class="nb">min</span>(), df[<span class="st">&quot;voto_mat&quot;</span>].<span class="nb">max</span>(), <span class="mi">100</span>)
+    y_line: np.ndarray <span class="op">=</span> np.polyval(coeffs, x_line)
+    ax3.plot(x_line, y_line, <span class="st">&quot;r--&quot;</span>, alpha<span class="op">=</span><span class="mi">0.5</span>,
+             label<span class="op">=</span><span class="st">f&quot;Tendenza (r={np.corrcoef(df[&#x27;voto_mat&#x27;], df[&#x27;voto_inf&#x27;])[0,1]:.2f})&quot;</span>)
+    ax3.legend()
+
+    path_scatter: <span class="nb">str</span> <span class="op">=</span> os.path.join(DIR_TEMP, <span class="st">&quot;scatter_mat_inf.png&quot;</span>)
+    fig3.savefig(path_scatter, dpi<span class="op">=</span><span class="mi">100</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)
+    plt.close(fig3)
+    <span class="nb">print</span>(<span class="st">f&quot;Scatter plot salvato: {path_scatter}&quot;</span>)
+
+    <span class="cm"># --- 3.4 Subplot multipli ---</span>
+    fig4, axes <span class="op">=</span> plt.subplots(<span class="mi">1</span>, <span class="mi">3</span>, figsize<span class="op">=</span>(<span class="mi">15</span>, <span class="mi">5</span>))
+    fig4.suptitle(<span class="st">&quot;Istogrammi dei voti per materia&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>)
+
+    materie_plot: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> [
+        (<span class="st">&quot;voto_mat&quot;</span>, <span class="st">&quot;Matematica&quot;</span>),
+        (<span class="st">&quot;voto_fis&quot;</span>, <span class="st">&quot;Fisica&quot;</span>),
+        (<span class="st">&quot;voto_inf&quot;</span>, <span class="st">&quot;Informatica&quot;</span>),
+    ]
+
+    <span class="kw">for</span> ax, (col, titolo) <span class="kw">in</span> <span class="nb">zip</span>(axes, materie_plot):
+        ax.hist(df[col], bins<span class="op">=</span><span class="nb">range</span>(<span class="mi">18</span>, <span class="mi">32</span>), edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>, alpha<span class="op">=</span><span class="mi">0.7</span>,
+                color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+        media_val: <span class="nb">float</span> <span class="op">=</span> df[col].mean()
+        ax.axvline(media_val, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>,
+                   label<span class="op">=</span><span class="st">f&quot;Media: {media_val:.1f}&quot;</span>)
+        ax.set_xlabel(<span class="st">&quot;Voto&quot;</span>)
+        ax.set_ylabel(<span class="st">&quot;Frequenza&quot;</span>)
+        ax.set_title(titolo)
+        ax.legend()
+
+    fig4.tight_layout()
+    path_subplots: <span class="nb">str</span> <span class="op">=</span> os.path.join(DIR_TEMP, <span class="st">&quot;istogrammi_materie.png&quot;</span>)
+    fig4.savefig(path_subplots, dpi<span class="op">=</span><span class="mi">100</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)
+    plt.close(fig4)
+    <span class="nb">print</span>(<span class="st">f&quot;Subplots salvati: {path_subplots}&quot;</span>)
+
+    <span class="nb">print</span>(<span class="st">&quot;\nEsercizio 3 superato!&quot;</span>)
+
+<span class="kw">elif</span> <span class="kw">not</span> HAS_MATPLOTLIB:
+    <span class="nb">print</span>(<span class="st">&quot;[SKIP] Esercizio 3 saltato (matplotlib non installato)&quot;</span>)
+<span class="kw">elif</span> <span class="kw">not</span> HAS_PANDAS:
+    <span class="nb">print</span>(<span class="st">&quot;[SKIP] Esercizio 3 saltato (pandas non installato)&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;[SKIP] Esercizio 3 saltato (numpy non installato)&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># Pulizia</span>
+<span class="cm"># ============================================================</span>
+<span class="kw">import</span> shutil
+shutil.rmtree(DIR_TEMP)
+<span class="nb">print</span>(<span class="st">f&quot;\nDirectory temporanea rimossa: {DIR_TEMP}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;\n=== Tutti gli esercizi F17 completati! ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

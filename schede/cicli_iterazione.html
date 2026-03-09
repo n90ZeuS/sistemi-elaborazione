@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cicli Iterazione — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a></nav>
+<h1>Cicli Iterazione</h1>
+
+<h1>Cicli e Iterazione a Confronto</h1>
+<p>Scheda di riferimento rapido su cicli <code>for</code> e <code>while</code>, funzioni di iterazione e pattern comuni.</p>
+<hr>
+<h2>for vs while: quando usare quale</h2>
+<table>
+<thead><tr>
+<th>Caratteristica</th>
+<th><code>for</code></th>
+<th><code>while</code></th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Quando usare</strong></td>
+<td>Numero di iterazioni noto o iterabile disponibile</td>
+<td>Numero di iterazioni non noto a priori</td>
+</tr>
+<tr>
+<td><strong>Itera su</strong></td>
+<td>Qualsiasi iterabile (lista, stringa, range...)</td>
+<td>Finche' una condizione e' vera</td>
+</tr>
+<tr>
+<td><strong>Rischio loop infinito</strong></td>
+<td>No (iterabile finito)</td>
+<td>Si, se la condizione non diventa mai falsa</td>
+</tr>
+<tr>
+<td><strong>Contatore</strong></td>
+<td>Automatico (la variabile del for)</td>
+<td>Da gestire manualmente</td>
+</tr>
+<tr>
+<td><strong>Uso tipico</strong></td>
+<td>Scorrere una collezione, ripetere N volte</td>
+<td>Input utente, convergenza, ricerca</td>
+</tr>
+</tbody></table>
+<h3>Sintassi <code>for</code></h3>
+<pre><code><span class="cm"># Itera su una lista</span>
+voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>]
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="nb">print</span>(voto)
+
+<span class="cm"># Ripeti N volte</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;Iterazione {i}&quot;</span>)
+
+<span class="cm"># Itera su una stringa</span>
+<span class="kw">for</span> carattere <span class="kw">in</span> <span class="st">&quot;ciao&quot;</span>:
+    <span class="nb">print</span>(carattere)
+
+<span class="cm"># Itera su un dizionario</span>
+studente <span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">20</span>}
+<span class="kw">for</span> chiave, valore <span class="kw">in</span> studente.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{chiave}: {valore}&quot;</span>)</code></pre>
+<h3>Sintassi <code>while</code></h3>
+<pre><code><span class="cm"># Ripeti finche&#x27; condizione vera</span>
+risposta <span class="op">=</span> <span class="st">&quot;&quot;</span>
+<span class="kw">while</span> risposta <span class="op">!</span><span class="op">=</span> <span class="st">&quot;si&quot;</span>:
+    risposta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Vuoi continuare? (si/no): &quot;</span>)
+
+<span class="cm"># Contatore manuale</span>
+i <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">while</span> i <span class="op">&lt;</span> <span class="mi">5</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Iterazione {i}&quot;</span>)
+    i <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>  <span class="cm"># NON dimenticare di aggiornare!</span>
+
+<span class="cm"># Convergenza (esempio statistico)</span>
+errore <span class="op">=</span> <span class="mi">100.0</span>
+<span class="kw">while</span> errore <span class="op">&gt;</span> <span class="mi">0.001</span>:
+    errore <span class="op">=</span> errore <span class="op">/</span> <span class="mi">2</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Errore: {errore}&quot;</span>)</code></pre>
+<hr>
+<h2>range() vs enumerate() vs zip()</h2>
+<h3>range() -- genera sequenze di numeri</h3>
+<pre><code><span class="nb">range</span>(<span class="mi">5</span>)           <span class="cm"># 0, 1, 2, 3, 4</span>
+<span class="nb">range</span>(<span class="mi">2</span>, <span class="mi">7</span>)        <span class="cm"># 2, 3, 4, 5, 6</span>
+<span class="nb">range</span>(<span class="mi">0</span>, <span class="mi">10</span>, <span class="mi">2</span>)    <span class="cm"># 0, 2, 4, 6, 8</span>
+<span class="nb">range</span>(<span class="mi">10</span>, <span class="mi">0</span>, <span class="op">-</span><span class="mi">1</span>)   <span class="cm"># 10, 9, 8, ..., 1</span>
+
+<span class="cm"># Uso: ripetere N volte o generare indici</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(voti)):     <span class="cm"># funziona, ma vedi enumerate</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Voto {i}: {voti[i]}&quot;</span>)</code></pre>
+<h3>enumerate() -- indice + valore insieme</h3>
+<pre><code>frutti <span class="op">=</span> [<span class="st">&quot;mela&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;ciliegia&quot;</span>]
+
+<span class="cm"># SENZA enumerate (brutto)</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(frutti)):
+    <span class="nb">print</span>(<span class="st">f&quot;{i}: {frutti[i]}&quot;</span>)
+
+<span class="cm"># CON enumerate (pythonic)</span>
+<span class="kw">for</span> i, frutto <span class="kw">in</span> <span class="nb">enumerate</span>(frutti):
+    <span class="nb">print</span>(<span class="st">f&quot;{i}: {frutto}&quot;</span>)
+
+<span class="cm"># Con indice di partenza personalizzato</span>
+<span class="kw">for</span> num, frutto <span class="kw">in</span> <span class="nb">enumerate</span>(frutti, start<span class="op">=</span><span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{num}. {frutto}&quot;</span>)
+<span class="cm"># 1. mela</span>
+<span class="cm"># 2. banana</span>
+<span class="cm"># 3. ciliegia</span></code></pre>
+<h3>zip() -- iterare su piu' sequenze in parallelo</h3>
+<pre><code>nomi <span class="op">=</span> [<span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>]
+voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+
+<span class="cm"># Itera su entrambe contemporaneamente</span>
+<span class="kw">for</span> nome, voto <span class="kw">in</span> <span class="nb">zip</span>(nomi, voti):
+    <span class="nb">print</span>(<span class="st">f&quot;{nome}: {voto}&quot;</span>)
+
+<span class="cm"># zip si ferma alla sequenza piu&#x27; corta!</span>
+<span class="cm"># Per continuare fino alla piu&#x27; lunga: itertools.zip_longest</span>
+
+<span class="cm"># Creare un dizionario con zip</span>
+registro <span class="op">=</span> <span class="nb">dict</span>(<span class="nb">zip</span>(nomi, voti))
+<span class="cm"># {&quot;Luca&quot;: 28, &quot;Anna&quot;: 30, &quot;Marco&quot;: 25}</span></code></pre>
+<h3>Confronto rapido</h3>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Input</th>
+<th>Output per iterazione</th>
+<th>Uso tipico</th>
+</tr></thead><tbody>
+<tr>
+<td><code>range(n)</code></td>
+<td>Numero intero</td>
+<td>Un numero</td>
+<td>Ripetere N volte</td>
+</tr>
+<tr>
+<td><code>enumerate(x)</code></td>
+<td>Un iterabile</td>
+<td><code>(indice, elemento)</code></td>
+<td>Indice + valore</td>
+</tr>
+<tr>
+<td><code>zip(a, b)</code></td>
+<td>Due+ iterabili</td>
+<td><code>(elem<em>a, elem</em>b)</code></td>
+<td>Iterare in parallelo</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>List Comprehension vs Ciclo Esplicito</h2>
+<h3>Sintassi a confronto</h3>
+<pre><code><span class="cm"># CICLO ESPLICITO</span>
+quadrati <span class="op">=</span> []
+<span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">10</span>):
+    quadrati.append(x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+<span class="cm"># LIST COMPREHENSION (equivalente)</span>
+quadrati <span class="op">=</span> [x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">10</span>)]</code></pre>
+<h3>Con condizione (filtro)</h3>
+<pre><code><span class="cm"># CICLO ESPLICITO</span>
+pari <span class="op">=</span> []
+<span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">20</span>):
+    <span class="kw">if</span> x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        pari.append(x)
+
+<span class="cm"># LIST COMPREHENSION</span>
+pari <span class="op">=</span> [x <span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">20</span>) <span class="kw">if</span> x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>]</code></pre>
+<h3>Con if-else (trasformazione)</h3>
+<pre><code><span class="cm"># CICLO ESPLICITO</span>
+risultati <span class="op">=</span> []
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        risultati.append(<span class="st">&quot;promosso&quot;</span>)
+    <span class="kw">else</span>:
+        risultati.append(<span class="st">&quot;bocciato&quot;</span>)
+
+<span class="cm"># LIST COMPREHENSION (nota: if-else PRIMA del for)</span>
+risultati <span class="op">=</span> [<span class="st">&quot;promosso&quot;</span> <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span> <span class="kw">else</span> <span class="st">&quot;bocciato&quot;</span> <span class="kw">for</span> voto <span class="kw">in</span> voti]</code></pre>
+<h3>Quando usare quale?</h3>
+<pre><code>Usa la LIST COMPREHENSION quando:
+  <span class="op">-</span> L<span class="st">&#x27;operazione e&#x27;</span> semplice (una riga logica)
+  <span class="op">-</span> Vuoi creare una nuova lista trasformando<span class="op">/</span>filtrando
+  <span class="op">-</span> La leggibilita<span class="st">&#x27; non ne risente
+
+Usa il CICLO ESPLICITO quando:
+  - L&#x27;</span>operazione e<span class="st">&#x27; complessa (piu&#x27;</span> righe di logica)
+  <span class="op">-</span> Hai bisogno di effetti collaterali (<span class="nb">print</span>, modificare altro)
+  <span class="op">-</span> Devi usare <span class="kw">try</span><span class="op">/</span><span class="kw">except</span> dentro il ciclo
+  <span class="op">-</span> La comprehension diventerebbe illeggibile</code></pre>
+<h3>Funziona anche per dict e set</h3>
+<pre><code><span class="cm"># Dict comprehension</span>
+quadrati <span class="op">=</span> {x: x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>)}
+<span class="cm"># {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</span>
+
+<span class="cm"># Set comprehension</span>
+iniziali <span class="op">=</span> {nome[<span class="mi">0</span>] <span class="kw">for</span> nome <span class="kw">in</span> nomi}
+<span class="cm"># {&#x27;L&#x27;, &#x27;A&#x27;, &#x27;M&#x27;}</span></code></pre>
+<hr>
+<h2>break, continue, else nei cicli</h2>
+<h3>break -- interrompe il ciclo</h3>
+<pre><code><span class="cm"># Cerca il primo numero negativo</span>
+numeri <span class="op">=</span> [<span class="mi">3</span>, <span class="mi">7</span>, <span class="op">-</span><span class="mi">2</span>, <span class="mi">5</span>, <span class="op">-</span><span class="mi">1</span>]
+<span class="kw">for</span> n <span class="kw">in</span> numeri:
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;Trovato negativo: {n}&quot;</span>)
+        <span class="kw">break</span>
+<span class="cm"># Stampa: Trovato negativo: -2</span>
+<span class="cm"># Il ciclo si ferma, non controlla 5 e -1</span></code></pre>
+<h3>continue -- salta all'iterazione successiva</h3>
+<pre><code><span class="cm"># Stampa solo i numeri positivi</span>
+<span class="kw">for</span> n <span class="kw">in</span> numeri:
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">continue</span>  <span class="cm"># salta questo elemento</span>
+    <span class="nb">print</span>(n)
+<span class="cm"># Stampa: 3, 7, 5</span></code></pre>
+<h3>else nei cicli -- eseguito se il ciclo termina SENZA break</h3>
+<pre><code><span class="cm"># Cerca un valore: else si esegue se NON trovato</span>
+numeri <span class="op">=</span> [<span class="mi">3</span>, <span class="mi">7</span>, <span class="mi">5</span>, <span class="mi">2</span>]
+cercato <span class="op">=</span> <span class="mi">10</span>
+
+<span class="kw">for</span> n <span class="kw">in</span> numeri:
+    <span class="kw">if</span> n <span class="op">=</span><span class="op">=</span> cercato:
+        <span class="nb">print</span>(<span class="st">f&quot;Trovato {cercato}!&quot;</span>)
+        <span class="kw">break</span>
+<span class="kw">else</span>:
+    <span class="cm"># Eseguito SOLO se il for finisce senza break</span>
+    <span class="nb">print</span>(<span class="st">f&quot;{cercato} non trovato nella lista&quot;</span>)
+<span class="cm"># Stampa: 10 non trovato nella lista</span></code></pre>
+<h3>Tabella riassuntiva</h3>
+<table>
+<thead><tr>
+<th>Istruzione</th>
+<th>Effetto</th>
+<th>Funziona in</th>
+</tr></thead><tbody>
+<tr>
+<td><code>break</code></td>
+<td>Esce dal ciclo immediatamente</td>
+<td>for, while</td>
+</tr>
+<tr>
+<td><code>continue</code></td>
+<td>Salta al prossimo giro del ciclo</td>
+<td>for, while</td>
+</tr>
+<tr>
+<td><code>else</code></td>
+<td>Eseguito se il ciclo finisce senza <code>break</code></td>
+<td>for, while</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Pattern di iterazione comuni</h2>
+<h3>1. Accumulatore (somma, prodotto, conteggio)</h3>
+<pre><code><span class="cm"># Somma</span>
+totale <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    totale <span class="op">+</span><span class="op">=</span> voto
+media <span class="op">=</span> totale <span class="op">/</span> <span class="nb">len</span>(voti)
+
+<span class="cm"># Conteggio con condizione</span>
+sufficienti <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        sufficienti <span class="op">+</span><span class="op">=</span> <span class="mi">1</span></code></pre>
+<h3>2. Ricerca (trovare un elemento)</h3>
+<pre><code><span class="cm"># Trova il primo che soddisfa una condizione</span>
+trovato <span class="op">=</span> <span class="kw">None</span>
+<span class="kw">for</span> voto <span class="kw">in</span> voti:
+    <span class="kw">if</span> voto <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>:
+        trovato <span class="op">=</span> voto
+        <span class="kw">break</span>
+
+<span class="cm"># Verificare se almeno uno soddisfa la condizione</span>
+ha_lode <span class="op">=</span> <span class="nb">any</span>(voto <span class="op">=</span><span class="op">=</span> <span class="mi">30</span> <span class="kw">for</span> voto <span class="kw">in</span> voti)      <span class="cm"># True/False</span>
+tutti_sufficienti <span class="op">=</span> <span class="nb">all</span>(voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span> <span class="kw">for</span> voto <span class="kw">in</span> voti)</code></pre>
+<h3>3. Trasformazione (creare nuova lista)</h3>
+<pre><code><span class="cm"># Converti tutti i voti in trentesimi a percentuale</span>
+percentuali <span class="op">=</span> [voto <span class="op">/</span> <span class="mi">30</span> <span class="op">*</span> <span class="mi">100</span> <span class="kw">for</span> voto <span class="kw">in</span> voti]</code></pre>
+<h3>4. Filtraggio (selezionare elementi)</h3>
+<pre><code><span class="cm"># Solo i voti sufficienti</span>
+sufficienti <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]</code></pre>
+<h3>5. Massimo/Minimo con posizione</h3>
+<pre><code>voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>]
+indice_max <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> i, voto <span class="kw">in</span> <span class="nb">enumerate</span>(voti):
+    <span class="kw">if</span> voto <span class="op">&gt;</span> voti[indice_max]:
+        indice_max <span class="op">=</span> i
+<span class="nb">print</span>(<span class="st">f&quot;Voto max: {voti[indice_max]} alla posizione {indice_max}&quot;</span>)
+
+<span class="cm"># Oppure, piu&#x27; semplice:</span>
+indice_max <span class="op">=</span> voti.index(<span class="nb">max</span>(voti))</code></pre>
+<h3>6. Iterazione su file (riga per riga)</h3>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> riga <span class="kw">in</span> f:
+        riga <span class="op">=</span> riga.strip()  <span class="cm"># rimuovi \n</span>
+        <span class="nb">print</span>(riga)</code></pre>
+<h3>7. Cicli annidati (combinazioni)</h3>
+<pre><code><span class="cm"># Tabellina pitagorica</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">6</span>):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">6</span>):
+        <span class="nb">print</span>(<span class="st">f&quot;{i*j:4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+    <span class="nb">print</span>()  <span class="cm"># vai a capo dopo ogni riga</span></code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

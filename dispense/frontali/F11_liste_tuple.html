@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F11 — Liste e tuple — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F10_comprehension_stringhe.html">← F10</a> &bull; <a href="F12_dizionari_set_mutabilita.html">F12 →</a> &bull; <a href="../../presentazioni/F11_liste_tuple.html">Presentazione</a></nav>
+<h1>F11 — Liste e tuple</h1>
+
+<h1>Lezione Frontale 11 — Liste e tuple</h1>
+<h2>Introduzione</h2>
+<p>Nelle lezioni precedenti avete già incontrato le liste: le avete usate per raccogliere voti, iterare con <code>for</code>, accumulare risultati. Ma finora le avete trattate come semplici contenitori, senza indagare come funzionano davvero. Questa lezione cambia prospettiva: le liste diventano l'oggetto di studio, non solo uno strumento.</p>
+<p>Capire a fondo le liste significa capire come Python gestisce la memoria, cosa succede quando assegnate una lista a un'altra variabile, e perché certi errori sono così insidiosi. Accanto alle liste, introduciamo le <strong>tuple</strong> — sequenze immutabili che completano il quadro delle strutture dati sequenziali di Python.</p>
+<p>Per chi studia statistica, liste e tuple sono il primo passo verso i vettori di dati: serie di osservazioni, campioni, sequenze temporali. Tutto ciò che vedrete in NumPy e Pandas ha le sue radici qui.</p>
+<hr>
+<h2>Liste: sequenze ordinate e mutabili</h2>
+<p>Una lista è una <strong>sequenza ordinata e mutabile</strong> di elementi. "Ordinata" significa che gli elementi hanno una posizione (un indice); "mutabile" significa che potete aggiungere, rimuovere o modificare elementi dopo la creazione.</p>
+<pre><code>temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">21.3</span>, <span class="mi">19.7</span>, <span class="mi">22.1</span>, <span class="mi">20.4</span>]
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+mista: <span class="nb">list</span>[<span class="nb">int</span> <span class="op">|</span> <span class="nb">str</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="st">&quot;due&quot;</span>, <span class="mi">3</span>]  <span class="cm"># possibile, ma sconsigliato</span>
+vuota: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []</code></pre>
+<p>Le liste possono contenere qualsiasi tipo di oggetto, anche tipi diversi nella stessa lista. Tuttavia, nella pratica statistica lavorerete quasi sempre con liste omogenee — tutti <code>float</code>, tutti <code>int</code>, tutti <code>str</code> — e i type hint lo riflettono.</p>
+<hr>
+<h2>Indicizzazione: perché si parte da 0</h2>
+<p>Ogni elemento di una lista ha un <strong>indice</strong> che ne identifica la posizione. In Python (e nella maggioranza dei linguaggi moderni), gli indici partono da <strong>0</strong>:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+<span class="cm">#                   0   1   2   3   4</span>
+
+primo: <span class="nb">int</span> <span class="op">=</span> voti[<span class="mi">0</span>]    <span class="cm"># 28</span>
+secondo: <span class="nb">int</span> <span class="op">=</span> voti[<span class="mi">1</span>]  <span class="cm"># 30</span>
+ultimo: <span class="nb">int</span> <span class="op">=</span> voti[<span class="mi">4</span>]   <span class="cm"># 22</span></code></pre>
+<h3>Dijkstra e l'offset</h3>
+<p>Perché si parte da 0 e non da 1? La risposta ha radici profonde nell'informatica. Edsger W. Dijkstra, uno dei padri della disciplina, scrisse nel 1982 un celebre appunto intitolato <em>"Why numbering should start at zero"</em>. L'argomento è matematico: quando si vuole rappresentare una sequenza di N elementi naturali consecutivi, ci sono quattro modi di scrivere l'intervallo:</p>
+<ul>
+<li>a) 0 <= i < N</li>
+<li>b) 0 < i <= N</li>
+<li>c) 0 <= i <= N-1</li>
+<li>d) 0 < i < N+1</li>
+</ul>
+<p>La convenzione (a) — intervallo semiaperto a sinistra chiuso e a destra aperto — ha due vantaggi decisivi: la <strong>differenza tra gli estremi</strong> dà esattamente il numero di elementi (N - 0 = N), e <strong>due intervalli adiacenti</strong> si concatenano naturalmente ([0, 5) e [5, 10) coprono [0, 10) senza buchi né sovrapposizioni). Questa è la stessa ragione per cui <code>range(5)</code> produce 0, 1, 2, 3, 4.</p>
+<p>Ma c'è anche una ragione più concreta. L'indice rappresenta un <strong>offset</strong> (spiazzamento) rispetto all'inizio della sequenza in memoria: il primo elemento ha offset 0 (è <em>all'inizio</em>), il secondo ha offset 1 (è <em>spostato di una posizione</em>), e così via. Se il primo elemento avesse indice 1, il calcolatore dovrebbe sottrarre 1 ogni volta per trovare la posizione in memoria — un'operazione inutile.</p>
+<p>All'inizio sembra innaturale, ma dopo poche settimane diventa seconda natura. Un consiglio: pensate agli indici come a "quanti elementi devo saltare per arrivare a quello che voglio". Il primo elemento richiede 0 salti.</p>
+<h3>Indici negativi</h3>
+<p>Python offre una scorciatoia elegante: gli <strong>indici negativi</strong> contano dalla fine della lista:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+
+ultimo: <span class="nb">int</span> <span class="op">=</span> voti[<span class="op">-</span><span class="mi">1</span>]       <span class="cm"># 22</span>
+penultimo: <span class="nb">int</span> <span class="op">=</span> voti[<span class="op">-</span><span class="mi">2</span>]    <span class="cm"># 27</span>
+primo: <span class="nb">int</span> <span class="op">=</span> voti[<span class="op">-</span><span class="nb">len</span>(voti)]  <span class="cm"># 28 (equivale a voti[0])</span></code></pre>
+<p>L'indice <code>-1</code> è l'ultimo elemento, <code>-2</code> il penultimo, e così via. Questo è molto comodo quando vi serve l'ultimo elemento senza sapere la lunghezza della lista. Internamente, Python calcola <code>voti[-1]</code> come <code>voti[len(voti) - 1]</code>, cioè <code>voti[4]</code>.</p>
+<p>Se provate ad accedere a un indice che non esiste, Python solleva un errore:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+voti[<span class="mi">10</span>]   <span class="cm"># IndexError: list index out of range</span>
+voti[<span class="op">-</span><span class="mi">10</span>]  <span class="cm"># IndexError: list index out of range</span></code></pre>
+<hr>
+<h2>Slicing: estrarre sottoliste</h2>
+<p>Lo <strong>slicing</strong> (affettamento) permette di estrarre una porzione di lista specificando un intervallo di indici. La sintassi è <code>lista[start:stop:step]</code>:</p>
+<pre><code>dati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">40</span>, <span class="mi">50</span>, <span class="mi">60</span>, <span class="mi">70</span>, <span class="mi">80</span>]
+<span class="cm">#                   0   1   2   3   4   5   6   7</span>
+
+dati[<span class="mi">2</span>:<span class="mi">5</span>]      <span class="cm"># [30, 40, 50]  — da indice 2 a 4 (stop escluso!)</span>
+dati[:<span class="mi">3</span>]       <span class="cm"># [10, 20, 30]  — dall&#x27;inizio a indice 2</span>
+dati[<span class="mi">5</span>:]       <span class="cm"># [60, 70, 80]  — da indice 5 alla fine</span>
+dati[:]        <span class="cm"># [10, 20, 30, 40, 50, 60, 70, 80]  — copia completa</span>
+dati[::<span class="mi">2</span>]      <span class="cm"># [10, 30, 50, 70]  — un elemento ogni due</span>
+dati[<span class="mi">1</span>::<span class="mi">2</span>]     <span class="cm"># [20, 40, 60, 80]  — gli elementi in posizione dispari</span>
+dati[::<span class="op">-</span><span class="mi">1</span>]     <span class="cm"># [80, 70, 60, 50, 40, 30, 20, 10]  — lista invertita</span></code></pre>
+<p>Notate che <code>stop</code> è sempre <strong>escluso</strong>, coerentemente con la convenzione dell'intervallo semiaperto vista per <code>range()</code>. Se <code>start</code> è omesso vale 0 (inizio); se <code>stop</code> è omesso vale la lunghezza della lista (fine); se <code>step</code> è omesso vale 1.</p>
+<p>Una proprietà utile dello slicing: <strong>non solleva mai <code>IndexError</code></strong>, anche se gli indici sono fuori range. Python li "taglia" silenziosamente:</p>
+<pre><code>dati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>]
+dati[<span class="mi">1</span>:<span class="mi">100</span>]   <span class="cm"># [20, 30]  — nessun errore</span>
+dati[<span class="mi">100</span>:<span class="mi">200</span>] <span class="cm"># []         — lista vuota</span></code></pre>
+<hr>
+<h2>Operazioni sulle liste</h2>
+<h3>Concatenazione e ripetizione</h3>
+<pre><code>a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+
+c: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a <span class="op">+</span> b        <span class="cm"># [1, 2, 3, 4, 5, 6] — concatenazione</span>
+d: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a <span class="op">*</span> <span class="mi">3</span>        <span class="cm"># [1, 2, 3, 1, 2, 3, 1, 2, 3] — ripetizione</span></code></pre>
+<p>La concatenazione crea una <strong>nuova lista</strong>; le liste originali restano invariate. Lo stesso vale per la ripetizione.</p>
+<h3>Appartenenza e lunghezza</h3>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>]
+
+<span class="mi">30</span> <span class="kw">in</span> voti      <span class="cm"># True</span>
+<span class="mi">18</span> <span class="kw">in</span> voti      <span class="cm"># False</span>
+<span class="mi">18</span> <span class="kw">not</span> <span class="kw">in</span> voti  <span class="cm"># True</span>
+<span class="nb">len</span>(voti)       <span class="cm"># 4</span></code></pre>
+<p>L'operatore <code>in</code> controlla se un valore è presente nella lista. <code>len()</code> restituisce il numero di elementi.</p>
+<hr>
+<h2>Metodi delle liste</h2>
+<p>Le liste sono <strong>oggetti</strong>, e come tali hanno <strong>metodi</strong> — funzioni associate all'oggetto che ne modificano il contenuto o ne restituiscono informazioni. Ecco i principali.</p>
+<h3>Aggiungere elementi</h3>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+
+voti.append(<span class="mi">27</span>)          <span class="cm"># [28, 30, 25, 27] — aggiunge in fondo</span>
+voti.insert(<span class="mi">1</span>, <span class="mi">29</span>)       <span class="cm"># [28, 29, 30, 25, 27] — inserisce alla posizione 1</span>
+voti.extend([<span class="mi">22</span>, <span class="mi">24</span>])    <span class="cm"># [28, 29, 30, 25, 27, 22, 24] — aggiunge più elementi</span></code></pre>
+<p><code>append()</code> aggiunge <strong>un</strong> elemento in coda. <code>insert(i, x)</code> inserisce <code>x</code> alla posizione <code>i</code>, spostando gli elementi successivi. <code>extend()</code> aggiunge <strong>tutti</strong> gli elementi di un'altra sequenza (equivale a <code>+=</code>).</p>
+<p>Attenzione a non confondere <code>append()</code> con <code>extend()</code>:</p>
+<pre><code>a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+a.append([<span class="mi">4</span>, <span class="mi">5</span>])   <span class="cm"># [1, 2, 3, [4, 5]] — ha aggiunto UNA lista come elemento!</span>
+
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+b.extend([<span class="mi">4</span>, <span class="mi">5</span>])   <span class="cm"># [1, 2, 3, 4, 5] — ha aggiunto DUE elementi</span></code></pre>
+<h3>Rimuovere elementi</h3>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">30</span>]
+
+voti.remove(<span class="mi">30</span>)     <span class="cm"># [28, 25, 27, 30] — rimuove la PRIMA occorrenza</span>
+ultimo: <span class="nb">int</span> <span class="op">=</span> voti.pop()     <span class="cm"># ultimo = 30, voti = [28, 25, 27]</span>
+secondo: <span class="nb">int</span> <span class="op">=</span> voti.pop(<span class="mi">1</span>)   <span class="cm"># secondo = 25, voti = [28, 27]</span></code></pre>
+<p><code>remove(x)</code> cerca il valore <code>x</code> e rimuove la prima occorrenza; se non lo trova, solleva <code>ValueError</code>. <code>pop()</code> rimuove e <strong>restituisce</strong> l'ultimo elemento (o quello all'indice specificato).</p>
+<h3>Ordinare e invertire</h3>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+
+voti.sort()              <span class="cm"># [22, 25, 27, 28, 30] — ordina IN PLACE</span>
+voti.sort(reverse<span class="op">=</span><span class="kw">True</span>)  <span class="cm"># [30, 28, 27, 25, 22] — ordine decrescente</span>
+voti.reverse()           <span class="cm"># [22, 25, 27, 28, 30] — inverte l&#x27;ordine</span></code></pre>
+<p><strong>Attenzione</strong>: <code>sort()</code> e <code>reverse()</code> modificano la lista <strong>in place</strong> e restituiscono <code>None</code>. Non scrivete <code>voti = voti.sort()</code> — perdereste la lista e otterreste <code>None</code>. Se volete una nuova lista ordinata senza modificare l'originale, usate la funzione built-in <code>sorted()</code>:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+voti_ordinati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">sorted</span>(voti)  <span class="cm"># voti resta invariata</span></code></pre>
+<h3>Cercare e contare</h3>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">30</span>]
+
+voti.index(<span class="mi">30</span>)    <span class="cm"># 1 — posizione della PRIMA occorrenza</span>
+voti.count(<span class="mi">30</span>)    <span class="cm"># 2 — quante volte appare 30</span></code></pre>
+<p><code>index(x)</code> restituisce la posizione della prima occorrenza di <code>x</code>; se non lo trova, solleva <code>ValueError</code>. <code>count(x)</code> restituisce quante volte <code>x</code> appare nella lista.</p>
+<hr>
+<h2>Riferimenti e copie: il concetto cruciale</h2>
+<p>Questa è la sezione più importante della lezione. Se non la capite bene, vi ritroverete con bug misteriosi che corrompono i vostri dati senza che ve ne accorgiate.</p>
+<h3>L'assegnamento crea un alias, non una copia</h3>
+<p>Quando scrivete <code>b = a</code> con una lista, <strong>non</strong> state creando una copia. State creando un <strong>alias</strong>: un secondo nome per lo stesso oggetto in memoria.</p>
+<pre><code>a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a           <span class="cm"># b è un ALIAS di a, non una copia</span>
+
+b.append(<span class="mi">4</span>)
+<span class="nb">print</span>(a)  <span class="cm"># [1, 2, 3, 4] — SORPRESA! Anche a è cambiata!</span></code></pre>
+<p>Per capire cosa succede, bisogna pensare a come Python gestisce la memoria. Immaginate la memoria del computer come un grande magazzino con scaffali numerati. Quando create <code>a = [1, 2, 3]</code>, Python:</p>
+<ol>
+<li>Costruisce la lista <code>[1, 2, 3]</code> da qualche parte nel magazzino.</li>
+<li>Attacca l'etichetta <code>a</code> a quello scaffale.</li>
+</ol>
+<p>Quando poi scrivete <code>b = a</code>, Python:</p>
+<ol>
+<li>Attacca una <strong>seconda etichetta</strong> <code>b</code> allo <strong>stesso scaffale</strong>.</li>
+</ol>
+<p>Non c'è nessuna copia. C'è un solo oggetto con due nomi. Qualsiasi modifica attraverso <code>b</code> è visibile anche attraverso <code>a</code>, perché puntano allo stesso posto.</p>
+<p>Potete verificarlo con <code>id()</code>, che restituisce l'indirizzo dell'oggetto in memoria, e con <code>is</code>, che confronta le identità (non i valori):</p>
+<pre><code>a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a
+
+<span class="nb">print</span>(<span class="nb">id</span>(a))       <span class="cm"># es. 140234567890</span>
+<span class="nb">print</span>(<span class="nb">id</span>(b))       <span class="cm"># 140234567890 — stesso indirizzo!</span>
+<span class="nb">print</span>(a <span class="kw">is</span> b)      <span class="cm"># True — stesso oggetto</span></code></pre>
+<p>Ecco un diagramma in memoria (ASCII art) che mostra la situazione:</p>
+<pre><code> Variabile     Memoria
+ ┌───┐        ┌───────────┐
+ │ a │───────<span class="op">&gt;</span>│ [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>] │
+ └───┘   ┌──<span class="op">&gt;</span>│           │
+ ┌───┐   │   └───────────┘
+ │ b │───┘
+ └───┘</code></pre>
+<p>Entrambe le frecce puntano allo stesso oggetto. Se modificate l'oggetto tramite <code>b</code>, vedrete la modifica anche da <code>a</code>.</p>
+<h3>Shallow copy: copiare il primo livello</h3>
+<p>Per creare una vera copia, avete diverse opzioni:</p>
+<pre><code>a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a.copy()    <span class="cm"># metodo copy()</span>
+c: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a[:]        <span class="cm"># slicing completo</span>
+d: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">list</span>(a)     <span class="cm"># costruttore list()</span></code></pre>
+<p>Ora <code>b</code>, <code>c</code> e <code>d</code> sono <strong>oggetti indipendenti</strong>: modificarli non modifica <code>a</code>.</p>
+<pre><code>a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> a.copy()
+
+b.append(<span class="mi">4</span>)
+<span class="nb">print</span>(a)  <span class="cm"># [1, 2, 3] — a è rimasta invariata</span>
+<span class="nb">print</span>(b)  <span class="cm"># [1, 2, 3, 4]</span>
+
+<span class="nb">print</span>(a <span class="kw">is</span> b)  <span class="cm"># False — oggetti diversi</span></code></pre>
+<p>In memoria:</p>
+<pre><code> Variabile     Memoria
+ ┌───┐        ┌───────────┐
+ │ a │───────<span class="op">&gt;</span>│ [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>] │
+ └───┘        └───────────┘
+ ┌───┐        ┌───────────┐
+ │ b │───────<span class="op">&gt;</span>│ [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>] │  (copia indipendente)
+ └───┘        └───────────┘</code></pre>
+<h3>Deep copy: il caso delle strutture annidate</h3>
+<p>Ma c'è un tranello. La <code>copy()</code> è una <strong>shallow copy</strong> (copia superficiale): copia i riferimenti agli elementi, non gli elementi stessi. Con una lista di interi non è un problema, perché gli interi sono immutabili. Ma con una <strong>lista di liste</strong>:</p>
+<pre><code>matrice: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>], [<span class="mi">5</span>, <span class="mi">6</span>]]
+copia: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> matrice.copy()  <span class="cm"># shallow copy</span>
+
+copia[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">99</span>
+<span class="nb">print</span>(matrice)  <span class="cm"># [[99, 2], [3, 4], [5, 6]] — MODIFICATA!</span></code></pre>
+<p>La shallow copy ha creato una nuova lista esterna, ma le liste interne sono ancora <strong>condivise</strong>:</p>
+<pre><code> Variabile       Memoria
+ ┌─────────┐    ┌────────────────────┐
+ │ matrice  │──<span class="op">&gt;</span> │ [ ref0, ref1, ref2 ] │
+ └─────────┘    └──┬──────┬──────┬───┘
+                   │      │      │
+ ┌─────────┐    ┌──┼──────┼──────┼───┐
+ │ copia    │──<span class="op">&gt;</span> │ [ ref0, ref1, ref2 ] │  (stessi riferimenti interni<span class="op">!</span>)
+ └─────────┘    └──┬──────┬──────┬───┘
+                   │      │      │
+                   v      v      v
+                [<span class="mi">1</span>,<span class="mi">2</span>]  [<span class="mi">3</span>,<span class="mi">4</span>]  [<span class="mi">5</span>,<span class="mi">6</span>]</code></pre>
+<p>Per copiare <strong>tutto</strong>, compresi gli oggetti annidati, serve <code>copy.deepcopy()</code>:</p>
+<pre><code><span class="kw">import</span> copy
+
+matrice: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>], [<span class="mi">5</span>, <span class="mi">6</span>]]
+copia_profonda: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> copy.deepcopy(matrice)
+
+copia_profonda[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">99</span>
+<span class="nb">print</span>(matrice)  <span class="cm"># [[1, 2], [3, 4], [5, 6]] — intatta!</span></code></pre>
+<h3>Perché è importante per la statistica</h3>
+<p>Immaginate di avere un dataset (rappresentato come lista di liste) e di voler "provare" una trasformazione senza alterare i dati originali:</p>
+<pre><code><span class="kw">import</span> copy
+
+dati_originali: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> [
+    [<span class="mi">1.2</span>, <span class="mi">3.4</span>, <span class="mi">5.6</span>],
+    [<span class="mi">7.8</span>, <span class="mi">9.0</span>, <span class="mi">1.2</span>],
+]
+
+<span class="cm"># SBAGLIATO: modifica anche dati_originali</span>
+dati_lavoro: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> dati_originali
+dati_lavoro[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">0.0</span>  <span class="cm"># dati_originali[0][0] è ora 0.0!</span>
+
+<span class="cm"># ANCORA SBAGLIATO con liste annidate: shallow copy</span>
+dati_lavoro <span class="op">=</span> dati_originali.copy()
+dati_lavoro[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">0.0</span>  <span class="cm"># dati_originali[0][0] è ancora modificato!</span>
+
+<span class="cm"># CORRETTO</span>
+dati_lavoro <span class="op">=</span> copy.deepcopy(dati_originali)
+dati_lavoro[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">0.0</span>  <span class="cm"># dati_originali resta intatta</span></code></pre>
+<p>Regola pratica: se la lista contiene solo tipi immutabili (int, float, str, tuple), basta <code>copy()</code>. Se contiene oggetti mutabili (altre liste, dizionari), serve <code>deepcopy()</code>.</p>
+<hr>
+<h2>Tuple: sequenze ordinate e immutabili</h2>
+<p>Le <strong>tuple</strong> sono simili alle liste, ma con una differenza fondamentale: sono <strong>immutabili</strong>. Una volta create, non potete aggiungere, rimuovere o modificare i loro elementi.</p>
+<pre><code>coordinate: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">45.4642</span>, <span class="mi">9.1900</span>)  <span class="cm"># Milano</span>
+giorni: <span class="nb">tuple</span>[<span class="nb">str</span>, ...] <span class="op">=</span> (<span class="st">&quot;lun&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;mer&quot;</span>, <span class="st">&quot;gio&quot;</span>, <span class="st">&quot;ven&quot;</span>, <span class="st">&quot;sab&quot;</span>, <span class="st">&quot;dom&quot;</span>)
+singolo: <span class="nb">tuple</span>[<span class="nb">int</span>] <span class="op">=</span> (<span class="mi">42</span>,)   <span class="cm"># la virgola è necessaria per tuple con un elemento!</span>
+vuota: <span class="nb">tuple</span>[()] <span class="op">=</span> ()</code></pre>
+<p>Notate i type hint: <code>tuple[float, float]</code> indica una tupla di esattamente due float (posizione fissa); <code>tuple[str, ...]</code> indica una tupla di lunghezza arbitraria con tutti elementi <code>str</code>.</p>
+<p>L'indicizzazione e lo slicing funzionano come per le liste:</p>
+<pre><code>coordinate: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">45.4642</span>, <span class="mi">9.1900</span>)
+lat: <span class="nb">float</span> <span class="op">=</span> coordinate[<span class="mi">0</span>]     <span class="cm"># 45.4642</span>
+lon: <span class="nb">float</span> <span class="op">=</span> coordinate[<span class="op">-</span><span class="mi">1</span>]    <span class="cm"># 9.1900</span></code></pre>
+<p>Ma il tentativo di modifica fallisce:</p>
+<pre><code>coordinate[<span class="mi">0</span>] <span class="op">=</span> <span class="mi">41.9028</span>  <span class="cm"># TypeError: &#x27;tuple&#x27; object does not support item assignment</span></code></pre>
+<h3>Perché esistono le tuple?</h3>
+<p>Se le liste possono fare tutto ciò che fanno le tuple (e di più), perché esistono le tuple? Tre motivi.</p>
+<p><strong>1. Garanzia di immutabilità.</strong> Quando passate una tupla a una funzione, avete la certezza che la funzione non potrà modificare i dati. Questo rende il codice più sicuro e facile da ragionare. È un contratto: "questi dati non cambieranno".</p>
+<pre><code><span class="kw">def</span> <span class="fn">distanza_da_origine</span>(<span class="fn">punto</span>: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Non può modificare il punto — è una tupla.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> (punto[<span class="mi">0</span>] <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> punto[<span class="mi">1</span>] <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span></code></pre>
+<p><strong>2. Hashabilità.</strong> Le tuple (purché contengano solo elementi immutabili) sono <em>hashable</em>, cioè possono essere usate come chiavi di dizionario o elementi di un insieme (<code>set</code>). Le liste no.</p>
+<pre><code><span class="cm"># Le tuple possono essere chiavi di dizionario</span>
+posizioni: <span class="nb">dict</span>[<span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>], <span class="nb">str</span>] <span class="op">=</span> {
+    (<span class="mi">0</span>, <span class="mi">0</span>): <span class="st">&quot;origine&quot;</span>,
+    (<span class="mi">1</span>, <span class="mi">0</span>): <span class="st">&quot;destra&quot;</span>,
+    (<span class="mi">0</span>, <span class="mi">1</span>): <span class="st">&quot;sopra&quot;</span>,
+}
+
+<span class="cm"># Le liste NO</span>
+<span class="cm"># {[0, 0]: &quot;origine&quot;}  # TypeError: unhashable type: &#x27;list&#x27;</span></code></pre>
+<p>Questo è fondamentale quando dovrete contare combinazioni, creare tabelle di contingenza, o usare coordinate come chiavi.</p>
+<p><strong>3. Efficienza.</strong> Le tuple occupano meno memoria delle liste e sono leggermente più veloci da creare e accedere. Per dati che non devono cambiare, sono la scelta appropriata.</p>
+<hr>
+<h2>Unpacking: assegnamento multiplo</h2>
+<p>L'<strong>unpacking</strong> (spacchettamento) permette di assegnare gli elementi di una tupla (o lista) a variabili separate in un'unica istruzione:</p>
+<pre><code>coordinate: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">45.4642</span>, <span class="mi">9.1900</span>)
+lat, lon <span class="op">=</span> coordinate  <span class="cm"># lat = 45.4642, lon = 9.1900</span>
+
+<span class="cm"># Funziona anche con le liste</span>
+valori: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>]
+a, b, c <span class="op">=</span> valori  <span class="cm"># a = 10, b = 20, c = 30</span></code></pre>
+<p>Il numero di variabili a sinistra deve corrispondere al numero di elementi a destra, altrimenti si ottiene un <code>ValueError</code>.</p>
+<h3>Return multipli dalle funzioni</h3>
+<p>L'unpacking è particolarmente utile con le funzioni che restituiscono più valori. In Python, una funzione può restituire una tupla, e il chiamante la spacchetta:</p>
+<pre><code><span class="kw">def</span> <span class="fn">statistiche_base</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media, minimo e massimo.&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(valori)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(valori)
+    <span class="kw">return</span> media, minimo, massimo  <span class="cm"># Python crea automaticamente una tupla</span>
+
+<span class="cm"># Unpacking del risultato</span>
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">23.5</span>, <span class="mi">21.0</span>, <span class="mi">25.3</span>, <span class="mi">19.8</span>, <span class="mi">22.1</span>]
+media, minimo, massimo <span class="op">=</span> statistiche_base(dati)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media:.1f}, Range: [{minimo}, {massimo}]&quot;</span>)
+<span class="cm"># Media: 22.3, Range: [19.8, 25.3]</span></code></pre>
+<p>Notate che <code>return media, minimo, massimo</code> crea implicitamente la tupla <code>(media, minimo, massimo)</code>. Le parentesi sono opzionali nella maggior parte dei contesti.</p>
+<h3>Scambio di variabili</h3>
+<p>L'unpacking rende elegante lo scambio di due variabili, che in molti linguaggi richiede una variabile temporanea:</p>
+<pre><code>a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
+b: <span class="nb">int</span> <span class="op">=</span> <span class="mi">20</span>
+
+<span class="cm"># In C: temp = a; a = b; b = temp;</span>
+<span class="cm"># In Python:</span>
+a, b <span class="op">=</span> b, a  <span class="cm"># a = 20, b = 10</span></code></pre>
+<p>Python crea la tupla <code>(b, a)</code> = <code>(20, 10)</code> a destra, poi la spacchetta nelle variabili a sinistra. Semplice ed elegante.</p>
+<hr>
+<h2>Named tuple (cenni)</h2>
+<p>Quando le tuple hanno molti elementi, ricordare quale posizione corrisponde a quale dato diventa difficile. Le <strong>named tuple</strong> risolvono questo problema aggiungendo nomi ai campi:</p>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+
+Studente <span class="op">=</span> namedtuple(<span class="st">&quot;Studente&quot;</span>, [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;matricola&quot;</span>, <span class="st">&quot;media&quot;</span>])
+
+s: Studente <span class="op">=</span> Studente(nome<span class="op">=</span><span class="st">&quot;Anna Rossi&quot;</span>, matricola<span class="op">=</span><span class="mi">123456</span>, media<span class="op">=</span><span class="mi">27.5</span>)
+
+<span class="cm"># Accesso per nome (più leggibile)</span>
+<span class="nb">print</span>(s.nome)      <span class="cm"># Anna Rossi</span>
+<span class="nb">print</span>(s.media)     <span class="cm"># 27.5</span>
+
+<span class="cm"># Accesso per indice (ancora possibile)</span>
+<span class="nb">print</span>(s[<span class="mi">0</span>])        <span class="cm"># Anna Rossi</span>
+
+<span class="cm"># Immutabile come una tupla normale</span>
+<span class="cm"># s.media = 28.0   # AttributeError!</span></code></pre>
+<p>Le named tuple sono un ponte tra le tuple e le classi: offrono la chiarezza di campi con nome mantenendo l'immutabilità e l'efficienza delle tuple. Le approfondiremo quando parleremo di classi e oggetti; per ora, sappiate che esistono e che sono utili quando una tupla ha più di due o tre elementi.</p>
+<p>Una versione moderna è <code>typing.NamedTuple</code>, che si integra meglio con i type hint:</p>
+<pre><code><span class="kw">from</span> typing <span class="kw">import</span> NamedTuple
+
+<span class="kw">class</span> <span class="fn">Osservazione</span>(<span class="fn">NamedTuple</span>):
+    valore: <span class="nb">float</span>
+    unita: <span class="nb">str</span>
+    timestamp: <span class="nb">str</span>
+
+o: Osservazione <span class="op">=</span> Osservazione(valore<span class="op">=</span><span class="mi">23.5</span>, unita<span class="op">=</span><span class="st">&quot;°C&quot;</span>, timestamp<span class="op">=</span><span class="st">&quot;2025-01-15&quot;</span>)
+<span class="nb">print</span>(o.valore)  <span class="cm"># 23.5</span></code></pre>
+<hr>
+<h2>Applicazioni statistiche</h2>
+<h3>Liste di osservazioni</h3>
+<p>La struttura dati più naturale per un campione statistico è una lista di numeri:</p>
+<pre><code>campione: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">23.5</span>, <span class="mi">21.0</span>, <span class="mi">25.3</span>, <span class="mi">19.8</span>, <span class="mi">22.1</span>, <span class="mi">24.7</span>, <span class="mi">20.5</span>]
+
+n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(campione)
+media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(campione) <span class="op">/</span> n
+
+<span class="cm"># Varianza campionaria (con n-1 al denominatore)</span>
+somma_scarti_quadrati: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> campione)
+varianza: <span class="nb">float</span> <span class="op">=</span> somma_scarti_quadrati <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)
+
+<span class="cm"># Ordinamento per calcolare la mediana</span>
+campione_ordinato: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(campione)
+<span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+    mediana: <span class="nb">float</span> <span class="op">=</span> campione_ordinato[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]
+<span class="kw">else</span>:
+    mediana <span class="op">=</span> (campione_ordinato[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> campione_ordinato[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]) <span class="op">/</span> <span class="mi">2</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;n = {n}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media = {media:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Varianza campionaria = {varianza:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Mediana = {mediana:.2f}&quot;</span>)</code></pre>
+<p>Notate l'uso di <code>sorted()</code> (che crea una nuova lista) anziché <code>sort()</code> (che modifica l'originale). Preservare i dati originali nell'ordine di raccolta è una buona pratica.</p>
+<h3>Serie di misurazioni con tuple</h3>
+<p>Quando ogni osservazione ha più attributi (valore, momento, condizioni), le tuple sono la scelta naturale:</p>
+<pre><code><span class="kw">from</span> typing <span class="kw">import</span> NamedTuple
+
+<span class="kw">class</span> <span class="fn">Misurazione</span>(<span class="fn">NamedTuple</span>):
+    temperatura: <span class="nb">float</span>
+    umidita: <span class="nb">float</span>
+    ora: <span class="nb">str</span>
+
+rilevamenti: <span class="nb">list</span>[Misurazione] <span class="op">=</span> [
+    Misurazione(<span class="mi">18.5</span>, <span class="mi">65.0</span>, <span class="st">&quot;08:00&quot;</span>),
+    Misurazione(<span class="mi">22.3</span>, <span class="mi">55.0</span>, <span class="st">&quot;12:00&quot;</span>),
+    Misurazione(<span class="mi">25.1</span>, <span class="mi">48.0</span>, <span class="st">&quot;15:00&quot;</span>),
+    Misurazione(<span class="mi">20.7</span>, <span class="mi">62.0</span>, <span class="st">&quot;18:00&quot;</span>),
+]
+
+<span class="cm"># Estrarre solo le temperature</span>
+temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [m.temperatura <span class="kw">for</span> m <span class="kw">in</span> rilevamenti]
+media_temp: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(temperature) <span class="op">/</span> <span class="nb">len</span>(temperature)
+<span class="nb">print</span>(<span class="st">f&quot;Temperatura media: {media_temp:.1f}°C&quot;</span>)
+
+<span class="cm"># Trovare il rilevamento con temperatura massima</span>
+piu_caldo: Misurazione <span class="op">=</span> <span class="nb">max</span>(rilevamenti, key<span class="op">=</span><span class="kw">lambda</span> m: m.temperatura)
+<span class="nb">print</span>(<span class="st">f&quot;Picco: {piu_caldo.temperatura}°C alle {piu_caldo.ora}&quot;</span>)</code></pre>
+<h3>Frequenze con liste e conteggio</h3>
+<pre><code><span class="kw">def</span> <span class="fn">distribuzione_frequenze</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]]:
+    <span class="st">&quot;&quot;&quot;Restituisce coppie (valore, frequenza) ordinate per valore.&quot;&quot;&quot;</span>
+    valori_unici: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">sorted</span>(<span class="nb">set</span>(dati))
+    frequenze: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> []
+    <span class="kw">for</span> valore <span class="kw">in</span> valori_unici:
+        freq: <span class="nb">int</span> <span class="op">=</span> dati.count(valore)
+        frequenze.append((valore, freq))
+    <span class="kw">return</span> frequenze
+
+voti_esame: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">25</span>, <span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">28</span>, <span class="mi">27</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">30</span>, <span class="mi">28</span>, <span class="mi">22</span>, <span class="mi">25</span>, <span class="mi">27</span>]
+<span class="kw">for</span> voto, freq <span class="kw">in</span> distribuzione_frequenze(voti_esame):
+    <span class="nb">print</span>(<span class="st">f&quot;Voto {voto}: {&#x27;█&#x27; * freq} ({freq})&quot;</span>)</code></pre>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li><strong>Perché in Python gli indici partono da 0?</strong> Spiegate sia la motivazione matematica (Dijkstra) sia quella pratica (offset in memoria).</li>
+</ol>
+<ol>
+<li><strong>Cosa restituisce <code>lista[2:2]</code>?</strong> E <code>lista[2:3]</code>? Perché?</li>
+</ol>
+<ol>
+<li><strong>Qual è la differenza tra <code>append()</code> e <code>extend()</code>?</strong> Cosa succede se scrivete <code>a.append([4, 5])</code> invece di <code>a.extend([4, 5])</code>?</li>
+</ol>
+<ol>
+<li><strong>Perché <code>voti = voti.sort()</code> è un errore logico?</strong> Cosa contiene <code>voti</code> dopo questa istruzione?</li>
+</ol>
+<ol>
+<li><strong>Dopo <code>a = [1, 2, 3]</code> e <code>b = a</code>, la modifica <code>b[0] = 99</code> cambia anche <code>a</code>?</strong> Perché? Disegnate un diagramma in memoria.</li>
+</ol>
+<ol>
+<li><strong>Quando serve <code>copy.deepcopy()</code> invece di <code>copy()</code> o slicing?</strong> Fate un esempio con una lista di liste.</li>
+</ol>
+<ol>
+<li><strong>Elencate tre motivi per cui esistono le tuple, nonostante le liste sembrino più versatili.</strong></li>
+</ol>
+<ol>
+<li><strong>Cos'è l'unpacking e perché è utile quando una funzione restituisce più valori?</strong></li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Create una lista con i primi 10 numeri naturali (da 0 a 9). Usando lo slicing, estraete: i numeri pari, i numeri dispari, la lista invertita, i primi 5 elementi, gli ultimi 3 elementi.</li>
+</ol>
+<ol>
+<li>Scrivete una funzione <code>rimuovi_duplicati(valori: list[int]) -> list[int]</code> che restituisce una nuova lista senza duplicati, mantenendo l'ordine originale. Non usate <code>set()</code>.</li>
+</ol>
+<ol>
+<li>Data una lista di voti <code>[28, 30, 25, 18, 27, 30, 22, 15, 28, 26]</code>, usate i metodi delle liste per: contare quanti 30 ci sono, trovare la posizione del primo 25, ordinare la lista in ordine decrescente (senza modificare l'originale), rimuovere tutti i voti insufficienti (< 18).</li>
+</ol>
+<h3>Intermedio</h3>
+<ol>
+<li>Scrivete una funzione <code>mediana(valori: list[float]) -> float</code> che calcola la mediana di una lista. Attenzione: non modificate la lista originale.</li>
+</ol>
+<ol>
+<li>Scrivete una funzione <code>quartili(valori: list[float]) -> tuple[float, float, float]</code> che restituisce il primo quartile (Q1), la mediana (Q2) e il terzo quartile (Q3). Usate l'unpacking per assegnare i risultati.</li>
+</ol>
+<ol>
+<li>Dimostrate la differenza tra alias, shallow copy e deep copy con un programma che:</li>
+</ol>
+<ul>
+<li>crea una lista di liste (es. <code>[[1, 2], [3, 4]]</code>)</li>
+<li>crea un alias, una shallow copy e una deep copy</li>
+<li>modifica un elemento della lista interna nella deep copy</li>
+<li>stampa tutte e quattro le versioni mostrando quale è stata modificata e quale no</li>
+</ul>
+<h3>Avanzato</h3>
+<ol>
+<li>Scrivete una funzione <code>normalizza(valori: list[float]) -> list[float]</code> che restituisce una nuova lista in cui ogni valore e' stato trasformato con la normalizzazione z-score: z = (x - media) / deviazione_standard. Calcolate media e deviazione standard manualmente (senza librerie).</li>
+</ol>
+<ol>
+<li>Implementate una funzione <code>tabella<em>contingenza(var1: list[str], var2: list[str]) -> dict[tuple[str, str], int]</code> che, date due liste di variabili categoriali della stessa lunghezza, restituisce un dizionario dove le chiavi sono tuple <code>(valore</em>var1, valore_var2)</code> e i valori sono le frequenze congiunte. Testatela con dati inventati (es. genere e preferenza).</li>
+</ol>
+<pre><code>   genere: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>]
+   sport: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;calcio&quot;</span>, <span class="st">&quot;tennis&quot;</span>, <span class="st">&quot;tennis&quot;</span>, <span class="st">&quot;calcio&quot;</span>, <span class="st">&quot;nuoto&quot;</span>, <span class="st">&quot;nuoto&quot;</span>, <span class="st">&quot;calcio&quot;</span>, <span class="st">&quot;tennis&quot;</span>]
+
+   tabella: <span class="nb">dict</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>], <span class="nb">int</span>] <span class="op">=</span> tabella_contingenza(genere, sport)
+   <span class="cm"># Dovrebbe produrre: {(&quot;M&quot;, &quot;calcio&quot;): 2, (&quot;F&quot;, &quot;tennis&quot;): 3, ...}</span></code></pre>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Liste e tuple sono i mattoni fondamentali per gestire collezioni di dati in Python. La distinzione tra le due non e' un dettaglio sintattico: riflette una scelta progettuale precisa. Usate le liste quando i dati devono crescere, ridursi o cambiare; usate le tuple quando i dati rappresentano un record fisso (una coordinata, una data, un risultato di funzione).</p>
+<p>Il concetto di <strong>riferimento</strong> e <strong>alias</strong> e' probabilmente l'idea piu' importante di questa lezione. Quasi tutti i bug piu' difficili da trovare nei programmi di analisi dati derivano da modifiche accidentali a strutture condivise. La regola e' semplice: se dovete lavorare su una copia, createla esplicitamente.</p>
+<p>Due osservazioni per il futuro:</p>
+<ol>
+<li><strong>NumPy e Pandas</strong> sostituiranno le liste per il lavoro numerico serio. Ma capire come funzionano le liste vi permette di capire cosa succede "sotto il cofano" di quelle librerie — e di riconoscere quando un bug dipende dalla struttura dati e quando dal calcolo.</li>
+</ol>
+<ol>
+<li><strong>L'unpacking e le tuple</strong> diventeranno ancora piu' utili quando vedrete le funzioni in dettaglio. Restituire piu' valori come tupla e spacchettarli nel chiamante e' un idioma Python cosi' frequente che diventa seconda natura.</li>
+</ol>
+<p>Nella prossima lezione esploreremo i <strong>dizionari e gli insiemi</strong> — strutture dati che non si basano sull'ordine posizionale ma su chiavi e appartenenza, aprendo la porta a un modo completamente diverso di organizzare i dati.</p>
+<nav class="bottom-nav"><span><a href="F10_comprehension_stringhe.html">← F10</a></span><span><a href="../../index.html">Home</a></span><span><a href="F12_dizionari_set_mutabilita.html">F12 →</a></span></nav>
+</body>
+</html>

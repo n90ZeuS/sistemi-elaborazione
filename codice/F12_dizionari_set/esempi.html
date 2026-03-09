@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F12_dizionari_set/esempi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/F12_dizionari_set_mutabilita.html">Dispensa</a> &bull; <a href="../../presentazioni/F12_dizionari_set_mutabilita.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>F12_dizionari_set/esempi.py</h1>
+<a class="download-link" href="esempi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F12 — Dizionari, set e mutabilità</span>
+<span class="cm"># Esempi per la lezione frontale 12</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 1. CREAZIONE DI DIZIONARI</span>
+<span class="cm"># ============================================================</span>
+
+<span class="cm"># Creazione letterale</span>
+studente: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span>] <span class="op">=</span> {
+    <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>,
+    <span class="st">&quot;cognome&quot;</span>: <span class="st">&quot;Rossi&quot;</span>,
+    <span class="st">&quot;matricola&quot;</span>: <span class="mi">12345</span>,
+    <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,
+}
+<span class="nb">print</span>(<span class="st">&quot;=== Creazione dizionari ===&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Studente: {studente}&quot;</span>)
+
+<span class="cm"># Creazione con dict()</span>
+voti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> <span class="nb">dict</span>(matematica<span class="op">=</span><span class="mi">28</span>, fisica<span class="op">=</span><span class="mi">30</span>, chimica<span class="op">=</span><span class="mi">25</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Voti: {voti}&quot;</span>)
+
+<span class="cm"># Creazione da lista di coppie</span>
+coppie: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> [(<span class="st">&quot;a&quot;</span>, <span class="mi">1</span>), (<span class="st">&quot;b&quot;</span>, <span class="mi">2</span>), (<span class="st">&quot;c&quot;</span>, <span class="mi">3</span>)]
+da_coppie: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> <span class="nb">dict</span>(coppie)
+<span class="kw">assert</span> da_coppie <span class="op">=</span><span class="op">=</span> {<span class="st">&quot;a&quot;</span>: <span class="mi">1</span>, <span class="st">&quot;b&quot;</span>: <span class="mi">2</span>, <span class="st">&quot;c&quot;</span>: <span class="mi">3</span>}
+<span class="nb">print</span>(<span class="st">f&quot;Da coppie: {da_coppie}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 2. ACCESSO AI VALORI: [], .get(), .setdefault()</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Accesso ai valori ===&quot;</span>)
+
+<span class="cm"># Accesso con []</span>
+nome: <span class="nb">str</span> <span class="op">=</span> studente[<span class="st">&quot;nome&quot;</span>]
+<span class="kw">assert</span> nome <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Marco&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Nome (con []): {nome}&quot;</span>)
+
+<span class="cm"># Accesso con .get() — ritorna None se la chiave non esiste</span>
+email: <span class="nb">str</span> <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> studente.get(<span class="st">&quot;email&quot;</span>)
+<span class="kw">assert</span> email <span class="kw">is</span> <span class="kw">None</span>
+<span class="nb">print</span>(<span class="st">f&quot;Email (con .get()): {email}&quot;</span>)
+
+<span class="cm"># .get() con valore predefinito</span>
+email_default: <span class="nb">str</span> <span class="op">=</span> studente.get(<span class="st">&quot;email&quot;</span>, <span class="st">&quot;non disponibile&quot;</span>)
+<span class="kw">assert</span> email_default <span class="op">=</span><span class="op">=</span> <span class="st">&quot;non disponibile&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Email (con default): {email_default}&quot;</span>)
+
+<span class="cm"># .setdefault() — inserisce la chiave se non esiste e ritorna il valore</span>
+anno: <span class="nb">int</span> <span class="op">=</span> studente.setdefault(<span class="st">&quot;anno&quot;</span>, <span class="mi">2024</span>)
+<span class="kw">assert</span> anno <span class="op">=</span><span class="op">=</span> <span class="mi">2024</span>
+<span class="kw">assert</span> studente[<span class="st">&quot;anno&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2024</span>
+<span class="nb">print</span>(<span class="st">f&quot;Anno (con .setdefault()): {anno}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Studente aggiornato: {studente}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 3. MODIFICA E .update()</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Modifica e .update() ===&quot;</span>)
+
+voti[<span class="st">&quot;matematica&quot;</span>] <span class="op">=</span> <span class="mi">30</span>  <span class="cm"># modifica valore esistente</span>
+voti[<span class="st">&quot;biologia&quot;</span>] <span class="op">=</span> <span class="mi">27</span>    <span class="cm"># aggiunge nuova coppia</span>
+<span class="nb">print</span>(<span class="st">f&quot;Voti dopo modifica: {voti}&quot;</span>)
+
+<span class="cm"># .update() con un altro dizionario</span>
+nuovi_voti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;inglese&quot;</span>: <span class="mi">29</span>, <span class="st">&quot;matematica&quot;</span>: <span class="mi">30</span>}
+voti.update(nuovi_voti)
+<span class="kw">assert</span> voti[<span class="st">&quot;inglese&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">29</span>
+<span class="nb">print</span>(<span class="st">f&quot;Voti dopo .update(): {voti}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 4. ITERAZIONE: .keys(), .values(), .items()</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Iterazione ===&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Chiavi (materie):&quot;</span>)
+materie: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">list</span>(voti.keys())
+<span class="kw">for</span> materia <span class="kw">in</span> voti.keys():
+    <span class="nb">print</span>(<span class="st">f&quot;  - {materia}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Valori (voti):&quot;</span>)
+lista_voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">list</span>(voti.values())
+<span class="kw">for</span> voto <span class="kw">in</span> voti.values():
+    <span class="nb">print</span>(<span class="st">f&quot;  - {voto}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Coppie (materia, voto):&quot;</span>)
+<span class="kw">for</span> materia, voto <span class="kw">in</span> voti.items():
+    <span class="nb">print</span>(<span class="st">f&quot;  {materia}: {voto}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 5. DICT COMPREHENSION</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Dict comprehension ===&quot;</span>)
+
+<span class="cm"># Quadrati dei numeri da 1 a 5</span>
+quadrati: <span class="nb">dict</span>[<span class="nb">int</span>, <span class="nb">int</span>] <span class="op">=</span> {n: n<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">6</span>)}
+<span class="kw">assert</span> quadrati <span class="op">=</span><span class="op">=</span> {<span class="mi">1</span>: <span class="mi">1</span>, <span class="mi">2</span>: <span class="mi">4</span>, <span class="mi">3</span>: <span class="mi">9</span>, <span class="mi">4</span>: <span class="mi">16</span>, <span class="mi">5</span>: <span class="mi">25</span>}
+<span class="nb">print</span>(<span class="st">f&quot;Quadrati: {quadrati}&quot;</span>)
+
+<span class="cm"># Filtrare voti &gt;= 28</span>
+voti_alti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {m: v <span class="kw">for</span> m, v <span class="kw">in</span> voti.items() <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>}
+<span class="nb">print</span>(<span class="st">f&quot;Voti alti (&gt;=28): {voti_alti}&quot;</span>)
+
+<span class="cm"># Invertire chiavi e valori</span>
+originale: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;a&quot;</span>: <span class="mi">1</span>, <span class="st">&quot;b&quot;</span>: <span class="mi">2</span>, <span class="st">&quot;c&quot;</span>: <span class="mi">3</span>}
+invertito: <span class="nb">dict</span>[<span class="nb">int</span>, <span class="nb">str</span>] <span class="op">=</span> {v: k <span class="kw">for</span> k, v <span class="kw">in</span> originale.items()}
+<span class="kw">assert</span> invertito <span class="op">=</span><span class="op">=</span> {<span class="mi">1</span>: <span class="st">&quot;a&quot;</span>, <span class="mi">2</span>: <span class="st">&quot;b&quot;</span>, <span class="mi">3</span>: <span class="st">&quot;c&quot;</span>}
+<span class="nb">print</span>(<span class="st">f&quot;Invertito: {invertito}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 6. ESEMPIO: REGISTRO STUDENTI</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Registro studenti ===&quot;</span>)
+
+registro: <span class="nb">dict</span>[<span class="nb">int</span>, <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">int</span>]]] <span class="op">=</span> {
+    <span class="mi">12345</span>: {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco Rossi&quot;</span>, <span class="st">&quot;voti&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]},
+    <span class="mi">12346</span>: {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Laura Bianchi&quot;</span>, <span class="st">&quot;voti&quot;</span>: [<span class="mi">30</span>, <span class="mi">30</span>, <span class="mi">29</span>]},
+    <span class="mi">12347</span>: {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Giulia Verdi&quot;</span>, <span class="st">&quot;voti&quot;</span>: [<span class="mi">24</span>, <span class="mi">26</span>, <span class="mi">22</span>]},
+}
+
+<span class="kw">for</span> matricola, dati <span class="kw">in</span> registro.items():
+    nome_studente: <span class="nb">str</span> <span class="op">=</span> dati[<span class="st">&quot;nome&quot;</span>]
+    voti_studente: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> dati[<span class="st">&quot;voti&quot;</span>]
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti_studente) <span class="op">/</span> <span class="nb">len</span>(voti_studente)
+    <span class="nb">print</span>(<span class="st">f&quot;  {matricola} - {nome_studente}: media = {media:.1f}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 7. ESEMPIO: CONTATORE DI PAROLE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Contatore di parole ===&quot;</span>)
+
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il gatto e il cane e il topo e il gatto&quot;</span>
+parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> testo.split()
+
+<span class="cm"># Metodo 1: manuale</span>
+conteggio_manuale: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
+<span class="kw">for</span> parola <span class="kw">in</span> parole:
+    conteggio_manuale[parola] <span class="op">=</span> conteggio_manuale.get(parola, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+
+<span class="kw">assert</span> conteggio_manuale[<span class="st">&quot;il&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
+<span class="kw">assert</span> conteggio_manuale[<span class="st">&quot;gatto&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> conteggio_manuale[<span class="st">&quot;e&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="nb">print</span>(<span class="st">f&quot;Conteggio manuale: {conteggio_manuale}&quot;</span>)
+
+<span class="cm"># Metodo 2: con .setdefault()</span>
+conteggio_setdefault: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
+<span class="kw">for</span> parola <span class="kw">in</span> parole:
+    conteggio_setdefault.setdefault(parola, <span class="mi">0</span>)
+    conteggio_setdefault[parola] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="kw">assert</span> conteggio_setdefault <span class="op">=</span><span class="op">=</span> conteggio_manuale
+<span class="nb">print</span>(<span class="st">f&quot;Conteggio setdefault: {conteggio_setdefault}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 8. SET — CREAZIONE E OPERAZIONI BASE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Set ===&quot;</span>)
+
+<span class="cm"># Creazione</span>
+numeri_pari: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>, <span class="mi">10</span>}
+numeri_dispari: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">9</span>}
+primi: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>}
+<span class="nb">print</span>(<span class="st">f&quot;Pari: {sorted(numeri_pari)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dispari: {sorted(numeri_dispari)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Primi: {sorted(primi)}&quot;</span>)
+
+<span class="cm"># Da lista (rimuove duplicati)</span>
+lista_con_duplicati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+unici: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">set</span>(lista_con_duplicati)
+<span class="kw">assert</span> <span class="nb">len</span>(unici) <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
+<span class="nb">print</span>(<span class="st">f&quot;Unici da lista: {sorted(unici)}&quot;</span>)
+
+<span class="cm"># Set vuoto — ATTENZIONE: {} crea un dict, non un set!</span>
+set_vuoto: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">set</span>()
+<span class="kw">assert</span> <span class="nb">isinstance</span>(set_vuoto, <span class="nb">set</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 9. SET — add, remove, discard</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Set: add, remove, discard ===&quot;</span>)
+
+frutta: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;mela&quot;</span>, <span class="st">&quot;pera&quot;</span>, <span class="st">&quot;banana&quot;</span>}
+frutta.add(<span class="st">&quot;arancia&quot;</span>)
+<span class="kw">assert</span> <span class="st">&quot;arancia&quot;</span> <span class="kw">in</span> frutta
+<span class="nb">print</span>(<span class="st">f&quot;Dopo add(&#x27;arancia&#x27;): {sorted(frutta)}&quot;</span>)
+
+frutta.remove(<span class="st">&quot;pera&quot;</span>)  <span class="cm"># KeyError se non esiste</span>
+<span class="kw">assert</span> <span class="st">&quot;pera&quot;</span> <span class="kw">not</span> <span class="kw">in</span> frutta
+<span class="nb">print</span>(<span class="st">f&quot;Dopo remove(&#x27;pera&#x27;): {sorted(frutta)}&quot;</span>)
+
+frutta.discard(<span class="st">&quot;kiwi&quot;</span>)  <span class="cm"># Nessun errore se non esiste</span>
+<span class="nb">print</span>(<span class="st">f&quot;Dopo discard(&#x27;kiwi&#x27;): {sorted(frutta)}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 10. SET — OPERAZIONI INSIEMISTICHE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Operazioni insiemistiche ===&quot;</span>)
+
+A: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>}
+B: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>}
+
+<span class="cm"># Unione</span>
+unione: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> A <span class="op">|</span> B  <span class="cm"># oppure A.union(B)</span>
+<span class="kw">assert</span> unione <span class="op">=</span><span class="op">=</span> {<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>}
+<span class="nb">print</span>(<span class="st">f&quot;A | B (unione): {sorted(unione)}&quot;</span>)
+
+<span class="cm"># Intersezione</span>
+intersezione: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> A <span class="op">&amp;</span> B  <span class="cm"># oppure A.intersection(B)</span>
+<span class="kw">assert</span> intersezione <span class="op">=</span><span class="op">=</span> {<span class="mi">4</span>, <span class="mi">5</span>}
+<span class="nb">print</span>(<span class="st">f&quot;A &amp; B (intersezione): {sorted(intersezione)}&quot;</span>)
+
+<span class="cm"># Differenza</span>
+differenza: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> A <span class="op">-</span> B  <span class="cm"># oppure A.difference(B)</span>
+<span class="kw">assert</span> differenza <span class="op">=</span><span class="op">=</span> {<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>}
+<span class="nb">print</span>(<span class="st">f&quot;A - B (differenza): {sorted(differenza)}&quot;</span>)
+
+<span class="cm"># Differenza simmetrica</span>
+diff_simm: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> A <span class="op">^</span> B  <span class="cm"># oppure A.symmetric_difference(B)</span>
+<span class="kw">assert</span> diff_simm <span class="op">=</span><span class="op">=</span> {<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>}
+<span class="nb">print</span>(<span class="st">f&quot;A ^ B (diff. simmetrica): {sorted(diff_simm)}&quot;</span>)
+
+<span class="cm"># Sottinsieme e sovrainsieme</span>
+C: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>}
+<span class="kw">assert</span> C.issubset(A)
+<span class="kw">assert</span> A.issuperset(C)
+<span class="nb">print</span>(<span class="st">f&quot;{sorted(C)} è sottinsieme di {sorted(A)}: {C.issubset(A)}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 11. FROZENSET</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Frozenset ===&quot;</span>)
+
+<span class="cm"># frozenset è un set immutabile — può essere usato come chiave di dict</span>
+immutabile: <span class="nb">frozenset</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">frozenset</span>([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+<span class="nb">print</span>(<span class="st">f&quot;Frozenset: {immutabile}&quot;</span>)
+
+<span class="cm"># Può essere usato come chiave di un dizionario</span>
+gruppi: <span class="nb">dict</span>[<span class="nb">frozenset</span>[<span class="nb">str</span>], <span class="nb">str</span>] <span class="op">=</span> {
+    <span class="nb">frozenset</span>([<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Laura&quot;</span>]): <span class="st">&quot;Gruppo A&quot;</span>,
+    <span class="nb">frozenset</span>([<span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;Paolo&quot;</span>]): <span class="st">&quot;Gruppo B&quot;</span>,
+}
+chiave: <span class="nb">frozenset</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">frozenset</span>([<span class="st">&quot;Laura&quot;</span>, <span class="st">&quot;Marco&quot;</span>])  <span class="cm"># ordine non conta</span>
+<span class="kw">assert</span> gruppi[chiave] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Gruppo A&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Gruppo per Marco e Laura: {gruppi[chiave]}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 12. MUTABILITÀ vs IMMUTABILITÀ</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Mutabilità vs Immutabilità ===&quot;</span>)
+
+<span class="cm"># Tipi immutabili: int, float, str, tuple, frozenset</span>
+<span class="cm"># Tipi mutabili: list, dict, set</span>
+
+<span class="cm"># Le stringhe sono immutabili</span>
+s: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;ciao&quot;</span>
+s2: <span class="nb">str</span> <span class="op">=</span> s.upper()  <span class="cm"># crea una NUOVA stringa</span>
+<span class="kw">assert</span> s <span class="op">=</span><span class="op">=</span> <span class="st">&quot;ciao&quot;</span>    <span class="cm"># l&#x27;originale non cambia</span>
+<span class="kw">assert</span> s2 <span class="op">=</span><span class="op">=</span> <span class="st">&quot;CIAO&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Stringa originale: {s}, nuova: {s2}&quot;</span>)
+
+<span class="cm"># Le liste sono mutabili</span>
+lista_a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+lista_a.append(<span class="mi">4</span>)  <span class="cm"># modifica IN PLACE</span>
+<span class="kw">assert</span> lista_a <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Lista dopo append: {lista_a}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 13. ALIASING vs COPYING</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Aliasing vs Copying ===&quot;</span>)
+
+<span class="cm"># Aliasing — due nomi per lo stesso oggetto</span>
+originale_lista: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+alias: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> originale_lista  <span class="cm"># NON è una copia!</span>
+alias.append(<span class="mi">4</span>)
+<span class="kw">assert</span> originale_lista <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]  <span class="cm"># anche l&#x27;originale è cambiato!</span>
+<span class="nb">print</span>(<span class="st">f&quot;Originale dopo modifica alias: {originale_lista}&quot;</span>)
+
+<span class="cm"># Copia superficiale (shallow copy)</span>
+lista_x: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+copia_x: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> lista_x.copy()  <span class="cm"># oppure list(lista_x) o lista_x[:]</span>
+copia_x.append(<span class="mi">4</span>)
+<span class="kw">assert</span> lista_x <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]  <span class="cm"># l&#x27;originale NON cambia</span>
+<span class="kw">assert</span> copia_x <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Originale dopo modifica copia: {lista_x}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Copia: {copia_x}&quot;</span>)
+
+<span class="cm"># Copia di dizionari</span>
+dict_orig: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;a&quot;</span>: <span class="mi">1</span>, <span class="st">&quot;b&quot;</span>: <span class="mi">2</span>}
+dict_copia: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> dict_orig.copy()
+dict_copia[<span class="st">&quot;c&quot;</span>] <span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> <span class="st">&quot;c&quot;</span> <span class="kw">not</span> <span class="kw">in</span> dict_orig
+<span class="nb">print</span>(<span class="st">f&quot;Dict originale: {dict_orig}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dict copia: {dict_copia}&quot;</span>)
+
+<span class="cm"># Attenzione: shallow copy con oggetti mutabili annidati</span>
+<span class="kw">import</span> copy
+
+lista_nested: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>]]
+shallow: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> lista_nested.copy()
+deep: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> copy.deepcopy(lista_nested)
+
+shallow[<span class="mi">0</span>].append(<span class="mi">99</span>)
+<span class="kw">assert</span> lista_nested[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">99</span>]  <span class="cm"># shallow copy condivide gli oggetti interni!</span>
+<span class="kw">assert</span> deep[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>]              <span class="cm"># deep copy è completamente indipendente</span>
+<span class="nb">print</span>(<span class="st">f&quot;Originale dopo modifica shallow: {lista_nested}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Deep copy (indipendente): {deep}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\n=== Fine esempi F12 ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

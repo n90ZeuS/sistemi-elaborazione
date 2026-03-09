@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autovalutazione — F16: Programmazione a oggetti — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/F16_programmazione_oggetti.html">Dispensa</a> &bull; <a href="../errori_comuni/F16_errori.html">Errori comuni</a></nav>
+<h1>Autovalutazione — F16: Programmazione a oggetti</h1>
+
+<h1>Autovalutazione — F16: Classi e Programmazione a Oggetti</h1>
+<p>Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere <strong>prima</strong> di guardare la soluzione.</p>
+<hr>
+<h2>Cosa stampa questo codice?</h2>
+<h3>Esercizio 1</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
+    universita <span class="op">=</span> <span class="st">&quot;La Sapienza&quot;</span>  <span class="cm"># attributo di classe</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome, matricola):
+        self.nome <span class="op">=</span> nome          <span class="cm"># attributo di istanza</span>
+        self.matricola <span class="op">=</span> matricola
+
+s1 <span class="op">=</span> Studente(<span class="st">&quot;Alice&quot;</span>, <span class="mi">12345</span>)
+s2 <span class="op">=</span> Studente(<span class="st">&quot;Bob&quot;</span>, <span class="mi">67890</span>)
+
+<span class="nb">print</span>(s1.universita)
+<span class="nb">print</span>(s2.universita)
+
+Studente.universita <span class="op">=</span> <span class="st">&quot;Tor Vergata&quot;</span>
+<span class="nb">print</span>(s1.universita)
+<span class="nb">print</span>(s2.universita)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>La Sapienza
+La Sapienza
+Tor Vergata
+Tor Vergata</code></pre>
+<p><strong>Spiegazione:</strong> <code>universita</code> e' un <strong>attributo di classe</strong>, condiviso da tutte le istanze. Quando lo modifichiamo tramite <code>Studente.universita</code>, il cambiamento e' visibile da tutte le istanze. Questo accade perche' <code>s1.universita</code> e <code>s2.universita</code> non trovano un attributo di istanza con quel nome, quindi risalgono all'attributo di classe.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 2</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Contatore</span>:
+    conteggio <span class="op">=</span> <span class="mi">0</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>):
+        Contatore.conteggio <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+    <span class="kw">def</span> <span class="fn">quanti</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> Contatore.conteggio
+
+c1 <span class="op">=</span> Contatore()
+c2 <span class="op">=</span> Contatore()
+c3 <span class="op">=</span> Contatore()
+<span class="nb">print</span>(c1.quanti())
+<span class="nb">print</span>(c2.quanti())</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code><span class="mi">3</span>
+<span class="mi">3</span></code></pre>
+<p><strong>Spiegazione:</strong> Ogni volta che viene creata un'istanza, <code><em>_init</em>_</code> incrementa l'attributo di classe <code>conteggio</code>. Dopo tre istanze, <code>conteggio</code> vale <code>3</code>. Il metodo <code>quanti()</code> restituisce il valore dell'attributo di classe, che e' lo stesso per tutte le istanze. Sia <code>c1.quanti()</code> che <code>c2.quanti()</code> restituiscono <code>3</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 3</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Animale</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome):
+        self.nome <span class="op">=</span> nome
+
+    <span class="kw">def</span> <span class="fn">parla</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="st">f&quot;{self.nome} fa un suono generico&quot;</span>
+
+<span class="kw">class</span> <span class="fn">Cane</span>(<span class="fn">Animale</span>):
+    <span class="kw">def</span> <span class="fn">parla</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="st">f&quot;{self.nome} fa: Bau!&quot;</span>
+
+<span class="kw">class</span> <span class="fn">Gatto</span>(<span class="fn">Animale</span>):
+    <span class="kw">def</span> <span class="fn">parla</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="st">f&quot;{self.nome} fa: Miao!&quot;</span>
+
+animali <span class="op">=</span> [Cane(<span class="st">&quot;Fido&quot;</span>), Gatto(<span class="st">&quot;Micio&quot;</span>), Animale(<span class="st">&quot;Creatura&quot;</span>)]
+<span class="kw">for</span> a <span class="kw">in</span> animali:
+    <span class="nb">print</span>(a.parla())</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>Fido fa: Bau<span class="op">!</span>
+Micio fa: Miao<span class="op">!</span>
+Creatura fa un suono generico</code></pre>
+<p><strong>Spiegazione:</strong> Questo e' un esempio di <strong>ereditarieta'</strong> e <strong>polimorfismo</strong>. <code>Cane</code> e <code>Gatto</code> ereditano da <code>Animale</code> e sovrascrivono il metodo <code>parla()</code>. Quando chiamiamo <code>a.parla()</code>, Python usa il metodo della classe specifica dell'oggetto. <code>Cane</code> usa il suo <code>parla()</code>, <code>Gatto</code> usa il suo, e <code>Animale</code> usa quello generico. Tutti e tre condividono l'<code><em>_init</em>_</code> della classe base.</p>
+<p></details></p>
+<hr>
+<h2>Trova l'errore</h2>
+<h3>Esercizio 4</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Rettangolo</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, base, altezza):
+        base <span class="op">=</span> base
+        altezza <span class="op">=</span> altezza
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> self.base <span class="op">*</span> self.altezza
+
+r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="mi">3</span>)
+<span class="nb">print</span>(r.area())</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>AttributeError: 'Rettangolo' object has no attribute 'base'</code></p>
+<p><strong>Problema:</strong> Nell'<code><em>_init</em>_</code>, manca <code>self.</code> davanti agli attributi. <code>base = base</code> crea una variabile locale che viene scartata alla fine del metodo, invece di salvare il valore nell'istanza.</p>
+<p><strong>Correzione:</strong></p>
+<pre><code><span class="kw">class</span> <span class="fn">Rettangolo</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, base, altezza):
+        self.base <span class="op">=</span> base       <span class="cm"># self. salva nell&#x27;istanza</span>
+        self.altezza <span class="op">=</span> altezza
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> self.base <span class="op">*</span> self.altezza
+
+r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="mi">3</span>)
+<span class="nb">print</span>(r.area())  <span class="cm"># 15</span></code></pre>
+<p><strong>Lezione:</strong> Dentro <code><em>_init</em><em></code>, usate sempre <code>self.nome</em>attributo = valore</code> per salvare i dati nell'istanza. Senza <code>self.</code>, i valori sono solo variabili locali temporanee.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 5</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Squadra</span>:
+    giocatori <span class="op">=</span> []  <span class="cm"># attributo di classe</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome):
+        self.nome <span class="op">=</span> nome
+
+    <span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">self</span>, giocatore):
+        self.giocatori.append(giocatore)
+
+roma <span class="op">=</span> Squadra(<span class="st">&quot;Roma&quot;</span>)
+lazio <span class="op">=</span> Squadra(<span class="st">&quot;Lazio&quot;</span>)
+roma.aggiungi(<span class="st">&quot;Totti&quot;</span>)
+lazio.aggiungi(<span class="st">&quot;Immobile&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;Roma: {roma.giocatori}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Lazio: {lazio.giocatori}&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output indesiderato:</strong></p>
+<pre><code>Roma: [<span class="st">&#x27;Totti&#x27;</span>, <span class="st">&#x27;Immobile&#x27;</span>]
+Lazio: [<span class="st">&#x27;Totti&#x27;</span>, <span class="st">&#x27;Immobile&#x27;</span>]</code></pre>
+<p><strong>Problema:</strong> <code>giocatori = []</code> e' un <strong>attributo di classe mutabile</strong>. La lista e' condivisa tra tutte le istanze. Quando <code>roma.aggiungi("Totti")</code> fa <code>append</code>, modifica la stessa lista visibile anche da <code>lazio</code>.</p>
+<p><strong>Correzione:</strong></p>
+<pre><code><span class="kw">class</span> <span class="fn">Squadra</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome):
+        self.nome <span class="op">=</span> nome
+        self.giocatori <span class="op">=</span> []  <span class="cm"># attributo di istanza: ogni squadra ha la sua lista</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">self</span>, giocatore):
+        self.giocatori.append(giocatore)
+
+roma <span class="op">=</span> Squadra(<span class="st">&quot;Roma&quot;</span>)
+lazio <span class="op">=</span> Squadra(<span class="st">&quot;Lazio&quot;</span>)
+roma.aggiungi(<span class="st">&quot;Totti&quot;</span>)
+lazio.aggiungi(<span class="st">&quot;Immobile&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;Roma: {roma.giocatori}&quot;</span>)   <span class="cm"># Roma: [&#x27;Totti&#x27;]</span>
+<span class="nb">print</span>(<span class="st">f&quot;Lazio: {lazio.giocatori}&quot;</span>) <span class="cm"># Lazio: [&#x27;Immobile&#x27;]</span></code></pre>
+<p><strong>Lezione:</strong> Non usate attributi di classe <strong>mutabili</strong> (liste, dizionari) se ogni istanza deve avere la propria copia. Inizializzateli dentro <code><em>_init</em>_</code> con <code>self.</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 6</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Cerchio</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, raggio):
+        self.raggio <span class="op">=</span> raggio
+        <span class="kw">return</span> self.raggio <span class="op">*</span> <span class="mi">3.14159</span>
+
+c <span class="op">=</span> Cerchio(<span class="mi">5</span>)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>TypeError: <em>_init</em>_() should return None, not 'float'</code></p>
+<p><strong>Problema:</strong> Il metodo <code><em>_init</em>_</code> <strong>non deve restituire un valore</strong>. Il suo compito e' solo inizializzare l'oggetto, non restituire risultati. Python lo chiama automaticamente dopo la creazione dell'oggetto.</p>
+<p><strong>Correzione:</strong></p>
+<pre><code><span class="kw">class</span> <span class="fn">Cerchio</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, raggio):
+        self.raggio <span class="op">=</span> raggio
+
+    <span class="kw">def</span> <span class="fn">circonferenza</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="mi">2</span> <span class="op">*</span> <span class="mi">3.14159</span> <span class="op">*</span> self.raggio
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="mi">3.14159</span> <span class="op">*</span> self.raggio <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+
+c <span class="op">=</span> Cerchio(<span class="mi">5</span>)
+<span class="nb">print</span>(c.area())           <span class="cm"># 78.53975</span>
+<span class="nb">print</span>(c.circonferenza())  <span class="cm"># 31.4159</span></code></pre>
+<p><strong>Lezione:</strong> <code><em>_init</em>_</code> serve solo per inizializzare gli attributi. I calcoli vanno in metodi separati che restituiscono i risultati.</p>
+<p></details></p>
+<hr>
+<h2>Completa il codice</h2>
+<h3>Esercizio 7</h3>
+<p>Completa la classe <code>Studente</code> con <code><em>_init</em>_</code>, un metodo per aggiungere voti e uno per calcolare la media.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
+    <span class="cm"># --- COMPLETA: __init__ con nome e lista voti vuota ---</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">self</span>, voto):
+        <span class="st">&quot;&quot;&quot;Aggiunge un voto se e&#x27; valido (tra 18 e 30).&quot;&quot;&quot;</span>
+        <span class="cm"># --- COMPLETA ---</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">media</span>(<span class="fn">self</span>):
+        <span class="st">&quot;&quot;&quot;Restituisce la media dei voti, o None se non ci sono voti.&quot;&quot;&quot;</span>
+        <span class="cm"># --- COMPLETA ---</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>):
+        <span class="st">&quot;&quot;&quot;Rappresentazione leggibile dello studente.&quot;&quot;&quot;</span>
+        <span class="cm"># --- COMPLETA: restituisci una stringa tipo &quot;Alice - Media: 27.5&quot; ---</span>
+        <span class="kw">pass</span>
+
+<span class="cm"># Test</span>
+s <span class="op">=</span> Studente(<span class="st">&quot;Alice&quot;</span>)
+s.aggiungi_voto(<span class="mi">28</span>)
+s.aggiungi_voto(<span class="mi">30</span>)
+s.aggiungi_voto(<span class="mi">15</span>)  <span class="cm"># Non valido, deve essere ignorato</span>
+s.aggiungi_voto(<span class="mi">26</span>)
+<span class="nb">print</span>(s)           <span class="cm"># Alice - Media: 28.0</span>
+<span class="nb">print</span>(s.media())   <span class="cm"># 28.0</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la soluzione</summary></p>
+<pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome):
+        self.nome <span class="op">=</span> nome
+        self.voti <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">self</span>, voto):
+        <span class="st">&quot;&quot;&quot;Aggiunge un voto se e&#x27; valido (tra 18 e 30).&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+            self.voti.append(voto)
+
+    <span class="kw">def</span> <span class="fn">media</span>(<span class="fn">self</span>):
+        <span class="st">&quot;&quot;&quot;Restituisce la media dei voti, o None se non ci sono voti.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="kw">not</span> self.voti:
+            <span class="kw">return</span> <span class="kw">None</span>
+        <span class="kw">return</span> <span class="nb">sum</span>(self.voti) <span class="op">/</span> <span class="nb">len</span>(self.voti)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>):
+        <span class="st">&quot;&quot;&quot;Rappresentazione leggibile dello studente.&quot;&quot;&quot;</span>
+        m <span class="op">=</span> self.media()
+        <span class="kw">if</span> m <span class="kw">is</span> <span class="kw">None</span>:
+            <span class="kw">return</span> <span class="st">f&quot;{self.nome} - Nessun voto&quot;</span>
+        <span class="kw">return</span> <span class="st">f&quot;{self.nome} - Media: {m}&quot;</span>
+
+s <span class="op">=</span> Studente(<span class="st">&quot;Alice&quot;</span>)
+s.aggiungi_voto(<span class="mi">28</span>)
+s.aggiungi_voto(<span class="mi">30</span>)
+s.aggiungi_voto(<span class="mi">15</span>)  <span class="cm"># Ignorato</span>
+s.aggiungi_voto(<span class="mi">26</span>)
+<span class="nb">print</span>(s)           <span class="cm"># Alice - Media: 28.0</span>
+<span class="nb">print</span>(s.media())   <span class="cm"># 28.0</span></code></pre>
+<p><strong>Spiegazione:</strong> La lista <code>voti</code> e' inizializzata in <code><em>_init</em><em></code> come attributo di istanza. <code>aggiungi</em>voto</code> valida il voto prima di aggiungerlo. <code>media</code> gestisce il caso di lista vuota restituendo <code>None</code>. <code><em>_str</em>_</code> viene chiamato automaticamente da <code>print()</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 8</h3>
+<p>Completa le classi usando l'ereditarieta'.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Forma</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, colore):
+        self.colore <span class="op">=</span> colore
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="fn">self</span>):
+        <span class="kw">raise</span> <span class="nb">NotImplementedError</span>(<span class="st">&quot;Le sottoclassi devono implementare area()&quot;</span>)
+
+    <span class="kw">def</span> <span class="fn">descrizione</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="st">f&quot;Forma {self.colore} con area {self.area():.2f}&quot;</span>
+
+
+<span class="kw">class</span> <span class="fn">Quadrato</span>(<span class="fn">Forma</span>):
+    <span class="cm"># --- COMPLETA: __init__ e area ---</span>
+    <span class="kw">pass</span>
+
+
+<span class="kw">class</span> <span class="fn">CerchioColorato</span>(<span class="fn">Forma</span>):
+    <span class="cm"># --- COMPLETA: __init__ e area ---</span>
+    <span class="kw">pass</span>
+
+
+<span class="cm"># Test</span>
+q <span class="op">=</span> Quadrato(<span class="st">&quot;rosso&quot;</span>, <span class="mi">4</span>)
+c <span class="op">=</span> CerchioColorato(<span class="st">&quot;blu&quot;</span>, <span class="mi">3</span>)
+<span class="nb">print</span>(q.descrizione())  <span class="cm"># Forma rosso con area 16.00</span>
+<span class="nb">print</span>(c.descrizione())  <span class="cm"># Forma blu con area 28.27</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la soluzione</summary></p>
+<pre><code><span class="kw">import</span> math
+
+<span class="kw">class</span> <span class="fn">Forma</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, colore):
+        self.colore <span class="op">=</span> colore
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="fn">self</span>):
+        <span class="kw">raise</span> <span class="nb">NotImplementedError</span>(<span class="st">&quot;Le sottoclassi devono implementare area()&quot;</span>)
+
+    <span class="kw">def</span> <span class="fn">descrizione</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="st">f&quot;Forma {self.colore} con area {self.area():.2f}&quot;</span>
+
+
+<span class="kw">class</span> <span class="fn">Quadrato</span>(<span class="fn">Forma</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, colore, lato):
+        <span class="nb">super</span>().__init__(colore)
+        self.lato <span class="op">=</span> lato
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> self.lato <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+
+
+<span class="kw">class</span> <span class="fn">CerchioColorato</span>(<span class="fn">Forma</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, colore, raggio):
+        <span class="nb">super</span>().__init__(colore)
+        self.raggio <span class="op">=</span> raggio
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> math.pi <span class="op">*</span> self.raggio <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+
+
+q <span class="op">=</span> Quadrato(<span class="st">&quot;rosso&quot;</span>, <span class="mi">4</span>)
+c <span class="op">=</span> CerchioColorato(<span class="st">&quot;blu&quot;</span>, <span class="mi">3</span>)
+<span class="nb">print</span>(q.descrizione())  <span class="cm"># Forma rosso con area 16.00</span>
+<span class="nb">print</span>(c.descrizione())  <span class="cm"># Forma blu con area 28.27</span></code></pre>
+<p><strong>Spiegazione:</strong> <code>super().<em>_init</em><em>(colore)</code> chiama l'<code></em><em>init</em>_</code> della classe base <code>Forma</code> per inizializzare <code>self.colore</code>. Ogni sottoclasse aggiunge i propri attributi specifici (<code>lato</code> o <code>raggio</code>) e implementa il metodo <code>area()</code>. Il metodo <code>descrizione()</code> ereditato da <code>Forma</code> funziona correttamente perche' chiama <code>self.area()</code>, che grazie al polimorfismo usa la versione della sottoclasse.</p>
+<p></details></p>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F04 — Sistemi operativi — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F03_architettura_elaboratori.html">← F03</a> &bull; <a href="F05_rappresentazione_dati.html">F05 →</a> &bull; <a href="../../presentazioni/F04_sistemi_operativi.html">Presentazione</a></nav>
+<h1>F04 — Sistemi operativi</h1>
+
+<h1>Lezione Frontale 4 — Sistemi operativi e software di sistema</h1>
+<h2>Introduzione</h2>
+<p>Nelle lezioni precedenti abbiamo costruito un elaboratore pezzo per pezzo: bit, porte logiche, CPU, memoria, bus. Abbiamo una macchina potentissima ma completamente "nuda". Se la accendeste ora, non fareste nulla: non c'è nessuno che gestisca le risorse, che vi permetta di interagire, che coordini l'esecuzione dei programmi. Manca il <strong>software di sistema</strong> — e il suo componente più importante è il <strong>sistema operativo</strong>.</p>
+<p>Il sistema operativo è il programma più importante che non vedrete mai. Lavora silenziosamente sotto ogni cosa che fate al computer: quando aprite un file, quando navigare in internet, quando eseguite uno script Python, quando Jupyter Notebook mostra un grafico. Capire cosa fa e come lo fa vi darà una comprensione profonda del funzionamento reale delle macchine con cui lavorate ogni giorno.</p>
+<hr>
+<h2>Perché serve un sistema operativo</h2>
+<p>Immaginate di avere un'orchestra con cento musicisti, decine di strumenti diversi e un programma di brani da eseguire. Senza un direttore d'orchestra, il risultato sarebbe il caos: chi suona quando? Chi aspetta chi? Come si gestisce il fatto che c'è un solo pianoforte ma tre pianisti?</p>
+<p>Il sistema operativo è il direttore d'orchestra del computer. I musicisti sono i programmi, gli strumenti sono le risorse hardware (CPU, memoria, disco, rete), e il direttore deve garantire che tutto funzioni armoniosamente.</p>
+<h3>Le funzioni fondamentali</h3>
+<p>Un sistema operativo svolge quattro ruoli essenziali:</p>
+<p><strong>1. Astrazione dell'hardware.</strong> L'hardware è complesso e diversificato: esistono centinaia di modelli di dischi, schede di rete, schermi, ognuno con le sue peculiarità. Il sistema operativo li nasconde dietro un'interfaccia uniforme. Quando in Python scrivete <code>open("dati.csv")</code>, non dovete sapere se il file è su un SSD Samsung o un HDD Seagate, se usa il file system NTFS o ext4. Il sistema operativo se ne occupa.</p>
+<p><strong>2. Gestione delle risorse.</strong> La CPU è una, la RAM è limitata, il disco è condiviso. Ma voi volete eseguire contemporaneamente il browser, Spotify, VS Code e un calcolo Python. Chi decide quanto tempo di CPU tocca a ciascun programma? Chi assegna la memoria? Chi evita che un programma sovrascriva i dati di un altro? Il sistema operativo.</p>
+<p><strong>3. Interfaccia utente.</strong> Il sistema operativo fornisce il modo in cui interagite con il computer: la riga di comando (terminale), l'interfaccia grafica (finestre, icone, menu), il touch screen. Senza di esso, dovreste comunicare in codice macchina.</p>
+<p><strong>4. Sicurezza e protezione.</strong> Ogni programma vive in uno spazio isolato: non può accedere alla memoria degli altri programmi, non può scrivere su file per cui non ha i permessi, non può prendere il controllo totale della macchina (a meno che non sia il sistema operativo stesso). Questa protezione è fondamentale: un bug in un programma non deve poter distruggere l'intero sistema.</p>
+<hr>
+<h2>Una breve storia dei sistemi operativi</h2>
+<p>La storia dei sistemi operativi è affascinante perché riflette l'evoluzione del rapporto tra gli esseri umani e le macchine.</p>
+<h3>L'era batch (anni '50-'60)</h3>
+<p>I primi computer non avevano un sistema operativo nel senso moderno. I programmatori scrivevano i programmi su <strong>schede perforate</strong> — cartoncini con fori che codificavano le istruzioni. Le schede venivano consegnate a un operatore, che le caricava nella macchina. Il computer eseguiva il programma, stampava i risultati, e passava al programma successivo. Non c'era nessuna interazione: si consegnava il lavoro la mattina e si ritiravano i risultati il giorno dopo (se tutto andava bene).</p>
+<p>I primi sistemi operativi nacquero proprio per automatizzare questo processo: caricare un programma, eseguirlo, caricare il successivo. Si chiamavano <strong>sistemi batch</strong> (a lotti) perché elaboravano un "lotto" di programmi in sequenza.</p>
+<h3>Il time-sharing (anni '60-'70)</h3>
+<p>L'idea rivoluzionaria del <strong>time-sharing</strong> (condivisione del tempo) cambiò tutto: invece di dedicare l'intera macchina a un utente alla volta, il sistema operativo suddivideva il tempo della CPU tra molti utenti, dando a ciascuno l'illusione di avere il computer tutto per sé. Ogni utente aveva un terminale (schermo e tastiera) collegato al computer centrale.</p>
+<p>Il progetto più ambizioso fu <strong>Multics</strong> (1964-69), nato dalla collaborazione tra MIT, Bell Labs e General Electric. Multics era straordinariamente avanzato per l'epoca: supportava molti utenti contemporanei, aveva un file system gerarchico, gestiva la sicurezza. Ma era anche enormemente complesso. Quando Bell Labs abbandonò il progetto, due dei suoi ricercatori — <strong>Ken Thompson</strong> e <strong>Dennis Ritchie</strong> — presero le idee migliori di Multics e le semplificarono radicalmente. Il risultato fu <strong>Unix</strong>.</p>
+<h3>Unix (1969)</h3>
+<p>Unix è forse il sistema operativo più influente della storia. Nato nel 1969 ai Bell Labs, si fondava su principi che sono ancora oggi considerati paradigmatici:</p>
+<ul>
+<li><strong>"Fare una cosa sola e farla bene":</strong> ogni strumento (programma) deve svolgere un compito specifico e farlo eccellentemente. La potenza nasce dalla combinazione di strumenti semplici (attraverso i <em>pipe</em>, le "tubature" che collegano l'output di un programma all'input di un altro).</li>
+</ul>
+<ul>
+<li><strong>"Tutto è un file":</strong> dispositivi hardware, connessioni di rete, processi — tutto viene rappresentato come un file. Questo rende l'interfaccia uniforme e composibile.</li>
+</ul>
+<ul>
+<li><strong>Portabilità:</strong> nel 1973, Thompson e Ritchie riscrissero Unix in <strong>C</strong> (un linguaggio ad alto livello creato da Ritchie stesso), rendendolo indipendente dalla specifica macchina. Prima, i sistemi operativi erano scritti in assembly per un'architettura specifica. Dopo Unix, un sistema operativo poteva essere portato su macchine diverse ricompilando il codice.</li>
+</ul>
+<p>Da Unix discende un'intera famiglia di sistemi operativi: BSD, Solaris, macOS (il Mac usa un kernel derivato da BSD), Linux, Android. La filosofia Unix pervade anche gli strumenti moderni di sviluppo software.</p>
+<h3>L'era dei personal computer</h3>
+<p>Con la nascita dei personal computer alla fine degli anni '70, servivano sistemi operativi adatti a utenti non specialisti:</p>
+<ul>
+<li><strong>MS-DOS</strong> (1981): il sistema operativo testuale che IBM scelse per i suoi PC, fornito da una giovane Microsoft. Riga di comando, niente grafica, un solo programma alla volta.</li>
+<li><strong>Windows</strong> (dal 1985): l'interfaccia grafica sopra MS-DOS, che evolse fino a diventare un sistema operativo completo. Oggi domina il mercato desktop (~72%).</li>
+<li><strong>Macintosh</strong> (1984): Apple introdusse l'interfaccia grafica con mouse e icone per il grande pubblico (ispirata dal lavoro di Xerox PARC). Evolse in <strong>macOS</strong>, che sotto la superficie è un sistema Unix.</li>
+</ul>
+<h3>Linux (1991)</h3>
+<p>Nel 1991, <strong>Linus Torvalds</strong>, studente finlandese di 21 anni, pubblicò su un newsgroup un messaggio che iniziava con: <em>"Sto facendo un sistema operativo (gratis) (solo un hobby, non sarà grande e professionale come gnu)"</em>. Quel "hobby" è diventato <strong>Linux</strong>, il sistema operativo open-source che:</p>
+<ul>
+<li>Fa girare il <strong>96% dei server mondiali</strong> (compresi quelli di Google, Amazon, Facebook).</li>
+<li>Alimenta <strong>tutti</strong> i primi 500 supercomputer del mondo.</li>
+<li>È alla base di <strong>Android</strong> (il sistema operativo mobile più diffuso al mondo, con oltre 3 miliardi di dispositivi).</li>
+<li>Costituisce la spina dorsale del <strong>cloud computing</strong> (AWS, Google Cloud, Azure usano Linux).</li>
+</ul>
+<p>La forza di Linux sta nel suo modello di sviluppo: il codice sorgente è pubblico e chiunque può contribuire. Migliaia di sviluppatori nel mondo collaborano per migliorarlo. È gratuito, robusto, flessibile e trasparente. Per un ricercatore, sapere che il software su cui girano le proprie analisi è ispezionabile e verificabile è un valore enorme.</p>
+<hr>
+<h2>Gestione dei processi</h2>
+<h3>Cos'è un processo</h3>
+<p>Quando eseguite un programma Python, il sistema operativo crea un <strong>processo</strong>: un'istanza del programma in esecuzione, con il proprio spazio di memoria, il proprio stato, le proprie risorse. Lo stesso programma può generare più processi indipendenti (ad esempio, potete aprire due terminali e lanciare due script Python diversi contemporaneamente — sono due processi distinti).</p>
+<p>Ogni processo ha:</p>
+<ul>
+<li>Uno <strong>spazio di indirizzamento</strong> privato (la sua porzione di memoria, isolata dagli altri).</li>
+<li>Uno <strong>stato</strong> (in esecuzione, in attesa, terminato).</li>
+<li>Un <strong>identificatore</strong> univoco (PID, <em>Process ID</em>).</li>
+<li>Risorse associate (file aperti, connessioni di rete, ecc.).</li>
+</ul>
+<h3>Multitasking</h3>
+<p>Il vostro computer sembra eseguire molti programmi contemporaneamente: browser, editor, player musicale, script Python, decine di processi di sistema. Ma se avete, per esempio, 8 core, al massimo 8 processi possono essere realmente in esecuzione nello stesso istante. Come è possibile l'illusione della simultaneità?</p>
+<p>La risposta è lo <strong>scheduling</strong>: il sistema operativo assegna a ogni processo brevi "fette di tempo" (<em>time slice</em>) sulla CPU, tipicamente di pochi millisecondi. Il processore salta da un processo all'altro talmente velocemente che l'utente percepisce tutti i programmi come simultanei. Questa tecnica si chiama <strong>multitasking preemptivo</strong> ("preemptivo" perché è il sistema operativo a decidere quando interrompere un processo, non il processo stesso).</p>
+<p>Gli algoritmi di scheduling devono bilanciare obiettivi contrastanti: dare tempo a tutti i processi (equità), rispondere rapidamente all'utente (reattività), massimizzare l'uso della CPU (efficienza). Un algoritmo classico è il <strong>round-robin</strong>: ogni processo riceve la stessa fetta di tempo, a turno, in ordine circolare. Nella pratica, i sistemi moderni usano algoritmi più sofisticati basati su <strong>priorità</strong>: i processi interattivi (come l'interfaccia grafica) hanno priorità alta per garantire reattività, i processi di calcolo pesante hanno priorità più bassa.</p>
+<h3>Cenni su thread e concorrenza</h3>
+<p>Un <strong>thread</strong> (filo) è un'unità di esecuzione all'interno di un processo. Un processo può contenere più thread che condividono lo stesso spazio di memoria ma hanno ciascuno il proprio flusso di esecuzione. I thread sono più "leggeri" dei processi (creare un thread è molto meno costoso che creare un processo).</p>
+<p>Condividere la memoria è un vantaggio (comunicazione veloce tra thread) ma anche un rischio: se due thread modificano lo stesso dato contemporaneamente, il risultato può essere imprevedibile. Questo problema si chiama <strong>race condition</strong> (condizione di corsa) ed è una delle fonti di bug più insidiose nel software concorrente.</p>
+<p><strong>Applicazione per Python:</strong> Python ha una particolarità chiamata <strong>GIL</strong> (<em>Global Interpreter Lock</em>): un blocco che impedisce a più thread Python di eseguire bytecode contemporaneamente. Il GIL semplifica la gestione della memoria di CPython ma limita il parallelismo. Per aggirare il GIL, si usa il modulo <code>multiprocessing</code> (processi separati invece di thread) o librerie che eseguono codice C/Fortran in parallelo (come NumPy).</p>
+<hr>
+<h2>Gestione della memoria</h2>
+<h3>Memoria virtuale</h3>
+<p>Ogni processo "crede" di avere a disposizione un'enorme spazio di memoria tutto per sé, che parte dall'indirizzo 0 e arriva fino a un massimo (ad esempio, 256 TB in un sistema a 64 bit). Questa è la <strong>memoria virtuale</strong>: un'illusione creata dal sistema operativo.</p>
+<p>In realtà, la memoria fisica (RAM) è condivisa tra tutti i processi. Il sistema operativo, con l'aiuto dell'hardware (la <strong>MMU</strong>, <em>Memory Management Unit</em>), traduce gli indirizzi virtuali usati dal processo negli indirizzi fisici reali della RAM. Questa traduzione è trasparente: il programma non sa (e non deve sapere) dove i suoi dati risiedono fisicamente.</p>
+<h3>Paginazione</h3>
+<p>La memoria virtuale è divisa in blocchi di dimensione fissa chiamati <strong>pagine</strong> (tipicamente 4 KB). Anche la RAM fisica è divisa in blocchi della stessa dimensione, chiamati <strong>frame</strong>. Il sistema operativo mantiene una tabella che mappa ogni pagina virtuale al frame fisico corrispondente.</p>
+<p>Non tutte le pagine di un processo devono essere in RAM contemporaneamente: le pagine non usate di recente possono essere spostate su disco (in un'area chiamata <strong>swap</strong>). Quando il processo cerca di accedere a una pagina che non è in RAM, si verifica un <strong>page fault</strong>: il sistema operativo sospende il processo, carica la pagina dal disco nella RAM, aggiorna la tabella di traduzione e riprende il processo. Tutto questo avviene automaticamente e in modo trasparente.</p>
+<h3>Perché il computer rallenta</h3>
+<p>Ora capite perché il computer rallenta quando avete troppi programmi aperti: quando la RAM è satura, il sistema operativo deve continuamente spostare pagine dalla RAM al disco e viceversa (<em>thrashing</em>). Poiché il disco è migliaia di volte più lento della RAM, tutto diventa lentissimo. Il famoso <code>MemoryError</code> di Python si verifica quando il processo richiede più memoria di quanta il sistema sia disposto ad allocargli.</p>
+<hr>
+<h2>Il file system</h2>
+<h3>Organizzazione logica</h3>
+<p>Il file system è il modo in cui il sistema operativo organizza i dati sul disco. L'astrazione fondamentale è semplice e familiare:</p>
+<ul>
+<li><strong>File:</strong> un contenitore di dati con un nome. Può essere un documento, un'immagine, un programma, un dataset CSV.</li>
+<li><strong>Directory (cartella):</strong> un contenitore di file e altre directory, creando una struttura <strong>gerarchica</strong> (ad albero).</li>
+</ul>
+<p>Ogni file ha dei <strong>metadati</strong>: nome, dimensione, data di creazione, data di ultima modifica, permessi di accesso (chi può leggere, scrivere, eseguire).</p>
+<h3>Percorsi assoluti e relativi</h3>
+<p>Per identificare un file nel file system, si usa un <strong>percorso</strong> (<em>path</em>):</p>
+<ul>
+<li><strong>Percorso assoluto:</strong> parte dalla radice del file system e specifica l'intera posizione.</li>
+<li>Unix/macOS: <code>/home/nicola/dati/studenti.csv</code> (la radice è <code>/</code>)</li>
+<li>Windows: <code>C:\Users\nicola\dati\studenti.csv</code> (la radice è <code>C:\</code>)</li>
+</ul>
+<ul>
+<li><strong>Percorso relativo:</strong> parte dalla directory corrente.</li>
+<li>Se siete in <code>/home/nicola/</code>, il percorso relativo per lo stesso file è <code>dati/studenti.csv</code>.</li>
+</ul>
+<p>Notate la differenza nel separatore: Unix usa <code>/</code> (slash), Windows usa <code>\</code> (backslash). Questa differenza apparentemente banale è fonte di infiniti problemi di compatibilità. In Python, il modulo <code>pathlib</code> risolve il problema: <code>Path("dati") / "studenti.csv"</code> funziona correttamente su entrambi i sistemi.</p>
+<h3>File system diversi</h3>
+<p>Sistemi operativi diversi usano file system diversi:</p>
+<ul>
+<li><strong>NTFS:</strong> il file system di Windows. Supporta permessi, crittografia, file di grandi dimensioni.</li>
+<li><strong>ext4:</strong> il file system standard di Linux. Robusto, efficiente, ben collaudato.</li>
+<li><strong>APFS (Apple File System):</strong> il file system di macOS e iOS. Ottimizzato per SSD, supporta crittografia nativa.</li>
+<li><strong>FAT32/exFAT:</strong> file system semplici, supportati da praticamente tutti i sistemi operativi. Per questo le chiavette USB usano FAT32 o exFAT: compatibilità universale. FAT32 ha un limite di 4 GB per singolo file.</li>
+</ul>
+<hr>
+<h2>Reti e internet</h2>
+<h3>Il problema della comunicazione</h3>
+<p>Quando due computer devono comunicare, servono regole condivise: come iniziare la conversazione, come formattare i messaggi, come gestire gli errori, come terminare. Queste regole si chiamano <strong>protocolli</strong>.</p>
+<h3>Il modello a livelli</h3>
+<p>La comunicazione di rete è organizzata a <strong>livelli</strong> (layer), ciascuno con una responsabilità specifica. L'analogia più intuitiva è quella postale: per spedire una lettera, la scrivete (contenuto), la mettete in una busta con l'indirizzo (instradamento), la portate all'ufficio postale (trasporto), che la affida al corriere (trasmissione fisica). Ogni livello "incapsula" il messaggio del livello superiore.</p>
+<p>Il protocollo fondamentale di internet è <strong>TCP/IP</strong>:</p>
+<ul>
+<li><strong>IP (Internet Protocol):</strong> si occupa dell'instradamento: ogni dispositivo ha un indirizzo IP (es: <code>192.168.1.100</code>), e IP trova la strada per far arrivare i pacchetti a destinazione.</li>
+<li><strong>TCP (Transmission Control Protocol):</strong> si occupa dell'affidabilità: garantisce che i dati arrivino completi, nell'ordine giusto, senza errori. Se un pacchetto si perde, TCP lo ritrasmette.</li>
+</ul>
+<h3>HTTP e il World Wide Web</h3>
+<p><strong>HTTP</strong> (<em>HyperText Transfer Protocol</em>) è il protocollo che fa funzionare il web. Il modello è semplice:</p>
+<ol>
+<li>Il <strong>client</strong> (il vostro browser) invia una <strong>richiesta</strong> al server ("dammi la pagina X").</li>
+<li>Il <strong>server</strong> risponde con i dati (la pagina HTML, un'immagine, un file JSON).</li>
+</ol>
+<p><strong>HTTPS</strong> è la versione crittografata di HTTP: i dati viaggiano cifrati, proteggendo la privacy e l'integrità della comunicazione.</p>
+<h3>Internet vs World Wide Web</h3>
+<p>È importante distinguere:</p>
+<ul>
+<li><strong>Internet</strong> è l'infrastruttura: la rete globale di reti, i cavi, i router, i protocolli (TCP/IP). Esiste dal 1969 (ARPANET).</li>
+<li><strong>Il World Wide Web</strong> è un servizio che funziona <em>sopra</em> internet: pagine collegate da link ipertestuali. Fu inventato da <strong>Tim Berners-Lee</strong> nel 1989 al CERN di Ginevra, per permettere ai fisici di condividere documenti.</li>
+</ul>
+<h3>Cloud computing</h3>
+<p>Il "cloud" non è una nuvola magica: sono <strong>i computer di qualcun altro</strong>, ospitati in enormi data center sparsi nel mondo. Quando usate Google Colab per eseguire un notebook Python, il vostro codice gira su un server Google, non sul vostro computer.</p>
+<p>Il cloud si divide in livelli di servizio:</p>
+<ul>
+<li><strong>IaaS</strong> (Infrastructure as a Service): vi danno macchine virtuali (AWS EC2, Google Compute Engine).</li>
+<li><strong>PaaS</strong> (Platform as a Service): vi danno un ambiente pronto per eseguire codice (Heroku, Google App Engine).</li>
+<li><strong>SaaS</strong> (Software as a Service): vi danno un'applicazione completa (Gmail, Google Docs, Dropbox).</li>
+</ul>
+<h3>API (Application Programming Interface)</h3>
+<p>Le <strong>API</strong> sono interfacce che permettono ai programmi di parlare tra loro. Quando il vostro script Python scarica dati dall'ISTAT o da Eurostat, sta usando un'API: invia una richiesta HTTP a un server, riceve una risposta (tipicamente in formato JSON) e la elabora.</p>
+<p>Le API sono fondamentali per la statistica moderna: permettono di raccogliere dati in modo automatizzato, riproducibile e aggiornato, senza dover scaricare file manualmente da siti web.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li><strong>Quali sono le quattro funzioni fondamentali di un sistema operativo?</strong> Spiegate ciascuna con un esempio concreto.</li>
+</ol>
+<ol>
+<li><strong>Cosa distingue un sistema batch da un sistema time-sharing?</strong> Quale problema risolve il time-sharing?</li>
+</ol>
+<ol>
+<li><strong>Quali principi fondamentali caratterizzano la filosofia di Unix?</strong> Perché sono stati così influenti?</li>
+</ol>
+<ol>
+<li><strong>Qual è la differenza tra un processo e un thread?</strong> Cos'è una race condition?</li>
+</ol>
+<ol>
+<li><strong>Cos'è la memoria virtuale e quale problema risolve?</strong> Cosa succede quando la RAM è satura?</li>
+</ol>
+<ol>
+<li><strong>Spiegate la differenza tra percorso assoluto e percorso relativo.</strong> Perché Python offre il modulo <code>pathlib</code>?</li>
+</ol>
+<ol>
+<li><strong>Qual è la differenza tra internet e il World Wide Web?</strong></li>
+</ol>
+<ol>
+<li><strong>Cos'è un'API e perché è rilevante per uno statistico?</strong> Fate un esempio concreto.</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Aprite il <strong>Task Manager</strong> (Windows) o <strong>Activity Monitor</strong> (macOS) o il comando <code>top</code>/<code>htop</code> (Linux). Identificate:</li>
+</ol>
+<ul>
+<li>Quanti processi sono in esecuzione.</li>
+<li>Quanto CPU e RAM sta usando il vostro sistema.</li>
+<li>Qual è il processo che consuma più memoria.</li>
+</ul>
+<ol>
+<li>Aprite il <strong>terminale</strong> (o il prompt dei comandi) e navigate il file system usando i comandi base:</li>
+</ol>
+<ul>
+<li><code>pwd</code> (mostra la directory corrente)</li>
+<li><code>ls</code> (elenca i file nella directory corrente)</li>
+<li><code>cd nome_directory</code> (entra in una directory)</li>
+<li><code>cd ..</code> (torna alla directory padre)</li>
+<li>Scrivete il percorso assoluto della vostra home directory.</li>
+</ul>
+<ol>
+<li>Indicate quale file system usa il vostro computer e quale file system usa una chiavetta USB. Perché sono diversi?</li>
+</ol>
+<h3>Intermedio</h3>
+<ol>
+<li>Spiegate cosa succede, passo per passo, dal punto di vista del sistema operativo quando fate doppio clic su un file Python (.py):</li>
+</ol>
+<ul>
+<li>Quale processo viene creato?</li>
+<li>Come viene allocata la memoria?</li>
+<li>Cosa succede quando lo script termina?</li>
+</ul>
+<ol>
+<li>Avete un server con 4 core e 10 processi da eseguire, ciascuno richiede 1 secondo di CPU. Stimate il tempo totale di completamento con uno scheduling round-robin (fetta di tempo: 100 ms). Confrontatelo con l'esecuzione sequenziale.</li>
+</ol>
+<h3>Avanzato</h3>
+<ol>
+<li>Spiegate perché Linux domina il mercato dei server e del cloud computing, mentre Windows domina il mercato desktop. Quali fattori tecnici, economici e storici contribuiscono a questa divisione?</li>
+</ol>
+<ol>
+<li>Un data scientist usa Google Colab per addestrare un modello di machine learning. Descrivete tutti i livelli di software (dal sistema operativo del suo portatile al server Google) che sono coinvolti quando clicca "Run" su una cella del notebook.</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Il sistema operativo è il ponte tra l'hardware — che abbiamo studiato nella lezione precedente — e il software applicativo che scriveremo nelle lezioni successive. È il software che rende il computer utilizzabile, trasformando un ammasso di circuiti in uno strumento produttivo.</p>
+<p>Tre lezioni da portare a casa:</p>
+<ol>
+<li><strong>L'astrazione è potenza.</strong> Il sistema operativo nasconde l'enorme complessità dell'hardware dietro interfacce semplici. Quando in Python scriverete <code>open("file.csv")</code>, decine di strati di software si attiveranno sotto di voi: dal file system al driver del disco, dal sistema di permessi alla cache del sistema operativo. Non dovrete sapere nulla di tutto questo — ma ora sapete che esiste.</li>
+</ol>
+<ol>
+<li><strong>Le risorse sono limitate e condivise.</strong> CPU, memoria, disco, rete: tutto è finito e conteso tra i processi. Capire questo vi aiuterà a scrivere programmi più efficienti e a diagnosticare problemi di prestazioni.</li>
+</ol>
+<ol>
+<li><strong>La storia conta.</strong> Le scelte progettuali fatte negli anni '60 e '70 (Unix, TCP/IP, il file system gerarchico) sono ancora le fondamenta del software moderno. Capire <em>perché</em> le cose sono fatte così vi rende utenti e programmatori più consapevoli.</li>
+</ol>
+<p>Nella prossima lezione affronteremo un tema cruciale per la statistica: come i computer rappresentano i dati — numeri, testo, immagini — e le trappole che si nascondono in queste rappresentazioni.</p>
+<nav class="bottom-nav"><span><a href="F03_architettura_elaboratori.html">← F03</a></span><span><a href="../../index.html">Home</a></span><span><a href="F05_rappresentazione_dati.html">F05 →</a></span></nav>
+</body>
+</html>

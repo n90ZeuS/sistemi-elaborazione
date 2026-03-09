@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funzioni Builtin — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a></nav>
+<h1>Funzioni Builtin</h1>
+
+<h1>Funzioni Built-in di Python</h1>
+<p>Scheda di riferimento rapido con le funzioni predefinite piu' usate, organizzate per categoria.</p>
+<hr>
+<h2>Conversione di tipo</h2>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Firma</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>int()</code></td>
+<td><code>int(x)</code> <code>int(s, base)</code></td>
+<td>Converte a intero</td>
+<td><code>int("42")</code></td>
+<td><code>42</code></td>
+</tr>
+<tr>
+<td><code>float()</code></td>
+<td><code>float(x)</code></td>
+<td>Converte a numero decimale</td>
+<td><code>float("3.14")</code></td>
+<td><code>3.14</code></td>
+</tr>
+<tr>
+<td><code>str()</code></td>
+<td><code>str(x)</code></td>
+<td>Converte a stringa</td>
+<td><code>str(42)</code></td>
+<td><code>"42"</code></td>
+</tr>
+<tr>
+<td><code>bool()</code></td>
+<td><code>bool(x)</code></td>
+<td>Converte a booleano</td>
+<td><code>bool(0)</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>list()</code></td>
+<td><code>list(iterabile)</code></td>
+<td>Converte a lista</td>
+<td><code>list("abc")</code></td>
+<td><code>["a","b","c"]</code></td>
+</tr>
+<tr>
+<td><code>tuple()</code></td>
+<td><code>tuple(iterabile)</code></td>
+<td>Converte a tupla</td>
+<td><code>tuple([1,2])</code></td>
+<td><code>(1, 2)</code></td>
+</tr>
+<tr>
+<td><code>dict()</code></td>
+<td><code>dict(coppie)</code></td>
+<td>Crea un dizionario</td>
+<td><code>dict(a=1, b=2)</code></td>
+<td><code>{"a":1,"b":2}</code></td>
+</tr>
+<tr>
+<td><code>set()</code></td>
+<td><code>set(iterabile)</code></td>
+<td>Converte a set (rimuove duplicati)</td>
+<td><code>set([1,1,2])</code></td>
+<td><code>{1, 2}</code></td>
+</tr>
+</tbody></table>
+<h3>Valori "falsy" in Python (bool restituisce False)</h3>
+<pre><code><span class="nb">bool</span>(<span class="mi">0</span>)       <span class="cm"># False     (zero numerico)</span>
+<span class="nb">bool</span>(<span class="mi">0.0</span>)     <span class="cm"># False</span>
+<span class="nb">bool</span>(<span class="st">&quot;&quot;</span>)      <span class="cm"># False     (stringa vuota)</span>
+<span class="nb">bool</span>([])      <span class="cm"># False     (lista vuota)</span>
+<span class="nb">bool</span>({})      <span class="cm"># False     (dict vuoto)</span>
+<span class="nb">bool</span>(<span class="kw">None</span>)    <span class="cm"># False</span>
+<span class="nb">bool</span>(<span class="nb">set</span>())   <span class="cm"># False</span>
+
+<span class="cm"># Tutto il resto e&#x27; True</span>
+<span class="nb">bool</span>(<span class="mi">1</span>)       <span class="cm"># True</span>
+<span class="nb">bool</span>(<span class="op">-</span><span class="mi">1</span>)      <span class="cm"># True</span>
+<span class="nb">bool</span>(<span class="st">&quot;ciao&quot;</span>)  <span class="cm"># True</span>
+<span class="nb">bool</span>([<span class="mi">0</span>])     <span class="cm"># True  (lista NON vuota, anche se contiene 0)</span></code></pre>
+<hr>
+<h2>Matematica</h2>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Firma</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>abs()</code></td>
+<td><code>abs(x)</code></td>
+<td>Valore assoluto</td>
+<td><code>abs(-5)</code></td>
+<td><code>5</code></td>
+</tr>
+<tr>
+<td><code>round()</code></td>
+<td><code>round(x[, n])</code></td>
+<td>Arrotonda a n decimali</td>
+<td><code>round(3.14159, 2)</code></td>
+<td><code>3.14</code></td>
+</tr>
+<tr>
+<td><code>sum()</code></td>
+<td><code>sum(iterabile[, start])</code></td>
+<td>Somma degli elementi</td>
+<td><code>sum([1, 2, 3])</code></td>
+<td><code>6</code></td>
+</tr>
+<tr>
+<td><code>min()</code></td>
+<td><code>min(iterabile)</code> <code>min(a, b, ...)</code></td>
+<td>Valore minimo</td>
+<td><code>min(3, 1, 4)</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>max()</code></td>
+<td><code>max(iterabile)</code> <code>max(a, b, ...)</code></td>
+<td>Valore massimo</td>
+<td><code>max(3, 1, 4)</code></td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td><code>pow()</code></td>
+<td><code>pow(base, exp[, mod])</code></td>
+<td>Potenza (come <code>**</code>)</td>
+<td><code>pow(2, 10)</code></td>
+<td><code>1024</code></td>
+</tr>
+<tr>
+<td><code>divmod()</code></td>
+<td><code>divmod(a, b)</code></td>
+<td>Quoziente e resto</td>
+<td><code>divmod(17, 5)</code></td>
+<td><code>(3, 2)</code></td>
+</tr>
+</tbody></table>
+<h3>Dettagli su round()</h3>
+<pre><code><span class="nb">round</span>(<span class="mi">2.5</span>)      <span class="cm"># 2   (!) Python usa &quot;banker&#x27;s rounding&quot; (arrotonda al pari)</span>
+<span class="nb">round</span>(<span class="mi">3.5</span>)      <span class="cm"># 4</span>
+<span class="nb">round</span>(<span class="mi">2.75</span>, <span class="mi">1</span>)  <span class="cm"># 2.8</span>
+<span class="nb">round</span>(<span class="mi">1234</span>, <span class="op">-</span><span class="mi">2</span>) <span class="cm"># 1200  (arrotonda alle centinaia)</span></code></pre>
+<h3>min() e max() con chiave personalizzata</h3>
+<pre><code>nomi <span class="op">=</span> [<span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Gianfranco&quot;</span>]
+<span class="nb">min</span>(nomi, key<span class="op">=</span><span class="nb">len</span>)    <span class="cm"># &quot;Luca&quot;  (il piu&#x27; corto)</span>
+<span class="nb">max</span>(nomi, key<span class="op">=</span><span class="nb">len</span>)    <span class="cm"># &quot;Gianfranco&quot;  (il piu&#x27; lungo)</span>
+
+studenti <span class="op">=</span> [(<span class="st">&quot;Luca&quot;</span>, <span class="mi">28</span>), (<span class="st">&quot;Anna&quot;</span>, <span class="mi">30</span>), (<span class="st">&quot;Marco&quot;</span>, <span class="mi">25</span>)]
+<span class="nb">max</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="mi">1</span>])   <span class="cm"># (&quot;Anna&quot;, 30)</span></code></pre>
+<hr>
+<h2>Iterazione</h2>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Firma</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>range()</code></td>
+<td><code>range(stop)</code> <code>range(start, stop[, step])</code></td>
+<td>Genera sequenza di interi</td>
+<td><code>list(range(5))</code></td>
+<td><code>[0,1,2,3,4]</code></td>
+</tr>
+<tr>
+<td><code>enumerate()</code></td>
+<td><code>enumerate(iter[, start])</code></td>
+<td>Aggiunge indice a ogni elemento</td>
+<td><code>list(enumerate("ab"))</code></td>
+<td><code>[(0,"a"),(1,"b")]</code></td>
+</tr>
+<tr>
+<td><code>zip()</code></td>
+<td><code>zip(iter1, iter2, ...)</code></td>
+<td>Unisce iterabili in parallelo</td>
+<td><code>list(zip("ab",[1,2]))</code></td>
+<td><code>[("a",1),("b",2)]</code></td>
+</tr>
+<tr>
+<td><code>map()</code></td>
+<td><code>map(func, iterabile)</code></td>
+<td>Applica funzione a ogni elemento</td>
+<td><code>list(map(int, ["1","2"]))</code></td>
+<td><code>[1, 2]</code></td>
+</tr>
+<tr>
+<td><code>filter()</code></td>
+<td><code>filter(func, iterabile)</code></td>
+<td>Filtra elementi (func restituisce True)</td>
+<td><code>list(filter(str.isdigit, ["a","1"]))</code></td>
+<td><code>["1"]</code></td>
+</tr>
+<tr>
+<td><code>sorted()</code></td>
+<td><code>sorted(iter[, key, reverse])</code></td>
+<td>Restituisce lista ordinata (nuova)</td>
+<td><code>sorted([3,1,2])</code></td>
+<td><code>[1, 2, 3]</code></td>
+</tr>
+<tr>
+<td><code>reversed()</code></td>
+<td><code>reversed(sequenza)</code></td>
+<td>Restituisce iteratore invertito</td>
+<td><code>list(reversed([1,2,3]))</code></td>
+<td><code>[3, 2, 1]</code></td>
+</tr>
+</tbody></table>
+<h3>sorted() in dettaglio</h3>
+<pre><code><span class="cm"># Ordine crescente (default)</span>
+<span class="nb">sorted</span>([<span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">1</span>, <span class="mi">5</span>])             <span class="cm"># [1, 1, 3, 4, 5]</span>
+
+<span class="cm"># Ordine decrescente</span>
+<span class="nb">sorted</span>([<span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">1</span>, <span class="mi">5</span>], reverse<span class="op">=</span><span class="kw">True</span>)  <span class="cm"># [5, 4, 3, 1, 1]</span>
+
+<span class="cm"># Ordina per criterio personalizzato</span>
+parole <span class="op">=</span> [<span class="st">&quot;banana&quot;</span>, <span class="st">&quot;mela&quot;</span>, <span class="st">&quot;ciliegia&quot;</span>]
+<span class="nb">sorted</span>(parole, key<span class="op">=</span><span class="nb">len</span>)               <span class="cm"># [&quot;mela&quot;, &quot;banana&quot;, &quot;ciliegia&quot;]</span>
+
+<span class="cm"># Ordina dizionari per un campo</span>
+studenti <span class="op">=</span> [{<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>}, {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>}]
+<span class="nb">sorted</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;voto&quot;</span>], reverse<span class="op">=</span><span class="kw">True</span>)
+<span class="cm"># [{&quot;nome&quot;: &quot;Anna&quot;, &quot;voto&quot;: 30}, {&quot;nome&quot;: &quot;Luca&quot;, &quot;voto&quot;: 28}]</span></code></pre>
+<h3>map() e filter() -- alternative alle comprehension</h3>
+<pre><code><span class="cm"># map: applica una funzione a ogni elemento</span>
+voti_str <span class="op">=</span> [<span class="st">&quot;28&quot;</span>, <span class="st">&quot;30&quot;</span>, <span class="st">&quot;25&quot;</span>]
+voti_int <span class="op">=</span> <span class="nb">list</span>(<span class="nb">map</span>(<span class="nb">int</span>, voti_str))      <span class="cm"># [28, 30, 25]</span>
+<span class="cm"># Equivalente: [int(v) for v in voti_str]</span>
+
+<span class="cm"># filter: mantiene solo gli elementi che soddisfano la condizione</span>
+numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="op">-</span><span class="mi">2</span>, <span class="mi">3</span>, <span class="op">-</span><span class="mi">4</span>, <span class="mi">5</span>]
+positivi <span class="op">=</span> <span class="nb">list</span>(<span class="nb">filter</span>(<span class="kw">lambda</span> x: x <span class="op">&gt;</span> <span class="mi">0</span>, numeri))  <span class="cm"># [1, 3, 5]</span>
+<span class="cm"># Equivalente: [x for x in numeri if x &gt; 0]</span></code></pre>
+<hr>
+<h2>Input/Output</h2>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Firma</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Tipo restituito</th>
+</tr></thead><tbody>
+<tr>
+<td><code>print()</code></td>
+<td><code>print(*args, sep=" ", end="\n")</code></td>
+<td>Stampa a schermo</td>
+<td><code>print("ciao", "mondo")</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>input()</code></td>
+<td><code>input(prompt)</code></td>
+<td>Legge stringa da tastiera</td>
+<td><code>nome = input("Nome: ")</code></td>
+<td><code>str</code></td>
+</tr>
+<tr>
+<td><code>open()</code></td>
+<td><code>open(file, mode, encoding)</code></td>
+<td>Apre un file</td>
+<td><code>open("dati.csv", "r", encoding="utf-8")</code></td>
+<td>file object</td>
+</tr>
+</tbody></table>
+<h3>print() -- parametri utili</h3>
+<pre><code><span class="nb">print</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)                <span class="cm"># a b c</span>
+<span class="nb">print</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, sep<span class="op">=</span><span class="st">&quot;, &quot;</span>)      <span class="cm"># a, b, c</span>
+<span class="nb">print</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, sep<span class="op">=</span><span class="st">&quot;&quot;</span>)        <span class="cm"># abc</span>
+<span class="nb">print</span>(<span class="st">&quot;caricamento&quot;</span>, end<span class="op">=</span><span class="st">&quot;...&quot;</span>)      <span class="cm"># caricamento... (senza andare a capo)</span>
+<span class="nb">print</span>(<span class="st">&quot;ciao&quot;</span>, file<span class="op">=</span><span class="nb">open</span>(<span class="st">&quot;out.txt&quot;</span>,<span class="st">&quot;w&quot;</span>))  <span class="cm"># scrive su file</span>
+
+<span class="cm"># Stampare una tabella allineata</span>
+<span class="kw">for</span> nome, voto <span class="kw">in</span> [(<span class="st">&quot;Luca&quot;</span>, <span class="mi">28</span>), (<span class="st">&quot;Anna&quot;</span>, <span class="mi">30</span>)]:
+    <span class="nb">print</span>(<span class="st">f&quot;{nome:&lt;10} {voto:&gt;5}&quot;</span>)
+<span class="cm"># Luca           28</span>
+<span class="cm"># Anna           30</span></code></pre>
+<h3>input() -- ricordare che restituisce sempre str!</h3>
+<pre><code>eta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Quanti anni hai? &quot;</span>)     <span class="cm"># eta e&#x27; una STRINGA</span>
+eta <span class="op">=</span> <span class="nb">int</span>(eta)                       <span class="cm"># ora e&#x27; un intero</span>
+
+<span class="cm"># In una riga</span>
+eta <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Quanti anni hai? &quot;</span>))</code></pre>
+<hr>
+<h2>Ispezione</h2>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Firma</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>type()</code></td>
+<td><code>type(x)</code></td>
+<td>Restituisce il tipo dell'oggetto</td>
+<td><code>type(42)</code></td>
+<td><code><class 'int'></code></td>
+</tr>
+<tr>
+<td><code>isinstance()</code></td>
+<td><code>isinstance(x, tipo)</code></td>
+<td>Verifica se x e' di quel tipo</td>
+<td><code>isinstance(42, int)</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>len()</code></td>
+<td><code>len(x)</code></td>
+<td>Numero di elementi / lunghezza</td>
+<td><code>len([1,2,3])</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>id()</code></td>
+<td><code>id(x)</code></td>
+<td>Identita' univoca dell'oggetto</td>
+<td><code>id(42)</code></td>
+<td>intero (indirizzo)</td>
+</tr>
+<tr>
+<td><code>dir()</code></td>
+<td><code>dir(x)</code></td>
+<td>Lista di attributi e metodi</td>
+<td><code>dir("")</code></td>
+<td>lista di stringhe</td>
+</tr>
+<tr>
+<td><code>help()</code></td>
+<td><code>help(x)</code></td>
+<td>Documentazione interattiva</td>
+<td><code>help(print)</code></td>
+<td>mostra la doc</td>
+</tr>
+</tbody></table>
+<h3>type() vs isinstance()</h3>
+<pre><code><span class="cm"># type() controlla il tipo esatto</span>
+<span class="nb">type</span>(<span class="mi">42</span>) <span class="op">=</span><span class="op">=</span> <span class="nb">int</span>           <span class="cm"># True</span>
+<span class="nb">type</span>(<span class="kw">True</span>) <span class="op">=</span><span class="op">=</span> <span class="nb">int</span>         <span class="cm"># True (!)  bool e&#x27; sottotipo di int</span>
+
+<span class="cm"># isinstance() gestisce l&#x27;ereditarieta&#x27;</span>
+<span class="nb">isinstance</span>(<span class="mi">42</span>, <span class="nb">int</span>)       <span class="cm"># True</span>
+<span class="nb">isinstance</span>(<span class="kw">True</span>, <span class="nb">int</span>)     <span class="cm"># True</span>
+<span class="nb">isinstance</span>(<span class="mi">42</span>, (<span class="nb">int</span>, <span class="nb">float</span>))  <span class="cm"># True (controlla piu&#x27; tipi)</span></code></pre>
+<hr>
+<h2>Logica</h2>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Firma</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>any()</code></td>
+<td><code>any(iterabile)</code></td>
+<td>True se almeno un elemento e' vero</td>
+<td><code>any([False, True, False])</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>all()</code></td>
+<td><code>all(iterabile)</code></td>
+<td>True se tutti gli elementi sono veri</td>
+<td><code>all([True, True, False])</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>callable()</code></td>
+<td><code>callable(x)</code></td>
+<td>Verifica se x e' chiamabile (funzione)</td>
+<td><code>callable(print)</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>hasattr()</code></td>
+<td><code>hasattr(obj, name)</code></td>
+<td>Verifica se obj ha l'attributo name</td>
+<td><code>hasattr("abc", "upper")</code></td>
+<td><code>True</code></td>
+</tr>
+</tbody></table>
+<h3>any() e all() -- molto utili in statistica</h3>
+<pre><code>voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">15</span>, <span class="mi">25</span>, <span class="mi">22</span>]
+
+<span class="cm"># Almeno un insufficiente?</span>
+<span class="nb">any</span>(v <span class="op">&lt;</span> <span class="mi">18</span> <span class="kw">for</span> v <span class="kw">in</span> voti)          <span class="cm"># True</span>
+
+<span class="cm"># Tutti sufficienti?</span>
+<span class="nb">all</span>(v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span> <span class="kw">for</span> v <span class="kw">in</span> voti)         <span class="cm"># False</span>
+
+<span class="cm"># Almeno un 30?</span>
+<span class="nb">any</span>(v <span class="op">=</span><span class="op">=</span> <span class="mi">30</span> <span class="kw">for</span> v <span class="kw">in</span> voti)         <span class="cm"># True</span>
+
+<span class="cm"># Tutte le risposte compilate?</span>
+risposte <span class="op">=</span> [<span class="st">&quot;si&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;si&quot;</span>]
+<span class="nb">all</span>(risposte)                      <span class="cm"># False (&quot;&quot; e&#x27; falsy)</span></code></pre>
+<hr>
+<h2>Altre funzioni utili</h2>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Firma</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>chr()</code></td>
+<td><code>chr(n)</code></td>
+<td>Numero Unicode -> carattere</td>
+<td><code>chr(65)</code></td>
+<td><code>"A"</code></td>
+</tr>
+<tr>
+<td><code>ord()</code></td>
+<td><code>ord(c)</code></td>
+<td>Carattere -> numero Unicode</td>
+<td><code>ord("A")</code></td>
+<td><code>65</code></td>
+</tr>
+<tr>
+<td><code>bin()</code></td>
+<td><code>bin(n)</code></td>
+<td>Intero -> stringa binaria</td>
+<td><code>bin(10)</code></td>
+<td><code>"0b1010"</code></td>
+</tr>
+<tr>
+<td><code>hex()</code></td>
+<td><code>hex(n)</code></td>
+<td>Intero -> stringa esadecimale</td>
+<td><code>hex(255)</code></td>
+<td><code>"0xff"</code></td>
+</tr>
+<tr>
+<td><code>repr()</code></td>
+<td><code>repr(x)</code></td>
+<td>Rappresentazione "per programmatori"</td>
+<td><code>repr("ciao\n")</code></td>
+<td><code>"'ciao\\n'"</code></td>
+</tr>
+<tr>
+<td><code>format()</code></td>
+<td><code>format(val, spec)</code></td>
+<td>Formattazione singolo valore</td>
+<td><code>format(3.14, ".1f")</code></td>
+<td><code>"3.1"</code></td>
+</tr>
+<tr>
+<td><code>hash()</code></td>
+<td><code>hash(x)</code></td>
+<td>Valore hash (solo per immutabili)</td>
+<td><code>hash("abc")</code></td>
+<td>intero</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Riepilogo: le 10 funzioni da sapere assolutamente</h2>
+<pre><code><span class="nb">print</span>()      <span class="cm"># Stampa a schermo</span>
+<span class="nb">input</span>()      <span class="cm"># Legge dall&#x27;utente (restituisce str!)</span>
+<span class="nb">len</span>()        <span class="cm"># Lunghezza / numero di elementi</span>
+<span class="nb">type</span>()       <span class="cm"># Che tipo e&#x27;?</span>
+<span class="nb">int</span>()        <span class="cm"># Converti a intero</span>
+<span class="nb">float</span>()      <span class="cm"># Converti a decimale</span>
+<span class="nb">str</span>()        <span class="cm"># Converti a stringa</span>
+<span class="nb">range</span>()      <span class="cm"># Genera sequenza di numeri</span>
+<span class="nb">sorted</span>()     <span class="cm"># Ordina (restituisce nuova lista)</span>
+<span class="nb">enumerate</span>()  <span class="cm"># Indice + valore in un ciclo for</span></code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

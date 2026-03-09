@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progetto 03 Analisi Meteo — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="soluzione.py">Soluzione (.py)</a></nav>
+<h1>Progetto 03 Analisi Meteo</h1>
+
+<h1>Progetto 3: Analisi dataset meteo</h1>
+<h2>Introduzione</h2>
+<p>In questo progetto analizzerai dati meteorologici di tre citta' italiane (Roma, Milano, Napoli) nel mese di gennaio 2024. Imparerai a gestire dati realistici con valori mancanti, a calcolare statistiche, e a creare visualizzazioni. Il progetto copre:</p>
+<ul>
+<li>Lavorare con strutture dati complesse (<strong>F09</strong> - Strutture dati)</li>
+<li>Gestire errori e dati mancanti (<strong>F10</strong> - Gestione errori)</li>
+<li>Usare NumPy per calcoli numerici (<strong>F11</strong> - Librerie scientifiche)</li>
+<li>Organizzare codice con funzioni (<strong>F12</strong>, <strong>F15</strong> - Funzioni)</li>
+<li>Controllare il flusso con condizioni e cicli (<strong>F13</strong> - Controllo di flusso)</li>
+<li>Usare Pandas e Matplotlib (<strong>F17</strong> - Analisi e visualizzazione dati)</li>
+</ul>
+<p>Il file <code>dati<em>meteo.csv</code> contiene 90 righe (30 giorni x 3 citta') con le colonne: data, citta, temperatura</em>max, temperatura<em>min, pioggia</em>mm, umidita_pct. Alcuni valori sono mancanti (celle vuote).</p>
+<hr>
+<h2>Passo 1: Leggere i dati CSV e gestire valori mancanti</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Leggere file CSV con il modulo <code>csv</code></li>
+<li>Riconoscere e gestire valori mancanti</li>
+<li>Convertire stringhe in numeri con gestione errori</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>I dati reali spesso contengono valori mancanti. Nel nostro CSV, alcuni campi numerici sono vuoti. Dobbiamo gestirli in modo sicuro, senza far crashare il programma.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa <code>csv.DictReader</code> per accedere alle colonne per nome</li>
+<li>Crea una funzione <code>converti_float()</code> che restituisce <code>None</code> se la conversione fallisce</li>
+<li>Conta quanti valori mancanti ci sono per ogni colonna</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">converti_float</span>(<span class="fn">valore</span>):
+    <span class="st">&quot;&quot;&quot;Converte una stringa in float. Restituisce None se vuota o non valida.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: gestisci stringhe vuote e errori di conversione</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">leggi_dati_meteo</span>(<span class="fn">percorso</span>):
+    <span class="st">&quot;&quot;&quot;Legge il CSV e restituisce una lista di dizionari con dati convertiti.&quot;&quot;&quot;</span>
+    dati <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&#x27;r&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> file:
+        lettore <span class="op">=</span> csv.DictReader(file)
+        <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+            record <span class="op">=</span> {
+                <span class="st">&#x27;data&#x27;</span>: riga[<span class="st">&#x27;data&#x27;</span>],
+                <span class="st">&#x27;citta&#x27;</span>: riga[<span class="st">&#x27;citta&#x27;</span>],
+                <span class="cm"># TODO: converti i campi numerici</span>
+            }
+            dati.append(record)
+    <span class="kw">return</span> dati
+
+<span class="cm"># Prova</span>
+percorso <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;dati_meteo.csv&quot;</span>
+dati <span class="op">=</span> leggi_dati_meteo(percorso)
+<span class="nb">print</span>(<span class="st">f&quot;Letti {len(dati)} record&quot;</span>)
+
+<span class="cm"># Conta valori mancanti</span>
+campi_numerici <span class="op">=</span> [<span class="st">&#x27;temperatura_max&#x27;</span>, <span class="st">&#x27;temperatura_min&#x27;</span>, <span class="st">&#x27;pioggia_mm&#x27;</span>, <span class="st">&#x27;umidita_pct&#x27;</span>]
+<span class="kw">for</span> campo <span class="kw">in</span> campi_numerici:
+    mancanti <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> d <span class="kw">in</span> dati <span class="kw">if</span> d[campo] <span class="kw">is</span> <span class="kw">None</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  {campo}: {mancanti} valori mancanti&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 1</summary></p>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">converti_float</span>(<span class="fn">valore</span>):
+    <span class="st">&quot;&quot;&quot;Converte una stringa in float. Restituisce None se vuota o non valida.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> valore <span class="kw">is</span> <span class="kw">None</span> <span class="kw">or</span> valore.strip() <span class="op">=</span><span class="op">=</span> <span class="st">&#x27;&#x27;</span>:
+        <span class="kw">return</span> <span class="kw">None</span>
+    <span class="kw">try</span>:
+        <span class="kw">return</span> <span class="nb">float</span>(valore)
+    <span class="kw">except</span> <span class="nb">ValueError</span>:
+        <span class="kw">return</span> <span class="kw">None</span>
+
+<span class="kw">def</span> <span class="fn">leggi_dati_meteo</span>(<span class="fn">percorso</span>):
+    <span class="st">&quot;&quot;&quot;Legge il CSV e restituisce una lista di dizionari con dati convertiti.&quot;&quot;&quot;</span>
+    dati <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&#x27;r&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> file:
+        lettore <span class="op">=</span> csv.DictReader(file)
+        <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+            record <span class="op">=</span> {
+                <span class="st">&#x27;data&#x27;</span>: riga[<span class="st">&#x27;data&#x27;</span>],
+                <span class="st">&#x27;citta&#x27;</span>: riga[<span class="st">&#x27;citta&#x27;</span>],
+                <span class="st">&#x27;temperatura_max&#x27;</span>: converti_float(riga[<span class="st">&#x27;temperatura_max&#x27;</span>]),
+                <span class="st">&#x27;temperatura_min&#x27;</span>: converti_float(riga[<span class="st">&#x27;temperatura_min&#x27;</span>]),
+                <span class="st">&#x27;pioggia_mm&#x27;</span>: converti_float(riga[<span class="st">&#x27;pioggia_mm&#x27;</span>]),
+                <span class="st">&#x27;umidita_pct&#x27;</span>: converti_float(riga[<span class="st">&#x27;umidita_pct&#x27;</span>]),
+            }
+            dati.append(record)
+    <span class="kw">return</span> dati
+
+percorso <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;dati_meteo.csv&quot;</span>
+dati <span class="op">=</span> leggi_dati_meteo(percorso)
+<span class="nb">print</span>(<span class="st">f&quot;Letti {len(dati)} record&quot;</span>)
+
+campi_numerici <span class="op">=</span> [<span class="st">&#x27;temperatura_max&#x27;</span>, <span class="st">&#x27;temperatura_min&#x27;</span>, <span class="st">&#x27;pioggia_mm&#x27;</span>, <span class="st">&#x27;umidita_pct&#x27;</span>]
+<span class="kw">for</span> campo <span class="kw">in</span> campi_numerici:
+    mancanti <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> d <span class="kw">in</span> dati <span class="kw">if</span> d[campo] <span class="kw">is</span> <span class="kw">None</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  {campo}: {mancanti} valori mancanti&quot;</span>)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 2: Pulizia dei dati e rilevamento anomalie</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Strategie per gestire valori mancanti (esclusione, imputazione)</li>
+<li>Rilevare outlier con metodi statistici semplici</li>
+<li>Organizzare dati per citta'</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Ci sono diversi approcci per i valori mancanti:</p>
+<ol>
+<li><strong>Escluderli</strong>: ignorare i record incompleti</li>
+<li><strong>Imputarli</strong>: sostituirli con la media o la mediana della colonna</li>
+</ol>
+<p>Per gli outlier (valori anomali), un metodo semplice e' verificare se un valore si discosta dalla media di piu' di 2 deviazioni standard.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Raggruppa i dati per citta' usando un dizionario di liste</li>
+<li>Per l'imputazione, calcola la media solo sui valori non-None</li>
+<li>Per gli outlier, calcola media e deviazione standard per citta'</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">raggruppa_per_citta</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Raggruppa i record per citta&#x27;. Restituisce un dizionario.&quot;&quot;&quot;</span>
+    gruppi <span class="op">=</span> {}
+    <span class="kw">for</span> record <span class="kw">in</span> dati:
+        citta <span class="op">=</span> record[<span class="st">&#x27;citta&#x27;</span>]
+        <span class="cm"># TODO: aggiungi il record alla lista della citta&#x27;</span>
+    <span class="kw">return</span> gruppi
+
+<span class="kw">def</span> <span class="fn">valori_validi</span>(<span class="fn">records</span>, campo):
+    <span class="st">&quot;&quot;&quot;Estrae i valori non-None di un campo da una lista di record.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: restituisci solo i valori non-None</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">imputa_valori_mancanti</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Sostituisce i None con la media della citta&#x27; per quel campo.&quot;&quot;&quot;</span>
+    gruppi <span class="op">=</span> raggruppa_per_citta(dati)
+    campi <span class="op">=</span> [<span class="st">&#x27;temperatura_max&#x27;</span>, <span class="st">&#x27;temperatura_min&#x27;</span>, <span class="st">&#x27;pioggia_mm&#x27;</span>, <span class="st">&#x27;umidita_pct&#x27;</span>]
+
+    <span class="kw">for</span> citta, records <span class="kw">in</span> gruppi.items():
+        <span class="kw">for</span> campo <span class="kw">in</span> campi:
+            validi <span class="op">=</span> valori_validi(records, campo)
+            <span class="kw">if</span> validi:
+                media <span class="op">=</span> <span class="nb">sum</span>(validi) <span class="op">/</span> <span class="nb">len</span>(validi)
+                <span class="kw">for</span> r <span class="kw">in</span> records:
+                    <span class="kw">if</span> r[campo] <span class="kw">is</span> <span class="kw">None</span>:
+                        r[campo] <span class="op">=</span> <span class="nb">round</span>(media, <span class="mi">1</span>)
+                        <span class="cm"># TODO: stampa un messaggio per tracciare l&#x27;imputazione</span>
+    <span class="kw">return</span> dati</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 2</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">raggruppa_per_citta</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Raggruppa i record per citta&#x27;. Restituisce un dizionario.&quot;&quot;&quot;</span>
+    gruppi <span class="op">=</span> {}
+    <span class="kw">for</span> record <span class="kw">in</span> dati:
+        citta <span class="op">=</span> record[<span class="st">&#x27;citta&#x27;</span>]
+        <span class="kw">if</span> citta <span class="kw">not</span> <span class="kw">in</span> gruppi:
+            gruppi[citta] <span class="op">=</span> []
+        gruppi[citta].append(record)
+    <span class="kw">return</span> gruppi
+
+<span class="kw">def</span> <span class="fn">valori_validi</span>(<span class="fn">records</span>, campo):
+    <span class="st">&quot;&quot;&quot;Estrae i valori non-None di un campo da una lista di record.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [r[campo] <span class="kw">for</span> r <span class="kw">in</span> records <span class="kw">if</span> r[campo] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>]
+
+<span class="kw">def</span> <span class="fn">imputa_valori_mancanti</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Sostituisce i None con la media della citta&#x27; per quel campo.&quot;&quot;&quot;</span>
+    gruppi <span class="op">=</span> raggruppa_per_citta(dati)
+    campi <span class="op">=</span> [<span class="st">&#x27;temperatura_max&#x27;</span>, <span class="st">&#x27;temperatura_min&#x27;</span>, <span class="st">&#x27;pioggia_mm&#x27;</span>, <span class="st">&#x27;umidita_pct&#x27;</span>]
+    contatore_imputazioni <span class="op">=</span> <span class="mi">0</span>
+
+    <span class="kw">for</span> citta, records <span class="kw">in</span> gruppi.items():
+        <span class="kw">for</span> campo <span class="kw">in</span> campi:
+            validi <span class="op">=</span> valori_validi(records, campo)
+            <span class="kw">if</span> validi:
+                media <span class="op">=</span> <span class="nb">sum</span>(validi) <span class="op">/</span> <span class="nb">len</span>(validi)
+                <span class="kw">for</span> r <span class="kw">in</span> records:
+                    <span class="kw">if</span> r[campo] <span class="kw">is</span> <span class="kw">None</span>:
+                        r[campo] <span class="op">=</span> <span class="nb">round</span>(media, <span class="mi">1</span>)
+                        contatore_imputazioni <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+                        <span class="nb">print</span>(<span class="st">f&quot;  Imputato: {citta}, {r[&#x27;data&#x27;]}, &quot;</span>
+                              <span class="st">f&quot;{campo} = {r[campo]} (media)&quot;</span>)
+
+    <span class="nb">print</span>(<span class="st">f&quot;  Totale imputazioni: {contatore_imputazioni}&quot;</span>)
+    <span class="kw">return</span> dati
+
+<span class="kw">def</span> <span class="fn">rileva_outlier</span>(<span class="fn">dati</span>, campo, soglia<span class="op">=</span><span class="mi">2.0</span>):
+    <span class="st">&quot;&quot;&quot;Rileva valori anomali che si discostano dalla media di piu&#x27; di &#x27;soglia&#x27; dev. std.&quot;&quot;&quot;</span>
+    gruppi <span class="op">=</span> raggruppa_per_citta(dati)
+    outlier <span class="op">=</span> []
+
+    <span class="kw">for</span> citta, records <span class="kw">in</span> gruppi.items():
+        validi <span class="op">=</span> valori_validi(records, campo)
+        <span class="kw">if</span> <span class="nb">len</span>(validi) <span class="op">&lt;</span> <span class="mi">3</span>:
+            <span class="kw">continue</span>
+        media <span class="op">=</span> <span class="nb">sum</span>(validi) <span class="op">/</span> <span class="nb">len</span>(validi)
+        varianza <span class="op">=</span> <span class="nb">sum</span>((x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> validi) <span class="op">/</span> (<span class="nb">len</span>(validi) <span class="op">-</span> <span class="mi">1</span>)
+        dev_std <span class="op">=</span> varianza <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+
+        <span class="kw">for</span> r <span class="kw">in</span> records:
+            val <span class="op">=</span> r[campo]
+            <span class="kw">if</span> val <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">and</span> <span class="nb">abs</span>(val <span class="op">-</span> media) <span class="op">&gt;</span> soglia <span class="op">*</span> dev_std:
+                outlier.append({
+                    <span class="st">&#x27;citta&#x27;</span>: citta,
+                    <span class="st">&#x27;data&#x27;</span>: r[<span class="st">&#x27;data&#x27;</span>],
+                    <span class="st">&#x27;campo&#x27;</span>: campo,
+                    <span class="st">&#x27;valore&#x27;</span>: val,
+                    <span class="st">&#x27;media&#x27;</span>: <span class="nb">round</span>(media, <span class="mi">2</span>),
+                    <span class="st">&#x27;dev_std&#x27;</span>: <span class="nb">round</span>(dev_std, <span class="mi">2</span>),
+                })
+    <span class="kw">return</span> outlier</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 3: Analisi con liste e dizionari (Python base)</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Calcolare statistiche aggregate per gruppi</li>
+<li>Trovare massimi e minimi con informazioni associate</li>
+<li>Confrontare dati tra citta'</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Prima di usare librerie esterne, e' importante saper fare analisi con gli strumenti base di Python. Calcoleremo: temperatura media per citta', giorno piu' caldo e piu' freddo, pioggia totale per citta', e giorni di pioggia.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa <code>raggruppa<em>per</em>citta()</code> per lavorare citta' per citta'</li>
+<li>Per trovare il record con il massimo, puoi usare <code>max()</code> con <code>key=</code></li>
+<li>Un giorno di pioggia e' quando <code>pioggia_mm > 0</code></li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">analisi_base</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Esegue un&#x27;analisi base dei dati meteo con Python standard.&quot;&quot;&quot;</span>
+    gruppi <span class="op">=</span> raggruppa_per_citta(dati)
+    risultati <span class="op">=</span> {}
+
+    <span class="kw">for</span> citta, records <span class="kw">in</span> gruppi.items():
+        temp_max_valori <span class="op">=</span> valori_validi(records, <span class="st">&#x27;temperatura_max&#x27;</span>)
+        temp_min_valori <span class="op">=</span> valori_validi(records, <span class="st">&#x27;temperatura_min&#x27;</span>)
+        pioggia_valori <span class="op">=</span> valori_validi(records, <span class="st">&#x27;pioggia_mm&#x27;</span>)
+
+        risultati[citta] <span class="op">=</span> {
+            <span class="cm"># TODO: calcola media temperatura massima</span>
+            <span class="cm"># TODO: calcola media temperatura minima</span>
+            <span class="cm"># TODO: trova la temperatura massima assoluta e il giorno</span>
+            <span class="cm"># TODO: trova la temperatura minima assoluta e il giorno</span>
+            <span class="cm"># TODO: calcola pioggia totale</span>
+            <span class="cm"># TODO: conta giorni di pioggia (pioggia_mm &gt; 0)</span>
+        }
+
+    <span class="kw">return</span> risultati</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 3</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">analisi_base</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Esegue un&#x27;analisi base dei dati meteo con Python standard.&quot;&quot;&quot;</span>
+    gruppi <span class="op">=</span> raggruppa_per_citta(dati)
+    risultati <span class="op">=</span> {}
+
+    <span class="kw">for</span> citta, records <span class="kw">in</span> gruppi.items():
+        temp_max_valori <span class="op">=</span> valori_validi(records, <span class="st">&#x27;temperatura_max&#x27;</span>)
+        temp_min_valori <span class="op">=</span> valori_validi(records, <span class="st">&#x27;temperatura_min&#x27;</span>)
+        pioggia_valori <span class="op">=</span> valori_validi(records, <span class="st">&#x27;pioggia_mm&#x27;</span>)
+        umidita_valori <span class="op">=</span> valori_validi(records, <span class="st">&#x27;umidita_pct&#x27;</span>)
+
+        <span class="cm"># Giorno piu&#x27; caldo</span>
+        record_max <span class="op">=</span> <span class="nb">max</span>(
+            [r <span class="kw">for</span> r <span class="kw">in</span> records <span class="kw">if</span> r[<span class="st">&#x27;temperatura_max&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>],
+            key<span class="op">=</span><span class="kw">lambda</span> r: r[<span class="st">&#x27;temperatura_max&#x27;</span>]
+        )
+        <span class="cm"># Giorno piu&#x27; freddo</span>
+        record_min <span class="op">=</span> <span class="nb">min</span>(
+            [r <span class="kw">for</span> r <span class="kw">in</span> records <span class="kw">if</span> r[<span class="st">&#x27;temperatura_min&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>],
+            key<span class="op">=</span><span class="kw">lambda</span> r: r[<span class="st">&#x27;temperatura_min&#x27;</span>]
+        )
+
+        giorni_pioggia <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> v <span class="kw">in</span> pioggia_valori <span class="kw">if</span> v <span class="op">&gt;</span> <span class="mi">0</span>)
+
+        risultati[citta] <span class="op">=</span> {
+            <span class="st">&#x27;temp_max_media&#x27;</span>: <span class="nb">round</span>(<span class="nb">sum</span>(temp_max_valori) <span class="op">/</span> <span class="nb">len</span>(temp_max_valori), <span class="mi">1</span>),
+            <span class="st">&#x27;temp_min_media&#x27;</span>: <span class="nb">round</span>(<span class="nb">sum</span>(temp_min_valori) <span class="op">/</span> <span class="nb">len</span>(temp_min_valori), <span class="mi">1</span>),
+            <span class="st">&#x27;temp_max_assoluta&#x27;</span>: record_max[<span class="st">&#x27;temperatura_max&#x27;</span>],
+            <span class="st">&#x27;giorno_piu_caldo&#x27;</span>: record_max[<span class="st">&#x27;data&#x27;</span>],
+            <span class="st">&#x27;temp_min_assoluta&#x27;</span>: record_min[<span class="st">&#x27;temperatura_min&#x27;</span>],
+            <span class="st">&#x27;giorno_piu_freddo&#x27;</span>: record_min[<span class="st">&#x27;data&#x27;</span>],
+            <span class="st">&#x27;pioggia_totale&#x27;</span>: <span class="nb">round</span>(<span class="nb">sum</span>(pioggia_valori), <span class="mi">1</span>),
+            <span class="st">&#x27;giorni_pioggia&#x27;</span>: giorni_pioggia,
+            <span class="st">&#x27;giorni_totali&#x27;</span>: <span class="nb">len</span>(records),
+            <span class="st">&#x27;umidita_media&#x27;</span>: <span class="nb">round</span>(<span class="nb">sum</span>(umidita_valori) <span class="op">/</span> <span class="nb">len</span>(umidita_valori), <span class="mi">1</span>),
+        }
+
+    <span class="kw">return</span> risultati
+
+<span class="kw">def</span> <span class="fn">stampa_analisi_base</span>(<span class="fn">risultati</span>):
+    <span class="st">&quot;&quot;&quot;Stampa i risultati dell&#x27;analisi in modo formattato.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  ANALISI METEO - RISULTATI BASE&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+
+    <span class="kw">for</span> citta, stats <span class="kw">in</span> risultati.items():
+        <span class="nb">print</span>(<span class="st">f&quot;\n--- {citta.upper()} ---&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Temperatura massima media: {stats[&#x27;temp_max_media&#x27;]}C&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Temperatura minima media:  {stats[&#x27;temp_min_media&#x27;]}C&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Giorno piu&#x27; caldo: {stats[&#x27;giorno_piu_caldo&#x27;]} &quot;</span>
+              <span class="st">f&quot;({stats[&#x27;temp_max_assoluta&#x27;]}C)&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Giorno piu&#x27; freddo: {stats[&#x27;giorno_piu_freddo&#x27;]} &quot;</span>
+              <span class="st">f&quot;({stats[&#x27;temp_min_assoluta&#x27;]}C)&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Pioggia totale: {stats[&#x27;pioggia_totale&#x27;]} mm&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Giorni di pioggia: {stats[&#x27;giorni_pioggia&#x27;]}/{stats[&#x27;giorni_totali&#x27;]}&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Umidita&#x27; media: {stats[&#x27;umidita_media&#x27;]}%&quot;</span>)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 4: Analisi con NumPy</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Creare array NumPy da liste Python</li>
+<li>Usare funzioni NumPy: <code>mean()</code>, <code>std()</code>, <code>min()</code>, <code>max()</code></li>
+<li>Calcolare correlazioni tra variabili</li>
+<li>Vantaggi di NumPy rispetto al Python base</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>NumPy e' la libreria fondamentale per il calcolo numerico in Python. Gli array NumPy sono piu' efficienti delle liste Python per operazioni matematiche. Useremo NumPy per ricalcolare le statistiche e per calcolare la correlazione tra temperatura e umidita'.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Importa NumPy con <code>import numpy as np</code></li>
+<li><code>np.array()</code> converte una lista in un array NumPy</li>
+<li><code>np.corrcoef()</code> calcola la matrice di correlazione</li>
+<li>Usa <code>try/except ImportError</code> per gestire il caso in cui NumPy non sia installato</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">try</span>:
+    <span class="kw">import</span> numpy <span class="kw">as</span> np
+    NUMPY_DISPONIBILE <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    NUMPY_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+    <span class="nb">print</span>(<span class="st">&quot;NumPy non installato. Saltare il Passo 4.&quot;</span>)
+
+<span class="kw">def</span> <span class="fn">analisi_numpy</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Analisi dei dati meteo usando NumPy.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> NUMPY_DISPONIBILE:
+        <span class="nb">print</span>(<span class="st">&quot;NumPy non disponibile.&quot;</span>)
+        <span class="kw">return</span>
+
+    gruppi <span class="op">=</span> raggruppa_per_citta(dati)
+
+    <span class="kw">for</span> citta, records <span class="kw">in</span> gruppi.items():
+        <span class="cm"># TODO: crea array NumPy per ogni campo</span>
+        <span class="cm"># TODO: calcola media, deviazione standard, min, max</span>
+        <span class="cm"># TODO: calcola correlazione temperatura-umidita&#x27;</span>
+        <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 4</summary></p>
+<pre><code><span class="kw">try</span>:
+    <span class="kw">import</span> numpy <span class="kw">as</span> np
+    NUMPY_DISPONIBILE <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    NUMPY_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="fn">analisi_numpy</span>(<span class="fn">dati</span>):
+    <span class="st">&quot;&quot;&quot;Analisi dei dati meteo usando NumPy.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> NUMPY_DISPONIBILE:
+        <span class="nb">print</span>(<span class="st">&quot;NumPy non disponibile. Installa con: pip install numpy&quot;</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+    <span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  ANALISI CON NUMPY&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+
+    gruppi <span class="op">=</span> raggruppa_per_citta(dati)
+    risultati_numpy <span class="op">=</span> {}
+
+    <span class="kw">for</span> citta, records <span class="kw">in</span> gruppi.items():
+        <span class="cm"># Crea array NumPy</span>
+        temp_max <span class="op">=</span> np.array(valori_validi(records, <span class="st">&#x27;temperatura_max&#x27;</span>))
+        temp_min <span class="op">=</span> np.array(valori_validi(records, <span class="st">&#x27;temperatura_min&#x27;</span>))
+        pioggia <span class="op">=</span> np.array(valori_validi(records, <span class="st">&#x27;pioggia_mm&#x27;</span>))
+        umidita <span class="op">=</span> np.array(valori_validi(records, <span class="st">&#x27;umidita_pct&#x27;</span>))
+
+        <span class="nb">print</span>(<span class="st">f&quot;\n--- {citta.upper()} ---&quot;</span>)
+
+        <span class="cm"># Statistiche con NumPy</span>
+        <span class="nb">print</span>(<span class="st">f&quot;  Temp. max: media={np.mean(temp_max):.1f}, &quot;</span>
+              <span class="st">f&quot;std={np.std(temp_max, ddof=1):.1f}, &quot;</span>
+              <span class="st">f&quot;min={np.min(temp_max):.1f}, max={np.max(temp_max):.1f}&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Temp. min: media={np.mean(temp_min):.1f}, &quot;</span>
+              <span class="st">f&quot;std={np.std(temp_min, ddof=1):.1f}, &quot;</span>
+              <span class="st">f&quot;min={np.min(temp_min):.1f}, max={np.max(temp_min):.1f}&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Pioggia:   totale={np.sum(pioggia):.1f} mm, &quot;</span>
+              <span class="st">f&quot;media giornaliera={np.mean(pioggia):.1f} mm&quot;</span>)
+
+        <span class="cm"># Escursione termica giornaliera</span>
+        n <span class="op">=</span> <span class="nb">min</span>(<span class="nb">len</span>(temp_max), <span class="nb">len</span>(temp_min))
+        escursione <span class="op">=</span> temp_max[:n] <span class="op">-</span> temp_min[:n]
+        <span class="nb">print</span>(<span class="st">f&quot;  Escursione termica media: {np.mean(escursione):.1f}C&quot;</span>)
+
+        <span class="cm"># Correlazione temperatura massima - umidita&#x27;</span>
+        n_corr <span class="op">=</span> <span class="nb">min</span>(<span class="nb">len</span>(temp_max), <span class="nb">len</span>(umidita))
+        <span class="kw">if</span> n_corr <span class="op">&gt;</span> <span class="mi">2</span>:
+            corr <span class="op">=</span> np.corrcoef(temp_max[:n_corr], umidita[:n_corr])[<span class="mi">0</span>, <span class="mi">1</span>]
+            <span class="nb">print</span>(<span class="st">f&quot;  Correlazione temp_max/umidita&#x27;: {corr:.3f}&quot;</span>)
+
+        risultati_numpy[citta] <span class="op">=</span> {
+            <span class="st">&#x27;temp_max_array&#x27;</span>: temp_max,
+            <span class="st">&#x27;temp_min_array&#x27;</span>: temp_min,
+            <span class="st">&#x27;pioggia_array&#x27;</span>: pioggia,
+            <span class="st">&#x27;escursione_media&#x27;</span>: <span class="nb">round</span>(<span class="nb">float</span>(np.mean(escursione)), <span class="mi">1</span>),
+        }
+
+    <span class="kw">return</span> risultati_numpy</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 5: Analisi con Pandas</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Creare un DataFrame da un file CSV</li>
+<li>Usare <code>groupby()</code> per analisi aggregate</li>
+<li>Usare <code>describe()</code> per statistiche automatiche</li>
+<li>Gestire valori mancanti con <code>dropna()</code> e <code>fillna()</code></li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Pandas e' la libreria di riferimento per l'analisi dati in Python. Il suo oggetto principale, il DataFrame, e' come una tabella di dati con righe e colonne nominate. Pandas rende semplicissime operazioni come raggruppamento, filtraggio e statistiche.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li><code>pd.read_csv()</code> legge direttamente il CSV in un DataFrame</li>
+<li><code>.groupby('citta')</code> raggruppa per citta'</li>
+<li><code>.describe()</code> calcola automaticamente le statistiche descrittive</li>
+<li><code>.isna()</code> e <code>.notna()</code> identificano i valori mancanti</li>
+<li><code>.fillna()</code> sostituisce i mancanti</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">try</span>:
+    <span class="kw">import</span> pandas <span class="kw">as</span> pd
+    PANDAS_DISPONIBILE <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    PANDAS_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="fn">analisi_pandas</span>(<span class="fn">percorso</span>):
+    <span class="st">&quot;&quot;&quot;Analisi dei dati meteo usando Pandas.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> PANDAS_DISPONIBILE:
+        <span class="nb">print</span>(<span class="st">&quot;Pandas non disponibile.&quot;</span>)
+        <span class="kw">return</span>
+
+    <span class="cm"># TODO: leggi il CSV con pd.read_csv()</span>
+    <span class="cm"># TODO: mostra le prime righe con .head()</span>
+    <span class="cm"># TODO: mostra info sui dati con .info()</span>
+    <span class="cm"># TODO: conta i valori mancanti</span>
+    <span class="cm"># TODO: riempi i valori mancanti con la media per citta&#x27;</span>
+    <span class="cm"># TODO: statistiche descrittive con .describe()</span>
+    <span class="cm"># TODO: raggruppa per citta&#x27; e calcola medie</span>
+    <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 5</summary></p>
+<pre><code><span class="kw">try</span>:
+    <span class="kw">import</span> pandas <span class="kw">as</span> pd
+    PANDAS_DISPONIBILE <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    PANDAS_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="fn">analisi_pandas</span>(<span class="fn">percorso</span>):
+    <span class="st">&quot;&quot;&quot;Analisi dei dati meteo usando Pandas.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> PANDAS_DISPONIBILE:
+        <span class="nb">print</span>(<span class="st">&quot;Pandas non disponibile. Installa con: pip install pandas&quot;</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+    <span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  ANALISI CON PANDAS&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+
+    <span class="cm"># Leggi il CSV</span>
+    df <span class="op">=</span> pd.read_csv(percorso)
+    <span class="nb">print</span>(<span class="st">f&quot;\nDimensioni dataset: {df.shape[0]} righe, {df.shape[1]} colonne&quot;</span>)
+
+    <span class="cm"># Prime righe</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nPrime 5 righe:&quot;</span>)
+    <span class="nb">print</span>(df.head().to_string(index<span class="op">=</span><span class="kw">False</span>))
+
+    <span class="cm"># Valori mancanti</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nValori mancanti per colonna:&quot;</span>)
+    mancanti <span class="op">=</span> df.isna().<span class="nb">sum</span>()
+    <span class="kw">for</span> col, n <span class="kw">in</span> mancanti.items():
+        <span class="kw">if</span> n <span class="op">&gt;</span> <span class="mi">0</span>:
+            <span class="nb">print</span>(<span class="st">f&quot;  {col}: {n}&quot;</span>)
+
+    <span class="cm"># Riempi i valori mancanti con la media per citta&#x27;</span>
+    campi_numerici <span class="op">=</span> [<span class="st">&#x27;temperatura_max&#x27;</span>, <span class="st">&#x27;temperatura_min&#x27;</span>, <span class="st">&#x27;pioggia_mm&#x27;</span>, <span class="st">&#x27;umidita_pct&#x27;</span>]
+    <span class="kw">for</span> campo <span class="kw">in</span> campi_numerici:
+        df[campo] <span class="op">=</span> df.groupby(<span class="st">&#x27;citta&#x27;</span>)[campo].transform(
+            <span class="kw">lambda</span> x: x.fillna(x.mean())
+        )
+    <span class="nb">print</span>(<span class="st">&quot;\nValori mancanti dopo imputazione:&quot;</span>, df.isna().<span class="nb">sum</span>().<span class="nb">sum</span>())
+
+    <span class="cm"># Statistiche descrittive generali</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nStatistiche descrittive:&quot;</span>)
+    <span class="nb">print</span>(df[campi_numerici].describe().<span class="nb">round</span>(<span class="mi">2</span>).to_string())
+
+    <span class="cm"># Statistiche per citta&#x27;</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nMedie per citta&#x27;:&quot;</span>)
+    medie <span class="op">=</span> df.groupby(<span class="st">&#x27;citta&#x27;</span>)[campi_numerici].mean().<span class="nb">round</span>(<span class="mi">1</span>)
+    <span class="nb">print</span>(medie.to_string())
+
+    <span class="cm"># Pioggia totale per citta&#x27;</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nPioggia totale per citta&#x27; (mm):&quot;</span>)
+    pioggia_tot <span class="op">=</span> df.groupby(<span class="st">&#x27;citta&#x27;</span>)[<span class="st">&#x27;pioggia_mm&#x27;</span>].<span class="nb">sum</span>().<span class="nb">round</span>(<span class="mi">1</span>)
+    <span class="kw">for</span> citta, tot <span class="kw">in</span> pioggia_tot.items():
+        <span class="nb">print</span>(<span class="st">f&quot;  {citta}: {tot} mm&quot;</span>)
+
+    <span class="cm"># Giorni di pioggia per citta&#x27;</span>
+    <span class="nb">print</span>(<span class="st">&quot;\nGiorni di pioggia per citta&#x27;:&quot;</span>)
+    giorni_pioggia <span class="op">=</span> df[df[<span class="st">&#x27;pioggia_mm&#x27;</span>] <span class="op">&gt;</span> <span class="mi">0</span>].groupby(<span class="st">&#x27;citta&#x27;</span>).size()
+    <span class="kw">for</span> citta, n <span class="kw">in</span> giorni_pioggia.items():
+        <span class="nb">print</span>(<span class="st">f&quot;  {citta}: {n} giorni&quot;</span>)
+
+    <span class="cm"># Escursione termica</span>
+    df[<span class="st">&#x27;escursione&#x27;</span>] <span class="op">=</span> df[<span class="st">&#x27;temperatura_max&#x27;</span>] <span class="op">-</span> df[<span class="st">&#x27;temperatura_min&#x27;</span>]
+    <span class="nb">print</span>(<span class="st">&quot;\nEscursione termica media per citta&#x27;:&quot;</span>)
+    esc_media <span class="op">=</span> df.groupby(<span class="st">&#x27;citta&#x27;</span>)[<span class="st">&#x27;escursione&#x27;</span>].mean().<span class="nb">round</span>(<span class="mi">1</span>)
+    <span class="kw">for</span> citta, esc <span class="kw">in</span> esc_media.items():
+        <span class="nb">print</span>(<span class="st">f&quot;  {citta}: {esc}C&quot;</span>)
+
+    <span class="kw">return</span> df</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 6: Visualizzazione con Matplotlib</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Creare grafici a linee (andamento temporale)</li>
+<li>Creare grafici a barre (confronto tra citta')</li>
+<li>Personalizzare i grafici (titoli, etichette, legende, colori)</li>
+<li>Salvare grafici come file immagine</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Matplotlib e' la libreria di visualizzazione piu' usata in Python. Creeremo quattro grafici:</p>
+<ol>
+<li>Andamento della temperatura massima nel tempo per tutte le citta'</li>
+<li>Confronto pioggia totale tra citta' (grafico a barre)</li>
+<li>Distribuzione delle temperature (boxplot)</li>
+<li>Relazione temperatura-umidita' (scatter plot)</li>
+</ol>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa <code>plt.figure(figsize=(larghezza, altezza))</code> per impostare le dimensioni</li>
+<li>Usa <code>plt.savefig()</code> invece di <code>plt.show()</code> per salvare su file</li>
+<li><code>plt.tight_layout()</code> evita che le etichette si sovrappongano</li>
+<li>Chiudi sempre la figura con <code>plt.close()</code> dopo il salvataggio</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">try</span>:
+    <span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+    MATPLOTLIB_DISPONIBILE <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    MATPLOTLIB_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="fn">crea_grafici</span>(<span class="fn">df</span>, cartella_output):
+    <span class="st">&quot;&quot;&quot;Crea e salva i grafici dell&#x27;analisi meteo.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> MATPLOTLIB_DISPONIBILE:
+        <span class="nb">print</span>(<span class="st">&quot;Matplotlib non disponibile.&quot;</span>)
+        <span class="kw">return</span>
+
+    <span class="cm"># TODO: Grafico 1 - Andamento temperatura massima</span>
+    <span class="cm"># TODO: Grafico 2 - Pioggia totale per citta&#x27; (barre)</span>
+    <span class="cm"># TODO: Grafico 3 - Boxplot temperature</span>
+    <span class="cm"># TODO: Grafico 4 - Scatter temperatura vs umidita&#x27;</span>
+    <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 6</summary></p>
+<pre><code><span class="kw">try</span>:
+    <span class="kw">import</span> matplotlib
+    matplotlib.use(<span class="st">&#x27;Agg&#x27;</span>)  <span class="cm"># Backend non interattivo per salvare su file</span>
+    <span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+    MATPLOTLIB_DISPONIBILE <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    MATPLOTLIB_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="fn">crea_grafici</span>(<span class="fn">df</span>, cartella_output):
+    <span class="st">&quot;&quot;&quot;Crea e salva i grafici dell&#x27;analisi meteo.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> MATPLOTLIB_DISPONIBILE:
+        <span class="nb">print</span>(<span class="st">&quot;Matplotlib non disponibile. Installa con: pip install matplotlib&quot;</span>)
+        <span class="kw">return</span>
+    <span class="kw">if</span> df <span class="kw">is</span> <span class="kw">None</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Nessun DataFrame disponibile per i grafici.&quot;</span>)
+        <span class="kw">return</span>
+
+    <span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  CREAZIONE GRAFICI&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+
+    citta_lista <span class="op">=</span> df[<span class="st">&#x27;citta&#x27;</span>].unique()
+    colori <span class="op">=</span> {<span class="st">&#x27;Roma&#x27;</span>: <span class="st">&#x27;#e74c3c&#x27;</span>, <span class="st">&#x27;Milano&#x27;</span>: <span class="st">&#x27;#3498db&#x27;</span>, <span class="st">&#x27;Napoli&#x27;</span>: <span class="st">&#x27;#2ecc71&#x27;</span>}
+
+    <span class="cm"># --- Grafico 1: Andamento temperatura massima ---</span>
+    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">12</span>, <span class="mi">5</span>))
+    <span class="kw">for</span> citta <span class="kw">in</span> citta_lista:
+        dati_citta <span class="op">=</span> df[df[<span class="st">&#x27;citta&#x27;</span>] <span class="op">=</span><span class="op">=</span> citta].sort_values(<span class="st">&#x27;data&#x27;</span>)
+        giorni <span class="op">=</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="nb">len</span>(dati_citta) <span class="op">+</span> <span class="mi">1</span>)
+        ax.plot(giorni, dati_citta[<span class="st">&#x27;temperatura_max&#x27;</span>],
+                label<span class="op">=</span>citta, color<span class="op">=</span>colori.get(citta, <span class="kw">None</span>),
+                marker<span class="op">=</span><span class="st">&#x27;o&#x27;</span>, markersize<span class="op">=</span><span class="mi">3</span>, linewidth<span class="op">=</span><span class="mi">1.5</span>)
+    ax.set_xlabel(<span class="st">&#x27;Giorno di gennaio 2024&#x27;</span>)
+    ax.set_ylabel(<span class="st">&#x27;Temperatura massima (C)&#x27;</span>)
+    ax.set_title(<span class="st">&#x27;Andamento temperatura massima - Gennaio 2024&#x27;</span>)
+    ax.legend()
+    ax.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+    plt.tight_layout()
+    percorso1 <span class="op">=</span> cartella_output <span class="op">/</span> <span class="st">&quot;grafico_temperatura.png&quot;</span>
+    plt.savefig(percorso1, dpi<span class="op">=</span><span class="mi">150</span>)
+    plt.close()
+    <span class="nb">print</span>(<span class="st">f&quot;  Salvato: {percorso1.name}&quot;</span>)
+
+    <span class="cm"># --- Grafico 2: Pioggia totale per citta&#x27; (barre) ---</span>
+    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+    pioggia_tot <span class="op">=</span> df.groupby(<span class="st">&#x27;citta&#x27;</span>)[<span class="st">&#x27;pioggia_mm&#x27;</span>].<span class="nb">sum</span>()
+    barre <span class="op">=</span> ax.bar(pioggia_tot.index, pioggia_tot.values,
+                   color<span class="op">=</span>[colori.get(c, <span class="st">&#x27;#95a5a6&#x27;</span>) <span class="kw">for</span> c <span class="kw">in</span> pioggia_tot.index])
+    <span class="kw">for</span> barra, valore <span class="kw">in</span> <span class="nb">zip</span>(barre, pioggia_tot.values):
+        ax.text(barra.get_x() <span class="op">+</span> barra.get_width() <span class="op">/</span> <span class="mi">2</span>, barra.get_height() <span class="op">+</span> <span class="mi">1</span>,
+                <span class="st">f&#x27;{valore:.1f}&#x27;</span>, ha<span class="op">=</span><span class="st">&#x27;center&#x27;</span>, va<span class="op">=</span><span class="st">&#x27;bottom&#x27;</span>, fontsize<span class="op">=</span><span class="mi">11</span>)
+    ax.set_ylabel(<span class="st">&#x27;Pioggia totale (mm)&#x27;</span>)
+    ax.set_title(<span class="st">&#x27;Pioggia totale per citta\&#x27; - Gennaio 2024&#x27;</span>)
+    ax.grid(axis<span class="op">=</span><span class="st">&#x27;y&#x27;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+    plt.tight_layout()
+    percorso2 <span class="op">=</span> cartella_output <span class="op">/</span> <span class="st">&quot;grafico_pioggia.png&quot;</span>
+    plt.savefig(percorso2, dpi<span class="op">=</span><span class="mi">150</span>)
+    plt.close()
+    <span class="nb">print</span>(<span class="st">f&quot;  Salvato: {percorso2.name}&quot;</span>)
+
+    <span class="cm"># --- Grafico 3: Boxplot temperature per citta&#x27; ---</span>
+    fig, axes <span class="op">=</span> plt.subplots(<span class="mi">1</span>, <span class="mi">2</span>, figsize<span class="op">=</span>(<span class="mi">12</span>, <span class="mi">5</span>))
+
+    <span class="cm"># Boxplot temp max</span>
+    dati_box_max <span class="op">=</span> [df[df[<span class="st">&#x27;citta&#x27;</span>] <span class="op">=</span><span class="op">=</span> c][<span class="st">&#x27;temperatura_max&#x27;</span>].dropna().values
+                    <span class="kw">for</span> c <span class="kw">in</span> citta_lista]
+    bp1 <span class="op">=</span> axes[<span class="mi">0</span>].boxplot(dati_box_max, labels<span class="op">=</span>citta_lista, patch_artist<span class="op">=</span><span class="kw">True</span>)
+    <span class="kw">for</span> patch, citta <span class="kw">in</span> <span class="nb">zip</span>(bp1[<span class="st">&#x27;boxes&#x27;</span>], citta_lista):
+        patch.set_facecolor(colori.get(citta, <span class="st">&#x27;#95a5a6&#x27;</span>))
+        patch.set_alpha(<span class="mi">0.6</span>)
+    axes[<span class="mi">0</span>].set_ylabel(<span class="st">&#x27;Temperatura (C)&#x27;</span>)
+    axes[<span class="mi">0</span>].set_title(<span class="st">&#x27;Distribuzione temperatura massima&#x27;</span>)
+    axes[<span class="mi">0</span>].grid(axis<span class="op">=</span><span class="st">&#x27;y&#x27;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+
+    <span class="cm"># Boxplot temp min</span>
+    dati_box_min <span class="op">=</span> [df[df[<span class="st">&#x27;citta&#x27;</span>] <span class="op">=</span><span class="op">=</span> c][<span class="st">&#x27;temperatura_min&#x27;</span>].dropna().values
+                    <span class="kw">for</span> c <span class="kw">in</span> citta_lista]
+    bp2 <span class="op">=</span> axes[<span class="mi">1</span>].boxplot(dati_box_min, labels<span class="op">=</span>citta_lista, patch_artist<span class="op">=</span><span class="kw">True</span>)
+    <span class="kw">for</span> patch, citta <span class="kw">in</span> <span class="nb">zip</span>(bp2[<span class="st">&#x27;boxes&#x27;</span>], citta_lista):
+        patch.set_facecolor(colori.get(citta, <span class="st">&#x27;#95a5a6&#x27;</span>))
+        patch.set_alpha(<span class="mi">0.6</span>)
+    axes[<span class="mi">1</span>].set_ylabel(<span class="st">&#x27;Temperatura (C)&#x27;</span>)
+    axes[<span class="mi">1</span>].set_title(<span class="st">&#x27;Distribuzione temperatura minima&#x27;</span>)
+    axes[<span class="mi">1</span>].grid(axis<span class="op">=</span><span class="st">&#x27;y&#x27;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+
+    plt.tight_layout()
+    percorso3 <span class="op">=</span> cartella_output <span class="op">/</span> <span class="st">&quot;grafico_boxplot.png&quot;</span>
+    plt.savefig(percorso3, dpi<span class="op">=</span><span class="mi">150</span>)
+    plt.close()
+    <span class="nb">print</span>(<span class="st">f&quot;  Salvato: {percorso3.name}&quot;</span>)
+
+    <span class="cm"># --- Grafico 4: Scatter temperatura vs umidita&#x27; ---</span>
+    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">6</span>))
+    <span class="kw">for</span> citta <span class="kw">in</span> citta_lista:
+        dati_citta <span class="op">=</span> df[df[<span class="st">&#x27;citta&#x27;</span>] <span class="op">=</span><span class="op">=</span> citta]
+        ax.scatter(dati_citta[<span class="st">&#x27;temperatura_max&#x27;</span>], dati_citta[<span class="st">&#x27;umidita_pct&#x27;</span>],
+                   label<span class="op">=</span>citta, color<span class="op">=</span>colori.get(citta, <span class="kw">None</span>),
+                   alpha<span class="op">=</span><span class="mi">0.7</span>, s<span class="op">=</span><span class="mi">40</span>)
+    ax.set_xlabel(<span class="st">&#x27;Temperatura massima (C)&#x27;</span>)
+    ax.set_ylabel(<span class="st">&#x27;Umidita\&#x27; (%)&#x27;</span>)
+    ax.set_title(<span class="st">&#x27;Relazione temperatura massima - umidita\&#x27;&#x27;</span>)
+    ax.legend()
+    ax.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+    plt.tight_layout()
+    percorso4 <span class="op">=</span> cartella_output <span class="op">/</span> <span class="st">&quot;grafico_scatter.png&quot;</span>
+    plt.savefig(percorso4, dpi<span class="op">=</span><span class="mi">150</span>)
+    plt.close()
+    <span class="nb">print</span>(<span class="st">f&quot;  Salvato: {percorso4.name}&quot;</span>)
+
+    <span class="nb">print</span>(<span class="st">&quot;\nTutti i grafici sono stati salvati nella cartella del progetto.&quot;</span>)</code></pre>
+<p></details></p>
+<hr>
+<h2>Complimenti!</h2>
+<p>Hai completato il Progetto 3. Ora sai:</p>
+<ul>
+<li>Leggere e pulire dati reali con valori mancanti</li>
+<li>Rilevare anomalie nei dati</li>
+<li>Analizzare dati con Python base, NumPy e Pandas</li>
+<li>Creare visualizzazioni con Matplotlib</li>
+<li>Gestire dipendenze opzionali con <code>try/except ImportError</code></li>
+</ul>
+<p>La soluzione completa e' nel file <code>soluzione.py</code>. I grafici generati vengono salvati come file PNG nella cartella del progetto.</p>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autovalutazione — F14: Funzioni avanzate e moduli — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/F14_funzioni_avanzate_moduli.html">Dispensa</a> &bull; <a href="../errori_comuni/F14_errori.html">Errori comuni</a></nav>
+<h1>Autovalutazione — F14: Funzioni avanzate e moduli</h1>
+
+<h1>Autovalutazione — F14: Lambda, Map/Filter e Closure</h1>
+<p>Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere <strong>prima</strong> di guardare la soluzione.</p>
+<hr>
+<h2>Cosa stampa questo codice?</h2>
+<h3>Esercizio 1</h3>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+doppi <span class="op">=</span> <span class="nb">list</span>(<span class="nb">map</span>(<span class="kw">lambda</span> x: x <span class="op">*</span> <span class="mi">2</span>, numeri))
+<span class="nb">print</span>(doppi)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>, <span class="mi">10</span>]</code></pre>
+<p><strong>Spiegazione:</strong> <code>map()</code> applica una funzione a ogni elemento di un iterabile. Qui la funzione lambda <code>lambda x: x * 2</code> raddoppia ogni numero. <code>map()</code> restituisce un iteratore, quindi usiamo <code>list()</code> per ottenere una lista. Il risultato e' ogni elemento della lista originale moltiplicato per 2.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 2</h3>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>, <span class="mi">10</span>]
+pari <span class="op">=</span> <span class="nb">list</span>(<span class="nb">filter</span>(<span class="kw">lambda</span> x: x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>, numeri))
+<span class="nb">print</span>(pari)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>, <span class="mi">10</span>]</code></pre>
+<p><strong>Spiegazione:</strong> <code>filter()</code> mantiene solo gli elementi per cui la funzione restituisce <code>True</code>. La lambda <code>lambda x: x % 2 == 0</code> verifica se un numero e' pari (resto della divisione per 2 uguale a 0). Vengono quindi mantenuti solo i numeri pari.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 3</h3>
+<pre><code><span class="kw">def</span> <span class="fn">crea_moltiplicatori</span>():
+    moltiplicatori <span class="op">=</span> []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">4</span>):
+        moltiplicatori.append(<span class="kw">lambda</span> x: x <span class="op">*</span> i)
+    <span class="kw">return</span> moltiplicatori
+
+funzioni <span class="op">=</span> crea_moltiplicatori()
+<span class="nb">print</span>(funzioni[<span class="mi">0</span>](<span class="mi">10</span>))
+<span class="nb">print</span>(funzioni[<span class="mi">1</span>](<span class="mi">10</span>))
+<span class="nb">print</span>(funzioni[<span class="mi">2</span>](<span class="mi">10</span>))</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code><span class="mi">30</span>
+<span class="mi">30</span>
+<span class="mi">30</span></code></pre>
+<p><strong>Spiegazione:</strong> Questo e' un errore classico chiamato <strong>late binding</strong> nelle closure. Tutte e tre le lambda catturano la <strong>stessa variabile</strong> <code>i</code>, non il suo valore al momento della creazione. Quando le funzioni vengono chiamate, il ciclo <code>for</code> e' gia' terminato e <code>i</code> vale <code>3</code>. Quindi tutte e tre calcolano <code>10 <em> 3 = 30</code>. Per catturare il valore corrente si usa un argomento di default: <code>lambda x, i=i: x </em> i</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 4</h3>
+<pre><code>nomi <span class="op">=</span> [<span class="st">&quot;alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;CARLA&quot;</span>, <span class="st">&quot;diana&quot;</span>]
+ordinati <span class="op">=</span> <span class="nb">sorted</span>(nomi, key<span class="op">=</span><span class="kw">lambda</span> s: s.lower())
+<span class="nb">print</span>(ordinati)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="st">&#x27;alice&#x27;</span>, <span class="st">&#x27;Bob&#x27;</span>, <span class="st">&#x27;CARLA&#x27;</span>, <span class="st">&#x27;diana&#x27;</span>]</code></pre>
+<p><strong>Spiegazione:</strong> <code>sorted()</code> ordina gli elementi usando la funzione <code>key</code> per determinare l'ordine. La lambda converte ogni stringa in minuscolo <strong>solo per il confronto</strong>, senza modificare gli elementi originali. L'ordine alfabetico (ignorando maiuscole/minuscole) e': alice, Bob, CARLA, diana. Gli elementi nella lista risultante mantengono le lettere originali.</p>
+<p></details></p>
+<hr>
+<h2>Trova l'errore</h2>
+<h3>Esercizio 5</h3>
+<pre><code><span class="cm"># Vogliamo una lambda che calcola il BMI</span>
+calcola_bmi <span class="op">=</span> <span class="kw">lambda</span> peso, altezza:
+    peso <span class="op">/</span> (altezza <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+<span class="nb">print</span>(calcola_bmi(<span class="mi">70</span>, <span class="mi">1.75</span>))</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>SyntaxError: invalid syntax</code></p>
+<p><strong>Problema:</strong> Le lambda in Python devono essere scritte su <strong>una sola riga</strong>. Non si puo' andare a capo dopo i <code>:</code>.</p>
+<p><strong>Correzione:</strong></p>
+<pre><code><span class="cm"># Lambda su una sola riga</span>
+calcola_bmi <span class="op">=</span> <span class="kw">lambda</span> peso, altezza: peso <span class="op">/</span> (altezza <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+<span class="nb">print</span>(calcola_bmi(<span class="mi">70</span>, <span class="mi">1.75</span>))  <span class="cm"># 22.857142857142858</span></code></pre>
+<p><strong>Alternativa (consigliata per funzioni con un nome):</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_bmi</span>(<span class="fn">peso</span>, altezza):
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;indice di massa corporea.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> peso <span class="op">/</span> (altezza <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+<span class="nb">print</span>(calcola_bmi(<span class="mi">70</span>, <span class="mi">1.75</span>))  <span class="cm"># 22.857142857142858</span></code></pre>
+<p><strong>Lezione:</strong> Le lambda sono pensate per funzioni semplici e brevi. Se una funzione ha bisogno di piu' righe o merita un nome descrittivo, usate <code>def</code>.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 6</h3>
+<pre><code><span class="kw">def</span> <span class="fn">crea_incrementatori</span>():
+    funzioni <span class="op">=</span> []
+    <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):
+        funzioni.append(<span class="kw">lambda</span> x: x <span class="op">+</span> n)
+    <span class="kw">return</span> funzioni
+
+inc <span class="op">=</span> crea_incrementatori()
+<span class="nb">print</span>(inc[<span class="mi">0</span>](<span class="mi">100</span>))  <span class="cm"># Ci aspettiamo 100</span>
+<span class="nb">print</span>(inc[<span class="mi">3</span>](<span class="mi">100</span>))  <span class="cm"># Ci aspettiamo 103</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output indesiderato:</strong></p>
+<pre><code><span class="mi">104</span>
+<span class="mi">104</span></code></pre>
+<p><strong>Problema:</strong> Late binding delle closure. Tutte le lambda catturano la variabile <code>n</code>, che alla fine del ciclo vale <code>4</code>. Quindi tutte le funzioni calcolano <code>x + 4</code>.</p>
+<p><strong>Correzione:</strong></p>
+<pre><code><span class="kw">def</span> <span class="fn">crea_incrementatori</span>():
+    funzioni <span class="op">=</span> []
+    <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):
+        <span class="cm"># n=n cattura il valore corrente come default</span>
+        funzioni.append(<span class="kw">lambda</span> x, n<span class="op">=</span>n: x <span class="op">+</span> n)
+    <span class="kw">return</span> funzioni
+
+inc <span class="op">=</span> crea_incrementatori()
+<span class="nb">print</span>(inc[<span class="mi">0</span>](<span class="mi">100</span>))  <span class="cm"># 100</span>
+<span class="nb">print</span>(inc[<span class="mi">3</span>](<span class="mi">100</span>))  <span class="cm"># 103</span></code></pre>
+<p><strong>Lezione:</strong> Quando create lambda in un ciclo, usate il trucco <code>n=n</code> nel parametro di default per "congelare" il valore della variabile al momento della creazione.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 7</h3>
+<pre><code><span class="kw">from</span> math <span class="kw">import</span> <span class="op">*</span>
+
+<span class="nb">print</span>(sqrt(<span class="mi">16</span>))
+<span class="nb">print</span>(log(<span class="mi">1</span>))
+
+<span class="cm"># Piu&#x27; tardi nel codice...</span>
+sqrt <span class="op">=</span> <span class="st">&quot;radice quadrata&quot;</span>
+<span class="nb">print</span>(sqrt(<span class="mi">25</span>))</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output prima dell'errore:</strong></p>
+<pre><code><span class="mi">4.0</span>
+<span class="mi">0.0</span></code></pre>
+<p><strong>Poi errore:</strong> <code>TypeError: 'str' object is not callable</code></p>
+<p><strong>Problema:</strong> <code>from math import *</code> importa tutte le funzioni di <code>math</code> nel namespace corrente. Successivamente, il nome <code>sqrt</code> viene sovrascritto con una stringa. Quando si tenta di chiamare <code>sqrt(25)</code>, Python prova a "chiamare" la stringa <code>"radice quadrata"</code>, causando l'errore.</p>
+<p><strong>Correzione:</strong></p>
+<pre><code><span class="kw">import</span> math
+
+<span class="nb">print</span>(math.sqrt(<span class="mi">16</span>))   <span class="cm"># 4.0</span>
+<span class="nb">print</span>(math.log(<span class="mi">1</span>))     <span class="cm"># 0.0</span>
+
+sqrt <span class="op">=</span> <span class="st">&quot;radice quadrata&quot;</span>  <span class="cm"># Non sovrascrive math.sqrt</span>
+<span class="nb">print</span>(math.sqrt(<span class="mi">25</span>))      <span class="cm"># 5.0</span></code></pre>
+<p><strong>Lezione:</strong> Evitate <code>from modulo import *</code> perche' inquina il namespace e rende possibili sovrascritture accidentali. Preferite <code>import math</code> e usate <code>math.sqrt()</code>.</p>
+<p></details></p>
+<hr>
+<h2>Completa il codice</h2>
+<h3>Esercizio 8</h3>
+<p>Completa il codice per trasformare una lista di temperature da Celsius a Fahrenheit usando <code>map</code> e una <code>lambda</code>.</p>
+<pre><code>temperature_celsius <span class="op">=</span> [<span class="mi">0</span>, <span class="mi">20</span>, <span class="mi">37</span>, <span class="mi">100</span>]
+
+<span class="cm"># --- COMPLETA: usa map e lambda per convertire ---</span>
+<span class="cm"># Formula: F = C * 9/5 + 32</span>
+temperature_fahrenheit <span class="op">=</span> ???
+
+<span class="nb">print</span>(temperature_fahrenheit)
+<span class="cm"># Output atteso: [32.0, 68.0, 98.6, 212.0]</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la soluzione</summary></p>
+<pre><code>temperature_celsius <span class="op">=</span> [<span class="mi">0</span>, <span class="mi">20</span>, <span class="mi">37</span>, <span class="mi">100</span>]
+
+temperature_fahrenheit <span class="op">=</span> <span class="nb">list</span>(<span class="nb">map</span>(<span class="kw">lambda</span> c: c <span class="op">*</span> <span class="mi">9</span><span class="op">/</span><span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>, temperature_celsius))
+
+<span class="nb">print</span>(temperature_fahrenheit)
+<span class="cm"># Output: [32.0, 68.0, 98.6, 212.0]</span></code></pre>
+<p><strong>Spiegazione:</strong> La lambda <code>lambda c: c * 9/5 + 32</code> applica la formula di conversione a ogni temperatura. <code>map()</code> applica questa lambda a ogni elemento della lista, e <code>list()</code> converte il risultato in una lista.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 9</h3>
+<p>Completa la funzione che filtra gli studenti con un voto sopra la soglia.</p>
+<pre><code><span class="kw">def</span> <span class="fn">studenti_sopra_soglia</span>(<span class="fn">registro</span>, soglia):
+    <span class="st">&quot;&quot;&quot;
+    Riceve un dizionario {nome: voto} e una soglia.
+    Restituisce la lista dei nomi degli studenti con voto &gt;= soglia,
+    ordinata alfabeticamente.
+    &quot;&quot;&quot;</span>
+    <span class="cm"># --- COMPLETA: usa filter e/o lambda ---</span>
+    <span class="kw">pass</span>
+
+<span class="cm"># Test</span>
+voti <span class="op">=</span> {<span class="st">&quot;Alice&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;Bob&quot;</span>: <span class="mi">18</span>, <span class="st">&quot;Carla&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;Diana&quot;</span>: <span class="mi">24</span>, <span class="st">&quot;Eva&quot;</span>: <span class="mi">15</span>}
+<span class="nb">print</span>(studenti_sopra_soglia(voti, <span class="mi">25</span>))
+<span class="cm"># Output atteso: [&#x27;Alice&#x27;, &#x27;Carla&#x27;]</span>
+<span class="nb">print</span>(studenti_sopra_soglia(voti, <span class="mi">18</span>))
+<span class="cm"># Output atteso: [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Carla&#x27;, &#x27;Diana&#x27;]</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la soluzione</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">studenti_sopra_soglia</span>(<span class="fn">registro</span>, soglia):
+    <span class="st">&quot;&quot;&quot;
+    Riceve un dizionario {nome: voto} e una soglia.
+    Restituisce la lista dei nomi degli studenti con voto &gt;= soglia,
+    ordinata alfabeticamente.
+    &quot;&quot;&quot;</span>
+    filtrati <span class="op">=</span> <span class="nb">filter</span>(<span class="kw">lambda</span> nome: registro[nome] <span class="op">&gt;</span><span class="op">=</span> soglia, registro)
+    <span class="kw">return</span> <span class="nb">sorted</span>(filtrati)
+
+voti <span class="op">=</span> {<span class="st">&quot;Alice&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;Bob&quot;</span>: <span class="mi">18</span>, <span class="st">&quot;Carla&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;Diana&quot;</span>: <span class="mi">24</span>, <span class="st">&quot;Eva&quot;</span>: <span class="mi">15</span>}
+<span class="nb">print</span>(studenti_sopra_soglia(voti, <span class="mi">25</span>))
+<span class="cm"># Output: [&#x27;Alice&#x27;, &#x27;Carla&#x27;]</span>
+<span class="nb">print</span>(studenti_sopra_soglia(voti, <span class="mi">18</span>))
+<span class="cm"># Output: [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Carla&#x27;, &#x27;Diana&#x27;]</span></code></pre>
+<p><strong>Spiegazione:</strong> <code>filter()</code> itera sulle chiavi del dizionario (i nomi) e mantiene solo quelli per cui <code>registro[nome] >= soglia</code> e' <code>True</code>. Poi <code>sorted()</code> ordina i nomi rimanenti in ordine alfabetico. Si poteva scrivere anche con una list comprehension: <code>sorted([nome for nome, voto in registro.items() if voto >= soglia])</code>.</p>
+<p></details></p>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

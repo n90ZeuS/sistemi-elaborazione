@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F16 — Programmazione a oggetti — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F15_file_dati_errori.html">← F15</a> &bull; <a href="F17_numpy_pandas_visualizzazione.html">F17 →</a> &bull; <a href="../../presentazioni/F16_programmazione_oggetti.html">Presentazione</a></nav>
+<h1>F16 — Programmazione a oggetti</h1>
+
+<h1>Lezione Frontale 16 — Programmazione orientata agli oggetti</h1>
+<h2>Introduzione: il problema della crescita del codice</h2>
+<p>Nei programmi che abbiamo scritto finora, i dati e le funzioni che li manipolano vivono separati. Abbiamo dizionari che rappresentano studenti, funzioni che calcolano medie, altre funzioni che formattano output. Finché il programma è piccolo, questo approccio funziona. Ma cosa succede quando il codice cresce?</p>
+<p>Immaginiamo di lavorare con dati su studenti universitari. Con l'approccio procedurale, potremmo avere qualcosa del genere:</p>
+<pre><code>studente_1: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> {
+    <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,
+    <span class="st">&quot;cognome&quot;</span>: <span class="st">&quot;Rossi&quot;</span>,
+    <span class="st">&quot;matricola&quot;</span>: <span class="mi">12345</span>,
+    <span class="st">&quot;voti&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>]
+}
+
+<span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">studente</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">int</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> studente[<span class="st">&quot;voti&quot;</span>]  <span class="cm"># type: ignore</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
+
+<span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">studente</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">int</span>]], voto: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="kw">if</span> <span class="kw">not</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto {voto} non valido&quot;</span>)
+    studente[<span class="st">&quot;voti&quot;</span>].append(voto)  <span class="cm"># type: ignore</span>
+
+<span class="kw">def</span> <span class="fn">descrizione_studente</span>(<span class="fn">studente</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">int</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="kw">return</span> <span class="st">f&quot;{studente[&#x27;nome&#x27;]} {studente[&#x27;cognome&#x27;]} (mat. {studente[&#x27;matricola&#x27;]})&quot;</span></code></pre>
+<p>Questo codice presenta diversi problemi concreti:</p>
+<ul>
+<li><strong>Nessuna garanzia di struttura.</strong> Nulla impedisce di creare un dizionario senza la chiave <code>"voti"</code>, e il programma si accorgerebbe dell'errore solo a runtime.</li>
+<li><strong>Le funzioni sono scollegate dai dati.</strong> <code>calcola_media</code> potrebbe ricevere per errore un dizionario che rappresenta un libro, non uno studente. Il type checker non può aiutarci.</li>
+<li><strong>Il tipo è illeggibile.</strong> Scrivere <code>dict[str, str | int | list[int]]</code> ovunque è faticoso e poco informativo. Non dice "questo è uno studente", dice solo "questo è un dizionario eterogeneo".</li>
+<li><strong>Mancanza di validazione centralizzata.</strong> Se vogliamo garantire che la matricola sia sempre un numero positivo, dobbiamo ricordarci di controllare in ogni funzione che crea o modifica studenti.</li>
+</ul>
+<p>La programmazione orientata agli oggetti (OOP, <em>Object-Oriented Programming</em>) risolve questi problemi unendo <strong>stato</strong> (i dati) e <strong>comportamento</strong> (le funzioni che operano su quei dati) in un'unica entità chiamata <em>oggetto</em>. L'oggetto "sa" quali dati contiene e "sa" cosa può fare con essi.</p>
+<hr>
+<h2>1. Già usate oggetti (senza saperlo)</h2>
+<p>Prima di imparare a creare i nostri oggetti, è importante rendersi conto che li abbiamo usati fin dalla prima lezione. In Python, <strong>tutto è un oggetto</strong>. Non è una metafora: è un fatto tecnico.</p>
+<pre><code><span class="cm"># Le stringhe sono oggetti</span>
+nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;ciao&quot;</span>
+<span class="nb">print</span>(nome.upper())       <span class="cm"># &quot;CIAO&quot; — upper() è un metodo dell&#x27;oggetto stringa</span>
+<span class="nb">print</span>(nome.replace(<span class="st">&quot;c&quot;</span>, <span class="st">&quot;C&quot;</span>))  <span class="cm"># &quot;Ciao&quot;</span>
+
+<span class="cm"># Le liste sono oggetti</span>
+voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
+voti.append(<span class="mi">27</span>)            <span class="cm"># append() è un metodo dell&#x27;oggetto lista</span>
+voti.sort()                <span class="cm"># sort() è un altro metodo</span>
+
+<span class="cm"># Anche i numeri sono oggetti</span>
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
+<span class="nb">print</span>(n.bit_length())     <span class="cm"># 6 — quanti bit servono per rappresentare 42</span>
+<span class="nb">print</span>((<span class="mi">3.14</span>).is_integer()) <span class="cm"># False</span></code></pre>
+<p>Quando scriviamo <code>nome.upper()</code>, stiamo chiedendo all'oggetto <code>nome</code> di eseguire il suo metodo <code>upper</code>. Il punto (<code>.</code>) è l'operatore che ci permette di accedere ai metodi e agli attributi di un oggetto. Questa è la sintassi fondamentale della programmazione a oggetti, e la usate da settimane.</p>
+<p>Anche i tipi stessi sono oggetti:</p>
+<pre><code><span class="nb">print</span>(<span class="nb">type</span>(<span class="mi">42</span>))        <span class="cm"># &lt;class &#x27;int&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="st">&quot;ciao&quot;</span>))    <span class="cm"># &lt;class &#x27;str&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])) <span class="cm"># &lt;class &#x27;list&#x27;&gt;</span></code></pre>
+<p>La parola <code>class</code> che compare nell'output non è casuale: ci dice che <code>int</code>, <code>str</code> e <code>list</code> sono <em>classi</em>. Ogni valore concreto (42, "ciao", [1, 2, 3]) è un'<em>istanza</em> di quella classe. Vediamo cosa significano questi termini.</p>
+<hr>
+<h2>2. Un po' di storia</h2>
+<p>La programmazione orientata agli oggetti non è nata con Python, e non è nemmeno un'idea recente. Le sue radici risalgono agli anni Sessanta.</p>
+<p><strong>Simula 67</strong> (1967), creato dai norvegesi Ole-Johan Dahl e Kristen Nygaard, è considerato il primo linguaggio orientato agli oggetti. Fu progettato per simulare sistemi complessi (code in un ufficio postale, traffico stradale, reti di telecomunicazioni). L'idea chiave era modellare ogni entità della simulazione come un oggetto autonomo, con il proprio stato interno e il proprio comportamento. Questa intuizione — rappresentare il mondo come una collezione di oggetti che interagiscono — si rivelò potentissima ben oltre il campo delle simulazioni.</p>
+<p><strong>Smalltalk</strong> (anni Settanta), sviluppato da Alan Kay e il suo gruppo allo Xerox PARC, portò l'idea alle sue conseguenze estreme: in Smalltalk <em>tutto</em> è un oggetto, perfino i numeri, i blocchi di codice e le classi stesse. Python ha ereditato questa filosofia. Alan Kay è anche l'autore di una frase celebre:</p>
+<blockquote>
+<p><em>"Il miglior modo di predire il futuro è inventarlo."</em></p>
+</blockquote>
+<p>Questa frase non riguarda solo la tecnologia: riguarda il modo di pensare. Invece di adattarsi agli strumenti esistenti, Kay e il suo gruppo inventarono strumenti nuovi — e con essi un modo completamente nuovo di progettare il software.</p>
+<p>Da Simula e Smalltalk, l'OOP si è diffusa in C++ (anni Ottanta), Java (anni Novanta) e infine in Python, che la integra in modo particolarmente elegante e pragmatico.</p>
+<hr>
+<h2>3. Classi e istanze</h2>
+<p>Una <strong>classe</strong> è un modello, uno stampo, un progetto. Descrive <em>quali</em> attributi e <em>quali</em> metodi avranno gli oggetti di quel tipo, ma non contiene dati concreti.</p>
+<p>Un'<strong>istanza</strong> (o oggetto) è una realizzazione concreta di quel modello. Contiene dati specifici e può eseguire i metodi definiti dalla classe.</p>
+<p>L'analogia più immediata: la classe è il <em>progetto architettonico</em> di una casa; l'istanza è una <em>casa costruita</em> seguendo quel progetto. Da un unico progetto posso costruire cento case, ciascuna con i propri abitanti e il proprio colore delle pareti.</p>
+<pre><code><span class="cm"># La classe è il progetto</span>
+<span class="kw">class</span> <span class="fn">Punto</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta un punto nel piano cartesiano.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.x: <span class="nb">float</span> <span class="op">=</span> x
+        self.y: <span class="nb">float</span> <span class="op">=</span> y
+
+<span class="cm"># Le istanze sono i punti concreti</span>
+origine: Punto <span class="op">=</span> Punto(<span class="mi">0.0</span>, <span class="mi">0.0</span>)
+p1: Punto <span class="op">=</span> Punto(<span class="mi">3.0</span>, <span class="mi">4.0</span>)
+p2: Punto <span class="op">=</span> Punto(<span class="op">-</span><span class="mi">1.5</span>, <span class="mi">2.7</span>)
+
+<span class="nb">print</span>(p1.x)  <span class="cm"># 3.0 — accediamo all&#x27;attributo x dell&#x27;istanza p1</span></code></pre>
+<p>Ogni istanza ha i propri valori per <code>x</code> e <code>y</code>. Modificare <code>p1.x</code> non cambia <code>p2.x</code>. Le istanze sono indipendenti.</p>
+<hr>
+<h2>4. Un esempio completo: la classe <code>Studente</code></h2>
+<p>Riprendiamo il problema iniziale e risolviamolo con una classe ben progettata.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta uno studente universitario con i suoi esami.&quot;&quot;&quot;</span>
+
+    <span class="cm"># Attributo di CLASSE: condiviso da tutte le istanze</span>
+    universita: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Università degli Studi&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, cognome: <span class="nb">str</span>, matricola: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="st">&quot;&quot;&quot;Inizializza un nuovo studente con una lista di voti vuota.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="kw">not</span> nome.strip():
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il nome non può essere vuoto&quot;</span>)
+        <span class="kw">if</span> <span class="kw">not</span> cognome.strip():
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il cognome non può essere vuoto&quot;</span>)
+        <span class="kw">if</span> matricola <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Matricola non valida: {matricola}&quot;</span>)
+
+        <span class="cm"># Attributi di ISTANZA: specifici di ogni singolo studente</span>
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome.strip()
+        self.cognome: <span class="nb">str</span> <span class="op">=</span> cognome.strip()
+        self.matricola: <span class="nb">int</span> <span class="op">=</span> matricola
+        self.voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">self</span>, voto: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="st">&quot;&quot;&quot;Aggiunge un voto alla carriera dello studente.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="kw">not</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto {voto} fuori dall&#x27;intervallo 18-30&quot;</span>)
+        self.voti.append(voto)
+
+    <span class="kw">def</span> <span class="fn">media</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Calcola la media aritmetica dei voti.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="kw">not</span> self.voti:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Nessun voto registrato&quot;</span>)
+        <span class="kw">return</span> <span class="nb">sum</span>(self.voti) <span class="op">/</span> <span class="nb">len</span>(self.voti)
+
+    <span class="kw">def</span> <span class="fn">numero_esami</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="st">&quot;&quot;&quot;Restituisce il numero di esami sostenuti.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> <span class="nb">len</span>(self.voti)
+
+    <span class="kw">def</span> <span class="fn">descrizione</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="st">&quot;&quot;&quot;Restituisce una descrizione leggibile dello studente.&quot;&quot;&quot;</span>
+        stato: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;media {self.media():.1f}&quot;</span> <span class="kw">if</span> self.voti <span class="kw">else</span> <span class="st">&quot;nessun esame&quot;</span>
+        <span class="kw">return</span> <span class="st">f&quot;{self.nome} {self.cognome} (mat. {self.matricola}) — {stato}&quot;</span></code></pre>
+<p>Usiamola:</p>
+<pre><code><span class="cm"># Creazione di istanze</span>
+anna: Studente <span class="op">=</span> Studente(<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Rossi&quot;</span>, <span class="mi">12345</span>)
+marco: Studente <span class="op">=</span> Studente(<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Bianchi&quot;</span>, <span class="mi">67890</span>)
+
+<span class="cm"># Aggiunta di voti</span>
+anna.aggiungi_voto(<span class="mi">28</span>)
+anna.aggiungi_voto(<span class="mi">30</span>)
+anna.aggiungi_voto(<span class="mi">25</span>)
+
+marco.aggiungi_voto(<span class="mi">24</span>)
+marco.aggiungi_voto(<span class="mi">27</span>)
+
+<span class="cm"># Uso dei metodi</span>
+<span class="nb">print</span>(anna.descrizione())  <span class="cm"># Anna Rossi (mat. 12345) — media 27.7</span>
+<span class="nb">print</span>(marco.media())       <span class="cm"># 25.5</span>
+<span class="nb">print</span>(anna.numero_esami()) <span class="cm"># 3</span>
+
+<span class="cm"># La validazione funziona</span>
+<span class="kw">try</span>:
+    anna.aggiungi_voto(<span class="mi">35</span>)  <span class="cm"># ValueError: Voto 35 fuori dall&#x27;intervallo 18-30</span>
+<span class="kw">except</span> <span class="nb">ValueError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(e)
+
+<span class="cm"># Anche alla creazione</span>
+<span class="kw">try</span>:
+    errore: Studente <span class="op">=</span> Studente(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Verdi&quot;</span>, <span class="mi">0</span>)  <span class="cm"># ValueError</span>
+<span class="kw">except</span> <span class="nb">ValueError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(e)</code></pre>
+<p>Confrontate questo codice con la versione procedurale dell'introduzione. I vantaggi sono evidenti:</p>
+<ul>
+<li><strong>Il tipo è chiaro.</strong> <code>anna: Studente</code> dice esattamente cosa contiene quella variabile.</li>
+<li><strong>La validazione è centralizzata.</strong> Avviene in <code><em>_init</em><em></code> e in <code>aggiungi</em>voto</code>. Non è possibile creare uno studente malformato.</li>
+<li><strong>Dati e comportamento sono uniti.</strong> <code>anna.media()</code> è più naturale di <code>calcola_media(anna)</code>.</li>
+<li><strong>Il type checker può aiutarci.</strong> Se scriviamo <code>anna.media</code> senza parentesi, l'IDE ci avvisa.</li>
+</ul>
+<hr>
+<h2>5. <code><em>_init</em>_</code> e <code>self</code>: due concetti fondamentali</h2>
+<h3><code><em>_init</em>_</code>: inizializzazione, non costruzione</h3>
+<p>Il metodo <code><em>_init</em>_</code> viene chiamato automaticamente da Python subito dopo la creazione dell'oggetto. Il suo compito è <em>inizializzare</em> l'oggetto, cioè assegnare valori iniziali ai suoi attributi.</p>
+<p>Una precisazione importante: <code><em>_init</em><em></code> <strong>non è il costruttore</strong>. Il vero costruttore in Python è <code></em><em>new</em><em></code>, che crea l'oggetto in memoria. <code></em><em>init</em>_</code> riceve l'oggetto già creato e lo <em>configura</em>. In pratica, la distinzione raramente conta, ma è bene saperlo per non usare il termine sbagliato.</p>
+<p>Quando scriviamo <code>Studente("Anna", "Rossi", 12345)</code>, Python esegue due passi:</p>
+<ol>
+<li>Crea un nuovo oggetto di tipo <code>Studente</code> (tramite <code><em>_new</em>_</code>).</li>
+<li>Chiama <code><em>_init</em>_</code> passandogli quell'oggetto come primo argomento (<code>self</code>).</li>
+</ol>
+<h3><code>self</code>: il riferimento esplicito all'istanza</h3>
+<p>In molti linguaggi (Java, C#, C++), l'istanza corrente è disponibile tramite una parola chiave implicita (<code>this</code>). Python segue una filosofia diversa, espressa dallo Zen di Python:</p>
+<blockquote>
+<p><em>"Explicit is better than implicit."</em></p>
+</blockquote>
+<p>Per questo motivo, ogni metodo di istanza riceve come primo parametro un riferimento all'oggetto su cui viene chiamato. Per convenzione universale, questo parametro si chiama <code>self</code>. Non è una parola riservata — potremmo chiamarlo <code>pippo</code> e funzionerebbe — ma usare un nome diverso da <code>self</code> è considerato un errore di stile grave.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Esempio</span>:
+    <span class="kw">def</span> <span class="fn">saluta</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Sono l&#x27;oggetto {id(self)}&quot;</span>
+
+e: Esempio <span class="op">=</span> Esempio()
+<span class="nb">print</span>(e.saluta())  <span class="cm"># Sono l&#x27;oggetto 140234567890</span>
+
+<span class="cm"># Quando chiamiamo e.saluta(), Python traduce internamente in:</span>
+<span class="cm"># Esempio.saluta(e)</span></code></pre>
+<p>L'esplicitazione di <code>self</code> ha anche un vantaggio pratico: dentro un metodo è sempre chiaro cosa è un attributo dell'oggetto (<code>self.nome</code>) e cosa è una variabile locale (<code>nome</code>).</p>
+<hr>
+<h2>6. Attributi di istanza vs attributi di classe</h2>
+<p>Esistono due tipi di attributi, ed è importante non confonderli.</p>
+<h3>Attributi di istanza</h3>
+<p>Sono definiti dentro <code><em>_init</em><em></code> (o in altri metodi) usando <code>self.nome</em>attributo</code>. Ogni istanza ha la propria copia indipendente.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Contatore</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.valore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>  <span class="cm"># Attributo di istanza</span>
+
+    <span class="kw">def</span> <span class="fn">incrementa</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.valore <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+c1: Contatore <span class="op">=</span> Contatore()
+c2: Contatore <span class="op">=</span> Contatore()
+c1.incrementa()
+c1.incrementa()
+
+<span class="nb">print</span>(c1.valore)  <span class="cm"># 2</span>
+<span class="nb">print</span>(c2.valore)  <span class="cm"># 0 — c2 è indipendente da c1</span></code></pre>
+<h3>Attributi di classe</h3>
+<p>Sono definiti nel corpo della classe, fuori da qualsiasi metodo. Sono condivisi da tutte le istanze.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
+    universita: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Università degli Studi&quot;</span>  <span class="cm"># Attributo di classe</span>
+    _contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>  <span class="cm"># Quanti studenti sono stati creati</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome       <span class="cm"># Attributo di istanza</span>
+        Studente._contatore <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>    <span class="cm"># Modifichiamo l&#x27;attributo di classe</span>
+        self.numero: <span class="nb">int</span> <span class="op">=</span> Studente._contatore
+
+s1: Studente <span class="op">=</span> Studente(<span class="st">&quot;Anna&quot;</span>)
+s2: Studente <span class="op">=</span> Studente(<span class="st">&quot;Marco&quot;</span>)
+
+<span class="nb">print</span>(s1.universita)      <span class="cm"># &quot;Università degli Studi&quot;</span>
+<span class="nb">print</span>(s2.universita)      <span class="cm"># &quot;Università degli Studi&quot; — stesso valore</span>
+<span class="nb">print</span>(Studente.universita) <span class="cm"># &quot;Università degli Studi&quot; — accessibile anche dalla classe</span>
+
+<span class="nb">print</span>(s1.numero)  <span class="cm"># 1</span>
+<span class="nb">print</span>(s2.numero)  <span class="cm"># 2</span>
+<span class="nb">print</span>(Studente._contatore)  <span class="cm"># 2</span></code></pre>
+<p>Gli attributi di classe sono utili per valori costanti condivisi (come <code>universita</code>) o per tenere traccia di informazioni globali alla classe (come il contatore). Usateli con parsimonia: nella maggior parte dei casi, gli attributi di istanza sono la scelta giusta.</p>
+<hr>
+<h2>7. Metodi speciali (dunder methods)</h2>
+<p>Python utilizza un sistema elegante di <strong>metodi speciali</strong> per definire come gli oggetti interagiscono con il linguaggio stesso. Questi metodi hanno nomi circondati da doppi underscore (<code><em>_nome</em>_</code>), per questo sono chiamati <em>dunder methods</em> (da <em>double underscore</em>).</p>
+<p>Non vengono chiamati direttamente: Python li invoca automaticamente in risposta a operatori e funzioni built-in.</p>
+<h3><code><em>_str</em><em></code> e <code></em><em>repr</em>_</code>: rappresentazione testuale</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.x: <span class="nb">float</span> <span class="op">=</span> x
+        self.y: <span class="nb">float</span> <span class="op">=</span> y
+
+p: Punto <span class="op">=</span> Punto(<span class="mi">3.0</span>, <span class="mi">4.0</span>)
+<span class="nb">print</span>(p)  <span class="cm"># &lt;__main__.Punto object at 0x...&gt; — poco utile!</span></code></pre>
+<p>Senza <code><em>_str</em>_</code>, stampare un oggetto produce un messaggio poco informativo. Definiamo le rappresentazioni:</p>
+<pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.x: <span class="nb">float</span> <span class="op">=</span> x
+        self.y: <span class="nb">float</span> <span class="op">=</span> y
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="st">&quot;&quot;&quot;Rappresentazione leggibile, per gli utenti.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> <span class="st">f&quot;({self.x}, {self.y})&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="st">&quot;&quot;&quot;Rappresentazione tecnica, per i programmatori.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> <span class="st">f&quot;Punto(x={self.x}, y={self.y})&quot;</span>
+
+p: Punto <span class="op">=</span> Punto(<span class="mi">3.0</span>, <span class="mi">4.0</span>)
+<span class="nb">print</span>(p)       <span class="cm"># (3.0, 4.0) — usa __str__</span>
+<span class="nb">print</span>(<span class="nb">repr</span>(p)) <span class="cm"># Punto(x=3.0, y=4.0) — usa __repr__</span>
+<span class="nb">print</span>([p])     <span class="cm"># [Punto(x=3.0, y=4.0)] — nelle collezioni Python usa __repr__</span></code></pre>
+<p>La regola pratica: <code><em>_str</em><em></code> deve essere leggibile per un essere umano; <code></em><em>repr</em><em></code> deve essere una stringa da cui, idealmente, si possa ricostruire l'oggetto. Se definite un solo metodo, definite <code></em><em>repr</em><em></code>: Python lo usa come fallback per <code></em><em>str</em>_</code>.</p>
+<h3><code><em>_len</em>_</code>: lunghezza</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Classe</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta una classe scolastica con i suoi studenti.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self.studenti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">self</span>, studente: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.studenti.append(studente)
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> <span class="nb">len</span>(self.studenti)
+
+prima_a: Classe <span class="op">=</span> Classe(<span class="st">&quot;1A&quot;</span>)
+prima_a.aggiungi(<span class="st">&quot;Anna&quot;</span>)
+prima_a.aggiungi(<span class="st">&quot;Marco&quot;</span>)
+prima_a.aggiungi(<span class="st">&quot;Luca&quot;</span>)
+
+<span class="nb">print</span>(<span class="nb">len</span>(prima_a))  <span class="cm"># 3 — funziona grazie a __len__</span></code></pre>
+<h3><code><em>_eq</em><em></code> e <code></em><em>lt</em>_</code>: confronti</h3>
+<p>Per default, due oggetti sono uguali solo se sono lo <em>stesso</em> oggetto in memoria. Spesso vogliamo un comportamento diverso:</p>
+<pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.x: <span class="nb">float</span> <span class="op">=</span> x
+        self.y: <span class="nb">float</span> <span class="op">=</span> y
+
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="fn">self</span>, altro: <span class="nb">object</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(altro, Punto):
+            <span class="kw">return</span> NotImplemented
+        <span class="kw">return</span> self.x <span class="op">=</span><span class="op">=</span> altro.x <span class="kw">and</span> self.y <span class="op">=</span><span class="op">=</span> altro.y
+
+    <span class="kw">def</span> <span class="fn">__lt__</span>(<span class="fn">self</span>, altro: <span class="st">&quot;Punto&quot;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="st">&quot;&quot;&quot;Ordina per distanza dall&#x27;origine.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> (self.x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> self.y <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>) <span class="op">&lt;</span> (altro.x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> altro.y <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Punto({self.x}, {self.y})&quot;</span>
+
+p1: Punto <span class="op">=</span> Punto(<span class="mi">3.0</span>, <span class="mi">4.0</span>)
+p2: Punto <span class="op">=</span> Punto(<span class="mi">3.0</span>, <span class="mi">4.0</span>)
+p3: Punto <span class="op">=</span> Punto(<span class="mi">1.0</span>, <span class="mi">1.0</span>)
+
+<span class="nb">print</span>(p1 <span class="op">=</span><span class="op">=</span> p2)  <span class="cm"># True — stesse coordinate</span>
+<span class="nb">print</span>(p1 <span class="kw">is</span> p2)  <span class="cm"># False — oggetti diversi in memoria</span>
+
+<span class="cm"># Con __lt__ definito, possiamo anche ordinare</span>
+punti: <span class="nb">list</span>[Punto] <span class="op">=</span> [p1, p3]
+punti.sort()
+<span class="nb">print</span>(punti)  <span class="cm"># [Punto(1.0, 1.0), Punto(3.0, 4.0)]</span></code></pre>
+<p>Notate il pattern in <code><em>_eq</em>_</code>: controlliamo che <code>altro</code> sia effettivamente un <code>Punto</code> con <code>isinstance</code>, e restituiamo <code>NotImplemented</code> (non <code>NotImplementedError</code>) se non lo è. Questo permette a Python di provare il confronto nell'altro senso.</p>
+<h3><code><em>_getitem</em>_</code>: accesso con indice</h3>
+<pre><code><span class="kw">class</span> <span class="fn">SerieStorica</span>:
+    <span class="st">&quot;&quot;&quot;Una serie di valori indicizzati nel tempo.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, valori: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.valori: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> valori
+
+    <span class="kw">def</span> <span class="fn">__getitem__</span>(<span class="fn">self</span>, indice: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> self.valori[indice]
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> <span class="nb">len</span>(self.valori)
+
+serie: SerieStorica <span class="op">=</span> SerieStorica([<span class="mi">100.0</span>, <span class="mi">102.5</span>, <span class="mi">98.3</span>, <span class="mi">105.1</span>])
+<span class="nb">print</span>(serie[<span class="mi">0</span>])   <span class="cm"># 100.0 — usa __getitem__</span>
+<span class="nb">print</span>(serie[<span class="op">-</span><span class="mi">1</span>])  <span class="cm"># 105.1</span>
+<span class="nb">print</span>(<span class="nb">len</span>(serie)) <span class="cm"># 4</span></code></pre>
+<h3>Riepilogo dei metodi speciali più comuni</h3>
+<table>
+<thead><tr>
+<th>Metodo</th>
+<th>Invocato da</th>
+<th>Scopo</th>
+</tr></thead><tbody>
+<tr>
+<td><code><em>_init</em>_</code></td>
+<td><code>Classe(...)</code></td>
+<td>Inizializzazione</td>
+</tr>
+<tr>
+<td><code><em>_str</em>_</code></td>
+<td><code>str(obj)</code>, <code>print(obj)</code></td>
+<td>Rappresentazione leggibile</td>
+</tr>
+<tr>
+<td><code><em>_repr</em>_</code></td>
+<td><code>repr(obj)</code>, nel REPL</td>
+<td>Rappresentazione tecnica</td>
+</tr>
+<tr>
+<td><code><em>_len</em>_</code></td>
+<td><code>len(obj)</code></td>
+<td>Lunghezza</td>
+</tr>
+<tr>
+<td><code><em>_eq</em>_</code></td>
+<td><code>obj1 == obj2</code></td>
+<td>Uguaglianza</td>
+</tr>
+<tr>
+<td><code><em>_lt</em>_</code></td>
+<td><code>obj1 < obj2</code>, <code>sorted()</code></td>
+<td>Confronto "minore di"</td>
+</tr>
+<tr>
+<td><code><em>_getitem</em>_</code></td>
+<td><code>obj[i]</code></td>
+<td>Accesso per indice</td>
+</tr>
+<tr>
+<td><code><em>_contains</em>_</code></td>
+<td><code>x in obj</code></td>
+<td>Appartenenza</td>
+</tr>
+<tr>
+<td><code><em>_add</em>_</code></td>
+<td><code>obj1 + obj2</code></td>
+<td>Somma</td>
+</tr>
+<tr>
+<td><code><em>_bool</em>_</code></td>
+<td><code>if obj:</code></td>
+<td>Valore di verità</td>
+</tr>
+</tbody></table>
+<p>Questa è una delle caratteristiche più potenti di Python: definendo pochi metodi speciali, i nostri oggetti si integrano perfettamente con la sintassi del linguaggio. <code>len()</code>, <code>print()</code>, <code>sorted()</code>, gli operatori <code>==</code>, <code><</code>, <code>+</code>, l'accesso con <code>[]</code> — funzionano tutti con oggetti personalizzati, esattamente come con i tipi built-in.</p>
+<hr>
+<h2>8. Ereditarietà</h2>
+<p>L'<strong>ereditarietà</strong> permette di creare una nuova classe basata su una classe esistente. La nuova classe (chiamata <em>sottoclasse</em> o <em>classe figlia</em>) eredita tutti gli attributi e i metodi della classe originale (la <em>superclasse</em> o <em>classe madre</em>), e può aggiungerne di nuovi o modificare quelli ereditati.</p>
+<h3>La relazione "è un"</h3>
+<p>L'ereditarietà modella la relazione <strong>"è un"</strong> (<em>is-a</em>). Uno <code>StudenteLavoratore</code> <em>è uno</em> <code>Studente</code>, con qualche caratteristica in più. Un <code>Cerchio</code> <em>è una</em> <code>Forma</code>. Un <code>Gatto</code> <em>è un</em> <code>Animale</code>.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
+    <span class="st">&quot;&quot;&quot;Studente universitario.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, cognome: <span class="nb">str</span>, matricola: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self.cognome: <span class="nb">str</span> <span class="op">=</span> cognome
+        self.matricola: <span class="nb">int</span> <span class="op">=</span> matricola
+        self.voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">self</span>, voto: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto {voto} fuori dall&#x27;intervallo 18-30&quot;</span>)
+        self.voti.append(voto)
+
+    <span class="kw">def</span> <span class="fn">media</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">if</span> <span class="kw">not</span> self.voti:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Nessun voto registrato&quot;</span>)
+        <span class="kw">return</span> <span class="nb">sum</span>(self.voti) <span class="op">/</span> <span class="nb">len</span>(self.voti)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;{self.nome} {self.cognome} (mat. {self.matricola})&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Studente({self.nome!r}, {self.cognome!r}, {self.matricola})&quot;</span>
+
+
+<span class="kw">class</span> <span class="fn">StudenteLavoratore</span>(<span class="fn">Studente</span>):
+    <span class="st">&quot;&quot;&quot;Studente che lavora part-time. È uno Studente con attributi aggiuntivi.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, cognome: <span class="nb">str</span>, matricola: <span class="nb">int</span>,
+                 azienda: <span class="nb">str</span>, ore_settimanali: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="cm"># super() chiama il __init__ della classe madre</span>
+        <span class="nb">super</span>().__init__(nome, cognome, matricola)
+        self.azienda: <span class="nb">str</span> <span class="op">=</span> azienda
+        self.ore_settimanali: <span class="nb">int</span> <span class="op">=</span> ore_settimanali
+
+    <span class="kw">def</span> <span class="fn">è_part_time</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="st">&quot;&quot;&quot;Un lavoratore è part-time se lavora meno di 20 ore a settimana.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> self.ore_settimanali <span class="op">&lt;</span> <span class="mi">20</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        base: <span class="nb">str</span> <span class="op">=</span> <span class="nb">super</span>().__str__()
+        <span class="kw">return</span> <span class="st">f&quot;{base} — lavora presso {self.azienda} ({self.ore_settimanali}h/sett.)&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> (<span class="st">f&quot;StudenteLavoratore({self.nome!r}, {self.cognome!r}, &quot;</span>
+                <span class="st">f&quot;{self.matricola}, {self.azienda!r}, {self.ore_settimanali})&quot;</span>)</code></pre>
+<p>Usiamo la sottoclasse:</p>
+<pre><code>sl: StudenteLavoratore <span class="op">=</span> StudenteLavoratore(
+    <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;Verdi&quot;</span>, <span class="mi">11111</span>, <span class="st">&quot;DataCorp&quot;</span>, <span class="mi">16</span>
+)
+
+<span class="cm"># Metodi ereditati da Studente</span>
+sl.aggiungi_voto(<span class="mi">28</span>)
+sl.aggiungi_voto(<span class="mi">30</span>)
+<span class="nb">print</span>(sl.media())       <span class="cm"># 29.0</span>
+
+<span class="cm"># Metodi propri di StudenteLavoratore</span>
+<span class="nb">print</span>(sl.è_part_time()) <span class="cm"># True</span>
+
+<span class="cm"># __str__ ridefinito</span>
+<span class="nb">print</span>(sl)  <span class="cm"># Giulia Verdi (mat. 11111) — lavora presso DataCorp (16h/sett.)</span>
+
+<span class="cm"># isinstance funziona con l&#x27;ereditarietà</span>
+<span class="nb">print</span>(<span class="nb">isinstance</span>(sl, StudenteLavoratore))  <span class="cm"># True</span>
+<span class="nb">print</span>(<span class="nb">isinstance</span>(sl, Studente))            <span class="cm"># True — è anche uno Studente</span></code></pre>
+<h3><code>super()</code>: chiamare la classe madre</h3>
+<p>La funzione <code>super()</code> restituisce un riferimento alla superclasse. Si usa tipicamente in <code><em>_init</em>_</code> per non duplicare il codice di inizializzazione, e nei metodi ridefiniti per estendere (anziché sostituire) il comportamento originale.</p>
+<h3>"È un" vs "ha un": preferire la composizione</h3>
+<p>Non tutte le relazioni tra classi sono relazioni "è un". Spesso la relazione corretta è <strong>"ha un"</strong> (<em>has-a</em>), e in quel caso si usa la <strong>composizione</strong>: un oggetto contiene un altro oggetto come attributo.</p>
+<pre><code><span class="cm"># SBAGLIATO: un Dipartimento NON è una lista di docenti</span>
+<span class="kw">class</span> <span class="fn">Dipartimento</span>(<span class="nb">list</span>):  <span class="cm"># Non fate questo!</span>
+    <span class="kw">pass</span>
+
+<span class="cm"># CORRETTO: un Dipartimento HA una lista di docenti</span>
+<span class="kw">class</span> <span class="fn">Docente</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, settore: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self.settore: <span class="nb">str</span> <span class="op">=</span> settore
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Docente({self.nome!r}, {self.settore!r})&quot;</span>
+
+<span class="kw">class</span> <span class="fn">Dipartimento</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self.docenti: <span class="nb">list</span>[Docente] <span class="op">=</span> []  <span class="cm"># Composizione: HA dei docenti</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi_docente</span>(<span class="fn">self</span>, docente: Docente) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.docenti.append(docente)
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> <span class="nb">len</span>(self.docenti)</code></pre>
+<p>Una regola pratica molto citata nel mondo della programmazione:</p>
+<blockquote>
+<p><em>Preferire la composizione all'ereditarietà.</em></p>
+</blockquote>
+<p>L'ereditarietà crea un accoppiamento forte tra le classi: ogni modifica alla classe madre si ripercuote su tutte le figlie. La composizione è più flessibile. Usate l'ereditarietà quando la relazione "è un" è genuina e stabile; usate la composizione in tutti gli altri casi.</p>
+<hr>
+<h2>9. Incapsulamento e <code>@property</code></h2>
+<h3>La convenzione dell'underscore</h3>
+<p>In Python non esistono veri attributi "privati" come in Java o C++. La protezione si basa su una <strong>convenzione</strong>: un attributo il cui nome inizia con un singolo underscore (<code>_</code>) è considerato <em>interno</em>, cioè non destinato all'uso esterno. Non è un divieto tecnico — è un accordo tra programmatori.</p>
+<pre><code><span class="kw">class</span> <span class="fn">ContoBancario</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, titolare: <span class="nb">str</span>, saldo_iniziale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.titolare: <span class="nb">str</span> <span class="op">=</span> titolare
+        self._saldo: <span class="nb">float</span> <span class="op">=</span> saldo_iniziale  <span class="cm"># Convenzione: uso interno</span>
+
+    <span class="kw">def</span> <span class="fn">deposita</span>(<span class="fn">self</span>, importo: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> importo <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;L&#x27;importo deve essere positivo&quot;</span>)
+        self._saldo <span class="op">+</span><span class="op">=</span> importo
+
+    <span class="kw">def</span> <span class="fn">preleva</span>(<span class="fn">self</span>, importo: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> importo <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;L&#x27;importo deve essere positivo&quot;</span>)
+        <span class="kw">if</span> importo <span class="op">&gt;</span> self._saldo:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Saldo insufficiente&quot;</span>)
+        self._saldo <span class="op">-</span><span class="op">=</span> importo
+
+    <span class="kw">def</span> <span class="fn">get_saldo</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> self._saldo</code></pre>
+<p>L'underscore dice: "non accedere direttamente a <code><em>saldo</code> da fuori la classe; usa i metodi <code>deposita</code>, <code>preleva</code> e <code>get</em>saldo</code>". Chi lo fa comunque non riceve un errore tecnico, ma viola il contratto implicito e rischia che il codice si rompa in futuro.</p>
+<h3>Il decoratore <code>@property</code></h3>
+<p>Python offre un modo più elegante per controllare l'accesso agli attributi: il decoratore <code>@property</code>. Permette di definire metodi che si usano <em>come se fossero attributi</em>.</p>
+<pre><code><span class="kw">class</span> <span class="fn">ContoBancario</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, titolare: <span class="nb">str</span>, saldo_iniziale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.titolare: <span class="nb">str</span> <span class="op">=</span> titolare
+        self._saldo: <span class="nb">float</span> <span class="op">=</span> saldo_iniziale
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">saldo</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Il saldo corrente (sola lettura).&quot;&quot;&quot;</span>
+        <span class="kw">return</span> self._saldo
+
+    <span class="kw">def</span> <span class="fn">deposita</span>(<span class="fn">self</span>, importo: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> importo <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;L&#x27;importo deve essere positivo&quot;</span>)
+        self._saldo <span class="op">+</span><span class="op">=</span> importo
+
+    <span class="kw">def</span> <span class="fn">preleva</span>(<span class="fn">self</span>, importo: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> importo <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;L&#x27;importo deve essere positivo&quot;</span>)
+        <span class="kw">if</span> importo <span class="op">&gt;</span> self._saldo:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Saldo insufficiente&quot;</span>)
+        self._saldo <span class="op">-</span><span class="op">=</span> importo
+
+conto: ContoBancario <span class="op">=</span> ContoBancario(<span class="st">&quot;Anna Rossi&quot;</span>, <span class="mi">1000.0</span>)
+<span class="nb">print</span>(conto.saldo)   <span class="cm"># 1000.0 — sembra un attributo, ma è un metodo</span>
+conto.deposita(<span class="mi">500</span>)
+<span class="nb">print</span>(conto.saldo)   <span class="cm"># 1500.0</span>
+
+<span class="cm"># Tentare di assegnare direttamente produce un errore</span>
+<span class="cm"># conto.saldo = 9999  # AttributeError: property &#x27;saldo&#x27; has no setter</span></code></pre>
+<p>Il vantaggio di <code>@property</code> è che il codice esterno non deve cambiare se in futuro decidiamo di aggiungere logica all'accesso (ad esempio, arrotondare il saldo, registrare ogni lettura in un log, o convertire la valuta). L'interfaccia resta <code>conto.saldo</code>.</p>
+<hr>
+<h2>10. Collegamento con il mondo dei dati</h2>
+<p>Se studiate Scienze Statistiche, vi chiederete: "a cosa mi serve tutto questo nella pratica?" La risposta è: lo state già usando.</p>
+<h3>pandas DataFrame</h3>
+<p>Un <code>DataFrame</code> di pandas è un oggetto. Quando scrivete:</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({<span class="st">&quot;età&quot;</span>: [<span class="mi">22</span>, <span class="mi">25</span>, <span class="mi">21</span>], <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]})
+<span class="nb">print</span>(df.shape)       <span class="cm"># (3, 2) — attributo</span>
+<span class="nb">print</span>(df.describe())  <span class="cm"># metodo</span>
+<span class="nb">print</span>(df[<span class="st">&quot;età&quot;</span>])       <span class="cm"># __getitem__</span>
+<span class="nb">print</span>(<span class="nb">len</span>(df))         <span class="cm"># __len__</span></code></pre>
+<p>State usando esattamente i concetti di questa lezione: attributi (<code>shape</code>), metodi (<code>describe()</code>), metodi speciali (<code><em>_getitem</em><em></code> per l'accesso con <code>[]</code>, <code></em><em>len</em>_</code> per <code>len()</code>).</p>
+<h3>Modelli scikit-learn</h3>
+<p>Anche i modelli di machine learning sono oggetti con un'interfaccia comune:</p>
+<pre><code><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+modello: LinearRegression <span class="op">=</span> LinearRegression()  <span class="cm"># Istanza</span>
+X: np.ndarray <span class="op">=</span> np.array([[<span class="mi">1</span>], [<span class="mi">2</span>], [<span class="mi">3</span>], [<span class="mi">4</span>]])
+y: np.ndarray <span class="op">=</span> np.array([<span class="mi">2.1</span>, <span class="mi">3.9</span>, <span class="mi">6.2</span>, <span class="mi">7.8</span>])
+
+modello.fit(X, y)                    <span class="cm"># Metodo: addestra il modello</span>
+previsioni: np.ndarray <span class="op">=</span> modello.predict(X)  <span class="cm"># Metodo: genera previsioni</span>
+<span class="nb">print</span>(modello.coef_)                 <span class="cm"># Attributo: coefficienti stimati</span>
+<span class="nb">print</span>(modello.intercept_)            <span class="cm"># Attributo: intercetta</span></code></pre>
+<p>La bellezza di questo design è la <strong>consistenza</strong>: tutti i modelli di scikit-learn (regressione lineare, alberi decisionali, reti neurali) seguono la stessa interfaccia <code>.fit()</code> / <code>.predict()</code>. Questo è possibile proprio grazie alla programmazione a oggetti e all'ereditarietà: tutti i modelli ereditano da classi base comuni.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Qual è la differenza tra una classe e un'istanza? Fate un'analogia con un esempio della vita quotidiana diverso da quelli visti a lezione.</li>
+</ol>
+<ol>
+<li>Perché <code><em>_init</em><em></code> si chiama "inizializzatore" e non "costruttore"? Cosa succede prima che <code></em><em>init</em>_</code> venga eseguito?</li>
+</ol>
+<ol>
+<li>Spiegate il ruolo di <code>self</code> nei metodi di istanza. Perché Python richiede che sia esplicito, a differenza di altri linguaggi?</li>
+</ol>
+<ol>
+<li>Qual è la differenza tra un attributo di istanza e un attributo di classe? In quale situazione usereste un attributo di classe?</li>
+</ol>
+<ol>
+<li>Spiegate la differenza tra <code><em>_str</em><em></code> e <code></em><em>repr</em>_</code>. Se poteste definire un solo metodo tra i due, quale scegliereste e perché?</li>
+</ol>
+<ol>
+<li>Cosa significa la regola "preferire la composizione all'ereditarietà"? Fate un esempio di una relazione tra classi che dovrebbe usare la composizione e non l'ereditarietà.</li>
+</ol>
+<ol>
+<li>Perché in Python gli attributi "privati" usano una semplice convenzione (l'underscore) invece di un meccanismo di protezione reale? Quale principio dello Zen di Python giustifica questa scelta?</li>
+</ol>
+<ol>
+<li>Quando scriviamo <code>len(df)</code> su un DataFrame di pandas, quale metodo speciale viene invocato? E quando scriviamo <code>df["colonna"]</code>?</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<p><strong>Esercizio 1 — Rettangolo</strong></p>
+<p>Scrivete una classe <code>Rettangolo</code> con attributi <code>larghezza: float</code> e <code>altezza: float</code> (entrambi devono essere positivi, altrimenti <code>ValueError</code>). Implementate i metodi <code>area() -> float</code>, <code>perimetro() -> float</code> e <code><em>_str</em>_</code> (che deve restituire qualcosa come <code>"Rettangolo 5.0 × 3.0"</code>). Usate sempre i type hints.</p>
+<p><strong>Esercizio 2 — Contatore con limiti</strong></p>
+<p>Scrivete una classe <code>Contatore</code> con un attributo <code><em>valore: int</code> inizializzato a zero e un attributo <code>massimo: int</code> passato al costruttore. Implementate i metodi <code>incrementa() -> None</code> (che alza un <code>ValueError</code> se il contatore ha raggiunto il massimo), <code>reset() -> None</code> (che riporta il valore a zero) e una <code>@property</code> chiamata <code>valore</code> che restituisce il valore corrente in sola lettura. Implementate anche <code></em><em>str</em><em></code> e <code></em><em>repr</em>_</code>.</p>
+<p><strong>Esercizio 3 — Dado</strong></p>
+<p>Scrivete una classe <code>Dado</code> con un attributo <code>facce: int</code> (default 6). Implementate un metodo <code>lancia() -> int</code> che restituisce un valore casuale tra 1 e <code>facce</code> (usate <code>random.randint</code>). Aggiungete un attributo <code><em>storico: list[int]</code> che tiene traccia di tutti i lanci e un metodo <code>media</em>lanci() -> float</code> che restituisce la media dei lanci effettuati.</p>
+<h3>Intermedio</h3>
+<p><strong>Esercizio 4 — Registro esami</strong></p>
+<p>Scrivete una classe <code>Esame</code> con attributi <code>materia: str</code>, <code>voto: int</code> e <code>data: str</code>. Poi scrivete una classe <code>RegistroEsami</code> che contiene una lista di esami e implementa:</p>
+<ul>
+<li><code>aggiungi(esame: Esame) -> None</code> con validazione del voto.</li>
+<li><code>media() -> float</code> che calcola la media dei voti.</li>
+<li><code><em>_len</em>_</code> che restituisce il numero di esami.</li>
+<li><code><em>_getitem</em>_</code> che permette di accedere agli esami per indice.</li>
+<li><code>migliore() -> Esame</code> che restituisce l'esame con il voto più alto. Implementate <code><em>_lt</em>_</code> su <code>Esame</code> per poter usare <code>max()</code>.</li>
+</ul>
+<p><strong>Esercizio 5 — Statistiche descrittive</strong></p>
+<p>Scrivete una classe <code>CampioneStatistico</code> che riceve una lista di <code>float</code> nel costruttore (deve contenere almeno un elemento). Implementate come <code>@property</code>: <code>media</code>, <code>varianza</code> (della popolazione), <code>deviazione<em>standard</code>. Implementate <code></em><em>len</em><em></code>, <code></em><em>getitem</em><em></code>, <code></em><em>str</em><em></code> (che stampa <code>"Campione(n=10, media=5.32, std=1.41)"</code>) e <code></em><em>eq</em>_</code> (due campioni sono uguali se contengono gli stessi valori nello stesso ordine).</p>
+<h3>Avanzato</h3>
+<p><strong>Esercizio 6 — Matrice semplice</strong></p>
+<p>Scrivete una classe <code>Matrice</code> che rappresenta una matrice di numeri reali. Il costruttore riceve una lista di liste di <code>float</code> e verifica che tutte le righe abbiano la stessa lunghezza. Implementate:</p>
+<ul>
+<li><code>righe</code> e <code>colonne</code> come <code>@property</code>.</li>
+<li><code><em>_getitem</em>_</code> che accetta una tupla <code>(riga, colonna)</code> e restituisce l'elemento.</li>
+<li><code><em>_add</em>_</code> per la somma tra matrici (stesse dimensioni, altrimenti <code>ValueError</code>).</li>
+<li><code><em>_str</em>_</code> per una rappresentazione leggibile.</li>
+<li>Un metodo <code>trasposta() -> "Matrice"</code> che restituisce una nuova matrice trasposta.</li>
+</ul>
+<p><strong>Esercizio 7 — Gerarchia di forme</strong></p>
+<p>Create una classe base <code>Forma</code> con un metodo astratto (basta alzare <code>NotImplementedError</code>) <code>area() -> float</code> e un metodo <code>descrizione() -> str</code> che restituisce <code>"Forma con area X.XX"</code>. Derivate le classi <code>Cerchio</code> (attributo <code>raggio</code>), <code>Rettangolo</code> (attributi <code>larghezza</code> e <code>altezza</code>) e <code>Quadrato</code> che eredita da <code>Rettangolo</code> (un quadrato <em>è un</em> rettangolo con lato uguale). Ogni sottoclasse implementa <code>area()</code> e <code><em>_repr</em><em></code>. Scrivete una funzione <code>area</em>totale(forme: list[Forma]) -> float</code> che somma le aree di una lista di forme qualsiasi.</p>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>La programmazione orientata agli oggetti è, prima di tutto, uno strumento per <em>organizzare il pensiero</em>. Quando rappresentiamo un concetto come una classe, siamo costretti a rispondere a domande precise: quali dati lo definiscono? Quali operazioni ha senso compiere su di esso? Quali garanzie devono valere sempre? Queste domande rendono il codice più chiaro, più robusto e più facile da estendere.</p>
+<p>Non tutto deve essere una classe. Python è un linguaggio <em>multi-paradigma</em>: potete mescolare funzioni, classi e moduli a seconda di ciò che serve. Una regola semplice: se avete dati e comportamento che vanno insieme, una classe è probabilmente la scelta giusta; se avete una funzione che non ha bisogno di stato, lasciatela come funzione.</p>
+<p>I concetti fondamentali da portare con sé:</p>
+<ol>
+<li><strong>Classe = modello, istanza = oggetto concreto.</strong> La classe definisce la struttura; le istanze contengono i dati.</li>
+<li><strong><code>self</code> è esplicito.</strong> Ogni metodo riceve il riferimento all'istanza come primo argomento.</li>
+<li><strong>I metodi speciali integrano i vostri oggetti nel linguaggio.</strong> Definite <code><em>_str</em><em></code>, <code></em><em>repr</em><em></code>, <code></em><em>len</em><em></code>, <code></em><em>eq</em>_</code> per rendere i vostri oggetti cittadini di prima classe in Python.</li>
+<li><strong>Preferite la composizione all'ereditarietà.</strong> Usate l'ereditarietà per le vere relazioni "è un"; usate la composizione per le relazioni "ha un".</li>
+<li><strong>Tutto in Python è un oggetto.</strong> Le stringhe, le liste, i DataFrame, i modelli di machine learning — tutto segue gli stessi principi che avete imparato oggi.</li>
+</ol>
+<p>Nelle prossime lezioni vedremo come questi concetti si applicano nella pratica dell'analisi dei dati, dove librerie come pandas e scikit-learn sfruttano intensamente la programmazione a oggetti per offrire interfacce potenti e coerenti.</p>
+<nav class="bottom-nav"><span><a href="F15_file_dati_errori.html">← F15</a></span><span><a href="../../index.html">Home</a></span><span><a href="F17_numpy_pandas_visualizzazione.html">F17 →</a></span></nav>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strutture Dati — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a></nav>
+<h1>Strutture Dati</h1>
+
+<h1>Strutture Dati a Confronto</h1>
+<p>Scheda di riferimento rapido: Lista vs Tupla vs Dizionario vs Set.</p>
+<hr>
+<h2>Tabella di confronto generale</h2>
+<table>
+<thead><tr>
+<th>Caratteristica</th>
+<th>Lista <code>list</code></th>
+<th>Tupla <code>tuple</code></th>
+<th>Dizionario <code>dict</code></th>
+<th>Set <code>set</code></th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Sintassi</strong></td>
+<td><code>[1, 2, 3]</code></td>
+<td><code>(1, 2, 3)</code></td>
+<td><code>{"a": 1, "b": 2}</code></td>
+<td><code>{1, 2, 3}</code></td>
+</tr>
+<tr>
+<td><strong>Vuota</strong></td>
+<td><code>[]</code> o <code>list()</code></td>
+<td><code>()</code> o <code>tuple()</code></td>
+<td><code>{}</code> o <code>dict()</code></td>
+<td><code>set()</code>  (NON <code>{}</code>)</td>
+</tr>
+<tr>
+<td><strong>Mutabile?</strong></td>
+<td>Si</td>
+<td>No</td>
+<td>Si</td>
+<td>Si</td>
+</tr>
+<tr>
+<td><strong>Ordinata?</strong></td>
+<td>Si (per indice)</td>
+<td>Si (per indice)</td>
+<td>Si (ordine inserimento 3.7+)</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Duplicati?</strong></td>
+<td>Si</td>
+<td>Si</td>
+<td>Chiavi uniche</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Indicizzabile?</strong></td>
+<td>Si <code>l[0]</code></td>
+<td>Si <code>t[0]</code></td>
+<td>Per chiave <code>d["a"]</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Slicing?</strong></td>
+<td>Si <code>l[1:3]</code></td>
+<td>Si <code>t[1:3]</code></td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Hashable?</strong></td>
+<td>No</td>
+<td>Si (se contenuto lo e')</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Uso tipico</strong></td>
+<td>Collezione modificabile</td>
+<td>Dati fissi, chiavi dict</td>
+<td>Associazioni chiave-valore</td>
+<td>Elementi unici, insiemi</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Complessita' temporale (Big-O) delle operazioni principali</h2>
+<table>
+<thead><tr>
+<th>Operazione</th>
+<th>Lista</th>
+<th>Tupla</th>
+<th>Dizionario</th>
+<th>Set</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Accesso per indice</strong></td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>--</td>
+<td>--</td>
+</tr>
+<tr>
+<td><strong>Accesso per chiave</strong></td>
+<td>--</td>
+<td>--</td>
+<td>O(1) medio</td>
+<td>--</td>
+</tr>
+<tr>
+<td><strong>Ricerca (<code>in</code>)</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1) medio</td>
+<td>O(1) medio</td>
+</tr>
+<tr>
+<td><strong>Inserimento</strong></td>
+<td>O(1) append, O(n) insert</td>
+<td>--</td>
+<td>O(1) medio</td>
+<td>O(1) medio</td>
+</tr>
+<tr>
+<td><strong>Cancellazione</strong></td>
+<td>O(n)</td>
+<td>--</td>
+<td>O(1) medio</td>
+<td>O(1) medio</td>
+</tr>
+<tr>
+<td><strong>Iterazione</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td><strong>len()</strong></td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Nota:</strong> "medio" indica il caso medio; nel caso peggiore (collisioni hash) puo' essere O(n).</p>
+</blockquote>
+<hr>
+<h2>Operazioni principali per struttura</h2>
+<h3>Lista</h3>
+<pre><code>frutti <span class="op">=</span> [<span class="st">&quot;mela&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;ciliegia&quot;</span>]
+
+frutti.append(<span class="st">&quot;arancia&quot;</span>)        <span class="cm"># aggiunge in fondo</span>
+frutti.insert(<span class="mi">1</span>, <span class="st">&quot;kiwi&quot;</span>)        <span class="cm"># inserisce alla posizione 1</span>
+frutti.remove(<span class="st">&quot;banana&quot;</span>)         <span class="cm"># rimuove per valore</span>
+ultimo <span class="op">=</span> frutti.pop()           <span class="cm"># rimuove e restituisce l&#x27;ultimo</span>
+frutti.sort()                   <span class="cm"># ordina in-place</span>
+frutti.reverse()                <span class="cm"># inverte in-place</span>
+copia <span class="op">=</span> frutti.copy()           <span class="cm"># copia superficiale</span>
+indice <span class="op">=</span> frutti.index(<span class="st">&quot;mela&quot;</span>)  <span class="cm"># trova indice del valore</span>
+quante <span class="op">=</span> frutti.count(<span class="st">&quot;mela&quot;</span>)  <span class="cm"># conta occorrenze</span>
+frutti.extend([<span class="st">&quot;uva&quot;</span>, <span class="st">&quot;pera&quot;</span>]) <span class="cm"># aggiunge piu&#x27; elementi</span></code></pre>
+<h3>Tupla</h3>
+<pre><code>coordinate <span class="op">=</span> (<span class="mi">45.07</span>, <span class="mi">7.69</span>)
+
+x, y <span class="op">=</span> coordinate               <span class="cm"># unpacking</span>
+primo <span class="op">=</span> coordinate[<span class="mi">0</span>]            <span class="cm"># accesso per indice</span>
+sotto <span class="op">=</span> coordinate[<span class="mi">0</span>:<span class="mi">1</span>]          <span class="cm"># slicing -&gt; (45.07,)</span>
+indice <span class="op">=</span> coordinate.index(<span class="mi">7.69</span>)  <span class="cm"># trova indice</span>
+quante <span class="op">=</span> coordinate.count(<span class="mi">7.69</span>)  <span class="cm"># conta occorrenze</span>
+lunghezza <span class="op">=</span> <span class="nb">len</span>(coordinate)      <span class="cm"># numero di elementi</span>
+
+<span class="cm"># Tupla con un solo elemento: serve la virgola!</span>
+singola <span class="op">=</span> (<span class="mi">42</span>,)</code></pre>
+<h3>Dizionario</h3>
+<pre><code>studente <span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;eta&quot;</span>: <span class="mi">20</span>, <span class="st">&quot;media&quot;</span>: <span class="mi">27.5</span>}
+
+studente[<span class="st">&quot;corso&quot;</span>] <span class="op">=</span> <span class="st">&quot;Statistica&quot;</span>    <span class="cm"># aggiunge/modifica</span>
+nome <span class="op">=</span> studente[<span class="st">&quot;nome&quot;</span>]             <span class="cm"># accesso (KeyError se assente)</span>
+nome <span class="op">=</span> studente.get(<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;?&quot;</span>)    <span class="cm"># accesso sicuro con default</span>
+<span class="kw">del</span> studente[<span class="st">&quot;eta&quot;</span>]                 <span class="cm"># cancella chiave</span>
+eta <span class="op">=</span> studente.pop(<span class="st">&quot;eta&quot;</span>, <span class="kw">None</span>)     <span class="cm"># rimuove e restituisce</span>
+
+chiavi <span class="op">=</span> studente.keys()            <span class="cm"># vista sulle chiavi</span>
+valori <span class="op">=</span> studente.values()          <span class="cm"># vista sui valori</span>
+coppie <span class="op">=</span> studente.items()           <span class="cm"># vista (chiave, valore)</span>
+
+studente.update({<span class="st">&quot;media&quot;</span>: <span class="mi">28</span>})      <span class="cm"># aggiorna da altro dict</span>
+esiste <span class="op">=</span> <span class="st">&quot;nome&quot;</span> <span class="kw">in</span> studente         <span class="cm"># True - cerca tra le CHIAVI</span></code></pre>
+<h3>Set</h3>
+<pre><code>numeri <span class="op">=</span> {<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>}
+pari <span class="op">=</span> {<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>}
+
+numeri.add(<span class="mi">6</span>)                       <span class="cm"># aggiunge un elemento</span>
+numeri.discard(<span class="mi">99</span>)                  <span class="cm"># rimuove (nessun errore se assente)</span>
+numeri.remove(<span class="mi">1</span>)                    <span class="cm"># rimuove (KeyError se assente)</span>
+
+<span class="cm"># Operazioni insiemistiche</span>
+unione       <span class="op">=</span> numeri <span class="op">|</span> pari        <span class="cm"># oppure numeri.union(pari)</span>
+intersezione <span class="op">=</span> numeri <span class="op">&amp;</span> pari        <span class="cm"># oppure numeri.intersection(pari)</span>
+differenza   <span class="op">=</span> numeri <span class="op">-</span> pari        <span class="cm"># oppure numeri.difference(pari)</span>
+simmetrica   <span class="op">=</span> numeri <span class="op">^</span> pari        <span class="cm"># oppure numeri.symmetric_difference(pari)</span>
+
+sottoinsieme <span class="op">=</span> {<span class="mi">2</span>, <span class="mi">4</span>} <span class="op">&lt;</span><span class="op">=</span> pari      <span class="cm"># True - sottoinsieme</span></code></pre>
+<hr>
+<h2>Quando usare quale? Guida decisionale</h2>
+<pre><code>Ho bisogno di una collezione di elementi...
+
+<span class="mi">1.</span> Gli elementi devono essere associati a delle chiavi?
+   <span class="op">-</span><span class="op">-</span><span class="op">&gt;</span> Si: usa un DIZIONARIO
+
+<span class="mi">2.</span> Gli elementi devono essere tutti unici? (senza duplicati)
+   <span class="op">-</span><span class="op">-</span><span class="op">&gt;</span> Si: usa un SET
+
+<span class="mi">3.</span> La collezione deve poter cambiare dopo la creazione?
+   <span class="op">-</span><span class="op">-</span><span class="op">&gt;</span> Si: usa una LISTA
+   <span class="op">-</span><span class="op">-</span><span class="op">&gt;</span> No: usa una TUPLA
+
+Casi particolari:
+<span class="op">-</span> Devo usarlo come chiave di un dizionario?   <span class="op">-</span><span class="op">-</span><span class="op">&gt;</span> TUPLA
+<span class="op">-</span> Devo fare molte ricerche <span class="st">&quot;x in collezione&quot;</span>?  <span class="op">-</span><span class="op">-</span><span class="op">&gt;</span> SET o DIZIONARIO
+<span class="op">-</span> Devo mantenere l<span class="st">&#x27;ordine di inserimento?      --&gt; LISTA o DIZIONARIO
+- Rappresento un record con campi fissi?       --&gt; TUPLA (o namedtuple)
+- Devo fare operazioni insiemistiche?          --&gt; SET</span></code></pre>
+<hr>
+<h2>Conversioni tra tipi</h2>
+<pre><code><span class="cm"># Lista &lt;-&gt; Tupla</span>
+lista <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+tupla <span class="op">=</span> <span class="nb">tuple</span>(lista)        <span class="cm"># (1, 2, 3)</span>
+lista <span class="op">=</span> <span class="nb">list</span>(tupla)         <span class="cm"># [1, 2, 3]</span>
+
+<span class="cm"># Lista/Tupla -&gt; Set (rimuove duplicati)</span>
+lista <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">3</span>]
+insieme <span class="op">=</span> <span class="nb">set</span>(lista)        <span class="cm"># {1, 2, 3}</span>
+lista_unica <span class="op">=</span> <span class="nb">list</span>(<span class="nb">set</span>(lista))  <span class="cm"># [1, 2, 3] (ordine non garantito)</span>
+
+<span class="cm"># Set -&gt; Lista (per ordinare)</span>
+ordinata <span class="op">=</span> <span class="nb">sorted</span>(insieme)  <span class="cm"># [1, 2, 3] restituisce una lista</span>
+
+<span class="cm"># Dizionario -&gt; Lista</span>
+chiavi <span class="op">=</span> <span class="nb">list</span>(studente.keys())      <span class="cm"># [&quot;nome&quot;, &quot;corso&quot;, ...]</span>
+valori <span class="op">=</span> <span class="nb">list</span>(studente.values())    <span class="cm"># [&quot;Luca&quot;, &quot;Statistica&quot;, ...]</span>
+coppie <span class="op">=</span> <span class="nb">list</span>(studente.items())     <span class="cm"># [(&quot;nome&quot;,&quot;Luca&quot;), ...]</span>
+
+<span class="cm"># Lista di coppie -&gt; Dizionario</span>
+coppie <span class="op">=</span> [(<span class="st">&quot;a&quot;</span>, <span class="mi">1</span>), (<span class="st">&quot;b&quot;</span>, <span class="mi">2</span>)]
+diz <span class="op">=</span> <span class="nb">dict</span>(coppie)                  <span class="cm"># {&quot;a&quot;: 1, &quot;b&quot;: 2}</span>
+
+<span class="cm"># Due liste -&gt; Dizionario (con zip)</span>
+chiavi <span class="op">=</span> [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;eta&quot;</span>]
+valori <span class="op">=</span> [<span class="st">&quot;Luca&quot;</span>, <span class="mi">20</span>]
+diz <span class="op">=</span> <span class="nb">dict</span>(<span class="nb">zip</span>(chiavi, valori))     <span class="cm"># {&quot;nome&quot;: &quot;Luca&quot;, &quot;eta&quot;: 20}</span>
+
+<span class="cm"># Stringa -&gt; Lista di caratteri</span>
+caratteri <span class="op">=</span> <span class="nb">list</span>(<span class="st">&quot;ciao&quot;</span>)           <span class="cm"># [&quot;c&quot;, &quot;i&quot;, &quot;a&quot;, &quot;o&quot;]</span>
+
+<span class="cm"># Lista di stringhe -&gt; Stringa</span>
+parole <span class="op">=</span> [<span class="st">&quot;buon&quot;</span>, <span class="st">&quot;giorno&quot;</span>]
+frase <span class="op">=</span> <span class="st">&quot; &quot;</span>.join(parole)           <span class="cm"># &quot;buon giorno&quot;</span></code></pre>
+<hr>
+<h2>Riepilogo visivo</h2>
+<pre><code>Lista   [a, b, c, d]     Ordinata, mutabile, duplicati ok
+Tupla   (a, b, c, d)     Ordinata, immutabile, duplicati ok
+Dict    {k1:v1, k2:v2}   Chiave<span class="op">-</span><span class="op">&gt;</span>Valore, mutabile, chiavi uniche
+Set     {a, b, c, d}     Non ordinata, mutabile, elementi unici</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L04_funzioni/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L04_funzioni_modularita.html">Dispensa</a> &bull; <a href="../../presentazioni/L04_funzioni_modularita.html">Presentazione</a></nav>
+<h1>L04_funzioni/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># L04 — Funzioni e modularita&#x27;</span>
+<span class="cm"># Esercizi per il laboratorio 04</span>
+<span class="cm">#</span>
+<span class="cm"># Esercizi pratici su funzioni, ricorsione, decoratori, composizione e ricerca.</span>
+<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
+
+<span class="kw">from</span> typing <span class="kw">import</span> Callable, Any
+<span class="kw">import</span> math
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 1: Fattoriale e Fibonacci ricorsivi</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">fattoriale_ricorsivo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola n! con la ricorsione.
+    Caso base: 0! = 1, 1! = 1
+    Passo ricorsivo: n! = n * (n-1)!
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il fattoriale non e&#x27; definito per numeri negativi&quot;</span>)
+    <span class="kw">if</span> n <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> <span class="mi">1</span>
+    <span class="kw">return</span> n <span class="op">*</span> fattoriale_ricorsivo(n <span class="op">-</span> <span class="mi">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">fattoriale_iterativo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Calcola n! con un ciclo (versione iterativa per confronto).&quot;&quot;&quot;</span>
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il fattoriale non e&#x27; definito per numeri negativi&quot;</span>)
+    risultato: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, n <span class="op">+</span> <span class="mi">1</span>):
+        risultato <span class="op">*</span><span class="op">=</span> i
+    <span class="kw">return</span> risultato
+
+
+<span class="kw">def</span> <span class="fn">fibonacci_ricorsivo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola l&#x27;n-esimo numero di Fibonacci con la ricorsione.
+    F(0) = 0, F(1) = 1, F(n) = F(n-1) + F(n-2)
+    ATTENZIONE: questa versione ha complessita&#x27; esponenziale O(2^n).
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Fibonacci non definito per indici negativi&quot;</span>)
+    <span class="kw">if</span> n <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">return</span> <span class="mi">0</span>
+    <span class="kw">if</span> n <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> <span class="mi">1</span>
+    <span class="kw">return</span> fibonacci_ricorsivo(n <span class="op">-</span> <span class="mi">1</span>) <span class="op">+</span> fibonacci_ricorsivo(n <span class="op">-</span> <span class="mi">2</span>)
+
+
+<span class="kw">def</span> <span class="fn">fibonacci_iterativo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola l&#x27;n-esimo numero di Fibonacci iterativamente.
+    Complessita&#x27; O(n) - molto piu&#x27; efficiente della versione ricorsiva.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Fibonacci non definito per indici negativi&quot;</span>)
+    <span class="kw">if</span> n <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> n
+
+    precedente: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    corrente: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, n <span class="op">+</span> <span class="mi">1</span>):
+        precedente, corrente <span class="op">=</span> corrente, precedente <span class="op">+</span> corrente
+    <span class="kw">return</span> corrente
+
+
+<span class="cm"># --- Test fattoriale ---</span>
+<span class="kw">assert</span> fattoriale_ricorsivo(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">assert</span> fattoriale_ricorsivo(<span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">assert</span> fattoriale_ricorsivo(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">120</span>
+<span class="kw">assert</span> fattoriale_ricorsivo(<span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3628800</span>
+
+<span class="cm"># Verifica che le due versioni diano lo stesso risultato</span>
+<span class="kw">for</span> k <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">15</span>):
+    <span class="kw">assert</span> fattoriale_ricorsivo(k) <span class="op">=</span><span class="op">=</span> fattoriale_iterativo(k)
+
+<span class="cm"># --- Test Fibonacci ---</span>
+fib_attesi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">8</span>, <span class="mi">13</span>, <span class="mi">21</span>, <span class="mi">34</span>, <span class="mi">55</span>]
+<span class="kw">for</span> i, atteso <span class="kw">in</span> <span class="nb">enumerate</span>(fib_attesi):
+    <span class="kw">assert</span> fibonacci_ricorsivo(i) <span class="op">=</span><span class="op">=</span> atteso, <span class="st">f&quot;F({i}) dovrebbe essere {atteso}&quot;</span>
+    <span class="kw">assert</span> fibonacci_iterativo(i) <span class="op">=</span><span class="op">=</span> atteso
+
+<span class="cm"># Verifica proprieta&#x27;: F(n)^2 - F(n-1)*F(n+1) = (-1)^(n-1) (identita&#x27; di Cassini)</span>
+<span class="kw">for</span> k <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">10</span>):
+    fn: <span class="nb">int</span> <span class="op">=</span> fibonacci_iterativo(k)
+    fn_meno_1: <span class="nb">int</span> <span class="op">=</span> fibonacci_iterativo(k <span class="op">-</span> <span class="mi">1</span>)
+    fn_piu_1: <span class="nb">int</span> <span class="op">=</span> fibonacci_iterativo(k <span class="op">+</span> <span class="mi">1</span>)
+    <span class="kw">assert</span> fn <span class="op">*</span> fn <span class="op">-</span> fn_meno_1 <span class="op">*</span> fn_piu_1 <span class="op">=</span><span class="op">=</span> (<span class="op">-</span><span class="mi">1</span>) <span class="op">*</span><span class="op">*</span> (k <span class="op">-</span> <span class="mi">1</span>)
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Fattoriale e Fibonacci): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 2: Decoratore di memoizzazione</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">memoize</span>(<span class="fn">funzione</span>: Callable) <span class="op">-</span><span class="op">&gt;</span> Callable:
+    <span class="st">&quot;&quot;&quot;
+    Decoratore che implementa la memoizzazione (caching dei risultati).
+    Salva il risultato di ogni chiamata in un dizionario.
+    Se la funzione viene chiamata di nuovo con gli stessi argomenti,
+    restituisce il risultato salvato senza ricalcolare.
+    &quot;&quot;&quot;</span>
+    cache: <span class="nb">dict</span>[<span class="nb">tuple</span>, Any] <span class="op">=</span> {}
+
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span><span class="fn">args</span>: Any) <span class="op">-</span><span class="op">&gt;</span> Any:
+        chiave: <span class="nb">tuple</span> <span class="op">=</span> args
+        <span class="kw">if</span> chiave <span class="kw">not</span> <span class="kw">in</span> cache:
+            cache[chiave] <span class="op">=</span> funzione(<span class="op">*</span>args)
+        <span class="kw">return</span> cache[chiave]
+
+    <span class="cm"># Aggiungiamo un attributo per poter ispezionare la cache nei test</span>
+    wrapper.cache <span class="op">=</span> cache  <span class="cm"># type: ignore</span>
+    wrapper.__name__ <span class="op">=</span> funzione.__name__
+    <span class="kw">return</span> wrapper
+
+
+<span class="cm"># Fibonacci con memoizzazione: ora e&#x27; efficiente anche in forma ricorsiva!</span>
+<span class="dc">@memoize</span>
+<span class="kw">def</span> <span class="fn">fibonacci_memo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Fibonacci ricorsivo con memoizzazione - complessita&#x27; O(n).&quot;&quot;&quot;</span>
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Fibonacci non definito per indici negativi&quot;</span>)
+    <span class="kw">if</span> n <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> n
+    <span class="kw">return</span> fibonacci_memo(n <span class="op">-</span> <span class="mi">1</span>) <span class="op">+</span> fibonacci_memo(n <span class="op">-</span> <span class="mi">2</span>)
+
+
+<span class="cm"># Decoratore contatore di chiamate (utile per verificare la memoizzazione)</span>
+<span class="kw">def</span> <span class="fn">conta_chiamate</span>(<span class="fn">funzione</span>: Callable) <span class="op">-</span><span class="op">&gt;</span> Callable:
+    <span class="st">&quot;&quot;&quot;Decoratore che conta il numero di volte che una funzione viene chiamata.&quot;&quot;&quot;</span>
+    contatore: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">0</span>]  <span class="cm"># lista per mutabilita&#x27; nella closure</span>
+
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span><span class="fn">args</span>: Any, <span class="op">*</span><span class="op">*</span>kwargs: Any) <span class="op">-</span><span class="op">&gt;</span> Any:
+        contatore[<span class="mi">0</span>] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        <span class="kw">return</span> funzione(<span class="op">*</span>args, <span class="op">*</span><span class="op">*</span>kwargs)
+
+    wrapper.contatore <span class="op">=</span> contatore  <span class="cm"># type: ignore</span>
+    wrapper.__name__ <span class="op">=</span> funzione.__name__
+    <span class="kw">return</span> wrapper
+
+
+<span class="cm"># --- Test memoizzazione ---</span>
+<span class="cm"># Fibonacci memoizzato puo&#x27; calcolare valori grandi senza problemi</span>
+<span class="kw">assert</span> fibonacci_memo(<span class="mi">50</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">12586269025</span>
+<span class="kw">assert</span> fibonacci_memo(<span class="mi">100</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">354224848179261915075</span>
+
+<span class="cm"># La cache deve contenere i risultati calcolati</span>
+<span class="kw">assert</span> <span class="mi">50</span> <span class="kw">in</span> fibonacci_memo.cache.values() <span class="kw">or</span> fibonacci_memo.cache[(<span class="mi">50</span>,)] <span class="op">=</span><span class="op">=</span> <span class="mi">12586269025</span>  <span class="cm"># type: ignore</span>
+
+<span class="cm"># Test decoratore conta_chiamate</span>
+<span class="dc">@conta_chiamate</span>
+<span class="kw">def</span> <span class="fn">quadrato</span>(<span class="fn">x</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="kw">return</span> x <span class="op">*</span> x
+
+_ <span class="op">=</span> quadrato(<span class="mi">5</span>)
+_ <span class="op">=</span> quadrato(<span class="mi">10</span>)
+_ <span class="op">=</span> quadrato(<span class="mi">15</span>)
+<span class="kw">assert</span> quadrato.contatore[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>  <span class="cm"># type: ignore</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Memoizzazione): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 3: Toolkit statistico</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">media</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> dati:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(dati) <span class="op">/</span> <span class="nb">len</span>(dati)
+
+
+<span class="kw">def</span> <span class="fn">mediana</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la mediana (valore centrale).
+    Per liste di lunghezza pari, restituisce la media dei due valori centrali.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> dati:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(dati)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(ordinati)
+    centro: <span class="nb">int</span> <span class="op">=</span> n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="cm"># Lunghezza dispari: il valore centrale</span>
+        <span class="kw">return</span> ordinati[centro]
+    <span class="kw">else</span>:
+        <span class="cm"># Lunghezza pari: media dei due valori centrali</span>
+        <span class="kw">return</span> (ordinati[centro <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[centro]) <span class="op">/</span> <span class="mi">2.0</span>
+
+
+<span class="kw">def</span> <span class="fn">moda</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la moda (valori piu&#x27; frequenti).
+    Puo&#x27; restituire piu&#x27; valori se ci sono piu&#x27; mode.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> dati:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+
+    frequenze: <span class="nb">dict</span>[<span class="nb">float</span>, <span class="nb">int</span>] <span class="op">=</span> {}
+    <span class="kw">for</span> valore <span class="kw">in</span> dati:
+        frequenze[valore] <span class="op">=</span> frequenze.get(valore, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+
+    max_freq: <span class="nb">int</span> <span class="op">=</span> <span class="nb">max</span>(frequenze.values())
+    <span class="cm"># Se tutti i valori hanno la stessa frequenza e appaiono una sola volta,</span>
+    <span class="cm"># non c&#x27;e&#x27; una moda significativa; restituiamo comunque tutti</span>
+    mode: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>([v <span class="kw">for</span> v, f <span class="kw">in</span> frequenze.items() <span class="kw">if</span> f <span class="op">=</span><span class="op">=</span> max_freq])
+    <span class="kw">return</span> mode
+
+
+<span class="kw">def</span> <span class="fn">varianza</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>], campione: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la varianza.
+    campione=True: varianza campionaria (divisione per n-1)
+    campione=False: varianza della popolazione (divisione per n)
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> dati:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(dati)
+    <span class="kw">if</span> campione <span class="kw">and</span> n <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Servono almeno 2 valori per la varianza campionaria&quot;</span>)
+
+    m: <span class="nb">float</span> <span class="op">=</span> media(dati)
+    somma_scarti_quadrati: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> dati)
+    divisore: <span class="nb">int</span> <span class="op">=</span> (n <span class="op">-</span> <span class="mi">1</span>) <span class="kw">if</span> campione <span class="kw">else</span> n
+    <span class="kw">return</span> somma_scarti_quadrati <span class="op">/</span> divisore
+
+
+<span class="kw">def</span> <span class="fn">deviazione_standard</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>], campione: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la deviazione standard (radice quadrata della varianza).&quot;&quot;&quot;</span>
+    <span class="kw">return</span> math.sqrt(varianza(dati, campione))
+
+
+<span class="kw">def</span> <span class="fn">sommario_statistico</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Genera un sommario statistico completo dei dati.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> {
+        <span class="st">&quot;n&quot;</span>: <span class="nb">float</span>(<span class="nb">len</span>(dati)),
+        <span class="st">&quot;media&quot;</span>: <span class="nb">round</span>(media(dati), <span class="mi">4</span>),
+        <span class="st">&quot;mediana&quot;</span>: <span class="nb">round</span>(mediana(dati), <span class="mi">4</span>),
+        <span class="st">&quot;varianza&quot;</span>: <span class="nb">round</span>(varianza(dati), <span class="mi">4</span>),
+        <span class="st">&quot;dev_std&quot;</span>: <span class="nb">round</span>(deviazione_standard(dati), <span class="mi">4</span>),
+        <span class="st">&quot;minimo&quot;</span>: <span class="nb">min</span>(dati),
+        <span class="st">&quot;massimo&quot;</span>: <span class="nb">max</span>(dati),
+    }
+
+
+<span class="cm"># --- Test toolkit statistico ---</span>
+dati_test: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">4</span>, <span class="mi">8</span>, <span class="mi">6</span>, <span class="mi">5</span>, <span class="mi">3</span>, <span class="mi">7</span>, <span class="mi">9</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">10</span>]
+
+<span class="kw">assert</span> media(dati_test) <span class="op">=</span><span class="op">=</span> <span class="mi">5.5</span>
+<span class="kw">assert</span> mediana(dati_test) <span class="op">=</span><span class="op">=</span> <span class="mi">5.5</span>  <span class="cm"># valori centrali 5 e 6, media = 5.5</span>
+<span class="kw">assert</span> mediana([<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">3.0</span>   <span class="cm"># valore centrale</span>
+
+<span class="cm"># Moda</span>
+<span class="kw">assert</span> moda([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">4</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">3</span>]
+<span class="kw">assert</span> moda([<span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">2</span>, <span class="mi">3</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>]  <span class="cm"># bimodale</span>
+
+<span class="cm"># Varianza e deviazione standard (verifica con valori noti)</span>
+dati_semplici: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">9</span>]
+media_semplici: <span class="nb">float</span> <span class="op">=</span> media(dati_semplici)
+<span class="kw">assert</span> media_semplici <span class="op">=</span><span class="op">=</span> <span class="mi">5.0</span>
+
+<span class="cm"># Varianza della popolazione: sum((x - 5)^2) / 8 = 32/8 = 4.0</span>
+var_pop: <span class="nb">float</span> <span class="op">=</span> varianza(dati_semplici, campione<span class="op">=</span><span class="kw">False</span>)
+<span class="kw">assert</span> <span class="nb">abs</span>(var_pop <span class="op">-</span> <span class="mi">4.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+<span class="cm"># Varianza campionaria: 32/7 ≈ 4.5714</span>
+var_camp: <span class="nb">float</span> <span class="op">=</span> varianza(dati_semplici, campione<span class="op">=</span><span class="kw">True</span>)
+<span class="kw">assert</span> <span class="nb">abs</span>(var_camp <span class="op">-</span> <span class="mi">32.0</span> <span class="op">/</span> <span class="mi">7.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+<span class="cm"># Deviazione standard della popolazione = 2.0</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(deviazione_standard(dati_semplici, campione<span class="op">=</span><span class="kw">False</span>) <span class="op">-</span> <span class="mi">2.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+<span class="cm"># Test sommario</span>
+sommario: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> sommario_statistico(dati_semplici)
+<span class="kw">assert</span> sommario[<span class="st">&quot;media&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">5.0</span>
+<span class="kw">assert</span> sommario[<span class="st">&quot;n&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">8.0</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (Toolkit statistico): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 4: Composizione di funzioni</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">componi</span>(<span class="fn">f</span>: Callable[[<span class="nb">float</span>], <span class="nb">float</span>], g: Callable[[<span class="nb">float</span>], <span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> Callable[[<span class="nb">float</span>], <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Composizione di due funzioni: (f o g)(x) = f(g(x)).
+    Prima si applica g, poi f al risultato.
+    &quot;&quot;&quot;</span>
+    <span class="kw">def</span> <span class="fn">composta</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> f(g(x))
+    <span class="kw">return</span> composta
+
+
+<span class="kw">def</span> <span class="fn">componi_n</span>(<span class="op">*</span><span class="fn">funzioni</span>: Callable[[<span class="nb">float</span>], <span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> Callable[[<span class="nb">float</span>], <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Composizione di n funzioni: (f1 o f2 o ... o fn)(x).
+    Le funzioni vengono applicate da destra a sinistra:
+    prima fn, poi fn-1, ..., infine f1.
+    &quot;&quot;&quot;</span>
+    <span class="kw">def</span> <span class="fn">composta</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        risultato: <span class="nb">float</span> <span class="op">=</span> x
+        <span class="cm"># Applica le funzioni da destra a sinistra</span>
+        <span class="kw">for</span> func <span class="kw">in</span> <span class="nb">reversed</span>(funzioni):
+            risultato <span class="op">=</span> func(risultato)
+        <span class="kw">return</span> risultato
+    <span class="kw">return</span> composta
+
+
+<span class="kw">def</span> <span class="fn">applica_pipeline</span>(<span class="fn">valore</span>: <span class="nb">float</span>, <span class="op">*</span>funzioni: Callable[[<span class="nb">float</span>], <span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Applica una pipeline di funzioni da sinistra a destra.
+    A differenza della composizione matematica, qui le funzioni vengono
+    applicate nell&#x27;ordine in cui sono elencate.
+    &quot;&quot;&quot;</span>
+    risultato: <span class="nb">float</span> <span class="op">=</span> valore
+    <span class="kw">for</span> func <span class="kw">in</span> funzioni:
+        risultato <span class="op">=</span> func(risultato)
+    <span class="kw">return</span> risultato
+
+
+<span class="cm"># --- Test composizione ---</span>
+<span class="cm"># Funzioni di test</span>
+<span class="kw">def</span> <span class="fn">raddoppia</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> x <span class="op">*</span> <span class="mi">2</span>
+
+<span class="kw">def</span> <span class="fn">incrementa</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> x <span class="op">+</span> <span class="mi">1</span>
+
+<span class="kw">def</span> <span class="fn">quadrato_f</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> x <span class="op">*</span> x
+
+<span class="cm"># f o g: raddoppia(incrementa(3)) = raddoppia(4) = 8</span>
+f_composta: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> componi(raddoppia, incrementa)
+<span class="kw">assert</span> f_composta(<span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">8</span>
+
+<span class="cm"># g o f: incrementa(raddoppia(3)) = incrementa(6) = 7</span>
+g_composta: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> componi(incrementa, raddoppia)
+<span class="kw">assert</span> g_composta(<span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
+
+<span class="cm"># Composizione di 3 funzioni: quadrato(raddoppia(incrementa(2)))</span>
+<span class="cm"># = quadrato(raddoppia(3)) = quadrato(6) = 36</span>
+tripla: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">=</span> componi_n(quadrato_f, raddoppia, incrementa)
+<span class="kw">assert</span> tripla(<span class="mi">2</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">36</span>
+
+<span class="cm"># Pipeline (ordine opposto): incrementa, raddoppia, quadrato</span>
+<span class="cm"># incrementa(2) = 3, raddoppia(3) = 6, quadrato(6) = 36</span>
+<span class="kw">assert</span> applica_pipeline(<span class="mi">2</span>, incrementa, raddoppia, quadrato_f) <span class="op">=</span><span class="op">=</span> <span class="mi">36</span>
+
+<span class="cm"># Pipeline con ordine diverso: raddoppia(2) = 4, incrementa(4) = 5, quadrato(5) = 25</span>
+<span class="kw">assert</span> applica_pipeline(<span class="mi">2</span>, raddoppia, incrementa, quadrato_f) <span class="op">=</span><span class="op">=</span> <span class="mi">25</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (Composizione funzioni): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 5: Ricerca binaria</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">ricerca_binaria</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">float</span>], obiettivo: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;
+    Ricerca binaria iterativa in una lista ordinata.
+    Restituisce l&#x27;indice dell&#x27;elemento cercato, oppure -1 se non trovato.
+
+    Complessita&#x27;: O(log n)
+
+    Prerequisito: la lista deve essere ordinata in ordine crescente.
+    &quot;&quot;&quot;</span>
+    sinistra: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    destra: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(lista) <span class="op">-</span> <span class="mi">1</span>
+
+    <span class="kw">while</span> sinistra <span class="op">&lt;</span><span class="op">=</span> destra:
+        centro: <span class="nb">int</span> <span class="op">=</span> (sinistra <span class="op">+</span> destra) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+
+        <span class="kw">if</span> lista[centro] <span class="op">=</span><span class="op">=</span> obiettivo:
+            <span class="kw">return</span> centro
+        <span class="kw">elif</span> lista[centro] <span class="op">&lt;</span> obiettivo:
+            <span class="cm"># L&#x27;obiettivo e&#x27; nella meta&#x27; destra</span>
+            sinistra <span class="op">=</span> centro <span class="op">+</span> <span class="mi">1</span>
+        <span class="kw">else</span>:
+            <span class="cm"># L&#x27;obiettivo e&#x27; nella meta&#x27; sinistra</span>
+            destra <span class="op">=</span> centro <span class="op">-</span> <span class="mi">1</span>
+
+    <span class="kw">return</span> <span class="op">-</span><span class="mi">1</span>  <span class="cm"># Non trovato</span>
+
+
+<span class="kw">def</span> <span class="fn">ricerca_binaria_ricorsiva</span>(
+    lista: <span class="nb">list</span>[<span class="nb">float</span>], obiettivo: <span class="nb">float</span>, sinistra: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>, destra: <span class="nb">int</span> <span class="op">=</span> <span class="op">-</span><span class="mi">1</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;
+    Ricerca binaria ricorsiva in una lista ordinata.
+    Restituisce l&#x27;indice dell&#x27;elemento, oppure -1 se non trovato.
+    &quot;&quot;&quot;</span>
+    <span class="cm"># Inizializzazione: destra = -1 come valore sentinella</span>
+    <span class="kw">if</span> destra <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>:
+        destra <span class="op">=</span> <span class="nb">len</span>(lista) <span class="op">-</span> <span class="mi">1</span>
+
+    <span class="cm"># Caso base: intervallo vuoto</span>
+    <span class="kw">if</span> sinistra <span class="op">&gt;</span> destra:
+        <span class="kw">return</span> <span class="op">-</span><span class="mi">1</span>
+
+    centro: <span class="nb">int</span> <span class="op">=</span> (sinistra <span class="op">+</span> destra) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+
+    <span class="kw">if</span> lista[centro] <span class="op">=</span><span class="op">=</span> obiettivo:
+        <span class="kw">return</span> centro
+    <span class="kw">elif</span> lista[centro] <span class="op">&lt;</span> obiettivo:
+        <span class="kw">return</span> ricerca_binaria_ricorsiva(lista, obiettivo, centro <span class="op">+</span> <span class="mi">1</span>, destra)
+    <span class="kw">else</span>:
+        <span class="kw">return</span> ricerca_binaria_ricorsiva(lista, obiettivo, sinistra, centro <span class="op">-</span> <span class="mi">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">ricerca_inserimento</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">float</span>], valore: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;
+    Trova la posizione in cui un valore dovrebbe essere inserito
+    per mantenere la lista ordinata.
+    &quot;&quot;&quot;</span>
+    sinistra: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    destra: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(lista)
+
+    <span class="kw">while</span> sinistra <span class="op">&lt;</span> destra:
+        centro: <span class="nb">int</span> <span class="op">=</span> (sinistra <span class="op">+</span> destra) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+        <span class="kw">if</span> lista[centro] <span class="op">&lt;</span> valore:
+            sinistra <span class="op">=</span> centro <span class="op">+</span> <span class="mi">1</span>
+        <span class="kw">else</span>:
+            destra <span class="op">=</span> centro
+
+    <span class="kw">return</span> sinistra
+
+
+<span class="cm"># --- Test ricerca binaria ---</span>
+lista_ord: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">9</span>, <span class="mi">11</span>, <span class="mi">13</span>, <span class="mi">15</span>, <span class="mi">17</span>, <span class="mi">19</span>]
+
+<span class="cm"># Cerca elementi presenti</span>
+<span class="kw">assert</span> ricerca_binaria(lista_ord, <span class="mi">7</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> ricerca_binaria(lista_ord, <span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>    <span class="cm"># primo elemento</span>
+<span class="kw">assert</span> ricerca_binaria(lista_ord, <span class="mi">19</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">9</span>   <span class="cm"># ultimo elemento</span>
+<span class="kw">assert</span> ricerca_binaria(lista_ord, <span class="mi">11</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+
+<span class="cm"># Cerca elemento assente</span>
+<span class="kw">assert</span> ricerca_binaria(lista_ord, <span class="mi">4</span>) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>
+<span class="kw">assert</span> ricerca_binaria(lista_ord, <span class="mi">20</span>) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>
+
+<span class="cm"># Lista vuota</span>
+<span class="kw">assert</span> ricerca_binaria([], <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>
+
+<span class="cm"># Verifica versione ricorsiva (stessi risultati)</span>
+<span class="kw">for</span> val <span class="kw">in</span> [<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">9</span>, <span class="mi">11</span>, <span class="mi">13</span>, <span class="mi">15</span>, <span class="mi">17</span>, <span class="mi">19</span>, <span class="mi">4</span>, <span class="mi">20</span>]:
+    <span class="kw">assert</span> ricerca_binaria(lista_ord, val) <span class="op">=</span><span class="op">=</span> ricerca_binaria_ricorsiva(lista_ord, val)
+
+<span class="cm"># Test posizione di inserimento</span>
+<span class="kw">assert</span> ricerca_inserimento([<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>], <span class="mi">4</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>   <span class="cm"># tra 3 e 5</span>
+<span class="kw">assert</span> ricerca_inserimento([<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>], <span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>   <span class="cm"># prima di tutto</span>
+<span class="kw">assert</span> ricerca_inserimento([<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>], <span class="mi">8</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>   <span class="cm"># dopo tutto</span>
+<span class="kw">assert</span> ricerca_inserimento([<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>], <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>   <span class="cm"># esiste gia&#x27;</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 5 (Ricerca binaria): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 04 SUPERATI!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F15 — File, dati e gestione errori — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F14_funzioni_avanzate_moduli.html">← F14</a> &bull; <a href="F16_programmazione_oggetti.html">F16 →</a> &bull; <a href="../../presentazioni/F15_file_dati_errori.html">Presentazione</a></nav>
+<h1>F15 — File, dati e gestione errori</h1>
+
+<h1>Frontale 15 — File, dati e gestione degli errori</h1>
+<h2>Introduzione: il programma incontra il mondo reale</h2>
+<p>Fino ad ora abbiamo lavorato con dati definiti direttamente nel codice: liste scritte a mano, dizionari costruiti riga per riga, variabili inizializzate con valori inventati. Questo è utile per imparare, ma non è il modo in cui si lavora davvero. Nella pratica statistica, i dati arrivano <em>da fuori</em>: file CSV esportati da un database, file JSON restituiti da un'API, fogli di calcolo salvati da un collega. Il programma deve saper leggere questi dati, elaborarli e scrivere i risultati.</p>
+<p>C'è però un problema: il mondo reale è disordinato. I file possono non esistere, avere un encoding sbagliato, contenere righe malformate, mancare di colonne attese. Un programma robusto non può semplicemente sperare che tutto vada bene: deve <em>gestire gli errori</em> in modo esplicito e controllato.</p>
+<p>In questa lezione impariamo a far dialogare Python con il filesystem, a leggere e scrivere i formati di dati più comuni (testo, CSV, JSON), e a proteggerci dagli errori con il meccanismo delle eccezioni.</p>
+<hr>
+<h2>1. Aprire e chiudere file: <code>open()</code> e il context manager <code>with</code></h2>
+<h3>La funzione <code>open()</code></h3>
+<p>Per lavorare con un file, il primo passo è <em>aprirlo</em>. Python offre la funzione built-in <code>open()</code>, che restituisce un oggetto file (un "handle") attraverso il quale possiamo leggere o scrivere.</p>
+<pre><code><span class="cm"># Apertura base — NON fare così (spiegheremo perché)</span>
+f <span class="op">=</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>)
+contenuto: <span class="nb">str</span> <span class="op">=</span> f.read()
+f.close()</code></pre>
+<p>I parametri principali di <code>open()</code> sono:</p>
+<table>
+<thead><tr>
+<th>Parametro</th>
+<th>Significato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>file</code></td>
+<td>Percorso del file (stringa o oggetto <code>Path</code>)</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>Modalità di apertura</td>
+</tr>
+<tr>
+<td><code>encoding</code></td>
+<td>Codifica del testo (quasi sempre <code>"utf-8"</code>)</td>
+</tr>
+</tbody></table>
+<h3>Le modalità di apertura</h3>
+<table>
+<thead><tr>
+<th>Modalità</th>
+<th>Significato</th>
+<th>Il file deve esistere?</th>
+</tr></thead><tbody>
+<tr>
+<td><code>"r"</code></td>
+<td>Lettura (read) — default</td>
+<td>Sì</td>
+</tr>
+<tr>
+<td><code>"w"</code></td>
+<td>Scrittura (write) — sovrascrive</td>
+<td>No (lo crea)</td>
+</tr>
+<tr>
+<td><code>"a"</code></td>
+<td>Aggiunta (append) — scrive in fondo</td>
+<td>No (lo crea)</td>
+</tr>
+<tr>
+<td><code>"x"</code></td>
+<td>Creazione esclusiva — errore se esiste</td>
+<td>No (lo crea)</td>
+</tr>
+</tbody></table>
+<p>A queste si può aggiungere <code>"b"</code> per la modalità binaria (<code>"rb"</code>, <code>"wb"</code>), utile per immagini, file compressi e simili. Per i file di testo, la modalità predefinita è sufficiente.</p>
+<h3>Perché specificare sempre <code>encoding="utf-8"</code></h3>
+<p>L'encoding predefinito dipende dal sistema operativo. Su Windows è spesso <code>"cp1252"</code>, su macOS e Linux è <code>"utf-8"</code>. Questo significa che un programma che funziona su macOS potrebbe produrre caratteri incomprensibili su Windows. Specificare esplicitamente <code>encoding="utf-8"</code> rende il codice <em>portabile</em> e prevedibile.</p>
+<h3>Il context manager <code>with</code> — usarlo SEMPRE</h3>
+<p>Il codice mostrato sopra ha un difetto grave: se si verifica un errore tra <code>open()</code> e <code>close()</code>, il file resta aperto. I file aperti consumano risorse del sistema operativo, e se ne accumulate troppi il programma (o l'intero sistema) può bloccarsi.</p>
+<p>Il <em>context manager</em> <code>with</code> risolve il problema in modo elegante: garantisce che il file venga chiuso automaticamente all'uscita dal blocco, anche se si verifica un'eccezione.</p>
+<pre><code><span class="cm"># Il modo CORRETTO di aprire un file</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    contenuto: <span class="nb">str</span> <span class="op">=</span> f.read()
+<span class="cm"># Qui il file è già chiuso, qualunque cosa sia successa</span></code></pre>
+<p>Questa è una regola senza eccezioni: <strong>usate sempre <code>with</code> per aprire i file</strong>. Non esiste un caso in cui sia meglio fare diversamente.</p>
+<hr>
+<h2>2. Leggere file di testo</h2>
+<p>Una volta aperto un file in lettura, abbiamo diversi modi per accedere al contenuto.</p>
+<h3><code>read()</code> — tutto in una volta</h3>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;romanzo.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    testo: <span class="nb">str</span> <span class="op">=</span> f.read()
+
+<span class="nb">print</span>(<span class="nb">len</span>(testo))  <span class="cm"># Numero di caratteri</span></code></pre>
+<p>Comodo per file piccoli, ma pericoloso per file grandi: se il file pesa 4 GB, Python cercherà di caricare 4 GB in memoria.</p>
+<h3><code>readline()</code> — una riga alla volta</h3>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    prima_riga: <span class="nb">str</span> <span class="op">=</span> f.readline()   <span class="cm"># Include il &#x27;\n&#x27; finale</span>
+    seconda_riga: <span class="nb">str</span> <span class="op">=</span> f.readline()</code></pre>
+<h3><code>readlines()</code> — tutte le righe in una lista</h3>
+<pre><code><span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati.txt&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> f.readlines()  <span class="cm"># Ogni elemento include &#x27;\n&#x27;</span>
+
+<span class="nb">print</span>(righe[<span class="mi">0</span>].strip())  <span class="cm"># .strip() rimuove spazi e &#x27;\n&#x27;</span></code></pre>
+<h3>Iterazione riga per riga — il modo migliore</h3>
+<p>Per file di qualsiasi dimensione, il modo più efficiente e idiomatico è iterare direttamente sull'oggetto file:</p>
+<pre><code><span class="kw">def</span> <span class="fn">conta_righe_non_vuote</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Conta le righe che contengono almeno un carattere non-spazio.&quot;&quot;&quot;</span>
+    conteggio: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> f:
+            <span class="kw">if</span> riga.strip():
+                conteggio <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">return</span> conteggio</code></pre>
+<p>Questo approccio legge una riga alla volta dalla memoria, quindi funziona anche su file enormi.</p>
+<hr>
+<h2>3. Scrivere file di testo</h2>
+<h3><code>write()</code> — scrivere una stringa</h3>
+<pre><code><span class="kw">def</span> <span class="fn">salva_risultato</span>(<span class="fn">percorso</span>: <span class="nb">str</span>, media: <span class="nb">float</span>, n: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Salva un riepilogo statistico su file.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        f.write(<span class="st">f&quot;Numero osservazioni: {n}\n&quot;</span>)
+        f.write(<span class="st">f&quot;Media: {media:.4f}\n&quot;</span>)</code></pre>
+<p>Notate che <code>write()</code> non aggiunge automaticamente il carattere di "a capo" (<code>\n</code>): dovete inserirlo voi.</p>
+<h3><code>writelines()</code> — scrivere una sequenza di stringhe</h3>
+<pre><code><span class="kw">def</span> <span class="fn">salva_nomi</span>(<span class="fn">percorso</span>: <span class="nb">str</span>, nomi: <span class="nb">list</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Salva una lista di nomi, uno per riga.&quot;&quot;&quot;</span>
+    righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [nome <span class="op">+</span> <span class="st">&quot;\n&quot;</span> <span class="kw">for</span> nome <span class="kw">in</span> nomi]
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        f.writelines(righe)</code></pre>
+<p>Anche <code>writelines()</code> non aggiunge <code>\n</code> automaticamente: le righe devono già contenere il terminatore.</p>
+<h3>Aggiungere a un file esistente</h3>
+<pre><code><span class="kw">def</span> <span class="fn">registra_evento</span>(<span class="fn">percorso</span>: <span class="nb">str</span>, evento: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Aggiunge un evento al file di log.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;a&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        f.write(<span class="st">f&quot;{evento}\n&quot;</span>)</code></pre>
+<p>La modalità <code>"a"</code> (append) non cancella il contenuto esistente: scrive in fondo.</p>
+<hr>
+<h2>4. <code>pathlib</code> — percorsi cross-platform moderni</h2>
+<p>Concatenare percorsi con le stringhe è fragile e non portabile:</p>
+<pre><code><span class="cm"># MALE: funziona solo su Unix, si rompe su Windows</span>
+percorso: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;dati&quot;</span> <span class="op">+</span> <span class="st">&quot;/&quot;</span> <span class="op">+</span> <span class="st">&quot;2024&quot;</span> <span class="op">+</span> <span class="st">&quot;/&quot;</span> <span class="op">+</span> <span class="st">&quot;risultati.csv&quot;</span></code></pre>
+<p>Il modulo <code>pathlib</code>, introdotto in Python 3.4, offre un'alternativa elegante e sicura:</p>
+<pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="cm"># L&#x27;operatore / costruisce percorsi in modo cross-platform</span>
+percorso: Path <span class="op">=</span> Path(<span class="st">&quot;dati&quot;</span>) <span class="op">/</span> <span class="st">&quot;2024&quot;</span> <span class="op">/</span> <span class="st">&quot;risultati.csv&quot;</span>
+<span class="nb">print</span>(percorso)  <span class="cm"># dati/2024/risultati.csv (Unix) o dati\2024\risultati.csv (Windows)</span></code></pre>
+<h3>Operazioni comuni con <code>Path</code></h3>
+<pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+p: Path <span class="op">=</span> Path(<span class="st">&quot;dati&quot;</span>) <span class="op">/</span> <span class="st">&quot;esperimento&quot;</span> <span class="op">/</span> <span class="st">&quot;misure.csv&quot;</span>
+
+<span class="cm"># Informazioni sul percorso</span>
+<span class="nb">print</span>(p.name)       <span class="cm"># &quot;misure.csv&quot;</span>
+<span class="nb">print</span>(p.stem)       <span class="cm"># &quot;misure&quot;</span>
+<span class="nb">print</span>(p.suffix)     <span class="cm"># &quot;.csv&quot;</span>
+<span class="nb">print</span>(p.parent)     <span class="cm"># dati/esperimento</span>
+
+<span class="cm"># Verifica esistenza</span>
+<span class="kw">if</span> p.exists():
+    <span class="nb">print</span>(<span class="st">&quot;Il file esiste&quot;</span>)
+
+<span class="kw">if</span> p.is_file():
+    <span class="nb">print</span>(<span class="st">&quot;È un file (non una directory)&quot;</span>)
+
+<span class="cm"># Creare directory (anche annidate)</span>
+cartella: Path <span class="op">=</span> Path(<span class="st">&quot;output&quot;</span>) <span class="op">/</span> <span class="st">&quot;grafici&quot;</span>
+cartella.mkdir(parents<span class="op">=</span><span class="kw">True</span>, exist_ok<span class="op">=</span><span class="kw">True</span>)
+
+<span class="cm"># Elencare file in una directory</span>
+cartella_dati: Path <span class="op">=</span> Path(<span class="st">&quot;dati&quot;</span>)
+<span class="kw">for</span> file_csv <span class="kw">in</span> cartella_dati.glob(<span class="st">&quot;*.csv&quot;</span>):
+    <span class="nb">print</span>(file_csv.name)</code></pre>
+<h3><code>Path</code> e <code>open()</code></h3>
+<p>Gli oggetti <code>Path</code> funzionano direttamente con <code>open()</code>:</p>
+<pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+percorso: Path <span class="op">=</span> Path(<span class="st">&quot;dati&quot;</span>) <span class="op">/</span> <span class="st">&quot;studenti.csv&quot;</span>
+<span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    contenuto: <span class="nb">str</span> <span class="op">=</span> f.read()</code></pre>
+<p>Oppure, ancora più conciso:</p>
+<pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+percorso: Path <span class="op">=</span> Path(<span class="st">&quot;dati&quot;</span>) <span class="op">/</span> <span class="st">&quot;studenti.csv&quot;</span>
+contenuto: <span class="nb">str</span> <span class="op">=</span> percorso.read_text(encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>)</code></pre>
+<p>Usate <code>pathlib</code> in ogni progetto: rende il codice più leggibile e portabile.</p>
+<hr>
+<h2>5. Lavorare con file CSV</h2>
+<p>Il formato CSV (<em>Comma-Separated Values</em>) è lo standard de facto per i dati tabulari. Ogni riga è un record, ogni campo è separato da un delimitatore (tipicamente la virgola).</p>
+<pre><code>nome,cognome,voto
+Anna,Rossi,<span class="mi">28</span>
+Marco,Bianchi,<span class="mi">25</span></code></pre>
+<h3>Leggere CSV con <code>csv.reader</code></h3>
+<pre><code><span class="kw">import</span> csv
+
+<span class="kw">def</span> <span class="fn">leggi_voti</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">int</span>]]:
+    <span class="st">&quot;&quot;&quot;Legge un CSV di studenti e restituisce una lista di tuple.&quot;&quot;&quot;</span>
+    risultati: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        lettore <span class="op">=</span> csv.reader(f)
+        intestazione <span class="op">=</span> <span class="nb">next</span>(lettore)  <span class="cm"># Salta la riga di intestazione</span>
+        <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+            nome: <span class="nb">str</span> <span class="op">=</span> riga[<span class="mi">0</span>]
+            cognome: <span class="nb">str</span> <span class="op">=</span> riga[<span class="mi">1</span>]
+            voto: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(riga[<span class="mi">2</span>])
+            risultati.append((nome, cognome, voto))
+    <span class="kw">return</span> risultati</code></pre>
+<h3>Leggere CSV con <code>csv.DictReader</code> — più leggibile</h3>
+<p><code>DictReader</code> usa la prima riga come chiavi e restituisce ogni riga come dizionario:</p>
+<pre><code><span class="kw">import</span> csv
+
+<span class="kw">def</span> <span class="fn">leggi_voti_dict</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]:
+    <span class="st">&quot;&quot;&quot;Legge un CSV e restituisce una lista di dizionari.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        lettore <span class="op">=</span> csv.DictReader(f)
+        <span class="kw">return</span> <span class="nb">list</span>(lettore)
+
+<span class="cm"># Uso:</span>
+studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> leggi_voti_dict(<span class="st">&quot;voti.csv&quot;</span>)
+<span class="kw">for</span> s <span class="kw">in</span> studenti:
+    <span class="nb">print</span>(<span class="st">f&quot;{s[&#x27;nome&#x27;]} {s[&#x27;cognome&#x27;]}: {s[&#x27;voto&#x27;]}&quot;</span>)</code></pre>
+<h3>Il problema del separatore nei CSV europei</h3>
+<p>In molti paesi europei (Italia inclusa), la virgola è il separatore decimale. Per evitare confusione, i CSV esportati da Excel in italiano usano il <em>punto e virgola</em> come delimitatore:</p>
+<pre><code>nome;cognome;voto
+Anna;Rossi;<span class="mi">28</span>
+Marco;Bianchi;<span class="mi">25</span></code></pre>
+<p>Per gestirlo, basta specificare il parametro <code>delimiter</code>:</p>
+<pre><code><span class="kw">import</span> csv
+
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;dati_italiani.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    lettore <span class="op">=</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>)
+    <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+        <span class="nb">print</span>(riga)</code></pre>
+<h3>Scrivere CSV</h3>
+<pre><code><span class="kw">import</span> csv
+
+<span class="kw">def</span> <span class="fn">salva_risultati</span>(<span class="fn">percorso</span>: <span class="nb">str</span>, dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">float</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Salva una lista di dizionari come CSV.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> dati:
+        <span class="kw">return</span>
+    campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">list</span>(dati[<span class="mi">0</span>].keys())
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+        scrittore <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span>campi)
+        scrittore.writeheader()
+        scrittore.writerows(dati)</code></pre>
+<p>Il parametro <code>newline=""</code> è importante su Windows per evitare righe vuote extra nel file.</p>
+<p><strong>Anticipazione</strong>: quando lavoreremo con Pandas (Lezione 17), caricare un CSV sarà una singola riga: <code>pd.read_csv("file.csv")</code>. Ma capire cosa succede "sotto il cofano" è essenziale per diagnosticare problemi.</p>
+<hr>
+<h2>6. Lavorare con file JSON</h2>
+<p>JSON (<em>JavaScript Object Notation</em>) è il formato standard per lo scambio di dati strutturati, specialmente con le API web. La sua sintassi è molto simile ai dizionari Python.</p>
+<h3>Corrispondenza tipi JSON e Python</h3>
+<table>
+<thead><tr>
+<th>JSON</th>
+<th>Python</th>
+</tr></thead><tbody>
+<tr>
+<td><code>object</code> <code>{...}</code></td>
+<td><code>dict</code></td>
+</tr>
+<tr>
+<td><code>array</code> <code>[...]</code></td>
+<td><code>list</code></td>
+</tr>
+<tr>
+<td><code>string</code> <code>"..."</code></td>
+<td><code>str</code></td>
+</tr>
+<tr>
+<td><code>number</code> (intero)</td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td><code>number</code> (decimale)</td>
+<td><code>float</code></td>
+</tr>
+<tr>
+<td><code>true</code> / <code>false</code></td>
+<td><code>True</code> / <code>False</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody></table>
+<h3>Le quattro funzioni del modulo <code>json</code></h3>
+<pre><code><span class="kw">import</span> json</code></pre>
+<table>
+<thead><tr>
+<th>Funzione</th>
+<th>Input</th>
+<th>Output</th>
+<th>Uso</th>
+</tr></thead><tbody>
+<tr>
+<td><code>json.load(f)</code></td>
+<td>File</td>
+<td>Oggetto Python</td>
+<td>Leggere da file</td>
+</tr>
+<tr>
+<td><code>json.dump(obj, f)</code></td>
+<td>Oggetto Python</td>
+<td>File</td>
+<td>Scrivere su file</td>
+</tr>
+<tr>
+<td><code>json.loads(s)</code></td>
+<td>Stringa</td>
+<td>Oggetto Python</td>
+<td>Parsare stringa JSON</td>
+</tr>
+<tr>
+<td><code>json.dumps(obj)</code></td>
+<td>Oggetto Python</td>
+<td>Stringa</td>
+<td>Serializzare a stringa</td>
+</tr>
+</tbody></table>
+<p>Il trucco mnemonico: la <code>s</code> finale sta per <em>string</em>.</p>
+<h3>Leggere JSON da file</h3>
+<pre><code><span class="kw">import</span> json
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">carica_configurazione</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">bool</span>]:
+    <span class="st">&quot;&quot;&quot;Carica un file di configurazione JSON.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        config: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">bool</span>] <span class="op">=</span> json.load(f)
+    <span class="kw">return</span> config
+
+<span class="cm"># Uso</span>
+config: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="nb">bool</span>] <span class="op">=</span> carica_configurazione(
+    Path(<span class="st">&quot;config.json&quot;</span>)
+)
+<span class="nb">print</span>(config[<span class="st">&quot;database_host&quot;</span>])</code></pre>
+<h3>Scrivere JSON su file</h3>
+<pre><code><span class="kw">import</span> json
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">salva_risultati_json</span>(
+    percorso: Path,
+    risultati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]
+) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Salva risultati statistici in formato JSON.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        json.dump(risultati, f, indent<span class="op">=</span><span class="mi">2</span>, ensure_ascii<span class="op">=</span><span class="kw">False</span>)
+
+<span class="cm"># Uso</span>
+risultati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> {
+    <span class="st">&quot;media&quot;</span>: <span class="mi">25.7</span>,
+    <span class="st">&quot;deviazione_standard&quot;</span>: <span class="mi">3.2</span>,
+    <span class="st">&quot;mediana&quot;</span>: <span class="mi">26.0</span>
+}
+salva_risultati_json(Path(<span class="st">&quot;risultati.json&quot;</span>), risultati)</code></pre>
+<p>Il parametro <code>indent=2</code> produce JSON leggibile (indentato con 2 spazi). Il parametro <code>ensure_ascii=False</code> permette di scrivere caratteri come <code>à</code>, <code>è</code>, <code>ù</code> senza codificarli come sequenze di escape.</p>
+<h3>JSON da stringa — utile con le API</h3>
+<p>Quando si ricevono dati da un'API web, la risposta è tipicamente una stringa JSON:</p>
+<pre><code><span class="kw">import</span> json
+
+risposta_api: <span class="nb">str</span> <span class="op">=</span> <span class="st">&#x27;{&quot;temperatura&quot;: 22.5, &quot;città&quot;: &quot;Roma&quot;, &quot;umidità&quot;: 65}&#x27;</span>
+dati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="nb">str</span>] <span class="op">=</span> json.loads(risposta_api)
+<span class="nb">print</span>(<span class="st">f&quot;A {dati[&#x27;città&#x27;]} ci sono {dati[&#x27;temperatura&#x27;]}°C&quot;</span>)</code></pre>
+<hr>
+<h2>7. Eccezioni e gestione degli errori</h2>
+<h3>Il problema</h3>
+<p>Considerate questo codice innocente:</p>
+<pre><code>valore: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Inserisci un numero: &quot;</span>))</code></pre>
+<p>Cosa succede se l'utente scrive <code>"ciao"</code>? Python solleva un <code>ValueError</code> e il programma termina bruscamente. In un programma reale — che magari sta analizzando migliaia di righe di dati — un singolo valore malformato non dovrebbe far crollare tutto.</p>
+<h3><code>try</code> / <code>except</code></h3>
+<p>Il blocco <code>try</code>/<code>except</code> permette di <em>catturare</em> un'eccezione e decidere cosa fare:</p>
+<pre><code><span class="kw">def</span> <span class="fn">leggi_intero</span>(<span class="fn">prompt</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Chiede un intero all&#x27;utente, ripetendo in caso di errore.&quot;&quot;&quot;</span>
+    <span class="kw">while</span> <span class="kw">True</span>:
+        <span class="kw">try</span>:
+            <span class="kw">return</span> <span class="nb">int</span>(<span class="nb">input</span>(prompt))
+        <span class="kw">except</span> <span class="nb">ValueError</span>:
+            <span class="nb">print</span>(<span class="st">&quot;Non è un numero valido. Riprova.&quot;</span>)</code></pre>
+<p>Il flusso è:</p>
+<ol>
+<li>Python esegue il codice nel blocco <code>try</code>.</li>
+<li>Se non ci sono errori, il blocco <code>except</code> viene saltato.</li>
+<li>Se si verifica l'eccezione specificata, il controllo passa al blocco <code>except</code>.</li>
+</ol>
+<h3>La gerarchia delle eccezioni</h3>
+<p>Le eccezioni Python formano una gerarchia ad albero. Ecco le più importanti:</p>
+<pre><code>BaseException
+├── KeyboardInterrupt      <span class="cm"># Ctrl+C</span>
+├── SystemExit             <span class="cm"># sys.exit()</span>
+└── <span class="nb">Exception</span>
+    ├── <span class="nb">ValueError</span>          <span class="cm"># Valore sbagliato (&quot;abc&quot; per int())</span>
+    ├── <span class="nb">TypeError</span>           <span class="cm"># Tipo sbagliato (1 + &quot;a&quot;)</span>
+    ├── <span class="nb">KeyError</span>            <span class="cm"># Chiave mancante in un dizionario</span>
+    ├── <span class="nb">IndexError</span>          <span class="cm"># Indice fuori range</span>
+    ├── <span class="nb">FileNotFoundError</span>   <span class="cm"># File non trovato</span>
+    ├── PermissionError     <span class="cm"># Permessi insufficienti</span>
+    ├── <span class="nb">ZeroDivisionError</span>   <span class="cm"># Divisione per zero</span>
+    ├── <span class="nb">OSError</span>             <span class="cm"># Errori del sistema operativo</span>
+    └── ...</code></pre>
+<p>Notate che <code>KeyboardInterrupt</code> e <code>SystemExit</code> <em>non</em> ereditano da <code>Exception</code>. Questo è intenzionale: catturare <code>Exception</code> non blocca Ctrl+C.</p>
+<h3>Catturare eccezioni specifiche — regola fondamentale</h3>
+<pre><code><span class="cm"># MALE — cattura TUTTO, anche errori che non vi aspettavate</span>
+<span class="kw">try</span>:
+    risultato <span class="op">=</span> calcola_qualcosa(dati)
+<span class="kw">except</span> <span class="nb">Exception</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Qualcosa è andato storto&quot;</span>)  <span class="cm"># Ma cosa?!</span>
+
+<span class="cm"># BENE — cattura solo gli errori prevedibili</span>
+<span class="kw">try</span>:
+    risultato <span class="op">=</span> calcola_qualcosa(dati)
+<span class="kw">except</span> <span class="nb">ValueError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;Valore non valido: {e}&quot;</span>)
+<span class="kw">except</span> <span class="nb">ZeroDivisionError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Divisione per zero nel calcolo&quot;</span>)</code></pre>
+<p>Catturare eccezioni troppo generiche nasconde i bug: il programma sembra funzionare, ma produce risultati sbagliati. La regola è: <strong>catturate solo le eccezioni che sapete gestire</strong>.</p>
+<h3><code>else</code> e <code>finally</code></h3>
+<p>Il blocco <code>try</code> ha due clausole opzionali poco conosciute ma molto utili:</p>
+<pre><code><span class="kw">def</span> <span class="fn">leggi_dati_sicuro</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Legge un file, gestendo l&#x27;assenza e gli errori di encoding.&quot;&quot;&quot;</span>
+    <span class="kw">try</span>:
+        f <span class="op">=</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>)
+    <span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;File non trovato: {percorso}&quot;</span>)
+        <span class="kw">return</span> []
+    <span class="kw">except</span> PermissionError:
+        <span class="nb">print</span>(<span class="st">f&quot;Permessi insufficienti per: {percorso}&quot;</span>)
+        <span class="kw">return</span> []
+    <span class="kw">else</span>:
+        <span class="cm"># Eseguito SOLO se try è andato a buon fine</span>
+        contenuto: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> f.readlines()
+        <span class="kw">return</span> contenuto
+    <span class="kw">finally</span>:
+        <span class="cm"># Eseguito SEMPRE, errore o no</span>
+        <span class="nb">print</span>(<span class="st">&quot;Tentativo di lettura completato.&quot;</span>)</code></pre>
+<ul>
+<li><strong><code>else</code></strong>: eseguito solo se il <code>try</code> non ha generato eccezioni. Utile per separare il codice "che può fallire" dal codice "che segue il successo".</li>
+<li><strong><code>finally</code></strong>: eseguito <em>sempre</em>, che ci sia stato un errore o meno. Utile per operazioni di cleanup (chiudere connessioni, rilasciare risorse). Con <code>with</code> il <code>finally</code> è meno necessario, ma resta utile in altri contesti.</li>
+</ul>
+<h3><code>raise</code> — sollevare eccezioni intenzionalmente</h3>
+<p>A volte siete voi a dover segnalare un errore. La parola chiave <code>raise</code> solleva un'eccezione:</p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">voti</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica dei voti.
+
+    Raises:
+        ValueError: Se la lista è vuota o contiene voti fuori range.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> voti:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Impossibile calcolare la media di una lista vuota&quot;</span>)
+    <span class="kw">for</span> voto <span class="kw">in</span> voti:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="mi">0</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto fuori range: {voto}&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)</code></pre>
+<p>Sollevare eccezioni con messaggi chiari è un atto di gentilezza verso chi userà il vostro codice (incluso il vostro sé futuro).</p>
+<h3>EAFP vs LBYL</h3>
+<p>Python adotta la filosofia <strong>EAFP</strong> (<em>Easier to Ask Forgiveness than Permission</em>): è meglio provare e gestire l'errore piuttosto che controllare tutto in anticipo.</p>
+<pre><code><span class="cm"># LBYL (Look Before You Leap) — stile non-pythonic</span>
+<span class="kw">def</span> <span class="fn">ottieni_valore_lbyl</span>(<span class="fn">dati</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>], chiave: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>:
+    <span class="kw">if</span> chiave <span class="kw">in</span> dati:
+        <span class="kw">return</span> dati[chiave]
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="kw">None</span>
+
+<span class="cm"># EAFP (Easier to Ask Forgiveness than Permission) — stile pythonic</span>
+<span class="kw">def</span> <span class="fn">ottieni_valore_eafp</span>(<span class="fn">dati</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>], chiave: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>:
+    <span class="kw">try</span>:
+        <span class="kw">return</span> dati[chiave]
+    <span class="kw">except</span> <span class="nb">KeyError</span>:
+        <span class="kw">return</span> <span class="kw">None</span></code></pre>
+<p>Perché EAFP è preferito? Perché evita <em>race condition</em> (il dato potrebbe cambiare tra il controllo e l'accesso) e perché il caso "normale" (nessun errore) è più veloce.</p>
+<hr>
+<h2>8. Esempio completo: leggere un CSV problematico</h2>
+<p>Mettiamo tutto insieme con un esempio realistico. Immaginate di ricevere un file CSV di risposte a un questionario. Il file ha diversi problemi:</p>
+<ul>
+<li>Potrebbe non esistere.</li>
+<li>Potrebbe usare il separatore <code>;</code> (CSV europeo).</li>
+<li>Alcune righe hanno campi mancanti.</li>
+<li>Il campo "età" contiene a volte valori non numerici.</li>
+</ul>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+
+<span class="kw">def</span> <span class="fn">carica_risposte</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>]]:
+    <span class="st">&quot;&quot;&quot;Carica risposte da un CSV, gestendo errori comuni.
+
+    Args:
+        percorso: Path al file CSV.
+
+    Returns:
+        Lista di dizionari con le risposte valide.
+
+    Raises:
+        FileNotFoundError: Se il file non esiste.
+    &quot;&quot;&quot;</span>
+    risposte: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>]] <span class="op">=</span> []
+    righe_problematiche: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+    <span class="kw">try</span>:
+        <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+            <span class="cm"># Rileva il dialetto (separatore) automaticamente</span>
+            campione: <span class="nb">str</span> <span class="op">=</span> f.read(<span class="mi">1024</span>)
+            f.seek(<span class="mi">0</span>)  <span class="cm"># Torna all&#x27;inizio</span>
+
+            <span class="kw">try</span>:
+                dialetto <span class="op">=</span> csv.Sniffer().sniff(campione, delimiters<span class="op">=</span><span class="st">&quot;,;\t&quot;</span>)
+            <span class="kw">except</span> csv.Error:
+                <span class="cm"># Se il rilevamento fallisce, usa la virgola</span>
+                dialetto <span class="op">=</span> csv.excel
+
+            lettore <span class="op">=</span> csv.DictReader(f, dialect<span class="op">=</span>dialetto)
+
+            <span class="kw">for</span> numero_riga, riga <span class="kw">in</span> <span class="nb">enumerate</span>(lettore, start<span class="op">=</span><span class="mi">2</span>):
+                <span class="kw">try</span>:
+                    risposta: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>] <span class="op">=</span> {
+                        <span class="st">&quot;nome&quot;</span>: riga.get(<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;&quot;</span>).strip(),
+                        <span class="st">&quot;cognome&quot;</span>: riga.get(<span class="st">&quot;cognome&quot;</span>, <span class="st">&quot;&quot;</span>).strip(),
+                    }
+
+                    <span class="cm"># Gestione del campo età</span>
+                    eta_raw: <span class="nb">str</span> <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> riga.get(<span class="st">&quot;età&quot;</span>, riga.get(<span class="st">&quot;eta&quot;</span>))
+                    <span class="kw">if</span> eta_raw <span class="kw">and</span> eta_raw.strip():
+                        <span class="kw">try</span>:
+                            risposta[<span class="st">&quot;età&quot;</span>] <span class="op">=</span> <span class="nb">int</span>(eta_raw.strip())
+                        <span class="kw">except</span> <span class="nb">ValueError</span>:
+                            <span class="nb">print</span>(<span class="st">f&quot;  Riga {numero_riga}: età non valida &quot;</span>
+                                  <span class="st">f&quot;&#x27;{eta_raw}&#x27;, impostata a None&quot;</span>)
+                            risposta[<span class="st">&quot;età&quot;</span>] <span class="op">=</span> <span class="kw">None</span>
+                    <span class="kw">else</span>:
+                        risposta[<span class="st">&quot;età&quot;</span>] <span class="op">=</span> <span class="kw">None</span>
+
+                    <span class="cm"># Scarta righe senza nome</span>
+                    <span class="kw">if</span> <span class="kw">not</span> risposta[<span class="st">&quot;nome&quot;</span>]:
+                        <span class="nb">print</span>(<span class="st">f&quot;  Riga {numero_riga}: nome mancante, &quot;</span>
+                              <span class="st">f&quot;riga scartata&quot;</span>)
+                        righe_problematiche <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+                        <span class="kw">continue</span>
+
+                    risposte.append(risposta)
+
+                <span class="kw">except</span> <span class="nb">Exception</span> <span class="kw">as</span> e:
+                    <span class="nb">print</span>(<span class="st">f&quot;  Riga {numero_riga}: errore imprevisto: {e}&quot;</span>)
+                    righe_problematiche <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+    <span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;File non trovato: {percorso}&quot;</span>)
+        <span class="kw">raise</span>
+    <span class="kw">except</span> UnicodeDecodeError:
+        <span class="nb">print</span>(<span class="st">f&quot;Errore di encoding in {percorso}. &quot;</span>
+              <span class="st">f&quot;Provare con encoding diverso (es. &#x27;latin-1&#x27;).&quot;</span>)
+        <span class="kw">raise</span>
+
+    <span class="nb">print</span>(<span class="st">f&quot;Caricate {len(risposte)} risposte valide, &quot;</span>
+          <span class="st">f&quot;{righe_problematiche} righe scartate.&quot;</span>)
+    <span class="kw">return</span> risposte
+
+
+<span class="cm"># Uso</span>
+<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
+    percorso_dati: Path <span class="op">=</span> Path(<span class="st">&quot;dati&quot;</span>) <span class="op">/</span> <span class="st">&quot;questionario.csv&quot;</span>
+    <span class="kw">try</span>:
+        risposte: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span> <span class="op">|</span> <span class="kw">None</span>]] <span class="op">=</span> carica_risposte(
+            percorso_dati
+        )
+        <span class="kw">for</span> r <span class="kw">in</span> risposte[:<span class="mi">5</span>]:
+            <span class="nb">print</span>(r)
+    <span class="kw">except</span> (<span class="nb">FileNotFoundError</span>, UnicodeDecodeError):
+        <span class="nb">print</span>(<span class="st">&quot;Impossibile caricare i dati.&quot;</span>)</code></pre>
+<p>Questo esempio mostra come i concetti di questa lezione — <code>open()</code> con <code>with</code>, lettura CSV, gestione eccezioni, <code>pathlib</code> — si combinano in un programma reale. Non è necessario scrivere codice così complesso per ogni esercizio, ma è importante capire il <em>pattern</em>: provare, catturare l'errore specifico, gestirlo o rilanciarlo.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Perché è importante usare sempre <code>with open(...)</code> invece di <code>open()</code> seguito da <code>close()</code>? Cosa potrebbe andare storto senza il context manager?</li>
+</ol>
+<ol>
+<li>Qual è la differenza tra le modalità <code>"w"</code> e <code>"a"</code> di <code>open()</code>? Cosa succede al contenuto esistente del file in ciascun caso?</li>
+</ol>
+<ol>
+<li>Perché dovremmo specificare sempre <code>encoding="utf-8"</code> quando apriamo un file di testo?</li>
+</ol>
+<ol>
+<li>Qual è la differenza tra <code>csv.reader</code> e <code>csv.DictReader</code>? In quale situazione preferireste l'uno o l'altro?</li>
+</ol>
+<ol>
+<li>Spiegate la differenza tra <code>json.load()</code> e <code>json.loads()</code>. Quando si usa ciascuna?</li>
+</ol>
+<ol>
+<li>Perché è sbagliato scrivere <code>except Exception</code> per catturare tutti gli errori? Che problema causa?</li>
+</ol>
+<ol>
+<li>Cosa significa la filosofia EAFP? Fate un esempio pratico di codice EAFP vs LBYL.</li>
+</ol>
+<ol>
+<li>Nel modulo <code>pathlib</code>, perché <code>Path("dati") / "file.csv"</code> è preferibile a <code>"dati" + "/" + "file.csv"</code>?</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<p><strong>Esercizio 1 — Contaparole</strong></p>
+<p>Scrivete una funzione <code>conta_parole(percorso: Path) -> dict[str, int]</code> che legge un file di testo e restituisce un dizionario con la frequenza di ogni parola (convertita in minuscolo). Usate <code>pathlib</code> per il percorso.</p>
+<p><strong>Esercizio 2 — Scrittura di un report</strong></p>
+<p>Scrivete una funzione <code>scrivi_report(percorso: Path, titolo: str, valori: list[float]) -> None</code> che crea un file di testo contenente: il titolo, il numero di valori, la media e il valore massimo. Ogni informazione su una riga separata.</p>
+<p><strong>Esercizio 3 — Lettura CSV sicura</strong></p>
+<p>Scrivete una funzione <code>leggi<em>csv</em>sicuro(percorso: Path) -> list[dict[str, str]]</code> che tenta di leggere un CSV. Se il file non esiste, stampa un messaggio e restituisce una lista vuota. Se il file esiste ma è vuoto, stampa un avviso e restituisce una lista vuota.</p>
+<h3>Intermedio</h3>
+<p><strong>Esercizio 4 — Conversione CSV-JSON</strong></p>
+<p>Scrivete un programma che legge un file CSV e lo converte in un file JSON equivalente. Il programma deve accettare il percorso del CSV come argomento e creare il JSON nella stessa directory con lo stesso nome ma estensione <code>.json</code>.</p>
+<p><strong>Esercizio 5 — Unione di CSV</strong></p>
+<p>Scrivete una funzione <code>unisci_csv(cartella: Path, output: Path) -> int</code> che trova tutti i file <code>.csv</code> in una cartella (usando <code>glob</code>), li unisce in un unico file CSV (mantenendo una sola riga di intestazione), e restituisce il numero totale di righe scritte.</p>
+<p><strong>Esercizio 6 — Validazione dati</strong></p>
+<p>Scrivete una funzione <code>valida_record(record: dict[str, str]) -> dict[str, str | int | float]</code> che riceve un dizionario letto da un CSV con chiavi <code>"nome"</code>, <code>"età"</code>, <code>"reddito"</code>. La funzione deve:</p>
+<ul>
+<li>Verificare che <code>"nome"</code> non sia vuoto (altrimenti <code>ValueError</code>).</li>
+<li>Convertire <code>"età"</code> a <code>int</code> (gestendo <code>ValueError</code> se non numerico).</li>
+<li>Convertire <code>"reddito"</code> a <code>float</code> (gestendo <code>ValueError</code>).</li>
+<li>Restituire il record "pulito" con i tipi corretti.</li>
+</ul>
+<h3>Avanzato</h3>
+<p><strong>Esercizio 7 — Analizzatore di log</strong></p>
+<p>Scrivete un programma che legge un file di log dove ogni riga ha il formato:</p>
+<pre><code><span class="mi">2024</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">15</span> <span class="mi">14</span>:<span class="mi">32</span>:<span class="mi">01</span> INFO Avvio <span class="kw">del</span> sistema
+<span class="mi">2024</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">15</span> <span class="mi">14</span>:<span class="mi">32</span>:<span class="mi">05</span> ERROR Connessione al database fallita</code></pre>
+<p>Il programma deve:</p>
+<ul>
+<li>Contare il numero di messaggi per ogni livello (INFO, WARNING, ERROR).</li>
+<li>Estrarre e salvare in un file separato tutti i messaggi di ERROR.</li>
+<li>Gestire righe malformate senza interrompere l'esecuzione.</li>
+</ul>
+<p><strong>Esercizio 8 — Cache JSON</strong></p>
+<p>Scrivete una classe <code>CacheSemplice</code> che memorizza coppie chiave-valore in un file JSON. La classe deve avere:</p>
+<ul>
+<li><code><em>_init</em>_(self, percorso: Path) -> None</code> — carica la cache dal file (se esiste).</li>
+<li><code>get(self, chiave: str) -> str | None</code> — restituisce il valore o <code>None</code>.</li>
+<li><code>set(self, chiave: str, valore: str) -> None</code> — inserisce o aggiorna e salva su disco.</li>
+<li>Tutta la gestione degli errori necessaria (file corrotto, permessi, ecc.).</li>
+</ul>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questa lezione abbiamo affrontato un passaggio fondamentale: far uscire i nostri programmi dall'isolamento del codice "autocontenuto" e metterli in comunicazione con il mondo esterno attraverso i file. Questo passaggio porta con sé una responsabilità nuova — la gestione degli errori — che distingue un programma "giocattolo" da un programma robusto e affidabile.</p>
+<p>Le tre regole da portare con sé:</p>
+<ol>
+<li><strong>Usate sempre <code>with</code></strong> per aprire i file.</li>
+<li><strong>Catturate eccezioni specifiche</strong>, mai generiche.</li>
+<li><strong>Usate <code>pathlib</code></strong> per i percorsi: è più sicuro, più leggibile e più portabile.</li>
+</ol>
+<p>Nella prossima lezione faremo un grande salto concettuale: passeremo dalla programmazione <em>procedurale</em> (funzioni che operano su dati) alla programmazione <em>orientata agli oggetti</em> (dati e comportamento uniti in un'unica entità). Scoprirete che molte delle cose che avete usato fin qui — stringhe, liste, dizionari, file — sono già oggetti. La lezione 16 vi darà gli strumenti per creare i vostri.</p>
+<nav class="bottom-nav"><span><a href="F14_funzioni_avanzate_moduli.html">← F14</a></span><span><a href="../../index.html">Home</a></span><span><a href="F16_programmazione_oggetti.html">F16 →</a></span></nav>
+</body>
+</html>

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F13 — Funzioni: fondamenti — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F12_dizionari_set_mutabilita.html">← F12</a> &bull; <a href="F14_funzioni_avanzate_moduli.html">F14 →</a> &bull; <a href="../../presentazioni/F13_funzioni_fondamenti.html">Presentazione</a></nav>
+<h1>F13 — Funzioni: fondamenti</h1>
+
+<h1>Lezione Frontale 13 — Funzioni: fondamenti</h1>
+<h2>Introduzione</h2>
+<p>Finora avete scritto programmi che scorrono dall'alto verso il basso, con variabili, condizioni e cicli. Ma man mano che i problemi crescono in complessità, il codice scritto in un unico blocco diventa difficile da leggere, da correggere e da riutilizzare. Se dovete calcolare la media in dieci punti diversi del programma, copiate e incollate lo stesso codice dieci volte? E quando scoprite un errore nella formula, lo correggete in tutti e dieci i posti?</p>
+<p>Le <strong>funzioni</strong> risolvono esattamente questo problema. Una funzione è un blocco di codice a cui date un nome, che potete richiamare ogni volta che ne avete bisogno. Scrivete la logica una volta sola, la testate una volta sola, e poi la usate ovunque.</p>
+<hr>
+<h2>Perche le funzioni: riuso, astrazione, decomposizione</h2>
+<p>Le funzioni servono per tre motivi fondamentali.</p>
+<h3>Riuso del codice</h3>
+<p>Il motivo piu immediato: evitare la duplicazione. Se la stessa operazione serve in piu punti del programma, la si scrive una volta come funzione e la si chiama dove serve. Quando si scopre un bug, si corregge in un solo posto.</p>
+<h3>Astrazione</h3>
+<p>Una funzione nasconde i dettagli implementativi dietro un nome significativo. Quando leggete <code>calcola_media(voti)</code>, capite immediatamente <em>cosa</em> fa il codice, senza dovervi preoccupare del <em>come</em>. Questo e il principio di <strong>astrazione</strong>: separare il "cosa" dal "come". In statistica lavorerete con funzioni come <code>media()</code>, <code>varianza()</code>, <code>regressione()</code>: vi basta sapere cosa calcolano, non come lo fanno internamente.</p>
+<h3>Decomposizione</h3>
+<p>Un problema complesso si risolve spezzandolo in sotto-problemi piu piccoli e gestibili. Ogni sotto-problema diventa una funzione. Questa strategia si chiama <strong>decomposizione funzionale</strong> ed e una delle tecniche piu potenti della programmazione.</p>
+<p>Immaginate di dover analizzare un dataset:</p>
+<ol>
+<li>Leggere i dati dal file</li>
+<li>Pulire i dati (rimuovere valori mancanti)</li>
+<li>Calcolare le statistiche descrittive</li>
+<li>Generare un report</li>
+</ol>
+<p>Ognuno di questi passi diventa una funzione separata. Il programma principale diventa una sequenza leggibile di chiamate a funzione.</p>
+<h3>Breve storia delle subroutine</h3>
+<p>L'idea di "sotto-programma riutilizzabile" e antica quasi quanto la programmazione stessa. Gia negli anni '40, i pionieri dell'informatica si accorsero che certi blocchi di istruzioni venivano ripetuti in programmi diversi. Grace Hopper, matematica e informatica americana, fu tra i primi a promuovere l'idea di librerie di subroutine riutilizzabili: pezzi di codice gia scritti e testati che i programmatori potevano incorporare nei propri programmi.</p>
+<p>Negli anni '60, con la "crisi del software" — progetti che sforavano tempi e costi — Edsger Dijkstra e altri teorici promossero la <strong>programmazione strutturata</strong>, in cui le funzioni sono il mattone fondamentale per organizzare il codice. Da allora, ogni linguaggio di programmazione ha messo le funzioni al centro della propria struttura.</p>
+<hr>
+<h2>Definire una funzione con type hints</h2>
+<p>In Python una funzione si definisce con la parola chiave <code>def</code>:</p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica di una lista di numeri.&quot;&quot;&quot;</span>
+    somma: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    <span class="kw">return</span> somma <span class="op">/</span> n</code></pre>
+<p>Questa funzione:</p>
+<ul>
+<li>si chiama <code>calcola_media</code></li>
+<li>accetta un parametro <code>valori</code> di tipo <code>list[float]</code></li>
+<li>restituisce un <code>float</code></li>
+<li>ha una <strong>docstring</strong> che ne descrive lo scopo</li>
+<li>usa <code>return</code> per restituire il risultato</li>
+</ul>
+<p>Per chiamarla:</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">28.0</span>, <span class="mi">30.0</span>, <span class="mi">25.0</span>, <span class="mi">27.0</span>, <span class="mi">22.0</span>]
+media: <span class="nb">float</span> <span class="op">=</span> calcola_media(voti)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media}&quot;</span>)  <span class="cm"># Media: 26.4</span></code></pre>
+<hr>
+<h2>Anatomia di una funzione</h2>
+<p>Ogni funzione Python e composta da parti ben definite. Analizziamole una per una:</p>
+<pre><code><span class="kw">def</span> <span class="fn">nome_funzione</span>(<span class="fn">param1</span>: tipo1, param2: tipo2) <span class="op">-</span><span class="op">&gt;</span> tipo_ritorno:
+    <span class="st">&quot;&quot;&quot;Docstring: descrizione della funzione.&quot;&quot;&quot;</span>
+    <span class="cm"># Corpo della funzione</span>
+    risultato <span class="op">=</span> ...
+    <span class="kw">return</span> risultato</code></pre>
+<h3><code>def</code></h3>
+<p>La parola chiave <code>def</code> (abbreviazione di <em>define</em>) introduce la definizione di una funzione. In Python, <code>def</code> e un'istruzione eseguibile: quando l'interprete la incontra, crea un oggetto funzione e lo associa al nome indicato. Questo significa che una funzione deve essere definita <em>prima</em> di essere chiamata.</p>
+<h3>Nome</h3>
+<p>Il nome segue le stesse regole delle variabili: lettere minuscole, parole separate da underscore (<code>snake<em>case</code>). Scegliete nomi che descrivano <em>cosa fa</em> la funzione, tipicamente con un verbo: <code>calcola</em>media</code>, <code>leggi<em>file</code>, <code>filtra</em>outlier</code>, <code>conta<em>valori</em>mancanti</code>.</p>
+<h3>Parametri tipizzati</h3>
+<p>Tra le parentesi tonde si elencano i <strong>parametri</strong>: variabili locali che riceveranno i valori passati alla chiamata. Ogni parametro ha un <strong>type hint</strong> che indica il tipo atteso:</p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_bmi</span>(<span class="fn">peso_kg</span>: <span class="nb">float</span>, altezza_m: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola l&#x27;indice di massa corporea.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> peso_kg <span class="op">/</span> (altezza_m <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)</code></pre>
+<p>I type hints non bloccano l'esecuzione se il tipo e sbagliato (Python non li controlla a runtime), ma sono preziosi per tre motivi:</p>
+<ol>
+<li><strong>Documentazione</strong>: chi legge la funzione capisce subito cosa passare</li>
+<li><strong>Errori precoci</strong>: strumenti come <code>mypy</code> verificano i tipi <em>prima</em> dell'esecuzione</li>
+<li><strong>Autocompletamento</strong>: gli editor suggeriscono metodi e attributi corretti</li>
+</ol>
+<h3><code>-> tipo_ritorno</code></h3>
+<p>La freccia <code>-></code> seguita dal tipo indica cosa restituisce la funzione. Se la funzione non restituisce nulla di significativo, si annota con <code>-> None</code>.</p>
+<pre><code><span class="kw">def</span> <span class="fn">stampa_report</span>(<span class="fn">titolo</span>: <span class="nb">str</span>, dati: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa un report formattato a schermo.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="st">f&quot;=== {titolo} ===&quot;</span>)
+    <span class="kw">for</span> valore <span class="kw">in</span> dati:
+        <span class="nb">print</span>(<span class="st">f&quot;  {valore:.2f}&quot;</span>)</code></pre>
+<h3>Docstring</h3>
+<p>La stringa immediatamente dopo la riga <code>def</code> e la <strong>docstring</strong> (<em>documentation string</em>). Approfondiremo le docstring in una sezione dedicata piu avanti.</p>
+<h3>Corpo</h3>
+<p>Il blocco indentato dopo la riga <code>def</code> e il corpo della funzione. Contiene le istruzioni che vengono eseguite ogni volta che la funzione viene chiamata. Puo contenere qualsiasi codice Python: variabili locali, condizioni, cicli, chiamate ad altre funzioni.</p>
+<h3><code>return</code></h3>
+<p>L'istruzione <code>return</code> restituisce un valore al chiamante e termina immediatamente l'esecuzione della funzione. Ne parliamo in dettaglio nella prossima sezione.</p>
+<hr>
+<h2>Parametro vs argomento</h2>
+<p>Questi due termini vengono spesso confusi, ma hanno significati distinti:</p>
+<ul>
+<li><strong>Parametro</strong>: la variabile nella <em>definizione</em> della funzione. E un "segnaposto" che aspetta un valore.</li>
+<li><strong>Argomento</strong>: il valore concreto passato nella <em>chiamata</em> della funzione.</li>
+</ul>
+<pre><code><span class="cm"># &quot;nome&quot; e &quot;eta&quot; sono PARAMETRI (definizione)</span>
+<span class="kw">def</span> <span class="fn">saluta</span>(<span class="fn">nome</span>: <span class="nb">str</span>, eta: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="kw">return</span> <span class="st">f&quot;Ciao {nome}, hai {eta} anni!&quot;</span>
+
+<span class="cm"># &quot;Anna&quot; e 21 sono ARGOMENTI (chiamata)</span>
+messaggio: <span class="nb">str</span> <span class="op">=</span> saluta(<span class="st">&quot;Anna&quot;</span>, <span class="mi">21</span>)</code></pre>
+<p>Un'analogia: i parametri sono come i campi vuoti di un modulo da compilare (Nome: <em>_</em>, Eta: <em>_</em>). Gli argomenti sono i valori che scrivete nei campi quando compilate il modulo.</p>
+<hr>
+<h2>L'istruzione <code>return</code></h2>
+<p><code>return</code> svolge due compiti contemporaneamente:</p>
+<ol>
+<li><strong>Restituisce un valore</strong> al codice che ha chiamato la funzione</li>
+<li><strong>Termina</strong> immediatamente l'esecuzione della funzione</li>
+</ol>
+<h3>Return semplice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">quadrato</span>(<span class="fn">n</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+
+risultato: <span class="nb">float</span> <span class="op">=</span> quadrato(<span class="mi">5.0</span>)  <span class="cm"># risultato = 25.0</span></code></pre>
+<h3>Return multipli: terminazione anticipata</h3>
+<p>Siccome <code>return</code> termina la funzione, puo essere usato per uscire in anticipo:</p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_media_sicura</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media, restituendo 0.0 se la lista e vuota.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">return</span> <span class="mi">0.0</span>  <span class="cm"># esce subito, il codice sotto non viene eseguito</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)</code></pre>
+<h3>Senza <code>return</code>: il valore <code>None</code></h3>
+<p>Se una funzione termina senza incontrare un'istruzione <code>return</code> (oppure esegue un <code>return</code> senza valore), restituisce automaticamente <code>None</code>:</p>
+<pre><code><span class="kw">def</span> <span class="fn">saluta</span>(<span class="fn">nome</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Ciao, {nome}!&quot;</span>)
+    <span class="cm"># nessun return esplicito → restituisce None</span>
+
+risultato <span class="op">=</span> saluta(<span class="st">&quot;Marco&quot;</span>)
+<span class="nb">print</span>(risultato)  <span class="cm"># None</span></code></pre>
+<p><code>None</code> e un valore speciale di Python che rappresenta "nessun valore". E l'equivalente di un foglio bianco: non e zero, non e la stringa vuota, e proprio l'assenza di valore.</p>
+<h3>Restituire piu valori con le tuple</h3>
+<p>Python permette di restituire piu valori contemporaneamente impacchettandoli in una <strong>tupla</strong>:</p>
+<pre><code><span class="kw">def</span> <span class="fn">statistiche_base</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media, minimo e massimo.&quot;&quot;&quot;</span>
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(valori)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(valori)
+    <span class="kw">return</span> media, minimo, massimo  <span class="cm"># restituisce una tupla</span></code></pre>
+<p>Al momento della chiamata, potete "spacchettare" i valori in variabili separate:</p>
+<pre><code>dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">12.5</span>, <span class="mi">18.3</span>, <span class="mi">9.1</span>, <span class="mi">22.0</span>, <span class="mi">15.7</span>]
+m, lo, hi <span class="op">=</span> statistiche_base(dati)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {m:.1f}, Min: {lo:.1f}, Max: {hi:.1f}&quot;</span>)
+<span class="cm"># Media: 15.5, Min: 9.1, Max: 22.0</span></code></pre>
+<p>Questo e estremamente comodo per le funzioni statistiche, dove spesso si vogliono calcolare piu indicatori in un unico passaggio sui dati.</p>
+<hr>
+<h2>Docstring: documentare le funzioni</h2>
+<p>Una <strong>docstring</strong> e una stringa posta come prima istruzione di una funzione, che ne documenta lo scopo, i parametri e il valore di ritorno. Python la rende accessibile tramite l'attributo <code><em>_doc</em>_</code> e la funzione built-in <code>help()</code>.</p>
+<h3>Formato consigliato</h3>
+<p>Esistono diversi stili di docstring. Per questo corso, adottiamo il formato "Google style", chiaro e leggibile:</p>
+<pre><code><span class="kw">def</span> <span class="fn">deviazione_standard</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>], campione: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la deviazione standard di una lista di valori.
+
+    Implementa la formula della deviazione standard, utilizzando
+    n-1 al denominatore per la versione campionaria (default)
+    oppure n per la versione della popolazione.
+
+    Args:
+        valori: lista di valori numerici (almeno 2 elementi).
+        campione: se True usa n-1 (Bessel), se False usa n.
+
+    Returns:
+        La deviazione standard come float.
+
+    Raises:
+        ValueError: se la lista contiene meno di 2 elementi.
+    &quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Servono almeno 2 valori&quot;</span>)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    scarti_quadratici: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori]
+    divisore: <span class="nb">int</span> <span class="op">=</span> n <span class="op">-</span> <span class="mi">1</span> <span class="kw">if</span> campione <span class="kw">else</span> n
+    <span class="kw">return</span> (<span class="nb">sum</span>(scarti_quadratici) <span class="op">/</span> divisore) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span></code></pre>
+<p>Le quattro sezioni della docstring sono:</p>
+<ol>
+<li><strong>Descrizione breve</strong> (prima riga): una frase che dice <em>cosa fa</em> la funzione</li>
+<li><strong>Descrizione estesa</strong> (opzionale): dettagli, algoritmo, formule, note</li>
+<li><strong>Args</strong>: un parametro per riga, con descrizione</li>
+<li><strong>Returns</strong>: cosa viene restituito</li>
+<li><strong>Raises</strong>: quali eccezioni puo sollevare e quando</li>
+</ol>
+<h3>Usare <code>help()</code></h3>
+<p>La funzione built-in <code>help()</code> mostra la docstring in modo formattato:</p>
+<pre><code>help(deviazione_standard)</code></pre>
+<p>Output:</p>
+<pre><code>Help on function deviazione_standard <span class="kw">in</span> module __main__:
+
+deviazione_standard(valori: <span class="nb">list</span>[<span class="nb">float</span>], campione: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>
+    Calcola la deviazione standard di una lista di valori.
+
+    Implementa la formula della deviazione standard, utilizzando
+    n<span class="op">-</span><span class="mi">1</span> al denominatore per la versione campionaria (default)
+    oppure n per la versione della popolazione.
+    ...</code></pre>
+<p>Scrivere docstring e un investimento: chi usera la vostra funzione (incluso il "voi del futuro") vi ringraziera.</p>
+<hr>
+<h2>Parametri: posizionali, con default e keyword</h2>
+<p>Python offre diversi modi per passare argomenti a una funzione.</p>
+<h3>Parametri posizionali</h3>
+<p>L'ordine degli argomenti corrisponde all'ordine dei parametri nella definizione:</p>
+<pre><code><span class="kw">def</span> <span class="fn">intervallo_confidenza</span>(<span class="fn">media</span>: <span class="nb">float</span>, errore: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Calcola estremi dell&#x27;intervallo di confidenza.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> media <span class="op">-</span> errore, media <span class="op">+</span> errore
+
+<span class="cm"># Gli argomenti sono associati per POSIZIONE</span>
+limiti: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> intervallo_confidenza(<span class="mi">25.3</span>, <span class="mi">1.2</span>)
+<span class="cm"># media=25.3, errore=1.2</span></code></pre>
+<h3>Parametri con valore di default</h3>
+<p>Un parametro puo avere un valore predefinito, che viene usato se il chiamante non fornisce un argomento:</p>
+<pre><code><span class="kw">def</span> <span class="fn">formatta_numero</span>(<span class="fn">valore</span>: <span class="nb">float</span>, decimali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>, prefisso: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Formatta un numero con il numero di decimali specificato.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="st">f&quot;{prefisso}{valore:.{decimali}f}&quot;</span>
+
+<span class="cm"># Usa tutti i default</span>
+<span class="nb">print</span>(formatta_numero(<span class="mi">3.14159</span>))          <span class="cm"># &quot;3.14&quot;</span>
+
+<span class="cm"># Sovrascrive il primo default</span>
+<span class="nb">print</span>(formatta_numero(<span class="mi">3.14159</span>, <span class="mi">4</span>))       <span class="cm"># &quot;3.1416&quot;</span>
+
+<span class="cm"># Sovrascrive entrambi i default</span>
+<span class="nb">print</span>(formatta_numero(<span class="mi">3.14159</span>, <span class="mi">3</span>, <span class="st">&quot;€&quot;</span>))  <span class="cm"># &quot;€3.142&quot;</span></code></pre>
+<p><strong>Regola importante:</strong> i parametri con default devono venire <em>dopo</em> quelli senza default. Questo non e valido:</p>
+<pre><code><span class="cm"># ERRORE: parametro senza default dopo uno con default</span>
+<span class="kw">def</span> <span class="fn">sbagliata</span>(<span class="fn">a</span>: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>, b: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:  <span class="cm"># SyntaxError!</span>
+    <span class="kw">return</span> a <span class="op">+</span> b</code></pre>
+<h3>Argomenti keyword</h3>
+<p>Potete specificare gli argomenti per <em>nome</em>, indipendentemente dall'ordine:</p>
+<pre><code><span class="cm"># Argomenti keyword: l&#x27;ordine non conta</span>
+<span class="nb">print</span>(formatta_numero(valore<span class="op">=</span><span class="mi">3.14159</span>, prefisso<span class="op">=</span><span class="st">&quot;€&quot;</span>, decimali<span class="op">=</span><span class="mi">3</span>))  <span class="cm"># &quot;€3.142&quot;</span>
+
+<span class="cm"># Misto: posizionali prima, keyword dopo</span>
+<span class="nb">print</span>(formatta_numero(<span class="mi">3.14159</span>, prefisso<span class="op">=</span><span class="st">&quot;$&quot;</span>))  <span class="cm"># &quot;$3.14&quot;</span></code></pre>
+<p>Gli argomenti keyword rendono le chiamate piu leggibili, specialmente quando ci sono molti parametri o parametri booleani:</p>
+<pre><code><span class="cm"># Poco chiaro: cosa significa True?</span>
+risultato: <span class="nb">float</span> <span class="op">=</span> deviazione_standard(dati, <span class="kw">True</span>)
+
+<span class="cm"># Chiaro: si capisce il significato</span>
+risultato: <span class="nb">float</span> <span class="op">=</span> deviazione_standard(dati, campione<span class="op">=</span><span class="kw">True</span>)</code></pre>
+<h3>Cenni su <code><em>args</code> e <code></em>*kwargs</code></h3>
+<p>Python permette di definire funzioni che accettano un numero variabile di argomenti. Non li userete spesso in questo corso, ma e bene sapere che esistono:</p>
+<pre><code><span class="kw">def</span> <span class="fn">somma_tutti</span>(<span class="op">*</span><span class="fn">args</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Somma un numero qualsiasi di valori.&quot;&quot;&quot;</span>
+    totale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+    <span class="kw">for</span> valore <span class="kw">in</span> args:
+        totale <span class="op">+</span><span class="op">=</span> valore
+    <span class="kw">return</span> totale
+
+<span class="nb">print</span>(somma_tutti(<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>))       <span class="cm"># 6.0</span>
+<span class="nb">print</span>(somma_tutti(<span class="mi">10.0</span>, <span class="mi">20.0</span>))           <span class="cm"># 30.0</span>
+<span class="nb">print</span>(somma_tutti(<span class="mi">5.0</span>))                  <span class="cm"># 5.0</span></code></pre>
+<p><code><em>args</code> raccoglie tutti gli argomenti posizionali "in piu" in una tupla. Analogamente, <code></em>*kwargs</code> raccoglie argomenti keyword aggiuntivi in un dizionario:</p>
+<pre><code><span class="kw">def</span> <span class="fn">stampa_info</span>(<span class="fn">nome</span>: <span class="nb">str</span>, <span class="op">*</span><span class="op">*</span>kwargs: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa informazioni su uno studente.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Nome: {nome}&quot;</span>)
+    <span class="kw">for</span> chiave, valore <span class="kw">in</span> kwargs.items():
+        <span class="nb">print</span>(<span class="st">f&quot;  {chiave}: {valore}&quot;</span>)
+
+stampa_info(<span class="st">&quot;Anna&quot;</span>, corso<span class="op">=</span><span class="st">&quot;Statistica&quot;</span>, anno<span class="op">=</span><span class="st">&quot;primo&quot;</span>)
+<span class="cm"># Nome: Anna</span>
+<span class="cm">#   corso: Statistica</span>
+<span class="cm">#   anno: primo</span></code></pre>
+<p>Troverete <code><em>args</code> e <code></em>*kwargs</code> usati internamente in molte librerie Python. Per ora, concentratevi sui parametri posizionali, con default e keyword.</p>
+<hr>
+<h2>Il pericolo del default mutabile</h2>
+<p>Questa sezione descrive uno dei bug piu insidiosi di Python, che ha colto di sorpresa generazioni di programmatori. Leggetela con attenzione.</p>
+<h3>Il problema</h3>
+<p>Osservate questa funzione, apparentemente innocua:</p>
+<pre><code><span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">voto</span>: <span class="nb">int</span>, lista: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Aggiunge un voto alla lista e la restituisce.&quot;&quot;&quot;</span>
+    lista.append(voto)
+    <span class="kw">return</span> lista</code></pre>
+<p>Sembra ragionevole: se non si passa una lista, ne crea una vuota. Ma guardate cosa succede:</p>
+<pre><code><span class="nb">print</span>(aggiungi_voto(<span class="mi">28</span>))  <span class="cm"># [28]        — fin qui tutto bene</span>
+<span class="nb">print</span>(aggiungi_voto(<span class="mi">30</span>))  <span class="cm"># [28, 30]    — aspettavamo [30]!</span>
+<span class="nb">print</span>(aggiungi_voto(<span class="mi">25</span>))  <span class="cm"># [28, 30, 25] — la lista &quot;vuota&quot; non è vuota!</span></code></pre>
+<p>Ogni chiamata modifica la <em>stessa</em> lista! Il valore di default <code>[]</code> viene creato <strong>una sola volta</strong>, nel momento in cui Python esegue la riga <code>def</code>. Da quel momento, tutte le chiamate che non forniscono una lista condividono lo stesso oggetto.</p>
+<h3>Perche succede</h3>
+<p>Quando Python incontra <code>def aggiungi<em>voto(voto: int, lista: list[int] = [])</code>, valuta l'espressione <code>[]</code> e crea un oggetto lista vuota. Questo oggetto viene conservato come attributo della funzione stessa (in <code>aggiungi</em>voto.<em>_defaults</em>_</code>). Ad ogni chiamata senza argomento <code>lista</code>, il parametro punta a <em>quello stesso oggetto</em>, che nel frattempo e stato modificato dalle chiamate precedenti.</p>
+<p>Potete verificare:</p>
+<pre><code><span class="nb">print</span>(aggiungi_voto.__defaults__)
+<span class="cm"># ([28, 30, 25],)  — il default NON è più una lista vuota!</span></code></pre>
+<h3>La soluzione: usare <code>None</code> come default</h3>
+<p>Il pattern corretto e usare <code>None</code> come valore di default e creare una nuova lista all'interno della funzione:</p>
+<pre><code><span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">voto</span>: <span class="nb">int</span>, lista: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Aggiunge un voto alla lista e la restituisce.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> lista <span class="kw">is</span> <span class="kw">None</span>:
+        lista <span class="op">=</span> []  <span class="cm"># nuova lista ad ogni chiamata</span>
+    lista.append(voto)
+    <span class="kw">return</span> lista</code></pre>
+<p>Ora ogni chiamata senza argomento <code>lista</code> crea una lista vuota <em>fresca</em>:</p>
+<pre><code><span class="nb">print</span>(aggiungi_voto(<span class="mi">28</span>))  <span class="cm"># [28]</span>
+<span class="nb">print</span>(aggiungi_voto(<span class="mi">30</span>))  <span class="cm"># [30]  — corretto!</span>
+<span class="nb">print</span>(aggiungi_voto(<span class="mi">25</span>))  <span class="cm"># [25]  — corretto!</span></code></pre>
+<h3>La regola d'oro</h3>
+<blockquote>
+<p><strong>Non usate mai un oggetto mutabile (lista, dizionario, set) come valore di default di un parametro.</strong> Usate <code>None</code> e create l'oggetto dentro la funzione.</p>
+</blockquote>
+<p>Questo vale per <code>list</code>, <code>dict</code>, <code>set</code> e qualsiasi altro oggetto modificabile. I tipi immutabili (<code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>tuple</code>, <code>None</code>) sono sicuri come default perche non possono essere modificati.</p>
+<hr>
+<h2>Scope e namespace</h2>
+<p>Quando definite una variabile, dove e accessibile? La risposta dipende dallo <strong>scope</strong> (ambito di visibilita) e dal <strong>namespace</strong> (spazio dei nomi) in cui si trova.</p>
+<h3>Scope locale</h3>
+<p>Le variabili create dentro una funzione esistono solo dentro quella funzione:</p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_area</span>(<span class="fn">base</span>: <span class="nb">float</span>, altezza: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    area: <span class="nb">float</span> <span class="op">=</span> base <span class="op">*</span> altezza  <span class="cm"># variabile LOCALE</span>
+    <span class="kw">return</span> area
+
+risultato: <span class="nb">float</span> <span class="op">=</span> calcola_area(<span class="mi">5.0</span>, <span class="mi">3.0</span>)
+<span class="nb">print</span>(risultato)  <span class="cm"># 15.0</span>
+<span class="nb">print</span>(area)       <span class="cm"># NameError: name &#x27;area&#x27; is not defined</span></code></pre>
+<p>La variabile <code>area</code> nasce quando la funzione viene chiamata e muore quando la funzione termina. Questo e il <strong>scope locale</strong>: le variabili locali sono invisibili dall'esterno.</p>
+<p>Questo e un vantaggio, non un limite. Significa che potete usare gli stessi nomi di variabile in funzioni diverse senza conflitti:</p>
+<pre><code><span class="kw">def</span> <span class="fn">media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)  <span class="cm"># questa n è locale a media()</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+
+<span class="kw">def</span> <span class="fn">varianza</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)  <span class="cm"># questa è un&#x27;ALTRA n, locale a varianza()</span>
+    m: <span class="nb">float</span> <span class="op">=</span> media(valori)
+    <span class="kw">return</span> <span class="nb">sum</span>((x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori) <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)</code></pre>
+<h3>Scope globale</h3>
+<p>Le variabili definite fuori da qualsiasi funzione, al livello principale del modulo, hanno <strong>scope globale</strong>:</p>
+<pre><code>PI: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.14159265</span>  <span class="cm"># variabile GLOBALE</span>
+
+<span class="kw">def</span> <span class="fn">area_cerchio</span>(<span class="fn">raggio</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> PI <span class="op">*</span> raggio <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>  <span class="cm"># può LEGGERE PI</span>
+
+<span class="nb">print</span>(area_cerchio(<span class="mi">5.0</span>))  <span class="cm"># 78.5398...</span></code></pre>
+<p>Una funzione puo <em>leggere</em> le variabili globali, ma non puo <em>modificarle</em> senza una dichiarazione esplicita:</p>
+<pre><code>contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+<span class="kw">def</span> <span class="fn">incrementa</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    contatore <span class="op">=</span> contatore <span class="op">+</span> <span class="mi">1</span>  <span class="cm"># UnboundLocalError!</span>
+
+incrementa()</code></pre>
+<p>Python vede che <code>contatore</code> appare a sinistra di un <code>=</code> dentro la funzione e la tratta come variabile locale. Ma quando tenta di leggere <code>contatore + 1</code>, la variabile locale non e ancora stata assegnata.</p>
+<h3>La parola chiave <code>global</code> (e perche evitarla)</h3>
+<p>Tecnicamente, potete usare <code>global</code> per modificare una variabile globale dall'interno di una funzione:</p>
+<pre><code>contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+<span class="kw">def</span> <span class="fn">incrementa</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="kw">global</span> contatore
+    contatore <span class="op">=</span> contatore <span class="op">+</span> <span class="mi">1</span>
+
+incrementa()
+<span class="nb">print</span>(contatore)  <span class="cm"># 1</span></code></pre>
+<p>Ma questo e quasi sempre una <strong>cattiva pratica</strong>. Perche?</p>
+<ul>
+<li>Crea <strong>dipendenze nascoste</strong>: la funzione modifica qualcosa che non e tra i suoi parametri ne tra i suoi valori di ritorno. Chi legge la chiamata <code>incrementa()</code> non sospetta che una variabile globale sia stata modificata.</li>
+<li>Rende il codice <strong>difficile da testare</strong>: il risultato della funzione dipende dallo stato globale, non solo dai suoi input.</li>
+<li>Causa <strong>bug sottili</strong>: in un programma grande, piu funzioni che modificano la stessa variabile globale creano interazioni imprevedibili.</li>
+</ul>
+<p>Il modo corretto e passare il valore come parametro e restituirlo come risultato:</p>
+<pre><code><span class="kw">def</span> <span class="fn">incrementa</span>(<span class="fn">contatore</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="kw">return</span> contatore <span class="op">+</span> <span class="mi">1</span>
+
+contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+contatore <span class="op">=</span> incrementa(contatore)
+<span class="nb">print</span>(contatore)  <span class="cm"># 1</span></code></pre>
+<h3>Scope built-in</h3>
+<p>Oltre allo scope locale e globale, esiste lo scope <strong>built-in</strong>: i nomi predefiniti di Python come <code>print</code>, <code>len</code>, <code>sum</code>, <code>range</code>, <code>int</code>, <code>float</code>, ecc. Questi sono sempre disponibili senza importazioni.</p>
+<h3>La regola LEGB</h3>
+<p>Quando Python incontra un nome, lo cerca in quest'ordine:</p>
+<ol>
+<li><strong>L</strong> — <strong>Local</strong>: lo scope della funzione corrente</li>
+<li><strong>E</strong> — <strong>Enclosing</strong>: gli scope delle funzioni che racchiudono quella corrente (per le funzioni annidate, che vedremo piu avanti)</li>
+<li><strong>G</strong> — <strong>Global</strong>: lo scope del modulo</li>
+<li><strong>B</strong> — <strong>Built-in</strong>: i nomi predefiniti di Python</li>
+</ol>
+<p>La ricerca si ferma al primo livello in cui il nome viene trovato. Se non viene trovato in nessun livello, Python solleva un <code>NameError</code>.</p>
+<pre><code>x: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;globale&quot;</span>
+
+<span class="kw">def</span> <span class="fn">esterna</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    x: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;enclosing&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">interna</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        x: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;locale&quot;</span>
+        <span class="nb">print</span>(x)  <span class="cm"># &quot;locale&quot; — trovata in L</span>
+
+    interna()
+
+esterna()</code></pre>
+<p>Se rimuovete <code>x = "locale"</code> dalla funzione <code>interna</code>, Python troverebbe <code>x</code> nello scope enclosing ("enclosing"). Se rimuovete anche quello, troverebbe quello globale ("globale"). Se rimuovete tutti e tre, cercherebbe <code>x</code> tra i built-in e, non trovandolo, solleverebbe un <code>NameError</code>.</p>
+<hr>
+<h2>Best practice per le funzioni</h2>
+<p>Ecco un riepilogo delle buone abitudini da seguire quando scrivete funzioni.</p>
+<h3>Funzioni brevi e focalizzate</h3>
+<p>Ogni funzione dovrebbe fare <strong>una cosa sola</strong> e farla bene. Se la vostra funzione supera le 20-30 righe, probabilmente sta facendo troppo e andrebbe spezzata in sotto-funzioni. Una funzione breve e piu facile da capire, da testare e da riutilizzare.</p>
+<h3>Comunicare via parametri e return</h3>
+<p>Le funzioni dovrebbero ricevere i dati necessari tramite i <strong>parametri</strong> e restituire i risultati tramite <strong>return</strong>. Evitate di leggere o modificare variabili globali dall'interno delle funzioni. Questo rende la funzione <strong>pura</strong>: il suo output dipende solo dai suoi input, senza effetti collaterali.</p>
+<pre><code><span class="cm"># MALE: usa variabile globale</span>
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>]
+
+<span class="kw">def</span> <span class="fn">media_brutta</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> <span class="nb">sum</span>(dati) <span class="op">/</span> <span class="nb">len</span>(dati)  <span class="cm"># dipende dalla variabile globale &quot;dati&quot;</span>
+
+<span class="cm"># BENE: riceve i dati come parametro</span>
+<span class="kw">def</span> <span class="fn">media_buona</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)  <span class="cm"># dipende solo dal parametro</span></code></pre>
+<h3>Type hints sempre</h3>
+<p>In questo corso annotiamo <em>sempre</em> i parametri e il tipo di ritorno. I type hints sono documentazione vivente, verificabile con strumenti automatici. Non e un capriccio stilistico: in un contesto professionale, il codice senza type hints e piu difficile da mantenere e piu soggetto a errori.</p>
+<h3>Nomi significativi</h3>
+<p>Il nome della funzione deve descrivere <em>cosa fa</em>. Usate verbi: <code>calcola<em></code>, <code>leggi</em></code>, <code>filtra<em></code>, <code>conta</em></code>, <code>valida<em></code>. Evitate nomi generici come <code>funzione1</code>, <code>fai</em>cose</code>, <code>f</code>.</p>
+<h3>Docstring per ogni funzione</h3>
+<p>Ogni funzione pubblica (cioe usata da altri, non solo come dettaglio interno) dovrebbe avere una docstring. Anche una sola riga e meglio di niente.</p>
+<h3>Un esempio completo</h3>
+<p>Mettiamo insieme tutto quello che abbiamo visto con un esempio realistico per un corso di statistica:</p>
+<pre><code><span class="kw">def</span> <span class="fn">analisi_descrittiva</span>(
+    valori: <span class="nb">list</span>[<span class="nb">float</span>],
+    nome_variabile: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;x&quot;</span>,
+    decimali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa un&#x27;analisi descrittiva di base per una variabile numerica.
+
+    Args:
+        valori: lista non vuota di valori numerici.
+        nome_variabile: nome della variabile per l&#x27;intestazione.
+        decimali: numero di cifre decimali nel report.
+
+    Raises:
+        ValueError: se la lista e vuota.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La lista non puo essere vuota&quot;</span>)
+
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(valori)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(valori)
+    ampiezza: <span class="nb">float</span> <span class="op">=</span> massimo <span class="op">-</span> minimo
+
+    <span class="nb">print</span>(<span class="st">f&quot;=== Analisi descrittiva: {nome_variabile} ===&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  n:         {n}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  Media:     {media:.{decimali}f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  Minimo:    {minimo:.{decimali}f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  Massimo:   {massimo:.{decimali}f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  Ampiezza:  {ampiezza:.{decimali}f}&quot;</span>)
+
+
+<span class="cm"># Uso della funzione</span>
+altezze: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">175.2</span>, <span class="mi">168.0</span>, <span class="mi">182.5</span>, <span class="mi">170.3</span>, <span class="mi">178.9</span>, <span class="mi">165.1</span>, <span class="mi">190.0</span>]
+analisi_descrittiva(altezze, nome_variabile<span class="op">=</span><span class="st">&quot;altezza (cm)&quot;</span>, decimali<span class="op">=</span><span class="mi">1</span>)</code></pre>
+<p>Output:</p>
+<pre><code><span class="op">=</span><span class="op">=</span><span class="op">=</span> Analisi descrittiva: altezza (cm) <span class="op">=</span><span class="op">=</span><span class="op">=</span>
+  n:         <span class="mi">7</span>
+  Media:     <span class="mi">175.7</span>
+  Minimo:    <span class="mi">165.1</span>
+  Massimo:   <span class="mi">190.0</span>
+  Ampiezza:  <span class="mi">24.9</span></code></pre>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Quali sono i tre motivi principali per cui si usano le funzioni? Spiegate brevemente ciascuno.</li>
+</ol>
+<ol>
+<li>Qual e la differenza tra <em>parametro</em> e <em>argomento</em>? Fate un esempio.</li>
+</ol>
+<ol>
+<li>Cosa restituisce una funzione che non ha istruzione <code>return</code>?</li>
+</ol>
+<ol>
+<li>Perche <code>def f(lista: list[int] = [])</code> e pericoloso? Qual e il pattern corretto?</li>
+</ol>
+<ol>
+<li>Spiegate la regola LEGB con un esempio. In quale ordine Python cerca un nome?</li>
+</ol>
+<ol>
+<li>Perche si sconsiglia l'uso della parola chiave <code>global</code>? Quale alternativa e preferibile?</li>
+</ol>
+<ol>
+<li>Cosa succede se una funzione contiene piu istruzioni <code>return</code>? Quale viene eseguita?</li>
+</ol>
+<ol>
+<li>Data la seguente funzione, quali sono i parametri e quali i type hints?</li>
+</ol>
+<pre><code>   <span class="kw">def</span> <span class="fn">calcola_iqr</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">float</span>], ordinati: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:</code></pre>
+<hr>
+<h2>Esercizi</h2>
+<h3>Esercizi base</h3>
+<p><strong>Esercizio 1 — Funzione di benvenuto.</strong></p>
+<p>Scrivete una funzione <code>benvenuto(nome: str, corso: str = "Statistica") -> str</code> che restituisca la stringa <code>"Benvenuto/a, {nome}! Corso: {corso}"</code>. Testatela con e senza il secondo argomento.</p>
+<p><strong>Esercizio 2 — Area del rettangolo.</strong></p>
+<p>Scrivete una funzione <code>area_rettangolo(base: float, altezza: float) -> float</code> che calcola e restituisce l'area. Aggiungete una docstring completa (con Args e Returns). Verificate con <code>help()</code>.</p>
+<p><strong>Esercizio 3 — Pari o dispari.</strong></p>
+<p>Scrivete una funzione <code>e_pari(n: int) -> bool</code> che restituisce <code>True</code> se <code>n</code> e pari, <code>False</code> altrimenti. Usatela in un ciclo <code>for</code> per classificare i numeri da 1 a 10.</p>
+<h3>Esercizi intermedi</h3>
+<p><strong>Esercizio 4 — Statistiche di base.</strong></p>
+<p>Scrivete una funzione <code>statistiche(valori: list[float]) -> tuple[float, float, float]</code> che restituisce la media, il valore minimo e il massimo. Gestite il caso della lista vuota restituendo <code>(0.0, 0.0, 0.0)</code>. Utilizzate lo spacchettamento della tupla per stampare i risultati.</p>
+<p><strong>Esercizio 5 — Contatore di occorrenze.</strong></p>
+<p>Scrivete una funzione <code>conta_occorrenze(testo: str, carattere: str) -> int</code> che conta quante volte <code>carattere</code> appare in <code>testo</code>, <em>senza</em> usare il metodo <code>.count()</code>. Aggiungete una docstring completa.</p>
+<p><strong>Esercizio 6 — Formattazione condizionale.</strong></p>
+<p>Scrivete una funzione <code>formatta_voto(voto: int, lode: bool = False, scala: int = 30) -> str</code> che restituisce:</p>
+<ul>
+<li><code>"INSUFFICIENTE"</code> se il voto e inferiore a 18</li>
+<li><code>"{voto}/{scala}"</code> normalmente</li>
+<li><code>"{voto}/{scala} e lode"</code> se <code>lode</code> e <code>True</code> e il voto e uguale a <code>scala</code></li>
+<li><code>"Errore: lode non valida"</code> se <code>lode</code> e <code>True</code> ma il voto non e uguale a <code>scala</code></li>
+</ul>
+<h3>Esercizi avanzati</h3>
+<p><strong>Esercizio 7 — Il default mutabile.</strong></p>
+<p>Considerate questa funzione:</p>
+<pre><code><span class="kw">def</span> <span class="fn">registra_esame</span>(<span class="fn">nome</span>: <span class="nb">str</span>, esami: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    esami.append(nome)
+    <span class="kw">return</span> esami</code></pre>
+<p>a) Senza eseguirla, prevedete cosa stampa il seguente codice:</p>
+<pre><code><span class="nb">print</span>(registra_esame(<span class="st">&quot;Analisi&quot;</span>))
+<span class="nb">print</span>(registra_esame(<span class="st">&quot;Statistica&quot;</span>))
+<span class="nb">print</span>(registra_esame(<span class="st">&quot;Informatica&quot;</span>))</code></pre>
+<p>b) Riscrivete la funzione in modo corretto.</p>
+<p>c) Verificate la vostra previsione eseguendo entrambe le versioni.</p>
+<p><strong>Esercizio 8 — Calcolatrice statistica.</strong></p>
+<p>Create un mini-programma che definisca le seguenti funzioni:</p>
+<ul>
+<li><code>media(valori: list[float]) -> float</code></li>
+<li><code>varianza_campionaria(valori: list[float]) -> float</code> (che internamente chiama <code>media()</code>)</li>
+<li><code>deviazione<em>standard(valori: list[float]) -> float</code> (che internamente chiama <code>varianza</em>campionaria()</code>)</li>
+<li><code>coefficiente<em>variazione(valori: list[float]) -> float</code> (che internamente chiama <code>media()</code> e <code>deviazione</em>standard()</code>)</li>
+</ul>
+<p>Ogni funzione deve avere type hints completi e una docstring. Il programma principale chiede all'utente di inserire una serie di numeri separati da virgola e stampa tutte le statistiche calcolate.</p>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Le funzioni sono il primo vero strumento di <em>ingegneria del software</em> che incontrate in questo corso. Fino a oggi avete scritto codice che risolve problemi piccoli e autocontenuti. Con le funzioni, potete iniziare a costruire programmi piu grandi, piu leggibili e piu affidabili.</p>
+<p>I concetti chiave di questa lezione sono:</p>
+<ul>
+<li><strong>Definire funzioni</strong> con <code>def</code>, parametri tipizzati e <code>return</code>.</li>
+<li><strong>Documentarle</strong> con docstring complete.</li>
+<li><strong>Distinguere</strong> parametri e argomenti, scope locale e globale.</li>
+<li><strong>Evitare</strong> i default mutabili e le variabili globali.</li>
+<li><strong>Seguire</strong> le best practice: funzioni brevi, nomi significativi, type hints sempre.</li>
+</ul>
+<p>Nelle prossime lezioni costruiremo su queste fondamenta, esplorando concetti piu avanzati come le funzioni come oggetti, le funzioni lambda, la ricorsione e l'uso delle funzioni nella manipolazione di file e dati. Per ora, assicuratevi di aver interiorizzato i fondamenti: la vostra produttivita come programmatori dipendera in larga misura dalla vostra capacita di progettare buone funzioni.</p>
+<p>Un ultimo consiglio pratico: quando vi trovate a copiare e incollare codice, fermatevi. Probabilmente quel codice dovrebbe essere una funzione.</p>
+<nav class="bottom-nav"><span><a href="F12_dizionari_set_mutabilita.html">← F12</a></span><span><a href="../../index.html">Home</a></span><span><a href="F14_funzioni_avanzate_moduli.html">F14 →</a></span></nav>
+</body>
+</html>

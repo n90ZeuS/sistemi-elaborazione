@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progetto 02 Rubrica — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="soluzione.py">Soluzione (.py)</a></nav>
+<h1>Progetto 02 Rubrica</h1>
+
+<h1>Progetto 2: Rubrica contatti</h1>
+<h2>Introduzione</h2>
+<p>In questo progetto costruirai una rubrica contatti completa in Python. Partirai da una versione procedurale (con funzioni) e poi la convertirai in una versione orientata agli oggetti (con classi). Imparerai a:</p>
+<ul>
+<li>Leggere e scrivere file JSON (<strong>F07</strong> - Input/Output su file)</li>
+<li>Gestire input utente con cicli (<strong>F08</strong> - Input/Output interattivo)</li>
+<li>Usare dizionari e liste per strutturare i dati (<strong>F09</strong> - Strutture dati)</li>
+<li>Definire e usare funzioni (<strong>F12</strong> - Funzioni base, <strong>F15</strong> - Funzioni avanzate)</li>
+<li>Controllare il flusso con menu e condizioni (<strong>F13</strong> - Controllo di flusso)</li>
+<li>Definire classi e oggetti (<strong>F16</strong> - Programmazione orientata agli oggetti)</li>
+</ul>
+<hr>
+<h2>Passo 1: Definire la struttura dati di un contatto</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Usare dizionari per rappresentare entita' strutturate</li>
+<li>Definire uno "schema" per i dati</li>
+<li>Validare input</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Ogni contatto nella rubrica avra' queste informazioni:</p>
+<ul>
+<li><strong>nome</strong>: nome completo della persona</li>
+<li><strong>telefono</strong>: numero di telefono</li>
+<li><strong>email</strong>: indirizzo email</li>
+<li><strong>categoria</strong>: tipo di contatto (amico, lavoro, famiglia, altro)</li>
+</ul>
+<p>Iniziamo rappresentando ogni contatto come un dizionario e la rubrica come una lista di dizionari.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Le categorie valide sono: "amico", "lavoro", "famiglia", "altro"</li>
+<li>Usa una funzione per creare un nuovo contatto con validazione</li>
+<li>Un contatto vuoto puo' servire come template</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="cm"># Categorie valide per i contatti</span>
+CATEGORIE_VALIDE <span class="op">=</span> [<span class="st">&quot;amico&quot;</span>, <span class="st">&quot;lavoro&quot;</span>, <span class="st">&quot;famiglia&quot;</span>, <span class="st">&quot;altro&quot;</span>]
+
+<span class="kw">def</span> <span class="fn">crea_contatto</span>(<span class="fn">nome</span>, telefono, email, categoria):
+    <span class="st">&quot;&quot;&quot;Crea un nuovo dizionario contatto con validazione.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: verifica che la categoria sia valida</span>
+    <span class="cm"># TODO: verifica che nome e telefono non siano vuoti</span>
+    <span class="cm"># TODO: restituisci un dizionario con i dati del contatto</span>
+    <span class="kw">pass</span>
+
+<span class="cm"># Esempio</span>
+contatto <span class="op">=</span> crea_contatto(<span class="st">&quot;Mario Rossi&quot;</span>, <span class="st">&quot;333-1234567&quot;</span>, <span class="st">&quot;mario@email.it&quot;</span>, <span class="st">&quot;amico&quot;</span>)
+<span class="nb">print</span>(contatto)</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 1</summary></p>
+<pre><code>CATEGORIE_VALIDE <span class="op">=</span> [<span class="st">&quot;amico&quot;</span>, <span class="st">&quot;lavoro&quot;</span>, <span class="st">&quot;famiglia&quot;</span>, <span class="st">&quot;altro&quot;</span>]
+
+<span class="kw">def</span> <span class="fn">crea_contatto</span>(<span class="fn">nome</span>, telefono, email, categoria):
+    <span class="st">&quot;&quot;&quot;Crea un nuovo dizionario contatto con validazione.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> nome.strip():
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il nome non puo&#x27; essere vuoto&quot;</span>)
+    <span class="kw">if</span> <span class="kw">not</span> telefono.strip():
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il telefono non puo&#x27; essere vuoto&quot;</span>)
+    <span class="kw">if</span> categoria <span class="kw">not</span> <span class="kw">in</span> CATEGORIE_VALIDE:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Categoria non valida. Scegli tra: {CATEGORIE_VALIDE}&quot;</span>)
+    <span class="kw">return</span> {
+        <span class="st">&#x27;nome&#x27;</span>: nome.strip(),
+        <span class="st">&#x27;telefono&#x27;</span>: telefono.strip(),
+        <span class="st">&#x27;email&#x27;</span>: email.strip(),
+        <span class="st">&#x27;categoria&#x27;</span>: categoria
+    }
+
+<span class="cm"># Esempio</span>
+contatto <span class="op">=</span> crea_contatto(<span class="st">&quot;Mario Rossi&quot;</span>, <span class="st">&quot;333-1234567&quot;</span>, <span class="st">&quot;mario@email.it&quot;</span>, <span class="st">&quot;amico&quot;</span>)
+<span class="nb">print</span>(contatto)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 2: Operazioni CRUD (Crea, Cerca, Modifica, Elimina)</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Implementare le quattro operazioni fondamentali sui dati</li>
+<li>Cercare in una lista di dizionari</li>
+<li>Modificare dizionari in una lista</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>CRUD e' un acronimo che indica le quattro operazioni base su qualsiasi collezione di dati:</p>
+<ul>
+<li><strong>C</strong>reate (Crea) - aggiungere un nuovo contatto</li>
+<li><strong>R</strong>ead (Leggi/Cerca) - trovare contatti per nome o categoria</li>
+<li><strong>U</strong>pdate (Modifica) - aggiornare i dati di un contatto</li>
+<li><strong>D</strong>elete (Elimina) - rimuovere un contatto</li>
+</ul>
+<h3>Suggerimenti</h3>
+<ul>
+<li>La funzione di ricerca puo' cercare sia per nome (parziale) che per categoria</li>
+<li>Usa <code>str.lower()</code> per ricerche case-insensitive</li>
+<li>La funzione di modifica deve prima trovare il contatto, poi aggiornarlo</li>
+<li>La funzione di eliminazione puo' usare <code>list.remove()</code> o ricostruire la lista</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">aggiungi_contatto</span>(<span class="fn">rubrica</span>, contatto):
+    <span class="st">&quot;&quot;&quot;Aggiunge un contatto alla rubrica.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: controlla se esiste gia&#x27; un contatto con lo stesso nome</span>
+    <span class="cm"># TODO: aggiungi il contatto alla lista</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">cerca_contatti</span>(<span class="fn">rubrica</span>, termine):
+    <span class="st">&quot;&quot;&quot;Cerca contatti per nome (ricerca parziale, case-insensitive).&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: restituisci i contatti il cui nome contiene il termine</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">cerca_per_categoria</span>(<span class="fn">rubrica</span>, categoria):
+    <span class="st">&quot;&quot;&quot;Cerca contatti per categoria.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: restituisci i contatti della categoria specificata</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">modifica_contatto</span>(<span class="fn">rubrica</span>, nome, campo, nuovo_valore):
+    <span class="st">&quot;&quot;&quot;Modifica un campo di un contatto identificato per nome.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: trova il contatto e aggiorna il campo specificato</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">elimina_contatto</span>(<span class="fn">rubrica</span>, nome):
+    <span class="st">&quot;&quot;&quot;Elimina un contatto dalla rubrica.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: trova e rimuovi il contatto</span>
+    <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 2</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">aggiungi_contatto</span>(<span class="fn">rubrica</span>, contatto):
+    <span class="st">&quot;&quot;&quot;Aggiunge un contatto alla rubrica. Restituisce True se aggiunto.&quot;&quot;&quot;</span>
+    <span class="cm"># Controlla duplicati</span>
+    <span class="kw">for</span> c <span class="kw">in</span> rubrica:
+        <span class="kw">if</span> c[<span class="st">&#x27;nome&#x27;</span>].lower() <span class="op">=</span><span class="op">=</span> contatto[<span class="st">&#x27;nome&#x27;</span>].lower():
+            <span class="nb">print</span>(<span class="st">f&quot;Errore: il contatto &#x27;{contatto[&#x27;nome&#x27;]}&#x27; esiste gia&#x27;.&quot;</span>)
+            <span class="kw">return</span> <span class="kw">False</span>
+    rubrica.append(contatto)
+    <span class="kw">return</span> <span class="kw">True</span>
+
+<span class="kw">def</span> <span class="fn">cerca_contatti</span>(<span class="fn">rubrica</span>, termine):
+    <span class="st">&quot;&quot;&quot;Cerca contatti per nome (ricerca parziale, case-insensitive).&quot;&quot;&quot;</span>
+    termine <span class="op">=</span> termine.lower()
+    <span class="kw">return</span> [c <span class="kw">for</span> c <span class="kw">in</span> rubrica <span class="kw">if</span> termine <span class="kw">in</span> c[<span class="st">&#x27;nome&#x27;</span>].lower()]
+
+<span class="kw">def</span> <span class="fn">cerca_per_categoria</span>(<span class="fn">rubrica</span>, categoria):
+    <span class="st">&quot;&quot;&quot;Cerca contatti per categoria.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [c <span class="kw">for</span> c <span class="kw">in</span> rubrica <span class="kw">if</span> c[<span class="st">&#x27;categoria&#x27;</span>] <span class="op">=</span><span class="op">=</span> categoria]
+
+<span class="kw">def</span> <span class="fn">modifica_contatto</span>(<span class="fn">rubrica</span>, nome, campo, nuovo_valore):
+    <span class="st">&quot;&quot;&quot;Modifica un campo di un contatto identificato per nome.&quot;&quot;&quot;</span>
+    campi_validi <span class="op">=</span> [<span class="st">&#x27;nome&#x27;</span>, <span class="st">&#x27;telefono&#x27;</span>, <span class="st">&#x27;email&#x27;</span>, <span class="st">&#x27;categoria&#x27;</span>]
+    <span class="kw">if</span> campo <span class="kw">not</span> <span class="kw">in</span> campi_validi:
+        <span class="nb">print</span>(<span class="st">f&quot;Errore: campo &#x27;{campo}&#x27; non valido. Campi: {campi_validi}&quot;</span>)
+        <span class="kw">return</span> <span class="kw">False</span>
+    <span class="kw">if</span> campo <span class="op">=</span><span class="op">=</span> <span class="st">&#x27;categoria&#x27;</span> <span class="kw">and</span> nuovo_valore <span class="kw">not</span> <span class="kw">in</span> CATEGORIE_VALIDE:
+        <span class="nb">print</span>(<span class="st">f&quot;Errore: categoria non valida.&quot;</span>)
+        <span class="kw">return</span> <span class="kw">False</span>
+    <span class="kw">for</span> c <span class="kw">in</span> rubrica:
+        <span class="kw">if</span> c[<span class="st">&#x27;nome&#x27;</span>].lower() <span class="op">=</span><span class="op">=</span> nome.lower():
+            c[campo] <span class="op">=</span> nuovo_valore
+            <span class="kw">return</span> <span class="kw">True</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Contatto &#x27;{nome}&#x27; non trovato.&quot;</span>)
+    <span class="kw">return</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="fn">elimina_contatto</span>(<span class="fn">rubrica</span>, nome):
+    <span class="st">&quot;&quot;&quot;Elimina un contatto dalla rubrica. Restituisce True se eliminato.&quot;&quot;&quot;</span>
+    <span class="kw">for</span> i, c <span class="kw">in</span> <span class="nb">enumerate</span>(rubrica):
+        <span class="kw">if</span> c[<span class="st">&#x27;nome&#x27;</span>].lower() <span class="op">=</span><span class="op">=</span> nome.lower():
+            rubrica.pop(i)
+            <span class="kw">return</span> <span class="kw">True</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Contatto &#x27;{nome}&#x27; non trovato.&quot;</span>)
+    <span class="kw">return</span> <span class="kw">False</span></code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 3: Menu interattivo</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Creare un ciclo <code>while</code> per un menu interattivo</li>
+<li>Gestire l'input dell'utente con validazione</li>
+<li>Usare <code>if/elif/else</code> per instradare le scelte</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Il menu permette all'utente di scegliere quale operazione eseguire. Il programma continua a mostrare il menu finche' l'utente non sceglie di uscire. Questo e' un pattern molto comune nelle applicazioni da terminale.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa un ciclo <code>while True</code> con <code>break</code> per uscire</li>
+<li>Mostra le opzioni numerate per semplicita'</li>
+<li>Gestisci input non validi con messaggi di errore chiari</li>
+<li>Usa una funzione separata per stampare il menu</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">mostra_menu</span>():
+    <span class="st">&quot;&quot;&quot;Mostra il menu delle opzioni.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="st">&quot;\n=== RUBRICA CONTATTI ===&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;1. Aggiungi contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;2. Cerca contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;3. Mostra tutti i contatti&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;4. Modifica contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;5. Elimina contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;6. Statistiche&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;7. Salva ed esci&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;========================&quot;</span>)
+
+<span class="kw">def</span> <span class="fn">menu_interattivo</span>(<span class="fn">rubrica</span>):
+    <span class="st">&quot;&quot;&quot;Gestisce il menu interattivo della rubrica.&quot;&quot;&quot;</span>
+    <span class="kw">while</span> <span class="kw">True</span>:
+        mostra_menu()
+        scelta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Scegli un&#x27;opzione (1-7): &quot;</span>).strip()
+
+        <span class="kw">if</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;1&quot;</span>:
+            <span class="cm"># TODO: chiedi i dati e aggiungi il contatto</span>
+            <span class="kw">pass</span>
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;2&quot;</span>:
+            <span class="cm"># TODO: chiedi il termine di ricerca e mostra i risultati</span>
+            <span class="kw">pass</span>
+        <span class="cm"># TODO: gestisci le altre opzioni</span>
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;7&quot;</span>:
+            <span class="nb">print</span>(<span class="st">&quot;Arrivederci!&quot;</span>)
+            <span class="kw">break</span>
+        <span class="kw">else</span>:
+            <span class="nb">print</span>(<span class="st">&quot;Opzione non valida. Riprova.&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 3</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">formatta_contatto</span>(<span class="fn">contatto</span>):
+    <span class="st">&quot;&quot;&quot;Formatta un contatto per la stampa.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> (<span class="st">f&quot;  Nome: {contatto[&#x27;nome&#x27;]}\n&quot;</span>
+            <span class="st">f&quot;  Tel:  {contatto[&#x27;telefono&#x27;]}\n&quot;</span>
+            <span class="st">f&quot;  Email:{contatto[&#x27;email&#x27;]}\n&quot;</span>
+            <span class="st">f&quot;  Cat:  {contatto[&#x27;categoria&#x27;]}&quot;</span>)
+
+<span class="kw">def</span> <span class="fn">mostra_menu</span>():
+    <span class="st">&quot;&quot;&quot;Mostra il menu delle opzioni.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="st">&quot;\n=== RUBRICA CONTATTI ===&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;1. Aggiungi contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;2. Cerca contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;3. Mostra tutti i contatti&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;4. Modifica contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;5. Elimina contatto&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;6. Statistiche&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;7. Salva ed esci&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;========================&quot;</span>)
+
+<span class="kw">def</span> <span class="fn">menu_interattivo</span>(<span class="fn">rubrica</span>):
+    <span class="st">&quot;&quot;&quot;Gestisce il menu interattivo della rubrica.&quot;&quot;&quot;</span>
+    <span class="kw">while</span> <span class="kw">True</span>:
+        mostra_menu()
+        scelta <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Scegli un&#x27;opzione (1-7): &quot;</span>).strip()
+
+        <span class="kw">if</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;1&quot;</span>:
+            <span class="nb">print</span>(<span class="st">&quot;\n--- Nuovo contatto ---&quot;</span>)
+            nome <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Nome: &quot;</span>)
+            telefono <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Telefono: &quot;</span>)
+            email <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Email: &quot;</span>)
+            <span class="nb">print</span>(<span class="st">f&quot;Categorie: {CATEGORIE_VALIDE}&quot;</span>)
+            categoria <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Categoria: &quot;</span>)
+            <span class="kw">try</span>:
+                contatto <span class="op">=</span> crea_contatto(nome, telefono, email, categoria)
+                <span class="kw">if</span> aggiungi_contatto(rubrica, contatto):
+                    <span class="nb">print</span>(<span class="st">f&quot;Contatto &#x27;{nome}&#x27; aggiunto!&quot;</span>)
+            <span class="kw">except</span> <span class="nb">ValueError</span> <span class="kw">as</span> e:
+                <span class="nb">print</span>(<span class="st">f&quot;Errore: {e}&quot;</span>)
+
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;2&quot;</span>:
+            termine <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Cerca per nome: &quot;</span>)
+            risultati <span class="op">=</span> cerca_contatti(rubrica, termine)
+            <span class="kw">if</span> risultati:
+                <span class="nb">print</span>(<span class="st">f&quot;\nTrovati {len(risultati)} contatti:&quot;</span>)
+                <span class="kw">for</span> c <span class="kw">in</span> risultati:
+                    <span class="nb">print</span>(formatta_contatto(c))
+                    <span class="nb">print</span>()
+            <span class="kw">else</span>:
+                <span class="nb">print</span>(<span class="st">&quot;Nessun contatto trovato.&quot;</span>)
+
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;3&quot;</span>:
+            <span class="kw">if</span> <span class="kw">not</span> rubrica:
+                <span class="nb">print</span>(<span class="st">&quot;La rubrica e&#x27; vuota.&quot;</span>)
+            <span class="kw">else</span>:
+                <span class="nb">print</span>(<span class="st">f&quot;\n--- Tutti i contatti ({len(rubrica)}) ---&quot;</span>)
+                <span class="kw">for</span> c <span class="kw">in</span> rubrica:
+                    <span class="nb">print</span>(formatta_contatto(c))
+                    <span class="nb">print</span>()
+
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;4&quot;</span>:
+            nome <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Nome del contatto da modificare: &quot;</span>)
+            campo <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Campo da modificare (nome/telefono/email/categoria): &quot;</span>)
+            nuovo <span class="op">=</span> <span class="nb">input</span>(<span class="st">f&quot;Nuovo valore per &#x27;{campo}&#x27;: &quot;</span>)
+            <span class="kw">if</span> modifica_contatto(rubrica, nome, campo, nuovo):
+                <span class="nb">print</span>(<span class="st">&quot;Contatto aggiornato!&quot;</span>)
+
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;5&quot;</span>:
+            nome <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Nome del contatto da eliminare: &quot;</span>)
+            <span class="kw">if</span> elimina_contatto(rubrica, nome):
+                <span class="nb">print</span>(<span class="st">f&quot;Contatto &#x27;{nome}&#x27; eliminato.&quot;</span>)
+
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;6&quot;</span>:
+            stampa_statistiche(rubrica)
+
+        <span class="kw">elif</span> scelta <span class="op">=</span><span class="op">=</span> <span class="st">&quot;7&quot;</span>:
+            <span class="nb">print</span>(<span class="st">&quot;Arrivederci!&quot;</span>)
+            <span class="kw">break</span>
+
+        <span class="kw">else</span>:
+            <span class="nb">print</span>(<span class="st">&quot;Opzione non valida. Riprova.&quot;</span>)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 4: Salvataggio e caricamento con JSON</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Usare il modulo <code>json</code> per salvare dati strutturati</li>
+<li>Caricare dati da file JSON</li>
+<li>Gestire il caso in cui il file non esiste</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>JSON (JavaScript Object Notation) e' un formato di testo per memorizzare dati strutturati. E' molto usato perche' e' leggibile sia dagli umani che dai computer. Python ha un modulo built-in <code>json</code> che converte facilmente liste e dizionari in JSON e viceversa.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li><code>json.dump()</code> scrive su file, <code>json.dumps()</code> restituisce una stringa</li>
+<li><code>json.load()</code> legge da file, <code>json.loads()</code> legge da una stringa</li>
+<li>Usa <code>ensure_ascii=False</code> per mantenere i caratteri accentati</li>
+<li>Usa <code>indent=2</code> per un formato leggibile</li>
+<li>Gestisci <code>FileNotFoundError</code> per il primo avvio (quando il file non esiste)</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">import</span> json
+
+PERCORSO_FILE <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;rubrica.json&quot;</span>
+
+<span class="kw">def</span> <span class="fn">salva_rubrica</span>(<span class="fn">rubrica</span>, percorso<span class="op">=</span>PERCORSO_FILE):
+    <span class="st">&quot;&quot;&quot;Salva la rubrica su file JSON.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: apri il file in scrittura e usa json.dump()</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">carica_rubrica</span>(<span class="fn">percorso</span><span class="op">=</span>PERCORSO_FILE):
+    <span class="st">&quot;&quot;&quot;Carica la rubrica da file JSON. Restituisce lista vuota se non esiste.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: prova a leggere il file, se non esiste restituisci []</span>
+    <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 4</summary></p>
+<pre><code><span class="kw">import</span> json
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+PERCORSO_FILE <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;rubrica.json&quot;</span>
+
+<span class="kw">def</span> <span class="fn">salva_rubrica</span>(<span class="fn">rubrica</span>, percorso<span class="op">=</span>PERCORSO_FILE):
+    <span class="st">&quot;&quot;&quot;Salva la rubrica su file JSON.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&#x27;w&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> file:
+        json.dump(rubrica, file, ensure_ascii<span class="op">=</span><span class="kw">False</span>, indent<span class="op">=</span><span class="mi">2</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Rubrica salvata ({len(rubrica)} contatti)&quot;</span>)
+
+<span class="kw">def</span> <span class="fn">carica_rubrica</span>(<span class="fn">percorso</span><span class="op">=</span>PERCORSO_FILE):
+    <span class="st">&quot;&quot;&quot;Carica la rubrica da file JSON. Restituisce lista vuota se non esiste.&quot;&quot;&quot;</span>
+    <span class="kw">try</span>:
+        <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&#x27;r&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> file:
+            rubrica <span class="op">=</span> json.load(file)
+        <span class="nb">print</span>(<span class="st">f&quot;Rubrica caricata ({len(rubrica)} contatti)&quot;</span>)
+        <span class="kw">return</span> rubrica
+    <span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Nessuna rubrica trovata, ne creo una nuova.&quot;</span>)
+        <span class="kw">return</span> []
+    <span class="kw">except</span> json.JSONDecodeError:
+        <span class="nb">print</span>(<span class="st">&quot;Errore nel file rubrica. Creo una nuova rubrica.&quot;</span>)
+        <span class="kw">return</span> []</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 5: Statistiche sulla rubrica</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Contare elementi per categoria usando dizionari</li>
+<li>Calcolare percentuali</li>
+<li>Formattare output statistici</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Aggiungiamo una funzione che mostra statistiche sulla rubrica: quanti contatti per categoria, la categoria piu' numerosa, ecc.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa un dizionario per contare i contatti per categoria</li>
+<li>Puoi usare <code>dict.get(chiave, 0)</code> per inizializzare i conteggi</li>
+<li>Calcola la percentuale come <code>(conteggio / totale) * 100</code></li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_statistiche</span>(<span class="fn">rubrica</span>):
+    <span class="st">&quot;&quot;&quot;Calcola e restituisce statistiche sulla rubrica.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: conta contatti per categoria</span>
+    <span class="cm"># TODO: trova la categoria piu&#x27; numerosa</span>
+    <span class="cm"># TODO: restituisci un dizionario con le statistiche</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">stampa_statistiche</span>(<span class="fn">rubrica</span>):
+    <span class="st">&quot;&quot;&quot;Stampa le statistiche della rubrica in modo formattato.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: usa calcola_statistiche e formatta l&#x27;output</span>
+    <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 5</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">calcola_statistiche</span>(<span class="fn">rubrica</span>):
+    <span class="st">&quot;&quot;&quot;Calcola e restituisce statistiche sulla rubrica.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> rubrica:
+        <span class="kw">return</span> {<span class="st">&#x27;totale&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;per_categoria&#x27;</span>: {}}
+
+    conteggio <span class="op">=</span> {}
+    <span class="kw">for</span> c <span class="kw">in</span> rubrica:
+        cat <span class="op">=</span> c[<span class="st">&#x27;categoria&#x27;</span>]
+        conteggio[cat] <span class="op">=</span> conteggio.get(cat, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+
+    totale <span class="op">=</span> <span class="nb">len</span>(rubrica)
+    categoria_max <span class="op">=</span> <span class="nb">max</span>(conteggio, key<span class="op">=</span>conteggio.get) <span class="kw">if</span> conteggio <span class="kw">else</span> <span class="kw">None</span>
+
+    <span class="kw">return</span> {
+        <span class="st">&#x27;totale&#x27;</span>: totale,
+        <span class="st">&#x27;per_categoria&#x27;</span>: conteggio,
+        <span class="st">&#x27;categoria_piu_numerosa&#x27;</span>: categoria_max,
+    }
+
+<span class="kw">def</span> <span class="fn">stampa_statistiche</span>(<span class="fn">rubrica</span>):
+    <span class="st">&quot;&quot;&quot;Stampa le statistiche della rubrica in modo formattato.&quot;&quot;&quot;</span>
+    stats <span class="op">=</span> calcola_statistiche(rubrica)
+
+    <span class="nb">print</span>(<span class="st">&quot;\n--- STATISTICHE RUBRICA ---&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  Contatti totali: {stats[&#x27;totale&#x27;]}&quot;</span>)
+
+    <span class="kw">if</span> stats[<span class="st">&#x27;totale&#x27;</span>] <span class="op">&gt;</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;  Per categoria:&quot;</span>)
+        <span class="kw">for</span> cat, num <span class="kw">in</span> stats[<span class="st">&#x27;per_categoria&#x27;</span>].items():
+            perc <span class="op">=</span> num <span class="op">/</span> stats[<span class="st">&#x27;totale&#x27;</span>] <span class="op">*</span> <span class="mi">100</span>
+            barra <span class="op">=</span> <span class="st">&quot;#&quot;</span> <span class="op">*</span> <span class="nb">int</span>(perc <span class="op">/</span> <span class="mi">5</span>)
+            <span class="nb">print</span>(<span class="st">f&quot;    {cat:&lt;12} {num:&gt;3} ({perc:5.1f}%) {barra}&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Categoria piu&#x27; numerosa: {stats[&#x27;categoria_piu_numerosa&#x27;]}&quot;</span>)
+    <span class="kw">else</span>:
+        <span class="nb">print</span>(<span class="st">&quot;  Rubrica vuota.&quot;</span>)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 6: Versione ad oggetti (OOP)</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Definire classi con <code>class</code></li>
+<li>Usare <code><em>_init</em><em></code>, <code></em><em>str</em><em></code>, <code></em><em>repr</em>_</code></li>
+<li>Incapsulare dati e comportamento in oggetti</li>
+<li>Convertire codice procedurale in codice orientato agli oggetti</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>La Programmazione Orientata agli Oggetti (OOP) organizza il codice in "classi" che raggruppano dati (attributi) e funzioni (metodi). Convertiamo la rubrica procedurale in due classi:</p>
+<ul>
+<li><strong>Contatto</strong>: rappresenta un singolo contatto</li>
+<li><strong>Rubrica</strong>: gestisce la collezione di contatti</li>
+</ul>
+<h3>Suggerimenti</h3>
+<ul>
+<li><code><em>_init</em>_</code> e' il costruttore: viene chiamato quando crei un nuovo oggetto</li>
+<li><code><em>_str</em>_</code> definisce come l'oggetto viene stampato con <code>print()</code></li>
+<li><code>self</code> si riferisce all'oggetto corrente</li>
+<li>I metodi della classe <code>Rubrica</code> corrispondono alle funzioni del Passo 2</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">class</span> <span class="fn">Contatto</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta un singolo contatto nella rubrica.&quot;&quot;&quot;</span>
+
+    CATEGORIE_VALIDE <span class="op">=</span> [<span class="st">&quot;amico&quot;</span>, <span class="st">&quot;lavoro&quot;</span>, <span class="st">&quot;famiglia&quot;</span>, <span class="st">&quot;altro&quot;</span>]
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome, telefono, email, categoria):
+        <span class="cm"># TODO: valida e assegna gli attributi</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>):
+        <span class="cm"># TODO: restituisci una rappresentazione leggibile</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">to_dict</span>(<span class="fn">self</span>):
+        <span class="cm"># TODO: converti in dizionario (utile per JSON)</span>
+        <span class="kw">pass</span>
+
+    <span class="dc">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">from_dict</span>(<span class="fn">cls</span>, dati):
+        <span class="cm"># TODO: crea un Contatto da un dizionario</span>
+        <span class="kw">pass</span>
+
+
+<span class="kw">class</span> <span class="fn">Rubrica</span>:
+    <span class="st">&quot;&quot;&quot;Gestisce una collezione di contatti.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, percorso_file<span class="op">=</span><span class="kw">None</span>):
+        <span class="cm"># TODO: inizializza la lista contatti e il percorso file</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">self</span>, contatto):
+        <span class="cm"># TODO: aggiungi un contatto (controlla duplicati)</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">cerca</span>(<span class="fn">self</span>, termine):
+        <span class="cm"># TODO: cerca per nome</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">modifica</span>(<span class="fn">self</span>, nome, campo, nuovo_valore):
+        <span class="cm"># TODO: modifica un contatto</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">elimina</span>(<span class="fn">self</span>, nome):
+        <span class="cm"># TODO: elimina un contatto</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">salva</span>(<span class="fn">self</span>):
+        <span class="cm"># TODO: salva su file JSON</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">carica</span>(<span class="fn">self</span>):
+        <span class="cm"># TODO: carica da file JSON</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">statistiche</span>(<span class="fn">self</span>):
+        <span class="cm"># TODO: restituisci statistiche</span>
+        <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 6</summary></p>
+<pre><code><span class="kw">class</span> <span class="fn">Contatto</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta un singolo contatto nella rubrica.&quot;&quot;&quot;</span>
+
+    CATEGORIE_VALIDE <span class="op">=</span> [<span class="st">&quot;amico&quot;</span>, <span class="st">&quot;lavoro&quot;</span>, <span class="st">&quot;famiglia&quot;</span>, <span class="st">&quot;altro&quot;</span>]
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome, telefono, email, categoria):
+        <span class="kw">if</span> <span class="kw">not</span> nome.strip():
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il nome non puo&#x27; essere vuoto&quot;</span>)
+        <span class="kw">if</span> <span class="kw">not</span> telefono.strip():
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il telefono non puo&#x27; essere vuoto&quot;</span>)
+        <span class="kw">if</span> categoria <span class="kw">not</span> <span class="kw">in</span> self.CATEGORIE_VALIDE:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Categoria non valida: {categoria}&quot;</span>)
+        self.nome <span class="op">=</span> nome.strip()
+        self.telefono <span class="op">=</span> telefono.strip()
+        self.email <span class="op">=</span> email.strip()
+        self.categoria <span class="op">=</span> categoria
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> (<span class="st">f&quot;{self.nome} | Tel: {self.telefono} | &quot;</span>
+                <span class="st">f&quot;Email: {self.email} | Cat: {self.categoria}&quot;</span>)
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="st">f&quot;Contatto(&#x27;{self.nome}&#x27;, &#x27;{self.telefono}&#x27;, &#x27;{self.email}&#x27;, &#x27;{self.categoria}&#x27;)&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">to_dict</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> {
+            <span class="st">&#x27;nome&#x27;</span>: self.nome,
+            <span class="st">&#x27;telefono&#x27;</span>: self.telefono,
+            <span class="st">&#x27;email&#x27;</span>: self.email,
+            <span class="st">&#x27;categoria&#x27;</span>: self.categoria
+        }
+
+    <span class="dc">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">from_dict</span>(<span class="fn">cls</span>, dati):
+        <span class="kw">return</span> cls(dati[<span class="st">&#x27;nome&#x27;</span>], dati[<span class="st">&#x27;telefono&#x27;</span>], dati[<span class="st">&#x27;email&#x27;</span>], dati[<span class="st">&#x27;categoria&#x27;</span>])
+
+
+<span class="kw">class</span> <span class="fn">Rubrica</span>:
+    <span class="st">&quot;&quot;&quot;Gestisce una collezione di contatti.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, percorso_file<span class="op">=</span><span class="kw">None</span>):
+        self.contatti <span class="op">=</span> []
+        self.percorso_file <span class="op">=</span> percorso_file
+
+    <span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">self</span>, contatto):
+        <span class="kw">for</span> c <span class="kw">in</span> self.contatti:
+            <span class="kw">if</span> c.nome.lower() <span class="op">=</span><span class="op">=</span> contatto.nome.lower():
+                <span class="nb">print</span>(<span class="st">f&quot;Errore: &#x27;{contatto.nome}&#x27; esiste gia&#x27;.&quot;</span>)
+                <span class="kw">return</span> <span class="kw">False</span>
+        self.contatti.append(contatto)
+        <span class="kw">return</span> <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">cerca</span>(<span class="fn">self</span>, termine):
+        termine <span class="op">=</span> termine.lower()
+        <span class="kw">return</span> [c <span class="kw">for</span> c <span class="kw">in</span> self.contatti <span class="kw">if</span> termine <span class="kw">in</span> c.nome.lower()]
+
+    <span class="kw">def</span> <span class="fn">cerca_per_categoria</span>(<span class="fn">self</span>, categoria):
+        <span class="kw">return</span> [c <span class="kw">for</span> c <span class="kw">in</span> self.contatti <span class="kw">if</span> c.categoria <span class="op">=</span><span class="op">=</span> categoria]
+
+    <span class="kw">def</span> <span class="fn">modifica</span>(<span class="fn">self</span>, nome, campo, nuovo_valore):
+        <span class="kw">for</span> c <span class="kw">in</span> self.contatti:
+            <span class="kw">if</span> c.nome.lower() <span class="op">=</span><span class="op">=</span> nome.lower():
+                <span class="kw">if</span> <span class="nb">hasattr</span>(c, campo):
+                    <span class="nb">setattr</span>(c, campo, nuovo_valore)
+                    <span class="kw">return</span> <span class="kw">True</span>
+        <span class="kw">return</span> <span class="kw">False</span>
+
+    <span class="kw">def</span> <span class="fn">elimina</span>(<span class="fn">self</span>, nome):
+        <span class="kw">for</span> i, c <span class="kw">in</span> <span class="nb">enumerate</span>(self.contatti):
+            <span class="kw">if</span> c.nome.lower() <span class="op">=</span><span class="op">=</span> nome.lower():
+                self.contatti.pop(i)
+                <span class="kw">return</span> <span class="kw">True</span>
+        <span class="kw">return</span> <span class="kw">False</span>
+
+    <span class="kw">def</span> <span class="fn">salva</span>(<span class="fn">self</span>):
+        <span class="kw">if</span> <span class="kw">not</span> self.percorso_file:
+            <span class="nb">print</span>(<span class="st">&quot;Nessun percorso file specificato.&quot;</span>)
+            <span class="kw">return</span>
+        dati <span class="op">=</span> [c.to_dict() <span class="kw">for</span> c <span class="kw">in</span> self.contatti]
+        <span class="kw">with</span> <span class="nb">open</span>(self.percorso_file, <span class="st">&#x27;w&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> f:
+            json.dump(dati, f, ensure_ascii<span class="op">=</span><span class="kw">False</span>, indent<span class="op">=</span><span class="mi">2</span>)
+
+    <span class="kw">def</span> <span class="fn">carica</span>(<span class="fn">self</span>):
+        <span class="kw">if</span> <span class="kw">not</span> self.percorso_file:
+            <span class="kw">return</span>
+        <span class="kw">try</span>:
+            <span class="kw">with</span> <span class="nb">open</span>(self.percorso_file, <span class="st">&#x27;r&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> f:
+                dati <span class="op">=</span> json.load(f)
+            self.contatti <span class="op">=</span> [Contatto.from_dict(d) <span class="kw">for</span> d <span class="kw">in</span> dati]
+        <span class="kw">except</span> (<span class="nb">FileNotFoundError</span>, json.JSONDecodeError):
+            self.contatti <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">statistiche</span>(<span class="fn">self</span>):
+        conteggio <span class="op">=</span> {}
+        <span class="kw">for</span> c <span class="kw">in</span> self.contatti:
+            conteggio[c.categoria] <span class="op">=</span> conteggio.get(c.categoria, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+        <span class="kw">return</span> {<span class="st">&#x27;totale&#x27;</span>: <span class="nb">len</span>(self.contatti), <span class="st">&#x27;per_categoria&#x27;</span>: conteggio}
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="fn">self</span>):
+        <span class="kw">return</span> <span class="nb">len</span>(self.contatti)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>):
+        <span class="kw">if</span> <span class="kw">not</span> self.contatti:
+            <span class="kw">return</span> <span class="st">&quot;Rubrica vuota.&quot;</span>
+        righe <span class="op">=</span> [<span class="st">f&quot;Rubrica ({len(self.contatti)} contatti):&quot;</span>]
+        <span class="kw">for</span> c <span class="kw">in</span> self.contatti:
+            righe.append(<span class="st">f&quot;  - {c}&quot;</span>)
+        <span class="kw">return</span> <span class="st">&#x27;\n&#x27;</span>.join(righe)</code></pre>
+<p></details></p>
+<hr>
+<h2>Complimenti!</h2>
+<p>Hai completato il Progetto 2. Ora sai:</p>
+<ul>
+<li>Strutturare dati con dizionari</li>
+<li>Implementare operazioni CRUD</li>
+<li>Creare interfacce a menu con cicli</li>
+<li>Salvare e caricare dati in formato JSON</li>
+<li>Calcolare statistiche su collezioni di dati</li>
+<li>Convertire codice procedurale in classi (OOP)</li>
+</ul>
+<p>La soluzione completa e' nel file <code>soluzione.py</code>, che include sia la versione procedurale che quella ad oggetti, con una modalita' demo che mostra tutte le funzionalita' senza richiedere input interattivo.</p>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

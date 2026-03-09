@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F02 — Logica booleana e storia del calcolo — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F01_informazione_bit_numerazione.html">← F01</a> &bull; <a href="F03_architettura_elaboratori.html">F03 →</a> &bull; <a href="../../presentazioni/F02_logica_booleana_storia.html">Presentazione</a></nav>
+<h1>F02 — Logica booleana e storia del calcolo</h1>
+
+<h1>Lezione Frontale 2 — Logica booleana e storia del calcolo</h1>
+<h2>Introduzione: quando la logica diventa algebra</h2>
+<p>Nella lezione precedente abbiamo visto come l'informazione si misura in bit e come i numeri si rappresentano in binario. Oggi facciamo un passo concettuale fondamentale: passiamo dai numeri alla <strong>logica</strong>. Vedremo come le operazioni logiche — quelle che usiamo quando diciamo "se piove E non ho l'ombrello, allora mi bagno" — possano essere trattate come operazioni matematiche. E vedremo come questa idea, nata nella mente di un matematico autodidatta nell'Inghilterra vittoriana, sia diventata il fondamento fisico di ogni computer mai costruito.</p>
+<p>Dopo aver esplorato la logica booleana, ripercorreremo la storia del calcolo automatico: un viaggio che copre millenni e che ci portera dall'abaco ai microprocessori, passando per alcune delle menti piu brillanti della storia umana.</p>
+<hr>
+<h2>George Boole e la nascita dell'algebra della logica</h2>
+<p><strong>George Boole</strong> (1815-1864) fu un personaggio singolare. Figlio di un calzolaio di Lincoln, in Inghilterra, fu quasi interamente autodidatta: imparo il latino, il greco, il francese e il tedesco da solo, e a sedici anni insegnava gia in una scuola. A vent'anni apri una scuola propria e, nei ritagli di tempo, studiava matematica leggendo i lavori di Lagrange e Laplace.</p>
+<p>Nel 1847 pubblico un libretto intitolato <em>The Mathematical Analysis of Logic</em>, e nel 1854 la sua opera principale: <em>An Investigation of the Laws of Thought, on Which are Founded the Mathematical Theories of Logic and Probabilities</em>. Il titolo e lungo, ma l'idea centrale e rivoluzionaria nella sua semplicita: <strong>la logica puo essere trattata come un'algebra</strong>.</p>
+<p>Boole osservo che le proposizioni logiche — affermazioni che possono essere vere o false — si possono manipolare con operazioni simili a quelle dell'algebra ordinaria. Invece di numeri, si lavora con valori di verita; invece di addizione e moltiplicazione, si usano operazioni logiche. I valori possibili sono solo due: <strong>Vero</strong> (1) e <strong>Falso</strong> (0).</p>
+<p>Questa scelta — usare 1 e 0, gli stessi simboli del sistema binario — non e una coincidenza: e il ponte che collega la logica astratta ai circuiti elettronici. Ma Boole non poteva saperlo. I computer non esistevano, e sarebbero arrivati quasi un secolo dopo. Boole mori nel 1864, a soli 49 anni (di polmonite, contratta, secondo la leggenda, perche la moglie, credendo nell'omeopatia, lo mise a letto bagnato con secchiate d'acqua fredda per curare la febbre). Non vide mai la realizzazione pratica della sua algebra, ma il suo lavoro cambio il mondo.</p>
+<hr>
+<h2>Gli operatori booleani fondamentali</h2>
+<h3>AND (congiunzione logica)</h3>
+<p>L'operatore AND restituisce Vero solo quando <strong>entrambi</strong> gli operandi sono Veri. Corrisponde alla congiunzione "e" del linguaggio naturale. In notazione matematica si scrive spesso come moltiplicazione: A AND B = A * B, oppure A ∧ B.</p>
+<p><strong>Tabella di verita di AND:</strong></p>
+<table>
+<thead><tr>
+<th>A</th>
+<th>B</th>
+<th>A AND B</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p><em>Esempio nella vita reale</em>: "Supero l'esame SE studio E sono presente all'appello." Entrambe le condizioni devono essere vere.</p>
+<p><em>Esempio per statistici</em>: quando filtrate un dataset e chiedete "righe dove eta > 30 AND reddito > 50000", state applicando un AND logico.</p>
+<h3>OR (disgiunzione logica)</h3>
+<p>L'operatore OR restituisce Vero quando <strong>almeno uno</strong> degli operandi e Vero. E importante notare che e un OR <strong>inclusivo</strong>: e vero anche quando entrambi sono veri (a differenza del "o" italiano, che spesso usiamo in senso esclusivo). Si scrive come addizione: A OR B = A + B, oppure A ∨ B.</p>
+<p><strong>Tabella di verita di OR:</strong></p>
+<table>
+<thead><tr>
+<th>A</th>
+<th>B</th>
+<th>A OR B</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p><em>Esempio nella vita reale</em>: "Puoi pagare con carta O con contanti." (Anche con entrambi, volendo.)</p>
+<p><em>Esempio per statistici</em>: "Seleziona i record dove regione = 'Lazio' OR regione = 'Toscana'."</p>
+<h3>NOT (negazione)</h3>
+<p>L'operatore NOT inverte il valore di verita: cio che era Vero diventa Falso e viceversa. E un operatore <strong>unario</strong> (agisce su un solo operando). Si scrive NOT A, oppure A con una barra sopra, oppure ¬A.</p>
+<p><strong>Tabella di verita di NOT:</strong></p>
+<table>
+<thead><tr>
+<th>A</th>
+<th>NOT A</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p><em>Esempio nella vita reale</em>: "Se NON piove, esco senza ombrello."</p>
+<p>Con questi tre operatori — AND, OR, NOT — si puo esprimere qualsiasi funzione logica. Sono la base di tutto.</p>
+<hr>
+<h2>Operatori derivati</h2>
+<h3>NAND (NOT AND)</h3>
+<p>NAND e la negazione dell'AND: restituisce Falso solo quando entrambi gli input sono Veri. In tutti gli altri casi restituisce Vero.</p>
+<p><strong>Tabella di verita di NAND:</strong></p>
+<table>
+<thead><tr>
+<th>A</th>
+<th>B</th>
+<th>A NAND B</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>Il NAND ha una proprieta straordinaria: e un operatore <strong>universale</strong>. Cio significa che qualsiasi funzione logica — AND, OR, NOT, e qualunque altra — puo essere costruita usando <strong>solamente</strong> porte NAND. Questa proprieta, apparentemente teorica, ha un'importanza pratica enorme. I transistor piu semplici ed economici da fabbricare formano naturalmente porte NAND, e l'intera industria dei semiconduttori sfrutta questo fatto. Le memorie flash dei vostri smartphone e SSD si chiamano proprio "NAND flash" per questo motivo.</p>
+<p>Vediamo come costruire gli operatori base usando solo NAND:</p>
+<ul>
+<li><strong>NOT A</strong> = A NAND A (cioe: collegate entrambi gli input allo stesso segnale)</li>
+<li><strong>A AND B</strong> = NOT (A NAND B) = (A NAND B) NAND (A NAND B)</li>
+<li><strong>A OR B</strong> = (A NAND A) NAND (B NAND B)</li>
+</ul>
+<h3>NOR (NOT OR)</h3>
+<p>Il NOR e la negazione dell'OR: restituisce Vero solo quando entrambi gli input sono Falsi. Anche il NOR e un operatore universale.</p>
+<p><strong>Tabella di verita di NOR:</strong></p>
+<table>
+<thead><tr>
+<th>A</th>
+<th>B</th>
+<th>A NOR B</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<h3>XOR (OR esclusivo)</h3>
+<p>Lo XOR (<em>exclusive OR</em>) restituisce Vero quando gli input sono <strong>diversi</strong> tra loro. E l'equivalente logico del "o" esclusivo italiano: "O l'uno o l'altro, ma non entrambi."</p>
+<p><strong>Tabella di verita di XOR:</strong></p>
+<table>
+<thead><tr>
+<th>A</th>
+<th>B</th>
+<th>A XOR B</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>Lo XOR e fondamentale nell'aritmetica binaria (e il cuore del circuito sommatore) e nella crittografia. Un'operazione XOR applicata due volte allo stesso valore restituisce il dato originale, proprieta sfruttata in molti algoritmi di cifratura.</p>
+<hr>
+<h2>Claude Shannon e i circuiti elettrici (1937)</h2>
+<p>Se Boole creo l'algebra della logica e il sistema binario gia esisteva da secoli (Leibniz lo formalizzo nel 1703), chi li mise insieme e realizzo che si potevano usare per costruire macchine?</p>
+<p>La risposta e, ancora una volta, <strong>Claude Shannon</strong>. Lo stesso Shannon della teoria dell'informazione, ma undici anni prima. Nel 1937, Shannon era un ventunenne studente al MIT e stava scrivendo la sua tesi di laurea magistrale (<em>master's thesis</em>). Il titolo era: <em>"A Symbolic Analysis of Relay and Switching Circuits"</em>. In quella tesi, Shannon dimostro che <strong>l'algebra di Boole descrive perfettamente il comportamento dei circuiti elettrici a rele</strong>.</p>
+<p>Un rele e un interruttore controllato elettricamente: puo essere aperto (0) o chiuso (1). Due rele in serie si comportano come un AND (la corrente passa solo se entrambi sono chiusi). Due rele in parallelo si comportano come un OR (la corrente passa se almeno uno e chiuso). Un rele normalmente chiuso che si apre quando riceve un segnale si comporta come un NOT.</p>
+<p>Shannon non invento i rele, ne scopri Boole. Il suo genio fu nel <strong>vedere il collegamento</strong>: un ponte tra la matematica pura del XIX secolo e l'ingegneria elettrica del XX. Quella tesi e stata definita "la piu importante tesi di master del XX secolo", e a ragione. Ogni circuito digitale mai progettato — dal calcolatore piu semplice al processore piu potente — si basa su quel collegamento.</p>
+<hr>
+<h2>Espressioni booleane e semplificazione</h2>
+<p>Un'<strong>espressione booleana</strong> combina variabili e operatori logici per definire una funzione. Per esempio:</p>
+<pre><code>F(A, B, C) <span class="op">=</span> (A AND B) OR (NOT A AND C)</code></pre>
+<p>Questa espressione vale 1 quando A e B sono entrambi 1, oppure quando A e 0 e C e 1.</p>
+<p>La <strong>semplificazione</strong> delle espressioni booleane e importante perche un'espressione piu semplice corrisponde a un circuito con meno porte logiche, quindi meno transistor, meno consumo energetico, meno costo e maggiore velocita. Alcune regole utili:</p>
+<ul>
+<li><strong>Identita</strong>: A AND 1 = A; A OR 0 = A</li>
+<li><strong>Annullamento</strong>: A AND 0 = 0; A OR 1 = 1</li>
+<li><strong>Idempotenza</strong>: A AND A = A; A OR A = A</li>
+<li><strong>Complemento</strong>: A AND (NOT A) = 0; A OR (NOT A) = 1</li>
+<li><strong>Leggi di De Morgan</strong>: NOT(A AND B) = (NOT A) OR (NOT B); NOT(A OR B) = (NOT A) AND (NOT B)</li>
+</ul>
+<p>Le <strong>leggi di De Morgan</strong> sono particolarmente importanti e meritano un esempio. Considerate la frase: "Non e vero che piove e fa freddo." Secondo De Morgan, equivale a: "Non piove oppure non fa freddo." In simboli: NOT(A AND B) = (NOT A) OR (NOT B). Provate a verificarlo con la tabella di verita: i risultati coincidono per tutte le combinazioni di A e B.</p>
+<p><strong>Esempio di semplificazione</strong>:</p>
+<pre><code>F <span class="op">=</span> (A AND B) OR (A AND NOT B)
+  <span class="op">=</span> A AND (B OR NOT B)          [raccogliendo A]
+  <span class="op">=</span> A AND <span class="mi">1</span>                     [complemento: B OR NOT B <span class="op">=</span> <span class="mi">1</span>]
+  <span class="op">=</span> A                           [identita]</code></pre>
+<p>L'espressione originale richiedeva 4 porte logiche; quella semplificata ne richiede 0 (e semplicemente il segnale A). Nella progettazione di circuiti integrati con miliardi di transistor, queste semplificazioni fanno la differenza tra un chip che funziona e uno che si surriscalda.</p>
+<hr>
+<h2>Dai transistor ai circuiti integrati</h2>
+<p>Prima di tuffarci nella grande storia del calcolo automatico, e utile capire la catena che porta dalla logica booleana ai computer fisici:</p>
+<ol>
+<li><strong>Transistor</strong>: un componente elettronico che funziona come un interruttore microscopico. Puo essere acceso o spento, e il suo stato puo essere controllato da un segnale elettrico. Fu inventato nel 1947 ai Bell Labs (ne parleremo tra poco).</li>
+</ol>
+<ol>
+<li><strong>Porta logica</strong>: un piccolo circuito composto da pochi transistor che realizza un'operazione booleana (AND, OR, NOT, NAND, ecc.). Una porta NAND a due input richiede tipicamente 4 transistor.</li>
+</ol>
+<ol>
+<li><strong>Circuito combinatorio</strong>: una rete di porte logiche che realizza una funzione piu complessa. Per esempio, un sommatore a un bit (che somma due bit e un riporto) si costruisce con un paio di porte XOR e un paio di porte AND e una OR.</li>
+</ol>
+<ol>
+<li><strong>Circuito integrato</strong>: milioni (o miliardi) di transistor incisi su una singola piastrina di silicio, che realizzano circuiti combinatori e sequenziali complessi. Un moderno processore contiene decine di miliardi di transistor.</li>
+</ol>
+<p>Questo e il filo rosso che va dall'algebra di Boole al chip che esegue i vostri programmi.</p>
+<hr>
+<h2>Storia del calcolo: dalle origini meccaniche</h2>
+<h3>L'abaco (circa 2400 a.C.)</h3>
+<p>La storia del calcolo automatico inizia migliaia di anni fa con l'<strong>abaco</strong>, uno strumento che permette di eseguire operazioni aritmetiche spostando palline lungo aste. L'abaco non "calcola" da solo — e l'operatore umano che esegue i passaggi — ma e il primo esempio di strumento progettato per assistere il calcolo. Versioni dell'abaco furono sviluppate indipendentemente in Mesopotamia, Cina, Giappone e Roma. Il <em>suanpan</em> cinese e il <em>soroban</em> giapponese sono ancora usati oggi, e un operatore esperto puo eseguire addizioni e sottrazioni con una velocita sorprendente.</p>
+<h3>Blaise Pascal e la Pascalina (1642)</h3>
+<p><strong>Blaise Pascal</strong> (1623-1662), matematico, fisico e filosofo francese, costrui a soli 19 anni la prima calcolatrice meccanica della storia: la <strong>Pascalina</strong>. La motivazione era pratica e toccante: suo padre, Etienne, era un esattore delle tasse e doveva eseguire interminabili calcoli aritmetici. Il giovane Blaise volle alleviare la sua fatica.</p>
+<p>La Pascalina usava un sistema di ruote dentate: girando una ruota, quando questa completava un giro intero (passando dal 9 allo 0), un meccanismo a scatto faceva avanzare di una posizione la ruota successiva, realizzando automaticamente il riporto. Poteva eseguire somme e sottrazioni. Ne furono costruite circa cinquanta esemplari, ma il costo elevato ne impedi la diffusione commerciale.</p>
+<h3>Gottfried Leibniz, il sistema binario e l'I Ching (1694)</h3>
+<p><strong>Gottfried Wilhelm Leibniz</strong> (1646-1716) e una figura colossale nella storia del pensiero. Co-inventore del calcolo infinitesimale (indipendentemente da Newton), filosofo, diplomatico, e anche inventore di macchine calcolatrici. Nel 1694 costrui la <strong>Stepped Reckoner</strong>, una macchina che poteva eseguire le quattro operazioni aritmetiche grazie a un ingegnoso meccanismo a tamburo scanalato.</p>
+<p>Ma il contributo di Leibniz che piu ci interessa e un altro: la formalizzazione del <strong>sistema binario</strong>. Nel suo articolo <em>"Explication de l'Arithmetique Binaire"</em> (1703), Leibniz mostro che tutti i numeri si possono esprimere con sole due cifre, 0 e 1. Fu affascinato dal parallelismo con l'<strong>I Ching</strong>, l'antico testo cinese di divinazione, in cui gli esagrammi sono costruiti combinando linee intere (yang) e spezzate (yin) — un sistema binario ante litteram vecchio di tremila anni. Leibniz, uomo profondamente religioso, vide nel binario una metafora della creazione: Dio (1) crea tutto dal nulla (0).</p>
+<p>Ci vollero quasi 250 anni perche il sistema binario di Leibniz trovasse la sua applicazione naturale nei circuiti elettronici.</p>
+<h3>Charles Babbage e Ada Lovelace: l'alba del computer programmabile</h3>
+<p><strong>Charles Babbage</strong> (1791-1871), matematico e ingegnere britannico, e spesso chiamato "il padre del computer". Nel 1822 inizio a progettare la <strong>Macchina Differenziale</strong> (<em>Difference Engine</em>), un dispositivo meccanico per calcolare tabelle matematiche eliminando gli errori umani. Ma il progetto piu visionario fu la <strong>Macchina Analitica</strong> (<em>Analytical Engine</em>), concepita nel 1837.</p>
+<p>La Macchina Analitica, mai completata, anticipava tutte le componenti fondamentali di un computer moderno:</p>
+<ul>
+<li>Un <strong>mulino</strong> (<em>mill</em>): l'equivalente dell'unita aritmetico-logica (ALU), che esegue le operazioni.</li>
+<li>Un <strong>magazzino</strong> (<em>store</em>): l'equivalente della memoria, che conserva i dati.</li>
+<li>Un sistema di <strong>schede perforate</strong> per fornire istruzioni: l'equivalente di un programma.</li>
+<li>La capacita di eseguire <strong>salti condizionali</strong>: "se il risultato e negativo, vai all'istruzione numero 15."</li>
+</ul>
+<p>Babbage, irascibile e perfezionista, non riusci mai a costruirla. Ma una persona capì appieno il potenziale della macchina: <strong>Augusta Ada King, contessa di Lovelace</strong> (1815-1852), figlia del poeta Lord Byron. Ada tradusse un articolo sulla Macchina Analitica scritto dal matematico italiano Luigi Menabrea, aggiungendo note che erano tre volte piu lunghe dell'articolo originale. In quelle note, descrisse un algoritmo per calcolare i numeri di Bernoulli usando la macchina: e considerato il <strong>primo programma della storia</strong>. Ma il contributo piu profondo di Ada fu concettuale: comprese che la macchina non era solo un calcolatore, ma poteva manipolare qualsiasi tipo di simbolo — note musicali, lettere, concetti — purche fosse possibile codificarli in numeri. Un'intuizione che anticipo di un secolo il concetto di <em>general-purpose computer</em>.</p>
+<hr>
+<h2>Alan Turing e la nascita dell'informatica teorica</h2>
+<p><strong>Alan Mathison Turing</strong> (1912-1954) e forse la figura piu importante di tutta la storia dell'informatica. Nel 1936, a soli 24 anni, pubblico l'articolo <em>"On Computable Numbers, with an Application to the Entscheidungsproblem"</em>, in cui defini un modello matematico di calcolo che oggi chiamiamo <strong>Macchina di Turing</strong>.</p>
+<h3>La Macchina di Turing</h3>
+<p>Una Macchina di Turing e un dispositivo immaginario composto da:</p>
+<ul>
+<li>Un <strong>nastro</strong> infinito diviso in celle, ciascuna contenente un simbolo (per esempio, 0 o 1).</li>
+<li>Una <strong>testina</strong> che puo leggere e scrivere sul nastro e spostarsi di una cella a destra o a sinistra.</li>
+<li>Un <strong>insieme finito di stati</strong> e una <strong>tabella di transizione</strong> che dice: "Se sei nello stato X e leggi il simbolo Y, scrivi il simbolo Z, spostati in direzione D e passa allo stato W."</li>
+</ul>
+<p>Questo modello, nella sua disarmante semplicita, e in grado di calcolare tutto cio che e calcolabile. Qualsiasi algoritmo — per quanto complesso — puo essere eseguito da una Macchina di Turing. Questa affermazione, nota come <strong>tesi di Church-Turing</strong>, e uno dei pilastri dell'informatica teorica.</p>
+<p>Ma Turing dimostro anche qualcosa di altrettanto profondo: esistono problemi che <strong>nessuna</strong> macchina puo risolvere. Il piu famoso e il <strong>problema della fermata</strong> (<em>halting problem</em>): non esiste un algoritmo generale che, dato un programma qualsiasi, possa determinare se quel programma terminera o girera all'infinito.</p>
+<h3>Bletchley Park e la decrittazione di Enigma</h3>
+<p>Durante la Seconda Guerra Mondiale, Turing fu reclutato a <strong>Bletchley Park</strong>, il centro segreto di crittoanalisi britannico. Qui lavoro alla decrittazione di <strong>Enigma</strong>, la macchina cifrante usata dalla marina tedesca. Turing progetto la <strong>Bombe</strong>, una macchina elettromeccanica che automatizzava la ricerca delle chiavi di cifratura. Si stima che il lavoro di Bletchley Park abbia accorciato la guerra di almeno due anni, salvando milioni di vite.</p>
+<p>La storia personale di Turing e tragica. Nel 1952 fu condannato per omosessualita (allora reato in Gran Bretagna) e sottoposto a castrazione chimica. Mori nel 1954, apparentemente suicida, mordendo una mela avvelenata con cianuro. Solo nel 2013 ricevette la grazia postuma dalla regina Elisabetta II. La mela morsicata nel logo di Apple non e un riferimento a Turing (secondo Steve Jobs fu una coincidenza), ma molti nella comunita informatica amano pensarlo.</p>
+<hr>
+<h2>I primi computer elettronici</h2>
+<h3>Konrad Zuse e lo Z3 (1941)</h3>
+<p>Mentre Turing lavorava in Inghilterra, in Germania un giovane ingegnere civile, <strong>Konrad Zuse</strong> (1910-1995), costruiva computer nel salotto di casa dei genitori a Berlino. Lo <strong>Z3</strong>, completato nel 1941, e considerato il primo computer programmabile funzionante della storia. Usava rele telefonici (era elettromeccanico, non elettronico), operava in binario, e poteva essere programmato tramite pellicola cinematografica perforata. Zuse lavoro in quasi completo isolamento — non conosceva il lavoro di Turing — e i suoi computer furono distrutti dai bombardamenti alleati. Solo decenni dopo ricevette il riconoscimento che meritava.</p>
+<h3>ENIAC (1945)</h3>
+<p>L'<strong>ENIAC</strong> (<em>Electronic Numerical Integrator and Computer</em>), completato nel 1945 all'Universita della Pennsylvania, fu il primo computer <strong>elettronico</strong> general-purpose. Usava circa 18.000 valvole termoioniche, pesava 27 tonnellate, occupava una stanza intera e consumava 150 kilowatt di potenza (abbastanza per alimentare un piccolo quartiere). Poteva eseguire 5.000 addizioni al secondo — impressionante per l'epoca, ma enormemente meno di qualsiasi calcolatrice tascabile di oggi.</p>
+<p>Un fatto poco noto: la programmazione dell'ENIAC era affidata a un gruppo di sei donne matematiche — Kay McNulty, Betty Jennings, Betty Snyder, Marlyn Meltzer, Fran Bilas e Ruth Lichterman — che dovevano collegare fisicamente cavi e impostare interruttori. Furono tra le prime programmatrici della storia, ma il loro contributo fu a lungo ignorato.</p>
+<hr>
+<h2>La grande transizione: dalle valvole ai microprocessori</h2>
+<h3>Valvole termoioniche (1940s)</h3>
+<p>I primi computer elettronici usavano <strong>valvole termoioniche</strong> (o <em>vacuum tubes</em>): dispositivi che controllano il flusso di elettroni nel vuoto. Funzionavano, ma erano enormi, fragili, consumavano molta energia e si bruciavano continuamente. L'ENIAC doveva sostituire in media una valvola ogni due giorni.</p>
+<h3>Il transistor (1947, Bell Labs)</h3>
+<p>Il 23 dicembre 1947, ai <strong>Bell Telephone Laboratories</strong> nel New Jersey, <strong>John Bardeen</strong>, <strong>Walter Brattain</strong> e <strong>William Shockley</strong> dimostrarono il primo <strong>transistor</strong> funzionante. Un transistor fa lo stesso lavoro di una valvola — funziona come un interruttore controllato elettricamente — ma e piu piccolo, piu veloce, piu affidabile, consuma meno energia e costa meno. I tre ricevettero il Nobel per la Fisica nel 1956.</p>
+<p>Il transistor e stato chiamato "la piu grande invenzione del XX secolo", e non e un'esagerazione. Senza di esso, non avremmo computer, smartphone, internet, ne nessuna delle tecnologie digitali che definiscono la nostra epoca.</p>
+<h3>Circuiti integrati (1958)</h3>
+<p>Nel 1958, <strong>Jack Kilby</strong> alla Texas Instruments (e, indipendentemente, Robert Noyce alla Fairchild Semiconductor nel 1959) invento il <strong>circuito integrato</strong>: l'idea di realizzare piu transistor, resistenze e condensatori su un unico pezzo di semiconduttore (tipicamente silicio). Questo elimino la necessita di saldare manualmente migliaia di componenti separati e apri la strada alla miniaturizzazione.</p>
+<p>Kilby ricevette il Nobel per la Fisica nel 2000. Noyce, che nel frattempo aveva co-fondato Intel, era gia morto e non pote condividerlo.</p>
+<h3>Il microprocessore (1971, Intel 4004)</h3>
+<p>Nel 1971, un team di ingegneri Intel guidato da <strong>Federico Faggin</strong> (un italiano!) progetto l'<strong>Intel 4004</strong>, il primo <strong>microprocessore</strong> commerciale: un'intera CPU su un singolo chip. Aveva 2.300 transistor e una frequenza di clock di 740 kHz. Per confronto, un processore Apple M3 del 2023 contiene circa 25 miliardi di transistor e opera a frequenze di diversi GHz.</p>
+<h3>La legge di Moore</h3>
+<p>Nel 1965, <strong>Gordon Moore</strong> (co-fondatore di Intel) osservo che il numero di transistor su un circuito integrato raddoppiava approssimativamente ogni due anni. Questa osservazione empirica, nota come <strong>legge di Moore</strong>, si e rivelata straordinariamente accurata per oltre cinquant'anni, guidando l'intera industria dei semiconduttori. Non e una legge fisica — e piuttosto una profezia autoavverante, un obiettivo che l'industria si e sforzata di raggiungere — e da qualche anno sta rallentando, perche ci avviciniamo ai limiti fisici della miniaturizzazione: quando un transistor e largo pochi nanometri (pochi atomi), effetti quantistici come il <em>tunneling</em> rendono il suo comportamento imprevedibile.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Qual e l'idea fondamentale introdotta da George Boole nel 1854? Perche fu rivoluzionaria?</li>
+</ol>
+<ol>
+<li>Completate la tabella di verita dell'operatore XOR e spiegate in che senso si differenzia dall'OR inclusivo.</li>
+</ol>
+<ol>
+<li>Perche la porta NAND e definita "universale"? Cosa significa in termini pratici per la costruzione di circuiti?</li>
+</ol>
+<ol>
+<li>Qual e il contributo di Claude Shannon del 1937 e perche e diverso dal suo contributo del 1948?</li>
+</ol>
+<ol>
+<li>Spiegate le leggi di De Morgan con un esempio tratto dal linguaggio naturale.</li>
+</ol>
+<ol>
+<li>In che senso la Macchina Analitica di Babbage anticipava i computer moderni? Quali componenti aveva?</li>
+</ol>
+<ol>
+<li>Che cos'e la Macchina di Turing e cosa dimostro Turing con essa?</li>
+</ol>
+<ol>
+<li>Descrivete la sequenza tecnologica: valvole -> transistor -> circuiti integrati -> microprocessori. Per ciascun passaggio, indicate l'anno e il vantaggio principale.</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Costruite la tabella di verita per l'espressione: F = A AND (B OR C).</li>
+</ol>
+<ol>
+<li>Costruite la tabella di verita per l'espressione: G = (NOT A) OR (A AND B).</li>
+</ol>
+<ol>
+<li>Verificate, usando le tabelle di verita, che NOT(A OR B) = (NOT A) AND (NOT B) (seconda legge di De Morgan).</li>
+</ol>
+<ol>
+<li>Un circuito di allarme deve attivarsi (output = 1) quando la porta e aperta (P = 1) e l'allarme e inserito (A = 1). Quale operatore booleano lo descrive? Scrivete la tabella di verita.</li>
+</ol>
+<h3>Intermedio</h3>
+<ol>
+<li>Semplificate l'espressione F = (A AND B) OR (A AND NOT B) OR (NOT A AND B). Mostrate ogni passaggio e verificate il risultato con la tabella di verita.</li>
+</ol>
+<ol>
+<li>Esprimete NOT A, A AND B e A OR B usando <strong>solo</strong> porte NAND. Disegnate (o descrivete a parole) i circuiti risultanti.</li>
+</ol>
+<ol>
+<li>Un sistema di voto elettronico ha tre membri (A, B, C). La proposta passa se almeno due membri votano a favore. Scrivete l'espressione booleana corrispondente e la sua tabella di verita.</li>
+</ol>
+<h3>Avanzato</h3>
+<ol>
+<li>Dimostrate, usando le leggi dell'algebra booleana, che:</li>
+</ol>
+<p>(A OR B) AND (A OR NOT B) = A</p>
+<ol>
+<li>Un <strong>half adder</strong> (semi-sommatore) e un circuito che somma due bit A e B producendo una Somma (S) e un Riporto (R). Mostrate che S = A XOR B e R = A AND B costruendo le tabelle di verita e confrontandole con l'addizione binaria.</li>
+</ol>
+<ol>
+<li>Scrivete una breve cronologia (massimo 10 righe) che colleghi Leibniz (1703), Boole (1854), Shannon (1937), Bardeen-Brattain-Shockley (1947), Kilby (1958), e Faggin (1971), evidenziando come ogni contributo dipenda dai precedenti.</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questa lezione abbiamo percorso un arco temporale enorme — dall'abaco sumero ai microprocessori — e un arco concettuale altrettanto vasto — dalla logica filosofica ai circuiti integrati. Il filo conduttore e questo: le idee astratte, quando trovano il contesto giusto, diventano tecnologie concrete che cambiano il mondo.</p>
+<p>L'algebra di Boole dormi per quasi un secolo prima che Shannon la svegliasse. Il sistema binario di Leibniz attese 250 anni prima di incontrare i transistor. La Macchina Analitica di Babbage anticipo i computer di un secolo, ma non pote essere costruita con la tecnologia dell'epoca. Questa storia ci ricorda che il progresso non e lineare: e fatto di intuizioni geniali che aspettano — a volte per generazioni — le condizioni materiali per realizzarsi.</p>
+<p>Per voi futuri statistici, la logica booleana non e un esercizio accademico: e il linguaggio con cui scriverete le condizioni nei vostri programmi (<code>if</code>, <code>and</code>, <code>or</code>, <code>not</code>), filtrerete i dati, e costruirete query. E la storia del calcolo vi da la prospettiva per capire da dove vengono gli strumenti che userete ogni giorno.</p>
+<p>Nella prossima lezione entreremo dentro la macchina: vedremo come sono fatte le componenti di un computer moderno, come collaborano, e perche la loro architettura — ancora oggi basata sulle idee di von Neumann del 1945 — determina le prestazioni dei vostri calcoli statistici.</p>
+<nav class="bottom-nav"><span><a href="F01_informazione_bit_numerazione.html">← F01</a></span><span><a href="../../index.html">Home</a></span><span><a href="F03_architettura_elaboratori.html">F03 →</a></span></nav>
+</body>
+</html>

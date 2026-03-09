@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemi operativi e software di sistema</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>Sistemi operativi e<br>software di sistema</h1>
+                <div class="subtitle">Dal hardware nudo al software che lo rende utilizzabile</div>
+                <div class="course-info">
+                    <p>Sistemi di Elaborazione — Lezione F04</p>
+                    <p>Corso di Laurea in Scienze Statistiche</p>
+                </div>
+                <aside class="notes">Nelle lezioni precedenti abbiamo costruito un elaboratore pezzo per pezzo: bit, porte logiche, CPU, memoria, bus. Ora vediamo il software che rende tutto questo utilizzabile.</aside>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li><strong>Perch&eacute; serve un sistema operativo</strong> &mdash; le 4 funzioni fondamentali</li>
+                    <li class="fragment"><strong>Breve storia dei SO</strong> &mdash; da batch a Linux</li>
+                    <li class="fragment"><strong>Gestione dei processi</strong> &mdash; multitasking e scheduling</li>
+                    <li class="fragment"><strong>Gestione della memoria</strong> &mdash; memoria virtuale e paginazione</li>
+                    <li class="fragment"><strong>Il file system</strong> &mdash; organizzazione dei dati</li>
+                    <li class="fragment"><strong>Reti e internet</strong> &mdash; protocolli, HTTP, cloud, API</li>
+                </ol>
+            </section>
+
+            <!-- ========== SEZIONE 1: PERCHE' SERVE UN SO ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Perch&eacute; serve un<br>sistema operativo</h2>
+                    <p><em>Il direttore d'orchestra del computer</em></p>
+                </section>
+
+                <section>
+                    <h2>Il problema</h2>
+                    <p>Abbiamo costruito un elaboratore: CPU, memoria, bus, dispositivi.</p>
+                    <p>Ma se lo accendete ora&hellip; <strong>non succede nulla</strong>.</p>
+                    <div class="box box-yellow fragment">
+                        <strong>Manca il software di sistema</strong> &mdash; nessuno gestisce le risorse, coordina i programmi, vi permette di interagire con la macchina.
+                    </div>
+                    <p class="fragment">Il sistema operativo &egrave; <strong>il programma pi&ugrave; importante che non vedrete mai</strong>: lavora silenziosamente sotto ogni cosa che fate al computer.</p>
+                    <aside class="notes">Analogia: un'orchestra con 100 musicisti, senza direttore. Caos totale.</aside>
+                </section>
+
+                <section>
+                    <h2>L'analogia dell'orchestra</h2>
+                    <div class="diagram">
+                        Direttore d'orchestra = <strong>Sistema Operativo</strong><br>
+                        Musicisti = <strong>Programmi</strong><br>
+                        Strumenti = <strong>Risorse hardware</strong> (CPU, RAM, disco, rete)<br>
+                        Spartito = <strong>Istruzioni da eseguire</strong>
+                    </div>
+                    <p class="fragment" style="margin-top: 0.8em;">Il direttore garantisce che tutto funzioni <strong>armoniosamente</strong>: chi suona quando, chi aspetta chi, come gestire un solo pianoforte con tre pianisti.</p>
+                </section>
+
+                <section>
+                    <h2>Le 4 funzioni fondamentali</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>1. Astrazione dell'hardware</h3>
+                                <p>Nasconde la complessit&agrave; dietro interfacce uniformi</p>
+                            </div>
+                            <div class="box box-green fragment">
+                                <h3>2. Gestione delle risorse</h3>
+                                <p>Assegna CPU, memoria, disco ai programmi</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow fragment">
+                                <h3>3. Interfaccia utente</h3>
+                                <p>Terminale, finestre, touch screen</p>
+                            </div>
+                            <div class="box box-red fragment">
+                                <h3>4. Sicurezza e protezione</h3>
+                                <p>Isolamento tra processi, permessi di accesso</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Astrazione dell'hardware</h2>
+                    <p>L'hardware &egrave; complesso e diversificato: centinaia di modelli di dischi, schede di rete, schermi.</p>
+                    <p>Il SO li nasconde dietro un'<strong>interfaccia uniforme</strong>.</p>
+                    <pre><code class="language-python"># Non dovete sapere se il file è su SSD Samsung o HDD Seagate,
+# se usa NTFS o ext4. Il SO se ne occupa.
+open("dati.csv")</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong>Risultato:</strong> scrivete lo stesso codice indipendentemente dall'hardware sottostante.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Gestione risorse e protezione</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Gestione delle risorse</h3>
+                            <ul>
+                                <li>La CPU &egrave; una (o poche)</li>
+                                <li class="fragment">La RAM &egrave; limitata</li>
+                                <li class="fragment">Il disco &egrave; condiviso</li>
+                                <li class="fragment">Ma voi volete: browser + Spotify + VS Code + Python</li>
+                            </ul>
+                        </div>
+                        <div class="col fragment">
+                            <h3>Sicurezza e protezione</h3>
+                            <ul>
+                                <li>Ogni programma vive in uno <strong>spazio isolato</strong></li>
+                                <li>Non pu&ograve; accedere alla memoria altrui</li>
+                                <li>Non pu&ograve; scrivere file senza permessi</li>
+                                <li>Un bug non distrugge il sistema</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 2: STORIA ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Breve storia dei<br>sistemi operativi</h2>
+                    <p><em>Dalle schede perforate a Linux</em></p>
+                </section>
+
+                <section>
+                    <h2>L'era batch (anni '50&ndash;'60)</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <ul>
+                                <li>Programmi scritti su <strong>schede perforate</strong></li>
+                                <li class="fragment">Consegnate a un operatore la mattina</li>
+                                <li class="fragment">Risultati ritirati il giorno dopo <em>(se tutto andava bene)</em></li>
+                                <li class="fragment">Nessuna interazione con la macchina</li>
+                            </ul>
+                            <div class="box box-blue fragment">
+                                I primi SO automatizzavano il processo: caricare un programma, eseguirlo, passare al successivo. <strong>Sistemi batch</strong> = elaborazione a lotti.
+                            </div>
+                        </div>
+                        <div class="col-40">
+                            <div class="diagram">
+                                Programma su schede<br>
+                                &darr;<br>
+                                Operatore carica<br>
+                                &darr;<br>
+                                Computer esegue<br>
+                                &darr;<br>
+                                Stampa risultati<br>
+                                &darr;<br>
+                                Programma successivo
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Il time-sharing (anni '60&ndash;'70)</h2>
+                    <p>Idea rivoluzionaria: suddividere il tempo della CPU tra <strong>molti utenti</strong>, dando a ciascuno l'illusione di avere il computer tutto per s&eacute;.</p>
+                    <div class="diagram fragment">
+                        Terminale 1 &nbsp; Terminale 2 &nbsp; Terminale 3 &nbsp; Terminale 4<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPUTER CENTRALE (time-sharing)
+                    </div>
+                    <div class="fragment" style="margin-top: 0.8em;">
+                        <p><strong>Multics</strong> (1964&ndash;69): MIT + Bell Labs + General Electric</p>
+                        <p>Straordinariamente avanzato ma enormemente complesso.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Unix (1969)</h2>
+                    <p>Quando Bell Labs abbandon&ograve; Multics, <strong>Ken Thompson</strong> e <strong>Dennis Ritchie</strong> presero le idee migliori e le semplificarono radicalmente.</p>
+                    <div class="box box-green fragment">
+                        <h3>Principi fondamentali di Unix</h3>
+                        <ul>
+                            <li><strong>"Fare una cosa sola e farla bene"</strong> &mdash; strumenti semplici combinati tramite pipe</li>
+                            <li><strong>"Tutto &egrave; un file"</strong> &mdash; interfaccia uniforme e composibile</li>
+                            <li><strong>Portabilit&agrave;</strong> &mdash; riscritto in C nel 1973, indipendente dalla macchina</li>
+                        </ul>
+                    </div>
+                    <p class="fragment">Da Unix discendono: BSD, Solaris, <strong>macOS</strong>, <strong>Linux</strong>, <strong>Android</strong>.</p>
+                </section>
+
+                <section>
+                    <h2>L'era dei personal computer</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sistema</th>
+                                <th>Anno</th>
+                                <th>Caratteristiche</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>MS-DOS</strong></td>
+                                <td>1981</td>
+                                <td>Testuale, un solo programma alla volta</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Windows</strong></td>
+                                <td>1985+</td>
+                                <td>Interfaccia grafica, oggi ~72% desktop</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Macintosh</strong></td>
+                                <td>1984</td>
+                                <td>GUI con mouse e icone (ispirata da Xerox PARC)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        <strong>Nota:</strong> macOS &egrave;, sotto la superficie, un sistema Unix (kernel derivato da BSD).
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Linux (1991)</h2>
+                    <p><strong>Linus Torvalds</strong>, studente finlandese di 21 anni:</p>
+                    <div class="box box-yellow">
+                        <em>"Sto facendo un sistema operativo (gratis) (solo un hobby, non sar&agrave; grande e professionale come gnu)"</em>
+                    </div>
+                    <p class="fragment">Quel "hobby" oggi:</p>
+                    <ul>
+                        <li class="fragment"><strong>96%</strong> dei server mondiali (Google, Amazon, Facebook)</li>
+                        <li class="fragment"><strong>Tutti</strong> i primi 500 supercomputer</li>
+                        <li class="fragment">Base di <strong>Android</strong> (3+ miliardi di dispositivi)</li>
+                        <li class="fragment">Spina dorsale del <strong>cloud computing</strong></li>
+                    </ul>
+                    <aside class="notes">Il modello open-source: codice pubblico, chiunque contribuisce. Gratuito, robusto, flessibile, trasparente. Per un ricercatore, il software ispezionabile e verificabile ha un valore enorme.</aside>
+                </section>
+
+                <section>
+                    <h2>Panorama attuale dei SO</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Desktop</h3>
+                            <ul>
+                                <li><strong>Windows</strong> ~72%</li>
+                                <li><strong>macOS</strong> ~16%</li>
+                                <li><strong>Linux</strong> ~4%</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3>Server / Cloud</h3>
+                            <ul>
+                                <li><strong>Linux</strong> ~96%</li>
+                                <li>Windows Server ~4%</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3>Mobile</h3>
+                            <ul>
+                                <li><strong>Android</strong> (Linux) ~72%</li>
+                                <li><strong>iOS</strong> (Unix) ~27%</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        <strong>Osservazione:</strong> la filosofia Unix domina quasi ovunque, tranne il desktop.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 3: PROCESSI ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Gestione dei processi</h2>
+                    <p><em>Come il SO esegue molti programmi contemporaneamente</em></p>
+                </section>
+
+                <section>
+                    <h2>Cos'&egrave; un processo</h2>
+                    <p>Quando eseguite un programma Python, il SO crea un <strong>processo</strong>: un'istanza del programma in esecuzione.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Ogni processo ha:</h3>
+                                <ul>
+                                    <li><strong>Spazio di indirizzamento</strong> privato</li>
+                                    <li><strong>Stato</strong> (in esecuzione, in attesa, terminato)</li>
+                                    <li><strong>PID</strong> &mdash; identificatore univoco</li>
+                                    <li><strong>Risorse</strong> associate (file, connessioni)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="diagram">
+                                Programma (.py)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&darr; esecuzione<br>
+                                Processo (PID 1234)<br>
+                                +-----------------+<br>
+                                | Memoria privata |<br>
+                                | Stato: running  |<br>
+                                | File aperti     |<br>
+                                +-----------------+
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">Lo stesso programma può generare più processi indipendenti: due terminali con due script Python diversi = due processi distinti.</aside>
+                </section>
+
+                <section>
+                    <h2>Multitasking e scheduling</h2>
+                    <p>8 core, ma decine di processi attivi. Come funziona?</p>
+                    <div class="box box-green fragment">
+                        <strong>Scheduling:</strong> il SO assegna brevi "fette di tempo" (<em>time slice</em>) sulla CPU, tipicamente pochi millisecondi. Il processore salta da un processo all'altro cos&igrave; velocemente che sembra tutto simultaneo.
+                    </div>
+                    <div class="diagram fragment">
+                        Tempo &rarr; |--P1--|--P2--|--P3--|--P1--|--P2--|--P3--|--P1--| ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5ms&nbsp;&nbsp;&nbsp;5ms&nbsp;&nbsp;&nbsp;5ms&nbsp;&nbsp;&nbsp;5ms&nbsp;&nbsp;&nbsp;5ms&nbsp;&nbsp;&nbsp;5ms&nbsp;&nbsp;&nbsp;5ms
+                    </div>
+                    <p class="fragment">Questo si chiama <strong>multitasking preemptivo</strong>: &egrave; il SO a decidere quando interrompere un processo, non il processo stesso.</p>
+                </section>
+
+                <section>
+                    <h2>Algoritmi di scheduling</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Round-robin</h3>
+                            <p>Ogni processo riceve la stessa fetta di tempo, a turno, in ordine circolare.</p>
+                            <div class="diagram">
+                                P1 &rarr; P2 &rarr; P3 &rarr; P4<br>
+                                &uarr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                                P4 &larr; P3 &larr; P2 &larr; P1
+                            </div>
+                        </div>
+                        <div class="col fragment">
+                            <h3>Con priorit&agrave;</h3>
+                            <table>
+                                <thead>
+                                    <tr><th>Tipo</th><th>Priorit&agrave;</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Interfaccia grafica</td><td><span class="badge badge-red">Alta</span></td></tr>
+                                    <tr><td>Audio/Video</td><td><span class="badge badge-yellow">Media</span></td></tr>
+                                    <tr><td>Calcolo pesante</td><td><span class="badge badge-green">Bassa</span></td></tr>
+                                </tbody>
+                            </table>
+                            <p style="margin-top: 0.5em;"><em>I processi interattivi hanno priorit&agrave; alta per garantire reattivit&agrave;.</em></p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Thread e concorrenza</h2>
+                    <p>Un <strong>thread</strong> &egrave; un'unit&agrave; di esecuzione all'interno di un processo.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="diagram">
+                                Processo (PID 1234)<br>
+                                +-------------------+<br>
+                                | Memoria condivisa |<br>
+                                |                   |<br>
+                                | Thread A  Thread B|<br>
+                                | (flusso1) (flusso2)|<br>
+                                +-------------------+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <ul>
+                                <li>Pi&ugrave; <strong>leggeri</strong> dei processi</li>
+                                <li class="fragment"><strong>Condividono</strong> la memoria del processo</li>
+                                <li class="fragment">Vantaggio: comunicazione veloce</li>
+                                <li class="fragment">Rischio: <strong>race condition</strong> &mdash; due thread modificano lo stesso dato contemporaneamente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Python e il GIL</h2>
+                    <div class="box box-red">
+                        <strong>GIL</strong> (<em>Global Interpreter Lock</em>): un blocco che impedisce a pi&ugrave; thread Python di eseguire bytecode contemporaneamente.
+                    </div>
+                    <div class="compare fragment">
+                        <div class="bad">
+                            <pre><code class="language-python">import threading
+# I thread NON girano
+# in parallelo per
+# codice Python puro</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python">import multiprocessing
+# Processi separati:
+# vero parallelismo!
+# (oppure NumPy, che usa C)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>In pratica:</strong> per calcolo parallelo in Python, usate <code>multiprocessing</code> o librerie come NumPy che eseguono codice C/Fortran in parallelo.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 4: MEMORIA ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Gestione della memoria</h2>
+                    <p><em>L'illusione di memoria infinita</em></p>
+                </section>
+
+                <section>
+                    <h2>Memoria virtuale</h2>
+                    <p>Ogni processo "crede" di avere un <strong>enorme spazio di memoria</strong> tutto per s&eacute;.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Dal punto di vista del processo</h3>
+                                <p>Memoria continua da 0 a 256 TB (64 bit)</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <h3>In realt&agrave;</h3>
+                                <p>La RAM fisica &egrave; condivisa tra tutti i processi</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="diagram fragment">
+                        Indirizzo virtuale &rarr; [MMU] &rarr; Indirizzo fisico<br>
+                        (Memory Management Unit dell'hardware)
+                    </div>
+                    <p class="fragment">La traduzione &egrave; <strong>trasparente</strong>: il programma non sa dove i suoi dati risiedono fisicamente.</p>
+                </section>
+
+                <section>
+                    <h2>Paginazione</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <ul>
+                                <li>Memoria virtuale divisa in <strong>pagine</strong> (4 KB tipicamente)</li>
+                                <li class="fragment">RAM fisica divisa in <strong>frame</strong> (stessa dimensione)</li>
+                                <li class="fragment">Il SO mantiene una <strong>tabella di traduzione</strong>: pagina &rarr; frame</li>
+                                <li class="fragment">Le pagine non usate possono essere spostate su disco (<strong>swap</strong>)</li>
+                            </ul>
+                        </div>
+                        <div class="col-40">
+                            <div class="diagram">
+                                Pagine virtuali<br>
+                                [P0][P1][P2][P3]<br>
+                                &nbsp;&darr;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&darr;<br>
+                                Frame fisici<br>
+                                [F5][F2][--][F8]<br>
+                                <br>
+                                P2 &rarr; su disco (swap)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <strong>Page fault:</strong> quando il processo accede a una pagina non in RAM, il SO la carica dal disco. Tutto avviene automaticamente.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Perch&eacute; il computer rallenta</h2>
+                    <p>Quando la RAM &egrave; satura:</p>
+                    <div class="diagram">
+                        RAM piena &rarr; Pagine spostate su disco continuamente &rarr; <strong>Thrashing</strong><br>
+                        <br>
+                        Disco: ~1000x pi&ugrave; lento della RAM
+                    </div>
+                    <div class="box box-red fragment">
+                        <strong>Thrashing:</strong> il SO passa pi&ugrave; tempo a spostare pagine che a eseguire programmi. Il computer diventa inutilizzabile.
+                    </div>
+                    <pre class="fragment"><code class="language-python"># Il famoso errore:
+MemoryError
+# Il processo ha richiesto più memoria di quanta il SO
+# sia disposto ad allocargli.</code></pre>
+                    <aside class="notes">Consiglio pratico: chiudete i programmi che non usate, specialmente il browser con molte schede aperte.</aside>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 5: FILE SYSTEM ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Il file system</h2>
+                    <p><em>Come il SO organizza i dati sul disco</em></p>
+                </section>
+
+                <section>
+                    <h2>Organizzazione logica</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Due astrazioni fondamentali</h3>
+                            <div class="box box-blue">
+                                <strong>File:</strong> contenitore di dati con un nome (documento, immagine, programma, dataset CSV)
+                            </div>
+                            <div class="box box-green">
+                                <strong>Directory (cartella):</strong> contenitore di file e altre directory &rarr; struttura <strong>gerarchica</strong> ad albero
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="diagram">
+                                /home/nicola/<br>
+                                &nbsp;&nbsp;|-- documenti/<br>
+                                &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|-- tesi.pdf<br>
+                                &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|-- appunti.txt<br>
+                                &nbsp;&nbsp;|-- dati/<br>
+                                &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|-- studenti.csv<br>
+                                &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|-- esami.csv<br>
+                                &nbsp;&nbsp;|-- script.py
+                            </div>
+                        </div>
+                    </div>
+                    <p class="fragment"><strong>Metadati:</strong> nome, dimensione, data di creazione, data di modifica, permessi (chi pu&ograve; leggere, scrivere, eseguire).</p>
+                </section>
+
+                <section>
+                    <h2>Percorsi assoluti e relativi</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>Percorso assoluto</h3>
+                                <p>Parte dalla radice del file system</p>
+                                <pre><code class="language-bash"># Unix/macOS (radice: /)
+/home/nicola/dati/studenti.csv
+
+# Windows (radice: C:\)
+C:\Users\nicola\dati\studenti.csv</code></pre>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>Percorso relativo</h3>
+                                <p>Parte dalla directory corrente</p>
+                                <pre><code class="language-bash"># Se siete in /home/nicola/
+dati/studenti.csv
+
+# Tornare indietro
+../altro_utente/file.txt</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <strong>Attenzione:</strong> Unix usa <code>/</code>, Windows usa <code>\</code>. In Python usate <code>pathlib</code>:
+                        <pre><code class="language-python">from pathlib import Path
+Path("dati") / "studenti.csv"  # Funziona su entrambi!</code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>File system a confronto</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File System</th>
+                                <th>Sistema</th>
+                                <th>Caratteristiche</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>NTFS</strong></td>
+                                <td>Windows</td>
+                                <td>Permessi, crittografia, file grandi</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ext4</strong></td>
+                                <td>Linux</td>
+                                <td>Robusto, efficiente, ben collaudato</td>
+                            </tr>
+                            <tr>
+                                <td><strong>APFS</strong></td>
+                                <td>macOS/iOS</td>
+                                <td>Ottimizzato per SSD, crittografia nativa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>FAT32/exFAT</strong></td>
+                                <td>Universale</td>
+                                <td>Chiavette USB; FAT32: limite 4 GB/file</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        Le chiavette USB usano FAT32 o exFAT per <strong>compatibilit&agrave; universale</strong>: funzionano su Windows, macOS e Linux.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 6: RETI E INTERNET ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Reti e internet</h2>
+                    <p><em>Come i computer comunicano tra loro</em></p>
+                </section>
+
+                <section>
+                    <h2>Il modello a livelli</h2>
+                    <p>La comunicazione di rete &egrave; organizzata a <strong>livelli</strong>, ciascuno con una responsabilit&agrave; specifica.</p>
+                    <div class="diagram">
+                        Analogia postale:<br>
+                        <br>
+                        Scrivi la lettera&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&rarr;&nbsp;&nbsp;<strong>Contenuto</strong> (applicazione)<br>
+                        Busta con indirizzo&nbsp;&nbsp;&rarr;&nbsp;&nbsp;<strong>Instradamento</strong> (IP)<br>
+                        Ufficio postale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&rarr;&nbsp;&nbsp;<strong>Trasporto affidabile</strong> (TCP)<br>
+                        Corriere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&rarr;&nbsp;&nbsp;<strong>Trasmissione fisica</strong> (cavi, WiFi)
+                    </div>
+                    <p class="fragment">Ogni livello "incapsula" il messaggio del livello superiore.</p>
+                </section>
+
+                <section>
+                    <h2>TCP/IP</h2>
+                    <p>Il protocollo fondamentale di internet.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="box box-blue">
+                                <h3>IP <span class="badge badge-blue">Internet Protocol</span></h3>
+                                <p><strong>Instradamento:</strong> ogni dispositivo ha un indirizzo IP (es: <code>192.168.1.100</code>). IP trova la strada per far arrivare i pacchetti a destinazione.</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <h3>TCP <span class="badge badge-green">Transmission Control</span></h3>
+                                <p><strong>Affidabilit&agrave;:</strong> garantisce che i dati arrivino completi, nell'ordine giusto, senza errori. Se un pacchetto si perde, lo ritrasmette.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>HTTP e il World Wide Web</h2>
+                    <div class="diagram">
+                        Client (browser) &mdash;&mdash; richiesta &mdash;&mdash;&rarr; Server<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&larr;&mdash; risposta &mdash;&mdash;&mdash; Server<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(HTML, JSON, immagini...)
+                    </div>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <div class="box box-yellow">
+                                <strong>HTTP</strong> = HyperText Transfer Protocol<br>
+                                Il protocollo che fa funzionare il web
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box box-green">
+                                <strong>HTTPS</strong> = HTTP + crittografia<br>
+                                Dati cifrati, privacy protetta
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-red fragment">
+                        <strong>Internet &ne; World Wide Web.</strong> Internet &egrave; l'infrastruttura (cavi, router, TCP/IP, dal 1969). Il Web &egrave; un servizio sopra internet (pagine + link, Tim Berners-Lee, CERN, 1989).
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Cloud computing</h2>
+                    <p>Il "cloud" non &egrave; una nuvola magica: sono <strong>i computer di qualcun altro</strong>, in enormi data center.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Livello</th>
+                                <th>Sigla</th>
+                                <th>Cosa vi danno</th>
+                                <th>Esempio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Infrastructure</td>
+                                <td><span class="badge badge-red">IaaS</span></td>
+                                <td>Macchine virtuali</td>
+                                <td>AWS EC2, Google Compute</td>
+                            </tr>
+                            <tr>
+                                <td>Platform</td>
+                                <td><span class="badge badge-yellow">PaaS</span></td>
+                                <td>Ambiente pronto</td>
+                                <td>Heroku, Google App Engine</td>
+                            </tr>
+                            <tr>
+                                <td>Software</td>
+                                <td><span class="badge badge-green">SaaS</span></td>
+                                <td>Applicazione completa</td>
+                                <td>Gmail, Google Docs, Dropbox</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        <strong>Google Colab</strong> = il vostro codice Python gira su un server Google, non sul vostro computer.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>API: i programmi parlano tra loro</h2>
+                    <p>Le <strong>API</strong> (<em>Application Programming Interface</em>) permettono ai programmi di comunicare.</p>
+                    <pre><code class="language-python"># Esempio: scaricare dati da un'API pubblica
+import requests
+
+risposta = requests.get("https://api.istat.it/dati/popolazione")
+dati = risposta.json()  # Risposta in formato JSON
+
+# Dati pronti per l'analisi!
+import pandas as pd
+df = pd.DataFrame(dati)</code></pre>
+                    <div class="box box-green fragment">
+                        <strong>Per lo statistico:</strong> le API permettono di raccogliere dati in modo <strong>automatizzato</strong>, <strong>riproducibile</strong> e <strong>aggiornato</strong>, senza scaricare file manualmente.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ========== SEZIONE 7: RIEPILOGO ========== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Riepilogo</h2>
+                    <p><em>Tre lezioni da portare a casa</em></p>
+                </section>
+
+                <section>
+                    <h2>Concetti chiave</h2>
+                    <div class="box box-blue">
+                        <h3>1. L'astrazione &egrave; potenza</h3>
+                        <p>Il SO nasconde l'enorme complessit&agrave; dell'hardware dietro interfacce semplici. <code>open("file.csv")</code> attiva decine di strati di software sotto di voi.</p>
+                    </div>
+                    <div class="box box-green fragment">
+                        <h3>2. Le risorse sono limitate e condivise</h3>
+                        <p>CPU, memoria, disco, rete: tutto &egrave; finito e conteso. Capirlo vi aiuta a scrivere programmi efficienti e diagnosticare problemi.</p>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <h3>3. La storia conta</h3>
+                        <p>Le scelte degli anni '60 e '70 (Unix, TCP/IP, file system gerarchico) sono ancora le fondamenta del software moderno.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Mappa concettuale</h2>
+                    <div class="diagram">
+                        +----------------------------------------------------------+<br>
+                        |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SISTEMA OPERATIVO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                        |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                        |&nbsp;&nbsp;Processi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Memoria&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File System&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rete&nbsp;&nbsp;&nbsp;|<br>
+                        |&nbsp;&nbsp;(scheduling)&nbsp;(virtuale)&nbsp;&nbsp;&nbsp;(gerarchico)&nbsp;&nbsp;&nbsp;(TCP/IP)|<br>
+                        +----------------------------------------------------------+<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                        +----------------------------------------------------------+<br>
+                        |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HARDWARE (CPU, RAM, disco, rete)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+                        +----------------------------------------------------------+
+                    </div>
+                    <p class="fragment" style="text-align: center; margin-top: 0.8em;"><strong>Prossima lezione:</strong> come i computer rappresentano i dati &mdash; numeri, testo, immagini &mdash; e le trappole nascoste.</p>
+                </section>
+
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="F03_architettura_elaboratori.html" style="color: var(--accent);">&larr; F03: Architettura degli elaboratori</a></div><div><a href="F05_rappresentazione_dati.html" style="color: var(--accent);">F05: Rappresentazione dei dati &rarr;</a></div><div><a href="../dispense/frontali/F04_sistemi_operativi.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — F04</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L05_file_dati/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L05_file_gestione_dati.html">Dispensa</a> &bull; <a href="../../presentazioni/L05_file_gestione_dati.html">Presentazione</a></nav>
+<h1>L05_file_dati/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># L05 — File e gestione dati</span>
+<span class="cm"># Esercizi per il laboratorio 05</span>
+<span class="cm">#</span>
+<span class="cm"># Esercizi pratici su lettura/scrittura file, CSV, JSON e analisi log.</span>
+<span class="cm"># I dati di test vengono creati programmaticamente con tempfile.</span>
+<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
+
+<span class="kw">import</span> tempfile
+<span class="kw">import</span> os
+<span class="kw">import</span> csv
+<span class="kw">import</span> json
+<span class="kw">from</span> typing <span class="kw">import</span> Any
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 1: Contatore di parole da file di testo</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">conta_parole_file</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Legge un file di testo e conta le occorrenze di ogni parola.
+    Le parole sono convertite in minuscolo; la punteggiatura viene rimossa.
+    &quot;&quot;&quot;</span>
+    frequenze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
+
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> f:
+            <span class="cm"># Rimuovi punteggiatura e converti in minuscolo</span>
+            pulita: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
+            <span class="kw">for</span> c <span class="kw">in</span> riga.lower():
+                <span class="kw">if</span> c.isalnum() <span class="kw">or</span> c.isspace():
+                    pulita <span class="op">+</span><span class="op">=</span> c
+                <span class="kw">else</span>:
+                    pulita <span class="op">+</span><span class="op">=</span> <span class="st">&quot; &quot;</span>
+            <span class="kw">for</span> parola <span class="kw">in</span> pulita.split():
+                frequenze[parola] <span class="op">=</span> frequenze.get(parola, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+
+    <span class="kw">return</span> frequenze
+
+
+<span class="kw">def</span> <span class="fn">top_parole_file</span>(<span class="fn">percorso</span>: <span class="nb">str</span>, n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]]:
+    <span class="st">&quot;&quot;&quot;Restituisce le n parole piu&#x27; frequenti da un file.&quot;&quot;&quot;</span>
+    freq: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> conta_parole_file(percorso)
+    ordinato: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> <span class="nb">sorted</span>(freq.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="mi">1</span>], reverse<span class="op">=</span><span class="kw">True</span>)
+    <span class="kw">return</span> ordinato[:n]
+
+
+<span class="kw">def</span> <span class="fn">statistiche_file</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Calcola statistiche su un file di testo:
+    - num_righe, num_parole, num_caratteri, righe_vuote
+    &quot;&quot;&quot;</span>
+    num_righe: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    num_parole: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    num_caratteri: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    righe_vuote: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> f:
+            num_righe <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+            num_caratteri <span class="op">+</span><span class="op">=</span> <span class="nb">len</span>(riga)
+            parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.split()
+            num_parole <span class="op">+</span><span class="op">=</span> <span class="nb">len</span>(parole)
+            <span class="kw">if</span> <span class="kw">not</span> riga.strip():
+                righe_vuote <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+    <span class="kw">return</span> {
+        <span class="st">&quot;num_righe&quot;</span>: num_righe,
+        <span class="st">&quot;num_parole&quot;</span>: num_parole,
+        <span class="st">&quot;num_caratteri&quot;</span>: num_caratteri,
+        <span class="st">&quot;righe_vuote&quot;</span>: righe_vuote,
+    }
+
+
+<span class="cm"># --- Test contatore parole ---</span>
+<span class="cm"># Creiamo un file di testo temporaneo per i test</span>
+testo_test: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;&quot;Il gatto dorme sul divano.
+Il cane corre nel giardino.
+Il gatto e il cane sono amici.
+Il giardino e&#x27; grande e bello.
+&quot;&quot;&quot;</span>
+
+<span class="kw">with</span> tempfile.NamedTemporaryFile(mode<span class="op">=</span><span class="st">&quot;w&quot;</span>, suffix<span class="op">=</span><span class="st">&quot;.txt&quot;</span>, delete<span class="op">=</span><span class="kw">False</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> tmp:
+    tmp.write(testo_test)
+    percorso_testo: <span class="nb">str</span> <span class="op">=</span> tmp.name
+
+<span class="kw">try</span>:
+    freq_parole: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> conta_parole_file(percorso_testo)
+    <span class="kw">assert</span> freq_parole[<span class="st">&quot;il&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+    <span class="kw">assert</span> freq_parole[<span class="st">&quot;gatto&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+    <span class="kw">assert</span> freq_parole[<span class="st">&quot;e&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+
+    top3: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> top_parole_file(percorso_testo, <span class="mi">3</span>)
+    <span class="kw">assert</span> top3[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;il&quot;</span>  <span class="cm"># &quot;il&quot; e&#x27; la parola piu&#x27; frequente</span>
+
+    stats: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> statistiche_file(percorso_testo)
+    <span class="kw">assert</span> stats[<span class="st">&quot;num_righe&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>  <span class="cm"># 4 righe di testo</span>
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Contatore parole da file): SUPERATO&quot;</span>)
+<span class="kw">finally</span>:
+    os.unlink(percorso_testo)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 2: Lettore e processore CSV</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">leggi_csv</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]:
+    <span class="st">&quot;&quot;&quot;
+    Legge un file CSV e restituisce una lista di dizionari.
+    Ogni riga diventa un dizionario con le intestazioni come chiavi.
+    &quot;&quot;&quot;</span>
+    righe: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+        reader <span class="op">=</span> csv.DictReader(f)
+        <span class="kw">for</span> riga <span class="kw">in</span> reader:
+            righe.append(<span class="nb">dict</span>(riga))
+    <span class="kw">return</span> righe
+
+
+<span class="kw">def</span> <span class="fn">filtra_csv</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]], campo: <span class="nb">str</span>, valore: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]:
+    <span class="st">&quot;&quot;&quot;Filtra le righe del CSV dove campo == valore.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [riga <span class="kw">for</span> riga <span class="kw">in</span> dati <span class="kw">if</span> riga.get(campo, <span class="st">&quot;&quot;</span>) <span class="op">=</span><span class="op">=</span> valore]
+
+
+<span class="kw">def</span> <span class="fn">media_colonna_csv</span>(<span class="fn">dati</span>: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]], colonna: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media di una colonna numerica del CSV.&quot;&quot;&quot;</span>
+    valori: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+    <span class="kw">for</span> riga <span class="kw">in</span> dati:
+        <span class="kw">if</span> colonna <span class="kw">in</span> riga <span class="kw">and</span> riga[colonna]:
+            valori.append(<span class="nb">float</span>(riga[colonna]))
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Nessun valore numerico nella colonna &#x27;{colonna}&#x27;&quot;</span>)
+    <span class="kw">return</span> <span class="nb">round</span>(<span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori), <span class="mi">2</span>)
+
+
+<span class="kw">def</span> <span class="fn">scrivi_csv</span>(<span class="fn">percorso</span>: <span class="nb">str</span>, dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]], intestazioni: <span class="nb">list</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Scrive dati in formato CSV.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+        writer <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span>intestazioni)
+        writer.writeheader()
+        writer.writerows(dati)
+
+
+<span class="cm"># --- Test CSV ---</span>
+<span class="cm"># Creiamo un file CSV temporaneo con dati studenti</span>
+csv_contenuto: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;&quot;nome,cognome,voto,materia
+Alice,Rossi,28,Matematica
+Bob,Bianchi,22,Informatica
+Carla,Verdi,30,Matematica
+Davide,Neri,25,Informatica
+Eva,Gialli,18,Matematica
+Fabio,Blu,27,Informatica
+&quot;&quot;&quot;</span>
+
+<span class="kw">with</span> tempfile.NamedTemporaryFile(mode<span class="op">=</span><span class="st">&quot;w&quot;</span>, suffix<span class="op">=</span><span class="st">&quot;.csv&quot;</span>, delete<span class="op">=</span><span class="kw">False</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> tmp:
+    tmp.write(csv_contenuto)
+    percorso_csv: <span class="nb">str</span> <span class="op">=</span> tmp.name
+
+<span class="kw">try</span>:
+    dati_csv: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> leggi_csv(percorso_csv)
+    <span class="kw">assert</span> <span class="nb">len</span>(dati_csv) <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>
+    <span class="kw">assert</span> dati_csv[<span class="mi">0</span>][<span class="st">&quot;nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Alice&quot;</span>
+    <span class="kw">assert</span> dati_csv[<span class="mi">0</span>][<span class="st">&quot;voto&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;28&quot;</span>
+
+    <span class="cm"># Filtra per materia</span>
+    matematica: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> filtra_csv(dati_csv, <span class="st">&quot;materia&quot;</span>, <span class="st">&quot;Matematica&quot;</span>)
+    <span class="kw">assert</span> <span class="nb">len</span>(matematica) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+    <span class="kw">assert</span> <span class="nb">all</span>(r[<span class="st">&quot;materia&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Matematica&quot;</span> <span class="kw">for</span> r <span class="kw">in</span> matematica)
+
+    <span class="cm"># Media voti</span>
+    media_voti: <span class="nb">float</span> <span class="op">=</span> media_colonna_csv(dati_csv, <span class="st">&quot;voto&quot;</span>)
+    <span class="kw">assert</span> media_voti <span class="op">=</span><span class="op">=</span> <span class="mi">25.0</span>  <span class="cm"># (28+22+30+25+18+27)/6 = 150/6 = 25.0</span>
+
+    media_mat: <span class="nb">float</span> <span class="op">=</span> media_colonna_csv(matematica, <span class="st">&quot;voto&quot;</span>)
+    <span class="kw">assert</span> <span class="nb">abs</span>(media_mat <span class="op">-</span> <span class="mi">25.33</span>) <span class="op">&lt;</span> <span class="mi">0.01</span>  <span class="cm"># (28+30+18)/3</span>
+
+    <span class="cm"># Scrivi e rileggi CSV</span>
+    <span class="kw">with</span> tempfile.NamedTemporaryFile(mode<span class="op">=</span><span class="st">&quot;w&quot;</span>, suffix<span class="op">=</span><span class="st">&quot;.csv&quot;</span>, delete<span class="op">=</span><span class="kw">False</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> tmp2:
+        percorso_csv_out: <span class="nb">str</span> <span class="op">=</span> tmp2.name
+
+    scrivi_csv(percorso_csv_out, dati_csv, [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;cognome&quot;</span>, <span class="st">&quot;voto&quot;</span>, <span class="st">&quot;materia&quot;</span>])
+    dati_riletti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> leggi_csv(percorso_csv_out)
+    <span class="kw">assert</span> <span class="nb">len</span>(dati_riletti) <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>
+    <span class="kw">assert</span> dati_riletti[<span class="mi">0</span>][<span class="st">&quot;nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Alice&quot;</span>
+    os.unlink(percorso_csv_out)
+
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (CSV): SUPERATO&quot;</span>)
+<span class="kw">finally</span>:
+    os.unlink(percorso_csv)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 3: Loader/Saver di configurazione JSON</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">carica_json</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, Any]:
+    <span class="st">&quot;&quot;&quot;
+    Carica un file JSON e restituisce il dizionario corrispondente.
+    Gestisce errori di file non trovato e JSON malformato.
+    &quot;&quot;&quot;</span>
+    <span class="kw">try</span>:
+        <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+            dati: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> json.load(f)
+        <span class="kw">return</span> dati
+    <span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+        <span class="kw">raise</span> <span class="nb">FileNotFoundError</span>(<span class="st">f&quot;File non trovato: {percorso}&quot;</span>)
+    <span class="kw">except</span> json.JSONDecodeError <span class="kw">as</span> e:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;JSON malformato in {percorso}: {e}&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">salva_json</span>(<span class="fn">percorso</span>: <span class="nb">str</span>, dati: <span class="nb">dict</span>[<span class="nb">str</span>, Any], indentazione: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Salva un dizionario in formato JSON con indentazione leggibile.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        json.dump(dati, f, indent<span class="op">=</span>indentazione, ensure_ascii<span class="op">=</span><span class="kw">False</span>)
+
+
+<span class="kw">def</span> <span class="fn">aggiorna_config</span>(
+    percorso: <span class="nb">str</span>, chiave: <span class="nb">str</span>, valore: Any
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, Any]:
+    <span class="st">&quot;&quot;&quot;
+    Carica una configurazione JSON, aggiorna un campo e salva.
+    Supporta chiavi annidate con notazione puntata (es. &quot;database.host&quot;).
+    &quot;&quot;&quot;</span>
+    config: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> carica_json(percorso)
+
+    <span class="cm"># Supporto per chiavi annidate</span>
+    parti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> chiave.split(<span class="st">&quot;.&quot;</span>)
+    d: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> config
+    <span class="kw">for</span> parte <span class="kw">in</span> parti[:<span class="op">-</span><span class="mi">1</span>]:
+        <span class="kw">if</span> parte <span class="kw">not</span> <span class="kw">in</span> d <span class="kw">or</span> <span class="kw">not</span> <span class="nb">isinstance</span>(d[parte], <span class="nb">dict</span>):
+            d[parte] <span class="op">=</span> {}
+        d <span class="op">=</span> d[parte]
+    d[parti[<span class="op">-</span><span class="mi">1</span>]] <span class="op">=</span> valore
+
+    salva_json(percorso, config)
+    <span class="kw">return</span> config
+
+
+<span class="cm"># --- Test JSON ---</span>
+config_test: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> {
+    <span class="st">&quot;app&quot;</span>: {
+        <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;MioProgetto&quot;</span>,
+        <span class="st">&quot;versione&quot;</span>: <span class="st">&quot;1.0.0&quot;</span>,
+        <span class="st">&quot;debug&quot;</span>: <span class="kw">False</span>,
+    },
+    <span class="st">&quot;database&quot;</span>: {
+        <span class="st">&quot;host&quot;</span>: <span class="st">&quot;localhost&quot;</span>,
+        <span class="st">&quot;porta&quot;</span>: <span class="mi">5432</span>,
+        <span class="st">&quot;nome_db&quot;</span>: <span class="st">&quot;test_db&quot;</span>,
+    },
+    <span class="st">&quot;utenti_max&quot;</span>: <span class="mi">100</span>,
+}
+
+<span class="kw">with</span> tempfile.NamedTemporaryFile(mode<span class="op">=</span><span class="st">&quot;w&quot;</span>, suffix<span class="op">=</span><span class="st">&quot;.json&quot;</span>, delete<span class="op">=</span><span class="kw">False</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> tmp:
+    json.dump(config_test, tmp, indent<span class="op">=</span><span class="mi">2</span>)
+    percorso_json: <span class="nb">str</span> <span class="op">=</span> tmp.name
+
+<span class="kw">try</span>:
+    <span class="cm"># Carica</span>
+    config_caricata: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> carica_json(percorso_json)
+    <span class="kw">assert</span> config_caricata[<span class="st">&quot;app&quot;</span>][<span class="st">&quot;nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;MioProgetto&quot;</span>
+    <span class="kw">assert</span> config_caricata[<span class="st">&quot;database&quot;</span>][<span class="st">&quot;porta&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">5432</span>
+    <span class="kw">assert</span> config_caricata[<span class="st">&quot;utenti_max&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">100</span>
+
+    <span class="cm"># Aggiorna campo semplice</span>
+    aggiorna_config(percorso_json, <span class="st">&quot;utenti_max&quot;</span>, <span class="mi">200</span>)
+    config_aggiornata: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> carica_json(percorso_json)
+    <span class="kw">assert</span> config_aggiornata[<span class="st">&quot;utenti_max&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">200</span>
+
+    <span class="cm"># Aggiorna campo annidato</span>
+    aggiorna_config(percorso_json, <span class="st">&quot;database.host&quot;</span>, <span class="st">&quot;192.168.1.1&quot;</span>)
+    config_aggiornata <span class="op">=</span> carica_json(percorso_json)
+    <span class="kw">assert</span> config_aggiornata[<span class="st">&quot;database&quot;</span>][<span class="st">&quot;host&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;192.168.1.1&quot;</span>
+
+    <span class="cm"># Salva e ricarica</span>
+    <span class="kw">with</span> tempfile.NamedTemporaryFile(mode<span class="op">=</span><span class="st">&quot;w&quot;</span>, suffix<span class="op">=</span><span class="st">&quot;.json&quot;</span>, delete<span class="op">=</span><span class="kw">False</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> tmp2:
+        percorso_json_out: <span class="nb">str</span> <span class="op">=</span> tmp2.name
+
+    salva_json(percorso_json_out, config_caricata)
+    ricaricato: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> carica_json(percorso_json_out)
+    <span class="kw">assert</span> ricaricato[<span class="st">&quot;app&quot;</span>][<span class="st">&quot;versione&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;1.0.0&quot;</span>
+    os.unlink(percorso_json_out)
+
+    <span class="cm"># Test file non trovato</span>
+    errore_file: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+    <span class="kw">try</span>:
+        carica_json(<span class="st">&quot;/percorso/inesistente.json&quot;</span>)
+    <span class="kw">except</span> <span class="nb">FileNotFoundError</span>:
+        errore_file <span class="op">=</span> <span class="kw">True</span>
+    <span class="kw">assert</span> errore_file
+
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (JSON): SUPERATO&quot;</span>)
+<span class="kw">finally</span>:
+    os.unlink(percorso_json)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 4: Analizzatore di log</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">def</span> <span class="fn">analizza_log</span>(<span class="fn">percorso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, Any]:
+    <span class="st">&quot;&quot;&quot;
+    Analizza un file di log con formato:
+    TIMESTAMP | LIVELLO | MESSAGGIO
+
+    Restituisce statistiche:
+    - totale_righe: numero totale di righe
+    - per_livello: conteggio per livello (INFO, WARNING, ERROR, DEBUG)
+    - errori: lista dei messaggi di errore
+    - percentuale_errori: percentuale di righe ERROR sul totale
+    &quot;&quot;&quot;</span>
+    totale: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    per_livello: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;INFO&quot;</span>: <span class="mi">0</span>, <span class="st">&quot;WARNING&quot;</span>: <span class="mi">0</span>, <span class="st">&quot;ERROR&quot;</span>: <span class="mi">0</span>, <span class="st">&quot;DEBUG&quot;</span>: <span class="mi">0</span>}
+    errori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> f:
+            riga <span class="op">=</span> riga.strip()
+            <span class="kw">if</span> <span class="kw">not</span> riga:
+                <span class="kw">continue</span>
+
+            totale <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+            parti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.split(<span class="st">&quot; | &quot;</span>)
+            <span class="kw">if</span> <span class="nb">len</span>(parti) <span class="op">&gt;</span><span class="op">=</span> <span class="mi">3</span>:
+                livello: <span class="nb">str</span> <span class="op">=</span> parti[<span class="mi">1</span>].strip()
+                messaggio: <span class="nb">str</span> <span class="op">=</span> parti[<span class="mi">2</span>].strip()
+
+                <span class="kw">if</span> livello <span class="kw">in</span> per_livello:
+                    per_livello[livello] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+                <span class="kw">if</span> livello <span class="op">=</span><span class="op">=</span> <span class="st">&quot;ERROR&quot;</span>:
+                    errori.append(messaggio)
+
+    percentuale_errori: <span class="nb">float</span> <span class="op">=</span> <span class="nb">round</span>(
+        (per_livello[<span class="st">&quot;ERROR&quot;</span>] <span class="op">/</span> totale <span class="op">*</span> <span class="mi">100</span>) <span class="kw">if</span> totale <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">else</span> <span class="mi">0.0</span>, <span class="mi">2</span>
+    )
+
+    <span class="kw">return</span> {
+        <span class="st">&quot;totale_righe&quot;</span>: totale,
+        <span class="st">&quot;per_livello&quot;</span>: per_livello,
+        <span class="st">&quot;errori&quot;</span>: errori,
+        <span class="st">&quot;percentuale_errori&quot;</span>: percentuale_errori,
+    }
+
+
+<span class="kw">def</span> <span class="fn">filtra_log_per_livello</span>(<span class="fn">percorso_input</span>: <span class="nb">str</span>, percorso_output: <span class="nb">str</span>, livello: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;
+    Filtra le righe del log per livello e le scrive in un nuovo file.
+    Restituisce il numero di righe filtrate.
+    &quot;&quot;&quot;</span>
+    conteggio: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso_input, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> fin:
+        <span class="kw">with</span> <span class="nb">open</span>(percorso_output, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> fout:
+            <span class="kw">for</span> riga <span class="kw">in</span> fin:
+                parti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.split(<span class="st">&quot; | &quot;</span>)
+                <span class="kw">if</span> <span class="nb">len</span>(parti) <span class="op">&gt;</span><span class="op">=</span> <span class="mi">2</span> <span class="kw">and</span> parti[<span class="mi">1</span>].strip() <span class="op">=</span><span class="op">=</span> livello:
+                    fout.write(riga)
+                    conteggio <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">return</span> conteggio
+
+
+<span class="cm"># --- Test analizzatore log ---</span>
+log_contenuto: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;&quot;2024-01-15 10:00:01 | INFO | Applicazione avviata
+2024-01-15 10:00:05 | DEBUG | Connessione al database stabilita
+2024-01-15 10:01:12 | INFO | Utente &#x27;admin&#x27; ha effettuato il login
+2024-01-15 10:02:30 | WARNING | Memoria disponibile sotto il 20%
+2024-01-15 10:03:45 | ERROR | Impossibile connettersi al servizio esterno
+2024-01-15 10:04:00 | INFO | Retry connessione in corso
+2024-01-15 10:04:15 | ERROR | Timeout nella risposta del servizio
+2024-01-15 10:05:00 | INFO | Connessione ristabilita
+2024-01-15 10:06:30 | WARNING | Disco quasi pieno (90% utilizzato)
+2024-01-15 10:10:00 | INFO | Report giornaliero generato
+&quot;&quot;&quot;</span>
+
+<span class="kw">with</span> tempfile.NamedTemporaryFile(mode<span class="op">=</span><span class="st">&quot;w&quot;</span>, suffix<span class="op">=</span><span class="st">&quot;.log&quot;</span>, delete<span class="op">=</span><span class="kw">False</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> tmp:
+    tmp.write(log_contenuto)
+    percorso_log: <span class="nb">str</span> <span class="op">=</span> tmp.name
+
+<span class="kw">try</span>:
+    risultato_log: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> analizza_log(percorso_log)
+
+    <span class="kw">assert</span> risultato_log[<span class="st">&quot;totale_righe&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+    <span class="kw">assert</span> risultato_log[<span class="st">&quot;per_livello&quot;</span>][<span class="st">&quot;INFO&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+    <span class="kw">assert</span> risultato_log[<span class="st">&quot;per_livello&quot;</span>][<span class="st">&quot;WARNING&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+    <span class="kw">assert</span> risultato_log[<span class="st">&quot;per_livello&quot;</span>][<span class="st">&quot;ERROR&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+    <span class="kw">assert</span> risultato_log[<span class="st">&quot;per_livello&quot;</span>][<span class="st">&quot;DEBUG&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">assert</span> <span class="nb">len</span>(risultato_log[<span class="st">&quot;errori&quot;</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+    <span class="kw">assert</span> risultato_log[<span class="st">&quot;percentuale_errori&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">20.0</span>
+
+    <span class="cm"># Test filtro per livello</span>
+    <span class="kw">with</span> tempfile.NamedTemporaryFile(mode<span class="op">=</span><span class="st">&quot;w&quot;</span>, suffix<span class="op">=</span><span class="st">&quot;.log&quot;</span>, delete<span class="op">=</span><span class="kw">False</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> tmp2:
+        percorso_errori: <span class="nb">str</span> <span class="op">=</span> tmp2.name
+
+    num_filtrate: <span class="nb">int</span> <span class="op">=</span> filtra_log_per_livello(percorso_log, percorso_errori, <span class="st">&quot;ERROR&quot;</span>)
+    <span class="kw">assert</span> num_filtrate <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+
+    <span class="cm"># Verifica che il file filtrato contenga solo errori</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso_errori, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        righe_errori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> f.readlines()
+    <span class="kw">assert</span> <span class="nb">len</span>(righe_errori) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+    <span class="kw">assert</span> <span class="nb">all</span>(<span class="st">&quot;ERROR&quot;</span> <span class="kw">in</span> r <span class="kw">for</span> r <span class="kw">in</span> righe_errori)
+
+    os.unlink(percorso_errori)
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (Analizzatore log): SUPERATO&quot;</span>)
+<span class="kw">finally</span>:
+    os.unlink(percorso_log)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 05 SUPERATI!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

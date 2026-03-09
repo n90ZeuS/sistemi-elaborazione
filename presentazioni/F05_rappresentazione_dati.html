@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rappresentazione dei Dati</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ===================== SLIDE 1: TITOLO ===================== -->
+            <section class="title-slide">
+                <h1>Rappresentazione dei Dati</h1>
+                <div class="subtitle">Come il computer traduce il mondo in bit</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione &mdash; Lezione F05<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+                <aside class="notes">Lezione fondamentale: le scelte di rappresentazione hanno conseguenze concrete, talvolta devastanti.</aside>
+            </section>
+
+            <!-- ===================== SLIDE 2: AGENDA ===================== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment"><strong>Numeri interi</strong> &mdash; binario, complemento a due, overflow</li>
+                    <li class="fragment"><strong>Numeri in virgola mobile</strong> &mdash; IEEE 754, errori di arrotondamento</li>
+                    <li class="fragment"><strong>Testo e codifiche</strong> &mdash; ASCII, Unicode, UTF-8</li>
+                    <li class="fragment"><strong>Immagini, audio e video</strong> &mdash; digitalizzazione dei segnali</li>
+                    <li class="fragment"><strong>Formati di dati strutturati</strong> &mdash; CSV, JSON, Parquet</li>
+                </ol>
+                <div class="box box-red fragment">
+                    <strong>Idea chiave:</strong> ogni dato digitale &egrave; un'approssimazione. Capire i limiti della rappresentazione previene errori gravi.
+                </div>
+            </section>
+
+            <!-- ==================== SEZIONE 1: NUMERI INTERI ==================== -->
+            <section>
+
+                <!-- Slide sezione -->
+                <section class="section-slide">
+                    <h2>Numeri Interi</h2>
+                    <p><em>Dal binario all'overflow</em></p>
+                </section>
+
+                <!-- Rappresentazione binaria -->
+                <section>
+                    <h2>Rappresentazione in binario</h2>
+                    <p>I numeri interi positivi si rappresentano in binario nel modo naturale:</p>
+                    <div class="diagram">
+                        42&lt;sub&gt;10&lt;/sub&gt; = <strong>101010</strong>&lt;sub&gt;2&lt;/sub&gt;<br><br>
+                        32 + 8 + 2 = 42
+                    </div>
+                    <div class="box box-blue fragment">
+                        Con <strong>n</strong> bit si rappresentano i numeri da <strong>0</strong> a <strong>2<sup>n</sup> &minus; 1</strong><br>
+                        &bull; 8 bit &rarr; 0 &ndash; 255<br>
+                        &bull; 32 bit &rarr; 0 &ndash; ~4,3 miliardi
+                    </div>
+                </section>
+
+                <!-- Numeri negativi -->
+                <section>
+                    <h2>Il problema dei numeri negativi</h2>
+                    <p>Tre soluzioni storiche:</p>
+                    <table>
+                        <thead>
+                            <tr><th>Metodo</th><th>Idea</th><th>Problema</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="fragment">
+                                <td><strong>Modulo e segno</strong></td>
+                                <td>Primo bit = segno, resto = valore</td>
+                                <td>Due zeri (+0, &minus;0); sottrazione complessa</td>
+                            </tr>
+                            <tr class="fragment">
+                                <td><strong>Complemento a&nbsp;1</strong></td>
+                                <td>Inversione di tutti i bit</td>
+                                <td>Due zeri; complicazioni aritmetiche</td>
+                            </tr>
+                            <tr class="fragment">
+                                <td><strong>Complemento a&nbsp;2</strong></td>
+                                <td>Inversione + aggiungi 1</td>
+                                <td><span class="badge badge-green">Nessuno!</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Complemento a due -->
+                <section>
+                    <h2>Complemento a due</h2>
+                    <p>La soluzione adottata <strong>universalmente</strong>.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Come funziona</h3>
+                            <ol>
+                                <li class="fragment">Inverti tutti i bit</li>
+                                <li class="fragment">Aggiungi 1</li>
+                            </ol>
+                            <div class="box box-green fragment">
+                                <strong>La sottrazione diventa un'addizione:</strong><br>
+                                A &minus; B = A + (&minus;B)<br>
+                                Un solo circuito per somme e sottrazioni!
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h3>Esempio: &minus;5 su 8 bit</h3>
+                            <div class="diagram fragment">
+                                +5 = 00000101<br>
+                                inverti &rarr; 11111010<br>
+                                +1 &rarr; <strong>11111011</strong> = &minus;5
+                            </div>
+                        </div>
+                    </div>
+                    <p class="fragment">Con <em>n</em> bit: da <strong>&minus;2<sup>n&minus;1</sup></strong> a <strong>2<sup>n&minus;1</sup> &minus; 1</strong>. Con 32 bit: circa &plusmn;2,1 miliardi.</p>
+                </section>
+
+                <!-- Overflow -->
+                <section>
+                    <h2>Overflow: quando i numeri &ldquo;traboccano&rdquo;</h2>
+                    <p>Se il risultato di un'operazione &egrave; troppo grande per la rappresentazione, i bit in eccesso vengono <strong>persi silenziosamente</strong>.</p>
+                    <div class="diagram">
+                        Con 8 bit senza segno:<br>
+                        255 + 1 &rarr; 11111111 + 1 &rarr; <strong>00000000</strong> = 0 (!)<br><br>
+                        Il contatore &ldquo;ricomincia da capo&rdquo;
+                    </div>
+                    <div class="box box-red fragment">
+                        L'overflow spesso non genera messaggi di errore: il programma continua con un risultato <strong>sbagliato</strong>.
+                    </div>
+                </section>
+
+                <!-- Bug 2038 -->
+                <section>
+                    <h2>Il bug dell'anno 2038</h2>
+                    <div class="columns">
+                        <div class="col-60">
+                            <p>Molti sistemi Unix rappresentano il tempo come <strong>secondi dal 1/1/1970</strong> in un intero con segno a 32 bit.</p>
+                            <ul>
+                                <li class="fragment">Il <strong>19 gennaio 2038</strong> alle 03:14:07 UTC il contatore raggiunge il massimo: 2.147.483.647</li>
+                                <li class="fragment">Il valore successivo va in <strong>overflow</strong> &rarr; diventa negativo</li>
+                                <li class="fragment">I sistemi non aggiornati leggeranno: <strong>13 dicembre 1901</strong></li>
+                            </ul>
+                        </div>
+                        <div class="col-40">
+                            <div class="box box-green fragment">
+                                <strong>Soluzione:</strong> passare a interi a 64 bit (gi&agrave; in corso)
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ariane 5 -->
+                <section>
+                    <h2>L'esplosione dell'Ariane 5 (1996)</h2>
+                    <div class="box box-red">
+                        <strong>370 milioni di dollari</strong> distrutti in 37 secondi
+                    </div>
+                    <ul>
+                        <li class="fragment">Software ereditato dal razzo Ariane 4</li>
+                        <li class="fragment">Conversione di velocit&agrave; orizzontale: <code>float 64 bit</code> &rarr; <code>int 16 bit</code></li>
+                        <li class="fragment">L'Ariane 5 era <strong>pi&ugrave; veloce</strong> dell'Ariane 4: il valore non stava in 16 bit</li>
+                        <li class="fragment"><strong>Overflow</strong> &rarr; errore di navigazione &rarr; autodistruzione</li>
+                    </ul>
+                    <div class="box box-yellow fragment">
+                        Un bug di <strong>conversione di tipo</strong>. La lezione: mai assumere che un range numerico sia sufficiente senza verificare.
+                    </div>
+                </section>
+
+                <!-- Python interi arbitrari -->
+                <section>
+                    <h2>Python: interi a precisione arbitraria</h2>
+                    <p>Python non ha limiti sulla dimensione degli interi:</p>
+                    <pre><code class="language-python"># In C, questo causerebbe overflow con un int a 32 bit:
+risultato: int = 2 ** 100
+print(risultato)  # 1267650600228229401496703205376
+
+# Python gestisce numeri arbitrariamente grandi:
+fattoriale_100: int = 1
+for i in range(1, 101):
+    fattoriale_100 *= i
+print(fattoriale_100)  # un numero con 158 cifre!</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Il prezzo:</strong> leggera penalit&agrave; di prestazioni sugli interi molto grandi. Ma per la statistica, la <strong>correttezza</strong> &egrave; pi&ugrave; importante della velocit&agrave;.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ==================== SEZIONE 2: VIRGOLA MOBILE ==================== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Numeri in Virgola Mobile</h2>
+                    <p><em>Floating point: l'arte dell'approssimazione</em></p>
+                </section>
+
+                <!-- Problema fondamentale -->
+                <section>
+                    <h2>Il problema fondamentale</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Numeri reali</h3>
+                            <ul>
+                                <li>Infiniti</li>
+                                <li>Continui</li>
+                                <li>Precisione illimitata</li>
+                            </ul>
+                        </div>
+                        <div class="col" style="display:flex;align-items:center;justify-content:center;font-size:2em;">
+                            &rarr;
+                        </div>
+                        <div class="col">
+                            <h3>Bit</h3>
+                            <ul>
+                                <li>Finiti</li>
+                                <li>Discreti</li>
+                                <li>Precisione limitata</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box box-red fragment">
+                        <strong>La rappresentazione in virgola mobile &egrave; sempre un'approssimazione.</strong> Comprenderne i limiti &egrave; essenziale per chi lavora con dati numerici.
+                    </div>
+                </section>
+
+                <!-- IEEE 754 -->
+                <section>
+                    <h2>Lo standard IEEE 754</h2>
+                    <p>Pubblicato nel 1985: notazione scientifica in binario.</p>
+                    <div class="diagram">
+                        (&minus;1)<sup>s</sup> &times; 1,mantissa &times; 2<sup>(esponente &minus; bias)</sup>
+                    </div>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <ul>
+                                <li><strong>s</strong> &mdash; bit di segno</li>
+                                <li><strong>mantissa</strong> &mdash; cifre significative</li>
+                                <li><strong>esponente</strong> &mdash; ordine di grandezza</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <div class="diagram">
+                                |s| esponente | mantissa |<br>
+                                |1|&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;52&nbsp;&nbsp;&nbsp;&nbsp;| = 64 bit
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Formati IEEE 754 -->
+                <section>
+                    <h2>Formati IEEE 754</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Formato</th><th>Bit</th><th>Segno</th><th>Esponente</th><th>Mantissa</th><th>Cifre decimali</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Single precision</td><td>32</td><td>1</td><td>8</td><td>23</td><td>~7</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Double precision</strong></td><td><strong>64</strong></td><td><strong>1</strong></td><td><strong>11</strong></td><td><strong>52</strong></td><td><strong>~15-16</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        Python usa la <strong>double precision</strong> per i suoi <code>float</code>: 64 bit, circa 15-16 cifre decimali di precisione.
+                    </div>
+                    <h3 class="fragment">Valori speciali</h3>
+                    <ul>
+                        <li class="fragment"><strong>+&infin; e &minus;&infin;</strong> &mdash; es. <code>float('inf')</code></li>
+                        <li class="fragment"><strong>NaN</strong> (<em>Not a Number</em>) &mdash; <code>NaN != NaN</code> &egrave; <code>True</code>: l'unico valore non uguale a se stesso</li>
+                    </ul>
+                </section>
+
+                <!-- 0.1 + 0.2 -->
+                <section>
+                    <h2>Perch&eacute; 0.1 + 0.2 &ne; 0.3</h2>
+                    <pre><code class="language-python">>>> 0.1 + 0.2
+0.30000000000000004</code></pre>
+                    <div class="box box-yellow fragment">
+                        <strong>Non &egrave; un bug di Python.</strong> Succede in <em>qualsiasi</em> linguaggio che usa IEEE 754.
+                    </div>
+                    <p class="fragment">Il motivo: <strong>0,1</strong> in base 10 &egrave; un numero <strong>periodico</strong> in base 2, esattamente come 1/3 = 0,333... in base 10.</p>
+                    <div class="diagram fragment">
+                        0.1<sub>10</sub> = 0.0001100110011001100...<sub>2</sub> (periodico!)<br><br>
+                        Il computer memorizza l'approssimazione pi&ugrave; vicina a 64 bit.
+                    </div>
+                </section>
+
+                <!-- Implicazioni statistiche -->
+                <section>
+                    <h2>Implicazioni per la statistica</h2>
+                    <div class="compare">
+                        <div class="bad">
+                            <pre><code class="language-python"># MAI confrontare float con ==
+if media == 0.3:
+    print("Uguale")</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python">import math
+if math.isclose(media, 0.3,
+                rel_tol=1e-9):
+    print("Uguale")</code></pre>
+                        </div>
+                    </div>
+                    <ul>
+                        <li class="fragment"><strong>Errori di accumulazione:</strong> sommando milioni di valori, gli errori si accumulano. Pu&ograve; distorcere medie, varianze e test statistici.</li>
+                        <li class="fragment"><strong>Pandas e NaN:</strong> i valori mancanti nelle colonne numeriche sono <code>NaN</code> IEEE 754. Fondamentale per la pulizia dei dati.</li>
+                    </ul>
+                </section>
+
+                <!-- Modulo decimal -->
+                <section>
+                    <h2>Soluzioni: il modulo <code>decimal</code></h2>
+                    <p>Per calcoli dove serve precisione decimale esatta (es. finanziari):</p>
+                    <pre><code class="language-python">from decimal import Decimal
+
+# Float: approssimato
+print(0.1 + 0.2)              # 0.30000000000000004
+
+# Decimal: esatto!
+print(Decimal('0.1') + Decimal('0.2'))  # 0.3</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong>Regola pratica:</strong> per la maggior parte dei calcoli statistici i <code>float</code> vanno bene. Usate <code>Decimal</code> per dati finanziari o quando servono confronti esatti.
+                    </div>
+                </section>
+
+                <!-- Disastro Patriot -->
+                <section>
+                    <h2>Il disastro del Patriot (1991)</h2>
+                    <div class="box box-red">
+                        <strong>28 soldati uccisi</strong> per un errore di arrotondamento
+                    </div>
+                    <ul>
+                        <li class="fragment">Il sistema misurava il tempo in decimi di secondo su un registro a <strong>24 bit</strong></li>
+                        <li class="fragment">0,1 in binario &egrave; periodico: errore di ~0,000000095 s per ogni tick</li>
+                        <li class="fragment">Dopo <strong>100 ore</strong> di funzionamento: errore cumulato di <strong>~0,34 secondi</strong></li>
+                        <li class="fragment">Il Patriot cerc&ograve; lo Scud in una posizione sbagliata di <strong>oltre 600 metri</strong></li>
+                    </ul>
+                    <div class="box box-yellow fragment">
+                        Un errore di arrotondamento floating point ha causato la morte di 28 persone. Ecco perch&eacute; questa lezione &egrave; importante.
+                    </div>
+                    <aside class="notes">Dhahran, Arabia Saudita, 25 febbraio 1991. Guerra del Golfo. L'errore era noto ma la correzione non era stata distribuita in tempo.</aside>
+                </section>
+
+            </section>
+
+            <!-- ==================== SEZIONE 3: TESTO E CODIFICHE ==================== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Testo e Codifiche</h2>
+                    <p><em>Da ASCII a Unicode: la torre di Babele digitale</em></p>
+                </section>
+
+                <!-- ASCII -->
+                <section>
+                    <h2>ASCII (1963)</h2>
+                    <p><strong>American Standard Code for Information Interchange</strong>: 7 bit, 128 simboli.</p>
+                    <table>
+                        <thead>
+                            <tr><th>Gruppo</th><th>Caratteri</th><th>Codici</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Lettere maiuscole</td><td>A&ndash;Z</td><td>65&ndash;90</td></tr>
+                            <tr><td>Lettere minuscole</td><td>a&ndash;z</td><td>97&ndash;122</td></tr>
+                            <tr><td>Cifre</td><td>0&ndash;9</td><td>48&ndash;57</td></tr>
+                            <tr><td>Simboli e punteggiatura</td><td>! @ # $ % ...</td><td>vari</td></tr>
+                            <tr><td>Caratteri di controllo</td><td>a capo, tab, ...</td><td>0&ndash;31</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-yellow fragment">
+                        ASCII funzionava perfettamente &mdash; <strong>per l'inglese</strong>. Niente lettere accentate (&agrave;, &egrave;, &ugrave;), n&tilde;, &uuml;, cirillico, giapponese, arabo...
+                    </div>
+                </section>
+
+                <!-- Caos estensioni -->
+                <section>
+                    <h2>Il caos delle estensioni</h2>
+                    <p>Ogni paese cre&ograve; la propria estensione a 8 bit (256 caratteri):</p>
+                    <ul>
+                        <li><strong>ISO 8859-1</strong> (Latin-1) &mdash; Europa occidentale</li>
+                        <li><strong>ISO 8859-5</strong> &mdash; Cirillico</li>
+                        <li><strong>Shift-JIS</strong> &mdash; Giapponese</li>
+                        <li><strong>GB2312</strong> &mdash; Cinese semplificato</li>
+                    </ul>
+                    <div class="box box-red fragment">
+                        <strong>Risultato:</strong> lo stesso byte = un carattere diverso a seconda della codifica. Se un file Shift-JIS viene aperto come Latin-1: <strong>mojibake</strong> (文字化け, &ldquo;caratteri trasformati&rdquo;).
+                    </div>
+                    <p class="fragment">Se avete mai visto <code>caffÃ¨</code> al posto di <code>caff&egrave;</code>, avete sperimentato il mojibake.</p>
+                </section>
+
+                <!-- Unicode -->
+                <section>
+                    <h2>Unicode</h2>
+                    <p>Il progetto (1991-oggi) di codificare <strong>ogni carattere di ogni sistema di scrittura umano</strong>.</p>
+                    <ul>
+                        <li class="fragment">Oltre <strong>150.000 caratteri</strong> da 161 scritture diverse</li>
+                        <li class="fragment">Ogni carattere ha un <strong>code point</strong> univoco: <code>U+XXXX</code></li>
+                    </ul>
+                    <table class="fragment">
+                        <thead>
+                            <tr><th>Carattere</th><th>Code point</th><th>Nome</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>A</td><td>U+0041</td><td>LATIN CAPITAL LETTER A</td></tr>
+                            <tr><td>&agrave;</td><td>U+00E0</td><td>LATIN SMALL LETTER A WITH GRAVE</td></tr>
+                            <tr><td>&#20320;</td><td>U+4F60</td><td>CJK UNIFIED IDEOGRAPH</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="fragment">Ma Unicode &egrave; un <em>catalogo</em>, non una codifica. Come si memorizzano i code point in byte?</p>
+                </section>
+
+                <!-- UTF-8 -->
+                <section>
+                    <h2>UTF-8: la codifica che ha vinto</h2>
+                    <p>Inventata nel 1992 da <strong>Ken Thompson</strong> e <strong>Rob Pike</strong> su una tovaglietta di carta a cena.</p>
+                    <table>
+                        <thead>
+                            <tr><th>Byte usati</th><th>Range code point</th><th>Esempio</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>U+0000 &ndash; U+007F</td><td>Caratteri ASCII (A, B, 1, 2...)</td></tr>
+                            <tr><td>2</td><td>U+0080 &ndash; U+07FF</td><td>Accenti, cirillico (&agrave;, &egrave;, &uuml;...)</td></tr>
+                            <tr><td>3</td><td>U+0800 &ndash; U+FFFF</td><td>CJK, arabo, thai...</td></tr>
+                            <tr><td>4</td><td>U+10000 &ndash; U+10FFFF</td><td>Emoji, scritture antiche</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-green fragment">
+                        <strong>Compatibile con ASCII</strong> &bull; <strong>Lunghezza variabile</strong> (efficiente) &bull; <strong>Auto-sincronizzante</strong><br>
+                        Oltre il 97% delle pagine web usa UTF-8. Standard de facto di internet.
+                    </div>
+                </section>
+
+                <!-- Python 3 e Unicode -->
+                <section>
+                    <h2>Python 3 e Unicode</h2>
+                    <p>Le stringhe <code>str</code> sono Unicode nativamente:</p>
+                    <pre><code class="language-python">nome: str = "François"
+citta: str = "東京"       # Tokyo in giapponese
+print(len(citta))          # 2 (ogni carattere conta 1)</code></pre>
+                    <div class="compare fragment">
+                        <div class="bad">
+                            <pre><code class="language-python"># Codifica sbagliata
+with open("dati.csv",
+          encoding="utf-8") as f:
+    f.read()
+# UnicodeDecodeError!</code></pre>
+                        </div>
+                        <div class="good">
+                            <pre><code class="language-python"># Codifica corretta
+with open("dati.csv",
+          encoding="latin-1") as f:
+    f.read()
+# Funziona!</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>Consiglio:</strong> salvate sempre in UTF-8. Per file di terze parti, provate <code>latin-1</code> o <code>cp1252</code>.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ==================== SEZIONE 4: IMMAGINI, AUDIO, VIDEO ==================== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Immagini, Audio e Video</h2>
+                    <p><em>Digitalizzare il mondo analogico</em></p>
+                </section>
+
+                <!-- Immagini digitali -->
+                <section>
+                    <h2>Immagini digitali</h2>
+                    <p>Un'immagine &egrave; una griglia di <strong>pixel</strong>, ogni pixel &egrave; un colore rappresentato da numeri.</p>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Modello RGB</h3>
+                            <ul>
+                                <li>3 canali: <span class="badge badge-red">Red</span> <span class="badge badge-green">Green</span> <span class="badge badge-blue">Blue</span></li>
+                                <li class="fragment">8 bit/canale &rarr; 256 livelli</li>
+                                <li class="fragment">24 bit/pixel &rarr; 16,7 milioni di colori</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3>Parametri chiave</h3>
+                            <ul>
+                                <li class="fragment"><strong>Risoluzione:</strong> numero di pixel (es. 1920&times;1080)</li>
+                                <li class="fragment"><strong>Profondit&agrave;:</strong> bit per canale (8, 16, 32)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>Intuizione:</strong> un'immagine RGB 1920&times;1080 &egrave; un <strong>array 3D</strong> di dimensione 1080 &times; 1920 &times; 3. Analizzare immagini = algebra lineare con NumPy.
+                    </div>
+                </section>
+
+                <!-- Formati immagine -->
+                <section>
+                    <h2>Formati immagine</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Formato</th><th>Compressione</th><th>Qualit&agrave;</th><th>Dimensione (1920&times;1080)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>BMP</strong></td>
+                                <td>Nessuna</td>
+                                <td>Originale</td>
+                                <td>~6 MB</td>
+                            </tr>
+                            <tr>
+                                <td><strong>JPEG</strong></td>
+                                <td><span class="badge badge-yellow">Con perdita</span> (lossy)</td>
+                                <td>Degradata ad ogni salvataggio</td>
+                                <td>~0,3&ndash;1 MB</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PNG</strong></td>
+                                <td><span class="badge badge-green">Senza perdita</span> (lossless)</td>
+                                <td>Identica all'originale</td>
+                                <td>~1&ndash;3 MB</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-yellow fragment">
+                        <strong>Attenzione:</strong> non salvate ripetutamente in JPEG un'immagine su cui state lavorando. Ogni salvataggio perde qualit&agrave;!
+                    </div>
+                </section>
+
+                <!-- Audio e video -->
+                <section>
+                    <h2>Audio e video digitale</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>Audio</h3>
+                            <p>Un suono &egrave; un'onda continua. Si <strong>campiona</strong> a intervalli regolari.</p>
+                            <div class="box box-blue">
+                                <strong>Teorema di Nyquist-Shannon:</strong><br>
+                                frequenza di campionamento &ge; 2 &times; frequenza massima
+                            </div>
+                            <p class="fragment">Orecchio: ~20.000 Hz<br>
+                            CD audio: <strong>44.100 Hz</strong>, 16 bit/campione</p>
+                        </div>
+                        <div class="col">
+                            <h3>Video</h3>
+                            <p>Sequenza di frame + traccia audio.</p>
+                            <div class="fragment">
+                                <p>Full HD non compresso a 30 fps:</p>
+                                <div class="diagram">
+                                    6 MB &times; 30 = <strong>180 MB/s</strong><br>
+                                    1 ora = ~650 GB
+                                </div>
+                            </div>
+                            <p class="fragment">Codec (H.264, H.265, AV1) sfruttano ridondanza tra frame.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rilevanza statistica -->
+                <section>
+                    <h2>Perch&eacute; &egrave; rilevante per la statistica?</h2>
+                    <p>I dati moderni non sono solo tabelle di numeri:</p>
+                    <div class="columns">
+                        <div class="col">
+                            <ul>
+                                <li class="fragment">Immagini mediche (radiografie, risonanze)</li>
+                                <li class="fragment">Dati satellitari e telerilevamento</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul>
+                                <li class="fragment">Analisi del parlato e del linguaggio</li>
+                                <li class="fragment">Riconoscimento di pattern in video</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        Comprendere la <strong>natura digitale</strong> di questi dati &mdash; campionamento, quantizzazione, compressione &mdash; &egrave; il primo passo per analizzarli correttamente.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ==================== SEZIONE 5: FORMATI DATI STRUTTURATI ==================== -->
+            <section>
+
+                <section class="section-slide">
+                    <h2>Formati di Dati Strutturati</h2>
+                    <p><em>CSV, JSON, Parquet e oltre</em></p>
+                </section>
+
+                <!-- CSV -->
+                <section>
+                    <h2>CSV (Comma-Separated Values)</h2>
+                    <p>Il formato pi&ugrave; semplice e diffuso in statistica:</p>
+                    <pre><code class="language-plaintext">nome,cognome,voto,data_esame
+Mario,Rossi,28,2024-01-15
+Anna,Bianchi,30,2024-01-15</code></pre>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <h3>Vantaggi</h3>
+                            <ul>
+                                <li>Universale e leggibile</li>
+                                <li>Supportato ovunque</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3>Problemi</h3>
+                            <ul>
+                                <li>Nessun tipo di dato (tutto &egrave; testo)</li>
+                                <li>Ambiguit&agrave; con i separatori</li>
+                                <li>Nessuno standard rigido</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        <strong>Trappola europea:</strong> in Italia il separatore decimale &egrave; la virgola (3,14). Per evitare conflitti, si usa il <strong>punto e virgola</strong> come separatore di campo. Verificate sempre!
+                    </div>
+                </section>
+
+                <!-- JSON -->
+                <section>
+                    <h2>JSON (JavaScript Object Notation)</h2>
+                    <p>Formato standard per dati gerarchici e API web:</p>
+                    <pre><code class="language-json">{
+    "nome": "Mario",
+    "cognome": "Rossi",
+    "voti": [28, 30, 27],
+    "indirizzo": {
+        "citta": "Milano",
+        "cap": "20100"
+    }
+}</code></pre>
+                    <div class="box box-green fragment">
+                        Supporta <strong>tipi di dato</strong>: stringhe, numeri, booleani, null, array, oggetti annidati. Leggibile da umani e macchine.
+                    </div>
+                </section>
+
+                <!-- XML e Excel -->
+                <section>
+                    <h2>XML ed Excel</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>XML</h3>
+                            <pre><code class="language-xml">&lt;studente&gt;
+  &lt;nome&gt;Mario&lt;/nome&gt;
+  &lt;cognome&gt;Rossi&lt;/cognome&gt;
+  &lt;voto&gt;28&lt;/voto&gt;
+&lt;/studente&gt;</code></pre>
+                            <p><em>Verboso ma espressivo. Diffuso nella PA e servizi SOAP.</em></p>
+                        </div>
+                        <div class="col">
+                            <h3>Excel (.xlsx)</h3>
+                            <p>Onnipresente ma problematico per uso scientifico:</p>
+                            <ul>
+                                <li class="fragment">Conversioni automatiche non richieste</li>
+                                <li class="fragment">Limite: 1.048.576 righe</li>
+                                <li class="fragment">Formato binario proprietario</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Il caso dei geni -->
+                <section>
+                    <h2>Excel e i geni rinominati</h2>
+                    <div class="box box-red">
+                        Un software ha costretto la scienza a cambiare i nomi dei geni.
+                    </div>
+                    <ul>
+                        <li class="fragment">Excel convertiva automaticamente nomi di geni come <code>MARCH1</code> e <code>SEPT2</code> in <strong>date</strong> (1 marzo, 2 settembre)</li>
+                        <li class="fragment">Il problema era cos&igrave; diffuso che nel 2020 l'organizzazione HUGO Gene Nomenclature Committee <strong>ha rinominato 27 geni umani</strong></li>
+                    </ul>
+                    <div class="box box-yellow fragment">
+                        <strong>Lezione:</strong> mai usare Excel per il lavoro scientifico serio. Usate formati che non &ldquo;aiutano&rdquo; senza chiedere.
+                    </div>
+                </section>
+
+                <!-- Formati binari -->
+                <section>
+                    <h2>Formati binari per grandi dataset</h2>
+                    <p>Quando CSV diventa lento (milioni di righe, gigabyte):</p>
+                    <table>
+                        <thead>
+                            <tr><th>Formato</th><th>Struttura</th><th>Uso tipico</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Parquet</strong></td>
+                                <td>Colonnare, compresso, tipi nativi</td>
+                                <td>Grandi dataset con Pandas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>HDF5</strong></td>
+                                <td>Gerarchico</td>
+                                <td>Fisica, astronomia, bioinformatica</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Feather</strong></td>
+                                <td>Ottimizzato per DataFrame</td>
+                                <td>Scambio veloce Python &harr; R</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-blue fragment">
+                        <strong>Regola pratica:</strong> CSV per portabilit&agrave;, Parquet per prestazioni, JSON per dati gerarchici. Mai Excel per lavoro scientifico.
+                    </div>
+                </section>
+
+            </section>
+
+            <!-- ==================== RIEPILOGO ==================== -->
+            <section>
+
+                <section>
+                    <h2>Riepilogo</h2>
+                    <div class="box box-red">
+                        <strong>Idea fondamentale:</strong> la rappresentazione digitale dei dati &egrave; sempre un'approssimazione.
+                    </div>
+                    <div class="columns fragment">
+                        <div class="col">
+                            <h3>Numeri</h3>
+                            <ul>
+                                <li>Interi: complemento a 2, overflow</li>
+                                <li>Float: IEEE 754, errori di arrotondamento</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h3>Testo e media</h3>
+                            <ul>
+                                <li>Testo: ASCII &rarr; Unicode/UTF-8</li>
+                                <li>Immagini/audio: campionamento e compressione</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        <strong>Tre regole per lo statistico:</strong>
+                        <ol>
+                            <li>Non fidatevi ciecamente dei numeri &mdash; solo 15-16 cifre sono significative</li>
+                            <li>Conoscete i vostri dati &mdash; encoding, tipi, NaN, conversioni implicite</li>
+                            <li>Scegliete il formato giusto &mdash; CSV, Parquet, JSON, mai Excel per la scienza</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Prossima lezione -->
+                <section class="section-slide">
+                    <h2>Prossima lezione</h2>
+                    <p>Algoritmi, programmi e pensiero computazionale</p>
+                    <p><em>Il ponte tra capire il computer e dirgli cosa fare</em></p>
+                </section>
+
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="F04_sistemi_operativi.html" style="color: var(--accent);">&larr; F04: Sistemi operativi</a></div><div><a href="F06_dal_problema_al_programma.html" style="color: var(--accent);">F06: Dal problema al programma &rarr;</a></div><div><a href="../dispense/frontali/F05_rappresentazione_dati.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; F05</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

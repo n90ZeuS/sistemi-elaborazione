@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L05 — File e gestione dati</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========== SLIDE 1: TITOLO ========== -->
+            <section class="title-slide">
+                <h1>File e gestione dati</h1>
+                <div class="subtitle">Laboratorio 5</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 2: AGENDA ========== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li><strong>File di testo</strong> &mdash; leggere, scrivere, contare</li>
+                    <li><strong>Percorsi con <code>pathlib</code></strong> &mdash; creare directory, costruire path</li>
+                    <li><strong>CSV con <code>csv.DictReader</code></strong> &mdash; separatore <code>;</code>, encoding</li>
+                    <li><strong>JSON</strong> &mdash; strutture annidate, <code>json.load</code>/<code>json.dump</code></li>
+                    <li><strong>Gestione errori</strong> &mdash; <code>try</code>/<code>except</code> per dati sporchi</li>
+                    <li><strong>Esercizi autonomi</strong> &mdash; dalla pulizia CSV alla pipeline completa</li>
+                </ol>
+                <div class="box box-blue">
+                    <strong>Prerequisito</strong>: Lezione F15 &mdash; File, dati e gestione degli errori
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 3: SEZIONE - FILE DI TESTO ========== -->
+            <section class="section-slide">
+                <h2>File di testo</h2>
+                <p>Leggere, analizzare, scrivere</p>
+            </section>
+
+            <!-- ========== SLIDE 4: ES. GUIDATO 1 - SETUP ========== -->
+            <section>
+                <h2>Esercizio guidato 1 &mdash; Statistiche di un file di testo</h2>
+                <p>Create un file <code>poesia.txt</code> con questo contenuto:</p>
+                <pre><code class="language-python">Nel mezzo del cammin di nostra vita
+mi ritrovai per una selva oscura
+che la diritta via era smarrita
+
+Ahi quanto a dir qual era è cosa dura
+esta selva selvaggia e aspra e forte
+che nel pensier rinova la paura</code></pre>
+                <p>Obiettivo: scrivere una funzione che conta <strong>righe</strong>, <strong>parole</strong> e <strong>caratteri</strong>.</p>
+            </section>
+
+            <!-- ========== SLIDE 5: ES. GUIDATO 1 - FUNZIONE ========== -->
+            <section>
+                <h2>Funzione <code>analizza_file</code></h2>
+                <pre><code class="language-python">from pathlib import Path
+
+
+def analizza_file(percorso: Path) -> dict[str, int]:
+    """Legge un file di testo e restituisce statistiche di base."""
+    num_righe: int = 0
+    num_righe_non_vuote: int = 0
+    num_parole: int = 0
+    num_caratteri: int = 0
+
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in f:
+            num_righe += 1
+            num_caratteri += len(riga)
+            if riga.strip():
+                num_righe_non_vuote += 1
+                num_parole += len(riga.split())
+
+    return {
+        "righe": num_righe,
+        "righe_non_vuote": num_righe_non_vuote,
+        "parole": num_parole,
+        "caratteri": num_caratteri,
+    }</code></pre>
+            </section>
+
+            <!-- ========== SLIDE 6: ES. GUIDATO 1 - PROVA E OUTPUT ========== -->
+            <section>
+                <h2>Prova e output atteso</h2>
+                <pre><code class="language-python">if __name__ == "__main__":
+    percorso_poesia: Path = Path("poesia.txt")
+    statistiche: dict[str, int] = analizza_file(percorso_poesia)
+    for chiave, valore in statistiche.items():
+        print(f"{chiave:>20}: {valore}")</code></pre>
+                <pre><code class="language-python">               righe: 7
+     righe_non_vuote: 6
+              parole: 40
+           caratteri: 235</code></pre>
+                <div class="box box-green">
+                    <strong>Osservazione</strong>: iteriamo riga per riga sull'oggetto file &mdash; funziona anche su file enormi perche' legge una riga alla volta. <code>riga.split()</code> senza argomenti divide su qualsiasi sequenza di spazi bianchi.
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 7: SEZIONE - PATHLIB ========== -->
+            <section class="section-slide">
+                <h2>Percorsi con <code>pathlib</code></h2>
+                <p>Scrivere risultati e creare directory</p>
+            </section>
+
+            <!-- ========== SLIDE 8: ES. GUIDATO 2 - SALVA STATISTICHE ========== -->
+            <section>
+                <h2>Esercizio guidato 2 &mdash; Scrivere file con <code>pathlib</code></h2>
+                <pre><code class="language-python">from pathlib import Path
+
+
+def salva_statistiche(
+    percorso_output: Path,
+    nome_sorgente: str,
+    statistiche: dict[str, int],
+) -> None:
+    """Salva le statistiche di un file in un report testuale."""
+    # Creiamo la directory genitore se non esiste
+    percorso_output.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(percorso_output, "w", encoding="utf-8") as f:
+        f.write(f"=== Report per: {nome_sorgente} ===\n\n")
+        for chiave, valore in statistiche.items():
+            f.write(f"  {chiave:>20}: {valore}\n")
+        f.write(f"\n{'='*40}\n")
+
+    print(f"Report salvato in: {percorso_output}")</code></pre>
+            </section>
+
+            <!-- ========== SLIDE 9: ES. GUIDATO 2 - PUNTI CHIAVE PATHLIB ========== -->
+            <section>
+                <h2>Punti chiave di <code>pathlib</code></h2>
+                <pre><code class="language-python">output: Path = Path("output") / "report_poesia.txt"
+salva_statistiche(output, "poesia.txt", statistiche)
+
+# Verifica: rileggiamo il file appena scritto
+contenuto: str = output.read_text(encoding="utf-8")
+print(contenuto)</code></pre>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-blue">
+                            <strong><code>.parent.mkdir(parents=True, exist_ok=True)</code></strong><br>
+                            Crea tutte le directory intermedie senza errore se esistono gia'.
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-blue">
+                            <strong>Operatore <code>/</code></strong><br>
+                            Costruisce percorsi in modo portabile tra sistemi operativi.
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-green">
+                    <strong><code>Path.read_text()</code></strong> e' una scorciatoia per leggere un intero file in una stringa.
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 10: SEZIONE - CSV ========== -->
+            <section class="section-slide">
+                <h2>File CSV</h2>
+                <p><code>csv.DictReader</code>, separatori e encoding</p>
+            </section>
+
+            <!-- ========== SLIDE 11: ES. GUIDATO 3 - CSV SETUP ========== -->
+            <section>
+                <h2>Esercizio guidato 3 &mdash; CSV all'italiana</h2>
+                <p>File <code>studenti.csv</code> con separatore <code>;</code>:</p>
+                <pre><code class="language-python">nome;cognome;voto;citta
+Anna;Rossi;28;Milano
+Marco;Bianchi;25;Roma
+Lucia;Verdi;30;Napoli
+Giuseppe;Neri;22;Torino
+Francesca;Gialli;27;Bologna</code></pre>
+                <div class="box box-yellow">
+                    <strong>Attenzione</strong>: i CSV esportati da Excel su Windows usano spesso il separatore <code>;</code> e l'encoding <code>cp1252</code> (non UTF-8).
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 12: ES. GUIDATO 3 - CARICA CSV ========== -->
+            <section>
+                <h2>Caricare un CSV con <code>DictReader</code></h2>
+                <pre><code class="language-python">import csv
+from pathlib import Path
+
+
+def carica_studenti(percorso: Path) -> list[dict[str, str]]:
+    """Carica un CSV di studenti con separatore punto e virgola."""
+    studenti: list[dict[str, str]] = []
+
+    with open(percorso, "r", encoding="utf-8") as f:
+        lettore = csv.DictReader(f, delimiter=";")
+        for riga in lettore:
+            studenti.append(dict(riga))
+
+    return studenti
+
+
+def calcola_media_voti(studenti: list[dict[str, str]]) -> float:
+    """Calcola la media dei voti degli studenti."""
+    if not studenti:
+        raise ValueError("Impossibile calcolare la media: lista vuota")
+
+    voti: list[int] = [int(s["voto"]) for s in studenti]
+    return sum(voti) / len(voti)</code></pre>
+            </section>
+
+            <!-- ========== SLIDE 13: ES. GUIDATO 3 - STAMPA TABELLA ========== -->
+            <section>
+                <h2>Stampa tabellare e output</h2>
+                <pre><code class="language-python">def stampa_tabella(studenti: list[dict[str, str]]) -> None:
+    """Stampa una lista di studenti in formato tabellare."""
+    intestazione: str = f"{'Nome':<15} {'Cognome':<15} {'Voto':>5} {'Citta':<15}"
+    print(intestazione)
+    print("-" * len(intestazione))
+    for s in studenti:
+        print(f"{s['nome']:<15} {s['cognome']:<15} {s['voto']:>5} {s['citta']:<15}")</code></pre>
+                <p><strong>Output atteso:</strong></p>
+                <pre><code class="language-python">Nome            Cognome          Voto Citta
+----------------------------------------------------
+Anna            Rossi              28 Milano
+Marco           Bianchi            25 Roma
+Lucia           Verdi              30 Napoli
+Giuseppe        Neri               22 Torino
+Francesca       Gialli             27 Bologna
+
+Media voti: 26.40</code></pre>
+            </section>
+
+            <!-- ========== SLIDE 14: SEZIONE - JSON ========== -->
+            <section class="section-slide">
+                <h2>File JSON</h2>
+                <p>Strutture annidate e navigazione</p>
+            </section>
+
+            <!-- ========== SLIDE 15: ES. GUIDATO 4 - JSON STRUTTURA ========== -->
+            <section>
+                <h2>Esercizio guidato 4 &mdash; Struttura JSON</h2>
+                <p>File <code>corso.json</code> con dati annidati:</p>
+                <pre><code class="language-python">{
+  "nome_corso": "Sistemi di Elaborazione",
+  "anno_accademico": "2025-2026",
+  "docente": {
+    "nome": "Mario", "cognome": "Rossi",
+    "email": "mario.rossi@universita.it"
+  },
+  "studenti": [
+    {"matricola": "S001", "nome": "Anna",  "voti": [28, 25, 30]},
+    {"matricola": "S002", "nome": "Marco", "voti": [22, 24]},
+    {"matricola": "S003", "nome": "Lucia", "voti": [30, 30, 28, 27]},
+    {"matricola": "S004", "nome": "Giuseppe", "voti": []}
+  ]
+}</code></pre>
+                <div class="box box-blue">
+                    Dizionari dentro dizionari, liste dentro dizionari: JSON permette strutture arbitrariamente annidate.
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 16: ES. GUIDATO 4 - CARICARE JSON ========== -->
+            <section>
+                <h2>Caricare e navigare JSON</h2>
+                <pre><code class="language-python">import json
+from pathlib import Path
+
+
+def carica_corso(percorso: Path) -> dict:
+    """Carica i dati di un corso da file JSON."""
+    with open(percorso, "r", encoding="utf-8") as f:
+        dati: dict = json.load(f)
+    return dati
+
+
+def riepilogo_corso(dati: dict) -> None:
+    """Stampa un riepilogo del corso con le medie di ogni studente."""
+    print(f"Corso: {dati['nome_corso']}")
+    print(f"Docente: {dati['docente']['nome']} {dati['docente']['cognome']}")
+
+    for s in dati["studenti"]:
+        voti: list[int] = s["voti"]
+        if voti:
+            media: float = sum(voti) / len(voti)
+            print(f"  {s['matricola']} {s['nome']:<12} media: {media:.2f}")
+        else:
+            print(f"  {s['matricola']} {s['nome']:<12} media: N/D")</code></pre>
+            </section>
+
+            <!-- ========== SLIDE 17: ES. GUIDATO 4 - SALVARE JSON ========== -->
+            <section>
+                <h2>Salvare risultati in JSON</h2>
+                <pre><code class="language-python">def salva_medie_json(dati: dict, percorso_output: Path) -> None:
+    """Calcola le medie e le salva in un nuovo file JSON."""
+    risultati: list[dict[str, str | float | None]] = []
+
+    for s in dati["studenti"]:
+        voti: list[int] = s["voti"]
+        media: float | None = sum(voti) / len(voti) if voti else None
+        risultati.append({
+            "matricola": s["matricola"],
+            "nome": s["nome"],
+            "media": round(media, 2) if media is not None else None,
+        })
+
+    output: dict[str, str | list] = {
+        "corso": dati["nome_corso"],
+        "medie": risultati,
+    }
+
+    percorso_output.parent.mkdir(parents=True, exist_ok=True)
+    with open(percorso_output, "w", encoding="utf-8") as f:
+        json.dump(output, f, indent=2, ensure_ascii=False)</code></pre>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-green">
+                            <code>indent=2</code> &rarr; JSON leggibile
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-green">
+                            <code>ensure_ascii=False</code> &rarr; preserva gli accenti
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 18: JSON - LOAD vs LOADS ========== -->
+            <section>
+                <h2><code>json.load</code> vs <code>json.loads</code></h2>
+                <div class="compare">
+                    <div class="good">
+                        <h3><code>json.load(f)</code></h3>
+                        <p>Legge da <strong>file</strong></p>
+<pre><code class="language-python">with open("dati.json") as f:
+    dati = json.load(f)</code></pre>
+                    </div>
+                    <div class="bad">
+                        <h3><code>json.loads(s)</code></h3>
+                        <p>Legge da <strong>stringa</strong></p>
+<pre><code class="language-python">testo = '{"chiave": 42}'
+dati = json.loads(testo)</code></pre>
+                    </div>
+                </div>
+                <div class="box box-yellow" style="margin-top: 0.8em;">
+                    <strong>Nota</strong>: la <code>s</code> finale sta per <em>string</em>. Lo stesso vale per <code>json.dump</code> (su file) e <code>json.dumps</code> (restituisce stringa).
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 19: SEZIONE - TRY/EXCEPT ========== -->
+            <section class="section-slide">
+                <h2>Gestione degli errori</h2>
+                <p><code>try</code>/<code>except</code> per dati sporchi</p>
+            </section>
+
+            <!-- ========== SLIDE 20: ES. GUIDATO 5 - MISURAZIONI ========== -->
+            <section>
+                <h2>Esercizio guidato 5 &mdash; Caricare dati sporchi</h2>
+                <p>Funzione robusta che carica un CSV di misurazioni gestendo tutti i problemi comuni.</p>
+                <pre><code class="language-python">def carica_misurazioni(percorso: Path) -> list[dict[str, float | None]]:
+    # 1. Verificare che il file esista
+    if not percorso.exists():
+        print(f"ERRORE: il file '{percorso}' non esiste.")
+        return []
+
+    misurazioni: list[dict[str, float | None]] = []
+    errori: list[str] = []
+
+    try:
+        with open(percorso, "r", encoding="utf-8") as f:
+            lettore = csv.DictReader(f, delimiter=";")
+
+            # 2. Verificare le colonne attese
+            colonne_attese: set[str] = {"id", "temperatura", "umidita", "pressione"}
+            if lettore.fieldnames is None:
+                print("ERRORE: il file sembra vuoto.")
+                return []
+            # ... continua nella slide successiva</code></pre>
+            </section>
+
+            <!-- ========== SLIDE 21: ES. GUIDATO 5 - GESTIONE VALORI ========== -->
+            <section>
+                <h2>Gestire valori non numerici</h2>
+                <pre><code class="language-python">            for num_riga, riga in enumerate(lettore, start=2):
+                misurazione: dict[str, float | None] = {}
+
+                # 3. Gestire valori non numerici
+                for campo in ["temperatura", "umidita", "pressione"]:
+                    valore_raw: str | None = riga.get(campo)
+                    if valore_raw is None or valore_raw.strip() == "":
+                        misurazione[campo] = None
+                        errori.append(f"Riga {num_riga}: '{campo}' mancante")
+                    else:
+                        try:
+                            misurazione[campo] = float(
+                                valore_raw.strip().replace(",", ".")
+                            )
+                        except ValueError:
+                            misurazione[campo] = None
+                            errori.append(
+                                f"Riga {num_riga}: '{campo}' non numerico "
+                                f"('{valore_raw}')"
+                            )
+                misurazioni.append(misurazione)
+
+    except UnicodeDecodeError:
+        print("ERRORE: il file non e' codificato in UTF-8.")</code></pre>
+            </section>
+
+            <!-- ========== SLIDE 22: PATTERN TRY/EXCEPT ========== -->
+            <section>
+                <h2>Pattern fondamentale: eccezioni specifiche</h2>
+                <div class="compare">
+                    <div class="good">
+                        <h3>Eccezioni specifiche</h3>
+<pre><code class="language-python">try:
+    valore = float(testo)
+except ValueError:
+    valore = None
+
+try:
+    with open(path) as f:
+        dati = f.read()
+except FileNotFoundError:
+    print("File non trovato")
+except UnicodeDecodeError:
+    print("Encoding errato")</code></pre>
+                    </div>
+                    <div class="bad">
+                        <h3>Eccezione generica</h3>
+<pre><code class="language-python">try:
+    valore = float(testo)
+except Exception:
+    # Nasconde TUTTI i bug!
+    valore = None
+
+
+
+
+# Non fatelo mai:
+except:
+    pass</code></pre>
+                    </div>
+                </div>
+                <div class="box box-red">
+                    <strong>Regola</strong>: catturate solo le eccezioni che sapete gestire. Un <code>except Exception</code> generico nasconde i bug.
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 23: ENCODING ========== -->
+            <section>
+                <h2>Problemi di encoding</h2>
+                <p>Se vedete caratteri strani (es. <code>Ã©</code> al posto di <code>e'</code>), il file non e' in UTF-8.</p>
+                <table>
+                    <tr><th>Situazione</th><th>Encoding da usare</th></tr>
+                    <tr><td>File moderno / web / Linux / macOS</td><td><code>utf-8</code></td></tr>
+                    <tr><td>CSV da Excel su Windows</td><td><code>cp1252</code> o <code>latin-1</code></td></tr>
+                    <tr><td>Vecchi file italiani</td><td><code>iso-8859-1</code></td></tr>
+                </table>
+                <pre><code class="language-python"># Se utf-8 non funziona, provate:
+with open("dati.csv", "r", encoding="latin-1") as f:
+    lettore = csv.DictReader(f, delimiter=";")</code></pre>
+                <div class="box box-yellow">
+                    <strong>Consiglio</strong>: salvate sempre i vostri file in UTF-8. La maggior parte degli editor moderni lo fa per default.
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 24: SEZIONE - ESERCIZI AUTONOMI ========== -->
+            <section class="section-slide">
+                <h2>Esercizi autonomi</h2>
+                <p>Dal semplice al complesso</p>
+            </section>
+
+            <!-- ========== SLIDE 25: ESERCIZI BASE ========== -->
+            <section>
+                <h2>Esercizi base</h2>
+                <div class="box box-blue">
+                    <h3>Esercizio 1 &mdash; Analisi di un file di log <span class="badge badge-green">Base</span></h3>
+                    <p>Scrivere <code>analizza_log(percorso: Path) -> dict[str, int]</code> che:</p>
+                    <ol>
+                        <li>Legge il file riga per riga</li>
+                        <li>Conta le righe per livello (<code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>)</li>
+                        <li>Gestisce righe vuote o malformate senza interrompersi</li>
+                    </ol>
+                    <p>Poi scrivere <code>salva_errori(percorso_log, percorso_output) -> int</code> che estrae solo le righe <code>ERROR</code>.</p>
+                </div>
+                <div class="box box-blue">
+                    <h3>Esercizio 2 &mdash; Pulizia di un CSV sporco <span class="badge badge-green">Base</span></h3>
+                    <p>Scrivere <code>pulisci_csv(percorso_input, percorso_output) -> dict[str, int]</code> che:</p>
+                    <ol>
+                        <li>Scarta righe senza <code>prodotto</code></li>
+                        <li>Converte campi numerici, sostituendo valori invalidi con <code>None</code></li>
+                        <li>Scrive un CSV pulito con solo le righe valide</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 26: ESERCIZI INTERMEDI ========== -->
+            <section>
+                <h2>Esercizi intermedi</h2>
+                <div class="box box-yellow">
+                    <h3>Esercizio 3 &mdash; Conversione CSV / JSON <span class="badge badge-yellow">Intermedio</span></h3>
+                    <p>Scrivere <code>csv_a_json(percorso_csv, percorso_json) -> int</code> che:</p>
+                    <ul>
+                        <li>Rileva automaticamente il separatore (<code>,</code> o <code>;</code>)</li>
+                        <li>Converte valori numerici nei tipi Python corrispondenti</li>
+                        <li>Salva come JSON con <code>indent=2</code></li>
+                    </ul>
+                    <p>Scrivere anche la funzione inversa <code>json_a_csv</code>.</p>
+                </div>
+                <div class="box box-yellow">
+                    <h3>Esercizio 4 &mdash; Unione di piu' CSV <span class="badge badge-yellow">Intermedio</span></h3>
+                    <p>Scrivere <code>unisci_e_riepiloga(cartella, output_unito, output_riepilogo)</code> che:</p>
+                    <ul>
+                        <li>Trova tutti i <code>.csv</code> con <code>glob</code></li>
+                        <li>Li unisce in un unico CSV (una sola intestazione)</li>
+                        <li>Calcola totali per prodotto</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 27: ESERCIZIO AVANZATO ========== -->
+            <section>
+                <h2>Esercizio avanzato</h2>
+                <div class="box box-red">
+                    <h3>Esercizio 5 &mdash; Analisi incrociata <span class="badge badge-red">Avanzato</span></h3>
+                    <p>Due file di input: <code>dipendenti.json</code> e <code>presenze.csv</code>.</p>
+                    <p>Scrivere <code>report_presenze(path_dipendenti, path_presenze, path_output)</code> che:</p>
+                    <ol>
+                        <li>Carica entrambi i file</li>
+                        <li>Per ogni dipendente, calcola ore totali e media giornaliera</li>
+                        <li>Raggruppa i risultati per reparto</li>
+                        <li>Genera un report JSON annidato</li>
+                    </ol>
+                    <p>Gestire: dipendenti senza presenze, presenze con ID inesistente, ore non numeriche.</p>
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 28: SFIDA FINALE - INTRO ========== -->
+            <section>
+                <h2>Sfida finale &mdash; Pipeline completa</h2>
+                <p>File <code>rilevazioni_meteo.csv</code> con dati meteorologici <strong>sporchi</strong>:</p>
+                <pre><code class="language-python">stazione;data;temperatura;umidita;vento_kmh
+Roma;2025-03-01;15.2;65;12
+Roma;2025-03-02;N/D;70;8
+Milano;2025-03-01;;80;
+Milano;2025-03-02;5.1;75;22
+Napoli;2025-03-01;18.3;errore;15
+;2025-03-01;20.0;55;5
+Napoli;2025-03-02;17.8;60;abc</code></pre>
+                <p>Problemi presenti: valori <code>N/D</code>, campi vuoti, testo al posto di numeri, righe senza stazione.</p>
+            </section>
+
+            <!-- ========== SLIDE 29: SFIDA FINALE - PIPELINE ========== -->
+            <section>
+                <h2>Sfida finale &mdash; Le 6 fasi</h2>
+                <div class="diagram">
+                    CSV sporco &rarr; Caricamento &rarr; Pulizia &rarr; Statistiche &rarr; Output CSV + JSON + Report
+                </div>
+                <ol>
+                    <li><strong>Caricamento</strong>: leggere il CSV gestendo encoding e separatore</li>
+                    <li><strong>Pulizia</strong>: scartare righe senza stazione, convertire campi numerici, sostituire valori invalidi con <code>None</code></li>
+                    <li><strong>Statistiche per stazione</strong>: media, minimo, massimo per ogni campo numerico</li>
+                    <li><strong>Output CSV</strong>: salvare in <code>output/statistiche_meteo.csv</code></li>
+                    <li><strong>Output JSON</strong>: salvare in <code>output/statistiche_meteo.json</code></li>
+                    <li><strong>Report testuale</strong>: riepilogo formattato a video</li>
+                </ol>
+                <div class="box box-blue">
+                    Ogni funzione con type hints completi. Il programma non deve mai crashare.
+                </div>
+            </section>
+
+            <!-- ========== SLIDE 30: RIEPILOGO ========== -->
+            <section>
+                <h2>Riepilogo</h2>
+                <table>
+                    <tr><th>Concetto</th><th>Cosa ricordare</th></tr>
+                    <tr><td><code>with open(...)</code></td><td>Usate <strong>sempre</strong> il context manager</td></tr>
+                    <tr><td><code>pathlib</code></td><td>Percorsi portabili e leggibili</td></tr>
+                    <tr><td><code>csv.DictReader</code></td><td>Specificate <code>delimiter=";"</code> per CSV europei</td></tr>
+                    <tr><td><code>json.load / dump</code></td><td><code>indent=2</code>, <code>ensure_ascii=False</code></td></tr>
+                    <tr><td><code>try/except</code></td><td>Eccezioni <strong>specifiche</strong>, mai generiche</td></tr>
+                    <tr><td>Architettura</td><td>Separare caricamento, pulizia e analisi</td></tr>
+                </table>
+                <div class="box box-green">
+                    Quando userete Pandas, molte di queste operazioni diventeranno una riga di codice (<code>pd.read_csv(...)</code>). Ma capire cosa succede sotto il cofano vi permettera' di diagnosticare i problemi che Pandas non risolve da solo.
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L04_funzioni_modularita.html" style="color: var(--accent);">&larr; L04: Funzioni e modularità</a></div><div><a href="L06_classi_oggetti.html" style="color: var(--accent);">L06: Classi e oggetti &rarr;</a></div><div><a href="../dispense/laboratori/L05_file_gestione_dati.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L05_file_dati/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; L05</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

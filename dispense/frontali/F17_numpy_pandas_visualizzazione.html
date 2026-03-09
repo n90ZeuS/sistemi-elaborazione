@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F17 — NumPy, Pandas e visualizzazione — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F16_programmazione_oggetti.html">← F16</a> &bull; <a href="../laboratori/L01_ambiente_variabili_condizionali.html">L01 →</a> &bull; <a href="../../presentazioni/F17_numpy_pandas_visualizzazione.html">Presentazione</a></nav>
+<h1>F17 — NumPy, Pandas e visualizzazione</h1>
+
+<h1>Lezione Frontale 17 — NumPy, Pandas e visualizzazione</h1>
+<h2>Introduzione: perché servono nuovi strumenti</h2>
+<p>Nelle lezioni precedenti abbiamo imparato a programmare in Python: variabili, funzioni, cicli, classi, file, gestione degli errori. Sappiamo scrivere codice corretto e leggibile. Ma c'è un problema che finora abbiamo ignorato: Python, nella sua forma base, è <em>lento</em> per il calcolo numerico, e <em>scomodo</em> per l'analisi dei dati.</p>
+<p>Provate a immaginare di avere un milione di osservazioni e dover calcolare la media, la deviazione standard, filtrare per una condizione, aggregare per gruppi, e infine produrre un grafico. Con le liste Python e i cicli <code>for</code> che conosciamo, servirebbero decine di righe di codice e il programma impiegherebbe secondi (o minuti) dove una soluzione ottimizzata richiede millisecondi.</p>
+<p>L'ecosistema scientifico di Python risolve questo problema con tre librerie fondamentali: <strong>NumPy</strong> per il calcolo numerico veloce, <strong>Pandas</strong> per la manipolazione tabellare dei dati, e <strong>Matplotlib</strong> (con il suo compagno <strong>Seaborn</strong>) per la visualizzazione. Queste tre librerie formano la spina dorsale del lavoro quantitativo in Python e sono strumenti quotidiani per qualsiasi statistico, data scientist o ricercatore.</p>
+<p>In questa lezione — la più densa del corso — le esploreremo tutte e tre, partendo dai fondamenti e arrivando a un livello sufficiente per affrontare analisi reali.</p>
+<hr>
+<h2>1. NumPy — il motore del calcolo numerico</h2>
+<h3>1.1 Perché esiste NumPy</h3>
+<p>Le liste Python sono strutture dati generiche: possono contenere oggetti di qualsiasi tipo, e ogni elemento è un oggetto Python completo con il suo overhead di memoria e di gestione. Quando lavoriamo con dati numerici — vettori di misurazioni, matrici di covarianza, serie temporali — questa generalità diventa un peso. Ogni operazione aritmetica su una lista richiede un ciclo Python, e ogni iterazione paga il costo dell'interprete.</p>
+<p>Il problema era noto fin dagli anni '90. Nel 1995 Jim Hugunin creò <strong>Numeric</strong>, la prima libreria per array numerici in Python. Il progetto ebbe successo ma si frammentò: nacque anche <strong>Numarray</strong>, con scelte di design diverse. Nel 2005 <strong>Travis Oliphant</strong> unificò i due progetti in un'unica libreria: <strong>NumPy</strong> (Numerical Python). Da allora NumPy è il fondamento su cui poggia tutto l'ecosistema scientifico di Python.</p>
+<p>Il segreto di NumPy è semplice: memorizza i dati in <strong>blocchi di memoria contigui</strong> di tipo omogeneo (ad esempio, tutti <code>float64</code>), esattamente come farebbe un programma C o Fortran. Le operazioni sono implementate in C compilato, non in Python interpretato. Il risultato è un guadagno di velocità che può raggiungere due ordini di grandezza (100x) rispetto al codice Python puro.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Lista Python: ogni elemento è un oggetto Python separato</span>
+lista: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>]
+
+<span class="cm"># Array NumPy: blocco contiguo di float64 in memoria</span>
+array: np.ndarray <span class="op">=</span> np.array([<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>])</code></pre>
+<p>La convenzione universale è importare NumPy con l'alias <code>np</code>. Non usate mai <code>from numpy import *</code>: inquina il namespace e crea confusione.</p>
+<h3>1.2 Creare array: il tipo <code>ndarray</code></h3>
+<p>L'oggetto fondamentale di NumPy è l'<code>ndarray</code> (<em>n-dimensional array</em>). Esistono molti modi per crearlo.</p>
+<p><strong>Da una lista Python:</strong></p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Vettore (1D)</span>
+voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">30</span>])
+
+<span class="cm"># Matrice (2D) — lista di liste</span>
+matrice: np.ndarray <span class="op">=</span> np.array([
+    [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>],
+    [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>],
+    [<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]
+])</code></pre>
+<p><strong>Con funzioni di costruzione:</strong></p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Array di zeri</span>
+zeri: np.ndarray <span class="op">=</span> np.zeros(<span class="mi">10</span>)            <span class="cm"># 10 zeri float64</span>
+zeri_2d: np.ndarray <span class="op">=</span> np.zeros((<span class="mi">3</span>, <span class="mi">4</span>))     <span class="cm"># Matrice 3×4 di zeri</span>
+
+<span class="cm"># Array di uni</span>
+uni: np.ndarray <span class="op">=</span> np.ones(<span class="mi">5</span>)               <span class="cm"># 5 uno float64</span>
+
+<span class="cm"># Sequenza con passo fisso (simile a range, ma per float)</span>
+intervallo: np.ndarray <span class="op">=</span> np.arange(<span class="mi">0</span>, <span class="mi">10</span>, <span class="mi">0.5</span>)  <span class="cm"># [0.0, 0.5, 1.0, ..., 9.5]</span>
+
+<span class="cm"># Sequenza con numero di punti fisso (molto usata per grafici)</span>
+punti: np.ndarray <span class="op">=</span> np.linspace(<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">100</span>)  <span class="cm"># 100 punti equidistanti tra 0 e 1</span></code></pre>
+<p>La differenza tra <code>np.arange</code> e <code>np.linspace</code> è importante: <code>arange</code> specifica il <em>passo</em>, <code>linspace</code> specifica il <em>numero di punti</em>. Per generare ascisse di un grafico, <code>linspace</code> è quasi sempre la scelta migliore.</p>
+<h3>1.3 Attributi di un array</h3>
+<p>Ogni <code>ndarray</code> porta con sé informazioni sulla propria struttura:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+dati: np.ndarray <span class="op">=</span> np.array([[<span class="mi">1.5</span>, <span class="mi">2.3</span>, <span class="mi">3.1</span>],
+                              [<span class="mi">4.0</span>, <span class="mi">5.7</span>, <span class="mi">6.2</span>]])
+
+<span class="nb">print</span>(dati.shape)    <span class="cm"># (2, 3) — 2 righe, 3 colonne</span>
+<span class="nb">print</span>(dati.dtype)    <span class="cm"># float64 — tipo degli elementi</span>
+<span class="nb">print</span>(dati.ndim)     <span class="cm"># 2 — numero di dimensioni</span>
+<span class="nb">print</span>(dati.size)     <span class="cm"># 6 — numero totale di elementi</span></code></pre>
+<p>L'attributo <code>dtype</code> è cruciale: NumPy ottiene la sua velocità proprio perché <em>tutti</em> gli elementi hanno lo stesso tipo. I tipi più comuni sono <code>float64</code> (default per i float), <code>int64</code> (default per gli interi) e <code>bool</code>. Se mescolate tipi, NumPy promuove tutto al tipo più generale:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+misto: np.ndarray <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2.5</span>, <span class="mi">3</span>])
+<span class="nb">print</span>(misto.dtype)  <span class="cm"># float64 — gli interi sono stati promossi a float</span></code></pre>
+<h3>1.4 Vettorizzazione: operare senza cicli</h3>
+<p>Questo è il concetto più importante di NumPy. La <strong>vettorizzazione</strong> consiste nell'applicare operazioni a interi array senza scrivere cicli espliciti. Le operazioni vengono eseguite elemento per elemento dal codice C interno di NumPy.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Con le liste Python — lento e verboso</span>
+valori_lista: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>]
+quadrati_lista: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+<span class="kw">for</span> v <span class="kw">in</span> valori_lista:
+    quadrati_lista.append(v <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+<span class="cm"># Con NumPy — veloce e conciso</span>
+valori: np.ndarray <span class="op">=</span> np.array([<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>])
+quadrati: np.ndarray <span class="op">=</span> valori <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>  <span class="cm"># [1.0, 4.0, 9.0, 16.0, 25.0]</span></code></pre>
+<p>Tutte le operazioni aritmetiche funzionano elemento per elemento:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+a: np.ndarray <span class="op">=</span> np.array([<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>])
+b: np.ndarray <span class="op">=</span> np.array([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+
+<span class="nb">print</span>(a <span class="op">+</span> b)     <span class="cm"># [11, 22, 33]</span>
+<span class="nb">print</span>(a <span class="op">*</span> b)     <span class="cm"># [10, 40, 90]</span>
+<span class="nb">print</span>(a <span class="op">/</span> b)     <span class="cm"># [10.0, 10.0, 10.0]</span>
+<span class="nb">print</span>(a <span class="op">&gt;</span> <span class="mi">15</span>)    <span class="cm"># [False, True, True]  — confronto vettorizzato</span></code></pre>
+<p>Anche il confronto è vettorizzato e restituisce un array di booleani. Questo è fondamentale per il <em>filtraggio</em>:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+temperature: np.ndarray <span class="op">=</span> np.array([<span class="mi">15.2</span>, <span class="mi">22.1</span>, <span class="mi">31.5</span>, <span class="mi">18.7</span>, <span class="mi">28.3</span>])
+calde: np.ndarray <span class="op">=</span> temperature[temperature <span class="op">&gt;</span> <span class="mi">25</span>]  <span class="cm"># [31.5, 28.3]</span></code></pre>
+<p><strong>Confronto di performance.</strong> Per apprezzare la differenza, considerate un'operazione su un milione di elementi:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> time
+
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1_000_000</span>
+
+<span class="cm"># Lista Python</span>
+lista: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">list</span>(<span class="nb">range</span>(n))
+inizio: <span class="nb">float</span> <span class="op">=</span> time.time()
+risultato_lista: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> <span class="mi">2</span> <span class="op">*</span> x <span class="op">+</span> <span class="mi">1</span> <span class="kw">for</span> x <span class="kw">in</span> lista]
+tempo_lista: <span class="nb">float</span> <span class="op">=</span> time.time() <span class="op">-</span> inizio
+
+<span class="cm"># NumPy</span>
+array: np.ndarray <span class="op">=</span> np.arange(n, dtype<span class="op">=</span>np.float64)
+inizio <span class="op">=</span> time.time()
+risultato_array: np.ndarray <span class="op">=</span> array <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> <span class="mi">2</span> <span class="op">*</span> array <span class="op">+</span> <span class="mi">1</span>
+tempo_numpy: <span class="nb">float</span> <span class="op">=</span> time.time() <span class="op">-</span> inizio
+
+<span class="nb">print</span>(<span class="st">f&quot;Lista Python: {tempo_lista:.3f} s&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;NumPy:        {tempo_numpy:.3f} s&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Speedup:      {tempo_lista / tempo_numpy:.0f}x&quot;</span>)
+<span class="cm"># Output tipico: Lista Python: 0.350 s, NumPy: 0.004 s, Speedup: ~80x</span></code></pre>
+<p>La regola pratica è: <strong>se vi trovate a scrivere un ciclo <code>for</code> su dati numerici, probabilmente esiste un modo vettorizzato per farlo con NumPy</strong>.</p>
+<h3>1.5 Funzioni statistiche e broadcasting</h3>
+<p>NumPy offre tutte le funzioni statistiche di base:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">24</span>, <span class="mi">29</span>, <span class="mi">26</span>])
+
+<span class="nb">print</span>(np.mean(voti))    <span class="cm"># 27.375  — media aritmetica</span>
+<span class="nb">print</span>(np.median(voti))  <span class="cm"># 27.5    — mediana</span>
+<span class="nb">print</span>(np.std(voti))     <span class="cm"># 2.155   — deviazione standard (popolazione)</span>
+<span class="nb">print</span>(np.std(voti, ddof<span class="op">=</span><span class="mi">1</span>))  <span class="cm"># 2.326 — dev. standard campionaria</span>
+<span class="nb">print</span>(np.<span class="nb">sum</span>(voti))     <span class="cm"># 219     — somma</span>
+<span class="nb">print</span>(np.<span class="nb">min</span>(voti))     <span class="cm"># 24      — minimo</span>
+<span class="nb">print</span>(np.<span class="nb">max</span>(voti))     <span class="cm"># 30      — massimo</span>
+<span class="nb">print</span>(np.var(voti))     <span class="cm"># 4.484   — varianza (popolazione)</span></code></pre>
+<p>Nota per gli statistici: <code>np.std</code> e <code>np.var</code> calcolano per default la deviazione standard e la varianza <em>della popolazione</em> (dividendo per <em>n</em>). Per la versione <em>campionaria</em> (dividendo per <em>n - 1</em>), passate <code>ddof=1</code> (degrees of freedom adjustment).</p>
+<p><strong>Broadcasting.</strong> Quando si opera tra array di forma diversa, NumPy applica il <em>broadcasting</em>: "espande" automaticamente l'array più piccolo per rendere le dimensioni compatibili.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Scalare + array: lo scalare viene &quot;espanso&quot;</span>
+dati: np.ndarray <span class="op">=</span> np.array([<span class="mi">10.0</span>, <span class="mi">20.0</span>, <span class="mi">30.0</span>])
+normalizzati: np.ndarray <span class="op">=</span> dati <span class="op">/</span> np.<span class="nb">max</span>(dati)  <span class="cm"># [0.333, 0.667, 1.0]</span>
+
+<span class="cm"># Standardizzazione (z-score)</span>
+media: np.floating <span class="op">=</span> np.mean(dati)
+dev_std: np.floating <span class="op">=</span> np.std(dati, ddof<span class="op">=</span><span class="mi">1</span>)
+z_scores: np.ndarray <span class="op">=</span> (dati <span class="op">-</span> media) <span class="op">/</span> dev_std</code></pre>
+<p>Il broadcasting funziona anche con matrici. Ad esempio, se volete sottrarre la media di ogni colonna da una matrice:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+matrice: np.ndarray <span class="op">=</span> np.array([[<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>],
+                                 [<span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">6.0</span>],
+                                 [<span class="mi">7.0</span>, <span class="mi">8.0</span>, <span class="mi">9.0</span>]])
+
+<span class="cm"># Media di ogni colonna: array di forma (3,)</span>
+medie_colonne: np.ndarray <span class="op">=</span> np.mean(matrice, axis<span class="op">=</span><span class="mi">0</span>)  <span class="cm"># [4.0, 5.0, 6.0]</span>
+
+<span class="cm"># Broadcasting: la riga (3,) viene &quot;espansa&quot; a (3, 3)</span>
+centrata: np.ndarray <span class="op">=</span> matrice <span class="op">-</span> medie_colonne</code></pre>
+<p>Il parametro <code>axis</code> specifica lungo quale dimensione operare: <code>axis=0</code> opera lungo le righe (risultato per colonna), <code>axis=1</code> opera lungo le colonne (risultato per riga).</p>
+<h3>1.6 Generazione di campioni casuali</h3>
+<p>Il modulo <code>np.random</code> è essenziale per la simulazione statistica:</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Generatore moderno (preferito rispetto alle funzioni globali)</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+
+<span class="cm"># Campione da una distribuzione uniforme [0, 1)</span>
+uniformi: np.ndarray <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="mi">0.0</span>, high<span class="op">=</span><span class="mi">1.0</span>, size<span class="op">=</span><span class="mi">1000</span>)
+
+<span class="cm"># Campione da una normale (media=0, dev.std=1)</span>
+normali: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">0.0</span>, scale<span class="op">=</span><span class="mi">1.0</span>, size<span class="op">=</span><span class="mi">1000</span>)
+
+<span class="cm"># Campione da una binomiale (n=10, p=0.5)</span>
+binomiali: np.ndarray <span class="op">=</span> rng.binomial(n<span class="op">=</span><span class="mi">10</span>, p<span class="op">=</span><span class="mi">0.5</span>, size<span class="op">=</span><span class="mi">1000</span>)
+
+<span class="cm"># Interi casuali</span>
+interi: np.ndarray <span class="op">=</span> rng.integers(low<span class="op">=</span><span class="mi">1</span>, high<span class="op">=</span><span class="mi">7</span>, size<span class="op">=</span><span class="mi">100</span>)  <span class="cm"># Simulazione di un dado</span>
+
+<span class="cm"># Permutazione casuale</span>
+ordine: np.ndarray <span class="op">=</span> rng.permutation(<span class="mi">10</span>)  <span class="cm"># [3, 7, 0, 5, ...]</span></code></pre>
+<p>Il parametro <code>seed</code> garantisce la <strong>riproducibilità</strong>: con lo stesso seed otterrete sempre gli stessi numeri "casuali". Questo è fondamentale nel lavoro scientifico: i risultati devono poter essere verificati e replicati.</p>
+<hr>
+<h2>2. Pandas — dati tabulari con potenza e semplicità</h2>
+<h3>2.1 Origine e filosofia</h3>
+<p>Nel 2008 <strong>Wes McKinney</strong>, analista finanziario, si trovava frustrato dalla mancanza di uno strumento Python adeguato per l'analisi dei dati tabulari. Creò <strong>Pandas</strong> (il nome deriva da <em>panel data</em>, un termine dell'econometria) per colmare questa lacuna. Pandas è costruito sopra NumPy e ne sfrutta la velocità, aggiungendo però un livello di astrazione che rende il lavoro con i dati tabulari enormemente più comodo.</p>
+<p>Se NumPy è il motore, Pandas è il cruscotto: vi permette di lavorare con dati etichettati (righe e colonne con nomi), gestire valori mancanti, leggere e scrivere diversi formati di file, e aggregare dati con poche righe di codice.</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Convenzione: importare pandas come pd</span></code></pre>
+<h3>2.2 Le strutture fondamentali: Series e DataFrame</h3>
+<p>Pandas ha due strutture dati principali:</p>
+<ul>
+<li><strong><code>Series</code></strong>: un array unidimensionale etichettato (pensatelo come una colonna di un foglio di calcolo).</li>
+<li><strong><code>DataFrame</code></strong>: una tabella bidimensionale con righe e colonne etichettate (pensatelo come un intero foglio di calcolo, o come un dizionario di Series).</li>
+</ul>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Series — una colonna con indice</span>
+voti: pd.Series <span class="op">=</span> pd.Series(
+    data<span class="op">=</span>[<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>],
+    index<span class="op">=</span>[<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Dario&quot;</span>],
+    name<span class="op">=</span><span class="st">&quot;voto&quot;</span>
+)
+<span class="nb">print</span>(voti[<span class="st">&quot;Alice&quot;</span>])   <span class="cm"># 28</span>
+<span class="nb">print</span>(voti.mean())     <span class="cm"># 27.5</span>
+
+<span class="cm"># DataFrame — una tabella</span>
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Dario&quot;</span>],
+    <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>],
+    <span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Stat I&quot;</span>, <span class="st">&quot;Stat I&quot;</span>, <span class="st">&quot;Stat II&quot;</span>, <span class="st">&quot;Stat II&quot;</span>]
+})</code></pre>
+<p>Nella pratica quotidiana si lavora quasi sempre con i DataFrame: le Series emergono quando si seleziona una singola colonna.</p>
+<h3>2.3 Leggere dati: <code>read_csv()</code> e l'esplorazione iniziale</h3>
+<p>Il modo più comune per creare un DataFrame è leggere un file CSV:</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Lettura base</span>
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Lettura con opzioni comuni</span>
+df <span class="op">=</span> pd.read_csv(
+    <span class="st">&quot;dati/esami_europeo.csv&quot;</span>,
+    sep<span class="op">=</span><span class="st">&quot;;&quot;</span>,                    <span class="cm"># Separatore (default: virgola)</span>
+    encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>,           <span class="cm"># Encoding del file</span>
+    decimal<span class="op">=</span><span class="st">&quot;,&quot;</span>,                <span class="cm"># Separatore decimale europeo</span>
+    na_values<span class="op">=</span>[<span class="st">&quot;&quot;</span>, <span class="st">&quot;NA&quot;</span>, <span class="st">&quot;?&quot;</span>],  <span class="cm"># Valori da trattare come mancanti</span>
+)</code></pre>
+<p>Dopo aver caricato i dati, il primo passo è <em>esplorarli</em>. Pandas offre metodi rapidi per farsi un'idea del contenuto:</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Prime 5 righe (o prime n con head(n))</span>
+<span class="nb">print</span>(df.head())
+
+<span class="cm"># Ultime 5 righe</span>
+<span class="nb">print</span>(df.tail())
+
+<span class="cm"># Struttura: tipi, valori non nulli, memoria</span>
+<span class="nb">print</span>(df.info())
+
+<span class="cm"># Statistiche descrittive per le colonne numeriche</span>
+<span class="nb">print</span>(df.describe())
+
+<span class="cm"># Dimensioni</span>
+<span class="nb">print</span>(df.shape)  <span class="cm"># (numero_righe, numero_colonne)</span>
+
+<span class="cm"># Nomi delle colonne</span>
+<span class="nb">print</span>(df.columns)</code></pre>
+<p>Il metodo <code>describe()</code> è particolarmente utile: restituisce in un colpo solo conteggio, media, deviazione standard, minimo, massimo e quartili di ogni colonna numerica. Per le colonne categoriali, usate <code>describe(include="object")</code>.</p>
+<p>Per le colonne categoriali, <code>value_counts()</code> è lo strumento chiave:</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Frequenze assolute</span>
+<span class="nb">print</span>(df[<span class="st">&quot;corso&quot;</span>].value_counts())
+
+<span class="cm"># Frequenze relative (proporzioni)</span>
+<span class="nb">print</span>(df[<span class="st">&quot;corso&quot;</span>].value_counts(normalize<span class="op">=</span><span class="kw">True</span>))</code></pre>
+<h3>2.4 Selezione e filtro</h3>
+<p>La selezione dei dati in Pandas è uno degli aspetti più importanti e talvolta più confusi. Vediamo i modi principali.</p>
+<p><strong>Selezione di colonne:</strong></p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Una colonna → restituisce una Series</span>
+voti: pd.Series <span class="op">=</span> df[<span class="st">&quot;voto&quot;</span>]
+
+<span class="cm"># Più colonne → restituisce un DataFrame</span>
+sottoinsieme: pd.DataFrame <span class="op">=</span> df[[<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;voto&quot;</span>]]</code></pre>
+<p><strong>Filtro di righe con condizioni booleane:</strong></p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Filtro semplice</span>
+promossi: pd.DataFrame <span class="op">=</span> df[df[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+
+<span class="cm"># Filtro combinato (usare &amp; per AND, | per OR, ~ per NOT)</span>
+<span class="cm"># ATTENZIONE: le parentesi sono obbligatorie!</span>
+eccellenti_stat: pd.DataFrame <span class="op">=</span> df[
+    (df[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>) <span class="op">&amp;</span> (df[<span class="st">&quot;corso&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Statistica I&quot;</span>)
+]</code></pre>
+<p><strong><code>loc</code> e <code>iloc</code> — selezione esplicita:</strong></p>
+<ul>
+<li><code>loc</code>: selezione per <em>etichette</em> (nomi di righe e colonne).</li>
+<li><code>iloc</code>: selezione per <em>posizione intera</em> (indici numerici).</li>
+</ul>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># loc — per etichetta</span>
+riga_zero: pd.Series <span class="op">=</span> df.loc[<span class="mi">0</span>]                      <span class="cm"># Riga con indice 0</span>
+cella: <span class="nb">object</span> <span class="op">=</span> df.loc[<span class="mi">0</span>, <span class="st">&quot;nome&quot;</span>]                      <span class="cm"># Riga 0, colonna &quot;nome&quot;</span>
+fetta: pd.DataFrame <span class="op">=</span> df.loc[<span class="mi">0</span>:<span class="mi">5</span>, [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;voto&quot;</span>]]   <span class="cm"># Righe 0-5, due colonne</span>
+
+<span class="cm"># iloc — per posizione (come gli indici delle liste)</span>
+prima_riga: pd.Series <span class="op">=</span> df.iloc[<span class="mi">0</span>]                     <span class="cm"># Prima riga</span>
+prime_tre: pd.DataFrame <span class="op">=</span> df.iloc[:<span class="mi">3</span>]                  <span class="cm"># Prime 3 righe</span>
+angolo: pd.DataFrame <span class="op">=</span> df.iloc[:<span class="mi">5</span>, :<span class="mi">2</span>]                 <span class="cm"># Prime 5 righe, prime 2 colonne</span></code></pre>
+<p>La differenza è sottile ma importante: <code>loc</code> include entrambi gli estremi dell'intervallo (<code>df.loc[0:5]</code> restituisce 6 righe), mentre <code>iloc</code> esclude l'estremo superiore (<code>df.iloc[0:5]</code> restituisce 5 righe), come il <code>range</code> di Python.</p>
+<h3>2.5 Pulizia dei dati</h3>
+<p>I dati reali sono quasi sempre sporchi: valori mancanti, duplicati, tipi sbagliati. Pandas offre strumenti specifici per ogni problema.</p>
+<p><strong>Valori mancanti (<code>NaN</code>):</strong></p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Quanti valori mancanti per colonna?</span>
+<span class="nb">print</span>(df.isna().<span class="nb">sum</span>())
+
+<span class="cm"># Rimuovere righe con qualsiasi valore mancante</span>
+pulito: pd.DataFrame <span class="op">=</span> df.dropna()
+
+<span class="cm"># Rimuovere righe solo se mancano valori in colonne specifiche</span>
+pulito <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">&quot;voto&quot;</span>, <span class="st">&quot;nome&quot;</span>])
+
+<span class="cm"># Sostituire i mancanti con un valore</span>
+riempito: pd.DataFrame <span class="op">=</span> df.fillna({<span class="st">&quot;voto&quot;</span>: <span class="mi">0</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Sconosciuto&quot;</span>})
+
+<span class="cm"># Sostituire con la media della colonna</span>
+media_voto: <span class="nb">float</span> <span class="op">=</span> df[<span class="st">&quot;voto&quot;</span>].mean()
+df[<span class="st">&quot;voto&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;voto&quot;</span>].fillna(media_voto)</code></pre>
+<p><strong>Duplicati:</strong></p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Ci sono duplicati?</span>
+<span class="nb">print</span>(df.duplicated().<span class="nb">sum</span>())
+
+<span class="cm"># Rimuovere duplicati (tiene la prima occorrenza)</span>
+senza_duplicati: pd.DataFrame <span class="op">=</span> df.drop_duplicates()
+
+<span class="cm"># Duplicati su colonne specifiche</span>
+senza_dup_nome: pd.DataFrame <span class="op">=</span> df.drop_duplicates(subset<span class="op">=</span>[<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;corso&quot;</span>])</code></pre>
+<p><strong>Conversione di tipo:</strong></p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Convertire una colonna a un tipo specifico</span>
+df[<span class="st">&quot;voto&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;voto&quot;</span>].astype(<span class="nb">int</span>)
+df[<span class="st">&quot;data&quot;</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">&quot;data&quot;</span>])  <span class="cm"># Conversione a datetime</span>
+
+<span class="cm"># Rinominare colonne</span>
+df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">&quot;voto&quot;</span>: <span class="st">&quot;punteggio&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;studente&quot;</span>})</code></pre>
+<h3>2.6 Aggregazione con <code>groupby()</code> e <code>merge()</code></h3>
+<p>Il metodo <code>groupby()</code> è uno degli strumenti più potenti di Pandas. Implementa il pattern <em>split-apply-combine</em>: divide i dati in gruppi, applica una funzione a ciascun gruppo, e combina i risultati.</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Media del voto per corso</span>
+medie: pd.DataFrame <span class="op">=</span> df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>].mean()
+<span class="nb">print</span>(medie)
+
+<span class="cm"># Più statistiche contemporaneamente</span>
+statistiche: pd.DataFrame <span class="op">=</span> df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>].agg(
+    [<span class="st">&quot;mean&quot;</span>, <span class="st">&quot;std&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;count&quot;</span>]
+)
+<span class="nb">print</span>(statistiche)
+
+<span class="cm"># Raggruppamento su più colonne</span>
+dettaglio: pd.DataFrame <span class="op">=</span> df.groupby([<span class="st">&quot;corso&quot;</span>, <span class="st">&quot;anno&quot;</span>])[<span class="st">&quot;voto&quot;</span>].mean()
+<span class="nb">print</span>(dettaglio)</code></pre>
+<p>Per unire dati da tabelle diverse, Pandas offre <code>merge()</code> (equivalente al JOIN di SQL):</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Due tabelle</span>
+esami: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;studente_id&quot;</span>: [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>],
+    <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>]
+})
+
+anagrafica: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;studente_id&quot;</span>: [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">5</span>],
+    <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Eva&quot;</span>]
+})
+
+<span class="cm"># Inner join (solo le corrispondenze presenti in entrambe)</span>
+risultato: pd.DataFrame <span class="op">=</span> pd.merge(esami, anagrafica, on<span class="op">=</span><span class="st">&quot;studente_id&quot;</span>)
+
+<span class="cm"># Left join (tutte le righe della tabella di sinistra)</span>
+risultato_left: pd.DataFrame <span class="op">=</span> pd.merge(
+    esami, anagrafica, on<span class="op">=</span><span class="st">&quot;studente_id&quot;</span>, how<span class="op">=</span><span class="st">&quot;left&quot;</span>
+)</code></pre>
+<h3>2.7 Method chaining: concatenare operazioni</h3>
+<p>Un aspetto elegante di Pandas è la possibilità di concatenare più operazioni in sequenza, ciascuna che restituisce un nuovo DataFrame. Questo stile si chiama <em>method chaining</em> e produce codice molto leggibile:</p>
+<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Senza method chaining — macchinoso</span>
+df1: pd.DataFrame <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">&quot;voto&quot;</span>])
+df2: pd.DataFrame <span class="op">=</span> df1[df1[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+df3: pd.DataFrame <span class="op">=</span> df2.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>].mean()
+risultato: pd.DataFrame <span class="op">=</span> df3.reset_index()
+
+<span class="cm"># Con method chaining — fluido e leggibile</span>
+risultato <span class="op">=</span> (
+    df
+    .dropna(subset<span class="op">=</span>[<span class="st">&quot;voto&quot;</span>])
+    .query(<span class="st">&quot;voto &gt;= 18&quot;</span>)
+    .groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>]
+    .mean()
+    .reset_index()
+    .rename(columns<span class="op">=</span>{<span class="st">&quot;voto&quot;</span>: <span class="st">&quot;media_voto&quot;</span>})
+)</code></pre>
+<p>Il metodo <code>query()</code> è un'alternativa alla selezione booleana che si integra bene nel chaining. La stringa passata a <code>query()</code> viene interpretata come un'espressione di filtro.</p>
+<hr>
+<h2>3. Visualizzazione dei dati</h2>
+<h3>3.1 Matplotlib — la base</h3>
+<p><strong>Matplotlib</strong> è la libreria di visualizzazione più usata in Python. Fu creata nel 2003 da <strong>John Hunter</strong>, un neuroscienziato che voleva replicare le capacità grafiche di MATLAB in Python. Il nome stesso ("mat-plot-lib") riflette questa eredità.</p>
+<p>Matplotlib è estremamente flessibile: può produrre qualsiasi tipo di grafico, dal più semplice al più complesso. Il prezzo di questa flessibilità è un'API a volte verbosa. Per l'uso quotidiano si utilizza il sottomodulo <code>pyplot</code>, che offre un'interfaccia procedurale semplice.</p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Convenzione: importare pyplot come plt</span></code></pre>
+<p><strong>Grafico a linee — il più semplice:</strong></p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+x: np.ndarray <span class="op">=</span> np.linspace(<span class="mi">0</span>, <span class="mi">2</span> <span class="op">*</span> np.pi, <span class="mi">100</span>)
+y: np.ndarray <span class="op">=</span> np.sin(x)
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">4</span>))
+plt.plot(x, y, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, linewidth<span class="op">=</span><span class="mi">1.5</span>, label<span class="op">=</span><span class="st">&quot;sin(x)&quot;</span>)
+plt.title(<span class="st">&quot;Funzione seno&quot;</span>)
+plt.xlabel(<span class="st">&quot;x (radianti)&quot;</span>)
+plt.ylabel(<span class="st">&quot;sin(x)&quot;</span>)
+plt.legend()
+plt.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;seno.png&quot;</span>, dpi<span class="op">=</span><span class="mi">150</span>)
+plt.show()</code></pre>
+<p><strong>Istogramma — distribuzione di una variabile continua:</strong></p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+dati: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">170</span>, scale<span class="op">=</span><span class="mi">10</span>, size<span class="op">=</span><span class="mi">500</span>)  <span class="cm"># Altezze simulate</span>
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">4</span>))
+plt.hist(dati, bins<span class="op">=</span><span class="mi">25</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>, alpha<span class="op">=</span><span class="mi">0.8</span>)
+plt.title(<span class="st">&quot;Distribuzione delle altezze (campione simulato)&quot;</span>)
+plt.xlabel(<span class="st">&quot;Altezza (cm)&quot;</span>)
+plt.ylabel(<span class="st">&quot;Frequenza&quot;</span>)
+plt.axvline(np.mean(dati), color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, label<span class="op">=</span><span class="st">&quot;Media&quot;</span>)
+plt.legend()
+plt.tight_layout()
+plt.show()</code></pre>
+<p><strong>Scatter plot — relazione tra due variabili:</strong></p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+ore_studio: np.ndarray <span class="op">=</span> rng.uniform(<span class="mi">2</span>, <span class="mi">40</span>, size<span class="op">=</span><span class="mi">80</span>)
+voto: np.ndarray <span class="op">=</span> <span class="mi">18</span> <span class="op">+</span> <span class="mi">0.3</span> <span class="op">*</span> ore_studio <span class="op">+</span> rng.normal(<span class="mi">0</span>, <span class="mi">2</span>, size<span class="op">=</span><span class="mi">80</span>)
+voto <span class="op">=</span> np.clip(voto, <span class="mi">18</span>, <span class="mi">31</span>)  <span class="cm"># Limita tra 18 e 31</span>
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">5</span>))
+plt.scatter(ore_studio, voto, alpha<span class="op">=</span><span class="mi">0.6</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolors<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+plt.title(<span class="st">&quot;Relazione tra ore di studio e voto&quot;</span>)
+plt.xlabel(<span class="st">&quot;Ore di studio settimanali&quot;</span>)
+plt.ylabel(<span class="st">&quot;Voto esame&quot;</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+<p><strong>Bar plot — confronto tra categorie:</strong></p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+corsi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Stat I&quot;</span>, <span class="st">&quot;Stat II&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>]
+medie: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">26.5</span>, <span class="mi">24.8</span>, <span class="mi">27.1</span>, <span class="mi">23.2</span>]
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+plt.bar(corsi, medie, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+plt.title(<span class="st">&quot;Media voti per corso&quot;</span>)
+plt.ylabel(<span class="st">&quot;Voto medio&quot;</span>)
+plt.ylim(<span class="mi">18</span>, <span class="mi">31</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+<p><strong>Boxplot — distribuzione e outlier:</strong></p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+stat1: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">26</span>, <span class="mi">3</span>, size<span class="op">=</span><span class="mi">100</span>)
+stat2: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">24</span>, <span class="mi">4</span>, size<span class="op">=</span><span class="mi">100</span>)
+info: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">27</span>, <span class="mi">2</span>, size<span class="op">=</span><span class="mi">100</span>)
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+plt.boxplot(
+    [stat1, stat2, info],
+    labels<span class="op">=</span>[<span class="st">&quot;Stat I&quot;</span>, <span class="st">&quot;Stat II&quot;</span>, <span class="st">&quot;Informatica&quot;</span>],
+    patch_artist<span class="op">=</span><span class="kw">True</span>,
+    boxprops<span class="op">=</span><span class="nb">dict</span>(facecolor<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, alpha<span class="op">=</span><span class="mi">0.5</span>)
+)
+plt.title(<span class="st">&quot;Distribuzione dei voti per corso&quot;</span>)
+plt.ylabel(<span class="st">&quot;Voto&quot;</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+<h3>3.2 Personalizzazione dei grafici</h3>
+<p>Un grafico senza titolo, senza etichette e senza legenda è un grafico inutile. Matplotlib offre un controllo totale sulla personalizzazione:</p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Impostazioni globali (opzionale, ma utile per uniformità)</span>
+plt.rcParams.update({
+    <span class="st">&quot;font.size&quot;</span>: <span class="mi">12</span>,
+    <span class="st">&quot;axes.titlesize&quot;</span>: <span class="mi">14</span>,
+    <span class="st">&quot;axes.labelsize&quot;</span>: <span class="mi">12</span>,
+    <span class="st">&quot;figure.figsize&quot;</span>: (<span class="mi">8</span>, <span class="mi">5</span>),
+    <span class="st">&quot;figure.dpi&quot;</span>: <span class="mi">100</span>,
+})</code></pre>
+<p>Elementi essenziali di ogni grafico:</p>
+<ul>
+<li><strong>Titolo</strong> (<code>plt.title()</code>): descrive <em>cosa</em> mostra il grafico.</li>
+<li><strong>Etichette degli assi</strong> (<code>plt.xlabel()</code>, <code>plt.ylabel()</code>): specificano <em>le variabili</em> e le <em>unità di misura</em>.</li>
+<li><strong>Legenda</strong> (<code>plt.legend()</code>): necessaria quando ci sono più serie.</li>
+<li><strong><code>tight_layout()</code></strong>: evita che le etichette vengano tagliate.</li>
+<li><strong><code>savefig()</code></strong>: salvare sempre i grafici in formato file, non solo mostrarli a schermo.</li>
+</ul>
+<h3>3.3 Seaborn — grafici statistici belli e informativi</h3>
+<p><strong>Seaborn</strong> è una libreria costruita sopra Matplotlib che semplifica la creazione di grafici statistici comuni. Il suo punto di forza è l'integrazione diretta con i DataFrame di Pandas e la produzione di grafici esteticamente curati con meno codice.</p>
+<pre><code><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Convenzione: importare seaborn come sns</span></code></pre>
+<p><strong>Boxplot con Seaborn:</strong></p>
+<pre><code><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">8</span>, <span class="mi">5</span>))
+sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">&quot;corso&quot;</span>, y<span class="op">=</span><span class="st">&quot;voto&quot;</span>, palette<span class="op">=</span><span class="st">&quot;Set2&quot;</span>)
+plt.title(<span class="st">&quot;Distribuzione dei voti per corso&quot;</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+<p>Notate la differenza con Matplotlib: in Seaborn passiamo direttamente il DataFrame e specifichiamo le colonne per nome. Non serve preparare i dati manualmente.</p>
+<p><strong>Heatmap — matrice di correlazione:</strong></p>
+<pre><code><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Dati simulati</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;ore_studio&quot;</span>: rng.uniform(<span class="mi">5</span>, <span class="mi">40</span>, <span class="mi">100</span>),
+    <span class="st">&quot;ore_sonno&quot;</span>: rng.uniform(<span class="mi">4</span>, <span class="mi">10</span>, <span class="mi">100</span>),
+    <span class="st">&quot;voto&quot;</span>: rng.normal(<span class="mi">25</span>, <span class="mi">3</span>, <span class="mi">100</span>),
+    <span class="st">&quot;assenze&quot;</span>: rng.integers(<span class="mi">0</span>, <span class="mi">20</span>, <span class="mi">100</span>),
+})
+
+correlazione: pd.DataFrame <span class="op">=</span> df.corr()
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">6</span>))
+sns.heatmap(correlazione, annot<span class="op">=</span><span class="kw">True</span>, fmt<span class="op">=</span><span class="st">&quot;.2f&quot;</span>, cmap<span class="op">=</span><span class="st">&quot;coolwarm&quot;</span>,
+            vmin<span class="op">=</span><span class="op">-</span><span class="mi">1</span>, vmax<span class="op">=</span><span class="mi">1</span>, center<span class="op">=</span><span class="mi">0</span>)
+plt.title(<span class="st">&quot;Matrice di correlazione&quot;</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+<p>La heatmap della matrice di correlazione è uno dei grafici più usati nell'analisi esplorativa: permette di identificare a colpo d'occhio quali variabili sono correlate tra loro.</p>
+<p><strong>Pairplot — tutte le relazioni a due a due:</strong></p>
+<pre><code><span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;dati/esami.csv&quot;</span>)
+
+<span class="cm"># Pairplot delle colonne numeriche, colorato per categoria</span>
+sns.pairplot(df, hue<span class="op">=</span><span class="st">&quot;corso&quot;</span>, palette<span class="op">=</span><span class="st">&quot;Set2&quot;</span>, diag_kind<span class="op">=</span><span class="st">&quot;kde&quot;</span>)
+plt.suptitle(<span class="st">&quot;Relazioni tra variabili numeriche&quot;</span>, y<span class="op">=</span><span class="mi">1.02</span>)
+plt.show()</code></pre>
+<p>Il <code>pairplot</code> è potente ma va usato con giudizio: con molte variabili genera una matrice enorme di grafici. È più utile con 3-6 variabili numeriche.</p>
+<h3>3.4 Edward Tufte e il data-ink ratio</h3>
+<p>Non possiamo parlare di visualizzazione senza menzionare <strong>Edward Tufte</strong>, il più influente teorico della visualizzazione dei dati. Nel suo libro <em>The Visual Display of Quantitative Information</em> (1983), Tufte introduce il concetto di <strong>data-ink ratio</strong>: il rapporto tra l'inchiostro usato per rappresentare i dati e l'inchiostro totale del grafico.</p>
+<p>L'idea è semplice e profonda: <strong>ogni elemento visivo che non comunica informazione è rumore e va eliminato</strong>. Griglie troppo marcate, bordi inutili, colori decorativi, effetti 3D — tutto ciò che non aiuta il lettore a capire i dati è "chartjunk" (spazzatura grafica) e va rimosso.</p>
+<p>Principi pratici derivati da Tufte:</p>
+<ol>
+<li><strong>Massimizzare il data-ink ratio</strong>: ogni pixel del grafico deve comunicare informazione.</li>
+<li><strong>Evitare effetti 3D</strong>: distorcono la percezione e non aggiungono informazione.</li>
+<li><strong>Evitare colori decorativi</strong>: il colore deve codificare una variabile, non abbellire.</li>
+<li><strong>Preferire grafici piccoli e multipli</strong> (<em>small multiples</em>) a un unico grafico complesso.</li>
+<li><strong>Etichettare direttamente i dati</strong> quando possibile, invece di usare legende separate.</li>
+</ol>
+<p>Un esempio pratico: un istogramma con sfondo grigio, griglia pesante, bordi spessi e ombreggiature è meno efficace di un istogramma pulito con sfondo bianco, griglia leggera e colori sobri.</p>
+<pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+dati: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">0</span>, <span class="mi">1</span>, size<span class="op">=</span><span class="mi">500</span>)
+
+<span class="cm"># Stile &quot;Tufte-inspired&quot;: minimale e chiaro</span>
+fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+ax.hist(dati, bins<span class="op">=</span><span class="mi">30</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>, alpha<span class="op">=</span><span class="mi">0.85</span>)
+ax.set_title(<span class="st">&quot;Campione da distribuzione normale standard&quot;</span>)
+ax.set_xlabel(<span class="st">&quot;Valore&quot;</span>)
+ax.set_ylabel(<span class="st">&quot;Frequenza&quot;</span>)
+ax.spines[<span class="st">&quot;top&quot;</span>].set_visible(<span class="kw">False</span>)     <span class="cm"># Rimuove bordo superiore</span>
+ax.spines[<span class="st">&quot;right&quot;</span>].set_visible(<span class="kw">False</span>)   <span class="cm"># Rimuove bordo destro</span>
+ax.grid(axis<span class="op">=</span><span class="st">&quot;y&quot;</span>, alpha<span class="op">=</span><span class="mi">0.2</span>)
+fig.tight_layout()
+plt.show()</code></pre>
+<p>Rimuovere i bordi superiore e destro (<em>spines</em>) è un piccolo cambiamento che rende il grafico immediatamente più pulito. È un'abitudine da adottare per tutti i grafici.</p>
+<hr>
+<h2>4. Orizzonti e best practice</h2>
+<h3>4.1 SciPy e scikit-learn — cenni</h3>
+<p>L'ecosistema scientifico di Python si estende ben oltre NumPy e Pandas. Due librerie meritano una menzione:</p>
+<p><strong>SciPy</strong> (<code>scipy.stats</code>) estende NumPy con funzioni statistiche avanzate: test di ipotesi, distribuzioni di probabilità, intervalli di confidenza.</p>
+<pre><code><span class="kw">from</span> scipy <span class="kw">import</span> stats
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Test t di Student per un campione</span>
+rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
+campione: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">100</span>, scale<span class="op">=</span><span class="mi">15</span>, size<span class="op">=</span><span class="mi">30</span>)
+
+risultato <span class="op">=</span> stats.ttest_1samp(campione, popmean<span class="op">=</span><span class="mi">100</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Statistica t: {risultato.statistic:.3f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;p-value:      {risultato.pvalue:.4f}&quot;</span>)
+
+<span class="cm"># Distribuzione normale: pdf, cdf, ppf (quantile)</span>
+<span class="nb">print</span>(stats.norm.cdf(<span class="mi">1.96</span>))   <span class="cm"># ~0.975</span>
+<span class="nb">print</span>(stats.norm.ppf(<span class="mi">0.975</span>))  <span class="cm"># ~1.96</span></code></pre>
+<p><strong>scikit-learn</strong> è la libreria di riferimento per il machine learning in Python. Il suo design è elegante e uniforme: tutti i modelli seguono il pattern <code>fit</code> / <code>predict</code>.</p>
+<pre><code><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cm"># Dati (X deve essere 2D)</span>
+X: np.ndarray <span class="op">=</span> np.array([[<span class="mi">1</span>], [<span class="mi">2</span>], [<span class="mi">3</span>], [<span class="mi">4</span>], [<span class="mi">5</span>]])
+y: np.ndarray <span class="op">=</span> np.array([<span class="mi">2.1</span>, <span class="mi">3.9</span>, <span class="mi">6.2</span>, <span class="mi">7.8</span>, <span class="mi">10.1</span>])
+
+<span class="cm"># Addestramento</span>
+modello: LinearRegression <span class="op">=</span> LinearRegression()
+modello.fit(X, y)
+
+<span class="cm"># Predizione</span>
+previsione: np.ndarray <span class="op">=</span> modello.predict(np.array([[<span class="mi">6</span>]]))
+<span class="nb">print</span>(<span class="st">f&quot;Previsione per x=6: {previsione[0]:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Coefficiente:        {modello.coef_[0]:.3f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Intercetta:          {modello.intercept_:.3f}&quot;</span>)</code></pre>
+<p>Questi sono solo cenni: SciPy e scikit-learn richiederebbero corsi interi. L'obiettivo qui è sapere che esistono e riconoscerne il pattern d'uso.</p>
+<h3>4.2 Dati dal mondo esterno — cenni</h3>
+<p>I dati non arrivano solo da file CSV. Due fonti importanti meritano una menzione:</p>
+<p><strong>API REST</strong>: molti servizi web espongono dati attraverso interfacce programmatiche. Python può interrogarle con la libreria <code>requests</code>:</p>
+<pre><code><span class="kw">import</span> requests
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Esempio concettuale (l&#x27;URL è illustrativo)</span>
+risposta <span class="op">=</span> requests.get(<span class="st">&quot;https://api.esempio.it/dati/istat/popolazione&quot;</span>)
+<span class="kw">if</span> risposta.status_code <span class="op">=</span><span class="op">=</span> <span class="mi">200</span>:
+    dati: <span class="nb">list</span>[<span class="nb">dict</span>] <span class="op">=</span> risposta.json()
+    df: pd.DataFrame <span class="op">=</span> pd.DataFrame(dati)</code></pre>
+<p><strong>Database SQLite</strong>: per dati strutturati e persistenti, Python include il modulo <code>sqlite3</code>. Pandas può leggere direttamente da un database:</p>
+<pre><code><span class="kw">import</span> sqlite3
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+connessione: sqlite3.Connection <span class="op">=</span> sqlite3.connect(<span class="st">&quot;universita.db&quot;</span>)
+df: pd.DataFrame <span class="op">=</span> pd.read_sql(
+    <span class="st">&quot;SELECT nome, voto FROM esami WHERE voto &gt;= 18&quot;</span>,
+    connessione
+)
+connessione.close()</code></pre>
+<h3>4.3 Intelligenza artificiale, LLM e il ruolo dello statistico</h3>
+<p>L'esplosione dei Large Language Model (ChatGPT, Claude, Gemini) sta trasformando il modo in cui si scrive codice. Questi strumenti possono generare codice Python, spiegare errori, suggerire approcci. È legittimo (e intelligente) usarli come assistenti.</p>
+<p>Ma c'è un punto fondamentale: <strong>un LLM non capisce i dati</strong>. Può generare codice che calcola una media, ma non sa se quella media ha senso statistico. Può produrre un grafico, ma non sa se quel grafico è fuorviante. Può suggerire un modello, ma non sa se le assunzioni sono violate.</p>
+<p>Il ruolo dello statistico non è scrivere codice velocemente — quello lo può fare una macchina. Il ruolo dello statistico è <em>pensare ai dati</em>: formulare domande, scegliere metodi appropriati, interpretare i risultati, comunicare le conclusioni con rigore e onestà. La competenza di programmazione che state acquisendo in questo corso vi rende capaci di <em>dialogare</em> con gli strumenti (inclusi gli LLM) in modo critico e informato. Chi non sa programmare è costretto a fidarsi ciecamente dell'output; chi sa programmare può verificare, modificare e comprendere.</p>
+<h3>4.4 Best practice consolidate</h3>
+<p>In questa ultima sezione raccogliamo le pratiche che distinguono un progetto Python professionale da un insieme disordinato di script.</p>
+<p><strong>Linter e formatter.</strong> Un <em>linter</em> analizza il codice alla ricerca di errori potenziali e violazioni di stile. Un <em>formatter</em> riformatta automaticamente il codice per renderlo uniforme.</p>
+<ul>
+<li><strong>Ruff</strong>: il linter moderno per Python, scritto in Rust, estremamente veloce. Sostituisce <code>flake8</code>, <code>isort</code> e molti altri strumenti in uno solo.</li>
+<li><strong>Black</strong>: il formatter "opinato" per Python. Non offre opzioni di configurazione (o quasi): sceglie uno stile e lo applica. Questo elimina le discussioni sullo stile e rende tutto il codice uniforme.</li>
+</ul>
+<pre><code># Installazione
+pip install ruff black
+
+# Uso
+ruff check mio_progetto/        # Analizza il codice
+ruff check --fix mio_progetto/  # Corregge automaticamente dove possibile
+black mio_progetto/              # Formatta tutto il codice</code></pre>
+<p><strong>Controllo dei tipi con mypy.</strong> Python è un linguaggio a tipizzazione dinamica, ma i <em>type hints</em> che abbiamo usato in tutto il corso permettono di aggiungere un livello di controllo statico. <strong>mypy</strong> verifica che i tipi dichiarati siano coerenti con l'uso effettivo:</p>
+<pre><code>pip install mypy
+mypy mio_programma.py</code></pre>
+<p>Se dichiariamo <code>x: int = "ciao"</code>, mypy segnalerà l'errore <em>prima</em> dell'esecuzione. In un progetto grande, questo previene intere categorie di bug.</p>
+<p><strong>Test con pytest.</strong> Abbiamo già visto i test nelle lezioni precedenti. <strong>pytest</strong> è lo strumento standard per scrivere ed eseguire test in Python:</p>
+<pre><code><span class="cm"># test_statistiche.py</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+
+<span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+<span class="kw">def</span> <span class="fn">test_media_base</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="kw">assert</span> calcola_media([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">2.0</span>
+
+
+<span class="kw">def</span> <span class="fn">test_media_singolo</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="kw">assert</span> calcola_media([<span class="mi">5.0</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">5.0</span>
+
+
+<span class="kw">def</span> <span class="fn">test_media_vuota</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="kw">import</span> pytest
+    <span class="kw">with</span> pytest.raises(<span class="nb">ValueError</span>):
+        calcola_media([])</code></pre>
+<pre><code>pytest test_statistiche.py -v</code></pre>
+<p><strong>Debugging.</strong> Quando un programma non funziona e non capite perché, usate il debugger integrato di Python:</p>
+<pre><code><span class="cm"># Inserite questa riga dove volete fermarvi</span>
+breakpoint()</code></pre>
+<p>Questo apre il debugger interattivo <code>pdb</code>, dove potete ispezionare variabili, eseguire codice riga per riga e capire cosa sta succedendo. Gli IDE moderni (VS Code, PyCharm) offrono debugger grafici ancora più comodi.</p>
+<p><strong>Struttura di un progetto.</strong> Un progetto Python ben organizzato segue una struttura prevedibile:</p>
+<pre><code>progetto_analisi<span class="op">/</span>
+├── dati<span class="op">/</span>
+│   ├── raw<span class="op">/</span>            <span class="cm"># Dati originali (MAI modificarli)</span>
+│   └── processed<span class="op">/</span>      <span class="cm"># Dati elaborati</span>
+├── src<span class="op">/</span>
+│   ├── __init__.py
+│   ├── caricamento.py
+│   ├── pulizia.py
+│   └── analisi.py
+├── test<span class="op">/</span>
+│   ├── test_caricamento.py
+│   └── test_pulizia.py
+├── grafici<span class="op">/</span>
+├── requirements.txt    <span class="cm"># Dipendenze (pip freeze &gt; requirements.txt)</span>
+├── pyproject.toml      <span class="cm"># Configurazione del progetto</span>
+└── README.md</code></pre>
+<p><strong>Principi guida:</strong></p>
+<ul>
+<li><strong>Riproducibilità</strong>: chiunque deve poter eseguire il vostro codice e ottenere gli stessi risultati. Usate seed per la casualità, documentate le dipendenze, versionate il codice con Git.</li>
+<li><strong>DRY</strong> (<em>Don't Repeat Yourself</em>): se copiate e incollate codice, probabilmente dovreste estrarre una funzione.</li>
+<li><strong>KISS</strong> (<em>Keep It Simple, Stupid</em>): il codice più semplice che risolve il problema è il codice migliore. La complessità non è un segno di competenza; la semplicità lo è.</li>
+</ul>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li>Perché un array NumPy è molto più veloce di una lista Python per operazioni numeriche? Quali sono le due caratteristiche architetturali che rendono possibile questo vantaggio?</li>
+</ol>
+<ol>
+<li>Qual è la differenza tra <code>np.arange(0, 10, 0.5)</code> e <code>np.linspace(0, 10, 20)</code>? In quale situazione preferireste l'uno o l'altro?</li>
+</ol>
+<ol>
+<li>Spiegate cosa fa <code>np.std(dati, ddof=1)</code> e perché il parametro <code>ddof=1</code> è importante per uno statistico.</li>
+</ol>
+<ol>
+<li>Qual è la differenza tra <code>df.loc[0:5]</code> e <code>df.iloc[0:5]</code> in Pandas? Quante righe restituisce ciascuno?</li>
+</ol>
+<ol>
+<li>Date un DataFrame <code>df</code> con colonne <code>"regione"</code>, <code>"anno"</code> e <code>"reddito"</code>, scrivete il codice Pandas per calcolare il reddito medio per regione, ordinato in modo decrescente.</li>
+</ol>
+<ol>
+<li>Perché Edward Tufte suggerisce di massimizzare il <em>data-ink ratio</em>? Fate un esempio di elemento grafico che andrebbe rimosso.</li>
+</ol>
+<ol>
+<li>Spiegate la differenza tra Matplotlib e Seaborn: quando usereste l'uno e quando l'altro?</li>
+</ol>
+<ol>
+<li>Cosa significa il principio DRY e perché è particolarmente importante nell'analisi dei dati?</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<p><strong>Esercizio 1 — Statistica descrittiva con NumPy</strong></p>
+<p>Scrivete una funzione <code>descrivi<em>campione(dati: np.ndarray) -> dict[str, float]</code> che riceve un array NumPy e restituisce un dizionario con le seguenti statistiche: <code>"media"</code>, <code>"mediana"</code>, <code>"dev</em>std"</code> (campionaria), <code>"minimo"</code>, <code>"massimo"</code>, <code>"n"</code>. Non usate cicli.</p>
+<p><strong>Esercizio 2 — DataFrame da dizionario</strong></p>
+<p>Create un DataFrame con i dati di almeno 10 studenti (nome, cognome, voto, corso). Calcolate la media e la deviazione standard del voto per corso usando <code>groupby()</code>. Stampate il risultato.</p>
+<p><strong>Esercizio 3 — Istogramma da dati simulati</strong></p>
+<p>Generate un campione di 1000 valori da una distribuzione normale con media 170 e deviazione standard 8 (altezze simulate). Create un istogramma con Matplotlib, aggiungendo una linea verticale per la media e una per la mediana. Salvate il grafico come file PNG.</p>
+<h3>Intermedio</h3>
+<p><strong>Esercizio 4 — Analisi esplorativa completa</strong></p>
+<p>Scrivete uno script che:</p>
+<ol>
+<li>Carica un file CSV con <code>pd.read_csv()</code>.</li>
+<li>Stampa <code>info()</code> e <code>describe()</code>.</li>
+<li>Identifica e riporta le colonne con valori mancanti.</li>
+<li>Produce un boxplot per ogni colonna numerica.</li>
+<li>Produce una heatmap della matrice di correlazione.</li>
+</ol>
+<p>Strutturate il codice in funzioni con type hints e docstring.</p>
+<p><strong>Esercizio 5 — Pulizia e aggregazione</strong></p>
+<p>Partendo da un DataFrame con colonne <code>"città"</code>, <code>"mese"</code>, <code>"temperatura"</code>, <code>"precipitazioni"</code>, scrivete una pipeline (method chaining) che:</p>
+<ol>
+<li>Rimuove le righe con valori mancanti.</li>
+<li>Filtra solo i mesi estivi (giugno, luglio, agosto).</li>
+<li>Calcola la temperatura media e le precipitazioni totali per città.</li>
+<li>Ordina il risultato per temperatura media decrescente.</li>
+</ol>
+<p><strong>Esercizio 6 — Confronto di grafici</strong></p>
+<p>Create due versioni dello stesso scatter plot: una "sovraccarica" (sfondo colorato, griglia pesante, bordi spessi, font piccolo) e una "minimale" (stile Tufte: sfondo bianco, griglia leggera, bordi superiore e destro rimossi). Usate <code>plt.subplots(1, 2)</code> per metterle affiancate.</p>
+<h3>Avanzato</h3>
+<p><strong>Esercizio 7 — Simulazione Monte Carlo</strong></p>
+<p>Scrivete una funzione <code>stima<em>pi</em>montecarlo(n: int, seed: int = 42) -> float</code> che stima il valore di pi greco lanciando <code>n</code> punti casuali in un quadrato unitario e contando quanti cadono nel cerchio inscritto. Usate NumPy (niente cicli). Producete un grafico che mostra come la stima converge al valore vero al crescere di <code>n</code>, usando <code>np.linspace</code> per generare i valori di <code>n</code> da testare.</p>
+<p><strong>Esercizio 8 — Pipeline completa di analisi</strong></p>
+<p>Scrivete un modulo Python (<code>analisi_esami.py</code>) che:</p>
+<ol>
+<li>Carica dati da un CSV.</li>
+<li>Pulisce i dati (rimuove duplicati, gestisce mancanti, converte tipi).</li>
+<li>Calcola statistiche descrittive per gruppo.</li>
+<li>Produce almeno tre grafici informativi (istogramma, boxplot, scatter o bar).</li>
+<li>Salva i risultati in un CSV e i grafici in una cartella <code>output/</code>.</li>
+<li>Usa type hints, docstring, e gestione degli errori.</li>
+<li>Include almeno 3 test con pytest in un file separato.</li>
+</ol>
+<p>Questo esercizio integra tutto ciò che avete imparato nel corso.</p>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Questa lezione è stata la più densa del corso, e non a caso: NumPy, Pandas e Matplotlib sono gli strumenti che userete ogni giorno nel vostro lavoro di statistici. Non ci si aspetta che memorizziate ogni funzione e ogni parametro — nessuno lo fa. L'obiettivo è che sappiate <em>cosa è possibile fare</em> e <em>dove cercare</em> quando ne avrete bisogno.</p>
+<p>Tre concetti da portare con sé:</p>
+<ol>
+<li><strong>Vettorizzazione</strong>: operare su interi array invece che su singoli elementi. È il salto concettuale che separa il codice lento dal codice veloce, e il codice verboso dal codice elegante.</li>
+<li><strong>Il DataFrame come unità di lavoro</strong>: nella pratica statistica, quasi tutto il lavoro si svolge su tabelle. Pandas vi dà un linguaggio per esprimere operazioni su tabelle (filtrare, aggregare, unire, trasformare) in modo conciso e leggibile.</li>
+<li><strong>Il grafico come strumento di pensiero</strong>: un buon grafico non è una decorazione per un report — è uno strumento per <em>capire</em> i dati. Seguite i principi di Tufte: ogni elemento deve informare, mai decorare.</li>
+</ol>
+<p>Avete percorso molta strada dal primo giorno, quando un bit era un concetto astratto e una variabile era un mistero. Ora sapete programmare, leggere file, costruire classi, gestire errori, analizzare dati e produrre grafici. Questi strumenti non sono il punto di arrivo, ma un punto di partenza solido: qualunque direzione prenderà la vostra carriera — analisi statistica, data science, ricerca accademica, consulenza — le fondamenta che avete costruito in questo corso vi sosterranno.</p>
+<nav class="bottom-nav"><span><a href="F16_programmazione_oggetti.html">← F16</a></span><span><a href="../../index.html">Home</a></span><span><a href="../laboratori/L01_ambiente_variabili_condizionali.html">L01 →</a></span></nav>
+</body>
+</html>

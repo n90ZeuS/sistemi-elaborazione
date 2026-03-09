@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F11_liste_tuple/esempi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/F11_liste_tuple.html">Dispensa</a> &bull; <a href="../../presentazioni/F11_liste_tuple.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>F11_liste_tuple/esempi.py</h1>
+<a class="download-link" href="esempi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F11 — Liste e tuple</span>
+<span class="cm"># Esempi per la lezione frontale 11</span>
+<span class="cm"># Creazione, indicizzazione, slicing, metodi, copia shallow/deep, tuple, unpacking</span>
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 1. Creazione e indicizzazione</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- 1. Creazione e indicizzazione ---&quot;</span>)
+
+<span class="cm"># Creazione di liste</span>
+vuota: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">40</span>, <span class="mi">50</span>]
+mista: <span class="nb">list</span>[<span class="nb">int</span> <span class="op">|</span> <span class="nb">str</span> <span class="op">|</span> <span class="nb">float</span> <span class="op">|</span> <span class="nb">bool</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="st">&quot;due&quot;</span>, <span class="mi">3.0</span>, <span class="kw">True</span>]
+
+<span class="cm"># Indicizzazione 0-based</span>
+<span class="kw">assert</span> numeri[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>   <span class="cm"># Primo elemento</span>
+<span class="kw">assert</span> numeri[<span class="mi">2</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>   <span class="cm"># Terzo elemento</span>
+<span class="kw">assert</span> numeri[<span class="mi">4</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">50</span>   <span class="cm"># Ultimo elemento</span>
+<span class="kw">assert</span> numeri[<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">50</span>  <span class="cm"># Ultimo (indice negativo)</span>
+<span class="kw">assert</span> numeri[<span class="op">-</span><span class="mi">2</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">40</span>  <span class="cm"># Penultimo</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  numeri = {numeri}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  numeri[0]  = {numeri[0]}  (primo)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  numeri[-1] = {numeri[-1]} (ultimo)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  numeri[-2] = {numeri[-2]} (penultimo)&quot;</span>)
+
+<span class="cm"># Modifica di un elemento (le liste sono mutabili)</span>
+numeri[<span class="mi">2</span>] <span class="op">=</span> <span class="mi">99</span>
+<span class="kw">assert</span> numeri <span class="op">=</span><span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">99</span>, <span class="mi">40</span>, <span class="mi">50</span>]
+numeri[<span class="mi">2</span>] <span class="op">=</span> <span class="mi">30</span>  <span class="cm"># Ripristiniamo</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  Dopo numeri[2] = 99: {[10, 20, 99, 40, 50]}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 2. Slicing delle liste</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 2. Slicing ---&quot;</span>)
+
+lettere: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;g&quot;</span>]
+
+<span class="cm"># lista[start:stop] — da start a stop-1</span>
+<span class="kw">assert</span> lettere[<span class="mi">1</span>:<span class="mi">4</span>] <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>]
+<span class="kw">assert</span> lettere[:<span class="mi">3</span>] <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>]       <span class="cm"># Dall&#x27;inizio</span>
+<span class="kw">assert</span> lettere[<span class="mi">4</span>:] <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;e&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;g&quot;</span>]       <span class="cm"># Fino alla fine</span>
+<span class="kw">assert</span> lettere[<span class="op">-</span><span class="mi">3</span>:] <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;e&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;g&quot;</span>]      <span class="cm"># Ultimi 3</span>
+<span class="kw">assert</span> lettere[::<span class="mi">2</span>] <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;a&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;g&quot;</span>]  <span class="cm"># Ogni 2</span>
+<span class="kw">assert</span> lettere[::<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;g&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;a&quot;</span>]  <span class="cm"># Invertita</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  lettere = {lettere}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  lettere[1:4]  = {lettere[1:4]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  lettere[:3]   = {lettere[:3]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  lettere[4:]   = {lettere[4:]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  lettere[::2]  = {lettere[::2]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  lettere[::-1] = {lettere[::-1]}&quot;</span>)
+
+<span class="cm"># Assegnamento a una slice (modifica multipla)</span>
+dati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+dati[<span class="mi">1</span>:<span class="mi">3</span>] <span class="op">=</span> [<span class="mi">20</span>, <span class="mi">30</span>]  <span class="cm"># Sostituisce gli elementi nelle posizioni 1 e 2</span>
+<span class="kw">assert</span> dati <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+<span class="nb">print</span>(<span class="st">f&quot;\n  Dopo dati[1:3] = [20, 30]: {dati}&quot;</span>)
+
+<span class="cm"># Lo slice crea una copia superficiale</span>
+copia_slice: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> lettere[:]
+<span class="kw">assert</span> copia_slice <span class="op">=</span><span class="op">=</span> lettere
+<span class="kw">assert</span> copia_slice <span class="kw">is</span> <span class="kw">not</span> lettere
+<span class="nb">print</span>(<span class="st">f&quot;  lettere[:] crea una copia: {copia_slice is not lettere}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 3. Metodi delle liste</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 3. Metodi delle liste ---&quot;</span>)
+
+frutti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;mela&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;arancia&quot;</span>]
+
+<span class="cm"># append: aggiunge alla fine</span>
+frutti.append(<span class="st">&quot;uva&quot;</span>)
+<span class="kw">assert</span> frutti <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;mela&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;arancia&quot;</span>, <span class="st">&quot;uva&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Dopo append(&#x27;uva&#x27;): {frutti}&quot;</span>)
+
+<span class="cm"># insert: inserisce in una posizione specifica</span>
+frutti.insert(<span class="mi">1</span>, <span class="st">&quot;pera&quot;</span>)
+<span class="kw">assert</span> frutti <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;mela&quot;</span>, <span class="st">&quot;pera&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;arancia&quot;</span>, <span class="st">&quot;uva&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Dopo insert(1, &#x27;pera&#x27;): {frutti}&quot;</span>)
+
+<span class="cm"># extend: aggiunge piu&#x27; elementi (da un iterabile)</span>
+frutti.extend([<span class="st">&quot;kiwi&quot;</span>, <span class="st">&quot;mango&quot;</span>])
+<span class="kw">assert</span> frutti[<span class="op">-</span><span class="mi">2</span>:] <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;kiwi&quot;</span>, <span class="st">&quot;mango&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  Dopo extend([&#x27;kiwi&#x27;, &#x27;mango&#x27;]): {frutti}&quot;</span>)
+
+<span class="cm"># remove: rimuove la prima occorrenza di un valore</span>
+frutti.remove(<span class="st">&quot;banana&quot;</span>)
+<span class="kw">assert</span> <span class="st">&quot;banana&quot;</span> <span class="kw">not</span> <span class="kw">in</span> frutti
+<span class="nb">print</span>(<span class="st">f&quot;  Dopo remove(&#x27;banana&#x27;): {frutti}&quot;</span>)
+
+<span class="cm"># pop: rimuove e restituisce un elemento (default: ultimo)</span>
+ultimo: <span class="nb">str</span> <span class="op">=</span> frutti.pop()
+<span class="kw">assert</span> ultimo <span class="op">=</span><span class="op">=</span> <span class="st">&quot;mango&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  pop() ha rimosso: &#x27;{ultimo}&#x27;, lista: {frutti}&quot;</span>)
+
+secondo: <span class="nb">str</span> <span class="op">=</span> frutti.pop(<span class="mi">1</span>)
+<span class="kw">assert</span> secondo <span class="op">=</span><span class="op">=</span> <span class="st">&quot;pera&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  pop(1) ha rimosso: &#x27;{secondo}&#x27;, lista: {frutti}&quot;</span>)
+
+<span class="cm"># sort: ordina in-place</span>
+numeri_disordinati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">42</span>, <span class="mi">7</span>, <span class="mi">15</span>, <span class="mi">3</span>, <span class="mi">28</span>, <span class="mi">11</span>]
+numeri_disordinati.sort()
+<span class="kw">assert</span> numeri_disordinati <span class="op">=</span><span class="op">=</span> [<span class="mi">3</span>, <span class="mi">7</span>, <span class="mi">11</span>, <span class="mi">15</span>, <span class="mi">28</span>, <span class="mi">42</span>]
+<span class="nb">print</span>(<span class="st">f&quot;\n  sort(): {numeri_disordinati}&quot;</span>)
+
+<span class="cm"># sort con reverse</span>
+numeri_disordinati.sort(reverse<span class="op">=</span><span class="kw">True</span>)
+<span class="kw">assert</span> numeri_disordinati <span class="op">=</span><span class="op">=</span> [<span class="mi">42</span>, <span class="mi">28</span>, <span class="mi">15</span>, <span class="mi">11</span>, <span class="mi">7</span>, <span class="mi">3</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  sort(reverse=True): {numeri_disordinati}&quot;</span>)
+
+<span class="cm"># sort con chiave personalizzata</span>
+parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;banana&quot;</span>, <span class="st">&quot;mela&quot;</span>, <span class="st">&quot;uva&quot;</span>, <span class="st">&quot;arancia&quot;</span>, <span class="st">&quot;kiwi&quot;</span>]
+parole.sort(key<span class="op">=</span><span class="nb">len</span>)  <span class="cm"># Ordina per lunghezza</span>
+<span class="kw">assert</span> parole <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;uva&quot;</span>, <span class="st">&quot;mela&quot;</span>, <span class="st">&quot;kiwi&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;arancia&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  sort(key=len): {parole}&quot;</span>)
+
+<span class="cm"># sorted() restituisce una NUOVA lista (non modifica l&#x27;originale)</span>
+originale: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">5</span>, <span class="mi">2</span>, <span class="mi">8</span>, <span class="mi">1</span>, <span class="mi">9</span>]
+ordinata: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">sorted</span>(originale)
+<span class="kw">assert</span> originale <span class="op">=</span><span class="op">=</span> [<span class="mi">5</span>, <span class="mi">2</span>, <span class="mi">8</span>, <span class="mi">1</span>, <span class="mi">9</span>]  <span class="cm"># Non modificata!</span>
+<span class="kw">assert</span> ordinata <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">5</span>, <span class="mi">8</span>, <span class="mi">9</span>]
+<span class="nb">print</span>(<span class="st">f&quot;\n  sorted() non modifica l&#x27;originale: {originale} → {ordinata}&quot;</span>)
+
+<span class="cm"># reverse: inverte in-place</span>
+numeri_seq: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+numeri_seq.reverse()
+<span class="kw">assert</span> numeri_seq <span class="op">=</span><span class="op">=</span> [<span class="mi">5</span>, <span class="mi">4</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  reverse(): {numeri_seq}&quot;</span>)
+
+<span class="cm"># Altre operazioni utili</span>
+numeri_test: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">20</span>, <span class="mi">40</span>, <span class="mi">20</span>]
+<span class="kw">assert</span> numeri_test.count(<span class="mi">20</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> numeri_test.index(<span class="mi">30</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> <span class="nb">len</span>(numeri_test) <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  {numeri_test}.count(20) = {numeri_test.count(20)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  {numeri_test}.index(30) = {numeri_test.index(30)}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 4. Copia shallow vs deep</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 4. Shallow copy vs deep copy ---&quot;</span>)
+
+<span class="kw">import</span> copy
+
+<span class="cm"># ALIAS — stessa lista in memoria</span>
+originale_2d: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>], [<span class="mi">5</span>, <span class="mi">6</span>]]
+alias: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> originale_2d
+<span class="kw">assert</span> alias <span class="kw">is</span> originale_2d  <span class="cm"># Stesso oggetto!</span>
+
+<span class="cm"># SHALLOW COPY — nuova lista, ma gli elementi interni sono condivisi</span>
+shallow: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> originale_2d.copy()  <span class="cm"># equivale a originale_2d[:]</span>
+<span class="kw">assert</span> shallow <span class="kw">is</span> <span class="kw">not</span> originale_2d      <span class="cm"># Lista esterna diversa</span>
+<span class="kw">assert</span> shallow[<span class="mi">0</span>] <span class="kw">is</span> originale_2d[<span class="mi">0</span>]    <span class="cm"># Ma le sotto-liste sono le stesse!</span>
+
+<span class="cm"># Modificare una sotto-lista nella copia shallow modifica anche l&#x27;originale</span>
+shallow[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">999</span>
+<span class="kw">assert</span> originale_2d[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">999</span>  <span class="cm"># Modificato anche l&#x27;originale!</span>
+originale_2d[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">1</span>  <span class="cm"># Ripristiniamo</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  Originale: {originale_2d}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Shallow copy condivide le sotto-liste: {shallow[0] is originale_2d[0]}&quot;</span>)
+
+<span class="cm"># DEEP COPY — copia completamente indipendente</span>
+deep: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> copy.deepcopy(originale_2d)
+<span class="kw">assert</span> deep <span class="kw">is</span> <span class="kw">not</span> originale_2d
+<span class="kw">assert</span> deep[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">not</span> originale_2d[<span class="mi">0</span>]  <span class="cm"># Anche le sotto-liste sono diverse!</span>
+
+deep[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">888</span>
+<span class="kw">assert</span> originale_2d[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>  <span class="cm"># L&#x27;originale NON e&#x27; modificato</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  Deep copy indipendente: modifica deep[0][0]=888, originale[0][0]={originale_2d[0][0]}&quot;</span>)
+
+<span class="cm"># Riepilogo visivo</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  Riepilogo:&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    alias = originale     → alias is originale: True&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    shallow = orig.copy() → shallow is orig: False, shallow[0] is orig[0]: True&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    deep = deepcopy(orig) → deep is orig: False, deep[0] is orig[0]: False&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 5. Tuple — sequenze immutabili</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 5. Tuple ---&quot;</span>)
+
+<span class="cm"># Creazione</span>
+punto: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">3.0</span>, <span class="mi">4.0</span>)
+singolo: <span class="nb">tuple</span>[<span class="nb">int</span>] <span class="op">=</span> (<span class="mi">42</span>,)  <span class="cm"># La virgola e&#x27; necessaria per tuple con un elemento!</span>
+vuota_t: <span class="nb">tuple</span>[()] <span class="op">=</span> ()
+
+<span class="kw">assert</span> <span class="nb">type</span>(punto) <span class="kw">is</span> <span class="nb">tuple</span>
+<span class="kw">assert</span> <span class="nb">type</span>(singolo) <span class="kw">is</span> <span class="nb">tuple</span>
+<span class="kw">assert</span> <span class="nb">len</span>(singolo) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="cm"># Indicizzazione (come le liste)</span>
+<span class="kw">assert</span> punto[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3.0</span>
+<span class="kw">assert</span> punto[<span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">4.0</span>
+<span class="kw">assert</span> punto[<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">4.0</span>
+
+<span class="cm"># Le tuple sono IMMUTABILI — non si possono modificare</span>
+<span class="kw">try</span>:
+    punto[<span class="mi">0</span>] <span class="op">=</span> <span class="mi">5.0</span>  <span class="cm"># type: ignore</span>
+    <span class="kw">assert</span> <span class="kw">False</span>, <span class="st">&quot;Doveva lanciare TypeError&quot;</span>
+<span class="kw">except</span> <span class="nb">TypeError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;  punto[0] = 5.0 → TypeError: {e}&quot;</span>)
+
+<span class="cm"># Le tuple possono contenere oggetti mutabili (ma la tuple stessa non cambia)</span>
+strano: <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> (<span class="mi">1</span>, [<span class="mi">2</span>, <span class="mi">3</span>])
+strano[<span class="mi">1</span>].append(<span class="mi">4</span>)  <span class="cm"># La lista interna e&#x27; mutabile!</span>
+<span class="kw">assert</span> strano <span class="op">=</span><span class="op">=</span> (<span class="mi">1</span>, [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>])
+<span class="nb">print</span>(<span class="st">f&quot;  Tuple con lista interna: {strano}&quot;</span>)
+
+<span class="cm"># Operazioni sulle tuple (come le liste, tranne quelle che modificano)</span>
+numeri_t: <span class="nb">tuple</span>[<span class="nb">int</span>, ...] <span class="op">=</span> (<span class="mi">5</span>, <span class="mi">3</span>, <span class="mi">8</span>, <span class="mi">1</span>, <span class="mi">5</span>, <span class="mi">3</span>, <span class="mi">5</span>)
+<span class="kw">assert</span> numeri_t.count(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> numeri_t.index(<span class="mi">8</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> <span class="nb">len</span>(numeri_t) <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
+<span class="kw">assert</span> <span class="nb">max</span>(numeri_t) <span class="op">=</span><span class="op">=</span> <span class="mi">8</span>
+<span class="kw">assert</span> <span class="nb">min</span>(numeri_t) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">assert</span> <span class="nb">sum</span>(numeri_t) <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>
+<span class="kw">assert</span> <span class="nb">sorted</span>(numeri_t) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">5</span>, <span class="mi">5</span>, <span class="mi">8</span>]  <span class="cm"># sorted restituisce una lista!</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;\n  numeri_t = {numeri_t}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  count(5) = {numeri_t.count(5)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  sorted() = {sorted(numeri_t)} (restituisce lista!)&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 6. Tuple unpacking</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 6. Tuple unpacking ---&quot;</span>)
+
+<span class="cm"># Unpacking base</span>
+coordinate: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">1.5</span>, <span class="mi">2.7</span>, <span class="mi">3.9</span>)
+x, y, z <span class="op">=</span> coordinate
+<span class="kw">assert</span> x <span class="op">=</span><span class="op">=</span> <span class="mi">1.5</span> <span class="kw">and</span> y <span class="op">=</span><span class="op">=</span> <span class="mi">2.7</span> <span class="kw">and</span> z <span class="op">=</span><span class="op">=</span> <span class="mi">3.9</span>
+<span class="nb">print</span>(<span class="st">f&quot;  x, y, z = {coordinate} → x={x}, y={y}, z={z}&quot;</span>)
+
+<span class="cm"># Unpacking con * (raccolta dei rimanenti)</span>
+primi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">10</span>, <span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">40</span>, <span class="mi">50</span>]
+primo, secondo_el, <span class="op">*</span>resto <span class="op">=</span> primi
+<span class="kw">assert</span> primo <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+<span class="kw">assert</span> secondo_el <span class="op">=</span><span class="op">=</span> <span class="mi">20</span>
+<span class="kw">assert</span> resto <span class="op">=</span><span class="op">=</span> [<span class="mi">30</span>, <span class="mi">40</span>, <span class="mi">50</span>]
+<span class="nb">print</span>(<span class="st">f&quot;  primo, secondo, *resto = {primi}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    primo={primo}, secondo={secondo_el}, resto={resto}&quot;</span>)
+
+<span class="cm"># * al centro</span>
+primo_v, <span class="op">*</span>mezzo, ultimo_v <span class="op">=</span> primi
+<span class="kw">assert</span> primo_v <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+<span class="kw">assert</span> mezzo <span class="op">=</span><span class="op">=</span> [<span class="mi">20</span>, <span class="mi">30</span>, <span class="mi">40</span>]
+<span class="kw">assert</span> ultimo_v <span class="op">=</span><span class="op">=</span> <span class="mi">50</span>
+<span class="nb">print</span>(<span class="st">f&quot;  primo, *mezzo, ultimo = {primi}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;    primo={primo_v}, mezzo={mezzo}, ultimo={ultimo_v}&quot;</span>)
+
+<span class="cm"># Unpacking nella funzione: restituire piu&#x27; valori</span>
+<span class="kw">def</span> <span class="fn">min_max_media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce minimo, massimo e media di una lista.&quot;&quot;&quot;</span>
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(valori)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+    <span class="kw">return</span> minimo, massimo, media  <span class="cm"># Restituisce una tupla</span>
+
+
+voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">28.0</span>, <span class="mi">22.0</span>, <span class="mi">30.0</span>, <span class="mi">19.0</span>, <span class="mi">25.0</span>, <span class="mi">27.0</span>]
+vmin, vmax, vmedia <span class="op">=</span> min_max_media(voti)  <span class="cm"># Unpacking del risultato</span>
+<span class="kw">assert</span> vmin <span class="op">=</span><span class="op">=</span> <span class="mi">19.0</span>
+<span class="kw">assert</span> vmax <span class="op">=</span><span class="op">=</span> <span class="mi">30.0</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(vmedia <span class="op">-</span> <span class="mi">25.1667</span>) <span class="op">&lt;</span> <span class="mi">0.001</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  Voti: {voti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  min={vmin}, max={vmax}, media={vmedia:.2f}&quot;</span>)
+
+<span class="cm"># Scambio di variabili (usa tuple unpacking sotto il cofano)</span>
+a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
+b: <span class="nb">int</span> <span class="op">=</span> <span class="mi">20</span>
+a, b <span class="op">=</span> b, a
+<span class="kw">assert</span> a <span class="op">=</span><span class="op">=</span> <span class="mi">20</span> <span class="kw">and</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+<span class="nb">print</span>(<span class="st">f&quot;\n  Scambio: a=10, b=20 → a={a}, b={b}&quot;</span>)
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># 7. Named tuple (cenni)</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- 7. Named tuple ---&quot;</span>)
+
+<span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+
+<span class="cm"># Definizione di un tipo named tuple</span>
+Studente <span class="op">=</span> namedtuple(<span class="st">&quot;Studente&quot;</span>, [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;matricola&quot;</span>, <span class="st">&quot;media&quot;</span>])
+
+<span class="cm"># Creazione di istanze</span>
+s1: Studente <span class="op">=</span> Studente(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;0001234&quot;</span>, <span class="mi">28.5</span>)
+s2: Studente <span class="op">=</span> Studente(nome<span class="op">=</span><span class="st">&quot;Bob&quot;</span>, matricola<span class="op">=</span><span class="st">&quot;0001235&quot;</span>, media<span class="op">=</span><span class="mi">25.0</span>)
+
+<span class="cm"># Accesso per nome (piu&#x27; leggibile) o per indice</span>
+<span class="kw">assert</span> s1.nome <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Alice&quot;</span>
+<span class="kw">assert</span> s1[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Alice&quot;</span>      <span class="cm"># Anche per indice (e&#x27; una tupla)</span>
+<span class="kw">assert</span> s1.media <span class="op">=</span><span class="op">=</span> <span class="mi">28.5</span>
+
+<span class="cm"># Le named tuple sono immutabili</span>
+<span class="kw">try</span>:
+    s1.nome <span class="op">=</span> <span class="st">&quot;Anna&quot;</span>  <span class="cm"># type: ignore</span>
+    <span class="kw">assert</span> <span class="kw">False</span>
+<span class="kw">except</span> <span class="nb">AttributeError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;  s1.nome = &#x27;Anna&#x27; → AttributeError: {e}&quot;</span>)
+
+<span class="cm"># _replace crea una NUOVA named tuple</span>
+s1_aggiornato: Studente <span class="op">=</span> s1._replace(media<span class="op">=</span><span class="mi">29.0</span>)
+<span class="kw">assert</span> s1.media <span class="op">=</span><span class="op">=</span> <span class="mi">28.5</span>       <span class="cm"># Originale invariato</span>
+<span class="kw">assert</span> s1_aggiornato.media <span class="op">=</span><span class="op">=</span> <span class="mi">29.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;  s1 = {s1}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  s1._replace(media=29.0) = {s1_aggiornato}&quot;</span>)
+
+<span class="cm"># Conversione a dizionario</span>
+<span class="kw">assert</span> s1._asdict() <span class="op">=</span><span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;0001234&quot;</span>, <span class="st">&quot;media&quot;</span>: <span class="mi">28.5</span>}
+<span class="nb">print</span>(<span class="st">f&quot;  s1._asdict() = {s1._asdict()}&quot;</span>)
+
+<span class="cm"># Lista di studenti</span>
+classe: <span class="nb">list</span>[Studente] <span class="op">=</span> [
+    Studente(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;001&quot;</span>, <span class="mi">28.5</span>),
+    Studente(<span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;002&quot;</span>, <span class="mi">25.0</span>),
+    Studente(<span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;003&quot;</span>, <span class="mi">30.0</span>),
+    Studente(<span class="st">&quot;Davide&quot;</span>, <span class="st">&quot;004&quot;</span>, <span class="mi">22.5</span>),
+]
+
+<span class="cm"># Ordinare per media</span>
+per_media: <span class="nb">list</span>[Studente] <span class="op">=</span> <span class="nb">sorted</span>(classe, key<span class="op">=</span><span class="kw">lambda</span> s: s.media, reverse<span class="op">=</span><span class="kw">True</span>)
+<span class="nb">print</span>(<span class="st">f&quot;\n  Classifica per media:&quot;</span>)
+<span class="kw">for</span> pos, stud <span class="kw">in</span> <span class="nb">enumerate</span>(per_media, start<span class="op">=</span><span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;    {pos}. {stud.nome} — media: {stud.media}&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">&quot;\nTutti gli assert passati — esempi F11 completati con successo!&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

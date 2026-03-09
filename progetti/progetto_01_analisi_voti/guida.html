@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progetto 01 Analisi Voti — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="soluzione.py">Soluzione (.py)</a></nav>
+<h1>Progetto 01 Analisi Voti</h1>
+
+<h1>Progetto 1: Analisi voti di un corso</h1>
+<h2>Introduzione</h2>
+<p>In questo progetto costruirai un programma Python che analizza i voti di un esame universitario. Partendo da un file CSV con i dati degli studenti, imparerai a:</p>
+<ul>
+<li>Leggere file CSV (<strong>F07</strong> - Input/Output su file)</li>
+<li>Memorizzare dati strutturati in liste e dizionari (<strong>F09</strong> - Strutture dati)</li>
+<li>Calcolare statistiche descrittive (<strong>F11</strong> - Librerie scientifiche di base)</li>
+<li>Filtrare e selezionare dati con condizioni (<strong>F13</strong> - Controllo di flusso)</li>
+<li>Scrivere funzioni riutilizzabili (<strong>F15</strong> - Funzioni)</li>
+</ul>
+<p>Il file <code>dati<em>voti.csv</code> contiene i dati di 20 studenti con le colonne: matricola, nome, cognome, voto</em>scritto, voto<em>orale e voto</em>finale. Alcuni studenti hanno il valore "assente" e alcuni hanno voti insufficienti (sotto il 18).</p>
+<hr>
+<h2>Passo 1: Leggere il file CSV</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Aprire un file con <code>with open()</code></li>
+<li>Usare il modulo <code>csv</code> per leggere file CSV</li>
+<li>Capire la differenza tra <code>csv.reader</code> e <code>csv.DictReader</code></li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Un file CSV (Comma-Separated Values) e' un file di testo dove ogni riga rappresenta un record e le colonne sono separate da virgole. Python ha un modulo built-in chiamato <code>csv</code> che semplifica la lettura di questi file.</p>
+<p>Usiamo <code>with open()</code> perche' garantisce che il file venga chiuso correttamente anche in caso di errore.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa <code>csv.DictReader</code> per avere accesso alle colonne per nome</li>
+<li>Ricorda di specificare <code>encoding='utf-8'</code> nell'apertura del file</li>
+<li>Usa <code>pathlib.Path</code> per costruire il percorso del file in modo portabile</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">leggi_voti</span>(<span class="fn">percorso_file</span>):
+    <span class="st">&quot;&quot;&quot;Legge il file CSV e restituisce una lista di dizionari.&quot;&quot;&quot;</span>
+    studenti <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso_file, mode<span class="op">=</span><span class="st">&#x27;r&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> file:
+        lettore <span class="op">=</span> csv.DictReader(file)
+        <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+            <span class="cm"># TODO: aggiungi ogni riga alla lista studenti</span>
+            <span class="kw">pass</span>
+    <span class="kw">return</span> studenti
+
+<span class="cm"># Prova la funzione</span>
+percorso <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;dati_voti.csv&quot;</span>
+dati <span class="op">=</span> leggi_voti(percorso)
+<span class="nb">print</span>(<span class="st">f&quot;Letti {len(dati)} studenti&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Primo studente: {dati[0]}&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 1</summary></p>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">leggi_voti</span>(<span class="fn">percorso_file</span>):
+    <span class="st">&quot;&quot;&quot;Legge il file CSV e restituisce una lista di dizionari.&quot;&quot;&quot;</span>
+    studenti <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso_file, mode<span class="op">=</span><span class="st">&#x27;r&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> file:
+        lettore <span class="op">=</span> csv.DictReader(file)
+        <span class="kw">for</span> riga <span class="kw">in</span> lettore:
+            studenti.append(<span class="nb">dict</span>(riga))
+    <span class="kw">return</span> studenti
+
+<span class="cm"># Prova la funzione</span>
+percorso <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;dati_voti.csv&quot;</span>
+dati <span class="op">=</span> leggi_voti(percorso)
+<span class="nb">print</span>(<span class="st">f&quot;Letti {len(dati)} studenti&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Primo studente: {dati[0]}&quot;</span>)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 2: Pulire e strutturare i dati</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Convertire stringhe in numeri con gestione degli errori</li>
+<li>Gestire valori mancanti o speciali (come "assente")</li>
+<li>Costruire strutture dati pulite</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>I dati letti dal CSV sono tutti stringhe. Dobbiamo convertire i voti in numeri interi, ma alcuni valori sono "assente" e non possono essere convertiti. Usiamo una funzione di supporto che restituisce <code>None</code> quando il valore non e' un numero valido.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa <code>try/except ValueError</code> per gestire la conversione</li>
+<li>Il valore <code>None</code> in Python rappresenta l'assenza di un dato</li>
+<li>Puoi usare una funzione di supporto per la conversione</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">converti_voto</span>(<span class="fn">valore</span>):
+    <span class="st">&quot;&quot;&quot;Converte una stringa in intero. Restituisce None se non possibile.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: prova a convertire in int, se fallisce restituisci None</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">pulisci_dati</span>(<span class="fn">studenti_raw</span>):
+    <span class="st">&quot;&quot;&quot;Pulisce i dati convertendo i voti in numeri.&quot;&quot;&quot;</span>
+    studenti_puliti <span class="op">=</span> []
+    <span class="kw">for</span> s <span class="kw">in</span> studenti_raw:
+        studente <span class="op">=</span> {
+            <span class="st">&#x27;matricola&#x27;</span>: s[<span class="st">&#x27;matricola&#x27;</span>],
+            <span class="st">&#x27;nome&#x27;</span>: s[<span class="st">&#x27;nome&#x27;</span>],
+            <span class="st">&#x27;cognome&#x27;</span>: s[<span class="st">&#x27;cognome&#x27;</span>],
+            <span class="cm"># TODO: converti i tre voti usando converti_voto</span>
+        }
+        studenti_puliti.append(studente)
+    <span class="kw">return</span> studenti_puliti</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 2</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">converti_voto</span>(<span class="fn">valore</span>):
+    <span class="st">&quot;&quot;&quot;Converte una stringa in intero. Restituisce None se non possibile.&quot;&quot;&quot;</span>
+    <span class="kw">try</span>:
+        <span class="kw">return</span> <span class="nb">int</span>(valore)
+    <span class="kw">except</span> (<span class="nb">ValueError</span>, <span class="nb">TypeError</span>):
+        <span class="kw">return</span> <span class="kw">None</span>
+
+<span class="kw">def</span> <span class="fn">pulisci_dati</span>(<span class="fn">studenti_raw</span>):
+    <span class="st">&quot;&quot;&quot;Pulisce i dati convertendo i voti in numeri.&quot;&quot;&quot;</span>
+    studenti_puliti <span class="op">=</span> []
+    <span class="kw">for</span> s <span class="kw">in</span> studenti_raw:
+        studente <span class="op">=</span> {
+            <span class="st">&#x27;matricola&#x27;</span>: s[<span class="st">&#x27;matricola&#x27;</span>],
+            <span class="st">&#x27;nome&#x27;</span>: s[<span class="st">&#x27;nome&#x27;</span>],
+            <span class="st">&#x27;cognome&#x27;</span>: s[<span class="st">&#x27;cognome&#x27;</span>],
+            <span class="st">&#x27;voto_scritto&#x27;</span>: converti_voto(s[<span class="st">&#x27;voto_scritto&#x27;</span>]),
+            <span class="st">&#x27;voto_orale&#x27;</span>: converti_voto(s[<span class="st">&#x27;voto_orale&#x27;</span>]),
+            <span class="st">&#x27;voto_finale&#x27;</span>: converti_voto(s[<span class="st">&#x27;voto_finale&#x27;</span>]),
+        }
+        studenti_puliti.append(studente)
+    <span class="kw">return</span> studenti_puliti</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 3: Calcolare statistiche descrittive</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Calcolare media, mediana, moda e varianza</li>
+<li>Lavorare con liste filtrate (escludendo i <code>None</code>)</li>
+<li>Usare le funzioni del modulo <code>statistics</code></li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Le statistiche descrittive ci permettono di riassumere i dati. Calcoleremo:</p>
+<ul>
+<li><strong>Media</strong>: somma dei valori diviso il numero di valori</li>
+<li><strong>Mediana</strong>: valore centrale quando i dati sono ordinati</li>
+<li><strong>Moda</strong>: valore piu' frequente</li>
+<li><strong>Varianza</strong>: misura di dispersione dei dati rispetto alla media</li>
+</ul>
+<p>Prima calcoleremo tutto "a mano" con Python base, poi useremo il modulo <code>statistics</code>.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Filtra i valori <code>None</code> prima di calcolare le statistiche</li>
+<li>Per la mediana: ordina la lista, poi prendi il valore centrale</li>
+<li>Per la moda: usa un dizionario per contare le occorrenze</li>
+<li>Il modulo <code>statistics</code> ha funzioni pronte: <code>mean()</code>, <code>median()</code>, <code>mode()</code>, <code>variance()</code></li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">estrai_voti_validi</span>(<span class="fn">studenti</span>, campo):
+    <span class="st">&quot;&quot;&quot;Estrae i voti validi (non None) per un dato campo.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: restituisci una lista con solo i voti non-None</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">valori</span>):
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">return</span> <span class="mi">0</span>
+    <span class="cm"># TODO: somma / lunghezza</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">calcola_mediana</span>(<span class="fn">valori</span>):
+    <span class="st">&quot;&quot;&quot;Calcola la mediana.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">return</span> <span class="mi">0</span>
+    ordinati <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    n <span class="op">=</span> <span class="nb">len</span>(ordinati)
+    <span class="cm"># TODO: se n e&#x27; dispari prendi l&#x27;elemento centrale,</span>
+    <span class="cm">#       se n e&#x27; pari fai la media dei due centrali</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">calcola_varianza</span>(<span class="fn">valori</span>):
+    <span class="st">&quot;&quot;&quot;Calcola la varianza campionaria.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">return</span> <span class="mi">0</span>
+    media <span class="op">=</span> calcola_media(valori)
+    <span class="cm"># TODO: somma dei quadrati degli scarti / (n - 1)</span>
+    <span class="kw">pass</span></code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 3</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">estrai_voti_validi</span>(<span class="fn">studenti</span>, campo):
+    <span class="st">&quot;&quot;&quot;Estrae i voti validi (non None) per un dato campo.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [s[campo] <span class="kw">for</span> s <span class="kw">in</span> studenti <span class="kw">if</span> s[campo] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>]
+
+<span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">valori</span>):
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">return</span> <span class="mi">0</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+<span class="kw">def</span> <span class="fn">calcola_mediana</span>(<span class="fn">valori</span>):
+    <span class="st">&quot;&quot;&quot;Calcola la mediana.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">return</span> <span class="mi">0</span>
+    ordinati <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    n <span class="op">=</span> <span class="nb">len</span>(ordinati)
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]
+    <span class="kw">else</span>:
+        <span class="kw">return</span> (ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]) <span class="op">/</span> <span class="mi">2</span>
+
+<span class="kw">def</span> <span class="fn">calcola_moda</span>(<span class="fn">valori</span>):
+    <span class="st">&quot;&quot;&quot;Calcola la moda (valore piu&#x27; frequente).&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">return</span> <span class="kw">None</span>
+    conteggio <span class="op">=</span> {}
+    <span class="kw">for</span> v <span class="kw">in</span> valori:
+        conteggio[v] <span class="op">=</span> conteggio.get(v, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+    massimo <span class="op">=</span> <span class="nb">max</span>(conteggio.values())
+    mode <span class="op">=</span> [k <span class="kw">for</span> k, v <span class="kw">in</span> conteggio.items() <span class="kw">if</span> v <span class="op">=</span><span class="op">=</span> massimo]
+    <span class="kw">return</span> mode[<span class="mi">0</span>] <span class="kw">if</span> <span class="nb">len</span>(mode) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span> <span class="kw">else</span> mode
+
+<span class="kw">def</span> <span class="fn">calcola_varianza</span>(<span class="fn">valori</span>):
+    <span class="st">&quot;&quot;&quot;Calcola la varianza campionaria.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">return</span> <span class="mi">0</span>
+    media <span class="op">=</span> calcola_media(valori)
+    scarti_quadrati <span class="op">=</span> [(x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori]
+    <span class="kw">return</span> <span class="nb">sum</span>(scarti_quadrati) <span class="op">/</span> (<span class="nb">len</span>(valori) <span class="op">-</span> <span class="mi">1</span>)
+
+<span class="cm"># Verifica con il modulo statistics</span>
+<span class="kw">import</span> statistics
+
+voti_finali <span class="op">=</span> estrai_voti_validi(studenti, <span class="st">&#x27;voto_finale&#x27;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media (manuale):     {calcola_media(voti_finali):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media (statistics):  {statistics.mean(voti_finali):.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Mediana (manuale):   {calcola_mediana(voti_finali)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Mediana (statistics):{statistics.median(voti_finali)}&quot;</span>)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 4: Filtrare studenti per criteri</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Filtrare liste con condizioni (list comprehension o cicli)</li>
+<li>Combinare piu' condizioni con <code>and</code>/<code>or</code></li>
+<li>Classificare gli studenti in categorie</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Ora che abbiamo i dati puliti, possiamo filtrare gli studenti per diversi criteri:</p>
+<ul>
+<li>Chi ha superato l'esame (voto finale >= 18)</li>
+<li>Chi e' stato assente</li>
+<li>Chi e' insufficiente</li>
+<li>Chi ha un voto sopra la media</li>
+</ul>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa le list comprehension per filtrare in modo compatto</li>
+<li>Ricorda di controllare che il voto non sia <code>None</code> prima di confrontarlo</li>
+<li>Puoi creare una funzione per ogni tipo di filtro</li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">filtra_promossi</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce gli studenti con voto finale &gt;= 18.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: filtra gli studenti promossi</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">filtra_assenti</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce gli studenti assenti (voto finale None).&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: filtra gli studenti assenti</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">filtra_sopra_media</span>(<span class="fn">studenti</span>, media):
+    <span class="st">&quot;&quot;&quot;Restituisce gli studenti con voto finale sopra la media.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: filtra gli studenti sopra la media</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">classifica_studenti</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Classifica gli studenti in categorie.&quot;&quot;&quot;</span>
+    classificazione <span class="op">=</span> {
+        <span class="st">&#x27;eccellente&#x27;</span>: [],   <span class="cm"># voto &gt;= 28</span>
+        <span class="st">&#x27;buono&#x27;</span>: [],        <span class="cm"># 24 &lt;= voto &lt; 28</span>
+        <span class="st">&#x27;sufficiente&#x27;</span>: [],  <span class="cm"># 18 &lt;= voto &lt; 24</span>
+        <span class="st">&#x27;insufficiente&#x27;</span>: [],<span class="cm"># voto &lt; 18</span>
+        <span class="st">&#x27;assente&#x27;</span>: []       <span class="cm"># voto is None</span>
+    }
+    <span class="cm"># TODO: classifica ogni studente</span>
+    <span class="kw">return</span> classificazione</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 4</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">filtra_promossi</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce gli studenti con voto finale &gt;= 18.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [s <span class="kw">for</span> s <span class="kw">in</span> studenti <span class="kw">if</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">and</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+
+<span class="kw">def</span> <span class="fn">filtra_assenti</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Restituisce gli studenti assenti (voto finale None).&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [s <span class="kw">for</span> s <span class="kw">in</span> studenti <span class="kw">if</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="kw">is</span> <span class="kw">None</span>]
+
+<span class="kw">def</span> <span class="fn">filtra_sopra_media</span>(<span class="fn">studenti</span>, media):
+    <span class="st">&quot;&quot;&quot;Restituisce gli studenti con voto finale sopra la media.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [s <span class="kw">for</span> s <span class="kw">in</span> studenti
+            <span class="kw">if</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">and</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="op">&gt;</span> media]
+
+<span class="kw">def</span> <span class="fn">classifica_studenti</span>(<span class="fn">studenti</span>):
+    <span class="st">&quot;&quot;&quot;Classifica gli studenti in categorie.&quot;&quot;&quot;</span>
+    classificazione <span class="op">=</span> {
+        <span class="st">&#x27;eccellente&#x27;</span>: [],
+        <span class="st">&#x27;buono&#x27;</span>: [],
+        <span class="st">&#x27;sufficiente&#x27;</span>: [],
+        <span class="st">&#x27;insufficiente&#x27;</span>: [],
+        <span class="st">&#x27;assente&#x27;</span>: []
+    }
+    <span class="kw">for</span> s <span class="kw">in</span> studenti:
+        voto <span class="op">=</span> s[<span class="st">&#x27;voto_finale&#x27;</span>]
+        nome_completo <span class="op">=</span> <span class="st">f&quot;{s[&#x27;nome&#x27;]} {s[&#x27;cognome&#x27;]}&quot;</span>
+        <span class="kw">if</span> voto <span class="kw">is</span> <span class="kw">None</span>:
+            classificazione[<span class="st">&#x27;assente&#x27;</span>].append(nome_completo)
+        <span class="kw">elif</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>:
+            classificazione[<span class="st">&#x27;eccellente&#x27;</span>].append(nome_completo)
+        <span class="kw">elif</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">24</span>:
+            classificazione[<span class="st">&#x27;buono&#x27;</span>].append(nome_completo)
+        <span class="kw">elif</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+            classificazione[<span class="st">&#x27;sufficiente&#x27;</span>].append(nome_completo)
+        <span class="kw">else</span>:
+            classificazione[<span class="st">&#x27;insufficiente&#x27;</span>].append(nome_completo)
+    <span class="kw">return</span> classificazione</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 5: Generare un report testuale</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Formattare stringhe con f-string</li>
+<li>Costruire un report strutturato</li>
+<li>Allineare testo in colonne</li>
+</ul>
+<h3>Spiegazione</h3>
+<p>Il report finale riassume tutte le analisi fatte. Deve essere leggibile e ben formattato, con sezioni chiare per le statistiche, la classificazione e i dettagli.</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa le f-string per formattare i numeri: <code>f"{valore:.2f}"</code> per 2 decimali</li>
+<li>Usa <code>str.ljust()</code> o <code>str.rjust()</code> per allineare il testo</li>
+<li>Costruisci il report come una lista di stringhe, poi uniscile con <code>'\n'.join()</code></li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">genera_report</span>(<span class="fn">studenti</span>, statistiche, classificazione):
+    <span class="st">&quot;&quot;&quot;Genera un report testuale completo.&quot;&quot;&quot;</span>
+    righe <span class="op">=</span> []
+    righe.append(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    righe.append(<span class="st">&quot;REPORT ANALISI VOTI DEL CORSO&quot;</span>)
+    righe.append(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    righe.append(<span class="st">&quot;&quot;</span>)
+
+    <span class="cm"># TODO: Sezione 1 - Panoramica generale</span>
+    <span class="cm"># Numero totale studenti, promossi, bocciati, assenti</span>
+
+    <span class="cm"># TODO: Sezione 2 - Statistiche descrittive</span>
+    <span class="cm"># Media, mediana, moda, varianza, deviazione standard</span>
+
+    <span class="cm"># TODO: Sezione 3 - Classificazione</span>
+    <span class="cm"># Per ogni categoria, elenca gli studenti</span>
+
+    <span class="cm"># TODO: Sezione 4 - Tabella riepilogativa</span>
+    <span class="cm"># Tabella con tutti gli studenti e i loro voti</span>
+
+    <span class="kw">return</span> <span class="st">&#x27;\n&#x27;</span>.join(righe)</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 5</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">genera_report</span>(<span class="fn">studenti</span>, statistiche, classificazione):
+    <span class="st">&quot;&quot;&quot;Genera un report testuale completo.&quot;&quot;&quot;</span>
+    righe <span class="op">=</span> []
+    righe.append(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    righe.append(<span class="st">&quot;         REPORT ANALISI VOTI DEL CORSO&quot;</span>)
+    righe.append(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+    righe.append(<span class="st">&quot;&quot;</span>)
+
+    <span class="cm"># Sezione 1 - Panoramica generale</span>
+    promossi <span class="op">=</span> [s <span class="kw">for</span> s <span class="kw">in</span> studenti <span class="kw">if</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">and</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+    assenti <span class="op">=</span> [s <span class="kw">for</span> s <span class="kw">in</span> studenti <span class="kw">if</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="kw">is</span> <span class="kw">None</span>]
+    righe.append(<span class="st">&quot;--- PANORAMICA GENERALE ---&quot;</span>)
+    righe.append(<span class="st">f&quot;  Studenti totali:    {len(studenti)}&quot;</span>)
+    righe.append(<span class="st">f&quot;  Promossi:           {len(promossi)}&quot;</span>)
+    righe.append(<span class="st">f&quot;  Assenti:            {len(assenti)}&quot;</span>)
+    righe.append(<span class="st">&quot;&quot;</span>)
+
+    <span class="cm"># Sezione 2 - Statistiche descrittive</span>
+    righe.append(<span class="st">&quot;--- STATISTICHE DESCRITTIVE (voto finale) ---&quot;</span>)
+    <span class="kw">for</span> nome, valore <span class="kw">in</span> statistiche.items():
+        <span class="kw">if</span> <span class="nb">isinstance</span>(valore, <span class="nb">float</span>):
+            righe.append(<span class="st">f&quot;  {nome.capitalize():20s} {valore:.2f}&quot;</span>)
+        <span class="kw">else</span>:
+            righe.append(<span class="st">f&quot;  {nome.capitalize():20s} {valore}&quot;</span>)
+    righe.append(<span class="st">&quot;&quot;</span>)
+
+    <span class="cm"># Sezione 3 - Classificazione</span>
+    righe.append(<span class="st">&quot;--- CLASSIFICAZIONE STUDENTI ---&quot;</span>)
+    <span class="kw">for</span> categoria, nomi <span class="kw">in</span> classificazione.items():
+        righe.append(<span class="st">f&quot;  {categoria.upper()} ({len(nomi)}):&quot;</span>)
+        <span class="kw">for</span> n <span class="kw">in</span> nomi:
+            righe.append(<span class="st">f&quot;    - {n}&quot;</span>)
+    righe.append(<span class="st">&quot;&quot;</span>)
+
+    <span class="cm"># Sezione 4 - Tabella riepilogativa</span>
+    righe.append(<span class="st">&quot;--- TABELLA RIEPILOGATIVA ---&quot;</span>)
+    intestazione <span class="op">=</span> <span class="st">f&quot;  {&#x27;Matricola&#x27;:&lt;10} {&#x27;Nome&#x27;:&lt;12} {&#x27;Cognome&#x27;:&lt;12} {&#x27;Scritto&#x27;:&gt;8} {&#x27;Orale&#x27;:&gt;8} {&#x27;Finale&#x27;:&gt;8}&quot;</span>
+    righe.append(intestazione)
+    righe.append(<span class="st">&quot;  &quot;</span> <span class="op">+</span> <span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">62</span>)
+    <span class="kw">for</span> s <span class="kw">in</span> studenti:
+        scritto <span class="op">=</span> <span class="nb">str</span>(s[<span class="st">&#x27;voto_scritto&#x27;</span>]) <span class="kw">if</span> s[<span class="st">&#x27;voto_scritto&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">else</span> <span class="st">&quot;assente&quot;</span>
+        orale <span class="op">=</span> <span class="nb">str</span>(s[<span class="st">&#x27;voto_orale&#x27;</span>]) <span class="kw">if</span> s[<span class="st">&#x27;voto_orale&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">else</span> <span class="st">&quot;assente&quot;</span>
+        finale <span class="op">=</span> <span class="nb">str</span>(s[<span class="st">&#x27;voto_finale&#x27;</span>]) <span class="kw">if</span> s[<span class="st">&#x27;voto_finale&#x27;</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">else</span> <span class="st">&quot;assente&quot;</span>
+        riga <span class="op">=</span> <span class="st">f&quot;  {s[&#x27;matricola&#x27;]:&lt;10} {s[&#x27;nome&#x27;]:&lt;12} {s[&#x27;cognome&#x27;]:&lt;12} {scritto:&gt;8} {orale:&gt;8} {finale:&gt;8}&quot;</span>
+        righe.append(riga)
+    righe.append(<span class="st">&quot;&quot;</span>)
+    righe.append(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+
+    <span class="kw">return</span> <span class="st">&#x27;\n&#x27;</span>.join(righe)</code></pre>
+<p></details></p>
+<hr>
+<h2>Passo 6: Salvare i risultati su file</h2>
+<h3>Cosa imparerai</h3>
+<ul>
+<li>Scrivere su file di testo con <code>with open(... , 'w')</code></li>
+<li>Organizzare il codice con una funzione <code>main()</code></li>
+<li>Usare il pattern <code>if <em>_name</em><em> == "</em><em>main</em>_"</code></li>
+</ul>
+<h3>Spiegazione</h3>
+<p>L'ultimo passo e' salvare il report su un file di testo. Organizziamo tutto il codice in una funzione <code>main()</code> che coordina tutte le operazioni: lettura, pulizia, analisi, report e salvataggio.</p>
+<p>Il pattern <code>if <em>_name</em><em> == "</em><em>main</em>_"</code> garantisce che <code>main()</code> venga eseguita solo quando il file e' lanciato direttamente (non quando viene importato da un altro modulo).</p>
+<h3>Suggerimenti</h3>
+<ul>
+<li>Usa <code>with open(percorso, 'w', encoding='utf-8')</code> per scrivere</li>
+<li>Usa <code>file.write(testo)</code> per scrivere il contenuto</li>
+<li>Metti tutto il flusso principale dentro <code>main()</code></li>
+</ul>
+<h3>Scheletro di codice</h3>
+<pre><code><span class="kw">def</span> <span class="fn">salva_report</span>(<span class="fn">report</span>, percorso_output):
+    <span class="st">&quot;&quot;&quot;Salva il report su file di testo.&quot;&quot;&quot;</span>
+    <span class="cm"># TODO: apri il file in scrittura e scrivi il report</span>
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> <span class="fn">main</span>():
+    <span class="st">&quot;&quot;&quot;Funzione principale che coordina tutte le operazioni.&quot;&quot;&quot;</span>
+    <span class="cm"># 1. Leggi i dati</span>
+    <span class="cm"># 2. Pulisci i dati</span>
+    <span class="cm"># 3. Calcola statistiche</span>
+    <span class="cm"># 4. Classifica studenti</span>
+    <span class="cm"># 5. Genera report</span>
+    <span class="cm"># 6. Stampa e salva</span>
+    <span class="kw">pass</span>
+
+<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
+    main()</code></pre>
+<p><details></p>
+<p><summary>Soluzione Passo 6</summary></p>
+<pre><code><span class="kw">def</span> <span class="fn">salva_report</span>(<span class="fn">report</span>, percorso_output):
+    <span class="st">&quot;&quot;&quot;Salva il report su file di testo.&quot;&quot;&quot;</span>
+    <span class="kw">with</span> <span class="nb">open</span>(percorso_output, <span class="st">&#x27;w&#x27;</span>, encoding<span class="op">=</span><span class="st">&#x27;utf-8&#x27;</span>) <span class="kw">as</span> file:
+        file.write(report)
+    <span class="nb">print</span>(<span class="st">f&quot;Report salvato in: {percorso_output}&quot;</span>)
+
+<span class="kw">def</span> <span class="fn">main</span>():
+    <span class="st">&quot;&quot;&quot;Funzione principale che coordina tutte le operazioni.&quot;&quot;&quot;</span>
+    <span class="cm"># 1. Leggi i dati</span>
+    percorso_csv <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;dati_voti.csv&quot;</span>
+    studenti_raw <span class="op">=</span> leggi_voti(percorso_csv)
+    <span class="nb">print</span>(<span class="st">f&quot;Letti {len(studenti_raw)} studenti dal file CSV&quot;</span>)
+
+    <span class="cm"># 2. Pulisci i dati</span>
+    studenti <span class="op">=</span> pulisci_dati(studenti_raw)
+
+    <span class="cm"># 3. Calcola statistiche</span>
+    voti_finali <span class="op">=</span> estrai_voti_validi(studenti, <span class="st">&#x27;voto_finale&#x27;</span>)
+    statistiche <span class="op">=</span> {
+        <span class="st">&#x27;media&#x27;</span>: calcola_media(voti_finali),
+        <span class="st">&#x27;mediana&#x27;</span>: calcola_mediana(voti_finali),
+        <span class="st">&#x27;moda&#x27;</span>: calcola_moda(voti_finali),
+        <span class="st">&#x27;varianza&#x27;</span>: calcola_varianza(voti_finali),
+        <span class="st">&#x27;dev. standard&#x27;</span>: calcola_varianza(voti_finali) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>,
+        <span class="st">&#x27;minimo&#x27;</span>: <span class="nb">min</span>(voti_finali),
+        <span class="st">&#x27;massimo&#x27;</span>: <span class="nb">max</span>(voti_finali),
+    }
+
+    <span class="cm"># 4. Classifica studenti</span>
+    classificazione <span class="op">=</span> classifica_studenti(studenti)
+
+    <span class="cm"># 5. Genera report</span>
+    report <span class="op">=</span> genera_report(studenti, statistiche, classificazione)
+
+    <span class="cm"># 6. Stampa e salva</span>
+    <span class="nb">print</span>(report)
+    percorso_output <span class="op">=</span> Path(__file__).parent <span class="op">/</span> <span class="st">&quot;report_voti.txt&quot;</span>
+    salva_report(report, percorso_output)
+
+<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
+    main()</code></pre>
+<p></details></p>
+<hr>
+<h2>Complimenti!</h2>
+<p>Hai completato il Progetto 1. Ora sai:</p>
+<ul>
+<li>Leggere e scrivere file CSV</li>
+<li>Pulire dati con valori mancanti</li>
+<li>Calcolare statistiche descrittive da zero</li>
+<li>Filtrare e classificare dati</li>
+<li>Generare report formattati</li>
+<li>Organizzare il codice con funzioni e <code>main()</code></li>
+</ul>
+<p>La soluzione completa e' nel file <code>soluzione.py</code>. Confronta il tuo codice con la soluzione per vedere approcci alternativi.</p>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

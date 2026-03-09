@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L07 — NumPy e Pandas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titolo -->
+            <section class="title-slide">
+                <h1>NumPy e Pandas</h1>
+                <div class="subtitle">Laboratorio 7</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione &mdash; Corso di Laurea in Scienze Statistiche<br>
+                    Calcolo numerico vettorizzato e manipolazione di dati tabulari
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <div class="columns">
+                    <div class="col">
+                        <h3>Parte 1 &mdash; Guidata</h3>
+                        <ol>
+                            <li>NumPy: array e operazioni vettorizzate</li>
+                            <li>Statistiche e confronto prestazioni</li>
+                            <li>Numeri casuali e Monte Carlo</li>
+                            <li>Pandas: caricare e esplorare CSV</li>
+                            <li>Pulizia dei dati</li>
+                            <li><code>groupby</code> per statistiche per gruppo</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <h3>Parte 2 &mdash; Autonoma</h3>
+                        <ul>
+                            <li>Esercizi base (1&ndash;3)</li>
+                            <li>Esercizi intermedi (4&ndash;6)</li>
+                            <li>Esercizio avanzato (7)</li>
+                        </ul>
+                        <div class="box box-blue" style="margin-top:1em;">
+                            <strong>Prerequisiti:</strong> Lezione F17 (NumPy, Pandas, analisi dati)
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Sezione NumPy -->
+            <section class="section-slide">
+                <h2>Parte 1 &mdash; NumPy</h2>
+                <p>Calcolo numerico vettorizzato</p>
+            </section>
+
+            <!-- SLIDE 4: Creare array NumPy -->
+            <section>
+                <h2>Creare array NumPy</h2>
+                <p>L'<code>ndarray</code> e un contenitore di dati omogenei: operazioni su interi vettori senza cicli.</p>
+                <pre><code class="language-python">import numpy as np
+
+# Da lista Python
+voti: np.ndarray = np.array([28, 25, 30, 22, 27, 18, 30, 24])
+print(f"Dtype: {voti.dtype}")    # int64
+print(f"Shape: {voti.shape}")    # (8,)
+print(f"Size:  {voti.size}")     # 8
+
+# Funzioni di creazione
+zeri: np.ndarray = np.zeros(10)
+sequenza: np.ndarray = np.arange(0, 100, 5)      # da 0 a 95, passo 5
+lineare: np.ndarray = np.linspace(0, 1, 11)       # 11 punti tra 0 e 1</code></pre>
+                <div class="box box-green">
+                    <strong>Concetto chiave:</strong> un array NumPy ha un tipo unico (<code>dtype</code>) e dimensione fissa &mdash; questo lo rende molto piu efficiente di una lista Python.
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Operazioni vettorizzate -->
+            <section>
+                <h2>Operazioni vettorizzate</h2>
+                <p>Le operazioni aritmetiche si applicano <strong>elemento per elemento</strong>:</p>
+                <pre><code class="language-python">voti: np.ndarray = np.array([28, 25, 30, 22, 27, 18, 30, 24])
+
+# Aritmetica elemento per elemento
+voti_normalizzati: np.ndarray = voti / 30.0
+voti_bonus: np.ndarray = voti + 2
+
+# Operazioni tra array
+pesi: np.ndarray = np.array([0.1, 0.1, 0.2, 0.1, 0.15, 0.1, 0.15, 0.1])
+media_pesata: float = float(np.sum(voti * pesi))
+print(f"Media pesata: {media_pesata:.2f}")</code></pre>
+                <div class="columns" style="margin-top:0.5em;">
+                    <div class="col">
+                        <h3>Confronti vettorizzati</h3>
+                        <pre><code class="language-python"># Restituiscono array di bool
+sufficienti = voti >= 18
+eccellenti = voti >= 28
+print(np.sum(eccellenti))  # 3</code></pre>
+                    </div>
+                    <div class="col">
+                        <h3>Indicizzazione booleana</h3>
+                        <pre><code class="language-python"># Filtro diretto
+voti_alti = voti[voti >= 27]
+# array([28, 30, 27, 30])</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Statistiche con NumPy -->
+            <section>
+                <h2>Statistiche con NumPy</h2>
+                <pre><code class="language-python">voti: np.ndarray = np.array([28, 25, 30, 22, 27, 18, 30, 24, 26, 29])
+
+print(f"Media:               {np.mean(voti):.2f}")
+print(f"Mediana:             {np.median(voti):.2f}")
+print(f"Deviazione standard: {np.std(voti):.2f}")
+print(f"Varianza:            {np.var(voti):.2f}")
+print(f"Minimo:              {np.min(voti)}")
+print(f"Massimo:             {np.max(voti)}")
+print(f"Percentile 25:       {np.percentile(voti, 25):.2f}")
+print(f"Percentile 75:       {np.percentile(voti, 75):.2f}")</code></pre>
+                <div class="box box-yellow">
+                    <strong>Nota:</strong> queste funzioni sono ottimizzate in C e operano su blocchi contigui di memoria, sfruttando le istruzioni SIMD del processore.
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Confronto prestazioni -->
+            <section>
+                <h2>Confronto prestazioni: Python vs NumPy</h2>
+                <pre><code class="language-python">import numpy as np
+import time
+
+n: int = 1_000_000
+dati_np: np.ndarray = np.random.randn(n)
+dati_lista: list[float] = dati_np.tolist()
+
+# Calcolo media con ciclo Python
+inizio: float = time.time()
+somma: float = 0.0
+for valore in dati_lista:
+    somma += valore
+media_ciclo: float = somma / n
+tempo_ciclo: float = time.time() - inizio
+
+# Calcolo media con NumPy
+inizio = time.time()
+media_numpy: float = float(np.mean(dati_np))
+tempo_numpy: float = time.time() - inizio
+
+print(f"Ciclo Python: {tempo_ciclo:.4f} s")
+print(f"NumPy:        {tempo_numpy:.6f} s")
+print(f"NumPy e circa {tempo_ciclo / tempo_numpy:.0f}x piu veloce")</code></pre>
+                <div class="box box-red">
+                    <strong>Risultato tipico:</strong> NumPy e 50&ndash;100x piu veloce. Il vantaggio cresce con la dimensione dei dati.
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Numeri casuali -->
+            <section>
+                <h2>NumPy random: generazione di numeri casuali</h2>
+                <pre><code class="language-python">import numpy as np
+
+# Generatore con seed per riproducibilita
+rng: np.random.Generator = np.random.default_rng(seed=42)
+
+# Distribuzione uniforme
+uniforme: np.ndarray = rng.uniform(low=0.0, high=1.0, size=10)
+
+# Distribuzione normale
+normale: np.ndarray = rng.normal(loc=25.0, scale=3.0, size=10)
+
+# Distribuzione di Poisson
+poisson: np.ndarray = rng.poisson(lam=5, size=10)
+
+# Campione grande: verificare i parametri
+campione: np.ndarray = rng.normal(loc=170, scale=10, size=10_000)
+print(f"Media campionaria:    {np.mean(campione):.2f}")   # ~170
+print(f"Dev. std campionaria: {np.std(campione):.2f}")    # ~10</code></pre>
+                <div class="box box-blue">
+                    <strong>Buona pratica:</strong> usate sempre <code>default_rng(seed=...)</code> per garantire la riproducibilita dei risultati.
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Monte Carlo -->
+            <section>
+                <h2>Simulazione Monte Carlo: stimare pi greco</h2>
+                <p>Generiamo punti casuali nel quadrato [-1,1] x [-1,1] e contiamo quanti cadono nel cerchio unitario.</p>
+                <div class="columns">
+                    <div class="col-60">
+                        <pre><code class="language-python">def stima_pi_montecarlo(n_punti: int,
+                        seed: int = 42) -> float:
+    """Stima pi greco con il metodo Monte Carlo."""
+    rng = np.random.default_rng(seed=seed)
+    x = rng.uniform(-1, 1, size=n_punti)
+    y = rng.uniform(-1, 1, size=n_punti)
+    distanza_quadrata = x**2 + y**2
+    dentro = int(np.sum(distanza_quadrata <= 1.0))
+    return 4.0 * dentro / n_punti
+
+for n in [100, 1_000, 10_000, 1_000_000]:
+    stima = stima_pi_montecarlo(n)
+    errore = abs(stima - np.pi)
+    print(f"n={n:>10,}  pi~={stima:.5f}"
+          f"  err={errore:.5f}")</code></pre>
+                    </div>
+                    <div class="col-40">
+                        <div class="box box-green">
+                            <strong>Logica:</strong><br>
+                            Area cerchio / Area quadrato = pi/4<br><br>
+                            Quindi: pi = 4 &times; (punti dentro / punti totali)<br><br>
+                            L'errore decresce come 1/&radic;n
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Sezione Pandas -->
+            <section class="section-slide">
+                <h2>Parte 1 &mdash; Pandas</h2>
+                <p>Manipolazione di dati tabulari</p>
+            </section>
+
+            <!-- SLIDE 11: Creare e caricare un DataFrame -->
+            <section>
+                <h2>Creare un DataFrame e salvarlo come CSV</h2>
+                <pre><code class="language-python">import pandas as pd
+import numpy as np
+
+rng: np.random.Generator = np.random.default_rng(seed=42)
+n: int = 200
+
+df: pd.DataFrame = pd.DataFrame({
+    "id_studente": range(1, n + 1),
+    "nome": [f"Studente_{i}" for i in range(1, n + 1)],
+    "corso": rng.choice(
+        ["Statistica", "Economia", "Sociologia", "Informatica"], size=n),
+    "anno": rng.choice([1, 2, 3], size=n),
+    "voto_medio": np.round(rng.normal(25, 3, size=n).clip(18, 30), 1),
+    "crediti": rng.choice([30, 60, 90, 120, 150, 180], size=n),
+    "regione": rng.choice(
+        ["Lombardia", "Lazio", "Campania", "Sicilia",
+         "Veneto", "Emilia-Romagna", "Toscana"], size=n),
+})
+
+df.to_csv("studenti.csv", index=False)
+print(f"Dimensioni: {df.shape[0]} righe x {df.shape[1]} colonne")</code></pre>
+            </section>
+
+            <!-- SLIDE 12: Esplorare un DataFrame -->
+            <section>
+                <h2>Esplorare un DataFrame</h2>
+                <pre><code class="language-python">df: pd.DataFrame = pd.read_csv("studenti.csv")
+
+df.head()           # Prime 5 righe
+df.info()           # Struttura: tipi, conteggio non-null
+df.describe()       # Statistiche (solo colonne numeriche)
+df["corso"].value_counts()    # Conteggio per categoria</code></pre>
+                <table>
+                    <thead>
+                        <tr><th>Metodo</th><th>Cosa restituisce</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>head(n)</code></td><td>Prime n righe (default 5)</td></tr>
+                        <tr><td><code>info()</code></td><td>Tipi, conteggio valori non-null, memoria</td></tr>
+                        <tr><td><code>describe()</code></td><td>count, mean, std, min, quartili, max</td></tr>
+                        <tr><td><code>shape</code></td><td>Tupla (righe, colonne)</td></tr>
+                        <tr><td><code>value_counts()</code></td><td>Frequenza di ogni valore in una colonna</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- SLIDE 13: Dati sporchi -->
+            <section>
+                <h2>Dati sporchi: problemi tipici</h2>
+                <pre><code class="language-python">dati_sporchi: dict[str, list] = {
+    "nome": ["Anna", "Marco", "Anna", "Luca", None, "Sara", "Marco", "Elena"],
+    "eta":  ["22",   "25",    "22",   "abc",  "30", "28",   "25",    "24"],
+    "voto": [28,     25,      28,     30,     np.nan, 22,   25,      np.nan],
+    "corso":["Stat", "Econ",  "Stat", "Stat", "Econ", "stat","Econ", "STAT"],
+}
+df: pd.DataFrame = pd.DataFrame(dati_sporchi)</code></pre>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-red">
+                            <strong>Problemi presenti:</strong>
+                            <ul>
+                                <li>Valori mancanti (<code>None</code>, <code>NaN</code>)</li>
+                                <li>Righe duplicate</li>
+                                <li>Tipi sbagliati (<code>"abc"</code> in eta)</li>
+                                <li>Stringhe inconsistenti (<code>"stat"</code>, <code>"STAT"</code>)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-blue">
+                            <strong>Individuare i problemi:</strong>
+                            <ul>
+                                <li><code>df.isnull().sum()</code></li>
+                                <li><code>df.duplicated().sum()</code></li>
+                                <li><code>df.dtypes</code></li>
+                                <li><code>df["corso"].unique()</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 14: Pulizia dei dati -->
+            <section>
+                <h2>Pulizia dei dati</h2>
+                <pre><code class="language-python"># 1. Rimuovere duplicati
+df_pulito: pd.DataFrame = df.drop_duplicates()
+
+# 2. Correggere tipi sbagliati (errori -> NaN)
+df_pulito["eta"] = pd.to_numeric(df_pulito["eta"], errors="coerce")
+
+# 3. Normalizzare stringhe
+df_pulito["corso"] = df_pulito["corso"].str.strip().str.capitalize()
+
+# 4. Gestire i mancanti
+# Rimuovere righe senza nome
+df_pulito = df_pulito.dropna(subset=["nome"])
+# Riempire voti mancanti con la mediana
+mediana_voto: float = df_pulito["voto"].median()
+df_pulito["voto"] = df_pulito["voto"].fillna(mediana_voto)
+# Riempire eta mancante con la media
+media_eta: float = df_pulito["eta"].mean()
+df_pulito["eta"] = df_pulito["eta"].fillna(round(media_eta))</code></pre>
+                <div class="box box-yellow">
+                    <strong>Attenzione:</strong> le decisioni prese nella pulizia (es. mediana vs eliminazione) possono influenzare significativamente i risultati dell'analisi.
+                </div>
+            </section>
+
+            <!-- SLIDE 15: dropna vs fillna -->
+            <section>
+                <h2><code>dropna()</code> vs <code>fillna()</code></h2>
+                <div class="compare">
+                    <div class="good">
+                        <h3><code>dropna()</code></h3>
+                        <p>Rimuove le righe (o colonne) con valori mancanti.</p>
+                        <pre><code class="language-python"># Rimuovi righe con qualsiasi NaN
+df.dropna()
+
+# Solo dove manca il nome
+df.dropna(subset=["nome"])</code></pre>
+                        <p><strong>Quando:</strong> pochi mancanti, oppure il dato e essenziale (es. chiave primaria).</p>
+                    </div>
+                    <div class="bad">
+                        <h3><code>fillna()</code></h3>
+                        <p>Sostituisce i valori mancanti con un valore scelto.</p>
+                        <pre><code class="language-python"># Con la mediana
+df["voto"].fillna(df["voto"].median())
+
+# Con un valore fisso
+df["nome"].fillna("Sconosciuto")</code></pre>
+                        <p><strong>Quando:</strong> molti mancanti, non si vuole perdere dati.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 16: Sezione groupby -->
+            <section class="section-slide">
+                <h2>groupby</h2>
+                <p>Il pattern split-apply-combine</p>
+            </section>
+
+            <!-- SLIDE 17: groupby base -->
+            <section>
+                <h2><code>groupby</code>: statistiche per categoria</h2>
+                <div class="diagram">
+                    DataFrame &rarr; <strong>split</strong> (dividi per gruppo) &rarr; <strong>apply</strong> (calcola funzione) &rarr; <strong>combine</strong> (ricombina risultati)
+                </div>
+                <pre><code class="language-python">df: pd.DataFrame = pd.read_csv("studenti.csv")
+
+# Media voto per corso
+media_per_corso: pd.DataFrame = (
+    df.groupby("corso")["voto_medio"]
+    .mean()
+    .round(2)
+    .sort_values(ascending=False)
+)
+print(media_per_corso)
+
+# Statistiche multiple per corso
+stats_corso: pd.DataFrame = (
+    df.groupby("corso")["voto_medio"]
+    .agg(["count", "mean", "std", "min", "max"])
+    .round(2)
+)</code></pre>
+            </section>
+
+            <!-- SLIDE 18: groupby avanzato -->
+            <section>
+                <h2><code>groupby</code> avanzato</h2>
+                <pre><code class="language-python"># Groupby con piu colonne + unstack per tabella pivot
+media_corso_anno: pd.DataFrame = (
+    df.groupby(["corso", "anno"])["voto_medio"]
+    .mean()
+    .round(2)
+    .unstack()       # anno diventa colonna
+)
+print(media_corso_anno)</code></pre>
+                <pre><code class="language-python"># Filtro + groupby combinati
+bravi: pd.DataFrame = df[df["voto_medio"] >= 27]
+
+crediti_regione: pd.Series = (
+    bravi.groupby("regione")["crediti"]
+    .mean()
+    .round(1)
+    .sort_values(ascending=False)
+)
+print(crediti_regione)</code></pre>
+                <div class="box box-green">
+                    <strong>Schema tipico:</strong> filtrare &rarr; raggruppare &rarr; aggregare &rarr; ordinare
+                </div>
+            </section>
+
+            <!-- SLIDE 19: Sezione esercizi autonomi -->
+            <section class="section-slide">
+                <h2>Parte 2 &mdash; Esercizi autonomi</h2>
+                <p>Risolvete senza guardare le soluzioni. Usate sempre type hints.</p>
+            </section>
+
+            <!-- SLIDE 20: Esercizio 1 -->
+            <section>
+                <h2>Esercizio 1 &mdash; Statistiche di un array <span class="badge badge-green">Base</span></h2>
+                <div class="box box-blue">
+                    <strong>Consegna:</strong> Create un array di 1000 valori da una distribuzione normale N(170, 8) &mdash; simulando altezze in cm.
+                </div>
+                <p>Calcolate e stampate:</p>
+                <ul>
+                    <li>Media, mediana, deviazione standard</li>
+                    <li>Minimo e massimo</li>
+                    <li>Percentile 5 e percentile 95</li>
+                    <li>Quanti valori cadono in [media &minus; 2*std, media + 2*std]</li>
+                    <li>Verificate che la percentuale sia vicina al 95%</li>
+                </ul>
+                <p><strong>Output atteso</strong> (valori approssimativi):</p>
+                <pre><code class="language-python">Media:         ~170.0
+Dev. std:      ~8.0
+Percentile 5:  ~156.8
+Percentile 95: ~183.2
+Valori in ±2 std: ~950/1000 (95.0%)</code></pre>
+            </section>
+
+            <!-- SLIDE 21: Esercizio 2 -->
+            <section>
+                <h2>Esercizio 2 &mdash; Selezione e filtro <span class="badge badge-green">Base</span></h2>
+                <div class="box box-blue">
+                    <strong>Consegna:</strong> Caricate <code>studenti.csv</code> e:
+                </div>
+                <ol>
+                    <li>Selezionate solo le colonne <code>nome</code>, <code>corso</code>, <code>voto_medio</code></li>
+                    <li>Filtrate gli studenti di "Statistica" con voto &gt; 26</li>
+                    <li>Ordinate per voto medio decrescente</li>
+                    <li>Stampate le prime 10 righe</li>
+                </ol>
+                <pre><code class="language-python"># Struttura della soluzione
+df: pd.DataFrame = pd.read_csv("studenti.csv")
+selezione = df[["nome", "corso", "voto_medio"]]
+filtro = selezione[
+    (selezione["corso"] == "Statistica") &
+    (selezione["voto_medio"] > 26)
+]
+risultato = filtro.sort_values("voto_medio", ascending=False)
+print(risultato.head(10))</code></pre>
+            </section>
+
+            <!-- SLIDE 22: Esercizio 3 -->
+            <section>
+                <h2>Esercizio 3 &mdash; Colonna calcolata <span class="badge badge-green">Base</span></h2>
+                <div class="box box-blue">
+                    <strong>Consegna:</strong> Aggiungete una colonna <code>fascia_voto</code> basata su queste regole:
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Voto medio</th><th>Fascia</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>&lt; 20</td><td><code>"insufficiente"</code></td></tr>
+                        <tr><td>20 &ndash; 24</td><td><code>"sufficiente"</code></td></tr>
+                        <tr><td>25 &ndash; 27</td><td><code>"buono"</code></td></tr>
+                        <tr><td>&ge; 28</td><td><code>"ottimo"</code></td></tr>
+                    </tbody>
+                </table>
+                <div class="box box-yellow">
+                    <strong>Suggerimento:</strong> usate <code>np.select()</code> con una lista di condizioni, oppure <code>pd.cut()</code>.
+                </div>
+                <pre><code class="language-python">condizioni = [df["voto_medio"] < 20,
+              df["voto_medio"] <= 24,
+              df["voto_medio"] <= 27]
+scelte = ["insufficiente", "sufficiente", "buono"]
+df["fascia_voto"] = np.select(condizioni, scelte, default="ottimo")</code></pre>
+            </section>
+
+            <!-- SLIDE 23: Esercizi 4-6 -->
+            <section>
+                <h2>Esercizi 4&ndash;6 <span class="badge badge-yellow">Intermedio</span></h2>
+                <div class="box box-blue">
+                    <strong>Esercizio 4 &mdash; Confronto tra gruppi:</strong> Usate <code>groupby</code> per rispondere: qual e il corso con media piu alta? La regione con piu crediti? Differenza tra anno 1 e anno 3?
+                </div>
+                <div class="box box-blue" style="margin-top:0.8em;">
+                    <strong>Esercizio 5 &mdash; Merge di DataFrame:</strong> Create due DataFrame (<code>esami</code> e <code>anagrafica</code>) e uniteli con un merge su <code>id_studente</code>. Calcolate la media voti per studente e per materia.
+                </div>
+                <div class="box box-blue" style="margin-top:0.8em;">
+                    <strong>Esercizio 6 &mdash; Pivot table:</strong> Dal DataFrame unito, create una pivot table con <code>pd.pivot_table()</code>:
+                </div>
+                <pre><code class="language-python">pivot: pd.DataFrame = pd.pivot_table(
+    df_unito,
+    values="voto",
+    index="corso",
+    columns="materia",
+    aggfunc="mean"
+).round(1).fillna("-")</code></pre>
+            </section>
+
+            <!-- SLIDE 24: Esercizio 7 -->
+            <section>
+                <h2>Esercizio 7 &mdash; Analisi completa <span class="badge badge-red">Avanzato</span></h2>
+                <div class="box box-red">
+                    <strong>Sfida:</strong> analisi end-to-end di un dataset simulato.
+                </div>
+                <ol>
+                    <li><strong>Generazione:</strong> 500+ righe &mdash; indagine sulla soddisfazione lavorativa con colonne: <code>id</code>, <code>settore</code>, <code>anni_esperienza</code>, <code>stipendio</code>, <code>soddisfazione</code>, <code>regione</code>, <code>titolo_studio</code></li>
+                    <li><strong>Esplorazione:</strong> dimensioni, tipi, head, describe, value_counts</li>
+                    <li><strong>Pulizia:</strong> inserite il 5% di NaN in stipendio e soddisfazione, poi gestite i mancanti</li>
+                    <li><strong>Analisi per gruppi:</strong> stipendio medio per settore, soddisfazione per titolo di studio, correlazione esperienza-stipendio</li>
+                    <li><strong>Export:</strong> salvate dataset pulito e riepilogo statistico come CSV</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 25: Domande di verifica -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol>
+                    <li>Differenza tra una lista Python e un array NumPy? Perche NumPy e piu veloce?</li>
+                    <li>Cosa fa <code>np.sum(array > 5)</code>? Perche funziona con booleani?</li>
+                    <li>Differenza tra <code>dropna()</code> e <code>fillna()</code>: quando preferire l'uno?</li>
+                    <li><code>df["col"]</code> vs <code>df[["col"]]</code> &mdash; che tipo restituisce ciascuna?</li>
+                    <li>Come funziona <code>groupby</code>? Descrivete split-apply-combine.</li>
+                    <li>Merge con <code>how="inner"</code> vs <code>how="left"</code>: cosa cambia?</li>
+                    <li>Perche l'errore Monte Carlo decresce con la radice di n?</li>
+                </ol>
+                <div class="box box-green">
+                    <strong>Prossimo laboratorio:</strong> Matplotlib, Seaborn e un mini-progetto riepilogativo che integra tutto il corso.
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L06_classi_oggetti.html" style="color: var(--accent);">&larr; L06: Classi e oggetti</a></div><div><a href="L08_visualizzazione_progetto.html" style="color: var(--accent);">L08: Visualizzazione e progetto &rarr;</a></div><div><a href="../dispense/laboratori/L07_numpy_pandas.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L07_numpy_pandas/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; L07</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

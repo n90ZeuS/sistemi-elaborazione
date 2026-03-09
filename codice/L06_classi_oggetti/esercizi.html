@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L06_classi_oggetti/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L06_classi_oggetti.html">Dispensa</a> &bull; <a href="../../presentazioni/L06_classi_oggetti.html">Presentazione</a></nav>
+<h1>L06_classi_oggetti/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># L06 — Classi e oggetti</span>
+<span class="cm"># Esercizi per il laboratorio 06</span>
+<span class="cm">#</span>
+<span class="cm"># Esercizi pratici su programmazione orientata agli oggetti:</span>
+<span class="cm"># classi, metodi, ereditarieta&#x27;, incapsulamento.</span>
+<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
+
+<span class="kw">from</span> __future__ <span class="kw">import</span> annotations
+<span class="kw">import</span> math
+<span class="kw">from</span> typing <span class="kw">import</span> Optional, Any
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 1: Punto2D con operazioni geometriche</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">class</span> <span class="fn">Punto2D</span>:
+    <span class="st">&quot;&quot;&quot;
+    Rappresenta un punto nel piano cartesiano 2D.
+    Supporta operazioni geometriche: distanza, traslazione, somma, ecc.
+    &quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>, y: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self._x: <span class="nb">float</span> <span class="op">=</span> x
+        self._y: <span class="nb">float</span> <span class="op">=</span> y
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">x</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> self._x
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">y</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> self._y
+
+    <span class="kw">def</span> <span class="fn">distanza_da</span>(<span class="fn">self</span>, altro: Punto2D) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Calcola la distanza euclidea tra due punti.&quot;&quot;&quot;</span>
+        dx: <span class="nb">float</span> <span class="op">=</span> self._x <span class="op">-</span> altro._x
+        dy: <span class="nb">float</span> <span class="op">=</span> self._y <span class="op">-</span> altro._y
+        <span class="kw">return</span> math.sqrt(dx <span class="op">*</span> dx <span class="op">+</span> dy <span class="op">*</span> dy)
+
+    <span class="kw">def</span> <span class="fn">distanza_origine</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Calcola la distanza dall&#x27;origine (0, 0).&quot;&quot;&quot;</span>
+        <span class="kw">return</span> math.sqrt(self._x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> self._y <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+    <span class="kw">def</span> <span class="fn">trasla</span>(<span class="fn">self</span>, dx: <span class="nb">float</span>, dy: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> Punto2D:
+        <span class="st">&quot;&quot;&quot;Restituisce un nuovo punto traslato di (dx, dy).&quot;&quot;&quot;</span>
+        <span class="kw">return</span> Punto2D(self._x <span class="op">+</span> dx, self._y <span class="op">+</span> dy)
+
+    <span class="kw">def</span> <span class="fn">punto_medio</span>(<span class="fn">self</span>, altro: Punto2D) <span class="op">-</span><span class="op">&gt;</span> Punto2D:
+        <span class="st">&quot;&quot;&quot;Calcola il punto medio tra self e altro.&quot;&quot;&quot;</span>
+        mx: <span class="nb">float</span> <span class="op">=</span> (self._x <span class="op">+</span> altro._x) <span class="op">/</span> <span class="mi">2.0</span>
+        my: <span class="nb">float</span> <span class="op">=</span> (self._y <span class="op">+</span> altro._y) <span class="op">/</span> <span class="mi">2.0</span>
+        <span class="kw">return</span> Punto2D(mx, my)
+
+    <span class="kw">def</span> <span class="fn">__add__</span>(<span class="fn">self</span>, altro: Punto2D) <span class="op">-</span><span class="op">&gt;</span> Punto2D:
+        <span class="st">&quot;&quot;&quot;Somma vettoriale: P1 + P2.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> Punto2D(self._x <span class="op">+</span> altro._x, self._y <span class="op">+</span> altro._y)
+
+    <span class="kw">def</span> <span class="fn">__sub__</span>(<span class="fn">self</span>, altro: Punto2D) <span class="op">-</span><span class="op">&gt;</span> Punto2D:
+        <span class="st">&quot;&quot;&quot;Differenza vettoriale: P1 - P2.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> Punto2D(self._x <span class="op">-</span> altro._x, self._y <span class="op">-</span> altro._y)
+
+    <span class="kw">def</span> <span class="fn">__mul__</span>(<span class="fn">self</span>, scalare: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> Punto2D:
+        <span class="st">&quot;&quot;&quot;Moltiplicazione per scalare.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> Punto2D(self._x <span class="op">*</span> scalare, self._y <span class="op">*</span> scalare)
+
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="fn">self</span>, altro: <span class="nb">object</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(altro, Punto2D):
+            <span class="kw">return</span> NotImplemented
+        <span class="kw">return</span> <span class="nb">abs</span>(self._x <span class="op">-</span> altro._x) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span> <span class="kw">and</span> <span class="nb">abs</span>(self._y <span class="op">-</span> altro._y) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Punto2D({self._x}, {self._y})&quot;</span>
+
+
+<span class="cm"># --- Test Punto2D ---</span>
+p1: Punto2D <span class="op">=</span> Punto2D(<span class="mi">0</span>, <span class="mi">0</span>)
+p2: Punto2D <span class="op">=</span> Punto2D(<span class="mi">3</span>, <span class="mi">4</span>)
+p3: Punto2D <span class="op">=</span> Punto2D(<span class="mi">1</span>, <span class="mi">1</span>)
+
+<span class="cm"># Distanza</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(p1.distanza_da(p2) <span class="op">-</span> <span class="mi">5.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>, <span class="st">&quot;Distanza (0,0)-(3,4) deve essere 5&quot;</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(p2.distanza_origine() <span class="op">-</span> <span class="mi">5.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+<span class="cm"># Traslazione</span>
+p_traslato: Punto2D <span class="op">=</span> p3.trasla(<span class="mi">2</span>, <span class="mi">3</span>)
+<span class="kw">assert</span> p_traslato <span class="op">=</span><span class="op">=</span> Punto2D(<span class="mi">3</span>, <span class="mi">4</span>)
+
+<span class="cm"># Punto medio</span>
+pm: Punto2D <span class="op">=</span> p1.punto_medio(p2)
+<span class="kw">assert</span> pm <span class="op">=</span><span class="op">=</span> Punto2D(<span class="mi">1.5</span>, <span class="mi">2.0</span>)
+
+<span class="cm"># Operazioni vettoriali</span>
+somma: Punto2D <span class="op">=</span> p2 <span class="op">+</span> p3
+<span class="kw">assert</span> somma <span class="op">=</span><span class="op">=</span> Punto2D(<span class="mi">4</span>, <span class="mi">5</span>)
+
+diff: Punto2D <span class="op">=</span> p2 <span class="op">-</span> p3
+<span class="kw">assert</span> diff <span class="op">=</span><span class="op">=</span> Punto2D(<span class="mi">2</span>, <span class="mi">3</span>)
+
+scalato: Punto2D <span class="op">=</span> p3 <span class="op">*</span> <span class="mi">3</span>
+<span class="kw">assert</span> scalato <span class="op">=</span><span class="op">=</span> Punto2D(<span class="mi">3</span>, <span class="mi">3</span>)
+
+<span class="cm"># Proprieta&#x27; della distanza: d(A,B) = d(B,A)</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(p1.distanza_da(p2) <span class="op">-</span> p2.distanza_da(p1)) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Punto2D): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 2: Classe Polinomio</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">class</span> <span class="fn">Polinomio</span>:
+    <span class="st">&quot;&quot;&quot;
+    Rappresenta un polinomio a coefficienti reali.
+    I coefficienti sono memorizzati come lista dove l&#x27;indice corrisponde
+    al grado: coefficienti[i] e&#x27; il coefficiente di x^i.
+    Esempio: [3, 2, 1] rappresenta 3 + 2x + x^2
+    &quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, coefficienti: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="cm"># Rimuovi zeri finali (tranne se il polinomio e&#x27; zero)</span>
+        <span class="kw">while</span> <span class="nb">len</span>(coefficienti) <span class="op">&gt;</span> <span class="mi">1</span> <span class="kw">and</span> coefficienti[<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            coefficienti.pop()
+        self._coeff: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> coefficienti.copy()
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">grado</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="st">&quot;&quot;&quot;Restituisce il grado del polinomio.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="nb">len</span>(self._coeff) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span> <span class="kw">and</span> self._coeff[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">return</span> <span class="mi">0</span>
+        <span class="kw">return</span> <span class="nb">len</span>(self._coeff) <span class="op">-</span> <span class="mi">1</span>
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">coefficienti</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+        <span class="kw">return</span> self._coeff.copy()
+
+    <span class="kw">def</span> <span class="fn">valuta</span>(<span class="fn">self</span>, x: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;
+        Calcola il valore del polinomio nel punto x.
+        Usa il metodo di Horner per efficienza: O(n).
+        &quot;&quot;&quot;</span>
+        risultato: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+        <span class="cm"># Metodo di Horner: p(x) = ((...((a_n * x + a_{n-1}) * x + a_{n-2}) * x + ...) * x + a_0</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(self._coeff) <span class="op">-</span> <span class="mi">1</span>, <span class="op">-</span><span class="mi">1</span>, <span class="op">-</span><span class="mi">1</span>):
+            risultato <span class="op">=</span> risultato <span class="op">*</span> x <span class="op">+</span> self._coeff[i]
+        <span class="kw">return</span> risultato
+
+    <span class="kw">def</span> <span class="fn">derivata</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> Polinomio:
+        <span class="st">&quot;&quot;&quot;Calcola la derivata del polinomio.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> self.grado <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">return</span> Polinomio([<span class="mi">0</span>])
+        nuovi_coeff: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [
+            self._coeff[i] <span class="op">*</span> i <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="nb">len</span>(self._coeff))
+        ]
+        <span class="kw">return</span> Polinomio(nuovi_coeff)
+
+    <span class="kw">def</span> <span class="fn">__add__</span>(<span class="fn">self</span>, altro: Polinomio) <span class="op">-</span><span class="op">&gt;</span> Polinomio:
+        <span class="st">&quot;&quot;&quot;Somma di due polinomi.&quot;&quot;&quot;</span>
+        lunghezza: <span class="nb">int</span> <span class="op">=</span> <span class="nb">max</span>(<span class="nb">len</span>(self._coeff), <span class="nb">len</span>(altro._coeff))
+        risultato: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(lunghezza):
+            a: <span class="nb">float</span> <span class="op">=</span> self._coeff[i] <span class="kw">if</span> i <span class="op">&lt;</span> <span class="nb">len</span>(self._coeff) <span class="kw">else</span> <span class="mi">0.0</span>
+            b: <span class="nb">float</span> <span class="op">=</span> altro._coeff[i] <span class="kw">if</span> i <span class="op">&lt;</span> <span class="nb">len</span>(altro._coeff) <span class="kw">else</span> <span class="mi">0.0</span>
+            risultato.append(a <span class="op">+</span> b)
+        <span class="kw">return</span> Polinomio(risultato)
+
+    <span class="kw">def</span> <span class="fn">__mul__</span>(<span class="fn">self</span>, altro: Polinomio) <span class="op">-</span><span class="op">&gt;</span> Polinomio:
+        <span class="st">&quot;&quot;&quot;Prodotto di due polinomi.&quot;&quot;&quot;</span>
+        n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(self._coeff) <span class="op">+</span> <span class="nb">len</span>(altro._coeff) <span class="op">-</span> <span class="mi">1</span>
+        risultato: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">0.0</span>] <span class="op">*</span> n
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(self._coeff)):
+            <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(altro._coeff)):
+                risultato[i <span class="op">+</span> j] <span class="op">+</span><span class="op">=</span> self._coeff[i] <span class="op">*</span> altro._coeff[j]
+        <span class="kw">return</span> Polinomio(risultato)
+
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="fn">self</span>, altro: <span class="nb">object</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(altro, Polinomio):
+            <span class="kw">return</span> NotImplemented
+        <span class="kw">return</span> self._coeff <span class="op">=</span><span class="op">=</span> altro._coeff
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        termini: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+        <span class="kw">for</span> i, c <span class="kw">in</span> <span class="nb">enumerate</span>(self._coeff):
+            <span class="kw">if</span> c <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+                <span class="kw">continue</span>
+            <span class="kw">if</span> i <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+                termini.append(<span class="st">f&quot;{c}&quot;</span>)
+            <span class="kw">elif</span> i <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+                termini.append(<span class="st">f&quot;{c}x&quot;</span>)
+            <span class="kw">else</span>:
+                termini.append(<span class="st">f&quot;{c}x^{i}&quot;</span>)
+        <span class="kw">return</span> <span class="st">&quot; + &quot;</span>.join(termini) <span class="kw">if</span> termini <span class="kw">else</span> <span class="st">&quot;0&quot;</span>
+
+
+<span class="cm"># --- Test Polinomio ---</span>
+<span class="cm"># p(x) = 3 + 2x + x^2</span>
+p: Polinomio <span class="op">=</span> Polinomio([<span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>])
+<span class="kw">assert</span> p.grado <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> p.valuta(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+<span class="kw">assert</span> p.valuta(<span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>      <span class="cm"># 3 + 2 + 1 = 6</span>
+<span class="kw">assert</span> p.valuta(<span class="mi">2</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">11</span>     <span class="cm"># 3 + 4 + 4 = 11</span>
+<span class="kw">assert</span> p.valuta(<span class="op">-</span><span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>     <span class="cm"># 3 - 2 + 1 = 2</span>
+
+<span class="cm"># Derivata: p&#x27;(x) = 2 + 2x</span>
+dp: Polinomio <span class="op">=</span> p.derivata()
+<span class="kw">assert</span> dp <span class="op">=</span><span class="op">=</span> Polinomio([<span class="mi">2</span>, <span class="mi">2</span>])
+<span class="kw">assert</span> dp.valuta(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> dp.valuta(<span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
+
+<span class="cm"># Somma: (3 + 2x + x^2) + (1 + x) = 4 + 3x + x^2</span>
+q: Polinomio <span class="op">=</span> Polinomio([<span class="mi">1</span>, <span class="mi">1</span>])
+somma_p: Polinomio <span class="op">=</span> p <span class="op">+</span> q
+<span class="kw">assert</span> somma_p <span class="op">=</span><span class="op">=</span> Polinomio([<span class="mi">4</span>, <span class="mi">3</span>, <span class="mi">1</span>])
+
+<span class="cm"># Prodotto: (1 + x) * (1 + x) = 1 + 2x + x^2</span>
+r: Polinomio <span class="op">=</span> Polinomio([<span class="mi">1</span>, <span class="mi">1</span>])
+prodotto_p: Polinomio <span class="op">=</span> r <span class="op">*</span> r
+<span class="kw">assert</span> prodotto_p <span class="op">=</span><span class="op">=</span> Polinomio([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">1</span>])
+
+<span class="cm"># Polinomio zero</span>
+zero: Polinomio <span class="op">=</span> Polinomio([<span class="mi">0</span>])
+<span class="kw">assert</span> zero.grado <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+<span class="kw">assert</span> zero.valuta(<span class="mi">42</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Polinomio): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 3: Lista concatenata (Linked List)</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">class</span> <span class="fn">Nodo</span>:
+    <span class="st">&quot;&quot;&quot;Un nodo della lista concatenata.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, dato: Any, successivo: Optional[Nodo] <span class="op">=</span> <span class="kw">None</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.dato: Any <span class="op">=</span> dato
+        self.successivo: Optional[Nodo] <span class="op">=</span> successivo
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Nodo({self.dato})&quot;</span>
+
+
+<span class="kw">class</span> <span class="fn">ListaConcatenata</span>:
+    <span class="st">&quot;&quot;&quot;
+    Implementazione di una lista concatenata semplice (singly linked list).
+    Ogni nodo contiene un dato e un puntatore al nodo successivo.
+    &quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self._testa: Optional[Nodo] <span class="op">=</span> <span class="kw">None</span>
+        self._lunghezza: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> self._lunghezza
+
+    <span class="kw">def</span> <span class="fn">is_vuota</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">return</span> self._testa <span class="kw">is</span> <span class="kw">None</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi_in_testa</span>(<span class="fn">self</span>, dato: Any) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="st">&quot;&quot;&quot;Inserisce un elemento in testa alla lista - O(1).&quot;&quot;&quot;</span>
+        nuovo_nodo: Nodo <span class="op">=</span> Nodo(dato, self._testa)
+        self._testa <span class="op">=</span> nuovo_nodo
+        self._lunghezza <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi_in_coda</span>(<span class="fn">self</span>, dato: Any) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="st">&quot;&quot;&quot;Inserisce un elemento in coda alla lista - O(n).&quot;&quot;&quot;</span>
+        nuovo_nodo: Nodo <span class="op">=</span> Nodo(dato)
+        <span class="kw">if</span> self._testa <span class="kw">is</span> <span class="kw">None</span>:
+            self._testa <span class="op">=</span> nuovo_nodo
+        <span class="kw">else</span>:
+            corrente: Nodo <span class="op">=</span> self._testa
+            <span class="kw">while</span> corrente.successivo <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:
+                corrente <span class="op">=</span> corrente.successivo
+            corrente.successivo <span class="op">=</span> nuovo_nodo
+        self._lunghezza <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+    <span class="kw">def</span> <span class="fn">rimuovi_testa</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> Any:
+        <span class="st">&quot;&quot;&quot;Rimuove e restituisce l&#x27;elemento in testa - O(1).&quot;&quot;&quot;</span>
+        <span class="kw">if</span> self._testa <span class="kw">is</span> <span class="kw">None</span>:
+            <span class="kw">raise</span> <span class="nb">IndexError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+        dato: Any <span class="op">=</span> self._testa.dato
+        self._testa <span class="op">=</span> self._testa.successivo
+        self._lunghezza <span class="op">-</span><span class="op">=</span> <span class="mi">1</span>
+        <span class="kw">return</span> dato
+
+    <span class="kw">def</span> <span class="fn">cerca</span>(<span class="fn">self</span>, dato: Any) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="st">&quot;&quot;&quot;Verifica se un dato e&#x27; presente nella lista - O(n).&quot;&quot;&quot;</span>
+        corrente: Optional[Nodo] <span class="op">=</span> self._testa
+        <span class="kw">while</span> corrente <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:
+            <span class="kw">if</span> corrente.dato <span class="op">=</span><span class="op">=</span> dato:
+                <span class="kw">return</span> <span class="kw">True</span>
+            corrente <span class="op">=</span> corrente.successivo
+        <span class="kw">return</span> <span class="kw">False</span>
+
+    <span class="kw">def</span> <span class="fn">ottieni</span>(<span class="fn">self</span>, indice: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> Any:
+        <span class="st">&quot;&quot;&quot;Restituisce l&#x27;elemento all&#x27;indice specificato - O(n).&quot;&quot;&quot;</span>
+        <span class="kw">if</span> indice <span class="op">&lt;</span> <span class="mi">0</span> <span class="kw">or</span> indice <span class="op">&gt;</span><span class="op">=</span> self._lunghezza:
+            <span class="kw">raise</span> <span class="nb">IndexError</span>(<span class="st">f&quot;Indice {indice} fuori range [0, {self._lunghezza - 1}]&quot;</span>)
+        corrente: Optional[Nodo] <span class="op">=</span> self._testa
+        <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(indice):
+            <span class="kw">assert</span> corrente <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>
+            corrente <span class="op">=</span> corrente.successivo
+        <span class="kw">assert</span> corrente <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>
+        <span class="kw">return</span> corrente.dato
+
+    <span class="kw">def</span> <span class="fn">to_list</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Any]:
+        <span class="st">&quot;&quot;&quot;Converte la lista concatenata in una lista Python.&quot;&quot;&quot;</span>
+        risultato: <span class="nb">list</span>[Any] <span class="op">=</span> []
+        corrente: Optional[Nodo] <span class="op">=</span> self._testa
+        <span class="kw">while</span> corrente <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:
+            risultato.append(corrente.dato)
+            corrente <span class="op">=</span> corrente.successivo
+        <span class="kw">return</span> risultato
+
+    <span class="kw">def</span> <span class="fn">inverti</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="st">&quot;&quot;&quot;Inverte la lista in-place - O(n).&quot;&quot;&quot;</span>
+        precedente: Optional[Nodo] <span class="op">=</span> <span class="kw">None</span>
+        corrente: Optional[Nodo] <span class="op">=</span> self._testa
+
+        <span class="kw">while</span> corrente <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:
+            successivo: Optional[Nodo] <span class="op">=</span> corrente.successivo
+            corrente.successivo <span class="op">=</span> precedente
+            precedente <span class="op">=</span> corrente
+            corrente <span class="op">=</span> successivo
+
+        self._testa <span class="op">=</span> precedente
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        elementi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="nb">str</span>(e) <span class="kw">for</span> e <span class="kw">in</span> self.to_list()]
+        <span class="kw">return</span> <span class="st">&quot; -&gt; &quot;</span>.join(elementi) <span class="op">+</span> <span class="st">&quot; -&gt; None&quot;</span>
+
+
+<span class="cm"># --- Test lista concatenata ---</span>
+ll: ListaConcatenata <span class="op">=</span> ListaConcatenata()
+<span class="kw">assert</span> ll.is_vuota() <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> <span class="nb">len</span>(ll) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+
+<span class="cm"># Aggiungi elementi</span>
+ll.aggiungi_in_coda(<span class="mi">1</span>)
+ll.aggiungi_in_coda(<span class="mi">2</span>)
+ll.aggiungi_in_coda(<span class="mi">3</span>)
+ll.aggiungi_in_testa(<span class="mi">0</span>)
+
+<span class="kw">assert</span> <span class="nb">len</span>(ll) <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
+<span class="kw">assert</span> ll.to_list() <span class="op">=</span><span class="op">=</span> [<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+<span class="kw">assert</span> ll.is_vuota() <span class="kw">is</span> <span class="kw">False</span>
+
+<span class="cm"># Cerca</span>
+<span class="kw">assert</span> ll.cerca(<span class="mi">2</span>) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> ll.cerca(<span class="mi">99</span>) <span class="kw">is</span> <span class="kw">False</span>
+
+<span class="cm"># Ottieni per indice</span>
+<span class="kw">assert</span> ll.ottieni(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+<span class="kw">assert</span> ll.ottieni(<span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+
+<span class="cm"># Rimuovi testa</span>
+rimosso: Any <span class="op">=</span> ll.rimuovi_testa()
+<span class="kw">assert</span> rimosso <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+<span class="kw">assert</span> ll.to_list() <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+
+<span class="cm"># Inverti</span>
+ll.inverti()
+<span class="kw">assert</span> ll.to_list() <span class="op">=</span><span class="op">=</span> [<span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">1</span>]
+
+<span class="cm"># Test errore su indice fuori range</span>
+errore_indice: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+<span class="kw">try</span>:
+    ll.ottieni(<span class="mi">10</span>)
+<span class="kw">except</span> <span class="nb">IndexError</span>:
+    errore_indice <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">assert</span> errore_indice
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (Lista concatenata): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 4: Sistema Studente/Corso con iscrizioni</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">class</span> <span class="fn">Studente</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta uno studente con matricola, nome e voti.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, matricola: <span class="nb">str</span>, nome: <span class="nb">str</span>, cognome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self._matricola: <span class="nb">str</span> <span class="op">=</span> matricola
+        self._nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self._cognome: <span class="nb">str</span> <span class="op">=</span> cognome
+        self._voti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> {}  <span class="cm"># materia -&gt; voto</span>
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">matricola</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> self._matricola
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">nome_completo</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;{self._nome} {self._cognome}&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">registra_voto</span>(<span class="fn">self</span>, materia: <span class="nb">str</span>, voto: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="st">&quot;&quot;&quot;Registra un voto per una materia.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> voto <span class="op">&lt;</span> <span class="mi">18</span> <span class="kw">or</span> voto <span class="op">&gt;</span> <span class="mi">30</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto {voto} non valido (deve essere tra 18 e 30)&quot;</span>)
+        self._voti[materia] <span class="op">=</span> voto
+
+    <span class="kw">def</span> <span class="fn">media_voti</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Calcola la media dei voti.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="kw">not</span> self._voti:
+            <span class="kw">return</span> <span class="mi">0.0</span>
+        <span class="kw">return</span> <span class="nb">round</span>(<span class="nb">sum</span>(self._voti.values()) <span class="op">/</span> <span class="nb">len</span>(self._voti), <span class="mi">2</span>)
+
+    <span class="kw">def</span> <span class="fn">num_esami</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="st">&quot;&quot;&quot;Restituisce il numero di esami superati.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> <span class="nb">len</span>(self._voti)
+
+    <span class="kw">def</span> <span class="fn">ha_superato</span>(<span class="fn">self</span>, materia: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="st">&quot;&quot;&quot;Verifica se lo studente ha superato un esame.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> materia <span class="kw">in</span> self._voti
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Studente({self._matricola}, {self.nome_completo})&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="fn">self</span>, altro: <span class="nb">object</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="nb">isinstance</span>(altro, Studente):
+            <span class="kw">return</span> NotImplemented
+        <span class="kw">return</span> self._matricola <span class="op">=</span><span class="op">=</span> altro._matricola
+
+
+<span class="kw">class</span> <span class="fn">Corso</span>:
+    <span class="st">&quot;&quot;&quot;Rappresenta un corso universitario con studenti iscritti.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, codice: <span class="nb">str</span>, nome: <span class="nb">str</span>, crediti: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self._codice: <span class="nb">str</span> <span class="op">=</span> codice
+        self._nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self._crediti: <span class="nb">int</span> <span class="op">=</span> crediti
+        self._iscritti: <span class="nb">list</span>[Studente] <span class="op">=</span> []
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">codice</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> self._codice
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">nome</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> self._nome
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">crediti</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> self._crediti
+
+    <span class="kw">def</span> <span class="fn">iscrivi</span>(<span class="fn">self</span>, studente: Studente) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="st">&quot;&quot;&quot;
+        Iscrive uno studente al corso.
+        Restituisce True se l&#x27;iscrizione e&#x27; avvenuta, False se gia&#x27; iscritto.
+        &quot;&quot;&quot;</span>
+        <span class="kw">if</span> studente <span class="kw">in</span> self._iscritti:
+            <span class="kw">return</span> <span class="kw">False</span>
+        self._iscritti.append(studente)
+        <span class="kw">return</span> <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">disiscrivi</span>(<span class="fn">self</span>, studente: Studente) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="st">&quot;&quot;&quot;Rimuove uno studente dal corso.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> studente <span class="kw">not</span> <span class="kw">in</span> self._iscritti:
+            <span class="kw">return</span> <span class="kw">False</span>
+        self._iscritti.remove(studente)
+        <span class="kw">return</span> <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">num_iscritti</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> <span class="nb">len</span>(self._iscritti)
+
+    <span class="kw">def</span> <span class="fn">lista_iscritti</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+        <span class="st">&quot;&quot;&quot;Restituisce la lista dei nomi degli iscritti, ordinata.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> <span class="nb">sorted</span>([s.nome_completo <span class="kw">for</span> s <span class="kw">in</span> self._iscritti])
+
+    <span class="kw">def</span> <span class="fn">media_corso</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;
+        Calcola la media dei voti degli studenti iscritti che hanno
+        superato l&#x27;esame di questo corso.
+        &quot;&quot;&quot;</span>
+        voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+        <span class="kw">for</span> studente <span class="kw">in</span> self._iscritti:
+            <span class="kw">if</span> studente.ha_superato(self._nome):
+                voti.append(studente.media_voti())
+        <span class="kw">if</span> <span class="kw">not</span> voti:
+            <span class="kw">return</span> <span class="mi">0.0</span>
+        <span class="kw">return</span> <span class="nb">round</span>(<span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti), <span class="mi">2</span>)
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Corso({self._codice}, {self._nome}, {self.num_iscritti()} iscritti)&quot;</span>
+
+
+<span class="cm"># --- Test Studente e Corso ---</span>
+<span class="cm"># Crea studenti</span>
+alice: Studente <span class="op">=</span> Studente(<span class="st">&quot;MAT001&quot;</span>, <span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Rossi&quot;</span>)
+bob: Studente <span class="op">=</span> Studente(<span class="st">&quot;MAT002&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Bianchi&quot;</span>)
+carla: Studente <span class="op">=</span> Studente(<span class="st">&quot;MAT003&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Verdi&quot;</span>)
+
+<span class="cm"># Registra voti</span>
+alice.registra_voto(<span class="st">&quot;Analisi I&quot;</span>, <span class="mi">28</span>)
+alice.registra_voto(<span class="st">&quot;Programmazione&quot;</span>, <span class="mi">30</span>)
+bob.registra_voto(<span class="st">&quot;Analisi I&quot;</span>, <span class="mi">24</span>)
+bob.registra_voto(<span class="st">&quot;Programmazione&quot;</span>, <span class="mi">22</span>)
+carla.registra_voto(<span class="st">&quot;Programmazione&quot;</span>, <span class="mi">27</span>)
+
+<span class="kw">assert</span> alice.media_voti() <span class="op">=</span><span class="op">=</span> <span class="mi">29.0</span>
+<span class="kw">assert</span> bob.media_voti() <span class="op">=</span><span class="op">=</span> <span class="mi">23.0</span>
+<span class="kw">assert</span> alice.num_esami() <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> alice.ha_superato(<span class="st">&quot;Analisi I&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> carla.ha_superato(<span class="st">&quot;Analisi I&quot;</span>) <span class="kw">is</span> <span class="kw">False</span>
+
+<span class="cm"># Test voto non valido</span>
+errore_voto: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+<span class="kw">try</span>:
+    alice.registra_voto(<span class="st">&quot;Fisica&quot;</span>, <span class="mi">15</span>)  <span class="cm"># troppo basso</span>
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    errore_voto <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">assert</span> errore_voto
+
+<span class="cm"># Crea corsi</span>
+analisi: Corso <span class="op">=</span> Corso(<span class="st">&quot;MAT101&quot;</span>, <span class="st">&quot;Analisi I&quot;</span>, <span class="mi">12</span>)
+prog: Corso <span class="op">=</span> Corso(<span class="st">&quot;INF101&quot;</span>, <span class="st">&quot;Programmazione&quot;</span>, <span class="mi">9</span>)
+
+<span class="cm"># Iscrizioni</span>
+<span class="kw">assert</span> analisi.iscrivi(alice) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> analisi.iscrivi(bob) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> analisi.iscrivi(alice) <span class="kw">is</span> <span class="kw">False</span>   <span class="cm"># gia&#x27; iscritta</span>
+<span class="kw">assert</span> analisi.num_iscritti() <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+
+<span class="kw">assert</span> prog.iscrivi(alice) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> prog.iscrivi(bob) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> prog.iscrivi(carla) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> prog.num_iscritti() <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+
+<span class="cm"># Lista iscritti (ordinata alfabeticamente)</span>
+<span class="kw">assert</span> analisi.lista_iscritti() <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;Alice Rossi&quot;</span>, <span class="st">&quot;Bob Bianchi&quot;</span>]
+
+<span class="cm"># Disiscrizione</span>
+<span class="kw">assert</span> analisi.disiscrivi(bob) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> analisi.num_iscritti() <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">assert</span> analisi.disiscrivi(bob) <span class="kw">is</span> <span class="kw">False</span>  <span class="cm"># non piu&#x27; iscritto</span>
+
+<span class="cm"># Uguaglianza basata su matricola</span>
+alice_copia: Studente <span class="op">=</span> Studente(<span class="st">&quot;MAT001&quot;</span>, <span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Rossi&quot;</span>)
+<span class="kw">assert</span> alice <span class="op">=</span><span class="op">=</span> alice_copia
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (Studente/Corso): SUPERATO&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 06 SUPERATI!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

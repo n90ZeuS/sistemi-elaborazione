@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operatori Precedenza — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a></nav>
+<h1>Operatori Precedenza</h1>
+
+<h1>Operatori e Precedenza in Python</h1>
+<p>Scheda di riferimento rapido: tabella completa della precedenza, esempi ed errori comuni.</p>
+<hr>
+<h2>Tabella di precedenza (dall'alto = priorita' maggiore)</h2>
+<table>
+<thead><tr>
+<th>Priorita'</th>
+<th>Operatore</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+</tr></thead><tbody>
+<tr>
+<td>1 (max)</td>
+<td><code>()</code></td>
+<td>Parentesi (raggruppamento)</td>
+<td><code>(2 + 3) * 4</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>**</code></td>
+<td>Esponenziazione</td>
+<td><code>2 ** 3</code> = 8</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>+x</code>, <code>-x</code>, <code>~x</code></td>
+<td>Operatori unari (segno, NOT bit)</td>
+<td><code>-5</code>, <code>~0</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></td>
+<td>Moltiplicazione, divisione, div. intera, modulo</td>
+<td><code>7 // 2</code> = 3</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>+</code>, <code>-</code></td>
+<td>Addizione, sottrazione</td>
+<td><code>3 + 4</code> = 7</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code><<</code>, <code>>></code></td>
+<td>Shift bit a bit</td>
+<td><code>1 << 3</code> = 8</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>&</code></td>
+<td>AND bit a bit</td>
+<td><code>5 & 3</code> = 1</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>^</code></td>
+<td>XOR bit a bit</td>
+<td><code>5 ^ 3</code> = 6</td>
+</tr>
+<tr>
+<td>9</td>
+<td>`\</td>
+<td>`</td>
+<td>OR bit a bit</td>
+<td>`5 \</td>
+<td>3` = 7</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>==</code>, <code>!=</code>, <code><</code>, <code>></code>, <code><=</code>, <code>>=</code>, <code>is</code>, <code>is not</code>, <code>in</code>, <code>not in</code></td>
+<td>Confronto, identita', appartenenza</td>
+<td><code>x == 5</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>not</code></td>
+<td>NOT logico</td>
+<td><code>not True</code> = False</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>and</code></td>
+<td>AND logico</td>
+<td><code>True and False</code> = False</td>
+</tr>
+<tr>
+<td>13 (min)</td>
+<td><code>or</code></td>
+<td>OR logico</td>
+<td><code>False or True</code> = True</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Regola pratica:</strong> la precedenza segue grosso modo l'ordine della matematica: prima le potenze, poi moltiplicazione/divisione, poi addizione/sottrazione, poi i confronti, infine la logica.</p>
+</blockquote>
+<hr>
+<h2>Operatori aritmetici in dettaglio</h2>
+<table>
+<thead><tr>
+<th>Operatore</th>
+<th>Nome</th>
+<th>Esempio</th>
+<th>Risultato</th>
+<th>Note</th>
+</tr></thead><tbody>
+<tr>
+<td><code>+</code></td>
+<td>Addizione</td>
+<td><code>7 + 3</code></td>
+<td><code>10</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Sottrazione</td>
+<td><code>7 - 3</code></td>
+<td><code>4</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>Moltiplicazione</td>
+<td><code>7 * 3</code></td>
+<td><code>21</code></td>
+<td>Anche per stringhe: <code>"ab" * 3</code> = <code>"ababab"</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Divisione</td>
+<td><code>7 / 3</code></td>
+<td><code>2.3333...</code></td>
+<td>Restituisce <strong>sempre</strong> float</td>
+</tr>
+<tr>
+<td><code>//</code></td>
+<td>Divisione intera</td>
+<td><code>7 // 3</code></td>
+<td><code>2</code></td>
+<td>Arrotonda verso il basso</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>Modulo (resto)</td>
+<td><code>7 % 3</code></td>
+<td><code>1</code></td>
+<td>Utile per pari/dispari: <code>n % 2</code></td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>Esponenziazione</td>
+<td><code>2 ** 10</code></td>
+<td><code>1024</code></td>
+<td>Associativo a destra: <code>2<strong>3</strong>2</code> = <code>2<strong>(3</strong>2)</code> = 512</td>
+</tr>
+</tbody></table>
+<h3>Divisione: <code>/</code> vs <code>//</code></h3>
+<pre><code><span class="mi">7</span> <span class="op">/</span> <span class="mi">2</span>       <span class="cm"># 3.5  (divisione reale, sempre float)</span>
+<span class="mi">7</span> <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>      <span class="cm"># 3    (divisione intera, arrotonda in basso)</span>
+<span class="op">-</span><span class="mi">7</span> <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>     <span class="cm"># -4   (!) arrotonda verso -infinito, NON verso zero</span>
+<span class="mi">7</span> <span class="op">/</span> <span class="mi">2.0</span>     <span class="cm"># 3.5</span>
+<span class="mi">7</span> <span class="op">/</span><span class="op">/</span> <span class="mi">2.0</span>    <span class="cm"># 3.0  (divisione intera ma risultato float)</span></code></pre>
+<hr>
+<h2>Operatori di confronto</h2>
+<table>
+<thead><tr>
+<th>Operatore</th>
+<th>Significato</th>
+<th>Esempio</th>
+</tr></thead><tbody>
+<tr>
+<td><code>==</code></td>
+<td>Uguale a (valore)</td>
+<td><code>5 == 5.0</code> -> <code>True</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>Diverso da</td>
+<td><code>5 != 3</code> -> <code>True</code></td>
+</tr>
+<tr>
+<td><code><</code></td>
+<td>Minore di</td>
+<td><code>3 < 5</code> -> <code>True</code></td>
+</tr>
+<tr>
+<td><code>></code></td>
+<td>Maggiore di</td>
+<td><code>5 > 3</code> -> <code>True</code></td>
+</tr>
+<tr>
+<td><code><=</code></td>
+<td>Minore o uguale</td>
+<td><code>5 <= 5</code> -> <code>True</code></td>
+</tr>
+<tr>
+<td><code>>=</code></td>
+<td>Maggiore o uguale</td>
+<td><code>5 >= 6</code> -> <code>False</code></td>
+</tr>
+<tr>
+<td><code>is</code></td>
+<td>Stesso oggetto (identita')</td>
+<td><code>x is None</code></td>
+</tr>
+<tr>
+<td><code>is not</code></td>
+<td>Oggetto diverso</td>
+<td><code>x is not None</code></td>
+</tr>
+<tr>
+<td><code>in</code></td>
+<td>Appartiene a</td>
+<td><code>3 in [1, 2, 3]</code> -> <code>True</code></td>
+</tr>
+<tr>
+<td><code>not in</code></td>
+<td>Non appartiene a</td>
+<td><code>4 not in [1, 2, 3]</code> -> <code>True</code></td>
+</tr>
+</tbody></table>
+<h3>Confronti a catena (feature di Python!)</h3>
+<pre><code><span class="cm"># Python permette i confronti a catena</span>
+<span class="mi">1</span> <span class="op">&lt;</span> x <span class="op">&lt;</span> <span class="mi">10</span>          <span class="cm"># equivale a: 1 &lt; x and x &lt; 10</span>
+a <span class="op">&lt;</span><span class="op">=</span> b <span class="op">&lt;</span><span class="op">=</span> c         <span class="cm"># equivale a: a &lt;= b and b &lt;= c</span>
+
+<span class="cm"># Molto utile per intervalli statistici</span>
+<span class="mi">18</span> <span class="op">&lt;</span><span class="op">=</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>    <span class="cm"># voto e&#x27; tra 18 e 30?</span></code></pre>
+<hr>
+<h2>Operatori logici</h2>
+<table>
+<thead><tr>
+<th>Operatore</th>
+<th>Significato</th>
+<th>Esempio</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td><code>not x</code></td>
+<td>Negazione</td>
+<td><code>not True</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>x and y</code></td>
+<td>Congiunzione (entrambi veri)</td>
+<td><code>True and False</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>x or y</code></td>
+<td>Disgiunzione (almeno uno vero)</td>
+<td><code>True or False</code></td>
+<td><code>True</code></td>
+</tr>
+</tbody></table>
+<h3>Cortocircuito (short-circuit evaluation)</h3>
+<pre><code><span class="cm"># and: se il primo e&#x27; False, il secondo NON viene valutato</span>
+<span class="kw">False</span> <span class="kw">and</span> funzione_costosa()    <span class="cm"># funzione_costosa() non viene chiamata</span>
+
+<span class="cm"># or: se il primo e&#x27; True, il secondo NON viene valutato</span>
+<span class="kw">True</span> <span class="kw">or</span> funzione_costosa()      <span class="cm"># funzione_costosa() non viene chiamata</span>
+
+<span class="cm"># Uso pratico: evitare errori</span>
+lista <span class="op">=</span> []
+<span class="kw">if</span> lista <span class="kw">and</span> lista[<span class="mi">0</span>] <span class="op">&gt;</span> <span class="mi">5</span>:     <span class="cm"># lista vuota -&gt; False -&gt; non accede a lista[0]</span>
+    <span class="nb">print</span>(<span class="st">&quot;ok&quot;</span>)
+
+<span class="cm"># Valore di default con or</span>
+nome <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Nome: &quot;</span>) <span class="kw">or</span> <span class="st">&quot;Anonimo&quot;</span>  <span class="cm"># se input vuoto (&quot;&quot;), usa &quot;Anonimo&quot;</span></code></pre>
+<hr>
+<h2>Operatori di assegnamento composto</h2>
+<table>
+<thead><tr>
+<th>Operatore</th>
+<th>Equivalente a</th>
+<th>Esempio</th>
+</tr></thead><tbody>
+<tr>
+<td><code>+=</code></td>
+<td><code>x = x + valore</code></td>
+<td><code>x += 5</code></td>
+</tr>
+<tr>
+<td><code>-=</code></td>
+<td><code>x = x - valore</code></td>
+<td><code>x -= 3</code></td>
+</tr>
+<tr>
+<td><code>*=</code></td>
+<td><code>x = x * valore</code></td>
+<td><code>x *= 2</code></td>
+</tr>
+<tr>
+<td><code>/=</code></td>
+<td><code>x = x / valore</code></td>
+<td><code>x /= 4</code></td>
+</tr>
+<tr>
+<td><code>//=</code></td>
+<td><code>x = x // valore</code></td>
+<td><code>x //= 3</code></td>
+</tr>
+<tr>
+<td><code>%=</code></td>
+<td><code>x = x % valore</code></td>
+<td><code>x %= 2</code></td>
+</tr>
+<tr>
+<td><code>**=</code></td>
+<td><code>x = x ** valore</code></td>
+<td><code>x **= 2</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Attenzione:</strong> Python NON ha gli operatori <code>++</code> e <code>--</code>. Usare <code>x += 1</code> e <code>x -= 1</code>.</p>
+</blockquote>
+<hr>
+<h2>Espressioni ambigue risolte dalla precedenza</h2>
+<h3>Esempio 1: Aritmetica mista</h3>
+<pre><code><span class="mi">2</span> <span class="op">+</span> <span class="mi">3</span> <span class="op">*</span> <span class="mi">4</span>       <span class="cm"># = 2 + 12 = 14      (* ha precedenza su +)</span>
+(<span class="mi">2</span> <span class="op">+</span> <span class="mi">3</span>) <span class="op">*</span> <span class="mi">4</span>     <span class="cm"># = 5 * 4 = 20       (parentesi forzano l&#x27;ordine)</span></code></pre>
+<h3>Esempio 2: Esponenziazione e segno</h3>
+<pre><code><span class="op">-</span><span class="mi">2</span> <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>          <span class="cm"># = -(2**2) = -4     (** ha precedenza su - unario!)</span>
+(<span class="op">-</span><span class="mi">2</span>) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>        <span class="cm"># = 4                (parentesi: prima il segno)</span></code></pre>
+<blockquote>
+<p>Questo e' un errore <strong>molto comune</strong>! In Python <code>-2<strong>2</code> vale </strong>-4**, non 4.</p>
+</blockquote>
+<h3>Esempio 3: Confronti e logica</h3>
+<pre><code>x <span class="op">=</span> <span class="mi">5</span>
+<span class="kw">not</span> x <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>       <span class="cm"># = not (x == 5) = not True = False</span>
+                  <span class="cm"># (== ha precedenza su not)</span>
+
+x <span class="op">!</span><span class="op">=</span> <span class="mi">5</span>           <span class="cm"># False (modo diretto per confrontare)</span></code></pre>
+<h3>Esempio 4: and vs or</h3>
+<pre><code><span class="kw">True</span> <span class="kw">or</span> <span class="kw">False</span> <span class="kw">and</span> <span class="kw">False</span>
+<span class="cm"># = True or (False and False)    (and ha precedenza su or)</span>
+<span class="cm"># = True or False</span>
+<span class="cm"># = True</span>
+
+(<span class="kw">True</span> <span class="kw">or</span> <span class="kw">False</span>) <span class="kw">and</span> <span class="kw">False</span>
+<span class="cm"># = True and False</span>
+<span class="cm"># = False</span></code></pre>
+<h3>Esempio 5: Confronto e in</h3>
+<pre><code>x <span class="op">=</span> <span class="mi">3</span>
+<span class="mi">1</span> <span class="op">&lt;</span> x <span class="kw">and</span> x <span class="op">&lt;</span> <span class="mi">10</span>       <span class="cm"># True (modo esplicito)</span>
+<span class="mi">1</span> <span class="op">&lt;</span> x <span class="op">&lt;</span> <span class="mi">10</span>              <span class="cm"># True (confronto a catena, piu&#x27; leggibile)</span></code></pre>
+<h3>Esempio 6: Assegnamento (NON e' un operatore di confronto!)</h3>
+<pre><code>x <span class="op">=</span> <span class="mi">5</span>       <span class="cm"># assegnamento: x riceve il valore 5</span>
+x <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>      <span class="cm"># confronto: x e&#x27; uguale a 5? -&gt; True</span>
+
+<span class="cm"># Errore comune nei condizionali:</span>
+<span class="kw">if</span> x <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>:  <span class="cm"># CORRETTO: confronto</span>
+    <span class="kw">pass</span>
+<span class="cm"># if x = 5:  # ERRORE DI SINTASSI! (Python lo impedisce)</span></code></pre>
+<hr>
+<h2>Errori comuni (trappole da evitare)</h2>
+<h3>1. <code>-x**n</code> non fa quello che pensi</h3>
+<pre><code><span class="op">-</span><span class="mi">3</span> <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>     <span class="cm"># -9, NON 9!  Equivale a -(3**2)</span>
+(<span class="op">-</span><span class="mi">3</span>) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>   <span class="cm"># 9            Usa le parentesi!</span></code></pre>
+<h3>2. <code>==</code> vs <code>is</code></h3>
+<pre><code>a <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+b <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+a <span class="op">=</span><span class="op">=</span> b      <span class="cm"># True  (stesso VALORE)</span>
+a <span class="kw">is</span> b      <span class="cm"># False (OGGETTI diversi in memoria)</span>
+
+<span class="cm"># Usa &#x27;is&#x27; SOLO con None, True, False</span>
+x <span class="kw">is</span> <span class="kw">None</span>   <span class="cm"># corretto</span>
+x <span class="op">=</span><span class="op">=</span> <span class="kw">None</span>   <span class="cm"># funziona ma non e&#x27; pythonico</span></code></pre>
+<h3>3. Divisione intera con numeri negativi</h3>
+<pre><code><span class="mi">7</span> <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>      <span class="cm">#  3  (ok, arrotonda verso il basso)</span>
+<span class="op">-</span><span class="mi">7</span> <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>     <span class="cm"># -4  (!) NON -3! Arrotonda verso -infinito</span></code></pre>
+<h3>4. Uguaglianza tra float</h3>
+<pre><code><span class="mi">0.1</span> <span class="op">+</span> <span class="mi">0.2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0.3</span>               <span class="cm"># False (!)</span>
+<span class="nb">abs</span>(<span class="mi">0.1</span> <span class="op">+</span> <span class="mi">0.2</span> <span class="op">-</span> <span class="mi">0.3</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>    <span class="cm"># True (confronto con tolleranza)</span>
+
+<span class="cm"># In NumPy:</span>
+<span class="cm"># numpy.isclose(0.1 + 0.2, 0.3)  # True</span></code></pre>
+<h3>5. Operatori logici su valori non booleani</h3>
+<pre><code><span class="cm"># and restituisce il primo valore falsy, o l&#x27;ultimo</span>
+<span class="mi">0</span> <span class="kw">and</span> <span class="mi">5</span>         <span class="cm"># 0</span>
+<span class="mi">3</span> <span class="kw">and</span> <span class="mi">5</span>         <span class="cm"># 5</span>
+
+<span class="cm"># or restituisce il primo valore truthy, o l&#x27;ultimo</span>
+<span class="mi">0</span> <span class="kw">or</span> <span class="mi">5</span>          <span class="cm"># 5</span>
+<span class="mi">3</span> <span class="kw">or</span> <span class="mi">5</span>          <span class="cm"># 3</span>
+<span class="st">&quot;&quot;</span> <span class="kw">or</span> <span class="st">&quot;default&quot;</span> <span class="cm"># &quot;default&quot;</span></code></pre>
+<hr>
+<h2>Consiglio finale</h2>
+<blockquote>
+<p><strong>Nel dubbio, usa le parentesi!</strong></p>
+<p>Le parentesi rendono il codice piu' leggibile e prevengono errori.</p>
+<p>Non costano nulla e salvano da bug insidiosi.</p>
+</blockquote>
+<pre><code><span class="cm"># Poco chiaro</span>
+risultato <span class="op">=</span> a <span class="op">+</span> b <span class="op">*</span> c <span class="op">&gt;</span> d <span class="kw">and</span> <span class="kw">not</span> e <span class="kw">or</span> f
+
+<span class="cm"># Chiaro!</span>
+risultato <span class="op">=</span> ((a <span class="op">+</span> (b <span class="op">*</span> c)) <span class="op">&gt;</span> d) <span class="kw">and</span> (<span class="kw">not</span> e) <span class="kw">or</span> f</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F13_funzioni_fondamenti/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/F13_funzioni_fondamenti.html">Dispensa</a> &bull; <a href="../../presentazioni/F13_funzioni_fondamenti.html">Presentazione</a> &bull; <a href="esempi.html">Esempi</a></nav>
+<h1>F13_funzioni_fondamenti/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F13 — Funzioni: fondamenti</span>
+<span class="cm"># Esercizi per la lezione frontale 13</span>
+
+<span class="kw">import</span> math
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 1: Varianza campionaria</span>
+<span class="cm"># Implementare la varianza campionaria (divisore n-1).</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 1: Varianza campionaria ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La lista non può essere vuota&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+<span class="kw">def</span> <span class="fn">varianza_campionaria</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la varianza campionaria (con divisore n-1).
+    Formula: s² = Σ(xi - x̄)² / (n - 1)
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="nb">len</span>(valori) <span class="op">&lt;</span> <span class="mi">2</span>:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Servono almeno 2 valori per la varianza campionaria&quot;</span>)
+    m: <span class="nb">float</span> <span class="op">=</span> media(valori)
+    somma_scarti_quadrati: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>((x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori)
+    <span class="kw">return</span> somma_scarti_quadrati <span class="op">/</span> (<span class="nb">len</span>(valori) <span class="op">-</span> <span class="mi">1</span>)
+
+
+<span class="cm"># Test</span>
+dati_1: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">2.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>, <span class="mi">5.0</span>, <span class="mi">7.0</span>, <span class="mi">9.0</span>]
+var_1: <span class="nb">float</span> <span class="op">=</span> varianza_campionaria(dati_1)
+<span class="cm"># Media = 5.0, varianza campionaria = 4.571428...</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(media(dati_1) <span class="op">-</span> <span class="mi">5.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(var_1 <span class="op">-</span> <span class="mi">32</span> <span class="op">/</span> <span class="mi">7</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="nb">print</span>(<span class="st">f&quot;Dati: {dati_1}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media(dati_1)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Varianza campionaria: {var_1:.4f}&quot;</span>)
+
+<span class="cm"># Test con dati uniformi (varianza = 0)</span>
+dati_uniformi: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">5.0</span>, <span class="mi">5.0</span>, <span class="mi">5.0</span>, <span class="mi">5.0</span>]
+<span class="kw">assert</span> varianza_campionaria(dati_uniformi) <span class="op">=</span><span class="op">=</span> <span class="mi">0.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;Varianza di {dati_uniformi}: {varianza_campionaria(dati_uniformi)}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 2: Deviazione standard campionaria</span>
+<span class="cm"># Implementare la deviazione standard campionaria.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 2: Deviazione standard ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">deviazione_standard</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la deviazione standard campionaria.
+    Formula: s = √(varianza_campionaria)
+    &quot;&quot;&quot;</span>
+    <span class="kw">return</span> math.sqrt(varianza_campionaria(valori))
+
+
+<span class="cm"># Test</span>
+dati_2: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">10.0</span>, <span class="mi">12.0</span>, <span class="mi">23.0</span>, <span class="mi">23.0</span>, <span class="mi">16.0</span>, <span class="mi">23.0</span>, <span class="mi">21.0</span>, <span class="mi">16.0</span>]
+ds: <span class="nb">float</span> <span class="op">=</span> deviazione_standard(dati_2)
+media_2: <span class="nb">float</span> <span class="op">=</span> media(dati_2)
+<span class="kw">assert</span> <span class="nb">abs</span>(media_2 <span class="op">-</span> <span class="mi">18.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="nb">print</span>(<span class="st">f&quot;Dati: {dati_2}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media_2}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Deviazione standard: {ds:.4f}&quot;</span>)
+
+<span class="cm"># Verifica: ~68% dei dati entro 1 deviazione standard dalla media</span>
+dentro_1ds: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> x <span class="kw">in</span> dati_2 <span class="kw">if</span> <span class="nb">abs</span>(x <span class="op">-</span> media_2) <span class="op">&lt;</span><span class="op">=</span> ds)
+percentuale: <span class="nb">float</span> <span class="op">=</span> dentro_1ds <span class="op">/</span> <span class="nb">len</span>(dati_2) <span class="op">*</span> <span class="mi">100</span>
+<span class="nb">print</span>(<span class="st">f&quot;Dati entro 1 DS dalla media: {dentro_1ds}/{len(dati_2)} ({percentuale:.0f}%)&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 3: Mediana</span>
+<span class="cm"># Implementare il calcolo della mediana.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 3: Mediana ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">mediana</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la mediana di una lista di valori.
+    Se il numero di valori è dispari, restituisce il valore centrale.
+    Se è pari, restituisce la media dei due valori centrali.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La lista non può essere vuota&quot;</span>)
+    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(ordinati)
+    indice_medio: <span class="nb">int</span> <span class="op">=</span> n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        <span class="kw">return</span> ordinati[indice_medio]
+    <span class="kw">else</span>:
+        <span class="kw">return</span> (ordinati[indice_medio <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[indice_medio]) <span class="op">/</span> <span class="mi">2</span>
+
+
+<span class="cm"># Test con numero dispari di elementi</span>
+dati_dispari: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">3.0</span>, <span class="mi">1.0</span>, <span class="mi">4.0</span>, <span class="mi">1.0</span>, <span class="mi">5.0</span>]
+med_dispari: <span class="nb">float</span> <span class="op">=</span> mediana(dati_dispari)
+<span class="kw">assert</span> med_dispari <span class="op">=</span><span class="op">=</span> <span class="mi">3.0</span>  <span class="cm"># ordinati: [1, 1, 3, 4, 5] → mediana = 3</span>
+<span class="nb">print</span>(<span class="st">f&quot;Mediana di {dati_dispari}: {med_dispari}&quot;</span>)
+
+<span class="cm"># Test con numero pari di elementi</span>
+dati_pari: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>]
+med_pari: <span class="nb">float</span> <span class="op">=</span> mediana(dati_pari)
+<span class="kw">assert</span> med_pari <span class="op">=</span><span class="op">=</span> <span class="mi">2.5</span>  <span class="cm"># media di 2 e 3</span>
+<span class="nb">print</span>(<span class="st">f&quot;Mediana di {dati_pari}: {med_pari}&quot;</span>)
+
+<span class="cm"># Test con un solo elemento</span>
+<span class="kw">assert</span> mediana([<span class="mi">42.0</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">42.0</span>
+
+<span class="cm"># Test con dati non ordinati</span>
+dati_test: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">7.0</span>, <span class="mi">1.0</span>, <span class="mi">3.0</span>, <span class="mi">5.0</span>, <span class="mi">9.0</span>, <span class="mi">2.0</span>, <span class="mi">8.0</span>]
+<span class="kw">assert</span> mediana(dati_test) <span class="op">=</span><span class="op">=</span> <span class="mi">5.0</span>  <span class="cm"># ordinati: [1,2,3,5,7,8,9]</span>
+<span class="nb">print</span>(<span class="st">f&quot;Mediana di {dati_test}: {mediana(dati_test)}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 3 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 4: Moda</span>
+<span class="cm"># Implementare il calcolo della moda (il valore più frequente).</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 4: Moda ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">moda</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la moda (valori più frequenti) di una lista.
+    Restituisce una lista ordinata perché ci possono essere più mode.
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La lista non può essere vuota&quot;</span>)
+    conteggio: <span class="nb">dict</span>[<span class="nb">float</span>, <span class="nb">int</span>] <span class="op">=</span> {}
+    <span class="kw">for</span> v <span class="kw">in</span> valori:
+        conteggio[v] <span class="op">=</span> conteggio.get(v, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
+    max_freq: <span class="nb">int</span> <span class="op">=</span> <span class="nb">max</span>(conteggio.values())
+    mode: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(
+        [v <span class="kw">for</span> v, freq <span class="kw">in</span> conteggio.items() <span class="kw">if</span> freq <span class="op">=</span><span class="op">=</span> max_freq]
+    )
+    <span class="kw">return</span> mode
+
+
+<span class="cm"># Test moda singola</span>
+dati_moda: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">3.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>]
+m: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> moda(dati_moda)
+<span class="kw">assert</span> m <span class="op">=</span><span class="op">=</span> [<span class="mi">3.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Moda di {dati_moda}: {m}&quot;</span>)
+
+<span class="cm"># Test moda multipla (bimodale)</span>
+dati_bimodali: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">3.0</span>]
+m_bi: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> moda(dati_bimodali)
+<span class="kw">assert</span> m_bi <span class="op">=</span><span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">3.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Moda di {dati_bimodali}: {m_bi}&quot;</span>)
+
+<span class="cm"># Test tutti uguali</span>
+dati_tutti_uguali: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">5.0</span>, <span class="mi">5.0</span>, <span class="mi">5.0</span>]
+<span class="kw">assert</span> moda(dati_tutti_uguali) <span class="op">=</span><span class="op">=</span> [<span class="mi">5.0</span>]
+
+<span class="cm"># Test tutti diversi (tutti sono moda)</span>
+dati_tutti_diversi: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>]
+<span class="kw">assert</span> moda(dati_tutti_diversi) <span class="op">=</span><span class="op">=</span> [<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Moda di {dati_tutti_diversi}: {moda(dati_tutti_diversi)}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 4 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 5: Funzioni min/max personalizzate con key</span>
+<span class="cm"># Implementare versioni personalizzate di min e max.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 5: Min/Max personalizzati ===&quot;</span>)
+
+<span class="kw">from</span> typing <span class="kw">import</span> Callable, TypeVar
+
+T <span class="op">=</span> TypeVar(<span class="st">&quot;T&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">mio_min</span>(
+    valori: <span class="nb">list</span>[<span class="nb">float</span>],
+    chiave: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Trova il minimo di una lista.
+    Se chiave è specificata, il confronto usa chiave(elemento).
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La lista non può essere vuota&quot;</span>)
+    minimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]
+    <span class="kw">for</span> v <span class="kw">in</span> valori[<span class="mi">1</span>:]:
+        val_confronto: <span class="nb">float</span> <span class="op">=</span> chiave(v) <span class="kw">if</span> chiave <span class="kw">else</span> v
+        val_min: <span class="nb">float</span> <span class="op">=</span> chiave(minimo) <span class="kw">if</span> chiave <span class="kw">else</span> minimo
+        <span class="kw">if</span> val_confronto <span class="op">&lt;</span> val_min:
+            minimo <span class="op">=</span> v
+    <span class="kw">return</span> minimo
+
+
+<span class="kw">def</span> <span class="fn">mio_max</span>(
+    valori: <span class="nb">list</span>[<span class="nb">float</span>],
+    chiave: Callable[[<span class="nb">float</span>], <span class="nb">float</span>] <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Trova il massimo di una lista.
+    Se chiave è specificata, il confronto usa chiave(elemento).
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La lista non può essere vuota&quot;</span>)
+    massimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]
+    <span class="kw">for</span> v <span class="kw">in</span> valori[<span class="mi">1</span>:]:
+        val_confronto: <span class="nb">float</span> <span class="op">=</span> chiave(v) <span class="kw">if</span> chiave <span class="kw">else</span> v
+        val_max: <span class="nb">float</span> <span class="op">=</span> chiave(massimo) <span class="kw">if</span> chiave <span class="kw">else</span> massimo
+        <span class="kw">if</span> val_confronto <span class="op">&gt;</span> val_max:
+            massimo <span class="op">=</span> v
+    <span class="kw">return</span> massimo
+
+
+<span class="cm"># Test base</span>
+numeri: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">3.0</span>, <span class="mi">1.0</span>, <span class="mi">4.0</span>, <span class="mi">1.0</span>, <span class="mi">5.0</span>, <span class="mi">9.0</span>, <span class="mi">2.0</span>, <span class="mi">6.0</span>]
+<span class="kw">assert</span> mio_min(numeri) <span class="op">=</span><span class="op">=</span> <span class="mi">1.0</span>
+<span class="kw">assert</span> mio_max(numeri) <span class="op">=</span><span class="op">=</span> <span class="mi">9.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;Min di {numeri}: {mio_min(numeri)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Max di {numeri}: {mio_max(numeri)}&quot;</span>)
+
+<span class="cm"># Test con chiave — valore più vicino a 5</span>
+vicino_a_5: <span class="nb">float</span> <span class="op">=</span> mio_min(numeri, chiave<span class="op">=</span><span class="kw">lambda</span> x: <span class="nb">abs</span>(x <span class="op">-</span> <span class="mi">5.0</span>))
+<span class="kw">assert</span> vicino_a_5 <span class="op">=</span><span class="op">=</span> <span class="mi">5.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;Più vicino a 5: {vicino_a_5}&quot;</span>)
+
+<span class="cm"># Test con chiave — valore più lontano da 5</span>
+lontano_da_5: <span class="nb">float</span> <span class="op">=</span> mio_max(numeri, chiave<span class="op">=</span><span class="kw">lambda</span> x: <span class="nb">abs</span>(x <span class="op">-</span> <span class="mi">5.0</span>))
+<span class="kw">assert</span> lontano_da_5 <span class="op">=</span><span class="op">=</span> <span class="mi">1.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;Più lontano da 5: {lontano_da_5}&quot;</span>)
+
+<span class="cm"># Test con valori negativi</span>
+neg: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="op">-</span><span class="mi">3.0</span>, <span class="op">-</span><span class="mi">1.0</span>, <span class="op">-</span><span class="mi">4.0</span>, <span class="op">-</span><span class="mi">1.0</span>, <span class="op">-</span><span class="mi">5.0</span>]
+<span class="kw">assert</span> mio_min(neg) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">5.0</span>
+<span class="kw">assert</span> mio_max(neg) <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1.0</span>
+
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 5 superato!\n&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 6: Riepilogo statistico completo</span>
+<span class="cm"># Combinare tutte le funzioni in un riepilogo.</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 6: Riepilogo statistico completo ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">riepilogo_statistico</span>(
+    valori: <span class="nb">list</span>[<span class="nb">float</span>],
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">float</span>]]:
+    <span class="st">&quot;&quot;&quot;Produce un riepilogo statistico completo di una lista di valori.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> {
+        <span class="st">&quot;n&quot;</span>: <span class="nb">float</span>(<span class="nb">len</span>(valori)),
+        <span class="st">&quot;media&quot;</span>: media(valori),
+        <span class="st">&quot;mediana&quot;</span>: mediana(valori),
+        <span class="st">&quot;moda&quot;</span>: moda(valori),
+        <span class="st">&quot;varianza&quot;</span>: varianza_campionaria(valori),
+        <span class="st">&quot;dev_standard&quot;</span>: deviazione_standard(valori),
+        <span class="st">&quot;minimo&quot;</span>: mio_min(valori),
+        <span class="st">&quot;massimo&quot;</span>: mio_max(valori),
+        <span class="st">&quot;range&quot;</span>: mio_max(valori) <span class="op">-</span> mio_min(valori),
+    }
+
+
+<span class="cm"># Test con dati di esempio: voti di un esame</span>
+voti_esame: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [
+    <span class="mi">18.0</span>, <span class="mi">22.0</span>, <span class="mi">25.0</span>, <span class="mi">25.0</span>, <span class="mi">27.0</span>, <span class="mi">28.0</span>, <span class="mi">28.0</span>, <span class="mi">28.0</span>, <span class="mi">30.0</span>, <span class="mi">30.0</span>
+]
+
+riep: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> riepilogo_statistico(voti_esame)
+<span class="kw">assert</span> riep[<span class="st">&quot;n&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">10.0</span>
+<span class="kw">assert</span> riep[<span class="st">&quot;minimo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">18.0</span>
+<span class="kw">assert</span> riep[<span class="st">&quot;massimo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">30.0</span>
+<span class="kw">assert</span> riep[<span class="st">&quot;range&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">12.0</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;Voti: {voti_esame}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;{&#x27;Statistica&#x27;:&lt;20} {&#x27;Valore&#x27;:&gt;10}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">32</span>)
+<span class="kw">for</span> chiave, valore <span class="kw">in</span> riep.items():
+    <span class="kw">if</span> <span class="nb">isinstance</span>(valore, <span class="nb">list</span>):
+        <span class="nb">print</span>(<span class="st">f&quot;{chiave:&lt;20} {str(valore):&gt;10}&quot;</span>)
+    <span class="kw">else</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;{chiave:&lt;20} {valore:&gt;10.4f}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\nEsercizio 6 superato!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;\n=== Tutti gli esercizi F13 completati! ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errori comuni — F14: Funzioni avanzate e moduli — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/F14_funzioni_avanzate_moduli.html">Dispensa</a> &bull; <a href="../autovalutazione/F14_autovalutazione.html">Autovalutazione</a></nav>
+<h1>Errori comuni — F14: Funzioni avanzate e moduli</h1>
+
+<h1>Errori comuni — F14: Funzioni avanzate e moduli</h1>
+<p>Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione F14.</p>
+<p>Ogni errore include il codice sbagliato, la spiegazione e la correzione.</p>
+<hr>
+<h3>Errore 1: Tentare di scrivere una lambda su più righe</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>trasforma <span class="op">=</span> <span class="kw">lambda</span> x:
+    <span class="kw">if</span> x <span class="op">&gt;</span> <span class="mi">0</span>:
+        <span class="kw">return</span> x <span class="op">*</span> <span class="mi">2</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="op">-</span>x</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>SyntaxError: expected an indented block after <span class="st">&#x27;lambda&#x27;</span> on line <span class="mi">1</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> Le funzioni lambda in Python sono limitate a una singola espressione. Non possono contenere blocchi <code>if/else</code> su più righe, cicli, <code>return</code> espliciti o istruzioni multiple. Sono pensate per operazioni semplici e concise.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="cm"># Opzione 1: lambda con espressione condizionale (su una riga)</span>
+trasforma <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span> <span class="mi">2</span> <span class="kw">if</span> x <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">else</span> <span class="op">-</span>x
+
+<span class="cm"># Opzione 2: funzione normale (preferibile per logica complessa)</span>
+<span class="kw">def</span> <span class="fn">trasforma</span>(<span class="fn">x</span>):
+    <span class="kw">if</span> x <span class="op">&gt;</span> <span class="mi">0</span>:
+        <span class="kw">return</span> x <span class="op">*</span> <span class="mi">2</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="op">-</span>x</code></pre>
+<p><strong>Regola da ricordare:</strong> Le lambda ammettono una sola espressione: se serve logica complessa, usa una funzione definita con <code>def</code>.</p>
+<hr>
+<h3>Errore 2: <code>from modulo import *</code> inquina il namespace</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="kw">from</span> math <span class="kw">import</span> <span class="op">*</span>
+<span class="kw">from</span> statistics <span class="kw">import</span> <span class="op">*</span>
+
+<span class="cm"># Entrambi i moduli definiscono funzioni con nomi comuni</span>
+<span class="cm"># Lo studente non sa più quale funzione sta usando</span>
+risultato <span class="op">=</span> log(<span class="mi">10</span>)     <span class="cm"># è math.log? O un&#x27;altra log?</span>
+media <span class="op">=</span> mean([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]) <span class="cm"># questo funziona, ma da dove viene?</span></code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Nessun errore immediato, ma rischio di conflitti tra nomi e codice difficile da leggere.</code></pre>
+<p>Se due moduli definiscono una funzione con lo stesso nome, l'ultimo <code>import *</code> sovrascrive il precedente senza avviso.</p>
+<p><strong>Perché è sbagliato:</strong> <code>from modulo import *</code> importa tutti i nomi del modulo nel namespace corrente, rendendo impossibile capire da dove proviene ogni funzione. Se due moduli esportano lo stesso nome, il secondo sovrascrive il primo silenziosamente, causando bug difficili da trovare.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="cm"># Opzione 1: importa il modulo e usa il prefisso</span>
+<span class="kw">import</span> math
+<span class="kw">import</span> statistics
+
+risultato <span class="op">=</span> math.log(<span class="mi">10</span>)
+media <span class="op">=</span> statistics.mean([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>])
+
+<span class="cm"># Opzione 2: importa solo le funzioni che servono</span>
+<span class="kw">from</span> math <span class="kw">import</span> log, sqrt
+<span class="kw">from</span> statistics <span class="kw">import</span> mean, stdev</code></pre>
+<p><strong>Regola da ricordare:</strong> Non usare mai <code>from modulo import *</code>: importa il modulo intero oppure solo i nomi specifici che ti servono.</p>
+<hr>
+<h3>Errore 3: Late binding nelle closure (variabile catturata per riferimento)</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>funzioni <span class="op">=</span> []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):
+    funzioni.append(<span class="kw">lambda</span>: i)
+
+<span class="cm"># Lo studente si aspetta [0, 1, 2, 3, 4]</span>
+risultati <span class="op">=</span> [f() <span class="kw">for</span> f <span class="kw">in</span> funzioni]
+<span class="nb">print</span>(risultati)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>[<span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="mi">4</span>]</code></pre>
+<p>Tutte le funzioni restituiscono 4 invece dei valori da 0 a 4.</p>
+<p><strong>Perché è sbagliato:</strong> Le lambda catturano la variabile <code>i</code> per riferimento, non per valore. Quando le lambda vengono eseguite (dopo la fine del ciclo), <code>i</code> ha il valore finale <code>4</code> per tutte. Questo comportamento si chiama <em>late binding</em>: il valore di <code>i</code> viene letto solo al momento della chiamata.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>funzioni <span class="op">=</span> []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>):
+    funzioni.append(<span class="kw">lambda</span> i<span class="op">=</span>i: i)  <span class="cm"># i=i &quot;congela&quot; il valore corrente</span>
+
+risultati <span class="op">=</span> [f() <span class="kw">for</span> f <span class="kw">in</span> funzioni]
+<span class="nb">print</span>(risultati)  <span class="cm"># [0, 1, 2, 3, 4]</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Quando crei una lambda in un ciclo, usa <code>lambda x=x:</code> per catturare il valore corrente della variabile, non il riferimento.</p>
+<hr>
+<h3>Errore 4: Confondere <code>map()</code> con il suo risultato</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+quadrati <span class="op">=</span> <span class="nb">map</span>(<span class="kw">lambda</span> x: x<span class="op">*</span><span class="op">*</span><span class="mi">2</span>, numeri)
+
+<span class="nb">print</span>(quadrati)
+<span class="nb">print</span>(<span class="nb">len</span>(quadrati))</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="op">&lt;</span><span class="nb">map</span> <span class="nb">object</span> at <span class="mi">0x7f8b8c0d5e80</span><span class="op">&gt;</span>
+<span class="nb">TypeError</span>: <span class="nb">object</span> of <span class="nb">type</span> <span class="st">&#x27;map&#x27;</span> has no <span class="nb">len</span>()</code></pre>
+<p><strong>Perché è sbagliato:</strong> <code>map()</code> restituisce un oggetto <em>map</em> (un iteratore), non una lista. Gli iteratori sono "pigri": calcolano i valori solo quando richiesti. Non si può stampare direttamente il contenuto, calcolarne la lunghezza, o indicizzarli come una lista.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+quadrati <span class="op">=</span> <span class="nb">list</span>(<span class="nb">map</span>(<span class="kw">lambda</span> x: x<span class="op">*</span><span class="op">*</span><span class="mi">2</span>, numeri))
+
+<span class="nb">print</span>(quadrati)       <span class="cm"># [1, 4, 9, 16, 25]</span>
+<span class="nb">print</span>(<span class="nb">len</span>(quadrati))  <span class="cm"># 5</span>
+
+<span class="cm"># Alternativa più leggibile con list comprehension:</span>
+quadrati <span class="op">=</span> [x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> numeri]</code></pre>
+<p><strong>Regola da ricordare:</strong> <code>map()</code> restituisce un iteratore, non una lista: avvolgilo con <code>list()</code> se ti servono tutti i risultati subito.</p>
+<hr>
+<h3>Errore 5: Import circolare tra moduli</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># --- file: modulo_a.py ---</span>
+<span class="kw">from</span> modulo_b <span class="kw">import</span> funzione_b
+
+<span class="kw">def</span> <span class="fn">funzione_a</span>():
+    <span class="kw">return</span> <span class="st">&quot;A&quot;</span>
+
+<span class="cm"># --- file: modulo_b.py ---</span>
+<span class="kw">from</span> modulo_a <span class="kw">import</span> funzione_a
+
+<span class="kw">def</span> <span class="fn">funzione_b</span>():
+    <span class="kw">return</span> funzione_a() <span class="op">+</span> <span class="st">&quot;B&quot;</span></code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>ImportError: cannot <span class="kw">import</span> name <span class="st">&#x27;funzione_a&#x27;</span> <span class="kw">from</span> partially initialized module <span class="st">&#x27;modulo_a&#x27;</span>
+(most likely due to a circular <span class="kw">import</span>)</code></pre>
+<p><strong>Perché è sbagliato:</strong> <code>modulo<em>a</code> importa <code>modulo</em>b</code>, che a sua volta importa <code>modulo<em>a</code>. Python entra in un ciclo: quando <code>modulo</em>b</code> cerca di importare <code>funzione<em>a</code>, <code>modulo</em>a</code> non ha ancora finito di caricarsi, quindi <code>funzione_a</code> non è ancora stata definita.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code><span class="cm"># Soluzione 1: ristrutturare il codice per eliminare la dipendenza circolare</span>
+<span class="cm"># Mettere le funzioni condivise in un terzo modulo</span>
+
+<span class="cm"># --- file: funzioni_comuni.py ---</span>
+<span class="kw">def</span> <span class="fn">funzione_a</span>():
+    <span class="kw">return</span> <span class="st">&quot;A&quot;</span>
+
+<span class="cm"># --- file: modulo_b.py ---</span>
+<span class="kw">from</span> funzioni_comuni <span class="kw">import</span> funzione_a
+
+<span class="kw">def</span> <span class="fn">funzione_b</span>():
+    <span class="kw">return</span> funzione_a() <span class="op">+</span> <span class="st">&quot;B&quot;</span>
+
+<span class="cm"># Soluzione 2: importare dentro la funzione (import locale)</span>
+<span class="cm"># --- file: modulo_b.py ---</span>
+<span class="kw">def</span> <span class="fn">funzione_b</span>():
+    <span class="kw">from</span> modulo_a <span class="kw">import</span> funzione_a  <span class="cm"># import ritardato</span>
+    <span class="kw">return</span> funzione_a() <span class="op">+</span> <span class="st">&quot;B&quot;</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Se due moduli si importano a vicenda, ristruttura il codice estraendo le funzioni condivise in un terzo modulo.</p>
+<hr>
+<h3>Errore 6: Usare <code>sorted()</code> con una funzione <code>key</code> sbagliata</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>studenti <span class="op">=</span> [
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>},
+]
+
+<span class="cm"># Lo studente chiama la funzione invece di passarla</span>
+ordinati <span class="op">=</span> <span class="nb">sorted</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;voto&quot;</span>]())</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code><span class="nb">TypeError</span>: <span class="st">&#x27;int&#x27;</span> <span class="nb">object</span> <span class="kw">is</span> <span class="kw">not</span> <span class="nb">callable</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> <code>s["voto"]</code> restituisce già un intero (es. <code>28</code>). Aggiungere <code>()</code> dopo significa cercare di chiamare quel numero come se fosse una funzione. Il parametro <code>key</code> vuole una funzione che estrae il valore da usare per il confronto, non il risultato di una chiamata.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>studenti <span class="op">=</span> [
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>},
+    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>},
+]
+
+<span class="cm"># La lambda accede al valore senza chiamarlo</span>
+ordinati <span class="op">=</span> <span class="nb">sorted</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;voto&quot;</span>])
+<span class="nb">print</span>(ordinati)
+<span class="cm"># [{&#x27;nome&#x27;: &#x27;Marco&#x27;, &#x27;voto&#x27;: 25}, {&#x27;nome&#x27;: &#x27;Luca&#x27;, &#x27;voto&#x27;: 28}, {&#x27;nome&#x27;: &#x27;Anna&#x27;, &#x27;voto&#x27;: 30}]</span>
+
+<span class="cm"># Per ordine decrescente:</span>
+ordinati_desc <span class="op">=</span> <span class="nb">sorted</span>(studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;voto&quot;</span>], reverse<span class="op">=</span><span class="kw">True</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> Il parametro <code>key</code> di <code>sorted()</code> richiede una funzione che restituisce il criterio di ordinamento: non aggiungere <code>()</code> al valore estratto.</p>
+<hr>
+<nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

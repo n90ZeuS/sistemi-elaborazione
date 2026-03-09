@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F07 — Primi passi in Python — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="F06_dal_problema_al_programma.html">← F06</a> &bull; <a href="F08_operatori_io_condizionali.html">F08 →</a> &bull; <a href="../../presentazioni/F07_primi_passi_python.html">Presentazione</a></nav>
+<h1>F07 — Primi passi in Python</h1>
+
+<h1>Lezione Frontale 7 — Primi passi in Python</h1>
+<h2>Introduzione</h2>
+<p>Oggi scriviamo il nostro primo codice Python. Dopo cinque lezioni di fondamenti e una di ponte, avete tutti gli strumenti concettuali per capire non solo <em>come</em> si programma, ma <em>perché</em> le cose funzionano in un certo modo. Quando vedrete che Python usa <code>=</code> per l'assegnamento, saprete che dietro c'è un'operazione che modifica un riferimento in memoria. Quando vedrete che <code>0.1 + 0.2</code> non è esattamente <code>0.3</code>, saprete perché.</p>
+<p>Cominciamo.</p>
+<hr>
+<h2>Il primo programma</h2>
+<p>Per tradizione inaugurata nel 1978 da Brian Kernighan e Dennis Ritchie nel libro <em>"The C Programming Language"</em>, il primo programma in un nuovo linguaggio stampa il messaggio "Hello, World!":</p>
+<pre><code><span class="nb">print</span>(<span class="st">&quot;Hello, World!&quot;</span>)</code></pre>
+<p>Una sola riga, ma c'è molto da osservare:</p>
+<ul>
+<li><code>print</code> è una <strong>funzione</strong> built-in di Python. Le funzioni si chiamano mettendo gli argomenti tra parentesi.</li>
+<li><code>"Hello, World!"</code> è una <strong>stringa</strong>: una sequenza di caratteri racchiusa tra virgolette (doppie <code>"</code> o singole <code>'</code>, in Python sono equivalenti).</li>
+<li>Non c'è punto e virgola alla fine della riga. In Python, ogni istruzione occupa una riga (salvo eccezioni esplicite). Questo riduce il "rumore visivo" del codice.</li>
+</ul>
+<h3>L'indentazione come sintassi</h3>
+<p>In molti linguaggi (C, Java, JavaScript), i blocchi di codice sono delimitati da parentesi graffe <code>{}</code>. L'indentazione è opzionale e puramente estetica. In Python, <strong>l'indentazione È la sintassi</strong>: il livello di indentazione determina quali istruzioni appartengono a quale blocco.</p>
+<pre><code><span class="kw">if</span> temperatura <span class="op">&gt;</span> <span class="mi">30</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Fa caldo!&quot;</span>)      <span class="cm"># questo è dentro l&#x27;if</span>
+    <span class="nb">print</span>(<span class="st">&quot;Accendi il ventilatore&quot;</span>)  <span class="cm"># anche questo</span>
+<span class="nb">print</span>(<span class="st">&quot;Fine del programma&quot;</span>)  <span class="cm"># questo è fuori dall&#x27;if</span></code></pre>
+<p>Questa è una scelta deliberata di Guido van Rossum: forza tutti a scrivere codice leggibile. Non esiste codice Python "funzionante ma illeggibile per l'indentazione" — se l'indentazione è sbagliata, il programma non funziona.</p>
+<p>La convenzione è usare <strong>4 spazi</strong> per livello di indentazione (mai tabulazioni, per evitare ambiguità).</p>
+<h3>I commenti</h3>
+<p>I commenti iniziano con <code>#</code> e vengono ignorati dall'interprete:</p>
+<pre><code><span class="cm"># Questo è un commento su una riga intera</span>
+temperatura: <span class="nb">float</span> <span class="op">=</span> <span class="mi">23.5</span>  <span class="cm"># Commento a fine riga</span></code></pre>
+<p>I commenti servono per spiegare il <strong>perché</strong>, non il <strong>cosa</strong>. Il codice stesso deve essere abbastanza chiaro da spiegare cosa fa. Un buon commento spiega l'intenzione, il ragionamento, o avverte di una trappola:</p>
+<pre><code><span class="cm"># MALE: commento inutile, ripete il codice</span>
+i <span class="op">=</span> i <span class="op">+</span> <span class="mi">1</span>  <span class="cm"># incrementa i di 1</span>
+
+<span class="cm"># BENE: commento che spiega il perché</span>
+i <span class="op">=</span> i <span class="op">+</span> <span class="mi">1</span>  <span class="cm"># salta l&#x27;intestazione del CSV (la prima riga non contiene dati)</span></code></pre>
+<hr>
+<h2>Variabili e assegnamento</h2>
+<h3>Il modello mentale giusto</h3>
+<p>In molti corsi introduttivi, le variabili vengono presentate come "scatole che contengono valori". Questo modello è sbagliato in Python e porta a fraintendimenti.</p>
+<p>In Python, una variabile è un <strong>nome (etichetta) che punta a un oggetto in memoria</strong>. L'operatore <code>=</code> non "mette un valore in una scatola" — <strong>attacca un'etichetta a un oggetto</strong>.</p>
+<pre><code>x: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span></code></pre>
+<p>Qui succede questo: Python crea un oggetto intero con valore 42 in memoria, e attacca l'etichetta <code>x</code> a quell'oggetto. Se poi scrivete:</p>
+<pre><code>y: <span class="nb">int</span> <span class="op">=</span> x</code></pre>
+<p>Non viene creata una copia: <code>y</code> diventa un'altra etichetta attaccata <strong>allo stesso oggetto</strong>. Sia <code>x</code> che <code>y</code> puntano al medesimo 42.</p>
+<pre><code>x: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
+y: <span class="nb">int</span> <span class="op">=</span> x
+<span class="nb">print</span>(x <span class="kw">is</span> y)  <span class="cm"># True: sono lo stesso oggetto!</span></code></pre>
+<p>Questo modello diventerà cruciale quando parleremo di liste e mutabilità — per ora, tenetelo a mente.</p>
+<h3>Assegnamento</h3>
+<p>L'operatore <code>=</code> è l'assegnamento. <strong>Non è l'uguaglianza matematica</strong> (per quella, Python usa <code>==</code>).</p>
+<pre><code>contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>          <span class="cm"># assegnamento: contatore punta a 0</span>
+contatore <span class="op">=</span> contatore <span class="op">+</span> <span class="mi">1</span>   <span class="cm"># riassegnamento: contatore ora punta a 1</span>
+<span class="cm"># In matematica &quot;x = x + 1&quot; è assurdo; in programmazione è normalissimo.</span></code></pre>
+<p>Esistono anche gli <strong>operatori di assegnamento composto</strong>:</p>
+<pre><code>contatore <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>   <span class="cm"># equivale a contatore = contatore + 1</span>
+totale <span class="op">-</span><span class="op">=</span> <span class="mi">10</span>     <span class="cm"># equivale a totale = totale - 10</span>
+prodotto <span class="op">*</span><span class="op">=</span> <span class="mi">2</span>    <span class="cm"># equivale a prodotto = prodotto * 2</span></code></pre>
+<h3>Assegnamento multiplo e unpacking</h3>
+<p>Python permette assegnamenti eleganti:</p>
+<pre><code><span class="cm"># Assegnamento multiplo</span>
+a: <span class="nb">int</span> <span class="op">=</span> b: <span class="nb">int</span> <span class="op">=</span> c: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>  <span class="cm"># tutti puntano a 0</span>
+
+<span class="cm"># In realtà, la forma più pythonica è:</span>
+a, b, c <span class="op">=</span> <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>  <span class="cm"># unpacking: a=1, b=2, c=3</span>
+
+<span class="cm"># Scambio di variabili (in altri linguaggi serve una variabile temporanea!)</span>
+a, b <span class="op">=</span> b, a  <span class="cm"># Python lo fa in un passo</span></code></pre>
+<h3>Naming conventions (PEP 8)</h3>
+<p><strong>PEP 8</strong> è la guida di stile ufficiale di Python. Per i nomi, le regole sono:</p>
+<ul>
+<li><strong>Variabili e funzioni:</strong> <code>snake_case</code> (lettere minuscole separate da underscore)</li>
+</ul>
+<pre><code>  media_voti: <span class="nb">float</span> <span class="op">=</span> <span class="mi">27.5</span>
+  numero_studenti: <span class="nb">int</span> <span class="op">=</span> <span class="mi">120</span></code></pre>
+<ul>
+<li><strong>Costanti:</strong> <code>UPPER<em>SNAKE</em>CASE</code></li>
+</ul>
+<pre><code>  SOGLIA_SUFFICIENZA: <span class="nb">int</span> <span class="op">=</span> <span class="mi">18</span>
+  PI_GRECO: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.14159265</span></code></pre>
+<ul>
+<li><strong>Classi:</strong> <code>PascalCase</code> (lo vedremo più avanti)</li>
+</ul>
+<pre><code>  <span class="kw">class</span> <span class="fn">StudenteUniversitario</span>:
+      <span class="kw">pass</span></code></pre>
+<p>La regola più importante: <strong>i nomi devono essere significativi</strong>. Il nome di una variabile è una forma di documentazione:</p>
+<pre><code><span class="cm"># MALE: cosa significano x, y, z?</span>
+x: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(z) <span class="op">/</span> <span class="nb">len</span>(z)
+
+<span class="cm"># BENE: il codice si spiega da solo</span>
+media_voti: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(lista_voti) <span class="op">/</span> <span class="nb">len</span>(lista_voti)</code></pre>
+<p>Evitate nomi di una sola lettera (tranne <code>i</code>, <code>j</code>, <code>k</code> per gli indici di ciclo e <code>n</code> per le dimensioni, dove la convenzione matematica è chiara). Evitate <code>l</code> (elle minuscola), <code>O</code> (o maiuscola) e <code>I</code> (i maiuscola) perché si confondono con i numeri 1 e 0.</p>
+<hr>
+<h2>Tipi di dato fondamentali</h2>
+<h3>Python è tipizzato dinamicamente</h3>
+<p>In Python, il <strong>tipo appartiene all'oggetto, non alla variabile</strong>. Una variabile può puntare a oggetti di tipo diverso nel tempo:</p>
+<pre><code>x <span class="op">=</span> <span class="mi">42</span>        <span class="cm"># x punta a un int</span>
+x <span class="op">=</span> <span class="st">&quot;ciao&quot;</span>    <span class="cm"># ora x punta a una str (perfettamente legale)</span></code></pre>
+<p>Questo è diverso da linguaggi come C o Java, dove ogni variabile ha un tipo fisso dichiarato. La tipizzazione dinamica rende Python flessibile, ma può nascondere errori. Per questo useremo i <strong>type hints</strong>.</p>
+<h3>Type hints: il nostro approccio</h3>
+<p>I type hints sono annotazioni <strong>volontarie</strong> che dichiarano il tipo atteso. Non cambiano il comportamento del programma, ma:</p>
+<ul>
+<li>Rendono il codice <strong>più leggibile</strong> (capisco subito cosa contiene ogni variabile)</li>
+<li>Permettono agli strumenti (<strong>mypy</strong>) di verificare la coerenza prima dell'esecuzione</li>
+<li>Forzano a <strong>pensare ai tipi</strong>, una disciplina mentale preziosa</li>
+</ul>
+<pre><code><span class="cm"># Senza type hints (funziona, ma meno chiaro):</span>
+eta <span class="op">=</span> <span class="mi">25</span>
+nome <span class="op">=</span> <span class="st">&quot;Mario&quot;</span>
+media <span class="op">=</span> <span class="mi">27.5</span>
+
+<span class="cm"># Con type hints (il nostro standard):</span>
+eta: <span class="nb">int</span> <span class="op">=</span> <span class="mi">25</span>
+nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Mario&quot;</span>
+media: <span class="nb">float</span> <span class="op">=</span> <span class="mi">27.5</span>
+iscritto: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span></code></pre>
+<p>Li useremo <strong>sempre</strong>, fin da questa lezione. Non sono un fardello — sono una buona abitudine che vi renderà programmatori migliori.</p>
+<h3>I tipi fondamentali</h3>
+<h4><code>int</code> — Numeri interi</h4>
+<pre><code>eta: <span class="nb">int</span> <span class="op">=</span> <span class="mi">25</span>
+popolazione: <span class="nb">int</span> <span class="op">=</span> <span class="mi">59_000_000</span>  <span class="cm"># underscore come separatore delle migliaia (ignorato)</span>
+temperatura: <span class="nb">int</span> <span class="op">=</span> <span class="op">-</span><span class="mi">5</span></code></pre>
+<p>Come visto nella lezione sulla rappresentazione dei dati, gli interi Python hanno <strong>precisione arbitraria</strong>: nessun overflow, nessun limite di dimensione.</p>
+<pre><code>grande: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span> <span class="op">*</span><span class="op">*</span> <span class="mi">100</span>  <span class="cm"># funziona perfettamente</span>
+<span class="nb">print</span>(grande)  <span class="cm"># 1267650600228229401496703205376</span></code></pre>
+<h4><code>float</code> — Numeri in virgola mobile</h4>
+<pre><code>altezza: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1.75</span>
+pi: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.14159265358979</span>
+temperatura: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span><span class="mi">2.5</span>
+notazione_scientifica: <span class="nb">float</span> <span class="op">=</span> <span class="mi">6.022e23</span>  <span class="cm"># 6.022 × 10²³</span></code></pre>
+<p>Sono numeri IEEE 754 a double precision (64 bit, ~15-16 cifre significative). Ricordate: <code>0.1 + 0.2 != 0.3</code>.</p>
+<h4><code>str</code> — Stringhe</h4>
+<pre><code>nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Anna&quot;</span>
+cognome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&#x27;Rossi&#x27;</span>     <span class="cm"># virgolette singole equivalenti</span>
+messaggio: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Ciao, mondo!&quot;</span>
+multilinea: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;&quot;Questa stringa
+occupa più righe&quot;&quot;&quot;</span></code></pre>
+<p>Le stringhe sono sequenze <strong>immutabili</strong> di caratteri Unicode. Le approfondiremo in una lezione dedicata.</p>
+<h4><code>bool</code> — Booleani</h4>
+<pre><code>iscritto: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+esame_superato: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span></code></pre>
+<p><code>True</code> e <code>False</code> (con la maiuscola!). Un fatto curioso: <code>bool</code> è un sottotipo di <code>int</code>. <code>True</code> vale <code>1</code> e <code>False</code> vale <code>0</code>:</p>
+<pre><code><span class="nb">print</span>(<span class="kw">True</span> <span class="op">+</span> <span class="kw">True</span>)   <span class="cm"># 2</span>
+<span class="nb">print</span>(<span class="kw">True</span> <span class="op">*</span> <span class="mi">10</span>)     <span class="cm"># 10</span>
+<span class="nb">print</span>(<span class="kw">False</span> <span class="op">+</span> <span class="mi">5</span>)     <span class="cm"># 5</span></code></pre>
+<p>Perché? Retrocompatibilità e praticità: permette di contare gli elementi veri in una sequenza con <code>sum()</code>.</p>
+<h4><code>NoneType</code> — L'assenza di valore</h4>
+<pre><code>risultato: <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span></code></pre>
+<p><code>None</code> rappresenta l'assenza di valore. Non è zero, non è la stringa vuota, non è <code>False</code> — è "niente". Le funzioni che non restituiscono esplicitamente un valore restituiscono <code>None</code>.</p>
+<h3>La funzione <code>type()</code></h3>
+<p>Per verificare il tipo di un oggetto:</p>
+<pre><code><span class="nb">print</span>(<span class="nb">type</span>(<span class="mi">42</span>))         <span class="cm"># &lt;class &#x27;int&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="mi">3.14</span>))       <span class="cm"># &lt;class &#x27;float&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="st">&quot;ciao&quot;</span>))     <span class="cm"># &lt;class &#x27;str&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="kw">True</span>))       <span class="cm"># &lt;class &#x27;bool&#x27;&gt;</span>
+<span class="nb">print</span>(<span class="nb">type</span>(<span class="kw">None</span>))       <span class="cm"># &lt;class &#x27;NoneType&#x27;&gt;</span></code></pre>
+<h3>Conversioni di tipo (casting)</h3>
+<pre><code><span class="cm"># Da stringa a numero</span>
+eta: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="st">&quot;25&quot;</span>)           <span class="cm"># 25</span>
+altezza: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="st">&quot;1.75&quot;</span>) <span class="cm"># 1.75</span>
+
+<span class="cm"># Da numero a stringa</span>
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="nb">str</span>(<span class="mi">42</span>)           <span class="cm"># &quot;42&quot;</span>
+
+<span class="cm"># Da int a float e viceversa</span>
+x: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="mi">42</span>)           <span class="cm"># 42.0</span>
+y: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="mi">3.99</span>)             <span class="cm"># 3 (tronca, non arrotonda!)</span>
+
+<span class="cm"># Conversione a bool</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="mi">0</span>))       <span class="cm"># False</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="mi">42</span>))      <span class="cm"># True (qualsiasi numero diverso da 0)</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="st">&quot;&quot;</span>))      <span class="cm"># False (stringa vuota)</span>
+<span class="nb">print</span>(<span class="nb">bool</span>(<span class="st">&quot;ciao&quot;</span>))  <span class="cm"># True (qualsiasi stringa non vuota)</span></code></pre>
+<h3>Tutto è un oggetto</h3>
+<p>In Python, tutto è un oggetto — anche i numeri:</p>
+<pre><code><span class="nb">print</span>((<span class="mi">42</span>).bit_length())      <span class="cm"># 6 (servono 6 bit per rappresentare 42)</span>
+<span class="nb">print</span>((<span class="op">-</span><span class="mi">7</span>).bit_length())      <span class="cm"># 3</span>
+<span class="nb">print</span>(<span class="st">&quot;ciao&quot;</span>.upper())         <span class="cm"># &quot;CIAO&quot;</span>
+<span class="nb">print</span>([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>].append(<span class="mi">4</span>))    <span class="cm"># None (modifica la lista in-place)</span></code></pre>
+<p>Questo significa che ogni valore ha <strong>attributi</strong> e <strong>metodi</strong> — funzioni associate all'oggetto che operano su di esso. La notazione col punto (<code>oggetto.metodo()</code>) è fondamentale in Python.</p>
+<hr>
+<h2>Domande di verifica</h2>
+<ol>
+<li><strong>Perché in Python l'indentazione non è opzionale?</strong> Qual è il vantaggio di questa scelta progettuale?</li>
+</ol>
+<ol>
+<li><strong>Qual è la differenza tra il modello "variabile come scatola" e il modello "variabile come etichetta"?</strong> Quale è corretto in Python?</li>
+</ol>
+<ol>
+<li><strong>Cosa sono i type hints?</strong> Cambiano il comportamento del programma?</li>
+</ol>
+<ol>
+<li><strong>Perché <code>bool</code> è un sottotipo di <code>int</code> in Python?</strong> Cosa significa in pratica?</li>
+</ol>
+<ol>
+<li><strong>Qual è la differenza tra <code>=</code> e <code>==</code> in Python?</strong></li>
+</ol>
+<ol>
+<li><strong>Cosa restituisce <code>int(3.99)</code>?</strong> Perché non restituisce 4?</li>
+</ol>
+<ol>
+<li><strong>Perché è importante dare nomi significativi alle variabili?</strong> Fate un esempio di nome cattivo e del suo equivalente buono.</li>
+</ol>
+<ol>
+<li><strong>Cosa significa "tutto è un oggetto" in Python?</strong> Fate un esempio con un numero intero.</li>
+</ol>
+<hr>
+<h2>Esercizi</h2>
+<h3>Base</h3>
+<ol>
+<li>Scrivete un programma che dichiara le seguenti variabili con type hints e stampa il loro tipo:</li>
+</ol>
+<pre><code>   nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il vostro nome&quot;</span>
+   eta: <span class="nb">int</span> <span class="op">=</span> <span class="cm"># la vostra età</span>
+   altezza: <span class="nb">float</span> <span class="op">=</span> <span class="cm"># la vostra altezza in metri</span>
+   studente: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span></code></pre>
+<ol>
+<li>Scrivete un programma che calcola l'area di un rettangolo:</li>
+</ol>
+<pre><code>   base: <span class="nb">float</span> <span class="op">=</span> <span class="mi">5.0</span>
+   altezza: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.0</span>
+   area: <span class="nb">float</span> <span class="op">=</span> ...  <span class="cm"># completate</span>
+   <span class="nb">print</span>(<span class="st">f&quot;L&#x27;area del rettangolo è {area}&quot;</span>)</code></pre>
+<ol>
+<li>Cosa stampa il seguente codice? Provate a prevederlo prima di eseguirlo:</li>
+</ol>
+<pre><code>   a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
+   b: <span class="nb">int</span> <span class="op">=</span> a
+   a <span class="op">=</span> <span class="mi">20</span>
+   <span class="nb">print</span>(b)</code></pre>
+<h3>Intermedio</h3>
+<ol>
+<li>Scrivete un programma che converte una temperatura da Celsius a Fahrenheit (formula: F = C × 9/5 + 32). Usate type hints e f-string per l'output formattato:</li>
+</ol>
+<pre><code>   celsius: <span class="nb">float</span> <span class="op">=</span> <span class="mi">25.0</span>
+   <span class="cm"># ... completate</span>
+   <span class="nb">print</span>(<span class="st">f&quot;{celsius}°C = {fahrenheit:.1f}°F&quot;</span>)</code></pre>
+<ol>
+<li>Scrivete un programma che, dato un importo in euro e un tasso di cambio, calcola l'equivalente in un'altra valuta. Usate nomi di variabili significativi.</li>
+</ol>
+<ol>
+<li>Esplorate il tipo <code>bool</code> come sottotipo di <code>int</code>:</li>
+</ol>
+<pre><code>   <span class="cm"># Cosa stampano queste espressioni? Perché?</span>
+   <span class="nb">print</span>(<span class="kw">True</span> <span class="op">+</span> <span class="kw">True</span> <span class="op">+</span> <span class="kw">True</span>)
+   <span class="nb">print</span>(<span class="kw">True</span> <span class="op">*</span> <span class="mi">100</span>)
+   <span class="nb">print</span>(<span class="kw">False</span> <span class="op">-</span> <span class="mi">1</span>)
+   <span class="nb">print</span>(<span class="nb">type</span>(<span class="kw">True</span> <span class="op">+</span> <span class="mi">1</span>))</code></pre>
+<h3>Avanzato</h3>
+<ol>
+<li>Scrivete un programma che calcola la <strong>distanza euclidea</strong> tra due punti nel piano:</li>
+</ol>
+<pre><code>   <span class="kw">import</span> math
+
+   x1: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1.0</span>
+   y1: <span class="nb">float</span> <span class="op">=</span> <span class="mi">2.0</span>
+   x2: <span class="nb">float</span> <span class="op">=</span> <span class="mi">4.0</span>
+   y2: <span class="nb">float</span> <span class="op">=</span> <span class="mi">6.0</span>
+
+   distanza: <span class="nb">float</span> <span class="op">=</span> ...  <span class="cm"># formula: √((x2-x1)² + (y2-y1)²)</span>
+   <span class="nb">print</span>(<span class="st">f&quot;Distanza: {distanza:.4f}&quot;</span>)</code></pre>
+<ol>
+<li>Investigate il comportamento dell'operatore <code>is</code> vs <code>==</code>:</li>
+</ol>
+<pre><code>   a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">256</span>
+   b: <span class="nb">int</span> <span class="op">=</span> <span class="mi">256</span>
+   <span class="nb">print</span>(a <span class="op">=</span><span class="op">=</span> b)   <span class="cm"># ?</span>
+   <span class="nb">print</span>(a <span class="kw">is</span> b)    <span class="cm"># ?</span>
+
+   c: <span class="nb">int</span> <span class="op">=</span> <span class="mi">257</span>
+   d: <span class="nb">int</span> <span class="op">=</span> <span class="mi">257</span>
+   <span class="nb">print</span>(c <span class="op">=</span><span class="op">=</span> d)   <span class="cm"># ?</span>
+   <span class="nb">print</span>(c <span class="kw">is</span> d)    <span class="cm"># ?  (Sorpresa! Perché?)</span></code></pre>
+<p>Ricercate il concetto di "integer caching" in Python per spiegare il risultato.</p>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>Oggi avete scritto il vostro primo codice Python. Può sembrare poco — variabili, tipi, assegnamenti — ma le fondamenta sono cruciali. Due concetti di questa lezione vi accompagneranno per tutto il corso e oltre:</p>
+<ol>
+<li><strong>Le variabili sono etichette, non scatole.</strong> Questo modello mentale diventerà essenziale quando lavorerete con liste e dizionari: capire che <code>b = a</code> non copia ma crea un alias vi risparmierà ore di debugging.</li>
+</ol>
+<ol>
+<li><strong>I type hints come disciplina.</strong> Annotare i tipi non è burocrazia — è pensare con chiarezza a cosa entra e cosa esce, a cosa contiene ogni variabile. È la differenza tra "funziona, non so perché" e "funziona, e so perché".</li>
+</ol>
+<p>Nella prossima lezione aggiungeremo gli operatori, l'input/output e le strutture condizionali — e i vostri programmi inizieranno a prendere decisioni.</p>
+<nav class="bottom-nav"><span><a href="F06_dal_problema_al_programma.html">← F06</a></span><span><a href="../../index.html">Home</a></span><span><a href="F08_operatori_io_condizionali.html">F08 →</a></span></nav>
+</body>
+</html>

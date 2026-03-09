@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F13_funzioni_fondamenti/esempi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/F13_funzioni_fondamenti.html">Dispensa</a> &bull; <a href="../../presentazioni/F13_funzioni_fondamenti.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>F13_funzioni_fondamenti/esempi.py</h1>
+<a class="download-link" href="esempi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># F13 — Funzioni: fondamenti</span>
+<span class="cm"># Esempi per la lezione frontale 13</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 1. DEFINIZIONE DI FUNZIONI CON def, PARAMETRI, RETURN</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Definizione di funzioni ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">saluta</span>(<span class="fn">nome</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce un saluto personalizzato.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="st">f&quot;Ciao, {nome}!&quot;</span>
+
+
+risultato: <span class="nb">str</span> <span class="op">=</span> saluta(<span class="st">&quot;Marco&quot;</span>)
+<span class="kw">assert</span> risultato <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Ciao, Marco!&quot;</span>
+<span class="nb">print</span>(risultato)
+
+
+<span class="kw">def</span> <span class="fn">somma</span>(<span class="fn">a</span>: <span class="nb">float</span>, b: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce la somma di due numeri.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> a <span class="op">+</span> b
+
+
+<span class="kw">assert</span> somma(<span class="mi">3</span>, <span class="mi">4</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
+<span class="kw">assert</span> somma(<span class="mi">1.5</span>, <span class="mi">2.5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">4.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;somma(3, 4) = {somma(3, 4)}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 2. DOCSTRINGS E TYPE HINTS</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Docstrings e type hints ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">calcola_media</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;
+    Calcola la media aritmetica di una lista di valori.
+
+    Args:
+        valori: lista di numeri (non vuota)
+
+    Returns:
+        la media aritmetica dei valori
+
+    Raises:
+        ValueError: se la lista è vuota
+    &quot;&quot;&quot;</span>
+    <span class="kw">if</span> <span class="kw">not</span> valori:
+        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La lista non può essere vuota&quot;</span>)
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">28.0</span>, <span class="mi">30.0</span>, <span class="mi">25.0</span>, <span class="mi">27.0</span>, <span class="mi">30.0</span>]
+media: <span class="nb">float</span> <span class="op">=</span> calcola_media(voti)
+<span class="kw">assert</span> media <span class="op">=</span><span class="op">=</span> <span class="mi">28.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;Media dei voti: {media}&quot;</span>)
+
+<span class="cm"># Accedere alla docstring</span>
+<span class="nb">print</span>(<span class="st">f&quot;Docstring: {calcola_media.__doc__[:50]}...&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 3. ARGOMENTI PREDEFINITI (DEFAULT)</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Argomenti predefiniti ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">potenza</span>(<span class="fn">base</span>: <span class="nb">float</span>, esponente: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola base elevato a esponente (default: quadrato).&quot;&quot;&quot;</span>
+    <span class="kw">return</span> base <span class="op">*</span><span class="op">*</span> esponente
+
+
+<span class="kw">assert</span> potenza(<span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">9</span>       <span class="cm"># usa il default</span>
+<span class="kw">assert</span> potenza(<span class="mi">3</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">27</span>   <span class="cm"># sovrascrive il default</span>
+<span class="kw">assert</span> potenza(<span class="mi">2</span>, <span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1024</span>
+<span class="nb">print</span>(<span class="st">f&quot;potenza(3) = {potenza(3)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;potenza(3, 3) = {potenza(3, 3)}&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">formatta_nome</span>(
+    nome: <span class="nb">str</span>,
+    cognome: <span class="nb">str</span>,
+    maiuscolo: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>,
+    ordine_cognome_nome: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Formatta un nome completo con varie opzioni.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> ordine_cognome_nome:
+        risultato: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;{cognome} {nome}&quot;</span>
+    <span class="kw">else</span>:
+        risultato <span class="op">=</span> <span class="st">f&quot;{nome} {cognome}&quot;</span>
+    <span class="kw">if</span> maiuscolo:
+        risultato <span class="op">=</span> risultato.upper()
+    <span class="kw">return</span> risultato
+
+
+<span class="kw">assert</span> formatta_nome(<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Rossi&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Marco Rossi&quot;</span>
+<span class="kw">assert</span> formatta_nome(<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Rossi&quot;</span>, maiuscolo<span class="op">=</span><span class="kw">True</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;MARCO ROSSI&quot;</span>
+<span class="kw">assert</span> formatta_nome(<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Rossi&quot;</span>, ordine_cognome_nome<span class="op">=</span><span class="kw">True</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Rossi Marco&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Formato base: {formatta_nome(&#x27;Marco&#x27;, &#x27;Rossi&#x27;)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Maiuscolo: {formatta_nome(&#x27;Marco&#x27;, &#x27;Rossi&#x27;, maiuscolo=True)}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 4. ARGOMENTI KEYWORD</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Argomenti keyword ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">crea_studente</span>(
+    nome: <span class="nb">str</span>,
+    cognome: <span class="nb">str</span>,
+    matricola: <span class="nb">int</span>,
+    corso: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Informatica&quot;</span>,
+    anno: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Crea un dizionario studente.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> {
+        <span class="st">&quot;nome&quot;</span>: nome,
+        <span class="st">&quot;cognome&quot;</span>: cognome,
+        <span class="st">&quot;matricola&quot;</span>: matricola,
+        <span class="st">&quot;corso&quot;</span>: corso,
+        <span class="st">&quot;anno&quot;</span>: anno,
+    }
+
+
+<span class="cm"># Tutti i modi di chiamare la funzione</span>
+s1: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span>] <span class="op">=</span> crea_studente(<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Rossi&quot;</span>, <span class="mi">12345</span>)
+s2: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span>] <span class="op">=</span> crea_studente(
+    nome<span class="op">=</span><span class="st">&quot;Laura&quot;</span>, cognome<span class="op">=</span><span class="st">&quot;Bianchi&quot;</span>, matricola<span class="op">=</span><span class="mi">12346</span>, anno<span class="op">=</span><span class="mi">2</span>
+)
+s3: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">int</span>] <span class="op">=</span> crea_studente(
+    <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;Verdi&quot;</span>, <span class="mi">12347</span>, corso<span class="op">=</span><span class="st">&quot;Matematica&quot;</span>
+)
+
+<span class="kw">assert</span> s1[<span class="st">&quot;corso&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Informatica&quot;</span>
+<span class="kw">assert</span> s2[<span class="st">&quot;anno&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">assert</span> s3[<span class="st">&quot;corso&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Matematica&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;Studente 1: {s1}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Studente 2: {s2}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 5. RETURN MULTIPLI (tuple)</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Return multipli ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">statistiche_base</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Calcola minimo, massimo e media di una lista di valori.&quot;&quot;&quot;</span>
+    minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(valori)
+    massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+    <span class="kw">return</span> minimo, massimo, media
+
+
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">10.0</span>, <span class="mi">20.0</span>, <span class="mi">30.0</span>, <span class="mi">40.0</span>, <span class="mi">50.0</span>]
+minimo, massimo, media_val <span class="op">=</span> statistiche_base(dati)
+<span class="kw">assert</span> minimo <span class="op">=</span><span class="op">=</span> <span class="mi">10.0</span>
+<span class="kw">assert</span> massimo <span class="op">=</span><span class="op">=</span> <span class="mi">50.0</span>
+<span class="kw">assert</span> media_val <span class="op">=</span><span class="op">=</span> <span class="mi">30.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;Min: {minimo}, Max: {massimo}, Media: {media_val}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 6. SCOPE: VARIABILI LOCALI E GLOBALI</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Scope: locale vs globale ===&quot;</span>)
+
+contatore_globale: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+
+<span class="kw">def</span> <span class="fn">incrementa_locale</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Dimostra che le variabili locali non modificano quelle globali.&quot;&quot;&quot;</span>
+    contatore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>  <span class="cm"># variabile LOCALE</span>
+    contatore <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">return</span> contatore
+
+
+<span class="cm"># La variabile globale non viene toccata</span>
+risultato_locale: <span class="nb">int</span> <span class="op">=</span> incrementa_locale()
+<span class="kw">assert</span> risultato_locale <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">assert</span> contatore_globale <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>  <span class="cm"># la globale è rimasta invariata!</span>
+<span class="nb">print</span>(<span class="st">f&quot;Risultato locale: {risultato_locale}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Contatore globale (invariato): {contatore_globale}&quot;</span>)
+
+<span class="cm"># NOTA: usare &#x27;global&#x27; è generalmente sconsigliato — meglio passare</span>
+<span class="cm"># e restituire valori esplicitamente.</span>
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 7. FUNZIONI PURE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Funzioni pure ===&quot;</span>)
+
+<span class="cm"># Funzione PURA: stesso input → stesso output, nessun effetto collaterale</span>
+
+
+<span class="kw">def</span> <span class="fn">aggiungi_elemento_puro</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>], elemento: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce una NUOVA lista con l&#x27;elemento aggiunto (pura).&quot;&quot;&quot;</span>
+    <span class="kw">return</span> lista <span class="op">+</span> [elemento]
+
+
+<span class="cm"># Funzione IMPURA: modifica l&#x27;argomento (effetto collaterale)</span>
+<span class="kw">def</span> <span class="fn">aggiungi_elemento_impuro</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>], elemento: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Modifica la lista in place (IMPURA — effetto collaterale).&quot;&quot;&quot;</span>
+    lista.append(elemento)
+
+
+originale: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+
+<span class="cm"># La funzione pura non modifica l&#x27;originale</span>
+nuova: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> aggiungi_elemento_puro(originale, <span class="mi">4</span>)
+<span class="kw">assert</span> originale <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]  <span class="cm"># non modificato!</span>
+<span class="kw">assert</span> nuova <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Pura — originale: {originale}, nuova: {nuova}&quot;</span>)
+
+<span class="cm"># La funzione impura modifica l&#x27;originale</span>
+copia: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
+aggiungi_elemento_impuro(copia, <span class="mi">4</span>)
+<span class="kw">assert</span> copia <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]  <span class="cm"># modificato!</span>
+<span class="nb">print</span>(<span class="st">f&quot;Impura — lista dopo modifica: {copia}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 8. ESEMPIO: FUNZIONI STATISTICHE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Funzioni statistiche ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">media_aritmetica</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media aritmetica.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+<span class="kw">def</span> <span class="fn">media_ponderata</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>], pesi: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la media ponderata.&quot;&quot;&quot;</span>
+    somma_pesata: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(v <span class="op">*</span> p <span class="kw">for</span> v, p <span class="kw">in</span> <span class="nb">zip</span>(valori, pesi))
+    somma_pesi: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(pesi)
+    <span class="kw">return</span> somma_pesata <span class="op">/</span> somma_pesi
+
+
+<span class="kw">def</span> <span class="fn">varianza_popolazione</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Calcola la varianza della popolazione.&quot;&quot;&quot;</span>
+    m: <span class="nb">float</span> <span class="op">=</span> media_aritmetica(valori)
+    <span class="kw">return</span> <span class="nb">sum</span>((x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori) <span class="op">/</span> <span class="nb">len</span>(valori)
+
+
+voti_esame: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">24.0</span>, <span class="mi">26.0</span>, <span class="mi">28.0</span>, <span class="mi">30.0</span>, <span class="mi">27.0</span>]
+
+m: <span class="nb">float</span> <span class="op">=</span> media_aritmetica(voti_esame)
+<span class="kw">assert</span> m <span class="op">=</span><span class="op">=</span> <span class="mi">27.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;Media aritmetica: {m}&quot;</span>)
+
+pesi: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">3.0</span>, <span class="mi">6.0</span>, <span class="mi">9.0</span>, <span class="mi">12.0</span>, <span class="mi">6.0</span>]  <span class="cm"># crediti</span>
+mp: <span class="nb">float</span> <span class="op">=</span> media_ponderata(voti_esame, pesi)
+<span class="nb">print</span>(<span class="st">f&quot;Media ponderata: {mp:.2f}&quot;</span>)
+
+var: <span class="nb">float</span> <span class="op">=</span> varianza_popolazione(voti_esame)
+<span class="nb">print</span>(<span class="st">f&quot;Varianza: {var:.2f}&quot;</span>)
+
+<span class="cm"># ============================================================</span>
+<span class="cm"># 9. ESEMPIO: CONVERTITORE DI TEMPERATURE</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;\n=== Convertitore di temperature ===&quot;</span>)
+
+
+<span class="kw">def</span> <span class="fn">celsius_a_fahrenheit</span>(<span class="fn">celsius</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Celsius in Fahrenheit.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> celsius <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>
+
+
+<span class="kw">def</span> <span class="fn">fahrenheit_a_celsius</span>(<span class="fn">fahrenheit</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Fahrenheit in Celsius.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> (fahrenheit <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>
+
+
+<span class="kw">def</span> <span class="fn">celsius_a_kelvin</span>(<span class="fn">celsius</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Converte gradi Celsius in Kelvin.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> celsius <span class="op">+</span> <span class="mi">273.15</span>
+
+
+<span class="cm"># Test</span>
+<span class="kw">assert</span> celsius_a_fahrenheit(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">32</span>
+<span class="kw">assert</span> celsius_a_fahrenheit(<span class="mi">100</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">212</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(fahrenheit_a_celsius(<span class="mi">32</span>) <span class="op">-</span> <span class="mi">0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(fahrenheit_a_celsius(<span class="mi">212</span>) <span class="op">-</span> <span class="mi">100</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+<span class="kw">assert</span> celsius_a_kelvin(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">273.15</span>
+<span class="kw">assert</span> <span class="nb">abs</span>(celsius_a_kelvin(<span class="op">-</span><span class="mi">273.15</span>)) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+temperature_celsius: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">0.0</span>, <span class="mi">20.0</span>, <span class="mi">37.0</span>, <span class="mi">100.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;{&#x27;Celsius&#x27;:&gt;10} {&#x27;Fahrenheit&#x27;:&gt;12} {&#x27;Kelvin&#x27;:&gt;10}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">35</span>)
+<span class="kw">for</span> temp <span class="kw">in</span> temperature_celsius:
+    f: <span class="nb">float</span> <span class="op">=</span> celsius_a_fahrenheit(temp)
+    k: <span class="nb">float</span> <span class="op">=</span> celsius_a_kelvin(temp)
+    <span class="nb">print</span>(<span class="st">f&quot;{temp:&gt;10.1f} {f:&gt;12.1f} {k:&gt;10.2f}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;\n=== Fine esempi F13 ===&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

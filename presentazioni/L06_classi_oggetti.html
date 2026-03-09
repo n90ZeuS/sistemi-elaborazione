@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L06 - Classi e Oggetti</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titolo -->
+            <section class="title-slide">
+                <h1>Classi e Oggetti</h1>
+                <div class="subtitle">Laboratorio 6</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li><strong>Esercizio guidato 1</strong> &mdash; <code>Punto2D</code>: attributi, metodi, <code>__str__</code></li>
+                    <li><strong>Esercizio guidato 2</strong> &mdash; <code>Studente</code>: validazione dei dati</li>
+                    <li><strong>Esercizio guidato 3</strong> &mdash; <code>__repr__</code>, <code>__eq__</code>, <code>__lt__</code></li>
+                    <li><strong>Esercizio guidato 4</strong> &mdash; <code>sorted()</code> su liste di oggetti</li>
+                    <li><strong>Esercizi autonomi</strong> &mdash; <code>Rettangolo</code>, <code>ContoCorrente</code>, <code>Corso</code>, <code>Temperatura</code></li>
+                    <li><strong>Sfida finale</strong> &mdash; <code>Dataset</code>: un mini-Pandas</li>
+                </ol>
+                <div class="box box-blue">
+                    <strong>Prerequisito</strong>: Frontale F16 (Classi e programmazione orientata agli oggetti)
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Sezione - Esercizio Guidato 1 -->
+            <section class="section-slide">
+                <h2>Esercizio Guidato 1</h2>
+                <p><code>Punto2D</code>: coordinate, distanza, <code>__str__</code></p>
+            </section>
+
+            <!-- SLIDE 4: Punto2D - Classe base -->
+            <section>
+                <h2>Punto2D &mdash; Definizione della classe</h2>
+                <pre><code class="language-python">import math
+
+class Punto2D:
+    """Rappresenta un punto nel piano cartesiano."""
+
+    def __init__(self, x: float, y: float) -> None:
+        self.x: float = x
+        self.y: float = y
+
+    def distanza_da(self, altro: "Punto2D") -> float:
+        dx: float = self.x - altro.x
+        dy: float = self.y - altro.y
+        return math.sqrt(dx ** 2 + dy ** 2)
+
+    def distanza_da_origine(self) -> float:
+        return self.distanza_da(Punto2D(0.0, 0.0))
+
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y})"</code></pre>
+                <div class="box box-green">
+                    <strong>Osservazione</strong>: <code>distanza_da_origine</code> riusa <code>distanza_da</code> &mdash; un metodo puo' chiamare altri metodi dello stesso oggetto tramite <code>self</code>.
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Punto2D - Prova e output -->
+            <section>
+                <h2>Punto2D &mdash; Test e output</h2>
+                <pre><code class="language-python">p1: Punto2D = Punto2D(3.0, 4.0)
+p2: Punto2D = Punto2D(0.0, 0.0)
+
+print(f"Punto 1: {p1}")             # Usa __str__
+print(f"Punto 2: {p2}")
+print(f"Distanza p1-p2: {p1.distanza_da(p2):.2f}")
+print(f"Distanza p1 dall'origine: {p1.distanza_da_origine():.2f}")</code></pre>
+                <p><strong>Output atteso:</strong></p>
+                <pre><code class="language-python">Punto 1: (3.0, 4.0)
+Punto 2: (0.0, 0.0)
+Distanza p1-p2: 5.00
+Distanza p1 dall'origine: 5.00</code></pre>
+            </section>
+
+            <!-- SLIDE 6: Concetti chiave - __init__ e self -->
+            <section>
+                <h2>Concetti chiave</h2>
+                <table>
+                    <tr>
+                        <th>Concetto</th>
+                        <th>Spiegazione</th>
+                    </tr>
+                    <tr>
+                        <td><code>__init__</code></td>
+                        <td>Il <strong>costruttore</strong>: viene chiamato quando si scrive <code>Punto2D(3.0, 4.0)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>self</code></td>
+                        <td>Riferimento all'<strong>oggetto corrente</strong>: ogni metodo lo riceve come primo parametro</td>
+                    </tr>
+                    <tr>
+                        <td><code>__str__</code></td>
+                        <td>Invocato da <code>print()</code> e dalle f-string per una rappresentazione <strong>leggibile</strong></td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- SLIDE 7: __repr__ -->
+            <section>
+                <h2>Punto2D &mdash; Aggiungere <code>__repr__</code></h2>
+                <pre><code class="language-python">def __repr__(self) -> str:
+    """Rappresentazione tecnica: ricrea l'oggetto."""
+    return f"Punto2D({self.x}, {self.y})"</code></pre>
+                <div class="columns">
+                    <div class="col">
+                        <h3><code>__str__</code> &mdash; per gli umani</h3>
+                        <pre><code class="language-python">print(p1)
+# (3.0, 4.0)</code></pre>
+                    </div>
+                    <div class="col">
+                        <h3><code>__repr__</code> &mdash; per i programmatori</h3>
+                        <pre><code class="language-python">print(repr(p1))
+# Punto2D(3.0, 4.0)</code></pre>
+                    </div>
+                </div>
+                <div class="box box-yellow">
+                    <strong>Attenzione</strong>: quando si stampa una <strong>lista</strong> di oggetti, Python usa <code>__repr__</code> per ogni elemento, non <code>__str__</code>.
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Sezione - Esercizio Guidato 2 -->
+            <section class="section-slide">
+                <h2>Esercizio Guidato 2</h2>
+                <p><code>Studente</code>: validazione dei dati</p>
+            </section>
+
+            <!-- SLIDE 9: Studente - Costruttore con validazione -->
+            <section>
+                <h2>Studente &mdash; Costruttore e validazione</h2>
+                <pre><code class="language-python">class Studente:
+    """Rappresenta uno studente universitario con i suoi voti."""
+
+    def __init__(self, nome: str, cognome: str, matricola: str) -> None:
+        if not nome.strip():
+            raise ValueError("Il nome non puo' essere vuoto")
+        if not cognome.strip():
+            raise ValueError("Il cognome non puo' essere vuoto")
+        if not matricola.strip():
+            raise ValueError("La matricola non puo' essere vuota")
+
+        self.nome: str = nome.strip()
+        self.cognome: str = cognome.strip()
+        self.matricola: str = matricola.strip()
+        self.voti: list[int] = []</code></pre>
+                <div class="box box-blue">
+                    <strong>Incapsulamento</strong>: la validazione nel costruttore garantisce che un oggetto <code>Studente</code> sia sempre in uno stato coerente fin dalla creazione.
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Studente - aggiungi_voto con validazione -->
+            <section>
+                <h2>Studente &mdash; <code>aggiungi_voto</code></h2>
+                <pre><code class="language-python">def aggiungi_voto(self, voto: int) -> None:
+    if not isinstance(voto, int):
+        raise TypeError(
+            f"Il voto deve essere un intero, ricevuto {type(voto).__name__}"
+        )
+    if voto < 18 or voto > 30:
+        raise ValueError(
+            f"Il voto deve essere tra 18 e 30, ricevuto {voto}"
+        )
+    self.voti.append(voto)
+
+def media(self) -> float:
+    if not self.voti:
+        raise ValueError(
+            f"Nessun voto registrato per {self.nome} {self.cognome}"
+        )
+    return sum(self.voti) / len(self.voti)
+
+def numero_esami(self) -> int:
+    return len(self.voti)</code></pre>
+            </section>
+
+            <!-- SLIDE 11: Studente - __str__ e test -->
+            <section>
+                <h2>Studente &mdash; <code>__str__</code> e test</h2>
+                <pre><code class="language-python">def __str__(self) -> str:
+    n_esami: int = self.numero_esami()
+    if n_esami > 0:
+        return (f"{self.nome} {self.cognome} ({self.matricola}) "
+                f"- {n_esami} esami, media: {self.media():.2f}")
+    return f"{self.nome} {self.cognome} ({self.matricola}) - nessun esame"</code></pre>
+                <pre><code class="language-python">s = Studente("Anna", "Rossi", "MAT001")
+print(s)                 # Anna Rossi (MAT001) - nessun esame
+s.aggiungi_voto(28)
+s.aggiungi_voto(25)
+s.aggiungi_voto(30)
+print(s)                 # Anna Rossi (MAT001) - 3 esami, media: 27.67</code></pre>
+            </section>
+
+            <!-- SLIDE 12: Studente - Test validazione -->
+            <section>
+                <h2>Studente &mdash; La validazione in azione</h2>
+                <pre><code class="language-python">try:
+    s.aggiungi_voto(15)        # Troppo basso
+except ValueError as e:
+    print(f"Errore catturato: {e}")
+
+try:
+    s.aggiungi_voto(25.5)      # Non intero
+except TypeError as e:
+    print(f"Errore catturato: {e}")</code></pre>
+                <p><strong>Output:</strong></p>
+                <pre><code class="language-python">Errore catturato: Il voto deve essere tra 18 e 30, ricevuto 15
+Errore catturato: Il voto deve essere un intero, ricevuto float</code></pre>
+                <div class="box box-green">
+                    <strong>Punto chiave</strong>: la classe <strong>protegge i propri dati</strong>. Non e' possibile inserire un voto invalido. Questa e' la potenza dell'incapsulamento.
+                </div>
+            </section>
+
+            <!-- SLIDE 13: Sezione - Esercizio Guidato 3 -->
+            <section class="section-slide">
+                <h2>Esercizio Guidato 3</h2>
+                <p><code>__repr__</code>, <code>__eq__</code>, <code>__lt__</code></p>
+            </section>
+
+            <!-- SLIDE 14: __repr__ e __eq__ -->
+            <section>
+                <h2>Studente &mdash; <code>__repr__</code> e <code>__eq__</code></h2>
+                <pre><code class="language-python">def __repr__(self) -> str:
+    return f"Studente('{self.nome}', '{self.cognome}', '{self.matricola}')"
+
+def __eq__(self, altro: object) -> bool:
+    """Due studenti sono uguali se hanno la stessa matricola."""
+    if not isinstance(altro, Studente):
+        return NotImplemented
+    return self.matricola == altro.matricola</code></pre>
+                <pre><code class="language-python">s1 = Studente("Anna", "Rossi", "MAT001")
+s3 = Studente("Anna", "Rossi", "MAT001")   # Stessa matricola
+s2 = Studente("Marco", "Bianchi", "MAT002")
+
+print(repr(s1))          # Studente('Anna', 'Rossi', 'MAT001')
+print(f"s1 == s3? {s1 == s3}")   # True  (stessa matricola)
+print(f"s1 == s2? {s1 == s2}")   # False</code></pre>
+                <div class="box box-yellow">
+                    <strong>Perche' <code>NotImplemented</code>?</strong> Restituire <code>NotImplemented</code> (e non <code>False</code>) permette a Python di provare il confronto nell'altro senso.
+                </div>
+            </section>
+
+            <!-- SLIDE 15: __lt__ e ordinamento -->
+            <section>
+                <h2>Studente &mdash; <code>__lt__</code> e ordinamento</h2>
+                <pre><code class="language-python">def __lt__(self, altro: "Studente") -> bool:
+    """Ordinamento per cognome, poi per nome."""
+    if not isinstance(altro, Studente):
+        return NotImplemented
+    if self.cognome == altro.cognome:
+        return self.nome < altro.nome
+    return self.cognome < altro.cognome</code></pre>
+                <pre><code class="language-python">studenti = [s1, s2, s4]   # Rossi, Bianchi, Bianchi
+ordinati = sorted(studenti)
+for s in ordinati:
+    print(f"  {s}")</code></pre>
+                <p><strong>Output:</strong></p>
+                <pre><code class="language-python">  Lucia Bianchi (MAT004) - nessun esame
+  Marco Bianchi (MAT002) - nessun esame
+  Anna Rossi (MAT001) - nessun esame</code></pre>
+                <div class="box box-blue">
+                    <code>__lt__</code> e' <strong>sufficiente</strong> per far funzionare <code>sorted()</code>: Python usa internamente solo <code>&lt;</code> per l'ordinamento.
+                </div>
+            </section>
+
+            <!-- SLIDE 16: Sezione - Esercizio Guidato 4 -->
+            <section class="section-slide">
+                <h2>Esercizio Guidato 4</h2>
+                <p><code>sorted()</code> con criteri diversi</p>
+            </section>
+
+            <!-- SLIDE 17: sorted() con key -->
+            <section>
+                <h2>Ordinamento con <code>key</code></h2>
+                <pre><code class="language-python">classe = crea_classe_esempio()
+
+# Ordinamento predefinito: usa __lt__ (cognome, nome)
+stampa_classifica(sorted(classe), "Ordine alfabetico")
+
+# Ordinamento per media (decrescente)
+per_media = sorted(classe, key=lambda s: s.media(), reverse=True)
+stampa_classifica(per_media, "Classifica per media")
+
+# Ordinamento per numero di esami
+per_esami = sorted(classe, key=lambda s: s.numero_esami())
+
+# Ordinamento per matricola
+per_matricola = sorted(classe, key=lambda s: s.matricola)</code></pre>
+                <div class="box box-green">
+                    <strong>Punto chiave</strong>: <code>sorted()</code> usa <code>__lt__</code> come criterio predefinito, ma il parametro <code>key</code> permette di ordinare per <strong>qualsiasi attributo o calcolo</strong>.
+                </div>
+            </section>
+
+            <!-- SLIDE 18: Schema riassuntivo metodi speciali -->
+            <section>
+                <h2>Riepilogo metodi speciali</h2>
+                <table>
+                    <tr>
+                        <th>Metodo</th>
+                        <th>Quando viene chiamato</th>
+                        <th>Esempio</th>
+                    </tr>
+                    <tr>
+                        <td><code>__init__</code></td>
+                        <td>Creazione dell'oggetto</td>
+                        <td><code>Studente("Anna", "Rossi", "MAT001")</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>__str__</code></td>
+                        <td><code>print()</code>, f-string</td>
+                        <td><code>print(s)</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>__repr__</code></td>
+                        <td>Debug, interprete, liste</td>
+                        <td><code>repr(s)</code>, <code>print([s1, s2])</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>__eq__</code></td>
+                        <td>Operatore <code>==</code></td>
+                        <td><code>s1 == s2</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>__lt__</code></td>
+                        <td>Operatore <code>&lt;</code>, <code>sorted()</code></td>
+                        <td><code>s1 &lt; s2</code>, <code>sorted(lista)</code></td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- SLIDE 19: Sezione - Esercizi autonomi -->
+            <section class="section-slide">
+                <h2>Esercizi Autonomi</h2>
+                <p>Da svolgere individualmente</p>
+            </section>
+
+            <!-- SLIDE 20: Esercizio 1 - Rettangolo -->
+            <section>
+                <h2>Esercizio 1 &mdash; Classe <code>Rettangolo</code> <span class="badge badge-green">Base</span></h2>
+                <p>Definite una classe <code>Rettangolo</code> con:</p>
+                <ul>
+                    <li><code>__init__(self, base, altezza)</code> &mdash; validare che siano positive</li>
+                    <li><code>area()</code> e <code>perimetro()</code></li>
+                    <li><code>e_quadrato()</code> &mdash; <code>True</code> se base == altezza</li>
+                    <li><code>__str__</code> &mdash; es. <code>"Rettangolo(base=5.0, altezza=3.0)"</code></li>
+                    <li><code>__repr__</code> &mdash; es. <code>"Rettangolo(5.0, 3.0)"</code></li>
+                    <li><code>__eq__</code> &mdash; uguali se stessa area</li>
+                    <li><code>__lt__</code> &mdash; confronto per area</li>
+                </ul>
+                <div class="box box-blue">
+                    <strong>Test</strong>: create una lista di rettangoli e ordinateli con <code>sorted()</code>.
+                </div>
+            </section>
+
+            <!-- SLIDE 21: Esercizio 2 - ContoCorrente -->
+            <section>
+                <h2>Esercizio 2 &mdash; Classe <code>ContoCorrente</code> <span class="badge badge-green">Base</span></h2>
+                <p>Definite una classe <code>ContoCorrente</code> con:</p>
+                <ul>
+                    <li><code>__init__(self, titolare, saldo_iniziale=0.0)</code> &mdash; saldo non negativo</li>
+                    <li><code>deposita(importo)</code> &mdash; importo positivo</li>
+                    <li><code>preleva(importo)</code> &mdash; importo positivo, non oltre il saldo</li>
+                    <li><code>saldo()</code> &mdash; restituisce il saldo corrente</li>
+                    <li><code>storico()</code> &mdash; lista di operazioni: <code>"DEPOSITO: +100.00"</code> / <code>"PRELIEVO: -50.00"</code></li>
+                    <li><code>__str__</code> &mdash; es. <code>"Conto di Mario Rossi: saldo 1250.00 EUR"</code></li>
+                </ul>
+                <div class="box box-blue">
+                    <strong>Test</strong>: simulate una sequenza di operazioni e stampate lo storico.
+                </div>
+            </section>
+
+            <!-- SLIDE 22: Esercizio 3 - Corso -->
+            <section>
+                <h2>Esercizio 3 &mdash; Classe <code>Corso</code> <span class="badge badge-yellow">Intermedio</span></h2>
+                <p>Una classe che gestisce una lista di <code>Studente</code>:</p>
+                <ul>
+                    <li><code>__init__(self, nome, codice)</code></li>
+                    <li><code>iscrivi(studente)</code> &mdash; no duplicati per matricola</li>
+                    <li><code>cerca_studente(matricola)</code> &mdash; restituisce <code>Studente | None</code></li>
+                    <li><code>media_corso()</code> &mdash; media delle medie</li>
+                    <li><code>migliore()</code> &mdash; studente con media piu' alta</li>
+                    <li><code>classifica()</code> &mdash; ordinati per media decrescente</li>
+                    <li><code>__len__</code> &mdash; permette <code>len(corso)</code></li>
+                </ul>
+                <div class="box box-green">
+                    <strong>Composizione</strong>: un <code>Corso</code> contiene oggetti <code>Studente</code>. Costruire sistemi complessi componendo oggetti semplici.
+                </div>
+            </section>
+
+            <!-- SLIDE 23: Esercizio 4 - Temperatura -->
+            <section>
+                <h2>Esercizio 4 &mdash; Classe <code>Temperatura</code> <span class="badge badge-yellow">Intermedio</span></h2>
+                <p>Una classe che rappresenta una temperatura con conversioni tra scale:</p>
+                <ul>
+                    <li><code>__init__(self, gradi, scala="C")</code> &mdash; scale: <code>"C"</code>, <code>"F"</code>, <code>"K"</code></li>
+                    <li>Validare la scala e verificare che non sia sotto lo zero assoluto</li>
+                    <li><code>in_celsius()</code>, <code>in_fahrenheit()</code>, <code>in_kelvin()</code></li>
+                    <li><code>__str__</code> &mdash; es. <code>"20.0 C"</code></li>
+                    <li><code>__eq__</code> &mdash; confronto in Kelvin (stesso valore fisico)</li>
+                    <li><code>__lt__</code> &mdash; confronto in Kelvin</li>
+                </ul>
+                <div class="box box-blue">
+                    <strong>Test</strong>: create temperature in scale diverse e verificate che <code>sorted()</code> le ordini correttamente.
+                </div>
+            </section>
+
+            <!-- SLIDE 24: Sfida finale -->
+            <section>
+                <h2>Sfida finale &mdash; Classe <code>Dataset</code> <span class="badge badge-red">Avanzato</span></h2>
+                <p>Un mini-Pandas: caricare dati da CSV, filtrarli, raggrupparli, calcolare statistiche.</p>
+                <div class="columns">
+                    <div class="col">
+                        <h3>Metodi richiesti</h3>
+                        <ul style="font-size: 0.8em;">
+                            <li><code>carica_da_csv()</code> &mdash; <code>@staticmethod</code></li>
+                            <li><code>n_righe()</code>, <code>n_colonne()</code></li>
+                            <li><code>colonna(nome)</code></li>
+                            <li><code>colonna_numerica(nome)</code></li>
+                            <li><code>filtra(colonna, valore)</code></li>
+                            <li><code>raggruppa(colonna)</code></li>
+                            <li><code>statistiche(colonna)</code></li>
+                            <li><code>salva_csv()</code></li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <h3>Suggerimenti</h3>
+                        <ul style="font-size: 0.8em;">
+                            <li>Dati interni: <code>list[dict[str, str]]</code></li>
+                            <li><code>filtra</code> e <code>raggruppa</code> restituiscono <strong>nuovi</strong> <code>Dataset</code></li>
+                            <li>Non modificare l'originale</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 25: Sfida finale - Esempio d'uso -->
+            <section>
+                <h2>Dataset &mdash; Esempio d'uso atteso</h2>
+                <pre><code class="language-python">from pathlib import Path
+
+# Caricamento
+ds = Dataset.carica_da_csv(Path("vendite.csv"), delimiter=";")
+print(f"Dataset: {ds.n_righe()} righe, {ds.n_colonne()} colonne")
+
+# Filtraggio
+roma = ds.filtra("citta", "Roma")
+print(f"Vendite a Roma: {roma.n_righe()} righe")
+
+# Raggruppamento e statistiche
+per_citta = ds.raggruppa("citta")
+for citta, sottoinsieme in per_citta.items():
+    stats = sottoinsieme.statistiche("importo")
+    print(f"{citta}: media={stats['media']:.2f}, "
+          f"totale={stats['somma']:.2f}")
+
+# Salvataggio
+roma.salva_csv(Path("output") / "vendite_roma.csv", delimiter=";")</code></pre>
+            </section>
+
+            <!-- SLIDE 26: Domande di verifica -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol style="font-size: 0.85em;">
+                    <li>Qual e' la differenza tra <code>__str__</code> e <code>__repr__</code>? Se ne definite solo uno, quale?</li>
+                    <li>Perche' <code>__eq__</code> restituisce <code>NotImplemented</code> e non <code>False</code> per tipi sbagliati?</li>
+                    <li>Perche' basta <code>__lt__</code> per far funzionare <code>sorted()</code>?</li>
+                    <li>Perche' <code>isinstance(voto, int)</code> e non <code>type(voto) == int</code>?</li>
+                    <li>Cosa significa che <code>self</code> e' "implicito"? Equivalente esplicito di <code>s.aggiungi_voto(28)</code>?</li>
+                    <li>Perche' <code>filtra()</code> deve restituire un <strong>nuovo</strong> oggetto?</li>
+                    <li>Differenza tra metodo normale e <code>@staticmethod</code>?</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 27: Concetti da portare con se' -->
+            <section>
+                <h2>Concetti da portare con se'</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-blue">
+                            <h3>Incapsulamento</h3>
+                            <p>Dati e operazioni vivono insieme. La validazione protegge l'integrita' dell'oggetto.</p>
+                        </div>
+                        <div class="box box-green">
+                            <h3>Metodi speciali</h3>
+                            <p><code>__str__</code>, <code>__repr__</code>, <code>__eq__</code>, <code>__lt__</code> integrano i vostri oggetti con il linguaggio.</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-yellow">
+                            <h3>Composizione</h3>
+                            <p>Un <code>Corso</code> contiene <code>Studente</code>, un <code>Dataset</code> contiene righe. Sistemi complessi da oggetti semplici.</p>
+                        </div>
+                        <div class="box box-red">
+                            <h3>Immutabilita' dei risultati</h3>
+                            <p><code>filtra()</code> restituisce un nuovo oggetto: mai modificare l'originale.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L05_file_gestione_dati.html" style="color: var(--accent);">&larr; L05: File e gestione dati</a></div><div><a href="L07_numpy_pandas.html" style="color: var(--accent);">L07: NumPy e Pandas &rarr;</a></div><div><a href="../dispense/laboratori/L06_classi_oggetti.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L06_classi_oggetti/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; L06</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

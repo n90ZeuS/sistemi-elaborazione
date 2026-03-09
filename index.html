@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemi di Elaborazione — Portale del corso</title>
+    <style>
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --warning: #d97706;
+            --code-bg: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background: var(--bg-alt);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header .info {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .quick-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .quick-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            background: white;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .quick-links a:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            color: var(--accent-dark);
+            margin-bottom: 0.3rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .section .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        thead th {
+            background: var(--accent-dark);
+            color: white;
+            padding: 0.7rem 0.8rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        tbody td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        tbody tr:last-child td { border-bottom: none; }
+
+        tbody tr:hover { background: var(--accent-light); }
+
+        td.lesson-id {
+            font-weight: 700;
+            color: var(--accent-dark);
+            white-space: nowrap;
+            width: 4rem;
+        }
+
+        td.lesson-title {
+            font-weight: 500;
+        }
+
+        td a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .link-cell {
+            white-space: nowrap;
+        }
+
+        .link-cell a + a {
+            margin-left: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .badge-slides { background: #dbeafe; color: #1e40af; }
+        .badge-dispensa { background: #dcfce7; color: #166534; }
+        .badge-esempi { background: #fef3c7; color: #92400e; }
+        .badge-esercizi { background: #fce7f3; color: #9d174d; }
+        .badge-slides:hover { background: #1e40af; color: white; }
+        .badge-dispensa:hover { background: #166534; color: white; }
+        .badge-esempi:hover { background: #92400e; color: white; }
+        .badge-esercizi:hover { background: #9d174d; color: white; }
+
+        .no-code { color: var(--text-muted); font-style: italic; font-size: 0.8rem; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            .header h1 { font-size: 1.6rem; }
+            table { font-size: 0.85rem; }
+            td, th { padding: 0.4rem; }
+            .quick-links { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Sistemi di Elaborazione</h1>
+    <p>Scienze Statistiche &mdash; Primo Anno</p>
+    <div class="info">17 lezioni frontali &bull; 8 laboratori &bull; 25 incontri</div>
+</div>
+
+<div class="container">
+
+    <div class="quick-links">
+        <a href="cheatsheet_python.html">&#128203; Cheatsheet Python</a>
+        <a href="programma_sistemi_elaborazione.html">&#128196; Programma del corso</a>
+        <a href="calendario_lezioni.html">&#128197; Calendario lezioni</a>
+    </div>
+
+    <!-- PARTE 1: FONDAMENTI -->
+    <div class="section">
+        <h2>Parte 1 &mdash; Fondamenti</h2>
+        <p class="subtitle">Architettura degli elaboratori, logica, storia dell'informatica</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Lezione</th>
+                    <th>Presentazione</th>
+                    <th>Dispensa</th>
+                    <th>Codice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lesson-id">F01</td>
+                    <td class="lesson-title">Informazione, bit e numerazione</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F01_informazione_bit_numerazione.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F01_informazione_bit_numerazione.html">Dispensa</a></td>
+                    <td><span class="no-code">&mdash;</span></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F02</td>
+                    <td class="lesson-title">Logica booleana e storia del calcolo</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F02_logica_booleana_storia.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F02_logica_booleana_storia.html">Dispensa</a></td>
+                    <td><span class="no-code">&mdash;</span></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F03</td>
+                    <td class="lesson-title">Architettura degli elaboratori</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F03_architettura_elaboratori.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F03_architettura_elaboratori.html">Dispensa</a></td>
+                    <td><span class="no-code">&mdash;</span></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F04</td>
+                    <td class="lesson-title">Sistemi operativi</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F04_sistemi_operativi.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F04_sistemi_operativi.html">Dispensa</a></td>
+                    <td><span class="no-code">&mdash;</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SEZIONE PONTE -->
+    <div class="section">
+        <h2>Sezione Ponte</h2>
+        <p class="subtitle">Dalla teoria alla programmazione</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Lezione</th>
+                    <th>Presentazione</th>
+                    <th>Dispensa</th>
+                    <th>Codice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lesson-id">F05</td>
+                    <td class="lesson-title">Rappresentazione dei dati</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F05_rappresentazione_dati.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F05_rappresentazione_dati.html">Dispensa</a></td>
+                    <td><span class="no-code">&mdash;</span></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F06</td>
+                    <td class="lesson-title">Dal problema al programma</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F06_dal_problema_al_programma.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F06_dal_problema_al_programma.html">Dispensa</a></td>
+                    <td><span class="no-code">&mdash;</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PARTE 2: PYTHON -->
+    <div class="section">
+        <h2>Parte 2 &mdash; Python</h2>
+        <p class="subtitle">Programmazione in Python: dai primi passi alle librerie scientifiche</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Lezione</th>
+                    <th>Presentazione</th>
+                    <th>Dispensa</th>
+                    <th>Esempi</th>
+                    <th>Esercizi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lesson-id">F07</td>
+                    <td class="lesson-title">Primi passi in Python</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F07_primi_passi_python.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F07_primi_passi_python.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F07_primi_passi/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F07_primi_passi/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F07_primi_passi/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F07_primi_passi/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F08</td>
+                    <td class="lesson-title">Operatori, I/O e condizionali</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F08_operatori_io_condizionali.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F08_operatori_io_condizionali.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F08_operatori_io/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F08_operatori_io/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F08_operatori_io/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F08_operatori_io/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F09</td>
+                    <td class="lesson-title">Cicli</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F09_cicli.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F09_cicli.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F09_cicli/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F09_cicli/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F09_cicli/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F09_cicli/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F10</td>
+                    <td class="lesson-title">Comprehension e stringhe</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F10_comprehension_stringhe.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F10_comprehension_stringhe.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F10_comprehension_stringhe/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F10_comprehension_stringhe/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F10_comprehension_stringhe/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F10_comprehension_stringhe/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F11</td>
+                    <td class="lesson-title">Liste e tuple</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F11_liste_tuple.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F11_liste_tuple.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F11_liste_tuple/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F11_liste_tuple/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F11_liste_tuple/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F11_liste_tuple/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F12</td>
+                    <td class="lesson-title">Dizionari, set e mutabilità</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F12_dizionari_set_mutabilita.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F12_dizionari_set_mutabilita.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F12_dizionari_set/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F12_dizionari_set/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F12_dizionari_set/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F12_dizionari_set/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F13</td>
+                    <td class="lesson-title">Funzioni: fondamenti</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F13_funzioni_fondamenti.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F13_funzioni_fondamenti.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F13_funzioni_fondamenti/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F13_funzioni_fondamenti/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F13_funzioni_fondamenti/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F13_funzioni_fondamenti/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F14</td>
+                    <td class="lesson-title">Funzioni avanzate e moduli</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F14_funzioni_avanzate_moduli.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F14_funzioni_avanzate_moduli.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F14_funzioni_avanzate/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F14_funzioni_avanzate/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F14_funzioni_avanzate/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F14_funzioni_avanzate/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F15</td>
+                    <td class="lesson-title">File, dati e gestione errori</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F15_file_dati_errori.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F15_file_dati_errori.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F15_file_dati_errori/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F15_file_dati_errori/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F15_file_dati_errori/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F15_file_dati_errori/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F16</td>
+                    <td class="lesson-title">Programmazione a oggetti</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F16_programmazione_oggetti.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F16_programmazione_oggetti.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F16_programmazione_oggetti/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F16_programmazione_oggetti/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F16_programmazione_oggetti/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F16_programmazione_oggetti/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F17</td>
+                    <td class="lesson-title">NumPy, Pandas e visualizzazione</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/F17_numpy_pandas_visualizzazione.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/frontali/F17_numpy_pandas_visualizzazione.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="codice/F17_numpy_pandas/esempi.html">HTML</a> <a class="badge badge-esempi" href="codice/F17_numpy_pandas/esempi.py">PY</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/F17_numpy_pandas/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/F17_numpy_pandas/esercizi.py">PY</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- LABORATORI -->
+    <div class="section">
+        <h2>Laboratori</h2>
+        <p class="subtitle">Esercitazioni pratiche guidate</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Laboratorio</th>
+                    <th>Presentazione</th>
+                    <th>Dispensa</th>
+                    <th>Esercizi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lesson-id">L01</td>
+                    <td class="lesson-title">Ambiente, variabili e condizionali</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L01_ambiente_variabili_condizionali.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L01_ambiente_variabili_condizionali.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L01_ambiente/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L01_ambiente/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">L02</td>
+                    <td class="lesson-title">Cicli, comprehension e stringhe</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L02_cicli_comprehension_stringhe.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L02_cicli_comprehension_stringhe.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L02_cicli_comprehension/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L02_cicli_comprehension/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">L03</td>
+                    <td class="lesson-title">Strutture dati</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L03_strutture_dati.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L03_strutture_dati.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L03_strutture_dati/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L03_strutture_dati/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">L04</td>
+                    <td class="lesson-title">Funzioni e modularità</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L04_funzioni_modularita.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L04_funzioni_modularita.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L04_funzioni/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L04_funzioni/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">L05</td>
+                    <td class="lesson-title">File e gestione dati</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L05_file_gestione_dati.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L05_file_gestione_dati.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L05_file_dati/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L05_file_dati/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">L06</td>
+                    <td class="lesson-title">Classi e oggetti</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L06_classi_oggetti.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L06_classi_oggetti.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L06_classi_oggetti/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L06_classi_oggetti/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">L07</td>
+                    <td class="lesson-title">NumPy e Pandas</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L07_numpy_pandas.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L07_numpy_pandas.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L07_numpy_pandas/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L07_numpy_pandas/esercizi.py">PY</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">L08</td>
+                    <td class="lesson-title">Visualizzazione e progetto</td>
+                    <td class="link-cell"><a class="badge badge-slides" href="presentazioni/L08_visualizzazione_progetto.html">Slides</a></td>
+                    <td class="link-cell"><a class="badge badge-dispensa" href="dispense/laboratori/L08_visualizzazione_progetto.html">Dispensa</a></td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="codice/L08_visualizzazione/esercizi.html">HTML</a> <a class="badge badge-esercizi" href="codice/L08_visualizzazione/esercizi.py">PY</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MATERIALE DI STUDIO -->
+    <div class="section">
+        <h2>Materiale di studio</h2>
+        <p class="subtitle">Risorse aggiuntive per lo studio individuale</p>
+
+        <h3 style="font-size: 1.1rem; color: var(--accent-dark); margin-top: 1.5rem; margin-bottom: 0.8rem;">Autovalutazione ed errori comuni</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Lezione</th>
+                    <th>Autovalutazione</th>
+                    <th>Errori comuni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lesson-id">F07</td>
+                    <td class="lesson-title">Primi passi in Python</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F07_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F07_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F08</td>
+                    <td class="lesson-title">Operatori, I/O e condizionali</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F08_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F08_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F09</td>
+                    <td class="lesson-title">Cicli</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F09_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F09_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F10</td>
+                    <td class="lesson-title">Comprehension e stringhe</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F10_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F10_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F11</td>
+                    <td class="lesson-title">Liste e tuple</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F11_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F11_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F12</td>
+                    <td class="lesson-title">Dizionari, set e mutabilità</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F12_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F12_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F13</td>
+                    <td class="lesson-title">Funzioni: fondamenti</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F13_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F13_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F14</td>
+                    <td class="lesson-title">Funzioni avanzate e moduli</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F14_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F14_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F15</td>
+                    <td class="lesson-title">File, dati e gestione errori</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F15_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F15_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F16</td>
+                    <td class="lesson-title">Programmazione a oggetti</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F16_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F16_errori.html">Errori</a></td>
+                </tr>
+                <tr>
+                    <td class="lesson-id">F17</td>
+                    <td class="lesson-title">NumPy, Pandas e visualizzazione</td>
+                    <td class="link-cell"><a class="badge badge-esercizi" href="autovalutazione/F17_autovalutazione.html">Quiz</a></td>
+                    <td class="link-cell"><a class="badge badge-esempi" href="errori_comuni/F17_errori.html">Errori</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="font-size: 1.1rem; color: var(--accent-dark); margin-top: 2rem; margin-bottom: 0.8rem;">Schede di confronto</h3>
+        <div class="quick-links" style="justify-content: flex-start;">
+            <a href="schede/strutture_dati.html">&#128202; Strutture dati</a>
+            <a href="schede/cicli_iterazione.html">&#128260; Cicli e iterazione</a>
+            <a href="schede/metodi_stringa.html">&#128292; Metodi stringa</a>
+            <a href="schede/funzioni_builtin.html">&#9881; Funzioni built-in</a>
+            <a href="schede/operatori_precedenza.html">&#128290; Operatori e precedenza</a>
+        </div>
+
+        <h3 style="font-size: 1.1rem; color: var(--accent-dark); margin-top: 2rem; margin-bottom: 0.8rem;">Mini-progetti guidati</h3>
+        <div class="quick-links" style="justify-content: flex-start;">
+            <a href="progetti/progetto_01_analisi_voti/guida.html">&#128200; Analisi voti</a>
+            <a href="progetti/progetto_02_rubrica/guida.html">&#128209; Rubrica contatti</a>
+            <a href="progetti/progetto_03_analisi_meteo/guida.html">&#127782; Analisi meteo</a>
+        </div>
+
+        <h3 style="font-size: 1.1rem; color: var(--accent-dark); margin-top: 2rem; margin-bottom: 0.8rem;">Glossario</h3>
+        <div class="quick-links" style="justify-content: flex-start;">
+            <a href="glossario.html">&#128218; Glossario Python</a>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    Sistemi di Elaborazione &mdash; Scienze Statistiche &mdash; Primo Anno
+</footer>
+
+</body>
+</html>

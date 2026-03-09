@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L07_numpy_pandas/esercizi.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L07_numpy_pandas.html">Dispensa</a> &bull; <a href="../../presentazioni/L07_numpy_pandas.html">Presentazione</a></nav>
+<h1>L07_numpy_pandas/esercizi.py</h1>
+<a class="download-link" href="esercizi.py" download>Scarica file .py</a>
+<pre><code><span class="cm"># L07 — NumPy e Pandas</span>
+<span class="cm"># Esercizi per il laboratorio 07</span>
+<span class="cm">#</span>
+<span class="cm"># Esercizi pratici di calcolo numerico con NumPy e manipolazione dati con Pandas.</span>
+<span class="cm"># Le importazioni sono protette da try/except per gestire ambienti senza le librerie.</span>
+<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
+
+<span class="kw">import</span> math
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># Importazione sicura delle librerie</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">try</span>:
+    <span class="kw">import</span> numpy <span class="kw">as</span> np
+    NUMPY_DISPONIBILE: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    NUMPY_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: NumPy non e&#x27; installato. Installa con: pip install numpy&quot;</span>)
+
+<span class="kw">try</span>:
+    <span class="kw">import</span> pandas <span class="kw">as</span> pd
+    PANDAS_DISPONIBILE: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">except</span> ImportError:
+    PANDAS_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
+    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: Pandas non e&#x27; installato. Installa con: pip install pandas&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 1: Operazioni su matrici con NumPy</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">if</span> NUMPY_DISPONIBILE:
+
+    <span class="kw">def</span> <span class="fn">crea_matrice_identita</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;Crea una matrice identita&#x27; n x n.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> np.eye(n)
+
+    <span class="kw">def</span> <span class="fn">somma_matrici_np</span>(<span class="fn">a</span>: np.ndarray, b: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;Somma elemento per elemento di due matrici.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> a.shape <span class="op">!</span><span class="op">=</span> b.shape:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Dimensioni incompatibili: {a.shape} vs {b.shape}&quot;</span>)
+        <span class="kw">return</span> a <span class="op">+</span> b
+
+    <span class="kw">def</span> <span class="fn">prodotto_matrici_np</span>(<span class="fn">a</span>: np.ndarray, b: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;Prodotto matriciale (dot product).&quot;&quot;&quot;</span>
+        <span class="kw">if</span> a.shape[<span class="mi">1</span>] <span class="op">!</span><span class="op">=</span> b.shape[<span class="mi">0</span>]:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(
+                <span class="st">f&quot;Colonne di A ({a.shape[1]}) != Righe di B ({b.shape[0]})&quot;</span>
+            )
+        <span class="kw">return</span> a <span class="dc">@</span> b  <span class="cm"># equivalente a np.dot(a, b)</span>
+
+    <span class="kw">def</span> <span class="fn">trasposta_np</span>(<span class="fn">matrice</span>: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;Calcola la trasposta di una matrice.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> matrice.T
+
+    <span class="kw">def</span> <span class="fn">determinante_np</span>(<span class="fn">matrice</span>: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Calcola il determinante di una matrice quadrata.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> matrice.shape[<span class="mi">0</span>] <span class="op">!</span><span class="op">=</span> matrice.shape[<span class="mi">1</span>]:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il determinante e&#x27; definito solo per matrici quadrate&quot;</span>)
+        <span class="kw">return</span> <span class="nb">float</span>(np.linalg.det(matrice))
+
+    <span class="kw">def</span> <span class="fn">inversa_np</span>(<span class="fn">matrice</span>: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;Calcola l&#x27;inversa di una matrice quadrata.&quot;&quot;&quot;</span>
+        det: <span class="nb">float</span> <span class="op">=</span> determinante_np(matrice)
+        <span class="kw">if</span> <span class="nb">abs</span>(det) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;La matrice e&#x27; singolare (determinante = 0)&quot;</span>)
+        <span class="kw">return</span> np.linalg.inv(matrice)
+
+    <span class="kw">def</span> <span class="fn">risolvi_sistema</span>(<span class="fn">a</span>: np.ndarray, b: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;
+        Risolve il sistema lineare Ax = b.
+        Restituisce il vettore x.
+        &quot;&quot;&quot;</span>
+        <span class="kw">return</span> np.linalg.solve(a, b)
+
+    <span class="cm"># --- Test operazioni matrici NumPy ---</span>
+    m1: np.ndarray <span class="op">=</span> np.array([[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>]], dtype<span class="op">=</span><span class="nb">float</span>)
+    m2: np.ndarray <span class="op">=</span> np.array([[<span class="mi">5</span>, <span class="mi">6</span>], [<span class="mi">7</span>, <span class="mi">8</span>]], dtype<span class="op">=</span><span class="nb">float</span>)
+
+    <span class="cm"># Somma</span>
+    somma: np.ndarray <span class="op">=</span> somma_matrici_np(m1, m2)
+    <span class="kw">assert</span> np.array_equal(somma, np.array([[<span class="mi">6</span>, <span class="mi">8</span>], [<span class="mi">10</span>, <span class="mi">12</span>]]))
+
+    <span class="cm"># Prodotto: [[1*5+2*7, 1*6+2*8], [3*5+4*7, 3*6+4*8]] = [[19, 22], [43, 50]]</span>
+    prodotto: np.ndarray <span class="op">=</span> prodotto_matrici_np(m1, m2)
+    <span class="kw">assert</span> np.array_equal(prodotto, np.array([[<span class="mi">19</span>, <span class="mi">22</span>], [<span class="mi">43</span>, <span class="mi">50</span>]]))
+
+    <span class="cm"># Trasposta</span>
+    t: np.ndarray <span class="op">=</span> trasposta_np(m1)
+    <span class="kw">assert</span> np.array_equal(t, np.array([[<span class="mi">1</span>, <span class="mi">3</span>], [<span class="mi">2</span>, <span class="mi">4</span>]]))
+
+    <span class="cm"># Determinante di m1: 1*4 - 2*3 = -2</span>
+    det: <span class="nb">float</span> <span class="op">=</span> determinante_np(m1)
+    <span class="kw">assert</span> <span class="nb">abs</span>(det <span class="op">-</span> (<span class="op">-</span><span class="mi">2.0</span>)) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+    <span class="cm"># Inversa: A * A^(-1) = I</span>
+    inv_m1: np.ndarray <span class="op">=</span> inversa_np(m1)
+    identita_calcolata: np.ndarray <span class="op">=</span> prodotto_matrici_np(m1, inv_m1)
+    identita_attesa: np.ndarray <span class="op">=</span> crea_matrice_identita(<span class="mi">2</span>)
+    <span class="kw">assert</span> np.allclose(identita_calcolata, identita_attesa)
+
+    <span class="cm"># Risolvi sistema: 2x + y = 5, x + 3y = 7 -&gt; x = 1.6, y = 1.8</span>
+    a_sist: np.ndarray <span class="op">=</span> np.array([[<span class="mi">2</span>, <span class="mi">1</span>], [<span class="mi">1</span>, <span class="mi">3</span>]], dtype<span class="op">=</span><span class="nb">float</span>)
+    b_sist: np.ndarray <span class="op">=</span> np.array([<span class="mi">5</span>, <span class="mi">7</span>], dtype<span class="op">=</span><span class="nb">float</span>)
+    x_sist: np.ndarray <span class="op">=</span> risolvi_sistema(a_sist, b_sist)
+    <span class="kw">assert</span> <span class="nb">abs</span>(x_sist[<span class="mi">0</span>] <span class="op">-</span> <span class="mi">1.6</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+    <span class="kw">assert</span> <span class="nb">abs</span>(x_sist[<span class="mi">1</span>] <span class="op">-</span> <span class="mi">1.8</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Matrici NumPy): SUPERATO&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Matrici NumPy): SALTATO (NumPy non disponibile)&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 2: Analisi statistica con NumPy</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">if</span> NUMPY_DISPONIBILE:
+
+    <span class="kw">def</span> <span class="fn">statistiche_numpy</span>(<span class="fn">dati</span>: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]:
+        <span class="st">&quot;&quot;&quot;
+        Calcola statistiche descrittive di un array con NumPy.
+        Piu&#x27; efficiente e preciso delle implementazioni manuali.
+        &quot;&quot;&quot;</span>
+        <span class="kw">return</span> {
+            <span class="st">&quot;n&quot;</span>: <span class="nb">float</span>(<span class="nb">len</span>(dati)),
+            <span class="st">&quot;media&quot;</span>: <span class="nb">float</span>(np.mean(dati)),
+            <span class="st">&quot;mediana&quot;</span>: <span class="nb">float</span>(np.median(dati)),
+            <span class="st">&quot;dev_std&quot;</span>: <span class="nb">float</span>(np.std(dati, ddof<span class="op">=</span><span class="mi">1</span>)),     <span class="cm"># campionaria</span>
+            <span class="st">&quot;varianza&quot;</span>: <span class="nb">float</span>(np.var(dati, ddof<span class="op">=</span><span class="mi">1</span>)),     <span class="cm"># campionaria</span>
+            <span class="st">&quot;minimo&quot;</span>: <span class="nb">float</span>(np.<span class="nb">min</span>(dati)),
+            <span class="st">&quot;massimo&quot;</span>: <span class="nb">float</span>(np.<span class="nb">max</span>(dati)),
+            <span class="st">&quot;q1&quot;</span>: <span class="nb">float</span>(np.percentile(dati, <span class="mi">25</span>)),
+            <span class="st">&quot;q3&quot;</span>: <span class="nb">float</span>(np.percentile(dati, <span class="mi">75</span>)),
+        }
+
+    <span class="kw">def</span> <span class="fn">genera_dati_normali</span>(
+        media: <span class="nb">float</span>, dev_std: <span class="nb">float</span>, n: <span class="nb">int</span>, seed: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
+    ) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;Genera n dati da una distribuzione normale.&quot;&quot;&quot;</span>
+        rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed)
+        <span class="kw">return</span> rng.normal(media, dev_std, n)
+
+    <span class="kw">def</span> <span class="fn">normalizza</span>(<span class="fn">dati</span>: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> np.ndarray:
+        <span class="st">&quot;&quot;&quot;Normalizzazione z-score: (x - media) / dev_std.&quot;&quot;&quot;</span>
+        m: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.mean(dati))
+        s: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.std(dati))
+        <span class="kw">if</span> s <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Deviazione standard zero: impossibile normalizzare&quot;</span>)
+        <span class="kw">return</span> (dati <span class="op">-</span> m) <span class="op">/</span> s
+
+    <span class="kw">def</span> <span class="fn">correlazione</span>(<span class="fn">x</span>: np.ndarray, y: np.ndarray) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Calcola il coefficiente di correlazione di Pearson tra x e y.&quot;&quot;&quot;</span>
+        <span class="kw">if</span> <span class="nb">len</span>(x) <span class="op">!</span><span class="op">=</span> <span class="nb">len</span>(y):
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Le serie devono avere la stessa lunghezza&quot;</span>)
+        matrice_corr: np.ndarray <span class="op">=</span> np.corrcoef(x, y)
+        <span class="kw">return</span> <span class="nb">float</span>(matrice_corr[<span class="mi">0</span>, <span class="mi">1</span>])
+
+    <span class="cm"># --- Test analisi statistica ---</span>
+    <span class="cm"># Genera dati con seed per riproducibilita&#x27;</span>
+    dati_norm: np.ndarray <span class="op">=</span> genera_dati_normali(<span class="mi">100.0</span>, <span class="mi">15.0</span>, <span class="mi">1000</span>, seed<span class="op">=</span><span class="mi">42</span>)
+
+    stats: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> statistiche_numpy(dati_norm)
+    <span class="kw">assert</span> stats[<span class="st">&quot;n&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1000.0</span>
+    <span class="cm"># Con 1000 campioni, la media dovrebbe essere vicina a 100</span>
+    <span class="kw">assert</span> <span class="nb">abs</span>(stats[<span class="st">&quot;media&quot;</span>] <span class="op">-</span> <span class="mi">100.0</span>) <span class="op">&lt;</span> <span class="mi">2.0</span>, <span class="st">f&quot;Media troppo lontana da 100: {stats[&#x27;media&#x27;]}&quot;</span>
+    <span class="cm"># La dev_std dovrebbe essere vicina a 15</span>
+    <span class="kw">assert</span> <span class="nb">abs</span>(stats[<span class="st">&quot;dev_std&quot;</span>] <span class="op">-</span> <span class="mi">15.0</span>) <span class="op">&lt;</span> <span class="mi">2.0</span>, <span class="st">f&quot;Dev std troppo lontana da 15: {stats[&#x27;dev_std&#x27;]}&quot;</span>
+
+    <span class="cm"># Normalizzazione: i dati normalizzati devono avere media ~0 e std ~1</span>
+    dati_normalizzati: np.ndarray <span class="op">=</span> normalizza(dati_norm)
+    <span class="kw">assert</span> <span class="nb">abs</span>(<span class="nb">float</span>(np.mean(dati_normalizzati))) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>
+    <span class="kw">assert</span> <span class="nb">abs</span>(<span class="nb">float</span>(np.std(dati_normalizzati)) <span class="op">-</span> <span class="mi">1.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">10</span>
+
+    <span class="cm"># Correlazione: dati perfettamente correlati</span>
+    x_test: np.ndarray <span class="op">=</span> np.array([<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>, <span class="mi">4.0</span>, <span class="mi">5.0</span>])
+    y_test: np.ndarray <span class="op">=</span> np.array([<span class="mi">2.0</span>, <span class="mi">4.0</span>, <span class="mi">6.0</span>, <span class="mi">8.0</span>, <span class="mi">10.0</span>])  <span class="cm"># y = 2x</span>
+    <span class="kw">assert</span> <span class="nb">abs</span>(correlazione(x_test, y_test) <span class="op">-</span> <span class="mi">1.0</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>  <span class="cm"># correlazione perfetta</span>
+
+    <span class="cm"># Correlazione negativa</span>
+    y_neg: np.ndarray <span class="op">=</span> np.array([<span class="mi">10.0</span>, <span class="mi">8.0</span>, <span class="mi">6.0</span>, <span class="mi">4.0</span>, <span class="mi">2.0</span>])
+    <span class="kw">assert</span> <span class="nb">abs</span>(correlazione(x_test, y_neg) <span class="op">-</span> (<span class="op">-</span><span class="mi">1.0</span>)) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">9</span>
+
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Statistiche NumPy): SUPERATO&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Statistiche NumPy): SALTATO (NumPy non disponibile)&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 3: Manipolazione DataFrame con Pandas</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">if</span> PANDAS_DISPONIBILE:
+
+    <span class="kw">def</span> <span class="fn">crea_dataframe_studenti</span>() <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;
+        Crea un DataFrame di esempio con dati di studenti.
+        Colonne: nome, cognome, eta, voto_medio, corso_laurea, anno
+        &quot;&quot;&quot;</span>
+        dati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>] <span class="op">=</span> {
+            <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Davide&quot;</span>, <span class="st">&quot;Eva&quot;</span>,
+                     <span class="st">&quot;Fabio&quot;</span>, <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;Hasan&quot;</span>, <span class="st">&quot;Irene&quot;</span>, <span class="st">&quot;Luca&quot;</span>],
+            <span class="st">&quot;cognome&quot;</span>: [<span class="st">&quot;Rossi&quot;</span>, <span class="st">&quot;Bianchi&quot;</span>, <span class="st">&quot;Verdi&quot;</span>, <span class="st">&quot;Neri&quot;</span>, <span class="st">&quot;Gialli&quot;</span>,
+                        <span class="st">&quot;Blu&quot;</span>, <span class="st">&quot;Rosa&quot;</span>, <span class="st">&quot;Marroni&quot;</span>, <span class="st">&quot;Viola&quot;</span>, <span class="st">&quot;Grigi&quot;</span>],
+            <span class="st">&quot;eta&quot;</span>: [<span class="mi">22</span>, <span class="mi">24</span>, <span class="mi">21</span>, <span class="mi">23</span>, <span class="mi">22</span>, <span class="mi">25</span>, <span class="mi">21</span>, <span class="mi">23</span>, <span class="mi">24</span>, <span class="mi">22</span>],
+            <span class="st">&quot;voto_medio&quot;</span>: [<span class="mi">28.5</span>, <span class="mi">24.0</span>, <span class="mi">29.0</span>, <span class="mi">22.5</span>, <span class="mi">27.0</span>,
+                           <span class="mi">25.5</span>, <span class="mi">30.0</span>, <span class="mi">23.0</span>, <span class="mi">26.5</span>, <span class="mi">28.0</span>],
+            <span class="st">&quot;corso_laurea&quot;</span>: [<span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>,
+                             <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>,
+                             <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>],
+            <span class="st">&quot;anno&quot;</span>: [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">2</span>],
+        }
+        <span class="kw">return</span> pd.DataFrame(dati)
+
+    <span class="kw">def</span> <span class="fn">filtra_per_corso</span>(<span class="fn">df</span>: pd.DataFrame, corso: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;Filtra il DataFrame per corso di laurea.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> df[df[<span class="st">&quot;corso_laurea&quot;</span>] <span class="op">=</span><span class="op">=</span> corso].reset_index(drop<span class="op">=</span><span class="kw">True</span>)
+
+    <span class="kw">def</span> <span class="fn">media_per_corso</span>(<span class="fn">df</span>: pd.DataFrame) <span class="op">-</span><span class="op">&gt;</span> pd.Series:
+        <span class="st">&quot;&quot;&quot;Calcola la media del voto_medio raggruppata per corso.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> df.groupby(<span class="st">&quot;corso_laurea&quot;</span>)[<span class="st">&quot;voto_medio&quot;</span>].mean().<span class="nb">round</span>(<span class="mi">2</span>)
+
+    <span class="kw">def</span> <span class="fn">studenti_migliori</span>(<span class="fn">df</span>: pd.DataFrame, n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">3</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;Restituisce i top n studenti per voto_medio.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> df.nlargest(n, <span class="st">&quot;voto_medio&quot;</span>)[[<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;cognome&quot;</span>, <span class="st">&quot;voto_medio&quot;</span>]].reset_index(drop<span class="op">=</span><span class="kw">True</span>)
+
+    <span class="kw">def</span> <span class="fn">aggiungi_colonna_lode</span>(<span class="fn">df</span>: pd.DataFrame) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;Aggiunge una colonna &#x27;lode&#x27; che e&#x27; True se voto_medio &gt;= 28.&quot;&quot;&quot;</span>
+        df_copia: pd.DataFrame <span class="op">=</span> df.copy()
+        df_copia[<span class="st">&quot;lode&quot;</span>] <span class="op">=</span> df_copia[<span class="st">&quot;voto_medio&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28.0</span>
+        <span class="kw">return</span> df_copia
+
+    <span class="kw">def</span> <span class="fn">statistiche_per_gruppo</span>(<span class="fn">df</span>: pd.DataFrame, colonna_gruppo: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;Calcola statistiche aggregate per gruppo.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> df.groupby(colonna_gruppo)[<span class="st">&quot;voto_medio&quot;</span>].agg(
+            [<span class="st">&quot;mean&quot;</span>, <span class="st">&quot;std&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;count&quot;</span>]
+        ).<span class="nb">round</span>(<span class="mi">2</span>)
+
+    <span class="cm"># --- Test DataFrame ---</span>
+    df: pd.DataFrame <span class="op">=</span> crea_dataframe_studenti()
+    <span class="kw">assert</span> <span class="nb">len</span>(df) <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
+    <span class="kw">assert</span> <span class="nb">list</span>(df.columns) <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;nome&quot;</span>, <span class="st">&quot;cognome&quot;</span>, <span class="st">&quot;eta&quot;</span>, <span class="st">&quot;voto_medio&quot;</span>, <span class="st">&quot;corso_laurea&quot;</span>, <span class="st">&quot;anno&quot;</span>]
+
+    <span class="cm"># Filtra per corso</span>
+    info: pd.DataFrame <span class="op">=</span> filtra_per_corso(df, <span class="st">&quot;Informatica&quot;</span>)
+    <span class="kw">assert</span> <span class="nb">len</span>(info) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
+    <span class="kw">assert</span> <span class="nb">all</span>(info[<span class="st">&quot;corso_laurea&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Informatica&quot;</span>)
+
+    <span class="cm"># Media per corso</span>
+    medie: pd.Series <span class="op">=</span> media_per_corso(df)
+    <span class="kw">assert</span> <span class="st">&quot;Informatica&quot;</span> <span class="kw">in</span> medie.index
+    <span class="kw">assert</span> <span class="st">&quot;Matematica&quot;</span> <span class="kw">in</span> medie.index
+    <span class="cm"># Informatica: (28.5+29+27+30+28)/5 = 28.5</span>
+    <span class="kw">assert</span> <span class="nb">abs</span>(medie[<span class="st">&quot;Informatica&quot;</span>] <span class="op">-</span> <span class="mi">28.5</span>) <span class="op">&lt;</span> <span class="mi">0.01</span>
+
+    <span class="cm"># Top studenti</span>
+    top: pd.DataFrame <span class="op">=</span> studenti_migliori(df, <span class="mi">3</span>)
+    <span class="kw">assert</span> <span class="nb">len</span>(top) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
+    <span class="kw">assert</span> top.iloc[<span class="mi">0</span>][<span class="st">&quot;nome&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Giulia&quot;</span>  <span class="cm"># voto 30.0</span>
+
+    <span class="cm"># Colonna lode</span>
+    df_lode: pd.DataFrame <span class="op">=</span> aggiungi_colonna_lode(df)
+    <span class="kw">assert</span> <span class="st">&quot;lode&quot;</span> <span class="kw">in</span> df_lode.columns
+    num_con_lode: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(df_lode[<span class="st">&quot;lode&quot;</span>].<span class="nb">sum</span>())
+    <span class="kw">assert</span> num_con_lode <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>  <span class="cm"># Alice(28.5), Carla(29), Giulia(30), Luca(28)</span>
+
+    <span class="cm"># Statistiche per gruppo</span>
+    stats_gruppo: pd.DataFrame <span class="op">=</span> statistiche_per_gruppo(df, <span class="st">&quot;corso_laurea&quot;</span>)
+    <span class="kw">assert</span> <span class="st">&quot;Informatica&quot;</span> <span class="kw">in</span> stats_gruppo.index
+    <span class="kw">assert</span> <span class="st">&quot;mean&quot;</span> <span class="kw">in</span> stats_gruppo.columns
+
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (DataFrame Pandas): SUPERATO&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (DataFrame Pandas): SALTATO (Pandas non disponibile)&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 4: Pulizia dati (Data Cleaning)</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="kw">if</span> PANDAS_DISPONIBILE <span class="kw">and</span> NUMPY_DISPONIBILE:
+
+    <span class="kw">def</span> <span class="fn">crea_dati_sporchi</span>() <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;
+        Crea un DataFrame con dati &#x27;sporchi&#x27; per praticare la pulizia:
+        - valori mancanti (NaN)
+        - duplicati
+        - tipi inconsistenti
+        - outlier
+        &quot;&quot;&quot;</span>
+        dati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>] <span class="op">=</span> {
+            <span class="st">&quot;id&quot;</span>: [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>, <span class="mi">10</span>, <span class="mi">3</span>, <span class="mi">5</span>],
+            <span class="st">&quot;temperatura&quot;</span>: [<span class="mi">36.5</span>, <span class="mi">37.0</span>, np.nan, <span class="mi">38.2</span>, <span class="mi">36.8</span>,
+                            <span class="mi">99.9</span>, <span class="mi">37.1</span>, np.nan, <span class="mi">36.9</span>, <span class="mi">37.5</span>, <span class="mi">36.5</span>, <span class="mi">36.8</span>],
+            <span class="st">&quot;pressione&quot;</span>: [<span class="mi">120</span>, <span class="mi">130</span>, <span class="mi">125</span>, np.nan, <span class="mi">118</span>,
+                          <span class="mi">122</span>, <span class="mi">135</span>, <span class="mi">128</span>, np.nan, <span class="mi">115</span>, <span class="mi">125</span>, <span class="mi">118</span>],
+            <span class="st">&quot;frequenza_cardiaca&quot;</span>: [<span class="mi">72</span>, <span class="mi">80</span>, <span class="mi">68</span>, <span class="mi">75</span>, np.nan,
+                                   <span class="mi">85</span>, <span class="mi">90</span>, <span class="mi">73</span>, <span class="mi">78</span>, <span class="mi">65</span>, <span class="mi">68</span>, np.nan],
+            <span class="st">&quot;note&quot;</span>: [<span class="st">&quot;ok&quot;</span>, <span class="st">&quot;ok&quot;</span>, <span class="st">&quot;ok&quot;</span>, <span class="st">&quot;febbre&quot;</span>, <span class="st">&quot;ok&quot;</span>,
+                     <span class="st">&quot;errore sensore&quot;</span>, <span class="st">&quot;ok&quot;</span>, <span class="st">&quot;ok&quot;</span>, <span class="st">&quot;ok&quot;</span>, <span class="st">&quot;ok&quot;</span>, <span class="st">&quot;ok&quot;</span>, <span class="st">&quot;ok&quot;</span>],
+        }
+        <span class="kw">return</span> pd.DataFrame(dati)
+
+    <span class="kw">def</span> <span class="fn">rimuovi_duplicati</span>(<span class="fn">df</span>: pd.DataFrame, colonna_id: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;Rimuove le righe duplicate basandosi sulla colonna ID, tenendo la prima.&quot;&quot;&quot;</span>
+        <span class="kw">return</span> df.drop_duplicates(subset<span class="op">=</span>[colonna_id], keep<span class="op">=</span><span class="st">&quot;first&quot;</span>).reset_index(drop<span class="op">=</span><span class="kw">True</span>)
+
+    <span class="kw">def</span> <span class="fn">riempi_mancanti_media</span>(<span class="fn">df</span>: pd.DataFrame, colonne: <span class="nb">list</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;Riempie i valori mancanti con la media della colonna.&quot;&quot;&quot;</span>
+        df_pulito: pd.DataFrame <span class="op">=</span> df.copy()
+        <span class="kw">for</span> col <span class="kw">in</span> colonne:
+            <span class="kw">if</span> col <span class="kw">in</span> df_pulito.columns:
+                media_col: <span class="nb">float</span> <span class="op">=</span> df_pulito[col].mean()
+                df_pulito[col] <span class="op">=</span> df_pulito[col].fillna(media_col).<span class="nb">round</span>(<span class="mi">1</span>)
+        <span class="kw">return</span> df_pulito
+
+    <span class="kw">def</span> <span class="fn">rimuovi_outlier_iqr</span>(<span class="fn">df</span>: pd.DataFrame, colonna: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;
+        Rimuove outlier usando il metodo IQR (InterQuartile Range).
+        Outlier = valori sotto Q1 - 1.5*IQR o sopra Q3 + 1.5*IQR
+        &quot;&quot;&quot;</span>
+        q1: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(df[colonna].quantile(<span class="mi">0.25</span>))
+        q3: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(df[colonna].quantile(<span class="mi">0.75</span>))
+        iqr: <span class="nb">float</span> <span class="op">=</span> q3 <span class="op">-</span> q1
+        limite_inf: <span class="nb">float</span> <span class="op">=</span> q1 <span class="op">-</span> <span class="mi">1.5</span> <span class="op">*</span> iqr
+        limite_sup: <span class="nb">float</span> <span class="op">=</span> q3 <span class="op">+</span> <span class="mi">1.5</span> <span class="op">*</span> iqr
+
+        maschera: pd.Series <span class="op">=</span> (df[colonna] <span class="op">&gt;</span><span class="op">=</span> limite_inf) <span class="op">&amp;</span> (df[colonna] <span class="op">&lt;</span><span class="op">=</span> limite_sup)
+        <span class="kw">return</span> df[maschera].reset_index(drop<span class="op">=</span><span class="kw">True</span>)
+
+    <span class="kw">def</span> <span class="fn">pipeline_pulizia</span>(<span class="fn">df</span>: pd.DataFrame) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+        <span class="st">&quot;&quot;&quot;
+        Pipeline completa di pulizia dati:
+        1. Rimuovi duplicati
+        2. Rimuovi outlier dalla temperatura
+        3. Riempi valori mancanti con la media
+        &quot;&quot;&quot;</span>
+        <span class="cm"># Passo 1: rimuovi duplicati</span>
+        df_clean: pd.DataFrame <span class="op">=</span> rimuovi_duplicati(df, <span class="st">&quot;id&quot;</span>)
+
+        <span class="cm"># Passo 2: rimuovi outlier dalla temperatura (prima di calcolare la media)</span>
+        df_clean <span class="op">=</span> rimuovi_outlier_iqr(df_clean, <span class="st">&quot;temperatura&quot;</span>)
+
+        <span class="cm"># Passo 3: riempi valori mancanti</span>
+        df_clean <span class="op">=</span> riempi_mancanti_media(
+            df_clean, [<span class="st">&quot;temperatura&quot;</span>, <span class="st">&quot;pressione&quot;</span>, <span class="st">&quot;frequenza_cardiaca&quot;</span>]
+        )
+
+        <span class="kw">return</span> df_clean
+
+    <span class="cm"># --- Test pulizia dati ---</span>
+    df_sporco: pd.DataFrame <span class="op">=</span> crea_dati_sporchi()
+    <span class="kw">assert</span> <span class="nb">len</span>(df_sporco) <span class="op">=</span><span class="op">=</span> <span class="mi">12</span>  <span class="cm"># include duplicati</span>
+
+    <span class="cm"># Test rimuovi duplicati</span>
+    df_no_dup: pd.DataFrame <span class="op">=</span> rimuovi_duplicati(df_sporco, <span class="st">&quot;id&quot;</span>)
+    <span class="kw">assert</span> <span class="nb">len</span>(df_no_dup) <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>  <span class="cm"># rimossi 2 duplicati</span>
+
+    <span class="cm"># Test pipeline completa</span>
+    df_pulito: pd.DataFrame <span class="op">=</span> pipeline_pulizia(df_sporco)
+
+    <span class="cm"># Non ci devono essere NaN dopo la pulizia</span>
+    <span class="kw">assert</span> df_pulito[<span class="st">&quot;temperatura&quot;</span>].isna().<span class="nb">sum</span>() <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">assert</span> df_pulito[<span class="st">&quot;pressione&quot;</span>].isna().<span class="nb">sum</span>() <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">assert</span> df_pulito[<span class="st">&quot;frequenza_cardiaca&quot;</span>].isna().<span class="nb">sum</span>() <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+
+    <span class="cm"># L&#x27;outlier 99.9 deve essere stato rimosso</span>
+    <span class="kw">assert</span> (df_pulito[<span class="st">&quot;temperatura&quot;</span>] <span class="op">&gt;</span> <span class="mi">50</span>).<span class="nb">sum</span>() <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+
+    <span class="cm"># Non ci devono essere duplicati</span>
+    <span class="kw">assert</span> df_pulito[<span class="st">&quot;id&quot;</span>].is_unique
+
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (Pulizia dati): SUPERATO&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (Pulizia dati): SALTATO (NumPy/Pandas non disponibili)&quot;</span>)
+
+
+<span class="cm"># ============================================================================</span>
+esercizi_superati: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+totale: <span class="nb">int</span> <span class="op">=</span> <span class="mi">4</span>
+<span class="kw">if</span> NUMPY_DISPONIBILE:
+    esercizi_superati <span class="op">+</span><span class="op">=</span> <span class="mi">2</span>
+<span class="kw">if</span> PANDAS_DISPONIBILE:
+    esercizi_superati <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+<span class="kw">if</span> PANDAS_DISPONIBILE <span class="kw">and</span> NUMPY_DISPONIBILE:
+    esercizi_superati <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">f&quot;LABORATORIO 07: {esercizi_superati}/{totale} ESERCIZI SUPERATI&quot;</span>)
+<span class="kw">if</span> esercizi_superati <span class="op">=</span><span class="op">=</span> totale:
+    <span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 07 SUPERATI!&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Installa le librerie mancanti per completare tutti gli esercizi.&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L08 — Visualizzazione e progetto riepilogativo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titolo -->
+            <section class="title-slide">
+                <h1>Visualizzazione e progetto riepilogativo</h1>
+                <div class="subtitle">Laboratorio 8</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione &mdash; Corso di Laurea in Scienze Statistiche<br>
+                    Matplotlib, Seaborn e mini-progetto di analisi dati
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <div class="columns">
+                    <div class="col">
+                        <h3>Parte 1 &mdash; Visualizzazione</h3>
+                        <ol>
+                            <li>Matplotlib: istogramma, scatter, barre</li>
+                            <li>Personalizzazione: titoli, legende, griglia</li>
+                            <li>Seaborn: boxplot e heatmap</li>
+                            <li>Subplots: dashboard 2&times;2</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <h3>Parte 2 &mdash; Mini-progetto</h3>
+                        <ol>
+                            <li>Generazione dataset</li>
+                            <li>Esplorazione</li>
+                            <li>Pulizia</li>
+                            <li>Analisi per gruppi</li>
+                            <li>Dashboard di visualizzazione</li>
+                        </ol>
+                        <div class="box box-blue" style="margin-top:0.5em;">
+                            <strong>Prerequisiti:</strong> L07 (NumPy, Pandas)
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Sezione Matplotlib -->
+            <section class="section-slide">
+                <h2>Parte 1 &mdash; Matplotlib</h2>
+                <p>La libreria di visualizzazione di riferimento</p>
+            </section>
+
+            <!-- SLIDE 4: Istogramma -->
+            <section>
+                <h2>Istogramma</h2>
+                <p>Visualizza la <strong>distribuzione</strong> di una variabile continua.</p>
+                <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+rng: np.random.Generator = np.random.default_rng(seed=42)
+altezze: np.ndarray = rng.normal(loc=170, scale=10, size=500)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.hist(altezze, bins=25, color="steelblue",
+        edgecolor="white", alpha=0.8)
+ax.set_title("Distribuzione delle altezze")
+ax.set_xlabel("Altezza (cm)")
+ax.set_ylabel("Frequenza")
+plt.tight_layout()
+plt.savefig("istogramma_altezze.png", dpi=150)
+plt.show()</code></pre>
+                <div class="box box-green">
+                    <strong>Parametri chiave:</strong> <code>bins</code> controlla il numero di barre; <code>alpha</code> la trasparenza (0&ndash;1); <code>edgecolor</code> il bordo delle barre.
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Scatter plot -->
+            <section>
+                <h2>Scatter plot</h2>
+                <p>Mostra la <strong>relazione tra due variabili</strong> continue.</p>
+                <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+rng: np.random.Generator = np.random.default_rng(seed=42)
+ore_studio: np.ndarray = rng.uniform(2, 40, size=100)
+voti: np.ndarray = 18 + 0.3 * ore_studio + rng.normal(0, 2, size=100)
+voti = np.clip(voti, 18, 30)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.scatter(ore_studio, voti, alpha=0.6,
+           color="coral", edgecolors="darkred", s=40)
+ax.set_title("Ore di studio vs voto")
+ax.set_xlabel("Ore di studio settimanali")
+ax.set_ylabel("Voto medio")
+plt.tight_layout()
+plt.savefig("scatter_studio_voti.png", dpi=150)
+plt.show()</code></pre>
+                <div class="box box-yellow">
+                    <strong>Quando usarlo:</strong> per esplorare correlazioni e individuare pattern, outlier o cluster.
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Grafico a barre -->
+            <section>
+                <h2>Grafico a barre</h2>
+                <p>Confronta <strong>valori tra categorie</strong> discrete.</p>
+                <pre><code class="language-python">import matplotlib.pyplot as plt
+
+corsi: list[str] = ["Statistica", "Economia", "Sociologia", "Informatica"]
+media_voti: list[float] = [26.3, 24.8, 25.1, 27.2]
+
+fig, ax = plt.subplots(figsize=(8, 5))
+colori = ["#4C72B0", "#55A868", "#C44E52", "#8172B2"]
+barre = ax.bar(corsi, media_voti, color=colori,
+               edgecolor="black", width=0.6)
+
+# Etichette sopra le barre
+for barra, valore in zip(barre, media_voti):
+    ax.text(barra.get_x() + barra.get_width() / 2,
+            barra.get_height() + 0.1,
+            f"{valore:.1f}", ha="center", va="bottom")
+
+ax.set_title("Voto medio per corso di laurea")
+ax.set_ylabel("Voto medio")
+ax.set_ylim(22, 29)
+plt.tight_layout()
+plt.savefig("barre_corsi.png", dpi=150)
+plt.show()</code></pre>
+            </section>
+
+            <!-- SLIDE 7: Istogramma vs Barre -->
+            <section>
+                <h2>Istogramma vs grafico a barre</h2>
+                <div class="compare">
+                    <div class="good">
+                        <h3>Istogramma</h3>
+                        <ul>
+                            <li>Variabile <strong>continua</strong></li>
+                            <li>Mostra la <strong>distribuzione</strong></li>
+                            <li>Le barre sono adiacenti</li>
+                            <li>L'asse x ha un ordine naturale</li>
+                            <li><em>Es: distribuzione delle altezze</em></li>
+                        </ul>
+                    </div>
+                    <div class="bad">
+                        <h3>Grafico a barre</h3>
+                        <ul>
+                            <li>Variabile <strong>categoriale</strong></li>
+                            <li>Confronta <strong>valori</strong> tra gruppi</li>
+                            <li>Le barre sono separate</li>
+                            <li>L'asse x sono etichette</li>
+                            <li><em>Es: voto medio per corso</em></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box box-red" style="margin-top:0.8em;">
+                    <strong>Errore comune:</strong> usare un grafico a barre per mostrare una distribuzione, o un istogramma per confrontare categorie. La scelta del grafico sbagliato comunica informazioni sbagliate.
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Personalizzazione -->
+            <section>
+                <h2>Personalizzazione dei grafici</h2>
+                <pre><code class="language-python">fig, ax = plt.subplots(figsize=(10, 6))
+
+# Tre linee con stili diversi
+ax.plot(x, y1, color="#E74C3C", linewidth=2,
+        linestyle="-",  label="sin(x)")
+ax.plot(x, y2, color="#3498DB", linewidth=2,
+        linestyle="--", label="cos(x)")
+ax.plot(x, y3, color="#2ECC71", linewidth=2,
+        linestyle="-.", label="sin(x) * exp(-x/5)")
+
+# Titoli ed etichette
+ax.set_title("Funzioni trigonometriche",
+             fontsize=16, fontweight="bold")
+ax.set_xlabel("x", fontsize=13)
+ax.set_ylabel("f(x)", fontsize=13)
+ax.legend(fontsize=11, loc="upper right", framealpha=0.9)
+ax.grid(True, alpha=0.3, linestyle="--")
+ax.set_xlim(0, 10)
+ax.axhline(y=0, color="black", linewidth=0.5)</code></pre>
+                <div class="box box-red">
+                    <strong>Regola d'oro:</strong> un grafico senza etichette e un grafico inutile. Titolo, assi, legenda, unita di misura: ogni grafico deve essere comprensibile da solo.
+                </div>
+            </section>
+
+            <!-- SLIDE 9: plt.plot vs ax.plot -->
+            <section>
+                <h2><code>plt.plot()</code> vs <code>ax.plot()</code></h2>
+                <div class="compare">
+                    <div class="bad">
+                        <h3>Interfaccia implicita</h3>
+                        <pre><code class="language-python">plt.plot(x, y)
+plt.title("Titolo")
+plt.xlabel("X")
+plt.show()</code></pre>
+                        <p>Funziona su una figura "nascosta". Problematico con piu grafici.</p>
+                    </div>
+                    <div class="good">
+                        <h3>Interfaccia esplicita</h3>
+                        <pre><code class="language-python">fig, ax = plt.subplots()
+ax.plot(x, y)
+ax.set_title("Titolo")
+ax.set_xlabel("X")
+plt.show()</code></pre>
+                        <p>Controllo esplicito su figura e assi. Scalabile a piu pannelli.</p>
+                    </div>
+                </div>
+                <div class="box box-green" style="margin-top:0.5em;">
+                    <strong>Consiglio:</strong> usate sempre <code>fig, ax = plt.subplots()</code>. E piu esplicito, piu flessibile, e si estende naturalmente ai subplots.
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Sezione Seaborn -->
+            <section class="section-slide">
+                <h2>Seaborn</h2>
+                <p>Grafici statistici con un'interfaccia semplificata</p>
+            </section>
+
+            <!-- SLIDE 11: Boxplot -->
+            <section>
+                <h2>Seaborn: boxplot per confronto gruppi</h2>
+                <p>Seaborn lavora direttamente con i DataFrame Pandas.</p>
+                <pre><code class="language-python">import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+fig, ax = plt.subplots(figsize=(9, 5))
+sns.boxplot(data=df, x="corso", y="voto",
+            palette="Set2", ax=ax)
+ax.set_title("Distribuzione dei voti per corso", fontsize=14)
+ax.set_xlabel("Corso di laurea")
+ax.set_ylabel("Voto medio")
+plt.tight_layout()
+plt.savefig("boxplot_voti_corso.png", dpi=150)
+plt.show()</code></pre>
+                <div class="box box-blue">
+                    <strong>Anatomia del boxplot:</strong>
+                    <ul>
+                        <li><strong>Linea centrale:</strong> mediana (Q2)</li>
+                        <li><strong>Bordi della scatola:</strong> Q1 (25%) e Q3 (75%)</li>
+                        <li><strong>Baffi:</strong> fino a 1.5 &times; IQR dai bordi</li>
+                        <li><strong>Punti isolati:</strong> outlier (oltre i baffi)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Heatmap -->
+            <section>
+                <h2>Seaborn: heatmap della correlazione</h2>
+                <pre><code class="language-python">import seaborn as sns
+import matplotlib.pyplot as plt
+
+colonne_numeriche = ["voto", "ore_studio", "eta", "stipendio_atteso"]
+matrice_corr: pd.DataFrame = df[colonne_numeriche].corr()
+
+fig, ax = plt.subplots(figsize=(7, 6))
+sns.heatmap(
+    matrice_corr,
+    annot=True,          # mostra i valori nelle celle
+    fmt=".2f",           # due decimali
+    cmap="coolwarm",     # scala di colori
+    center=0,            # centro della scala
+    square=True,         # celle quadrate
+    linewidths=1,        # griglia tra le celle
+    ax=ax
+)
+ax.set_title("Matrice di correlazione", fontsize=14)
+plt.tight_layout()
+plt.savefig("heatmap_correlazione.png", dpi=150)
+plt.show()</code></pre>
+                <div class="box box-yellow">
+                    <strong>Nota:</strong> la diagonale e sempre 1.0 (correlazione di una variabile con se stessa). Un valore vicino a 0 indica assenza di relazione lineare.
+                </div>
+            </section>
+
+            <!-- SLIDE 13: Subplots / dashboard -->
+            <section>
+                <h2>Subplots: creare una dashboard</h2>
+                <p>Combinare piu grafici in una singola figura con <code>plt.subplots(righe, colonne)</code>.</p>
+                <pre><code class="language-python">fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.suptitle("Dashboard: analisi studenti universitari",
+             fontsize=16, fontweight="bold", y=1.02)
+
+# Pannello 1: istogramma dei voti
+axes[0, 0].hist(df["voto"], bins=20, color="steelblue",
+                edgecolor="white", alpha=0.8)
+axes[0, 0].set_title("Distribuzione dei voti")
+
+# Pannello 2: boxplot per corso
+sns.boxplot(data=df, x="corso", y="voto",
+            palette="Set2", ax=axes[0, 1])
+
+# Pannello 3: scatter ore studio vs voto
+axes[1, 0].scatter(df["ore_studio"], df["voto"],
+                   alpha=0.4, color="coral", s=20)
+
+# Pannello 4: conteggio per corso (barre)
+conteggi = df["corso"].value_counts()
+axes[1, 1].bar(conteggi.index, conteggi.values,
+               color=["#4C72B0", "#55A868", "#C44E52", "#8172B2"])
+
+plt.tight_layout()
+plt.savefig("dashboard.png", dpi=150, bbox_inches="tight")</code></pre>
+            </section>
+
+            <!-- SLIDE 14: tight_layout e savefig -->
+            <section>
+                <h2>Dettagli importanti</h2>
+                <div class="columns">
+                    <div class="col">
+                        <h3><code>plt.tight_layout()</code></h3>
+                        <p>Regola automaticamente i margini per evitare sovrapposizioni tra titoli, etichette e pannelli.</p>
+                        <div class="box box-red">
+                            Senza <code>tight_layout()</code>, i subplots si sovrappongono facilmente.
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3><code>plt.savefig()</code></h3>
+                        <table>
+                            <thead><tr><th>Parametro</th><th>Uso</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>dpi=150</code></td><td>Risoluzione (150 per schermo, 300 per stampa)</td></tr>
+                                <tr><td><code>bbox_inches="tight"</code></td><td>Taglia i margini vuoti</td></tr>
+                                <tr><td><code>transparent=True</code></td><td>Sfondo trasparente</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="box box-green" style="margin-top:0.5em;">
+                    <strong>Ordine corretto:</strong> <code>tight_layout()</code> &rarr; <code>savefig()</code> &rarr; <code>show()</code>. Se chiamate <code>show()</code> prima di <code>savefig()</code>, il file salvato potrebbe essere vuoto.
+                </div>
+            </section>
+
+            <!-- SLIDE 15: Parametro alpha -->
+            <section>
+                <h2>Il parametro <code>alpha</code></h2>
+                <p>Controlla la <strong>trasparenza</strong> degli elementi grafici (0 = invisibile, 1 = opaco).</p>
+                <div class="columns">
+                    <div class="col">
+                        <pre><code class="language-python"># Senza trasparenza
+ax.scatter(x, y, alpha=1.0)
+# I punti sovrapposti si coprono</code></pre>
+                    </div>
+                    <div class="col">
+                        <pre><code class="language-python"># Con trasparenza
+ax.scatter(x, y, alpha=0.4)
+# Si vedono le zone dense</code></pre>
+                    </div>
+                </div>
+                <div class="box box-blue">
+                    <strong>Quando e utile:</strong>
+                    <ul>
+                        <li><strong>Scatter plot con molti punti:</strong> <code>alpha=0.3&ndash;0.5</code> per vedere la densita</li>
+                        <li><strong>Istogrammi sovrapposti:</strong> <code>alpha=0.5&ndash;0.7</code> per confrontare distribuzioni</li>
+                        <li><strong>Grafici a linee multiple:</strong> <code>alpha=0.8</code> per distinguere le linee</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 16: Sezione mini-progetto -->
+            <section class="section-slide">
+                <h2>Parte 2 &mdash; Mini-progetto</h2>
+                <p>Analisi end-to-end di un dataset</p>
+            </section>
+
+            <!-- SLIDE 17: Panoramica progetto -->
+            <section>
+                <h2>Mini-progetto: panoramica</h2>
+                <p>Costruite un programma completo che esegue un'analisi end-to-end, integrando tutte le competenze del corso.</p>
+                <div class="diagram">
+                    <strong>1. Generazione</strong> &rarr; <strong>2. Esplorazione</strong> &rarr; <strong>3. Pulizia</strong> &rarr; <strong>4. Analisi</strong> &rarr; <strong>5. Visualizzazione</strong>
+                </div>
+                <div class="box box-yellow" style="margin-top:0.8em;">
+                    <strong>Requisiti trasversali:</strong>
+                    <ul>
+                        <li>Ogni passo in una o piu <strong>funzioni dedicate</strong></li>
+                        <li><strong>Type hints</strong> su tutti i parametri e valori di ritorno</li>
+                        <li><strong>Docstring</strong> per ogni funzione</li>
+                        <li>Nessuna variabile globale: tutto passa attraverso parametri e return</li>
+                        <li>Blocco <code>if __name__ == "__main__"</code> per il flusso principale</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 18: Passo 1 - Generazione -->
+            <section>
+                <h2>Passo 1 &mdash; Generazione del dataset</h2>
+                <p>Simulate un'indagine su 500 dipendenti con queste colonne:</p>
+                <table>
+                    <thead>
+                        <tr><th>Colonna</th><th>Tipo</th><th>Descrizione</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td>int</td><td>Identificativo univoco</td></tr>
+                        <tr><td><code>settore</code></td><td>str</td><td>Tecnologia, Sanita, Istruzione, Finanza, Commercio</td></tr>
+                        <tr><td><code>ruolo</code></td><td>str</td><td>Junior, Mid, Senior, Manager</td></tr>
+                        <tr><td><code>anni_esperienza</code></td><td>int</td><td>Da 0 a 35</td></tr>
+                        <tr><td><code>stipendio</code></td><td>float</td><td>In euro, correlato a settore e esperienza</td></tr>
+                        <tr><td><code>soddisfazione</code></td><td>int</td><td>Scala 1&ndash;10</td></tr>
+                        <tr><td><code>ore_settimanali</code></td><td>float</td><td>Ore lavorate a settimana</td></tr>
+                        <tr><td><code>regione</code></td><td>str</td><td>Almeno 5 regioni italiane</td></tr>
+                    </tbody>
+                </table>
+                <pre><code class="language-python">def genera_dataset(n: int, percorso: str,
+                   seed: int = 42) -> pd.DataFrame:
+    """Genera un dataset simulato di dipendenti
+    e lo salva come CSV."""
+    ...</code></pre>
+            </section>
+
+            <!-- SLIDE 19: Passo 2 - Esplorazione -->
+            <section>
+                <h2>Passo 2 &mdash; Esplorazione</h2>
+                <pre><code class="language-python">def esplora_dataset(df: pd.DataFrame) -> None:
+    """Stampa un riepilogo esplorativo del dataset.
+
+    Mostra: dimensioni, tipi delle colonne, prime righe,
+    statistiche descrittive, conteggio valori per ogni
+    colonna categoriale, conteggio valori mancanti.
+    """
+    print(f"Dimensioni: {df.shape}")
+    print(f"\n=== TIPI ===\n{df.dtypes}")
+    print(f"\n=== HEAD ===\n{df.head()}")
+    print(f"\n=== DESCRIBE ===\n{df.describe()}")
+
+    for col in df.select_dtypes(include="object").columns:
+        print(f"\n=== {col.upper()} ===")
+        print(df[col].value_counts())
+
+    print(f"\n=== MANCANTI ===\n{df.isnull().sum()}")</code></pre>
+                <div class="box box-green">
+                    <strong>Regola:</strong> esplorate <em>sempre</em> i dati prima di analizzarli. Un <code>head()</code>, un <code>describe()</code>, un istogramma: bastano pochi secondi per evitare ore di lavoro su dati sbagliati.
+                </div>
+            </section>
+
+            <!-- SLIDE 20: Passo 3 - Pulizia -->
+            <section>
+                <h2>Passo 3 &mdash; Pulizia</h2>
+                <p>Inserite intenzionalmente dei difetti, poi correggeteli:</p>
+                <pre><code class="language-python">def pulisci_dataset(df: pd.DataFrame) -> pd.DataFrame:
+    """Pulisce il dataset: gestisce mancanti, anomali,
+    inconsistenze.
+
+    Strategia:
+    - Stipendio mancante: mediana del settore.
+    - Ore settimanali > 80 o < 5: sostituite con mediana.
+    - Stringhe: normalizzate con strip() e capitalize().
+    """
+    df_pulito: pd.DataFrame = df.copy()
+
+    # Normalizzare stringhe
+    for col in ["settore", "ruolo", "regione"]:
+        df_pulito[col] = (df_pulito[col]
+                          .str.strip()
+                          .str.capitalize())
+
+    # Stipendio mancante -> mediana per settore
+    df_pulito["stipendio"] = (
+        df_pulito.groupby("settore")["stipendio"]
+        .transform(lambda s: s.fillna(s.median()))
+    )
+
+    # Ore anomale -> mediana generale
+    mediana_ore = df_pulito["ore_settimanali"].median()
+    anomale = (df_pulito["ore_settimanali"] > 80) | \
+              (df_pulito["ore_settimanali"] < 5)
+    df_pulito.loc[anomale, "ore_settimanali"] = mediana_ore
+
+    return df_pulito</code></pre>
+            </section>
+
+            <!-- SLIDE 21: Passo 4 - Analisi -->
+            <section>
+                <h2>Passo 4 &mdash; Analisi per gruppi</h2>
+                <pre><code class="language-python">def analisi_per_gruppi(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    """Calcola statistiche aggregate per diversi raggruppamenti."""
+    risultati: dict[str, pd.DataFrame] = {}
+
+    # Stipendio medio e mediano per settore
+    risultati["stipendio_per_settore"] = (
+        df.groupby("settore")["stipendio"]
+        .agg(["mean", "median"]).round(0)
+    )
+
+    # Soddisfazione media per ruolo
+    risultati["soddisfazione_per_ruolo"] = (
+        df.groupby("ruolo")["soddisfazione"]
+        .mean().round(2)
+    )
+
+    # Pivot table: stipendio medio per settore e ruolo
+    risultati["pivot_stipendio"] = pd.pivot_table(
+        df, values="stipendio",
+        index="settore", columns="ruolo",
+        aggfunc="mean"
+    ).round(0)
+
+    # Correlazione
+    cols = ["anni_esperienza", "stipendio", "soddisfazione"]
+    risultati["correlazione"] = df[cols].corr().round(3)
+
+    return risultati</code></pre>
+            </section>
+
+            <!-- SLIDE 22: Passo 5 - Visualizzazione -->
+            <section>
+                <h2>Passo 5 &mdash; Dashboard di visualizzazione</h2>
+                <pre><code class="language-python">def crea_dashboard(df: pd.DataFrame,
+                   percorso_output: str) -> None:
+    """Crea una dashboard con 4 grafici e la salva."""
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    fig.suptitle("Dashboard dipendenti", fontsize=16,
+                 fontweight="bold")
+
+    # 1. Istogramma stipendi
+    axes[0,0].hist(df["stipendio"], bins=30,
+                   color="steelblue", edgecolor="white")
+    axes[0,0].set_title("Distribuzione stipendi")
+
+    # 2. Boxplot stipendi per settore
+    sns.boxplot(data=df, x="settore", y="stipendio",
+                palette="Set2", ax=axes[0,1])
+    axes[0,1].tick_params(axis="x", rotation=30)
+
+    # 3. Scatter esperienza vs stipendio
+    for settore in df["settore"].unique():
+        mask = df["settore"] == settore
+        axes[1,0].scatter(df.loc[mask, "anni_esperienza"],
+                          df.loc[mask, "stipendio"],
+                          alpha=0.4, s=20, label=settore)
+    axes[1,0].legend(fontsize=8)
+
+    # 4. Heatmap correlazione
+    cols_num = df.select_dtypes(include="number").columns
+    sns.heatmap(df[cols_num].corr(), annot=True, fmt=".2f",
+                cmap="coolwarm", center=0, ax=axes[1,1])
+
+    plt.tight_layout()
+    plt.savefig(percorso_output, dpi=150, bbox_inches="tight")</code></pre>
+            </section>
+
+            <!-- SLIDE 23: Struttura principale -->
+            <section>
+                <h2>Struttura del programma principale</h2>
+                <pre><code class="language-python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ... definizioni delle funzioni sopra ...
+
+def main() -> None:
+    """Funzione principale: esegue l'analisi completa."""
+    percorso_csv: str = "dipendenti.csv"
+
+    # 1. Generazione
+    df: pd.DataFrame = genera_dataset(500, percorso_csv)
+    # 2. Caricamento (dimostra il ciclo salva/carica)
+    df = carica_dataset(percorso_csv)
+    # 3. Esplorazione
+    esplora_dataset(df)
+    # 4. Pulizia
+    df_pulito: pd.DataFrame = pulisci_dataset(df)
+    # 5. Analisi
+    risultati = analisi_per_gruppi(df_pulito)
+    for nome, tabella in risultati.items():
+        print(f"\n{'=' * 50}")
+        print(f"  {nome}")
+        print(f"{'=' * 50}")
+        print(tabella)
+    # 6. Visualizzazione
+    crea_dashboard(df_pulito, "dashboard_dipendenti.png")
+    # 7. Export
+    df_pulito.to_csv("dipendenti_pulito.csv", index=False)
+
+if __name__ == "__main__":
+    main()</code></pre>
+            </section>
+
+            <!-- SLIDE 24: Criteri di qualita -->
+            <section>
+                <h2>Criteri di qualita del progetto</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-green">
+                            <strong>Codice</strong>
+                            <ul>
+                                <li>Type hints su tutti i parametri e valori di ritorno</li>
+                                <li>Docstring per ogni funzione</li>
+                                <li>Nessuna variabile globale</li>
+                                <li>Eseguibile da terminale senza errori</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-blue">
+                            <strong>Contenuto</strong>
+                            <ul>
+                                <li>Dataset realistico (correlazione stipendio-esperienza)</li>
+                                <li>Pulizia di almeno 3 tipi di problema</li>
+                                <li>Almeno 4 tabelle statistiche</li>
+                                <li>4 grafici con titolo, etichette e legenda</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 25: Interpretazione risultati -->
+            <section>
+                <h2>Interpretazione dei risultati</h2>
+                <p>Dopo aver completato il progetto, rispondete per iscritto:</p>
+                <ol>
+                    <li>Quale settore ha lo stipendio medio piu alto? E anche quello con la soddisfazione piu alta?</li>
+                    <li>Dallo scatter plot, la relazione esperienza-stipendio e lineare? Ci sono pattern diversi per settore?</li>
+                    <li>Dalla heatmap, quali coppie di variabili sono piu correlate? Quali sono indipendenti?</li>
+                    <li>I boxplot mostrano outlier? In quale settore la variabilita e maggiore?</li>
+                    <li>Se doveste comunicare i risultati a un committente non tecnico, quali due grafici scegliereste e perche?</li>
+                </ol>
+                <div class="box box-yellow">
+                    <strong>Ricordate:</strong> i numeri e i grafici non parlano da soli. La vera competenza e saperli interpretare e comunicare in modo chiaro e onesto.
+                </div>
+            </section>
+
+            <!-- SLIDE 26: Domande di verifica -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol>
+                    <li>Differenza tra <code>plt.plot()</code> e <code>ax.plot()</code>?</li>
+                    <li>Cosa fa il parametro <code>alpha</code> nei grafici?</li>
+                    <li>Differenza tra istogramma e grafico a barre?</li>
+                    <li>Perche la diagonale della heatmap e sempre 1.0?</li>
+                    <li>In un boxplot, cosa rappresentano linea centrale, bordi, baffi e punti isolati?</li>
+                    <li>Vantaggio di organizzare il codice in funzioni?</li>
+                    <li>Perche <code>tight_layout()</code> e importante?</li>
+                    <li>Cosa significa <code>dpi=150</code> in <code>savefig()</code>?</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 27: Chiusura del corso -->
+            <section>
+                <h2>Il percorso del corso</h2>
+                <div class="diagram">
+                    Variabili e tipi &rarr; Condizionali &rarr; Cicli &rarr; Funzioni &rarr; Strutture dati &rarr; File e CSV &rarr; Eccezioni &rarr; <strong>NumPy + Pandas + Matplotlib</strong>
+                </div>
+                <div class="box box-green" style="margin-top:1em;">
+                    <strong>Tre lezioni da portare con se:</strong>
+                    <ol>
+                        <li><strong>I dati vanno sempre esplorati prima di analizzarli.</strong> Un <code>head()</code>, un <code>describe()</code>, un istogramma: bastano pochi secondi per evitare ore di errori.</li>
+                        <li><strong>Il codice deve essere organizzato in funzioni con interfacce chiare.</strong> Type hints e docstring non sono un lusso: sono il modo in cui il codice comunica.</li>
+                        <li><strong>Un grafico senza etichette e un grafico inutile.</strong> Titolo, assi, legenda, unita di misura: ogni grafico deve essere comprensibile da solo.</li>
+                    </ol>
+                </div>
+                <p style="text-align:center; margin-top:1em; color:var(--text-muted);">Il linguaggio e le librerie sono strumenti. La vera competenza e saper formulare la domanda giusta, scegliere l'analisi appropriata e comunicare il risultato in modo onesto e chiaro. Buon lavoro.</p>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L07_numpy_pandas.html" style="color: var(--accent);">&larr; L07: NumPy e Pandas</a></div><div><a href="../dispense/laboratori/L08_visualizzazione_progetto.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L08_visualizzazione/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; L08</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L02 — Cicli, comprehension e stringhe — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="L01_ambiente_variabili_condizionali.html">← L01</a> &bull; <a href="L03_strutture_dati.html">L03 →</a> &bull; <a href="../../presentazioni/L02_cicli_comprehension_stringhe.html">Presentazione</a></nav>
+<h1>L02 — Cicli, comprehension e stringhe</h1>
+
+<h1>Laboratorio 2 — Cicli, comprehension e stringhe</h1>
+<p><strong>Prerequisiti:</strong> Lezioni frontali F9 (<em>Cicli</em>) e F10 (<em>Comprehension e stringhe</em>).</p>
+<p><strong>Obiettivo:</strong> padroneggiare i cicli <code>for</code> e <code>while</code> con i pattern fondamentali (accumulatore, contatore, min/max), riscrivere cicli come comprehension, manipolare dati testuali con i metodi delle stringhe.</p>
+<hr>
+<h2>Parte 1 — Cicli e statistiche base</h2>
+<h3>Esercizio guidato 1.1: media, minimo e massimo con <code>while</code></h3>
+<p>Un caso comune in statistica: l'utente inserisce valori uno alla volta (non sappiamo quanti saranno in anticipo) e alla fine vogliamo le statistiche. Il ciclo <code>while</code> e lo strumento giusto.</p>
+<p>Create un file <code>statistiche_input.py</code>:</p>
+<pre><code><span class="cm"># statistiche_input.py — Media, minimo e massimo da input variabile</span>
+
+<span class="nb">print</span>(<span class="st">&quot;Inserisci valori numerici uno per riga.&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Scrivi &#x27;fine&#x27; per terminare.\n&quot;</span>)
+
+conteggio: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+minimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="st">&quot;inf&quot;</span>)   <span class="cm"># +infinito: qualsiasi valore sara minore</span>
+massimo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="st">&quot;-inf&quot;</span>) <span class="cm"># -infinito: qualsiasi valore sara maggiore</span>
+
+<span class="kw">while</span> <span class="kw">True</span>:
+    testo: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">f&quot;Valore {conteggio + 1}: &quot;</span>)
+
+    <span class="kw">if</span> testo.lower().strip() <span class="op">=</span><span class="op">=</span> <span class="st">&quot;fine&quot;</span>:
+        <span class="kw">break</span>
+
+    valore: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(testo)
+    conteggio <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    somma <span class="op">+</span><span class="op">=</span> valore
+
+    <span class="kw">if</span> valore <span class="op">&lt;</span> minimo:
+        minimo <span class="op">=</span> valore
+    <span class="kw">if</span> valore <span class="op">&gt;</span> massimo:
+        massimo <span class="op">=</span> valore
+
+<span class="kw">if</span> conteggio <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">&quot;\nNessun valore inserito.&quot;</span>)
+<span class="kw">else</span>:
+    media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> conteggio
+    <span class="nb">print</span>(<span class="st">f&quot;\n--- Statistiche su {conteggio} valori ---&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Somma:   {somma:&gt;10.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Media:   {media:&gt;10.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Minimo:  {minimo:&gt;10.2f}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Massimo: {massimo:&gt;10.2f}&quot;</span>)</code></pre>
+<p>Esecuzione di esempio:</p>
+<pre><code>Inserisci valori numerici uno per riga.
+Scrivi <span class="st">&#x27;fine&#x27;</span> per terminare.
+
+Valore <span class="mi">1</span>: <span class="mi">23.5</span>
+Valore <span class="mi">2</span>: <span class="mi">19.8</span>
+Valore <span class="mi">3</span>: <span class="mi">31.2</span>
+Valore <span class="mi">4</span>: <span class="mi">25.0</span>
+Valore <span class="mi">5</span>: fine
+
+<span class="op">-</span><span class="op">-</span><span class="op">-</span> Statistiche su <span class="mi">4</span> valori <span class="op">-</span><span class="op">-</span><span class="op">-</span>
+Somma:      <span class="mi">99.50</span>
+Media:      <span class="mi">24.88</span>
+Minimo:     <span class="mi">19.80</span>
+Massimo:    <span class="mi">31.20</span></code></pre>
+<p>Osservate:</p>
+<ul>
+<li><code>float("inf")</code> e <code>float("-inf")</code> sono valori speciali che garantiscono che il primo valore inserito diventi sia minimo che massimo. Questa e una tecnica standard.</li>
+<li><code>.lower().strip()</code> rende robusto il confronto: l'utente puo scrivere "Fine", "FINE", " fine " e il programma funziona comunque.</li>
+<li>Il pattern accumulatore (<code>somma += valore</code>) e il pattern min/max lavorano insieme nello stesso ciclo.</li>
+</ul>
+<h3>Esercizio guidato 1.2: tavola pitagorica con cicli annidati</h3>
+<p>Create un file <code>tavola_pitagorica.py</code>:</p>
+<pre><code><span class="cm"># tavola_pitagorica.py — Tavola pitagorica con formattazione allineata</span>
+
+DIMENSIONE: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
+
+<span class="cm"># Intestazione</span>
+<span class="nb">print</span>(<span class="st">f&quot;{&#x27;&#x27;:&gt;4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+<span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, DIMENSIONE <span class="op">+</span> <span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{j:&gt;4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+<span class="nb">print</span>()
+
+<span class="cm"># Linea separatrice</span>
+<span class="nb">print</span>(<span class="st">f&quot;{&#x27;&#x27;:&gt;4}&quot;</span> <span class="op">+</span> <span class="st">&quot;-&quot;</span> <span class="op">*</span> (DIMENSIONE <span class="op">*</span> <span class="mi">4</span>))
+
+<span class="cm"># Corpo della tavola</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, DIMENSIONE <span class="op">+</span> <span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{i:&gt;3}|&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, DIMENSIONE <span class="op">+</span> <span class="mi">1</span>):
+        prodotto: <span class="nb">int</span> <span class="op">=</span> i <span class="op">*</span> j
+        <span class="nb">print</span>(<span class="st">f&quot;{prodotto:&gt;4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+    <span class="nb">print</span>()</code></pre>
+<p>Output:</p>
+<pre><code>       <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">9</span>  <span class="mi">10</span>
+    <span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span>
+  <span class="mi">1</span><span class="op">|</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span>   <span class="mi">8</span>   <span class="mi">9</span>  <span class="mi">10</span>
+  <span class="mi">2</span><span class="op">|</span>   <span class="mi">2</span>   <span class="mi">4</span>   <span class="mi">6</span>   <span class="mi">8</span>  <span class="mi">10</span>  <span class="mi">12</span>  <span class="mi">14</span>  <span class="mi">16</span>  <span class="mi">18</span>  <span class="mi">20</span>
+  <span class="mi">3</span><span class="op">|</span>   <span class="mi">3</span>   <span class="mi">6</span>   <span class="mi">9</span>  <span class="mi">12</span>  <span class="mi">15</span>  <span class="mi">18</span>  <span class="mi">21</span>  <span class="mi">24</span>  <span class="mi">27</span>  <span class="mi">30</span>
+  ...</code></pre>
+<p>Osservate: il ciclo esterno (<code>i</code>) scorre le righe, quello interno (<code>j</code>) le colonne. Il formato <code>>4</code> allinea ogni numero a destra in 4 caratteri, producendo colonne ordinate. <code>end=""</code> impedisce l'a capo automatico di <code>print</code>, cosi i numeri si accumulano sulla stessa riga.</p>
+<h3>Esercizio guidato 1.3: contare valori sopra e sotto la media</h3>
+<p>Create un file <code>sopra<em>sotto</em>media.py</code>:</p>
+<pre><code><span class="cm"># sopra_sotto_media.py — Analisi distribuzione rispetto alla media</span>
+
+temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [
+    <span class="mi">18.5</span>, <span class="mi">22.3</span>, <span class="mi">15.7</span>, <span class="mi">28.1</span>, <span class="mi">20.0</span>,
+    <span class="mi">31.4</span>, <span class="mi">17.2</span>, <span class="mi">24.8</span>, <span class="mi">19.5</span>, <span class="mi">26.3</span>,
+    <span class="mi">14.0</span>, <span class="mi">23.7</span>, <span class="mi">29.5</span>, <span class="mi">16.8</span>, <span class="mi">21.1</span>,
+]
+
+<span class="cm"># Primo passo: calcolare la media</span>
+n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(temperature)
+somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+<span class="kw">for</span> temp <span class="kw">in</span> temperature:
+    somma <span class="op">+</span><span class="op">=</span> temp
+media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
+
+<span class="cm"># Secondo passo: contare sopra, sotto e uguali alla media</span>
+sopra: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+sotto: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+uguali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+<span class="kw">for</span> temp <span class="kw">in</span> temperature:
+    <span class="kw">if</span> temp <span class="op">&gt;</span> media:
+        sopra <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> temp <span class="op">&lt;</span> media:
+        sotto <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">else</span>:
+        uguali <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="cm"># Report</span>
+<span class="nb">print</span>(<span class="st">f&quot;--- Analisi di {n} temperature ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media:.2f}°C\n&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Sopra la media: {sopra:&gt;3} ({sopra / n:.1%})&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Sotto la media: {sotto:&gt;3} ({sotto / n:.1%})&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Uguali:         {uguali:&gt;3} ({uguali / n:.1%})&quot;</span>)
+
+<span class="cm"># Dettaglio: quali sono sopra la media?</span>
+<span class="nb">print</span>(<span class="st">f&quot;\nValori sopra la media ({media:.2f}°C):&quot;</span>)
+<span class="kw">for</span> i, temp <span class="kw">in</span> <span class="nb">enumerate</span>(temperature, start<span class="op">=</span><span class="mi">1</span>):
+    <span class="kw">if</span> temp <span class="op">&gt;</span> media:
+        <span class="nb">print</span>(<span class="st">f&quot;  Osservazione {i:&gt;2}: {temp:.1f}°C  (+{temp - media:.1f})&quot;</span>)</code></pre>
+<p>Osservate: servono <strong>due passaggi</strong> sui dati. Nel primo calcoliamo la media; nel secondo la usiamo per classificare. Non possiamo fare tutto in un solo ciclo perche la media dipende da <em>tutti</em> i valori. Questo pattern a due passaggi e molto comune nell'analisi dei dati.</p>
+<hr>
+<h2>Parte 2 — Dalle comprehension ai cicli e ritorno</h2>
+<h3>Esercizio guidato 2.1: riscrivere cicli come comprehension</h3>
+<p>Le comprehension sono un modo conciso di creare liste (e altri contenitori) a partire da un iterabile, applicando opzionalmente una trasformazione e un filtro. Vediamo come tradurre i pattern visti nei cicli.</p>
+<p>Create un file <code>comprehension.py</code>:</p>
+<pre><code><span class="cm"># comprehension.py — Da cicli a comprehension</span>
+
+temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [
+    <span class="mi">18.5</span>, <span class="mi">22.3</span>, <span class="mi">15.7</span>, <span class="mi">28.1</span>, <span class="mi">20.0</span>,
+    <span class="mi">31.4</span>, <span class="mi">17.2</span>, <span class="mi">24.8</span>, <span class="mi">19.5</span>, <span class="mi">26.3</span>,
+]
+
+<span class="cm"># --- Pattern FILTRO ---</span>
+<span class="cm"># Con ciclo:</span>
+calde_ciclo: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+<span class="kw">for</span> temp <span class="kw">in</span> temperature:
+    <span class="kw">if</span> temp <span class="op">&gt;</span> <span class="mi">25.0</span>:
+        calde_ciclo.append(temp)
+<span class="nb">print</span>(<span class="st">f&quot;Calde (ciclo):         {calde_ciclo}&quot;</span>)
+
+<span class="cm"># Con comprehension:</span>
+calde_comp: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [temp <span class="kw">for</span> temp <span class="kw">in</span> temperature <span class="kw">if</span> temp <span class="op">&gt;</span> <span class="mi">25.0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Calde (comprehension): {calde_comp}&quot;</span>)
+
+<span class="cm"># --- Pattern TRASFORMAZIONE ---</span>
+<span class="cm"># Con ciclo:</span>
+fahrenheit_ciclo: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+<span class="kw">for</span> temp <span class="kw">in</span> temperature:
+    fahrenheit_ciclo.append(temp <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>)
+<span class="nb">print</span>(<span class="st">f&quot;\nFahrenheit (ciclo):         {fahrenheit_ciclo}&quot;</span>)
+
+<span class="cm"># Con comprehension:</span>
+fahrenheit_comp: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [temp <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span> <span class="kw">for</span> temp <span class="kw">in</span> temperature]
+<span class="nb">print</span>(<span class="st">f&quot;Fahrenheit (comprehension): {fahrenheit_comp}&quot;</span>)
+
+<span class="cm"># --- Pattern FILTRO + TRASFORMAZIONE ---</span>
+<span class="cm"># Solo le temperature sopra 25°C, convertite in Fahrenheit</span>
+<span class="cm"># Con ciclo:</span>
+calde_f_ciclo: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
+<span class="kw">for</span> temp <span class="kw">in</span> temperature:
+    <span class="kw">if</span> temp <span class="op">&gt;</span> <span class="mi">25.0</span>:
+        calde_f_ciclo.append(temp <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>)
+
+<span class="cm"># Con comprehension:</span>
+calde_f_comp: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [
+    temp <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>
+    <span class="kw">for</span> temp <span class="kw">in</span> temperature
+    <span class="kw">if</span> temp <span class="op">&gt;</span> <span class="mi">25.0</span>
+]
+<span class="nb">print</span>(<span class="st">f&quot;\nCalde in °F (ciclo):         {calde_f_ciclo}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Calde in °F (comprehension): {calde_f_comp}&quot;</span>)
+
+<span class="cm"># --- Quando NON usare una comprehension ---</span>
+<span class="cm"># Se la logica e complessa o ha effetti collaterali, il ciclo e piu chiaro.</span>
+<span class="cm"># Regola pratica: se la comprehension non sta su 1-2 righe leggibili,</span>
+<span class="cm"># usate un ciclo.</span></code></pre>
+<h3>Esercizio guidato 2.2: comprehension per stringhe e formattazione</h3>
+<pre><code><span class="cm"># comprehension_stringhe.py — Comprehension applicate a stringhe</span>
+
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;anna rossi&quot;</span>, <span class="st">&quot;marco bianchi&quot;</span>, <span class="st">&quot;luca verdi&quot;</span>, <span class="st">&quot;sara neri&quot;</span>]
+
+<span class="cm"># Capitalizzare ogni nome</span>
+nomi_formattati: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [nome.title() <span class="kw">for</span> nome <span class="kw">in</span> nomi]
+<span class="nb">print</span>(<span class="st">f&quot;Formattati: {nomi_formattati}&quot;</span>)
+<span class="cm"># [&#x27;Anna Rossi&#x27;, &#x27;Marco Bianchi&#x27;, &#x27;Luca Verdi&#x27;, &#x27;Sara Neri&#x27;]</span>
+
+<span class="cm"># Estrarre solo i cognomi</span>
+cognomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [nome.split()[<span class="op">-</span><span class="mi">1</span>].title() <span class="kw">for</span> nome <span class="kw">in</span> nomi]
+<span class="nb">print</span>(<span class="st">f&quot;Cognomi: {cognomi}&quot;</span>)
+<span class="cm"># [&#x27;Rossi&#x27;, &#x27;Bianchi&#x27;, &#x27;Verdi&#x27;, &#x27;Neri&#x27;]</span>
+
+<span class="cm"># Filtrare nomi che contengono la lettera &#x27;a&#x27;</span>
+con_a: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [nome.title() <span class="kw">for</span> nome <span class="kw">in</span> nomi <span class="kw">if</span> <span class="st">&quot;a&quot;</span> <span class="kw">in</span> nome]
+<span class="nb">print</span>(<span class="st">f&quot;Con &#x27;a&#x27;: {con_a}&quot;</span>)
+
+<span class="cm"># Lunghezza di ogni nome</span>
+lunghezze: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="nb">len</span>(nome) <span class="kw">for</span> nome <span class="kw">in</span> nomi]
+<span class="nb">print</span>(<span class="st">f&quot;Lunghezze: {lunghezze}&quot;</span>)</code></pre>
+<hr>
+<h2>Parte 3 — Stringhe come struttura dati</h2>
+<h3>Esercizio guidato 3.1: pulire dati testuali</h3>
+<p>I dati reali sono quasi sempre "sporchi": spazi in eccesso, maiuscole/minuscole miste, caratteri inattesi. I metodi delle stringhe sono lo strumento base per la pulizia.</p>
+<p>Create un file <code>pulizia_dati.py</code>:</p>
+<pre><code><span class="cm"># pulizia_dati.py — Pulizia dati testuali con metodi stringa</span>
+
+<span class="cm"># Dati &quot;sporchi&quot; come arriverebbero da un file o un form</span>
+dati_grezzi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
+    <span class="st">&quot;  Mario ROSSI  &quot;</span>,
+    <span class="st">&quot;anna   bianchi&quot;</span>,
+    <span class="st">&quot;LUCA  Verdi &quot;</span>,
+    <span class="st">&quot; Sara   NERI&quot;</span>,
+    <span class="st">&quot;  marco   De Luca  &quot;</span>,
+]
+
+<span class="nb">print</span>(<span class="st">&quot;--- Dati grezzi ---&quot;</span>)
+<span class="kw">for</span> i, dato <span class="kw">in</span> <span class="nb">enumerate</span>(dati_grezzi):
+    <span class="nb">print</span>(<span class="st">f&quot;  {i}: {dato!r}&quot;</span>)
+
+<span class="cm"># Passo 1: rimuovere spazi iniziali e finali</span>
+puliti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [dato.strip() <span class="kw">for</span> dato <span class="kw">in</span> dati_grezzi]
+
+<span class="cm"># Passo 2: normalizzare gli spazi interni (sostituire spazi multipli con uno)</span>
+normalizzati: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+<span class="kw">for</span> nome <span class="kw">in</span> puliti:
+    <span class="cm"># split() senza argomenti divide su qualsiasi whitespace e ignora i multipli</span>
+    parti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> nome.split()
+    normalizzati.append(<span class="st">&quot; &quot;</span>.join(parti))
+
+<span class="cm"># Passo 3: uniformare la capitalizzazione</span>
+formattati: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [nome.title() <span class="kw">for</span> nome <span class="kw">in</span> normalizzati]
+
+<span class="nb">print</span>(<span class="st">&quot;\n--- Dati puliti ---&quot;</span>)
+<span class="kw">for</span> i, dato <span class="kw">in</span> <span class="nb">enumerate</span>(formattati):
+    <span class="nb">print</span>(<span class="st">f&quot;  {i}: {dato!r}&quot;</span>)
+
+<span class="cm"># Passo 4: estrarre iniziali</span>
+<span class="nb">print</span>(<span class="st">&quot;\n--- Iniziali ---&quot;</span>)
+<span class="kw">for</span> nome <span class="kw">in</span> formattati:
+    parti <span class="op">=</span> nome.split()
+    iniziali: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>.join(p[<span class="mi">0</span>] <span class="kw">for</span> p <span class="kw">in</span> parti)
+    <span class="nb">print</span>(<span class="st">f&quot;  {nome:&lt;25} -&gt; {iniziali}&quot;</span>)</code></pre>
+<p>Output atteso:</p>
+<pre><code><span class="op">-</span><span class="op">-</span><span class="op">-</span> Dati grezzi <span class="op">-</span><span class="op">-</span><span class="op">-</span>
+  <span class="mi">0</span>: <span class="st">&#x27;  Mario ROSSI  &#x27;</span>
+  <span class="mi">1</span>: <span class="st">&#x27;anna   bianchi&#x27;</span>
+  <span class="mi">2</span>: <span class="st">&#x27;LUCA  Verdi &#x27;</span>
+  <span class="mi">3</span>: <span class="st">&#x27; Sara   NERI&#x27;</span>
+  <span class="mi">4</span>: <span class="st">&#x27;  marco   De Luca  &#x27;</span>
+
+<span class="op">-</span><span class="op">-</span><span class="op">-</span> Dati puliti <span class="op">-</span><span class="op">-</span><span class="op">-</span>
+  <span class="mi">0</span>: <span class="st">&#x27;Mario Rossi&#x27;</span>
+  <span class="mi">1</span>: <span class="st">&#x27;Anna Bianchi&#x27;</span>
+  <span class="mi">2</span>: <span class="st">&#x27;Luca Verdi&#x27;</span>
+  <span class="mi">3</span>: <span class="st">&#x27;Sara Neri&#x27;</span>
+  <span class="mi">4</span>: <span class="st">&#x27;Marco De Luca&#x27;</span>
+
+<span class="op">-</span><span class="op">-</span><span class="op">-</span> Iniziali <span class="op">-</span><span class="op">-</span><span class="op">-</span>
+  Mario Rossi               <span class="op">-</span><span class="op">&gt;</span> MR
+  Anna Bianchi              <span class="op">-</span><span class="op">&gt;</span> AB
+  Luca Verdi                <span class="op">-</span><span class="op">&gt;</span> LV
+  Sara Neri                 <span class="op">-</span><span class="op">&gt;</span> SN
+  Marco De Luca             <span class="op">-</span><span class="op">&gt;</span> MDL</code></pre>
+<p>Osservate la pipeline di pulizia: <code>strip()</code> -> <code>split()</code> + <code>join()</code> -> <code>title()</code>. Questa sequenza risolve la maggior parte dei problemi di formattazione nei dati testuali. Il trucco <code>" ".join(nome.split())</code> e un idioma Python fondamentale: normalizza qualsiasi sequenza di spazi bianchi (spazi, tab, a capo) in un singolo spazio.</p>
+<hr>
+<h2>Parte 4 — Esercizi autonomi</h2>
+<p>Svolgete i seguenti esercizi in autonomia. Usate type hints in tutte le variabili.</p>
+<h3>Esercizio base: statistiche temperature settimanali</h3>
+<p>Create un file <code>temperature_settimana.py</code>.</p>
+<p><strong>Traccia:</strong> data la lista seguente che rappresenta le temperature massime giornaliere di una settimana:</p>
+<pre><code>temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">22.3</span>, <span class="mi">15.7</span>, <span class="mi">28.1</span>, <span class="mi">20.0</span>, <span class="mi">31.4</span>, <span class="mi">17.2</span>]
+giorni: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Lun&quot;</span>, <span class="st">&quot;Mar&quot;</span>, <span class="st">&quot;Mer&quot;</span>, <span class="st">&quot;Gio&quot;</span>, <span class="st">&quot;Ven&quot;</span>, <span class="st">&quot;Sab&quot;</span>, <span class="st">&quot;Dom&quot;</span>]</code></pre>
+<p>Scrivete un programma che:</p>
+<ol>
+<li>Calcola media, minimo e massimo delle temperature (senza usare <code>sum()</code>, <code>min()</code>, <code>max()</code> -- usate i pattern visti nei guidati).</li>
+<li>Stampa una tabella formattata con giorno, temperatura e scostamento dalla media.</li>
+<li>Indica qual e il giorno piu caldo e quale il piu freddo.</li>
+<li>Usando una comprehension, crea una lista dei giorni con temperatura sopra la media e stampala.</li>
+</ol>
+<p>Esempio parziale di output:</p>
+<pre><code>Giorno <span class="op">|</span> Temp (°C) <span class="op">|</span> Scostamento
+<span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">|</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">|</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span>
+Lun    <span class="op">|</span>     <span class="mi">18.5</span>  <span class="op">|</span>      <span class="op">-</span><span class="mi">3.4</span>
+Mar    <span class="op">|</span>     <span class="mi">22.3</span>  <span class="op">|</span>      <span class="op">+</span><span class="mi">0.4</span>
+...
+
+Giorno piu caldo: Sab (<span class="mi">31.4</span>°C)
+Giorno piu freddo: Mer (<span class="mi">15.7</span>°C)
+Giorni sopra la media: Mar, Gio, Sab</code></pre>
+<h3>Esercizio intermedio: frequenza dei caratteri</h3>
+<p>Create un file <code>frequenza_caratteri.py</code>.</p>
+<p><strong>Traccia:</strong> scrivete un programma che:</p>
+<ol>
+<li>Chiede all'utente di inserire una frase.</li>
+<li>Conta la frequenza di ogni carattere (convertito in minuscolo), ignorando gli spazi.</li>
+<li>Stampa i risultati ordinati per frequenza decrescente.</li>
+<li>Calcola e stampa la percentuale di vocali e consonanti (considerare solo le lettere dell'alfabeto, ignorando numeri e punteggiatura; usate <code>char.isalpha()</code> per verificare se un carattere e una lettera).</li>
+</ol>
+<p>Suggerimenti:</p>
+<ul>
+<li>Usate un dizionario <code>dict[str, int]</code> per contare le occorrenze.</li>
+<li>Per ordinare: <code>sorted(dizionario.items(), key=lambda coppia: coppia[1], reverse=True)</code>.</li>
+<li>Le vocali sono <code>"aeiou"</code>.</li>
+</ul>
+<p>Esempio di output:</p>
+<pre><code>Frase: Il sole splende nel cielo azzurro
+
+<span class="op">-</span><span class="op">-</span><span class="op">-</span> Frequenza caratteri <span class="op">-</span><span class="op">-</span><span class="op">-</span>
+l : <span class="mi">5</span> (<span class="mi">17.9</span><span class="op">%</span>)
+e : <span class="mi">4</span> (<span class="mi">14.3</span><span class="op">%</span>)
+o : <span class="mi">3</span> (<span class="mi">10.7</span><span class="op">%</span>)
+...
+
+Vocali:     <span class="mi">10</span> (<span class="mi">35.7</span><span class="op">%</span>)
+Consonanti: <span class="mi">18</span> (<span class="mi">64.3</span><span class="op">%</span>)</code></pre>
+<h3>Esercizio avanzato: validatore codice fiscale (formato)</h3>
+<p>Create un file <code>validatore_cf.py</code>.</p>
+<p><strong>Traccia:</strong> scrivete un programma che verifica se una stringa rispetta il <strong>formato</strong> di un codice fiscale italiano. Non serve calcolare il codice fiscale corretto: verificate solo la struttura.</p>
+<p>Un codice fiscale valido ha 16 caratteri con questo schema:</p>
+<ul>
+<li>Posizioni 1-3: tre lettere (cognome)</li>
+<li>Posizioni 4-6: tre lettere (nome)</li>
+<li>Posizioni 7-8: due cifre (anno)</li>
+<li>Posizione 9: una lettera (mese)</li>
+<li>Posizioni 10-11: due cifre (giorno)</li>
+<li>Posizione 12: una lettera (codice catastale, prima lettera)</li>
+<li>Posizioni 13-15: tre cifre (codice catastale, parte numerica)</li>
+<li>Posizione 16: una lettera (carattere di controllo)</li>
+</ul>
+<p>Il programma deve:</p>
+<ol>
+<li>Verificare che la lunghezza sia 16.</li>
+<li>Verificare che ogni posizione contenga il tipo di carattere atteso (lettera o cifra), usando <code>char.isalpha()</code> e <code>char.isdigit()</code>.</li>
+<li>Stampare un report dettagliato indicando se ogni sezione e valida.</li>
+<li>Convertire l'input in maiuscolo prima della validazione.</li>
+</ol>
+<p>Suggerimenti:</p>
+<ul>
+<li>Definite lo schema atteso come stringa di <code>L</code> (lettera) e <code>N</code> (numero): <code>"LLLLLLNNLNNLNNNL"</code>.</li>
+<li>Usate <code>zip()</code> o <code>enumerate()</code> per confrontare ogni carattere con lo schema.</li>
+</ul>
+<hr>
+<h2>Parte 5 — Sfida</h2>
+<h3>Sfida: analisi e pulizia dati da stringa multi-riga</h3>
+<p>Create un file <code>sfida<em>analisi</em>dati.py</code>.</p>
+<p><strong>Traccia:</strong> avete ricevuto dati di vendite in un formato testuale disordinato. I dati sono in una stringa multi-riga, con campi separati da <code>";"</code>. I dati sono sporchi: spazi in eccesso, maiuscole miste, valori mancanti o non numerici.</p>
+<pre><code>dati_grezzi: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;&quot;
+  prodotto ; quantita ; prezzo_unitario
+  Mele     ; 50       ; 1.20
+  BANANE   ;  30      ; 0.85
+  Arance   ; 25       ; 1.50
+  mele     ; 15       ;  1.20
+  Pere     ;          ; 2.00
+  BANANE   ; 20       ; abc
+  kiwi     ; 40       ; 3.50
+  Arance   ; 10       ; 1.50
+  Mele     ; errore   ; 1.20
+&quot;&quot;&quot;</span></code></pre>
+<p>Il programma deve:</p>
+<ol>
+<li><strong>Parsare i dati:</strong> dividere la stringa in righe, e ogni riga in campi separati da <code>";"</code>. Saltare la riga di intestazione e le righe vuote.</li>
+</ol>
+<ol>
+<li><strong>Pulire ogni campo:</strong> rimuovere spazi, uniformare i nomi dei prodotti in formato <code>title()</code>.</li>
+</ol>
+<ol>
+<li><strong>Validare:</strong> scartare le righe in cui quantita o prezzo non sono numerici, oppure la quantita e vuota. Stampare un avviso per ogni riga scartata, indicando il motivo.</li>
+</ol>
+<ol>
+<li><strong>Aggregare per prodotto:</strong> per ogni prodotto, calcolare:</li>
+</ol>
+<ul>
+<li>Quantita totale venduta</li>
+<li>Ricavo totale (quantita * prezzo per ogni riga valida)</li>
+<li>Prezzo medio ponderato (ricavo totale / quantita totale)</li>
+</ul>
+<ol>
+<li><strong>Stampare un report formattato:</strong></li>
+</ol>
+<pre><code><span class="op">=</span><span class="op">=</span><span class="op">=</span> REPORT VENDITE <span class="op">=</span><span class="op">=</span><span class="op">=</span>
+
+Righe elaborate: <span class="mi">6</span> su <span class="mi">8</span> (<span class="mi">2</span> scartate)
+
+Prodotto     <span class="op">|</span> Quantita <span class="op">|</span> Ricavo (EUR) <span class="op">|</span> Prezzo medio
+<span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">|</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">|</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">|</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span>
+Mele         <span class="op">|</span>       <span class="mi">65</span> <span class="op">|</span>        <span class="mi">78.00</span> <span class="op">|</span>         <span class="mi">1.20</span>
+Banane       <span class="op">|</span>       <span class="mi">30</span> <span class="op">|</span>        <span class="mi">25.50</span> <span class="op">|</span>         <span class="mi">0.85</span>
+Arance       <span class="op">|</span>       <span class="mi">35</span> <span class="op">|</span>        <span class="mi">52.50</span> <span class="op">|</span>         <span class="mi">1.50</span>
+Kiwi         <span class="op">|</span>       <span class="mi">40</span> <span class="op">|</span>       <span class="mi">140.00</span> <span class="op">|</span>         <span class="mi">3.50</span>
+
+TOTALE       <span class="op">|</span>      <span class="mi">170</span> <span class="op">|</span>       <span class="mi">296.00</span> <span class="op">|</span>         <span class="mi">1.74</span></code></pre>
+<p>Suggerimenti:</p>
+<ul>
+<li>Usate <code>stringa.split("\n")</code> per le righe e <code>riga.split(";")</code> per i campi.</li>
+<li>Per verificare se una stringa rappresenta un numero (anche decimale), una strategia semplice: provate a convertire con <code>float()</code> e controllate se <code>stringa.strip()</code> non e vuoto. Per ora, potete usare un approccio con <code>try/except</code> oppure verificare con <code>stringa.replace(".", "", 1).isdigit()</code>.</li>
+<li>Usate un dizionario <code>dict[str, dict[str, float]]</code> per aggregare per prodotto.</li>
+</ul>
+<hr>
+<h2>Domande di verifica</h2>
+<p>Rispondete brevemente a ciascuna domanda.</p>
+<ol>
+<li>Perche nell'esercizio guidato 1.1 inizializziamo <code>minimo</code> con <code>float("inf")</code> e <code>massimo</code> con <code>float("-inf")</code>? Cosa succederebbe se inizializzassimo entrambi a <code>0</code>?</li>
+</ol>
+<ol>
+<li>Nel conteggio sopra/sotto media, perche servono due passaggi separati sui dati? Sarebbe possibile farlo in un solo passaggio?</li>
+</ol>
+<ol>
+<li>Qual e la differenza tra <code>nome.split()</code> (senza argomenti) e <code>nome.split(" ")</code> (con argomento spazio)? Provate con la stringa <code>"  anna   rossi  "</code>.</li>
+</ol>
+<ol>
+<li>Riscrivete questa comprehension come ciclo <code>for</code> equivalente:</li>
+</ol>
+<pre><code>   pari: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">20</span>) <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>]</code></pre>
+<ol>
+<li>Quando e preferibile usare un ciclo <code>for</code> tradizionale invece di una comprehension?</li>
+</ol>
+<ol>
+<li>Nel validatore del codice fiscale, perche e importante convertire l'input in maiuscolo prima della validazione?</li>
+</ol>
+<hr>
+<h2>Osservazioni finali</h2>
+<p>In questo laboratorio avete lavorato con i tre strumenti che, combinati, risolvono la maggior parte dei problemi di manipolazione dati in Python:</p>
+<ul>
+<li><strong>I cicli</strong> vi permettono di elaborare collezioni di dimensione arbitraria, applicando pattern ricorrenti (accumulatore, contatore, min/max, filtro). La scelta tra <code>for</code> e <code>while</code> dipende da una domanda semplice: sapete in anticipo quante iterazioni servono?</li>
+</ul>
+<ul>
+<li><strong>Le comprehension</strong> condensano i pattern filtro e trasformazione in espressioni compatte. Non sono una scorciatoia: sono un modo diverso di pensare, piu dichiarativo. Pero hanno un limite: quando la logica diventa complessa, il ciclo esplicito e piu chiaro. La regola pratica e: se la comprehension non e immediatamente leggibile, tornate al ciclo.</li>
+</ul>
+<ul>
+<li><strong>I metodi delle stringhe</strong> sono il coltellino svizzero della pulizia dati. La pipeline <code>strip()</code> -> <code>split()</code> -> <code>join()</code> -> <code>title()</code>/<code>lower()</code>/<code>upper()</code> risolve la stragrande maggioranza dei problemi di formattazione. In un corso di statistica, la pulizia dei dati e spesso la parte piu lunga e ingrata del lavoro: meglio padroneggiarla fin da subito.</li>
+</ul>
+<p>La sfida finale vi ha fatto lavorare con un problema realistico: dati sporchi, formati misti, valori mancanti. Questo e il pane quotidiano di chi lavora con i dati. Le tecniche di oggi sono le stesse che userete con pandas e NumPy -- solo che li avrete funzioni di piu alto livello che fanno il lavoro pesante. Ma capire cosa succede sotto e la differenza tra usare uno strumento e padroneggiarlo.</p>
+<nav class="bottom-nav"><span><a href="L01_ambiente_variabili_condizionali.html">← L01</a></span><span><a href="../../index.html">Home</a></span><span><a href="L03_strutture_dati.html">L03 →</a></span></nav>
+</body>
+</html>

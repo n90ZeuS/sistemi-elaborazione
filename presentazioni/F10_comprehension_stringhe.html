@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehension e Stringhe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ==================== SLIDE 1: TITOLO ==================== -->
+            <section class="title-slide">
+                <h1>Comprehension e Stringhe</h1>
+                <div class="subtitle">Costruire collezioni in modo dichiarativo e manipolare dati testuali</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione &mdash; Lezione F10<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- ==================== SLIDE 2: AGENDA ==================== -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li class="fragment"><strong>List comprehension</strong> &mdash; sintassi, filtro, trasformazione</li>
+                    <li class="fragment"><strong>Dict e set comprehension</strong> &mdash; la stessa idea su altre strutture</li>
+                    <li class="fragment"><strong>Generator expression</strong> &mdash; lazy evaluation</li>
+                    <li class="fragment"><strong>Best practice</strong> &mdash; quando usarle, quando evitarle</li>
+                    <li class="fragment"><strong>Stringhe come struttura dati</strong> &mdash; indicizzazione, slicing, immutabilit&agrave;</li>
+                    <li class="fragment"><strong>Metodi fondamentali delle stringhe</strong></li>
+                    <li class="fragment"><strong>Pattern di pulizia dati</strong> &mdash; split + strip</li>
+                    <li class="fragment"><strong>f-string avanzate</strong> &mdash; formattazione e allineamento</li>
+                    <li class="fragment"><strong>Cenni su espressioni regolari</strong></li>
+                </ol>
+            </section>
+
+            <!-- ==================== SEZIONE: LIST COMPREHENSION ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>List Comprehension</h2>
+                    <p>Da imperativo a dichiarativo</p>
+                </section>
+
+                <!-- SLIDE: Dal ciclo alla comprehension -->
+                <section>
+                    <h2>Dal ciclo alla comprehension</h2>
+                    <p>Nella lezione precedente abbiamo visto pattern ricorrenti: <strong>accumulatore</strong>, <strong>filtro</strong>, <strong>trasformazione</strong>. Molti condividono la stessa struttura:</p>
+                    <div class="diagram">
+                        scorrere una sequenza &rarr; applicare trasformazione/filtro &rarr; raccogliere i risultati
+                    </div>
+                    <div class="box box-blue fragment">
+                        <strong>Comprehension:</strong> invece di dire <em>come</em> costruire la lista passo per passo (imperativo), descriviamo <em>cosa</em> deve contenere (dichiarativo).
+                    </div>
+                    <aside class="notes">Richiamare i pattern visti nella lezione F09 sui cicli. La comprehension nasce per rendere espliciti questi pattern.</aside>
+                </section>
+
+                <!-- SLIDE: Sintassi di base -->
+                <section>
+                    <h2>Sintassi di base</h2>
+                    <pre><code class="language-python">[espressione for variabile in iterabile]</code></pre>
+                    <p>Esempio: calcolare il quadrato di ogni numero.</p>
+                    <pre><code class="language-python">numeri: list[int] = [1, 2, 3, 4, 5]
+quadrati: list[int] = [n ** 2 for n in numeri]
+print(quadrati)  # [1, 4, 9, 16, 25]</code></pre>
+                    <div class="box box-green fragment">
+                        <code>espressione</code> = valore che finisce nella lista risultante<br>
+                        <code>variabile</code> = assume a turno ogni valore dell'iterabile
+                    </div>
+                </section>
+
+                <!-- SLIDE: Confronto con il ciclo for -->
+                <section>
+                    <h2>Confronto con il ciclo for</h2>
+                    <div class="compare">
+                        <div class="good">
+                            <h3>Comprehension</h3>
+<pre><code class="language-python">numeri = [1, 2, 3, 4, 5]
+quadrati = [n ** 2 for n in numeri]</code></pre>
+                            <p><em>1 riga, intenzione chiara</em></p>
+                        </div>
+                        <div class="bad">
+                            <h3>Ciclo for</h3>
+<pre><code class="language-python">numeri = [1, 2, 3, 4, 5]
+quadrati = []
+for n in numeri:
+    quadrati.append(n ** 2)</code></pre>
+                            <p><em>4 righe, serve leggere il corpo</em></p>
+                        </div>
+                    </div>
+                    <p class="fragment">Il risultato &egrave; <strong>identico</strong>. La comprehension rende visibile l'intenzione: "voglio una lista dei quadrati di <code>numeri</code>".</p>
+                </section>
+
+                <!-- SLIDE: Comprehension con filtro -->
+                <section>
+                    <h2>Comprehension con filtro</h2>
+                    <pre><code class="language-python">[espressione for variabile in iterabile if condizione]</code></pre>
+                    <p>Esempio: estrarre solo i voti sufficienti.</p>
+                    <pre><code class="language-python">voti: list[int] = [28, 15, 30, 22, 12, 27, 18]
+sufficienti: list[int] = [v for v in voti if v >= 18]
+print(sufficienti)  # [28, 30, 22, 27, 18]</code></pre>
+                    <div class="fragment">
+                        <p>Equivalente con ciclo:</p>
+<pre><code class="language-python">sufficienti: list[int] = []
+for v in voti:
+    if v >= 18:
+        sufficienti.append(v)</code></pre>
+                    </div>
+                    <aside class="notes">La clausola if agisce come filtro: solo gli elementi che soddisfano la condizione entrano nella lista risultante.</aside>
+                </section>
+
+                <!-- SLIDE: Trasformazione + filtro -->
+                <section>
+                    <h2>Trasformazione e filtro insieme</h2>
+                    <pre><code class="language-python">temperature_fahrenheit: list[float] = [32.0, 68.0, 95.0, 14.0, 77.0, 50.0]
+
+# Converti in Celsius solo le temperature sopra lo zero F,
+# arrotondando a una cifra decimale
+temperature_celsius: list[float] = [
+    round((f - 32) * 5 / 9, 1)
+    for f in temperature_fahrenheit
+    if f > 0
+]
+print(temperature_celsius)  # [0.0, 20.0, 35.0, -10.0, 25.0, 10.0]</code></pre>
+                    <div class="box box-blue fragment">
+                        Schema: <code>[f(x) for x in lista if p(x)]</code><br>
+                        "Applica <code>f</code> agli elementi di <code>lista</code> che soddisfano <code>p</code>"
+                    </div>
+                </section>
+
+                <!-- SLIDE: Perche le comprehension esistono -->
+                <section>
+                    <h2>Perch&eacute; le comprehension esistono</h2>
+                    <ul>
+                        <li class="fragment"><strong>Leggibilit&agrave;:</strong> il pattern &egrave; immediatamente riconoscibile</li>
+                        <li class="fragment"><strong>Concisione:</strong> esprimono in una riga ci&ograve; che richiede 3-4 righe con un ciclo</li>
+                        <li class="fragment"><strong>Prestazioni:</strong> generalmente pi&ugrave; veloci del ciclo equivalente, perch&eacute; Python ottimizza internamente l'operazione di <code>append</code></li>
+                    </ul>
+                    <div class="box box-green fragment">
+                        Non sono solo "zucchero sintattico": rendono <strong>esplicito</strong> un pattern che altrimenti sarebbe nascosto nel corpo di un ciclo.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: DICT E SET COMPREHENSION ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Dict e Set Comprehension</h2>
+                    <p>La stessa idea, altre strutture dati</p>
+                </section>
+
+                <!-- SLIDE: Dict comprehension -->
+                <section>
+                    <h2>Dict comprehension</h2>
+                    <pre><code class="language-python">{chiave: valore for variabile in iterabile}</code></pre>
+                    <p>Esempio: associare ogni nome alla sua lunghezza.</p>
+                    <pre><code class="language-python">nomi: list[str] = ["Anna", "Marco", "Luca", "Francesca"]
+lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi}
+print(lunghezze)
+# {'Anna': 4, 'Marco': 5, 'Luca': 4, 'Francesca': 9}</code></pre>
+                </section>
+
+                <!-- SLIDE: Dict comprehension con filtro -->
+                <section>
+                    <h2>Dict comprehension con filtro</h2>
+                    <p>Filtrare un dizionario esistente:</p>
+                    <pre><code class="language-python">registro: dict[str, int] = {
+    "Anna": 28, "Marco": 15, "Luca": 30, "Sara": 12, "Paolo": 22
+}
+
+promossi: dict[str, int] = {
+    nome: voto for nome, voto in registro.items() if voto >= 18
+}
+print(promossi)  # {'Anna': 28, 'Luca': 30, 'Paolo': 22}</code></pre>
+                    <div class="fragment">
+                        <p>Invertire un dizionario (scambiare chiavi e valori):</p>
+<pre><code class="language-python">codici: dict[str, int] = {"Milano": 2, "Roma": 6, "Napoli": 81}
+inverso: dict[int, str] = {v: k for k, v in codici.items()}
+print(inverso)  # {2: 'Milano', 6: 'Roma', 81: 'Napoli'}</code></pre>
+                    </div>
+                </section>
+
+                <!-- SLIDE: Set comprehension -->
+                <section>
+                    <h2>Set comprehension</h2>
+                    <p>Parentesi graffe, senza struttura chiave-valore:</p>
+                    <pre><code class="language-python">{espressione for variabile in iterabile}</code></pre>
+                    <pre><code class="language-python">nomi: list[str] = ["Anna", "Andrea", "Marco", "Maria", "Luca"]
+iniziali: set[str] = {nome[0] for nome in nomi}
+print(iniziali)  # {'A', 'M', 'L'}</code></pre>
+                    <div class="box box-yellow fragment">
+                        Le set comprehension eliminano automaticamente i <strong>duplicati</strong> dal risultato.
+                    </div>
+                </section>
+
+                <!-- SLIDE: Riepilogo tipi di comprehension -->
+                <section>
+                    <h2>Riepilogo: tipi di comprehension</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Sintassi</th>
+                                <th>Risultato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>List</strong></td>
+                                <td><code>[expr for x in iter]</code></td>
+                                <td><code>list</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dict</strong></td>
+                                <td><code>{k: v for x in iter}</code></td>
+                                <td><code>dict</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Set</strong></td>
+                                <td><code>{expr for x in iter}</code></td>
+                                <td><code>set</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Generator</strong></td>
+                                <td><code>(expr for x in iter)</code></td>
+                                <td><code>generator</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="fragment">Tutte supportano la clausola <code>if</code> per il filtro.</p>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: GENERATOR EXPRESSION ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Generator Expression</h2>
+                    <p>Lazy evaluation</p>
+                </section>
+
+                <!-- SLIDE: Generator expression -->
+                <section>
+                    <h2>Generator expression</h2>
+                    <p>Stessa sintassi della list comprehension, ma con <strong>parentesi tonde</strong>:</p>
+                    <pre><code class="language-python">numeri: list[int] = [1, 2, 3, 4, 5]
+
+# List comprehension: crea tutta la lista in memoria
+quadrati_lista: list[int] = [n ** 2 for n in numeri]
+
+# Generator expression: non crea nulla finche' non lo chiedi
+quadrati_gen = (n ** 2 for n in numeri)
+print(type(quadrati_gen))  # &lt;class 'generator'&gt;</code></pre>
+                    <div class="box box-blue fragment">
+                        <strong>Lazy evaluation</strong> (valutazione pigra): il generatore produce i valori <strong>uno alla volta</strong>, su richiesta. Non costruisce tutta la lista in memoria.
+                    </div>
+                </section>
+
+                <!-- SLIDE: Quando usare i generatori -->
+                <section>
+                    <h2>Quando usare i generatori</h2>
+                    <p>Brillano con <strong>grandi quantit&agrave; di dati</strong> quando non servono tutti i risultati insieme.</p>
+                    <div class="compare">
+                        <div class="bad">
+<pre><code class="language-python"># Crea una lista di 1 milione
+# di elementi solo per sommarla
+totale = sum(
+    [n ** 2 for n in range(1_000_000)]
+)</code></pre>
+                        </div>
+                        <div class="good">
+<pre><code class="language-python"># Il generatore produce i valori
+# uno alla volta, senza occupare memoria
+totale = sum(
+    n ** 2 for n in range(1_000_000)
+)</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        Funzioni come <code>sum()</code>, <code>min()</code>, <code>max()</code>, <code>any()</code>, <code>all()</code> accettano tutte un iterabile: i generatori sono perfetti.
+                    </div>
+                    <aside class="notes">Quando il generatore e' l'unico argomento di una funzione, le parentesi esterne si possono omettere.</aside>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: BEST PRACTICE ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Best Practice</h2>
+                    <p>Quando usare (e quando evitare) le comprehension</p>
+                </section>
+
+                <!-- SLIDE: Quando usarle -->
+                <section>
+                    <h2>Quando usare le comprehension</h2>
+                    <ul>
+                        <li class="fragment"><strong>Trasformazioni semplici:</strong> <code>[f(x) for x in lista]</code></li>
+                        <li class="fragment"><strong>Filtri semplici:</strong> <code>[x for x in lista if condizione]</code></li>
+                        <li class="fragment"><strong>Combinazione trasformazione + filtro:</strong> <code>[f(x) for x in lista if cond]</code></li>
+                    </ul>
+                    <div class="box box-green fragment">
+                        Regola pratica: se la comprehension si legge come una frase in linguaggio naturale, usatela.
+                    </div>
+                </section>
+
+                <!-- SLIDE: Quando evitarle -->
+                <section>
+                    <h2>Quando evitarle</h2>
+                    <h3>Comprehension annidate complesse</h3>
+                    <pre><code class="language-python"># Difficile da leggere
+matrice: list[list[int]] = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+piatta: list[int] = [x for riga in matrice for x in riga]
+# Funziona, ma chi legge deve fermarsi a pensare</code></pre>
+                    <div class="fragment">
+                        <h3>Mai per side effect</h3>
+<pre><code class="language-python"># ANTI-PATTERN: comprehension per side effect
+nomi: list[str] = ["Anna", "Marco", "Luca"]
+[print(nome) for nome in nomi]  # crea una lista di None inutile!</code></pre>
+                    </div>
+                    <div class="box box-red fragment">
+                        <strong>Regola:</strong> se il risultato della comprehension non vi interessa, non usate una comprehension. Usate un ciclo <code>for</code>.
+                    </div>
+                </section>
+
+                <!-- SLIDE: Anti-pattern vs pattern corretto -->
+                <section>
+                    <h2>Side effect: il modo corretto</h2>
+                    <div class="compare">
+                        <div class="bad">
+<pre><code class="language-python"># Comprehension per side effect
+nomi = ["Anna", "Marco", "Luca"]
+[print(nome) for nome in nomi]
+# Costruisce [None, None, None]
+# solo per stampare!</code></pre>
+                        </div>
+                        <div class="good">
+<pre><code class="language-python"># Ciclo for per side effect
+nomi = ["Anna", "Marco", "Luca"]
+for nome in nomi:
+    print(nome)
+# Chiaro e diretto</code></pre>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: STRINGHE ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Stringhe come Struttura Dati</h2>
+                    <p>Sequenze immutabili di caratteri</p>
+                </section>
+
+                <!-- SLIDE: Stringhe - sequenze immutabili -->
+                <section>
+                    <h2>Sequenze immutabili</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <p><strong>Sequenza</strong> = supporta indicizzazione e slicing</p>
+                            <p><strong>Immutabile</strong> = una volta creata, non pu&ograve; essere modificata</p>
+                        </div>
+                        <div class="col">
+                            <div class="diagram">
+S &nbsp; t &nbsp; a &nbsp; t &nbsp; i &nbsp; s &nbsp; t &nbsp; i &nbsp; c &nbsp; a<br>
+0 &nbsp; 1 &nbsp; 2 &nbsp; 3 &nbsp; 4 &nbsp; 5 &nbsp; 6 &nbsp; 7 &nbsp; 8 &nbsp; 9
+                            </div>
+                        </div>
+                    </div>
+                    <pre><code class="language-python">testo: str = "Statistica"
+
+print(testo[0])     # 'S'
+print(testo[-1])    # 'a'
+print(testo[0:4])   # 'Stat'
+print(testo[::-1])  # 'acitsitatS'
+print(len(testo))   # 10
+print("ist" in testo)  # True</code></pre>
+                </section>
+
+                <!-- SLIDE: Immutabilita -->
+                <section>
+                    <h2>Immutabilit&agrave; in pratica</h2>
+                    <p>Modificare un carattere &egrave; un <strong>errore</strong>:</p>
+                    <pre><code class="language-python">testo: str = "Statistica"
+testo[0] = "s"  # TypeError: 'str' object does not support item assignment</code></pre>
+                    <div class="fragment">
+                        <p>Per "modificare" una stringa, bisogna <strong>crearne una nuova</strong>:</p>
+<pre><code class="language-python">testo: str = "Statistica"
+testo_minuscolo: str = "s" + testo[1:]
+print(testo_minuscolo)  # "statistica"</code></pre>
+                    </div>
+                    <div class="box box-yellow fragment">
+                        Ogni metodo delle stringhe <strong>restituisce una nuova stringa</strong>, senza modificare l'originale.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: METODI DELLE STRINGHE ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Metodi Fondamentali delle Stringhe</h2>
+                    <p>Il toolkit per lavorare con il testo</p>
+                </section>
+
+                <!-- SLIDE: strip -->
+                <section>
+                    <h2>strip(), lstrip(), rstrip()</h2>
+                    <p>Rimozione di spazi, tab e newline dai bordi della stringa.</p>
+                    <pre><code class="language-python">dato: str = "  42.5  \n"
+pulito: str = dato.strip()
+print(repr(pulito))  # '42.5'
+
+# lstrip() solo a sinistra, rstrip() solo a destra</code></pre>
+                    <div class="box box-blue fragment">
+                        Nella pulizia di dati importati da file, <code>strip()</code> &egrave; quasi sempre il <strong>primo metodo</strong> da chiamare.
+                    </div>
+                </section>
+
+                <!-- SLIDE: split e join -->
+                <section>
+                    <h2>split() e join()</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <h3>split() &mdash; dividere</h3>
+<pre><code class="language-python">riga = "Anna,28,Economia"
+campi = riga.split(",")
+# ['Anna', '28', 'Economia']
+
+# Senza argomento: divide su
+# qualsiasi spazio bianco
+frase = "la  statistica   e   bella"
+parole = frase.split()
+# ['la', 'statistica', 'e', 'bella']</code></pre>
+                        </div>
+                        <div class="col">
+                            <h3>join() &mdash; ricomporre</h3>
+<pre><code class="language-python">parole = ["media", "varianza",
+           "deviazione"]
+risultato = ", ".join(parole)
+# 'media, varianza, deviazione'
+
+percorso = "/".join(
+    ["home", "utente", "dati"]
+)
+# 'home/utente/dati'</code></pre>
+                        </div>
+                    </div>
+                    <div class="box box-green fragment">
+                        <code>split()</code> e <code>join()</code> sono operazioni <strong>inverse</strong>.
+                    </div>
+                </section>
+
+                <!-- SLIDE: replace -->
+                <section>
+                    <h2>replace()</h2>
+                    <p>Sostituisce <strong>tutte</strong> le occorrenze di una sottostringa:</p>
+                    <pre><code class="language-python">testo: str = "valore: N/A"
+pulito: str = testo.replace("N/A", "0")
+print(pulito)  # 'valore: 0'
+
+dati: str = "1,2,,4,,6"
+dati_puliti: str = dati.replace(",,", ",0,")
+print(dati_puliti)  # '1,2,0,4,0,6'</code></pre>
+                </section>
+
+                <!-- SLIDE: find e index -->
+                <section>
+                    <h2>find() e index()</h2>
+                    <pre><code class="language-python">testo: str = "La media campionaria"
+
+# find() restituisce la posizione, o -1 se non trovato
+pos: int = testo.find("media")
+print(pos)  # 3
+
+pos_assente: int = testo.find("varianza")
+print(pos_assente)  # -1
+
+# index() fa lo stesso, ma lancia ValueError se non trovato
+# testo.index("varianza")  # ValueError!</code></pre>
+                    <table class="fragment">
+                        <thead><tr><th>Metodo</th><th>Non trovato</th><th>Uso tipico</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>find()</code></td><td>Restituisce <code>-1</code></td><td>Quando l'assenza &egrave; prevista</td></tr>
+                            <tr><td><code>index()</code></td><td>Lancia <code>ValueError</code></td><td>Quando l'assenza &egrave; un errore</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- SLIDE: startswith e endswith -->
+                <section>
+                    <h2>startswith() e endswith()</h2>
+                    <pre><code class="language-python">nome_file: str = "dati_2024.csv"
+
+print(nome_file.startswith("dati"))  # True
+print(nome_file.endswith(".csv"))    # True
+print(nome_file.endswith(".xlsx"))   # False</code></pre>
+                    <div class="box box-blue fragment">
+                        Utile per filtrare nomi di file, controllare formati, validare input.
+                    </div>
+                </section>
+
+                <!-- SLIDE: upper, lower, title, capitalize -->
+                <section>
+                    <h2>Maiuscole e minuscole</h2>
+                    <pre><code class="language-python">testo: str = "statistica Descrittiva"
+
+print(testo.upper())       # 'STATISTICA DESCRITTIVA'
+print(testo.lower())       # 'statistica descrittiva'
+print(testo.title())       # 'Statistica Descrittiva'
+print(testo.capitalize())  # 'Statistica descrittiva'</code></pre>
+                    <div class="fragment">
+                        <p>Uso pratico &mdash; <strong>confronti case-insensitive</strong>:</p>
+<pre><code class="language-python">risposta: str = "Si"
+if risposta.lower() == "si":
+    print("Confermato")</code></pre>
+                    </div>
+                </section>
+
+                <!-- SLIDE: isdigit, isalpha, isalnum -->
+                <section>
+                    <h2>Test sul contenuto</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Metodo</th><th>Verifica</th><th>Esempio True</th><th>Esempio False</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>isdigit()</code></td>
+                                <td>Solo cifre</td>
+                                <td><code>"42"</code></td>
+                                <td><code>"3.14"</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>isalpha()</code></td>
+                                <td>Solo lettere</td>
+                                <td><code>"abc"</code></td>
+                                <td><code>"abc123"</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>isalnum()</code></td>
+                                <td>Lettere o cifre</td>
+                                <td><code>"abc123"</code></td>
+                                <td><code>"abc 123"</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-yellow fragment">
+                        Utili per <strong>validare l'input</strong> dell'utente prima di convertirlo.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: PATTERN PULIZIA DATI ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Pattern di Pulizia Dati</h2>
+                    <p>split + strip: il coltellino svizzero</p>
+                </section>
+
+                <!-- SLIDE: Pattern split + strip -->
+                <section>
+                    <h2>Il pattern split + strip</h2>
+                    <p>I dati arrivano spesso con spazi extra, newline, campi sporchi:</p>
+                    <pre><code class="language-python">riga_grezza: str = "  Anna , 28 , Economia , 105  \n"
+
+# Step 1: strip della riga intera
+riga: str = riga_grezza.strip()
+
+# Step 2: split sul separatore
+campi_grezzi: list[str] = riga.split(",")
+# ['  Anna ', ' 28 ', ' Economia ', ' 105  ']
+
+# Step 3: strip di ogni campo — ecco la comprehension!
+campi: list[str] = [campo.strip() for campo in campi_grezzi]
+# ['Anna', '28', 'Economia', '105']</code></pre>
+                </section>
+
+                <!-- SLIDE: Una riga sola -->
+                <section>
+                    <h2>Tutto in una riga</h2>
+                    <pre><code class="language-python">campi: list[str] = [c.strip() for c in riga_grezza.strip().split(",")]</code></pre>
+                    <div class="box box-green">
+                        Questo pattern combina <strong>metodi delle stringhe</strong> e <strong>list comprehension</strong>. Lo vedrete ogni volta che lavorerete con dati testuali.
+                    </div>
+                    <div class="diagram fragment">
+                        stringa grezza &rarr; strip() &rarr; split(",") &rarr; [c.strip() for c in ...] &rarr; lista pulita
+                    </div>
+                </section>
+
+                <!-- SLIDE: Esempio completo mini-CSV -->
+                <section>
+                    <h2>Esempio: parsing di un mini-CSV</h2>
+                    <pre><code class="language-python">righe: list[str] = [
+    "nome, eta, voto",
+    "Anna, 22, 28",
+    "Marco, 21, 25",
+    "Sara, 23, 30",
+]
+
+intestazione: list[str] = [c.strip() for c in righe[0].split(",")]
+dati: list[dict[str, str]] = []
+
+for riga in righe[1:]:
+    valori: list[str] = [c.strip() for c in riga.split(",")]
+    record: dict[str, str] = {
+        intestazione[i]: valori[i] for i in range(len(intestazione))
+    }
+    dati.append(record)
+
+# [{'nome': 'Anna', 'eta': '22', 'voto': '28'}, ...]</code></pre>
+                    <aside class="notes">Questo esempio combina list comprehension, dict comprehension, split e strip. E' un pattern fondamentale per il lavoro con dati reali.</aside>
+                </section>
+
+                <!-- SLIDE: Normalizzazione categorie -->
+                <section>
+                    <h2>Normalizzazione di categorie</h2>
+                    <pre><code class="language-python">risposte: list[str] = [
+    "si", "Si", "SI", " si ", "no", "No", "  NO", "forse"
+]
+
+# Normalizzare: strip + lower
+normalizzate: list[str] = [r.strip().lower() for r in risposte]
+# ['si', 'si', 'si', 'si', 'no', 'no', 'no', 'forse']
+
+# Contare le frequenze
+valori_unici: set[str] = set(normalizzate)
+frequenze: dict[str, int] = {
+    valore: normalizzate.count(valore) for valore in valori_unici
+}
+print(frequenze)  # {'si': 4, 'no': 3, 'forse': 1}</code></pre>
+                    <div class="box box-blue fragment">
+                        Senza normalizzazione, "Si", "SI" e " si " sarebbero tre categorie diverse.
+                    </div>
+                </section>
+
+                <!-- SLIDE: Estrazione valori numerici -->
+                <section>
+                    <h2>Estrazione di valori numerici</h2>
+                    <pre><code class="language-python">celle: list[str] = ["42", "  38.5 ", "N/A", "27", "", "31.2", "-"]
+
+valori_validi: list[float] = []
+for cella in celle:
+    pulita: str = cella.strip()
+    try:
+        valori_validi.append(float(pulita))
+    except ValueError:
+        pass  # saltiamo i valori non numerici
+
+print(valori_validi)  # [42.0, 38.5, 27.0, 31.2]</code></pre>
+                    <div class="box box-yellow fragment">
+                        Il blocco <code>try/except</code> gestisce i valori non convertibili senza interrompere il programma.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: F-STRING AVANZATE ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>f-string Avanzate</h2>
+                    <p>Formattazione e allineamento</p>
+                </section>
+
+                <!-- SLIDE: Formattazione numeri -->
+                <section>
+                    <h2>Formattazione di numeri</h2>
+                    <pre><code class="language-python">pi: float = 3.141592653589793
+
+# Cifre decimali
+print(f"Pi greco: {pi:.2f}")      # Pi greco: 3.14
+print(f"Pi greco: {pi:.4f}")      # Pi greco: 3.1416
+
+# Notazione scientifica
+grande: float = 6.022e23
+print(f"Avogadro: {grande:.2e}")  # Avogadro: 6.02e+23
+
+# Percentuale
+tasso: float = 0.0325
+print(f"Tasso: {tasso:.1%}")      # Tasso: 3.2%
+
+# Separatore delle migliaia
+popolazione: int = 59_641_488
+print(f"Pop.: {popolazione:,}")   # Pop.: 59,641,488</code></pre>
+                </section>
+
+                <!-- SLIDE: Tabella formati -->
+                <section>
+                    <h2>Mini-linguaggio di formattazione</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Formato</th><th>Significato</th><th>Esempio</th><th>Output</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>.2f</code></td><td>2 decimali</td><td><code>f"{3.14159:.2f}"</code></td><td><code>3.14</code></td></tr>
+                            <tr><td><code>.2e</code></td><td>Notazione scientifica</td><td><code>f"{6022e20:.2e}"</code></td><td><code>6.02e+23</code></td></tr>
+                            <tr><td><code>.1%</code></td><td>Percentuale</td><td><code>f"{0.0325:.1%}"</code></td><td><code>3.2%</code></td></tr>
+                            <tr><td><code>,</code></td><td>Separatore migliaia</td><td><code>f"{59641488:,}"</code></td><td><code>59,641,488</code></td></tr>
+                            <tr><td><code>2d</code></td><td>Intero, largh. 2</td><td><code>f"{3:2d}"</code></td><td><code>&nbsp;3</code></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- SLIDE: Allineamento -->
+                <section>
+                    <h2>Allineamento e larghezza</h2>
+                    <pre><code class="language-python">nome: str = "Anna"
+print(f"|{nome:<15}|")  # |Anna           |  (sinistra)
+print(f"|{nome:>15}|")  # |           Anna|  (destra)
+print(f"|{nome:^15}|")  # |     Anna      |  (centro)</code></pre>
+                    <table class="fragment">
+                        <thead><tr><th>Simbolo</th><th>Allineamento</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>&lt;</code></td><td>A sinistra (default per stringhe)</td></tr>
+                            <tr><td><code>&gt;</code></td><td>A destra (default per numeri)</td></tr>
+                            <tr><td><code>^</code></td><td>Centrato</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- SLIDE: Report formattato -->
+                <section>
+                    <h2>Esempio: report formattato</h2>
+                    <pre><code class="language-python">def report_statistiche(nome_var: str, valori: list[float]) -> str:
+    n = len(valori)
+    media = sum(valori) / n
+    righe = [
+        f"{'=' * 40}",
+        f"{'Statistiche descrittive':^40}",
+        f"{'=' * 40}",
+        f"{'Variabile:':<20} {nome_var}",
+        f"{'N. osservazioni:':<20} {n}",
+        f"{'Media:':<20} {media:>10.2f}",
+        f"{'Minimo:':<20} {min(valori):>10.2f}",
+        f"{'Massimo:':<20} {max(valori):>10.2f}",
+        f"{'=' * 40}",
+    ]
+    return "\n".join(righe)</code></pre>
+                    <div class="box box-green fragment">
+                        Combina <code>join()</code>, f-string con allineamento e una funzione che restituisce una stringa.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: REGEX ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Cenni su Espressioni Regolari</h2>
+                    <p>Per quando i metodi stringa non bastano</p>
+                </section>
+
+                <!-- SLIDE: Intro regex -->
+                <section>
+                    <h2>Espressioni regolari (regex)</h2>
+                    <p>Un linguaggio per descrivere <strong>pattern</strong> nelle stringhe. Modulo <code>re</code>.</p>
+                    <pre><code class="language-python">import re
+
+testo = "Il reddito medio e 32.500 euro, con dev. standard 8.200 euro."
+
+# Trovare tutti i numeri (anche con punto separatore)
+numeri: list[str] = re.findall(r"\d+\.?\d*", testo)
+print(numeri)  # ['32.500', '8.200']
+
+# Verificare un codice fiscale (pattern semplificato)
+cf: str = "RSSMRA85M01H501Z"
+if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
+    print("Formato codice fiscale valido")</code></pre>
+                </section>
+
+                <!-- SLIDE: Simboli principali -->
+                <section>
+                    <h2>Simboli principali</h2>
+                    <table>
+                        <thead><tr><th>Simbolo</th><th>Significato</th><th>Esempio</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>\d</code></td><td>Una cifra</td><td><code>\d+</code> = una o pi&ugrave; cifre</td></tr>
+                            <tr><td><code>\w</code></td><td>Carattere alfanumerico</td><td><code>\w+</code> = una parola</td></tr>
+                            <tr><td><code>\s</code></td><td>Uno spazio</td><td><code>\s+</code> = spazi multipli</td></tr>
+                            <tr><td><code>+</code></td><td>Una o pi&ugrave; ripetizioni</td><td></td></tr>
+                            <tr><td><code>*</code></td><td>Zero o pi&ugrave; ripetizioni</td><td></td></tr>
+                            <tr><td><code>?</code></td><td>Zero o una ripetizione</td><td></td></tr>
+                            <tr><td><code>^</code> / <code>$</code></td><td>Inizio / fine stringa</td><td></td></tr>
+                            <tr><td><code>[A-Z]</code></td><td>Intervallo di caratteri</td><td><code>[a-z0-9]</code></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="box box-yellow fragment">
+                        Le regex sono potenti ma complesse. Per la pulizia semplice, <code>split()</code>, <code>strip()</code> e <code>replace()</code> bastano.
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==================== SEZIONE: RIEPILOGO ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Riepilogo</h2>
+                    <p>Tre punti da ricordare</p>
+                </section>
+
+                <!-- SLIDE: Tre punti chiave -->
+                <section>
+                    <h2>Punti chiave</h2>
+                    <ol>
+                        <li class="fragment">
+                            <strong>Comprehension semplici, cicli per il resto.</strong><br>
+                            Se una comprehension diventa difficile da leggere, tornate al ciclo <code>for</code>. La leggibilit&agrave; &egrave; pi&ugrave; importante della concisione.
+                        </li>
+                        <li class="fragment">
+                            <strong>Le stringhe sono immutabili.</strong><br>
+                            Ogni metodo (<code>strip()</code>, <code>replace()</code>, <code>upper()</code>, ...) restituisce una <strong>nuova</strong> stringa. L'originale non viene mai modificata.
+                        </li>
+                        <li class="fragment">
+                            <strong>Il pattern split + strip &egrave; il vostro coltellino svizzero.</strong><br>
+                            La combinazione di <code>split()</code>, <code>strip()</code> e list comprehension risolve la maggior parte dei problemi di parsing di dati testuali.
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- SLIDE: Domande di verifica -->
+                <section>
+                    <h2>Domande di verifica</h2>
+                    <ol>
+                        <li class="fragment">Qual &egrave; la differenza tra list comprehension e ciclo <code>for</code> con <code>append()</code>?</li>
+                        <li class="fragment">Qual &egrave; la differenza tra <code>[...]</code> e <code>(...)</code>?</li>
+                        <li class="fragment">Perch&eacute; <code>[print(x) for x in lista]</code> &egrave; un anti-pattern?</li>
+                        <li class="fragment">Cosa significa che le stringhe sono "immutabili"?</li>
+                        <li class="fragment">Differenza tra <code>find()</code> e <code>index()</code>?</li>
+                        <li class="fragment">Cosa fa <code>f"{valore:.2%}"</code> se <code>valore = 0.1573</code>?</li>
+                    </ol>
+                </section>
+
+                <!-- SLIDE: Prossima lezione -->
+                <section>
+                    <h2>Prossima lezione</h2>
+                    <div class="box box-blue">
+                        Introdurremo le <strong>funzioni</strong> in modo pi&ugrave; approfondito: come definirle, come organizzare il codice, e il concetto di <strong>scope</strong> delle variabili.
+                    </div>
+                </section>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="F09_cicli.html" style="color: var(--accent);">&larr; F09: Cicli</a></div><div><a href="F11_liste_tuple.html" style="color: var(--accent);">F11: Liste e tuple &rarr;</a></div><div><a href="../dispense/frontali/F10_comprehension_stringhe.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/F10_comprehension_stringhe/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; F10</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

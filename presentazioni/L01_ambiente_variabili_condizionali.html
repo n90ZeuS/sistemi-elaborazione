@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L01 — Ambiente Python, variabili, tipi e condizionali</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titolo -->
+            <section class="title-slide">
+                <h1>Ambiente Python, variabili, tipi e condizionali</h1>
+                <div class="subtitle">Laboratorio 1</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione<br>
+                    Prerequisiti: F7 (Primi passi in Python) e F8 (Operatori, I/O e strutture condizionali)
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li><strong>Setup dell'ambiente</strong> &mdash; Terminale, Python, VS Code, REPL</li>
+                    <li><strong>Variabili tipizzate e operatori</strong> &mdash; Type hints, tipi fondamentali, aritmetica</li>
+                    <li><strong>Input/Output formattato</strong> &mdash; <code>input()</code>, f-string, formati numerici</li>
+                    <li><strong>Condizionali</strong> &mdash; <code>if</code>/<code>elif</code>/<code>else</code>, validazione</li>
+                    <li><strong>Esercizi autonomi</strong> &mdash; Temperatura, IMC, bancomat</li>
+                    <li><strong>Sfida</strong> &mdash; Convertitore e classificatore di temperatura</li>
+                </ol>
+                <div class="box box-blue">
+                    <strong>Obiettivo:</strong> configurare l'ambiente di lavoro, scrivere programmi con variabili tipizzate, I/O formattato e strutture condizionali.
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Sezione — Setup -->
+            <section class="section-slide">
+                <h2>Parte 1<br>Setup dell'ambiente</h2>
+            </section>
+
+            <!-- SLIDE 4: Verifica installazione -->
+            <section>
+                <h2>Verifica dell'installazione</h2>
+                <p>Aprite un terminale e verificate che Python sia installato:</p>
+                <pre><code class="language-python">python3 --version
+# Output atteso: Python 3.12.x (o superiore)</code></pre>
+                <p>Verificate anche VS Code:</p>
+                <pre><code class="language-python">code --version</code></pre>
+                <div class="box box-yellow">
+                    <strong>VS Code non si apre da terminale?</strong> Aprite VS Code, premete <code>Cmd+Shift+P</code> (macOS) o <code>Ctrl+Shift+P</code> (Windows), cercate <em>"Shell Command: Install 'code' command in PATH"</em> e confermate.
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Il REPL -->
+            <section>
+                <h2>Il REPL di Python</h2>
+                <p>Il <strong>REPL</strong> (Read-Eval-Print Loop) e l'interprete interattivo. Si avvia con:</p>
+                <pre><code class="language-python">python3</code></pre>
+                <p>Il prompt cambia in <code>&gt;&gt;&gt;</code>. Provate:</p>
+                <pre><code class="language-python">>>> 2 + 3
+5
+>>> "ciao" * 3
+'ciaociaociao'
+>>> type(42)
+&lt;class 'int'&gt;
+>>> exit()</code></pre>
+                <div class="box box-green">
+                    Il REPL e utile per <strong>esperimenti rapidi</strong>. Per programmi veri, useremo file <code>.py</code>.
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Il primo file Python -->
+            <section>
+                <h2>Il primo file Python</h2>
+                <p>Create una cartella per il laboratorio e apritela in VS Code:</p>
+                <pre><code class="language-python">mkdir -p ~/lab_python/lab01
+code ~/lab_python/lab01</code></pre>
+                <p>Create un file <code>saluto.py</code>:</p>
+                <pre><code class="language-python"># saluto.py — Il mio primo programma Python
+nome: str = "Mondo"
+print(f"Ciao, {nome}!")</code></pre>
+                <p>Eseguitelo dal terminale integrato di VS Code:</p>
+                <pre><code class="language-python">python3 saluto.py</code></pre>
+                <div class="box box-blue">
+                    <strong>Output atteso:</strong> <code>Ciao, Mondo!</code>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Sezione — Variabili e operatori -->
+            <section class="section-slide">
+                <h2>Parte 2<br>Variabili tipizzate e operatori</h2>
+            </section>
+
+            <!-- SLIDE 8: Type hints e type() -->
+            <section>
+                <h2>Variabili, type hints e <code>type()</code></h2>
+                <p>Create un file <code>variabili.py</code>:</p>
+                <pre><code class="language-python"># Dichiarazione con type hints
+nome: str = "Maria"
+eta: int = 21
+altezza: float = 1.68
+iscritta: bool = True
+
+# Verifica dei tipi
+print(f"nome     = {nome!r:>15}  tipo: {type(nome).__name__}")
+print(f"eta      = {eta!r:>15}  tipo: {type(eta).__name__}")
+print(f"altezza  = {altezza!r:>15}  tipo: {type(altezza).__name__}")
+print(f"iscritta = {iscritta!r:>15}  tipo: {type(iscritta).__name__}")</code></pre>
+            </section>
+
+            <!-- SLIDE 9: Output variabili e osservazioni -->
+            <section>
+                <h2>Output e osservazioni</h2>
+                <pre><code class="language-python">nome     =         'Maria'  tipo: str
+eta      =              21  tipo: int
+altezza  =            1.68  tipo: float
+iscritta =            True  tipo: bool</code></pre>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-blue">
+                            <strong><code>!r</code></strong> nella f-string mostra la rappresentazione "grezza" del valore (le stringhe appaiono con le virgolette).
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-green">
+                            <strong><code>:>15</code></strong> allinea il valore a destra in un campo di 15 caratteri.
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-yellow">
+                    I <strong>type hints</strong> (<code>str</code>, <code>int</code>, ecc.) non cambiano il comportamento del programma, ma documentano le vostre intenzioni.
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Operatori aritmetici -->
+            <section>
+                <h2>Operatori aritmetici</h2>
+                <p>Create un file <code>operatori.py</code>:</p>
+                <pre><code class="language-python">a: int = 17
+b: int = 5
+
+print(f"{a} + {b}  = {a + b}")     # 22
+print(f"{a} - {b}  = {a - b}")     # 12
+print(f"{a} * {b}  = {a * b}")     # 85
+print(f"{a} / {b}  = {a / b}")     # 3.4  (divisione vera -> float)
+print(f"{a} // {b} = {a // b}")    # 3    (divisione intera)
+print(f"{a} % {b}  = {a % b}")     # 2    (modulo / resto)
+print(f"{a} ** {b} = {a ** b}")    # 1419857 (potenza)</code></pre>
+                <div class="box box-red">
+                    Attenzione: <code>/</code> restituisce <strong>sempre</strong> un <code>float</code>, anche se il risultato e intero. Per la divisione intera usate <code>//</code>.
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Conversioni di tipo -->
+            <section>
+                <h2>Conversioni di tipo</h2>
+                <pre><code class="language-python">prezzo_stringa: str = "49.99"
+prezzo: float = float(prezzo_stringa)
+iva: float = prezzo * 0.22
+totale: float = prezzo + iva
+
+print(f"Prezzo: {prezzo:.2f} EUR")
+print(f"IVA 22%: {iva:.2f} EUR")
+print(f"Totale: {totale:.2f} EUR")</code></pre>
+                <pre><code class="language-python">Prezzo: 49.99 EUR
+IVA 22%: 11.00 EUR
+Totale: 60.99 EUR</code></pre>
+                <div class="box box-blue">
+                    <strong><code>:.2f</code></strong> formatta il numero con esattamente 2 cifre decimali.
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Sezione — I/O formattato -->
+            <section class="section-slide">
+                <h2>Parte 3<br>Input/Output formattato</h2>
+            </section>
+
+            <!-- SLIDE 13: Calcolo area cerchio -->
+            <section>
+                <h2>Calcolo interattivo: area del cerchio</h2>
+                <p>Create un file <code>area_cerchio.py</code>:</p>
+                <pre><code class="language-python">import math
+
+raggio_str: str = input("Inserisci il raggio del cerchio (in cm): ")
+raggio: float = float(raggio_str)
+
+area: float = math.pi * raggio ** 2
+circonferenza: float = 2 * math.pi * raggio
+
+print(f"\n--- Risultati ---")
+print(f"Raggio:        {raggio:>10.2f} cm")
+print(f"Area:          {area:>10.2f} cm²")
+print(f"Circonferenza: {circonferenza:>10.2f} cm")</code></pre>
+            </section>
+
+            <!-- SLIDE 14: Output area cerchio e formato -->
+            <section>
+                <h2>Output e formato <code>:>10.2f</code></h2>
+                <pre><code class="language-python">Inserisci il raggio del cerchio (in cm): 5
+
+--- Risultati ---
+Raggio:              5.00 cm
+Area:             78.54 cm²
+Circonferenza:       31.42 cm</code></pre>
+                <div class="diagram">
+                    <code>{valore:>10.2f}</code><br>
+                    <code>></code> = allinea a destra &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <code>10</code> = larghezza campo &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <code>.2f</code> = 2 decimali, float
+                </div>
+                <div class="box box-green">
+                    Questo formato rende l'output <strong>ordinato e leggibile</strong>, con i numeri allineati verticalmente.
+                </div>
+            </section>
+
+            <!-- SLIDE 15: Sezione — Condizionali -->
+            <section class="section-slide">
+                <h2>Parte 4<br>Condizionali</h2>
+            </section>
+
+            <!-- SLIDE 16: Classificatore ISEE — Costanti -->
+            <section>
+                <h2>Classificatore fascia ISEE</h2>
+                <p>L'ISEE determina l'accesso ad agevolazioni. Scrivete un programma che classifica un reddito in fasce.</p>
+                <p>Create un file <code>classificatore_isee.py</code>:</p>
+                <pre><code class="language-python"># Costanti in UPPER_SNAKE_CASE (PEP 8)
+SOGLIA_1: float = 6_000.00
+SOGLIA_2: float = 15_000.00
+SOGLIA_3: float = 25_000.00
+SOGLIA_4: float = 40_000.00
+
+reddito_str: str = input("Inserisci il reddito ISEE (in euro): ")
+reddito: float = float(reddito_str)</code></pre>
+                <div class="box box-blue">
+                    L'underscore nelle costanti numeriche (<code>6_000.00</code>) migliora la leggibilita senza cambiare il valore.
+                </div>
+            </section>
+
+            <!-- SLIDE 17: Classificatore ISEE — Logica if/elif -->
+            <section>
+                <h2>Classificatore ISEE: catena <code>if</code>/<code>elif</code>/<code>else</code></h2>
+                <pre><code class="language-python">if reddito < 0:
+    print("Errore: il reddito non puo essere negativo.")
+elif reddito <= SOGLIA_1:
+    fascia: str = "Fascia 1 — Esenzione totale"
+    aliquota: float = 0.0
+elif reddito <= SOGLIA_2:
+    fascia = "Fascia 2 — Agevolazione alta"
+    aliquota = 0.05
+elif reddito <= SOGLIA_3:
+    fascia = "Fascia 3 — Agevolazione media"
+    aliquota = 0.10
+elif reddito <= SOGLIA_4:
+    fascia = "Fascia 4 — Agevolazione ridotta"
+    aliquota = 0.15
+else:
+    fascia = "Fascia 5 — Nessuna agevolazione"
+    aliquota = 0.22</code></pre>
+            </section>
+
+            <!-- SLIDE 18: Classificatore ISEE — Output -->
+            <section>
+                <h2>Classificatore ISEE: output formattato</h2>
+                <pre><code class="language-python">if reddito >= 0:
+    contributo: float = reddito * aliquota
+    print(f"\n--- Risultato ---")
+    print(f"Reddito ISEE:  {reddito:>12,.2f} EUR")
+    print(f"Classificazione: {fascia}")
+    print(f"Aliquota:      {aliquota:>12.0%}")
+    print(f"Contributo:    {contributo:>12,.2f} EUR")</code></pre>
+                <p>Esecuzione con reddito <code>18500</code>:</p>
+                <pre><code class="language-python">--- Risultato ---
+Reddito ISEE:    18,500.00 EUR
+Classificazione: Fascia 3 — Agevolazione media
+Aliquota:              10%
+Contributo:      1,850.00 EUR</code></pre>
+                <div class="columns">
+                    <div class="col">
+                        <div class="box box-green">
+                            <strong><code>:,.2f</code></strong> &rarr; separatore migliaia + 2 decimali
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="box box-green">
+                            <strong><code>:.0%</code></strong> &rarr; valore come percentuale (0.10 &rarr; 10%)
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 19: Calcolatrice — Input -->
+            <section>
+                <h2>Calcolatrice interattiva</h2>
+                <p>Create un file <code>calcolatrice.py</code>:</p>
+                <pre><code class="language-python">print("=== CALCOLATRICE ===")
+print("Operazioni: +  -  *  /  //  %  **")
+print()
+
+primo_str: str = input("Primo numero: ")
+primo: float = float(primo_str)
+
+operazione: str = input("Operazione: ")
+
+secondo_str: str = input("Secondo numero: ")
+secondo: float = float(secondo_str)
+
+errore: bool = False
+risultato: float = 0.0</code></pre>
+            </section>
+
+            <!-- SLIDE 20: Calcolatrice — Logica -->
+            <section>
+                <h2>Calcolatrice: logica e validazione</h2>
+                <pre><code class="language-python">if operazione == "+":
+    risultato = primo + secondo
+elif operazione == "-":
+    risultato = primo - secondo
+elif operazione == "*":
+    risultato = primo * secondo
+elif operazione == "/":
+    if secondo == 0:
+        print("Errore: divisione per zero!")
+        errore = True
+    else:
+        risultato = primo / secondo
+elif operazione == "**":
+    risultato = primo ** secondo
+else:
+    print(f"Errore: operazione '{operazione}' non riconosciuta.")
+    errore = True
+
+if not errore:
+    print(f"\n{primo} {operazione} {secondo} = {risultato:.4f}")</code></pre>
+            </section>
+
+            <!-- SLIDE 21: Calcolatrice — Test -->
+            <section>
+                <h2>Calcolatrice: casi di test</h2>
+                <p>Provate questi casi e verificate i risultati:</p>
+                <table>
+                    <thead>
+                        <tr><th>Input</th><th>Risultato atteso</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>10 / 3</code></td><td><code>3.3333</code> (verifica decimali)</td></tr>
+                        <tr><td><code>10 / 0</code></td><td>Messaggio di errore: divisione per zero</td></tr>
+                        <tr><td><code>2 ** 10</code></td><td><code>1024.0000</code> (potenza)</td></tr>
+                        <tr><td><code>17 % 5</code></td><td><code>2.0000</code> (modulo)</td></tr>
+                        <tr><td><code>10 @ 3</code></td><td>Messaggio di errore: operazione non riconosciuta</td></tr>
+                    </tbody>
+                </table>
+                <div class="box box-yellow">
+                    <strong>Perche controlliamo <code>secondo == 0</code> solo per <code>/</code>, <code>//</code> e <code>%</code>?</strong> Perche la divisione per zero genera un errore a runtime, mentre addizione, sottrazione e moltiplicazione funzionano con qualsiasi valore.
+                </div>
+            </section>
+
+            <!-- SLIDE 22: Sezione — Esercizi autonomi -->
+            <section class="section-slide">
+                <h2>Parte 5<br>Esercizi autonomi</h2>
+            </section>
+
+            <!-- SLIDE 23: Esercizio — Temperatura -->
+            <section>
+                <h2>Esercizio base: conversione di temperatura</h2>
+                <p>Create un file <code>temperatura.py</code>.</p>
+                <div class="box box-blue">
+                    <strong>Traccia:</strong> scrivete un programma che chiede all'utente una temperatura in Celsius e la converte in Fahrenheit. La formula e: <code>F = C * 9/5 + 32</code>. Stampate il risultato con una cifra decimale.
+                </div>
+                <p>Output atteso:</p>
+                <pre><code class="language-python">Temperatura in Celsius: 25
+25.0°C = 77.0°F</code></pre>
+                <div class="box box-yellow">
+                    <strong>Suggerimenti:</strong> usate <code>input()</code> per leggere, <code>float()</code> per convertire, e una f-string con formato <code>:.1f</code> per stampare.
+                </div>
+            </section>
+
+            <!-- SLIDE 24: Esercizio — IMC -->
+            <section>
+                <h2>Esercizio intermedio: calcolo IMC</h2>
+                <p>Create un file <code>imc.py</code>.</p>
+                <div class="box box-blue">
+                    <strong>Traccia:</strong> chiede peso (kg) e altezza (m), calcola l'IMC (<code>peso / altezza ** 2</code>) e classifica secondo le fasce OMS.
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>IMC</th><th>Classificazione</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>&lt; 18.5</td><td>Sottopeso</td></tr>
+                        <tr><td>18.5 &ndash; 24.9</td><td>Normopeso</td></tr>
+                        <tr><td>25.0 &ndash; 29.9</td><td>Sovrappeso</td></tr>
+                        <tr><td>&ge; 30.0</td><td>Obesita</td></tr>
+                    </tbody>
+                </table>
+                <div class="box box-yellow">
+                    <strong>Validazione richiesta:</strong> peso e altezza devono essere positivi; l'altezza non puo superare 2.50 m.
+                </div>
+                <pre><code class="language-python">Peso (kg): 72
+Altezza (m): 1.75
+
+IMC: 23.5 — Normopeso</code></pre>
+            </section>
+
+            <!-- SLIDE 25: Esercizio — Bancomat -->
+            <section>
+                <h2>Esercizio avanzato: simulazione bancomat</h2>
+                <p>Create un file <code>bancomat.py</code>.</p>
+                <div class="box box-blue">
+                    <strong>Traccia:</strong> simulate un'operazione al bancomat con saldo iniziale di 1000.00 EUR.
+                </div>
+                <ul>
+                    <li>Menu: <code>D</code> = deposito, <code>P</code> = prelievo, <code>S</code> = saldo</li>
+                    <li>Accettate sia maiuscole che minuscole (usate <code>.upper()</code>)</li>
+                    <li>Gestite: operazione non riconosciuta, importo negativo/zero, prelievo &gt; saldo</li>
+                </ul>
+                <pre><code class="language-python">=== BANCOMAT ===
+Saldo attuale: 1,000.00 EUR
+
+Operazione (D=Deposito, P=Prelievo, S=Saldo): P
+Importo: 250
+
+Prelievo di 250.00 EUR effettuato.
+Nuovo saldo: 750.00 EUR</code></pre>
+            </section>
+
+            <!-- SLIDE 26: Sezione — Sfida -->
+            <section class="section-slide">
+                <h2>Parte 6<br>Sfida</h2>
+            </section>
+
+            <!-- SLIDE 27: Sfida temperatura -->
+            <section>
+                <h2>Sfida: convertitore e classificatore</h2>
+                <p>Create un file <code>sfida_temperatura.py</code>.</p>
+                <div class="box box-blue">
+                    <strong>Traccia:</strong> convertite Celsius in Fahrenheit e classificate la percezione.
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Intervallo Celsius</th><th>Classificazione</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>C &le; -10</td><td>Gelido</td></tr>
+                        <tr><td>-10 &lt; C &le; 5</td><td>Freddo</td></tr>
+                        <tr><td>5 &lt; C &le; 18</td><td>Mite</td></tr>
+                        <tr><td>18 &lt; C &le; 30</td><td>Caldo</td></tr>
+                        <tr><td>C &gt; 30</td><td>Torrido</td></tr>
+                    </tbody>
+                </table>
+                <pre><code class="language-python">=== REPORT TEMPERATURA ===
+Celsius:       22.0°C
+Fahrenheit:    71.6°F
+Percezione:    Caldo</code></pre>
+                <div class="box box-red">
+                    <strong>Validazione:</strong> se la temperatura e inferiore a -273.15 (zero assoluto), stampate un messaggio di errore.
+                </div>
+            </section>
+
+            <!-- SLIDE 28: Domande di verifica -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol>
+                    <li class="fragment">Qual e la differenza tra eseguire codice nel <strong>REPL</strong> e da un file <code>.py</code>?</li>
+                    <li class="fragment">Cosa succede se scrivete <code>int(input("Eta: "))</code> e l'utente inserisce <code>"venti"</code>?</li>
+                    <li class="fragment">Perche controlliamo <code>secondo == 0</code> solo per <code>/</code>, <code>//</code> e <code>%</code>?</li>
+                    <li class="fragment">Perche usiamo <code>elif</code> invece di una sequenza di <code>if</code> nel classificatore ISEE?</li>
+                    <li class="fragment">Cosa fa il formato <code>{valore:>12,.2f}</code>?</li>
+                    <li class="fragment">Perche le soglie ISEE sono definite come <strong>costanti</strong> all'inizio del programma?</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 29: Riepilogo -->
+            <section>
+                <h2>Riepilogo</h2>
+                <div class="columns">
+                    <div class="col">
+                        <h3>Cosa avete imparato</h3>
+                        <ul>
+                            <li><strong>Ambiente di lavoro:</strong> terminale, Python, VS Code, REPL</li>
+                            <li><strong>Variabili con type hints:</strong> <code>str</code>, <code>int</code>, <code>float</code>, <code>bool</code></li>
+                            <li><strong>Operatori aritmetici:</strong> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>, <code>**</code></li>
+                            <li><strong>F-string formattate:</strong> <code>:.2f</code>, <code>:>10</code>, <code>:,.2f</code>, <code>:.0%</code></li>
+                            <li><strong>Condizionali:</strong> <code>if</code>/<code>elif</code>/<code>else</code> con validazione</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <div class="box box-green">
+                            <strong>Consiglio:</strong> riscrivete da zero gli esercizi guidati <em>senza guardare il codice</em>. Se riuscite a ricostruirli dalla memoria e dalla comprensione, avete davvero imparato.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="F17_numpy_pandas_visualizzazione.html" style="color: var(--accent);">&larr; F17: NumPy, Pandas e visualizzazione</a></div><div><a href="L02_cicli_comprehension_stringhe.html" style="color: var(--accent);">L02: Cicli, comprehension e stringhe &rarr;</a></div><div><a href="../dispense/laboratori/L01_ambiente_variabili_condizionali.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L01_ambiente/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — L01</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>

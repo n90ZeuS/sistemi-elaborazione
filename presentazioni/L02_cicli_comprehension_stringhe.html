@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L02 — Cicli, comprehension e stringhe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <style>
+        /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
+
+        :root {
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1e40af;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --code-bg: #1e293b;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        .reveal {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        /* === TITOLI === */
+        .reveal h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.3em;
+            letter-spacing: -0.02em;
+        }
+
+        .reveal h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.4em;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3em;
+        }
+
+        /* === SLIDE TITOLO === */
+        .reveal .title-slide {
+            text-align: center;
+        }
+
+        .reveal .title-slide h1 {
+            font-size: 2.6em;
+            border: none;
+            margin-bottom: 0.1em;
+        }
+
+        .reveal .title-slide .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1em;
+        }
+
+        .reveal .title-slide .course-info {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        /* === TESTO === */
+        .reveal p {
+            line-height: 1.6;
+            margin-bottom: 0.6em;
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0.5em;
+        }
+
+        .reveal strong {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--text-muted);
+        }
+
+        /* === CODICE === */
+        .reveal pre {
+            width: 100%;
+            margin: 0.6em 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.72em;
+        }
+
+        .reveal pre code {
+            padding: 1em 1.2em;
+            line-height: 1.5;
+            max-height: 520px;
+            border-radius: 8px;
+        }
+
+        .reveal code:not(pre code) {
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* === TABELLE === */
+        .reveal table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6em 0;
+            font-size: 0.85em;
+        }
+
+        .reveal table th {
+            background: var(--accent);
+            color: white;
+            padding: 0.6em 1em;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .reveal table td {
+            padding: 0.5em 1em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .reveal table tr:nth-child(even) td {
+            background: var(--bg-alt);
+        }
+
+        /* === BOX INFORMATIVI === */
+        .reveal .box {
+            padding: 0.8em 1.2em;
+            border-radius: 8px;
+            margin: 0.6em 0;
+            border-left: 4px solid;
+        }
+
+        .reveal .box-blue {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .reveal .box-green {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .reveal .box-yellow {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+
+        .reveal .box-red {
+            background: #fef2f2;
+            border-color: var(--danger);
+        }
+
+        /* === COLONNE === */
+        .reveal .columns {
+            display: flex;
+            gap: 1.5em;
+            align-items: flex-start;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        .reveal .col-60 { flex: 3; }
+        .reveal .col-40 { flex: 2; }
+
+        /* === CONFRONTO BUONO/MALE === */
+        .reveal .compare {
+            display: flex;
+            gap: 1em;
+        }
+
+        .reveal .compare .good,
+        .reveal .compare .bad {
+            flex: 1;
+            padding: 0.5em;
+            border-radius: 8px;
+        }
+
+        .reveal .compare .good {
+            border: 2px solid var(--success);
+        }
+
+        .reveal .compare .bad {
+            border: 2px solid var(--danger);
+        }
+
+        .reveal .compare .good::before {
+            content: "BENE";
+            display: block;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .compare .bad::before {
+            content: "MALE";
+            display: block;
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 0.8em;
+            margin-bottom: 0.3em;
+        }
+
+        /* === DIAGRAMMI ASCII / SCHEMA === */
+        .reveal .diagram {
+            background: var(--bg-alt);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.8em;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* === BADGE / ETICHETTE === */
+        .reveal .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .reveal .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .badge-green { background: #dcfce7; color: #166534; }
+        .reveal .badge-yellow { background: #fef3c7; color: #92400e; }
+        .reveal .badge-red { background: #fecaca; color: #991b1b; }
+
+        /* === ANIMAZIONI FRAMMENTI === */
+        .reveal .fragment.highlight-current-blue.current-fragment {
+            color: var(--accent);
+        }
+
+        /* === PROGRESS BAR === */
+        .reveal .progress {
+            color: var(--accent);
+            height: 4px;
+        }
+
+        /* === FOOTER === */
+        .reveal .slide-footer {
+            position: fixed;
+            bottom: 1em;
+            left: 1.5em;
+            font-size: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* === SLIDE SEZIONE === */
+        .reveal .section-slide {
+            text-align: center;
+        }
+
+        .reveal .section-slide h2 {
+            font-size: 2em;
+            border: none;
+            color: var(--accent-dark);
+        }
+
+        /* === EMOJI ACCENTI === */
+        .reveal .icon {
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 0.2em;
+        }
+
+        /* === PRINT === */
+        @media print {
+            .reveal .slides {
+                font-size: 14px;
+            }
+            .reveal pre {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Titolo -->
+            <section class="title-slide">
+                <h1>Cicli, comprehension e stringhe</h1>
+                <div class="subtitle">Laboratorio 2</div>
+                <div class="course-info">
+                    Sistemi di Elaborazione<br>
+                    Corso di Laurea in Scienze Statistiche
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Agenda -->
+            <section>
+                <h2>Agenda</h2>
+                <ol>
+                    <li><strong>Parte 1</strong> — Cicli e statistiche base
+                        <ul>
+                            <li>Pattern accumulatore, contatore, min/max con <code>while</code></li>
+                            <li>Cicli annidati: tavola pitagorica</li>
+                            <li>Analisi sopra/sotto la media</li>
+                        </ul>
+                    </li>
+                    <li><strong>Parte 2</strong> — Comprehension
+                        <ul>
+                            <li>Da cicli a comprehension: filtro, trasformazione</li>
+                            <li>Comprehension su stringhe</li>
+                        </ul>
+                    </li>
+                    <li><strong>Parte 3</strong> — Stringhe come struttura dati
+                        <ul>
+                            <li>Pipeline di pulizia dati testuali</li>
+                        </ul>
+                    </li>
+                    <li><strong>Parte 4</strong> — Esercizi autonomi e sfida</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 3: Sezione 1 -->
+            <section class="section-slide">
+                <h2>Parte 1</h2>
+                <p>Cicli e statistiche base</p>
+            </section>
+
+            <!-- SLIDE 4: Esercizio 1.1 - Introduzione -->
+            <section>
+                <h2>Esercizio 1.1: media, min, max con <code>while</code></h2>
+                <p>Scenario: l'utente inserisce valori uno alla volta, non sappiamo quanti saranno.</p>
+                <div class="box box-blue">
+                    <strong>Quando usare <code>while</code>?</strong><br>
+                    Quando <strong>non sappiamo in anticipo</strong> quante iterazioni servono.
+                </div>
+                <h3>Pattern utilizzati</h3>
+                <ul>
+                    <li><strong>Accumulatore:</strong> <code>somma += valore</code></li>
+                    <li><strong>Contatore:</strong> <code>conteggio += 1</code></li>
+                    <li><strong>Min/Max:</strong> confronto ad ogni iterazione</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 5: Esercizio 1.1 - Inizializzazione -->
+            <section>
+                <h2>Esercizio 1.1: inizializzazione</h2>
+                <p>File: <code>statistiche_input.py</code></p>
+                <pre><code class="language-python">print("Inserisci valori numerici uno per riga.")
+print("Scrivi 'fine' per terminare.\n")
+
+conteggio: int = 0
+somma: float = 0.0
+minimo: float = float("inf")   # +infinito: qualsiasi valore sara minore
+massimo: float = float("-inf") # -infinito: qualsiasi valore sara maggiore</code></pre>
+                <div class="box box-yellow">
+                    <strong>Perche <code>float("inf")</code>?</strong><br>
+                    Inizializzando il minimo a +infinito, il primo valore inserito diventa automaticamente il nuovo minimo. Analogamente per il massimo con -infinito.
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Esercizio 1.1 - Ciclo while -->
+            <section>
+                <h2>Esercizio 1.1: il ciclo</h2>
+                <pre><code class="language-python">while True:
+    testo: str = input(f"Valore {conteggio + 1}: ")
+
+    if testo.lower().strip() == "fine":
+        break
+
+    valore: float = float(testo)
+    conteggio += 1
+    somma += valore
+
+    if valore < minimo:
+        minimo = valore
+    if valore > massimo:
+        massimo = valore</code></pre>
+                <div class="box box-green">
+                    <strong><code>.lower().strip()</code></strong> rende robusto il confronto: l'utente puo scrivere "Fine", "FINE", " fine " e il programma funziona comunque.
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Esercizio 1.1 - Output -->
+            <section>
+                <h2>Esercizio 1.1: risultati e output</h2>
+                <pre><code class="language-python">if conteggio == 0:
+    print("\nNessun valore inserito.")
+else:
+    media: float = somma / conteggio
+    print(f"\n--- Statistiche su {conteggio} valori ---")
+    print(f"Somma:   {somma:>10.2f}")
+    print(f"Media:   {media:>10.2f}")
+    print(f"Minimo:  {minimo:>10.2f}")
+    print(f"Massimo: {massimo:>10.2f}")</code></pre>
+                <h3>Esempio di esecuzione</h3>
+                <pre><code class="language-python">Valore 1: 23.5
+Valore 2: 19.8
+Valore 3: 31.2
+Valore 4: 25.0
+Valore 5: fine
+
+--- Statistiche su 4 valori ---
+Somma:      99.50
+Media:      24.88
+Minimo:     19.80
+Massimo:    31.20</code></pre>
+            </section>
+
+            <!-- SLIDE 8: Esercizio 1.2 - Tavola pitagorica -->
+            <section>
+                <h2>Esercizio 1.2: tavola pitagorica</h2>
+                <p>Cicli annidati: il ciclo esterno scorre le <strong>righe</strong>, quello interno le <strong>colonne</strong>.</p>
+                <pre><code class="language-python">DIMENSIONE: int = 10
+
+# Intestazione
+print(f"{'':>4}", end="")
+for j in range(1, DIMENSIONE + 1):
+    print(f"{j:>4}", end="")
+print()
+
+# Linea separatrice
+print(f"{'':>4}" + "-" * (DIMENSIONE * 4))
+
+# Corpo della tavola
+for i in range(1, DIMENSIONE + 1):
+    print(f"{i:>3}|", end="")
+    for j in range(1, DIMENSIONE + 1):
+        prodotto: int = i * j
+        print(f"{prodotto:>4}", end="")
+    print()</code></pre>
+            </section>
+
+            <!-- SLIDE 9: Esercizio 1.2 - Output e note -->
+            <section>
+                <h2>Esercizio 1.2: output e osservazioni</h2>
+                <pre><code class="language-python">       1   2   3   4   5   6   7   8   9  10
+    ----------------------------------------
+  1|   1   2   3   4   5   6   7   8   9  10
+  2|   2   4   6   8  10  12  14  16  18  20
+  3|   3   6   9  12  15  18  21  24  27  30
+  ...</code></pre>
+                <div class="box box-blue">
+                    <strong>Concetti chiave:</strong>
+                    <ul>
+                        <li><code>{prodotto:>4}</code> — allinea a destra in 4 caratteri</li>
+                        <li><code>end=""</code> — impedisce l'a capo automatico di <code>print</code></li>
+                        <li><code>print()</code> senza argomenti — va a capo alla fine di ogni riga</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Esercizio 1.3 - Sopra/sotto media -->
+            <section>
+                <h2>Esercizio 1.3: sopra e sotto la media</h2>
+                <p>File: <code>sopra_sotto_media.py</code> — Servono <strong>due passaggi</strong> sui dati.</p>
+                <div class="columns">
+                    <div class="col">
+                        <h3>Passo 1: calcolo media</h3>
+                        <pre><code class="language-python">temperature: list[float] = [
+    18.5, 22.3, 15.7, 28.1,
+    20.0, 31.4, 17.2, 24.8,
+    19.5, 26.3, 14.0, 23.7,
+    29.5, 16.8, 21.1,
+]
+
+n: int = len(temperature)
+somma: float = 0.0
+for temp in temperature:
+    somma += temp
+media: float = somma / n</code></pre>
+                    </div>
+                    <div class="col">
+                        <h3>Passo 2: classificazione</h3>
+                        <pre><code class="language-python">sopra: int = 0
+sotto: int = 0
+uguali: int = 0
+
+for temp in temperature:
+    if temp > media:
+        sopra += 1
+    elif temp < media:
+        sotto += 1
+    else:
+        uguali += 1</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Esercizio 1.3 - Report e dettaglio -->
+            <section>
+                <h2>Esercizio 1.3: report e dettaglio</h2>
+                <pre><code class="language-python"># Report
+print(f"--- Analisi di {n} temperature ---")
+print(f"Media: {media:.2f}°C\n")
+print(f"Sopra la media: {sopra:>3} ({sopra / n:.1%})")
+print(f"Sotto la media: {sotto:>3} ({sotto / n:.1%})")
+print(f"Uguali:         {uguali:>3} ({uguali / n:.1%})")
+
+# Dettaglio: quali sono sopra la media?
+print(f"\nValori sopra la media ({media:.2f}°C):")
+for i, temp in enumerate(temperature, start=1):
+    if temp > media:
+        print(f"  Osservazione {i:>2}: {temp:.1f}°C  (+{temp - media:.1f})")</code></pre>
+                <div class="box box-yellow">
+                    <strong>Perche due passaggi?</strong> La media dipende da <em>tutti</em> i valori. Non possiamo classificare un valore come "sopra la media" finche non abbiamo calcolato la media stessa. Questo pattern a due passaggi e molto comune nell'analisi dati.
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Sezione 2 -->
+            <section class="section-slide">
+                <h2>Parte 2</h2>
+                <p>Dalle comprehension ai cicli e ritorno</p>
+            </section>
+
+            <!-- SLIDE 13: Pattern FILTRO -->
+            <section>
+                <h2>Comprehension: pattern filtro</h2>
+                <p>File: <code>comprehension.py</code></p>
+                <div class="compare">
+                    <div class="bad">
+                        <h3>Con ciclo</h3>
+                        <pre><code class="language-python">calde_ciclo: list[float] = []
+for temp in temperature:
+    if temp > 25.0:
+        calde_ciclo.append(temp)</code></pre>
+                    </div>
+                    <div class="good">
+                        <h3>Con comprehension</h3>
+                        <pre><code class="language-python">calde_comp: list[float] = [
+    temp
+    for temp in temperature
+    if temp > 25.0
+]</code></pre>
+                    </div>
+                </div>
+                <div class="diagram">
+                    [<strong>espressione</strong> &nbsp; for <strong>variabile</strong> in <strong>iterabile</strong> &nbsp; if <strong>condizione</strong>]
+                </div>
+            </section>
+
+            <!-- SLIDE 14: Pattern TRASFORMAZIONE -->
+            <section>
+                <h2>Comprehension: pattern trasformazione</h2>
+                <div class="compare">
+                    <div class="bad">
+                        <h3>Con ciclo</h3>
+                        <pre><code class="language-python">fahrenheit_ciclo: list[float] = []
+for temp in temperature:
+    fahrenheit_ciclo.append(
+        temp * 9 / 5 + 32
+    )</code></pre>
+                    </div>
+                    <div class="good">
+                        <h3>Con comprehension</h3>
+                        <pre><code class="language-python">fahrenheit_comp: list[float] = [
+    temp * 9 / 5 + 32
+    for temp in temperature
+]</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 15: Filtro + Trasformazione -->
+            <section>
+                <h2>Comprehension: filtro + trasformazione</h2>
+                <p>Solo le temperature sopra 25 C, convertite in Fahrenheit:</p>
+                <div class="compare">
+                    <div class="bad">
+                        <h3>Con ciclo</h3>
+                        <pre><code class="language-python">calde_f_ciclo: list[float] = []
+for temp in temperature:
+    if temp > 25.0:
+        calde_f_ciclo.append(
+            temp * 9 / 5 + 32
+        )</code></pre>
+                    </div>
+                    <div class="good">
+                        <h3>Con comprehension</h3>
+                        <pre><code class="language-python">calde_f_comp: list[float] = [
+    temp * 9 / 5 + 32
+    for temp in temperature
+    if temp > 25.0
+]</code></pre>
+                    </div>
+                </div>
+                <div class="box box-yellow">
+                    <strong>Regola pratica:</strong> se la comprehension non sta su 1-2 righe leggibili, usate un ciclo.
+                </div>
+            </section>
+
+            <!-- SLIDE 16: Comprehension su stringhe -->
+            <section>
+                <h2>Comprehension applicate a stringhe</h2>
+                <p>File: <code>comprehension_stringhe.py</code></p>
+                <pre><code class="language-python">nomi: list[str] = ["anna rossi", "marco bianchi", "luca verdi", "sara neri"]
+
+# Capitalizzare ogni nome
+nomi_formattati: list[str] = [nome.title() for nome in nomi]
+# ['Anna Rossi', 'Marco Bianchi', 'Luca Verdi', 'Sara Neri']
+
+# Estrarre solo i cognomi
+cognomi: list[str] = [nome.split()[-1].title() for nome in nomi]
+# ['Rossi', 'Bianchi', 'Verdi', 'Neri']
+
+# Filtrare nomi che contengono la lettera 'a'
+con_a: list[str] = [nome.title() for nome in nomi if "a" in nome]
+
+# Lunghezza di ogni nome
+lunghezze: list[int] = [len(nome) for nome in nomi]</code></pre>
+            </section>
+
+            <!-- SLIDE 17: Sezione 3 -->
+            <section class="section-slide">
+                <h2>Parte 3</h2>
+                <p>Stringhe come struttura dati</p>
+            </section>
+
+            <!-- SLIDE 18: Pulizia dati - Problema -->
+            <section>
+                <h2>Esercizio 3.1: pulire dati testuali</h2>
+                <p>I dati reali sono quasi sempre "sporchi". File: <code>pulizia_dati.py</code></p>
+                <pre><code class="language-python"># Dati "sporchi" come arriverebbero da un file o un form
+dati_grezzi: list[str] = [
+    "  Mario ROSSI  ",
+    "anna   bianchi",
+    "LUCA  Verdi ",
+    " Sara   NERI",
+    "  marco   De Luca  ",
+]</code></pre>
+                <div class="box box-red">
+                    <strong>Problemi tipici:</strong> spazi iniziali/finali, spazi multipli interni, maiuscole/minuscole miste.
+                </div>
+            </section>
+
+            <!-- SLIDE 19: Pulizia dati - Pipeline -->
+            <section>
+                <h2>La pipeline di pulizia</h2>
+                <div class="diagram">
+                    <code>strip()</code> &rarr; <code>split()</code> + <code>join()</code> &rarr; <code>title()</code>
+                </div>
+                <pre><code class="language-python"># Passo 1: rimuovere spazi iniziali e finali
+puliti: list[str] = [dato.strip() for dato in dati_grezzi]
+
+# Passo 2: normalizzare gli spazi interni
+normalizzati: list[str] = []
+for nome in puliti:
+    parti: list[str] = nome.split()  # split() senza argomenti
+    normalizzati.append(" ".join(parti))
+
+# Passo 3: uniformare la capitalizzazione
+formattati: list[str] = [nome.title() for nome in normalizzati]</code></pre>
+                <div class="box box-green">
+                    <strong>Idioma fondamentale:</strong> <code>" ".join(nome.split())</code> normalizza qualsiasi sequenza di spazi bianchi in un singolo spazio.
+                </div>
+            </section>
+
+            <!-- SLIDE 20: Pulizia dati - Iniziali e output -->
+            <section>
+                <h2>Estrarre iniziali e risultati</h2>
+                <pre><code class="language-python"># Passo 4: estrarre iniziali
+for nome in formattati:
+    parti = nome.split()
+    iniziali: str = "".join(p[0] for p in parti)
+    print(f"  {nome:<25} -> {iniziali}")</code></pre>
+                <h3>Output</h3>
+                <pre><code class="language-python">--- Dati puliti ---
+  0: 'Mario Rossi'
+  1: 'Anna Bianchi'
+  2: 'Luca Verdi'
+  3: 'Sara Neri'
+  4: 'Marco De Luca'
+
+--- Iniziali ---
+  Mario Rossi               -> MR
+  Anna Bianchi              -> AB
+  Luca Verdi                -> LV
+  Sara Neri                 -> SN
+  Marco De Luca             -> MDL</code></pre>
+            </section>
+
+            <!-- SLIDE 21: split() con e senza argomenti -->
+            <section>
+                <h2><code>split()</code> vs <code>split(" ")</code></h2>
+                <p>Una differenza cruciale:</p>
+                <pre><code class="language-python">testo: str = "  anna   rossi  "
+
+# split() senza argomenti: ignora spazi multipli e iniziali/finali
+print(testo.split())
+# ['anna', 'rossi']
+
+# split(" ") con argomento: divide su OGNI spazio singolo
+print(testo.split(" "))
+# ['', '', 'anna', '', '', 'rossi', '', '']</code></pre>
+                <div class="box box-blue">
+                    <strong>Regola:</strong> per la pulizia dati, usate quasi sempre <code>split()</code> senza argomenti. Usate <code>split(";")</code> o <code>split(",")</code> solo quando il separatore e un carattere specifico diverso dallo spazio.
+                </div>
+            </section>
+
+            <!-- SLIDE 22: Sezione 4 -->
+            <section class="section-slide">
+                <h2>Parte 4</h2>
+                <p>Esercizi autonomi</p>
+            </section>
+
+            <!-- SLIDE 23: Esercizio base -->
+            <section>
+                <h2>Esercizio base: temperature settimanali</h2>
+                <p>File: <code>temperature_settimana.py</code></p>
+                <pre><code class="language-python">temperature: list[float] = [18.5, 22.3, 15.7, 28.1, 20.0, 31.4, 17.2]
+giorni: list[str] = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"]</code></pre>
+                <p>Il programma deve:</p>
+                <ol>
+                    <li>Calcolare media, minimo e massimo <em>(senza <code>sum()</code>, <code>min()</code>, <code>max()</code>)</em></li>
+                    <li>Stampare una tabella con giorno, temperatura e scostamento dalla media</li>
+                    <li>Indicare il giorno piu caldo e il piu freddo</li>
+                    <li>Creare con una <strong>comprehension</strong> la lista dei giorni sopra la media</li>
+                </ol>
+                <h3>Output atteso (parziale)</h3>
+                <pre><code class="language-python">Giorno | Temp (°C) | Scostamento
+-------|-----------|------------
+Lun    |     18.5  |      -3.4
+Mar    |     22.3  |      +0.4
+
+Giorno piu caldo: Sab (31.4°C)
+Giorni sopra la media: Mar, Gio, Sab</code></pre>
+            </section>
+
+            <!-- SLIDE 24: Esercizio intermedio -->
+            <section>
+                <h2>Esercizio intermedio: frequenza caratteri</h2>
+                <p>File: <code>frequenza_caratteri.py</code></p>
+                <p>Il programma deve:</p>
+                <ol>
+                    <li>Chiedere all'utente di inserire una frase</li>
+                    <li>Contare la frequenza di ogni carattere <em>(minuscolo, ignorando spazi)</em></li>
+                    <li>Stampare i risultati ordinati per frequenza decrescente</li>
+                    <li>Calcolare la percentuale di vocali e consonanti</li>
+                </ol>
+                <h3>Suggerimenti</h3>
+                <ul>
+                    <li>Usate un dizionario <code>dict[str, int]</code></li>
+                    <li>Per ordinare: <code>sorted(diz.items(), key=lambda c: c[1], reverse=True)</code></li>
+                    <li><code>char.isalpha()</code> per verificare se e una lettera</li>
+                    <li>Le vocali sono <code>"aeiou"</code></li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 25: Esercizio avanzato -->
+            <section>
+                <h2>Esercizio avanzato: validatore codice fiscale</h2>
+                <p>File: <code>validatore_cf.py</code> — Verificare la <strong>struttura</strong> (non il calcolo) di un CF.</p>
+                <div class="diagram">
+                    L L L | L L L | N N | L | N N | L | N N N | L<br>
+                    <em>cogn.</em> &nbsp; <em>nome</em> &nbsp; <em>anno</em> &nbsp; <em>mese</em> &nbsp; <em>giorno</em> &nbsp; <em>cat.</em> &nbsp; <em>cat.num</em> &nbsp; <em>ctrl</em>
+                </div>
+                <p>Schema atteso: <code>"LLLLLLNNLNNLNNNL"</code> &nbsp; <span class="badge badge-blue">L = lettera</span> <span class="badge badge-yellow">N = numero</span></p>
+                <h3>Suggerimenti</h3>
+                <ul>
+                    <li>Convertire l'input in maiuscolo prima della validazione</li>
+                    <li>Usate <code>char.isalpha()</code> e <code>char.isdigit()</code></li>
+                    <li>Usate <code>zip()</code> o <code>enumerate()</code> per confrontare ogni carattere con lo schema</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 26: Sfida -->
+            <section>
+                <h2>Sfida: analisi e pulizia dati da stringa</h2>
+                <p>File: <code>sfida_analisi_dati.py</code> — Dati di vendite in formato testuale disordinato.</p>
+                <pre><code class="language-python">dati_grezzi: str = """
+  prodotto ; quantita ; prezzo_unitario
+  Mele     ; 50       ; 1.20
+  BANANE   ;  30      ; 0.85
+  mele     ; 15       ;  1.20
+  Pere     ;          ; 2.00
+  BANANE   ; 20       ; abc
+  kiwi     ; 40       ; 3.50
+"""</code></pre>
+                <p>Il programma deve: <strong>parsare</strong>, <strong>pulire</strong>, <strong>validare</strong> (scartare righe non valide), <strong>aggregare per prodotto</strong> e stampare un <strong>report formattato</strong> con quantita totale, ricavo e prezzo medio ponderato.</p>
+            </section>
+
+            <!-- SLIDE 27: Sfida - Output atteso -->
+            <section>
+                <h2>Sfida: output atteso</h2>
+                <pre><code class="language-python">=== REPORT VENDITE ===
+
+Righe elaborate: 6 su 8 (2 scartate)
+
+Prodotto     | Quantita | Ricavo (EUR) | Prezzo medio
+-------------|----------|--------------|-------------
+Mele         |       65 |        78.00 |         1.20
+Banane       |       30 |        25.50 |         0.85
+Arance       |       35 |        52.50 |         1.50
+Kiwi         |       40 |       140.00 |         3.50
+
+TOTALE       |      170 |       296.00 |         1.74</code></pre>
+                <h3>Suggerimenti</h3>
+                <ul>
+                    <li><code>stringa.split("\n")</code> per le righe, <code>riga.split(";")</code> per i campi</li>
+                    <li>Per verificare se e un numero: <code>stringa.replace(".", "", 1).isdigit()</code></li>
+                    <li>Usate <code>dict[str, dict[str, float]]</code> per aggregare per prodotto</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 28: Domande di verifica -->
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol>
+                    <li>Perche inizializziamo <code>minimo</code> con <code>float("inf")</code>? Cosa succederebbe con <code>0</code>?</li>
+                    <li class="fragment">Nel conteggio sopra/sotto media, perche servono <strong>due passaggi</strong> sui dati?</li>
+                    <li class="fragment">Qual e la differenza tra <code>nome.split()</code> e <code>nome.split(" ")</code>?</li>
+                    <li class="fragment">Riscrivete come ciclo <code>for</code>:
+                        <pre><code class="language-python">pari: list[int] = [n ** 2 for n in range(20) if n % 2 == 0]</code></pre>
+                    </li>
+                    <li class="fragment">Quando e preferibile un ciclo tradizionale rispetto a una comprehension?</li>
+                    <li class="fragment">Nel validatore CF, perche convertire in maiuscolo prima della validazione?</li>
+                </ol>
+            </section>
+
+            <!-- SLIDE 29: Riepilogo -->
+            <section>
+                <h2>Riepilogo</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Strumento</th>
+                            <th>Quando usarlo</th>
+                            <th>Pattern chiave</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cicli <code>for</code>/<code>while</code></strong></td>
+                            <td>Elaborare collezioni di dimensione arbitraria</td>
+                            <td>Accumulatore, contatore, min/max</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Comprehension</strong></td>
+                            <td>Filtro e trasformazione concisi</td>
+                            <td><code>[expr for x in iter if cond]</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Metodi stringa</strong></td>
+                            <td>Pulizia e normalizzazione dati testuali</td>
+                            <td><code>strip &rarr; split &rarr; join &rarr; title</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="box box-green">
+                    <strong>Queste tecniche sono le stesse che userete con pandas e NumPy</strong> — solo che li avrete funzioni di piu alto livello. Ma capire cosa succede sotto e la differenza tra usare uno strumento e padroneggiarlo.
+                </div>
+            </section>
+
+    
+            <!-- Slide di navigazione -->
+            <section class="nav-slide">
+                <section>
+                    <h2>Navigazione</h2>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L01_ambiente_variabili_condizionali.html" style="color: var(--accent);">&larr; L01: Ambiente, variabili e condizionali</a></div><div><a href="L03_strutture_dati.html" style="color: var(--accent);">L03: Strutture dati &rarr;</a></div><div><a href="../dispense/laboratori/L02_cicli_comprehension_stringhe.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L02_cicli_comprehension/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                    </div>
+                </section>
+            </section>
+
+    </div>
+        <div class="slide-footer">Sistemi di Elaborazione — L02</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0.08,
+            transition: 'slide',
+            transitionSpeed: 'fast',
+            plugins: [RevealHighlight, RevealNotes],
+            highlight: {
+                highlightOnLoad: true
+            }
+        });
+    </script>
+</body>
+</html>
