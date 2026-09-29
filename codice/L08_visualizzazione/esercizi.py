@@ -178,7 +178,7 @@ if MATPLOTLIB_DISPONIBILE and NUMPY_DISPONIBILE:
         fig, ax = plt.subplots(figsize=(10, 6))
 
         bp = ax.boxplot(
-            dati_gruppi, labels=etichette_gruppi, patch_artist=True,
+            dati_gruppi, tick_labels=etichette_gruppi, patch_artist=True,
             medianprops=dict(color="red", linewidth=2),
         )
 
@@ -410,7 +410,7 @@ if MATPLOTLIB_DISPONIBILE and NUMPY_DISPONIBILE and PANDAS_DISPONIBILE:
         dati_box: list[np.ndarray] = [
             df[df["categoria"] == cat]["fatturato"].values for cat in categorie_uniche
         ]
-        bp = ax.boxplot(dati_box, labels=categorie_uniche, patch_artist=True,
+        bp = ax.boxplot(dati_box, tick_labels=categorie_uniche, patch_artist=True,
                         medianprops=dict(color="red", linewidth=2))
         colori_box: list[str] = ["#2196F3", "#4CAF50", "#FF9800"]
         for patch, colore in zip(bp["boxes"], colori_box):

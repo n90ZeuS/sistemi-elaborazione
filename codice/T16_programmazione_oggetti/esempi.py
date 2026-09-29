@@ -1,4 +1,4 @@
-# F16 — Programmazione a oggetti
+# T16 — Programmazione a oggetti
 # Esempi per la lezione frontale 16
 
 from __future__ import annotations
@@ -386,4 +386,4 @@ assert sd.voti == [28, 30, 25]  # non influenzato!
 print(f"\n{sd.nome_completo}: voti={sd.voti}")
 print(f"{sd2.nome_completo}: voti={sd2.voti}")
 
-print("\n=== Fine esempi F16 ===")
+print("\n=== Fine esempi T16 ===")

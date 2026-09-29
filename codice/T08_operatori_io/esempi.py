@@ -1,4 +1,4 @@
-# F08 — Operatori, I/O e condizionali
+# T08 — Operatori, I/O e condizionali
 # Esempi per la lezione frontale 8
 # Operatori aritmetici, confronto, logici, condizionali, operatore ternario
 
@@ -219,4 +219,4 @@ print(f"  Come float:      {valore_numerico}")
 print(f"  Come int (troncato): {valore_intero}")
 
 
-print("\nTutti gli assert passati — esempi F08 completati con successo!")
+print("\nTutti gli assert passati — esempi T08 completati con successo!")

@@ -1,4 +1,4 @@
-# F09 — Cicli
+# T09 — Cicli
 # Esempi per la lezione frontale 9
 # for, range, enumerate, zip, while, break/continue, pattern di iterazione
 
@@ -273,4 +273,4 @@ assert coppie == [("A", "B"), ("A", "C"), ("A", "D"), ("B", "C"), ("B", "D"), ("
 print(f"\n  Coppie da {elementi}: {coppie}")
 
 
-print("\nTutti gli assert passati — esempi F09 completati con successo!")
+print("\nTutti gli assert passati — esempi T09 completati con successo!")

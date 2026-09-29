@@ -1,4 +1,4 @@
-# F15 — File, dati, errori
+# T15 — File, dati, errori
 # Esempi per la lezione frontale 15
 
 import os
@@ -271,4 +271,4 @@ import shutil
 shutil.rmtree(DIR_TEMP)
 print(f"\nDirectory temporanea rimossa: {DIR_TEMP}")
 
-print("\n=== Fine esempi F15 ===")
+print("\n=== Fine esempi T15 ===")

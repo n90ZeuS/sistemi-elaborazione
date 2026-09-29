@@ -1,4 +1,4 @@
-# F10 — Comprehension e stringhe
+# T10 — Comprehension e stringhe
 # Esercizi per la lezione frontale 10
 # Frequenza parole, cifrario di Cesare, validazione email, trasposizione matrice
 
@@ -297,4 +297,4 @@ stampa_matrice(t2, "M^T (3x3)")
 print("  Esercizio 4 superato!\n")
 
 
-print("Tutti gli esercizi F10 completati con successo!")
+print("Tutti gli esercizi T10 completati con successo!")

@@ -1,4 +1,4 @@
-# F12 — Dizionari, set e mutabilità
+# T12 — Dizionari, set e mutabilità
 # Esempi per la lezione frontale 12
 
 # ============================================================
@@ -305,4 +305,4 @@ assert deep[0] == [1, 2]              # deep copy è completamente indipendente
 print(f"Originale dopo modifica shallow: {lista_nested}")
 print(f"Deep copy (indipendente): {deep}")
 
-print("\n=== Fine esempi F12 ===")
+print("\n=== Fine esempi T12 ===")

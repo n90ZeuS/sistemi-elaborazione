@@ -1,4 +1,4 @@
-# F13 — Funzioni: fondamenti
+# T13 — Funzioni: fondamenti
 # Esempi per la lezione frontale 13
 
 # ============================================================
@@ -289,4 +289,4 @@ for temp in temperature_celsius:
     k: float = celsius_a_kelvin(temp)
     print(f"{temp:>10.1f} {f:>12.1f} {k:>10.2f}")
 
-print("\n=== Fine esempi F13 ===")
+print("\n=== Fine esempi T13 ===")

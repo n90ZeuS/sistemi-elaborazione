@@ -1,28 +1,10 @@
 # Python Cheatsheet — Sistemi di Elaborazione
 
-> **Come usare questo documento:** ogni sezione corrisponde a una lezione frontale. Dopo la lezione *N*, avete a disposizione tutte le sezioni dalla 7 alla *N*. All'esame potete consultare l'intero cheatsheet (versione finale).
+Questo cheatsheet raccoglie in un unico documento la sintassi Python usata nel corso: tipi, operatori, strutture di controllo, strutture dati, funzioni, file, classi, NumPy e Pandas. Ogni sezione riporta tra parentesi la lezione in cui l'argomento viene spiegato. Serve come riferimento rapido mentre scrivete codice; le spiegazioni complete sono nelle dispense.
 
 ---
 
-## Indice progressivo
-
-| Dopo la lezione | Sezioni disponibili |
-|---|---|
-| F07 | 1 |
-| F08 | 1–2 |
-| F09 | 1–3 |
-| F10 | 1–4 |
-| F11 | 1–5 |
-| F12 | 1–6 |
-| F13 | 1–7 |
-| F14 | 1–8 |
-| F15 | 1–9 |
-| F16 | 1–10 |
-| F17 | 1–11 (versione completa) |
-
----
-
-## 1. Variabili, tipi e conversioni (F07)
+## 1. Variabili, tipi e conversioni (T07)
 
 ### Tipi fondamentali e type hints
 
@@ -90,7 +72,7 @@ print("ciao".upper())        # "CIAO"
 
 ---
 
-## 2. Operatori, I/O e condizionali (F08)
+## 2. Operatori, I/O e condizionali (T08)
 
 ### Operatori aritmetici
 
@@ -163,7 +145,7 @@ if 18 <= voto <= 30:
 
 ---
 
-## 3. Cicli (F09)
+## 3. Cicli (T09)
 
 ### Ciclo `for`
 
@@ -300,7 +282,7 @@ def statistiche(valori: list[float]) -> dict[str, float]:
 
 ---
 
-## 4. Comprehension, stringhe e formattazione (F10)
+## 4. Comprehension, stringhe e formattazione (T10)
 
 ### List comprehension
 
@@ -426,7 +408,7 @@ if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
 
 ---
 
-## 5. Liste e tuple (F11)
+## 5. Liste e tuple (T11)
 
 ### Creare liste
 
@@ -554,7 +536,7 @@ else:
 
 ---
 
-## 6. Dizionari, set e mutabilità (F12)
+## 6. Dizionari, set e mutabilità (T12)
 
 ### Creare dizionari
 
@@ -696,7 +678,7 @@ lista_a.append(5)    # lista_c NON è cambiata
 
 ---
 
-## 7. Funzioni — fondamenti (F13)
+## 7. Funzioni — fondamenti (T13)
 
 ### Definire e chiamare una funzione
 
@@ -814,7 +796,7 @@ def deviazione_standard(valori: list[float], campione: bool = True) -> float:
 
 ---
 
-## 8. Funzioni avanzate e moduli (F14)
+## 8. Funzioni avanzate e moduli (T14)
 
 ### Funzioni come oggetti
 
@@ -944,7 +926,7 @@ from mio_progetto.utils import pulisci_dati
 
 ---
 
-## 9. File, dati e gestione errori (F15)
+## 9. File, dati e gestione errori (T15)
 
 ### Leggere un file di testo
 
@@ -1096,7 +1078,7 @@ def calcola_media(voti: list[int]) -> float:
 
 ---
 
-## 10. Programmazione a oggetti (F16)
+## 10. Programmazione a oggetti (T16)
 
 ### Definire una classe
 
@@ -1233,7 +1215,7 @@ class Dipartimento:
 
 ---
 
-## 11. NumPy, Pandas e visualizzazione (F17)
+## 11. NumPy, Pandas e visualizzazione (T17)
 
 ### NumPy — creare array
 
@@ -1470,7 +1452,7 @@ plt.show()
 plt.bar(categorie, valori, color="steelblue", edgecolor="white")
 
 # Boxplot
-plt.boxplot([gruppo1, gruppo2, gruppo3], labels=["A", "B", "C"],
+plt.boxplot([gruppo1, gruppo2, gruppo3], tick_labels=["A", "B", "C"],
             patch_artist=True, boxprops=dict(facecolor="steelblue", alpha=0.5))
 ```
 

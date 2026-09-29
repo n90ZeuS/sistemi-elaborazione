@@ -1,4 +1,4 @@
-# F09 — Cicli
+# T09 — Cicli
 # Esercizi per la lezione frontale 9
 # Fattoriale, somma pari, numeri primi, tavola pitagorica, FizzBuzz, indovina il numero
 
@@ -339,4 +339,4 @@ print(f"    Max tentativi:   {max_tentativi}")
 print("  Esercizio 6 superato!\n")
 
 
-print("Tutti gli esercizi F09 completati con successo!")
+print("Tutti gli esercizi T09 completati con successo!")

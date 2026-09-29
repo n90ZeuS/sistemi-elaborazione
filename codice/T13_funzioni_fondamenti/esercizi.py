@@ -1,4 +1,4 @@
-# F13 — Funzioni: fondamenti
+# T13 — Funzioni: fondamenti
 # Esercizi per la lezione frontale 13
 
 import math
@@ -288,4 +288,4 @@ for chiave, valore in riep.items():
         print(f"{chiave:<20} {valore:>10.4f}")
 
 print("\nEsercizio 6 superato!")
-print("\n=== Tutti gli esercizi F13 completati! ===")
+print("\n=== Tutti gli esercizi T13 completati! ===")

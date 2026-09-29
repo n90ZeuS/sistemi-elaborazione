@@ -1,4 +1,4 @@
-# F14 — Funzioni avanzate, moduli
+# T14 — Funzioni avanzate, moduli
 # Esercizi per la lezione frontale 14
 
 import time
@@ -290,4 +290,4 @@ assert corr_neg < -0.95  # correlazione negativa forte
 print(f"Correlazione temperatura vs vendite_cappotti: {corr_neg:.4f}")
 
 print("\nEsercizio 3 superato!")
-print("\n=== Tutti gli esercizi F14 completati! ===")
+print("\n=== Tutti gli esercizi T14 completati! ===")

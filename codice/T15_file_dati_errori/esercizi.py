@@ -1,4 +1,4 @@
-# F15 — File, dati, errori
+# T15 — File, dati, errori
 # Esercizi per la lezione frontale 15
 
 import csv
@@ -351,4 +351,4 @@ print("Esercizio 3 superato!\n")
 # ============================================================
 shutil.rmtree(DIR_TEMP)
 print(f"Directory temporanea rimossa: {DIR_TEMP}")
-print("\n=== Tutti gli esercizi F15 completati! ===")
+print("\n=== Tutti gli esercizi T15 completati! ===")

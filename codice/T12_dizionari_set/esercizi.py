@@ -1,4 +1,4 @@
-# F12 — Dizionari, set e mutabilità
+# T12 — Dizionari, set e mutabilità
 # Esercizi per la lezione frontale 12
 
 # ============================================================
@@ -281,4 +281,4 @@ assert tutti == {"Marco", "Laura", "Giulia", "Anna", "Paolo", "Luca", "Sara"}
 print(f"Tutti gli studenti: {sorted(tutti)}")
 
 print("Bonus superato!\n")
-print("=== Tutti gli esercizi F12 completati! ===")
+print("=== Tutti gli esercizi T12 completati! ===")

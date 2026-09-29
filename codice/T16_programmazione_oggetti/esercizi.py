@@ -1,4 +1,4 @@
-# F16 — Programmazione a oggetti
+# T16 — Programmazione a oggetti
 # Esercizi per la lezione frontale 16
 
 from __future__ import annotations
@@ -494,4 +494,4 @@ rubrica2: Rubrica = Rubrica.da_lista(dati_import)
 assert len(rubrica2) == 2
 
 print("\nEsercizio 3 superato!")
-print("\n=== Tutti gli esercizi F16 completati! ===")
+print("\n=== Tutti gli esercizi T16 completati! ===")

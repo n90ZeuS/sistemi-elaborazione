@@ -5,7 +5,7 @@ Questo programma implementa una rubrica contatti con operazioni CRUD,
 persistenza su file JSON e interfaccia a menu.
 Include sia una versione procedurale che una versione orientata agli oggetti.
 
-Argomenti trattati: F07, F08, F09, F12, F13, F15, F16
+Argomenti trattati: T07, T08, T09, T12, T13, T15, T16
 """
 
 import json

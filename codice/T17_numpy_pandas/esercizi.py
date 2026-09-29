@@ -1,4 +1,4 @@
-# F17 — NumPy, Pandas, visualizzazione
+# T17 — NumPy, Pandas, visualizzazione
 # Esercizi per la lezione frontale 17
 
 from __future__ import annotations
@@ -241,7 +241,7 @@ if HAS_MATPLOTLIB and HAS_PANDAS and HAS_NUMPY:
     # --- 3.2 Box plot: distribuzione voti per materia ---
     fig2, ax2 = plt.subplots(figsize=(8, 5))
     dati_box: list[pd.Series] = [df["voto_mat"], df["voto_fis"], df["voto_inf"]]
-    bp = ax2.boxplot(dati_box, labels=["Matematica", "Fisica", "Informatica"],
+    bp = ax2.boxplot(dati_box, tick_labels=["Matematica", "Fisica", "Informatica"],
                      patch_artist=True)
     colors_box: list[str] = ["#81C784", "#64B5F6", "#FFB74D"]
     for patch, color in zip(bp["boxes"], colors_box):
@@ -321,4 +321,4 @@ else:
 import shutil
 shutil.rmtree(DIR_TEMP)
 print(f"\nDirectory temporanea rimossa: {DIR_TEMP}")
-print("\n=== Tutti gli esercizi F17 completati! ===")
+print("\n=== Tutti gli esercizi T17 completati! ===")

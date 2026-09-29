@@ -1,4 +1,4 @@
-# F11 — Liste e tuple
+# T11 — Liste e tuple
 # Esempi per la lezione frontale 11
 # Creazione, indicizzazione, slicing, metodi, copia shallow/deep, tuple, unpacking
 
@@ -335,4 +335,4 @@ for pos, stud in enumerate(per_media, start=1):
     print(f"    {pos}. {stud.nome} — media: {stud.media}")
 
 
-print("\nTutti gli assert passati — esempi F11 completati con successo!")
+print("\nTutti gli assert passati — esempi T11 completati con successo!")

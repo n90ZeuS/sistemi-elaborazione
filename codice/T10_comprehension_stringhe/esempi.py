@@ -1,4 +1,4 @@
-# F10 — Comprehension e stringhe
+# T10 — Comprehension e stringhe
 # Esempi per la lezione frontale 10
 # List/dict/set comprehension, metodi stringa, slicing, f-string avanzate
 
@@ -244,4 +244,4 @@ print(f"  Esadecimale: {255:x}")
 print(f"  Ottale: {255:o}")
 
 
-print("\nTutti gli assert passati — esempi F10 completati con successo!")
+print("\nTutti gli assert passati — esempi T10 completati con successo!")

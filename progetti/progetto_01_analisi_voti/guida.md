@@ -4,11 +4,11 @@
 
 In questo progetto costruirai un programma Python che analizza i voti di un esame universitario. Partendo da un file CSV con i dati degli studenti, imparerai a:
 
-- Leggere file CSV (**F07** - Input/Output su file)
-- Memorizzare dati strutturati in liste e dizionari (**F09** - Strutture dati)
-- Calcolare statistiche descrittive (**F11** - Librerie scientifiche di base)
-- Filtrare e selezionare dati con condizioni (**F13** - Controllo di flusso)
-- Scrivere funzioni riutilizzabili (**F15** - Funzioni)
+- Leggere file CSV (**T07** - Input/Output su file)
+- Memorizzare dati strutturati in liste e dizionari (**T09** - Strutture dati)
+- Calcolare statistiche descrittive (**T11** - Librerie scientifiche di base)
+- Filtrare e selezionare dati con condizioni (**T13** - Controllo di flusso)
+- Scrivere funzioni riutilizzabili (**T15** - Funzioni)
 
 Il file `dati_voti.csv` contiene i dati di 20 studenti con le colonne: matricola, nome, cognome, voto_scritto, voto_orale e voto_finale. Alcuni studenti hanno il valore "assente" e alcuni hanno voti insufficienti (sotto il 18).
 

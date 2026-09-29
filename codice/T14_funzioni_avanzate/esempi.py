@@ -1,4 +1,4 @@
-# F14 — Funzioni avanzate, moduli
+# T14 — Funzioni avanzate, moduli
 # Esempi per la lezione frontale 14
 
 import time
@@ -303,4 +303,4 @@ print(f"Il valore di __name__ in questo file è: {__name__!r}")
 if __name__ == "__main__":
     print("Questo codice viene eseguito solo se il file è lanciato direttamente.")
 
-print("\n=== Fine esempi F14 ===")
+print("\n=== Fine esempi T14 ===")

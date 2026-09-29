@@ -1,4 +1,4 @@
-# F08 — Operatori, I/O e condizionali
+# T08 — Operatori, I/O e condizionali
 # Esercizi per la lezione frontale 8
 # Calcolatrice, classificatore voti, anno bisestile, discriminante
 
@@ -269,4 +269,4 @@ for a_coeff, b_coeff, c_coeff in equazioni:
 print("  Esercizio 4 superato!\n")
 
 
-print("Tutti gli esercizi F08 completati con successo!")
+print("Tutti gli esercizi T08 completati con successo!")

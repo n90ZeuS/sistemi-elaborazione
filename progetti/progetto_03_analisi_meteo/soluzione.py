@@ -5,7 +5,7 @@ Questo programma analizza dati meteorologici di tre citta' italiane
 (Roma, Milano, Napoli) nel mese di gennaio 2024.
 Include analisi con Python base, NumPy, Pandas e visualizzazioni Matplotlib.
 
-Argomenti trattati: F09, F10, F11, F12, F13, F15, F17
+Argomenti trattati: T09, T10, T11, T12, T13, T15, T17
 """
 
 import csv
@@ -390,7 +390,7 @@ def crea_grafici(df, cartella_output):
     # Boxplot temperatura massima
     dati_box_max = [df[df['citta'] == c]['temperatura_max'].dropna().values
                     for c in citta_lista]
-    bp1 = axes[0].boxplot(dati_box_max, labels=citta_lista, patch_artist=True)
+    bp1 = axes[0].boxplot(dati_box_max, tick_labels=citta_lista, patch_artist=True)
     for patch, citta in zip(bp1['boxes'], citta_lista):
         patch.set_facecolor(colori.get(citta, '#95a5a6'))
         patch.set_alpha(0.6)
@@ -401,7 +401,7 @@ def crea_grafici(df, cartella_output):
     # Boxplot temperatura minima
     dati_box_min = [df[df['citta'] == c]['temperatura_min'].dropna().values
                     for c in citta_lista]
-    bp2 = axes[1].boxplot(dati_box_min, labels=citta_lista, patch_artist=True)
+    bp2 = axes[1].boxplot(dati_box_min, tick_labels=citta_lista, patch_artist=True)
     for patch, citta in zip(bp2['boxes'], citta_lista):
         patch.set_facecolor(colori.get(citta, '#95a5a6'))
         patch.set_alpha(0.6)

@@ -4,12 +4,12 @@
 
 In questo progetto analizzerai dati meteorologici di tre citta' italiane (Roma, Milano, Napoli) nel mese di gennaio 2024. Imparerai a gestire dati realistici con valori mancanti, a calcolare statistiche, e a creare visualizzazioni. Il progetto copre:
 
-- Lavorare con strutture dati complesse (**F09** - Strutture dati)
-- Gestire errori e dati mancanti (**F10** - Gestione errori)
-- Usare NumPy per calcoli numerici (**F11** - Librerie scientifiche)
-- Organizzare codice con funzioni (**F12**, **F15** - Funzioni)
-- Controllare il flusso con condizioni e cicli (**F13** - Controllo di flusso)
-- Usare Pandas e Matplotlib (**F17** - Analisi e visualizzazione dati)
+- Lavorare con strutture dati complesse (**T09** - Strutture dati)
+- Gestire errori e dati mancanti (**T10** - Gestione errori)
+- Usare NumPy per calcoli numerici (**T11** - Librerie scientifiche)
+- Organizzare codice con funzioni (**T12**, **T15** - Funzioni)
+- Controllare il flusso con condizioni e cicli (**T13** - Controllo di flusso)
+- Usare Pandas e Matplotlib (**T17** - Analisi e visualizzazione dati)
 
 Il file `dati_meteo.csv` contiene 90 righe (30 giorni x 3 citta') con le colonne: data, citta, temperatura_max, temperatura_min, pioggia_mm, umidita_pct. Alcuni valori sono mancanti (celle vuote).
 
@@ -686,7 +686,7 @@ def crea_grafici(df, cartella_output):
     # Boxplot temp max
     dati_box_max = [df[df['citta'] == c]['temperatura_max'].dropna().values
                     for c in citta_lista]
-    bp1 = axes[0].boxplot(dati_box_max, labels=citta_lista, patch_artist=True)
+    bp1 = axes[0].boxplot(dati_box_max, tick_labels=citta_lista, patch_artist=True)
     for patch, citta in zip(bp1['boxes'], citta_lista):
         patch.set_facecolor(colori.get(citta, '#95a5a6'))
         patch.set_alpha(0.6)
@@ -697,7 +697,7 @@ def crea_grafici(df, cartella_output):
     # Boxplot temp min
     dati_box_min = [df[df['citta'] == c]['temperatura_min'].dropna().values
                     for c in citta_lista]
-    bp2 = axes[1].boxplot(dati_box_min, labels=citta_lista, patch_artist=True)
+    bp2 = axes[1].boxplot(dati_box_min, tick_labels=citta_lista, patch_artist=True)
     for patch, citta in zip(bp2['boxes'], citta_lista):
         patch.set_facecolor(colori.get(citta, '#95a5a6'))
         patch.set_alpha(0.6)

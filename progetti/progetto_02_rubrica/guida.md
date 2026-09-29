@@ -4,12 +4,12 @@
 
 In questo progetto costruirai una rubrica contatti completa in Python. Partirai da una versione procedurale (con funzioni) e poi la convertirai in una versione orientata agli oggetti (con classi). Imparerai a:
 
-- Leggere e scrivere file JSON (**F07** - Input/Output su file)
-- Gestire input utente con cicli (**F08** - Input/Output interattivo)
-- Usare dizionari e liste per strutturare i dati (**F09** - Strutture dati)
-- Definire e usare funzioni (**F12** - Funzioni base, **F15** - Funzioni avanzate)
-- Controllare il flusso con menu e condizioni (**F13** - Controllo di flusso)
-- Definire classi e oggetti (**F16** - Programmazione orientata agli oggetti)
+- Leggere e scrivere file JSON (**T07** - Input/Output su file)
+- Gestire input utente con cicli (**T08** - Input/Output interattivo)
+- Usare dizionari e liste per strutturare i dati (**T09** - Strutture dati)
+- Definire e usare funzioni (**T12** - Funzioni base, **T15** - Funzioni avanzate)
+- Controllare il flusso con menu e condizioni (**T13** - Controllo di flusso)
+- Definire classi e oggetti (**T16** - Programmazione orientata agli oggetti)
 
 ---
 

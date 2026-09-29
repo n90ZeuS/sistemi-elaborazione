@@ -1,4 +1,4 @@
-# F17 — NumPy, Pandas, visualizzazione
+# T17 — NumPy, Pandas, visualizzazione
 # Esempi per la lezione frontale 17
 
 from __future__ import annotations
@@ -354,4 +354,4 @@ else:
 import shutil
 shutil.rmtree(DIR_TEMP)
 print(f"\nDirectory temporanea rimossa: {DIR_TEMP}")
-print("\n=== Fine esempi F17 ===")
+print("\n=== Fine esempi T17 ===")

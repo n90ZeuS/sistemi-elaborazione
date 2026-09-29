@@ -1,4 +1,4 @@
-# F11 — Liste e tuple
+# T11 — Liste e tuple
 # Esercizi per la lezione frontale 11
 # Rimozione duplicati, merge liste ordinate, record studenti, media mobile
 
@@ -298,4 +298,4 @@ print(f"  (la media mobile riduce la varianza, finestra piu' grande = piu' lisci
 print("  Esercizio 4 superato!\n")
 
 
-print("Tutti gli esercizi F11 completati con successo!")
+print("Tutti gli esercizi T11 completati con successo!")

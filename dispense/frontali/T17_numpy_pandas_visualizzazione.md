@@ -665,7 +665,7 @@ info: np.ndarray = rng.normal(27, 2, size=100)
 plt.figure(figsize=(7, 4))
 plt.boxplot(
     [stat1, stat2, info],
-    labels=["Stat I", "Stat II", "Informatica"],
+    tick_labels=["Stat I", "Stat II", "Informatica"],
     patch_artist=True,
     boxprops=dict(facecolor="steelblue", alpha=0.5)
 )

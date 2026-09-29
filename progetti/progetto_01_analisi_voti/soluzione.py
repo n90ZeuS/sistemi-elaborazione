@@ -5,7 +5,7 @@ Questo programma legge i voti degli studenti da un file CSV,
 calcola statistiche descrittive, classifica gli studenti
 e genera un report testuale salvato su file.
 
-Argomenti trattati: F07, F09, F11, F13, F15
+Argomenti trattati: T07, T09, T11, T13, T15
 """
 
 import csv
