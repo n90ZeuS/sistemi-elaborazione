@@ -4,8 +4,8 @@ Pubblicazione progressiva dei materiali del corso.
 
 Legge calendario.json (sorgente unica di date e assegnazioni) e allinea index.html:
   - aggiunge la colonna "Data" alle tabelle di lezioni e laboratori
-  - le lezioni gia' tenute restano cliccabili
-  - le lezioni future compaiono disattivate, con la loro data
+  - il materiale diventa cliccabile ANTICIPO giorni prima della lezione (default 7)
+  - le lezioni piu' lontane compaiono disattivate, con la loro data
 
 L'operazione e' reversibile e ripetibile: rilanciare lo script dopo aver
 modificato calendario.json riallinea tutto, riattivando o disattivando
@@ -15,6 +15,8 @@ Uso:
     python3 pianifica.py                 # usa la data odierna
     python3 pianifica.py --data 2026-11-15   # simula un'altra data
     python3 pianifica.py --controlla     # solo diagnostica, non scrive nulla
+    python3 pianifica.py --anticipo 3    # pubblica 3 giorni prima invece di 7
+    python3 pianifica.py --pota          # cancella i file bloccati (solo sulla copia del sito!)
 """
 
 from __future__ import annotations
@@ -23,6 +25,7 @@ import argparse
 import datetime as dt
 import json
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -32,6 +35,8 @@ INDEX = BASE / "index.html"
 CALENDARIO_MD = BASE / "calendario_lezioni.md"
 
 TITOLI_EXTRA = {"T00": "Introduzione al corso"}
+
+ANTICIPO_DEFAULT = 7   # giorni di anticipo con cui il materiale viene pubblicato
 
 GIORNI = ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"]
 MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
@@ -178,7 +183,12 @@ def aggiungi_intestazioni(html: str) -> str:
     return re.sub(r'<thead>.*?</thead>', sost, html, flags=re.DOTALL)
 
 
-def aggiorna_index(html: str, codici: dict[str, dict], oggi: dt.date) -> tuple[str, int, int]:
+def pubblicato(slot: dict, oggi: dt.date, anticipo: int) -> bool:
+    return slot["_data"] - dt.timedelta(days=anticipo) <= oggi
+
+
+def aggiorna_index(html: str, codici: dict[str, dict], oggi: dt.date,
+                   anticipo: int = ANTICIPO_DEFAULT) -> tuple[str, int, int]:
     html = aggiungi_intestazioni(html)
 
     # prossimo slot in programma, per evidenziarlo
@@ -200,10 +210,9 @@ def aggiorna_index(html: str, codici: dict[str, dict], oggi: dt.date) -> tuple[s
             classe = ""
         else:
             d = slot["_data"]
-            tenuta = d <= oggi
             cella = f'<td class="lesson-date">{data_breve(d)}</td>'
-            if tenuta:
-                classe = ""
+            if pubblicato(slot, oggi, anticipo):
+                classe = ' class="prossima"' if d == prossima else ""
                 pubbl += 1
             else:
                 corpo = blocca(corpo)
@@ -332,6 +341,28 @@ def _riscrivi_schema(testo: str, titoli: dict[str, str]) -> str:
     return testo.rstrip() + "\n\n---\n\n" + nuovo
 
 
+# ─── Potatura della copia del sito ───
+
+def pota(codici: dict[str, dict], oggi: dt.date, anticipo: int) -> None:
+    """Cancella file e cartelle il cui nome inizia con il codice di una
+    lezione non ancora pubblicata (es. presentazioni/T09_cicli.html,
+    codice/T09_cicli/, autovalutazione/T09_autovalutazione.md)."""
+    if (BASE / ".git").exists():
+        sys.exit("ERRORE: --pota va usato sulla copia del sito, non sul repository.")
+    bloccati = sorted(c for c, s in codici.items() if not pubblicato(s, oggi, anticipo))
+    rimossi = 0
+    for codice in bloccati:
+        for voce in sorted(BASE.rglob(f"{codice}_*"), key=lambda v: -len(v.parts)):
+            if not voce.exists():
+                continue
+            if voce.is_dir():
+                shutil.rmtree(voce)
+            else:
+                voce.unlink()
+            rimossi += 1
+    print(f"  Potatura: {rimossi} file/cartelle rimossi per {len(bloccati)} lezioni non pubblicate.")
+
+
 # ─── main ───
 
 def main() -> None:
@@ -340,6 +371,11 @@ def main() -> None:
     ap.add_argument("--controlla", action="store_true", help="solo diagnostica")
     ap.add_argument("--sblocca", action="store_true",
                     help="sblocca tutto il materiale, ignorando le date (uso locale)")
+    ap.add_argument("--anticipo", type=int, default=ANTICIPO_DEFAULT,
+                    help=f"giorni di anticipo della pubblicazione (default {ANTICIPO_DEFAULT})")
+    ap.add_argument("--pota", action="store_true",
+                    help="cancella i file delle lezioni non ancora pubblicate "
+                         "(da usare SOLO sulla copia del sito, mai sul repo)")
     args = ap.parse_args()
 
     sbloccato = args.sblocca
@@ -353,19 +389,20 @@ def main() -> None:
     if sbloccato:
         print("Pianificazione — TUTTO SBLOCCATO (date ignorate, solo per uso locale)")
     else:
-        print(f"Pianificazione — data di riferimento: {data_estesa(oggi)} {oggi.year}")
+        print(f"Pianificazione — data di riferimento: {data_estesa(oggi)} {oggi.year}, "
+              f"anticipo {args.anticipo} giorni")
     print("=" * 62)
 
     valido = controlla(slot, codici)
     if not valido:
         print("\n  Il calendario ha incoerenze (vedi sopra).")
     if args.controlla:
-        tenute = [c for c, s in codici.items() if s["_data"] <= oggi]
-        print(f"\n  Gia' tenute: {len(tenute)} -> {', '.join(sorted(tenute)) or 'nessuna'}")
+        pubbl = [c for c, s in codici.items() if pubblicato(s, oggi, args.anticipo)]
+        print(f"\n  Pubblicate: {len(pubbl)} -> {', '.join(sorted(pubbl)) or 'nessuna'}")
         sys.exit(0 if valido else 1)
 
     html = INDEX.read_text(encoding="utf-8")
-    nuovo, pubbl, fut = aggiorna_index(html, codici, oggi)
+    nuovo, pubbl, fut = aggiorna_index(html, codici, oggi, args.anticipo)
 
     if nuovo == html:
         print("\n  index.html gia' allineato, nessuna modifica.")
@@ -377,6 +414,9 @@ def main() -> None:
         print("  calendario_lezioni.md aggiornato: date e schema cronologico.")
     else:
         print("  calendario_lezioni.md gia' allineato.")
+
+    if args.pota:
+        pota(codici, oggi, args.anticipo)
 
     prossimi = [s for s in slot if s["_data"] >= oggi]
     if prossimi:
