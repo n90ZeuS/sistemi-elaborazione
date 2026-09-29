@@ -204,8 +204,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <h1>Errori comuni — T07: Primi passi in Python</h1>
 
 <h1>Errori comuni — T07: Primi passi in Python</h1>
-<p>Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione T07.</p>
-<p>Ogni errore include il codice sbagliato, la spiegazione e la correzione.</p>
+<p>Errori frequenti sugli argomenti della lezione T07. Per ogni errore: il codice sbagliato, il messaggio di Python (verificato con Python 3.13), la spiegazione e la correzione.</p>
 <hr>
 <h3>Errore 1: IndentationError — indentazione inaspettata</h3>
 <p><strong>Codice errato:</strong></p>
@@ -213,11 +212,11 @@ nav.bottom-nav a:hover { text-decoration: underline; }
   <span class="nb">print</span>(nome)</code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code>IndentationError: unexpected indent</code></pre>
-<p><strong>Perché è sbagliato:</strong> Python usa l'indentazione (gli spazi a inizio riga) per definire la struttura del codice. Se una riga è indentata senza motivo (cioè senza un <code>if</code>, <code>for</code>, <code>def</code> o simile che la precede), Python non sa come interpretarla e segnala un errore. A differenza di altri linguaggi, in Python gli spazi a inizio riga non sono solo estetici: hanno un significato preciso.</p>
+<p><strong>Perché è sbagliato:</strong> Python usa l'indentazione (gli spazi a inizio riga) per definire la struttura del codice. Una riga può essere indentata solo se fa parte di un blocco, cioè se segue un'istruzione che termina con <code>:</code> come <code>if</code> (che vedremo in T08). Qui <code>print(nome)</code> è indentata senza un blocco che la contenga, quindi Python segnala l'errore. In Python gli spazi a inizio riga fanno parte della sintassi.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code>nome <span class="op">=</span> <span class="st">&quot;Mario&quot;</span>
 <span class="nb">print</span>(nome)</code></pre>
-<p><strong>Regola da ricordare:</strong> In Python, non indentare mai una riga a meno che non faccia parte di un blocco (dopo <code>if</code>, <code>for</code>, <code>while</code>, <code>def</code>, ecc.).</p>
+<p><strong>Regola da ricordare:</strong> Si indenta una riga solo quando fa parte di un blocco (dopo <code>if</code>, e più avanti <code>for</code>, <code>while</code>, <code>def</code>). Le istruzioni del programma principale partono dalla colonna 1.</p>
 <hr>
 <h3>Errore 2: Usare <code>=</code> al posto di <code>==</code> per confrontare</h3>
 <p><strong>Codice errato:</strong></p>
@@ -225,26 +224,26 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <span class="kw">if</span> voto <span class="op">=</span> <span class="mi">30</span>:
     <span class="nb">print</span>(<span class="st">&quot;Complimenti!&quot;</span>)</code></pre>
 <p><strong>Cosa succede:</strong></p>
-<pre><code>SyntaxError: invalid syntax</code></pre>
-<p><strong>Perché è sbagliato:</strong> L'operatore <code>=</code> serve per assegnare un valore a una variabile, non per confrontare due valori. Per verificare se due valori sono uguali si usa <code>==</code> (doppio uguale). È un errore molto comune perché in matematica usiamo un solo <code>=</code> per l'uguaglianza.</p>
+<pre><code>SyntaxError: invalid syntax. Maybe you meant <span class="st">&#x27;==&#x27;</span> <span class="kw">or</span> <span class="st">&#x27;:=&#x27;</span> instead of <span class="st">&#x27;=&#x27;</span>?</code></pre>
+<p><strong>Perché è sbagliato:</strong> L'operatore <code>=</code> assegna un valore a una variabile, non confronta due valori. Per verificare se due valori sono uguali si usa <code>==</code> (doppio uguale). L'errore è frequente perché in matematica si usa un solo <code>=</code> per l'uguaglianza. L'istruzione <code>if</code> la vediamo in T08; il messaggio di Python suggerisce già la correzione (<code>:=</code> è un operatore diverso, che in questo corso non useremo).</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code>voto <span class="op">=</span> <span class="mi">30</span>
 <span class="kw">if</span> voto <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>:
     <span class="nb">print</span>(<span class="st">&quot;Complimenti!&quot;</span>)</code></pre>
-<p><strong>Regola da ricordare:</strong> Un solo <code>=</code> assegna, due <code>==</code> confrontano: sono due operazioni completamente diverse.</p>
+<p><strong>Regola da ricordare:</strong> Un solo <code>=</code> assegna, due <code>==</code> confrontano.</p>
 <hr>
 <h3>Errore 3: Tipo sbagliato nel casting — passare una stringa non numerica a <code>int()</code></h3>
 <p><strong>Codice errato:</strong></p>
 <pre><code>numero <span class="op">=</span> <span class="nb">int</span>(<span class="st">&quot;ciao&quot;</span>)</code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code><span class="nb">ValueError</span>: invalid literal <span class="kw">for</span> <span class="nb">int</span>() <span class="kw">with</span> base <span class="mi">10</span>: <span class="st">&#x27;ciao&#x27;</span></code></pre>
-<p><strong>Perché è sbagliato:</strong> La funzione <code>int()</code> può convertire in intero solo stringhe che contengono effettivamente un numero (come <code>"42"</code> o <code>"7"</code>). Se la stringa contiene lettere o altri caratteri non numerici, Python non sa come trasformarla in un numero e genera un errore. Lo stesso vale per <code>float()</code> con stringhe non numeriche.</p>
+<p><strong>Perché è sbagliato:</strong> La funzione <code>int()</code> può convertire in intero solo stringhe che contengono un numero intero (come <code>"42"</code> o <code>"-7"</code>). Se la stringa contiene lettere, o anche un punto decimale come <code>"3.14"</code>, Python genera un <code>ValueError</code>. Lo stesso vale per <code>float()</code> con stringhe non numeriche: <code>float("ciao")</code> dà <code>ValueError: could not convert string to float: 'ciao'</code>.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code><span class="cm"># Convertire una stringa che contiene un numero</span>
 numero <span class="op">=</span> <span class="nb">int</span>(<span class="st">&quot;42&quot;</span>)
 <span class="nb">print</span>(numero)  <span class="cm"># 42</span>
 
-<span class="cm"># Convertire un numero decimale in stringa</span>
+<span class="cm"># Convertire in float una stringa che contiene un numero decimale</span>
 valore <span class="op">=</span> <span class="nb">float</span>(<span class="st">&quot;3.14&quot;</span>)
 <span class="nb">print</span>(valore)  <span class="cm"># 3.14</span></code></pre>
 <p><strong>Regola da ricordare:</strong> <code>int()</code> e <code>float()</code> possono convertire solo stringhe che rappresentano numeri validi, altrimenti si ottiene un <code>ValueError</code>.</p>
@@ -255,7 +254,8 @@ valore <span class="op">=</span> <span class="nb">float</span>(<span class="st">
 <span class="nb">print</span>(messaggio)</code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code>SyntaxError: invalid syntax</code></pre>
-<p><strong>Perché è sbagliato:</strong> In Python, il testo (le stringhe) deve essere racchiuso tra virgolette, singole (<code>'...'</code>) o doppie (<code>"..."</code>). Senza virgolette, Python interpreta <code>Ciao</code> come un nome di variabile e non trova nessuna variabile con quel nome. Il testo scritto senza virgolette non viene riconosciuto come stringa.</p>
+<p>(Con Python 3.14 il messaggio è <code>SyntaxError: invalid syntax. Did you mean 'and'?</code>: il suggerimento non è pertinente.)</p>
+<p><strong>Perché è sbagliato:</strong> Il testo (le stringhe) va racchiuso tra virgolette, singole (<code>'...'</code>) o doppie (<code>"..."</code>). Senza virgolette Python legge <code>Ciao</code>, <code>a</code> e <code>tutti</code> come tre nomi di variabile scritti uno dopo l'altro, che non formano un'istruzione valida: per questo l'errore è di sintassi. Con una sola parola, per esempio <code>messaggio = Ciao</code>, la sintassi è valida ma Python cerca una variabile di nome <code>Ciao</code> e dà <code>NameError: name 'Ciao' is not defined</code>.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code>messaggio <span class="op">=</span> <span class="st">&quot;Ciao a tutti&quot;</span>
 <span class="nb">print</span>(messaggio)</code></pre>
@@ -266,31 +266,32 @@ valore <span class="op">=</span> <span class="nb">float</span>(<span class="st">
 <pre><code><span class="mi">1_voto</span> <span class="op">=</span> <span class="mi">28</span>
 media voti <span class="op">=</span> <span class="mi">25.5</span></code></pre>
 <p><strong>Cosa succede:</strong></p>
-<pre><code>SyntaxError: invalid syntax</code></pre>
-<p><strong>Perché è sbagliato:</strong> I nomi delle variabili in Python devono rispettare regole precise: non possono iniziare con un numero e non possono contenere spazi. <code>1_voto</code> inizia con un numero, <code>media voti</code> contiene uno spazio. Python li considera sintassi non valida e non riesce a interpretare la riga.</p>
+<pre><code>SyntaxError: invalid decimal literal</code></pre>
+<p>Python si ferma al primo errore, sulla riga <code>1_voto = 28</code>. Corretta quella, la riga <code>media voti = 25.5</code> dà <code>SyntaxError: invalid syntax</code>.</p>
+<p><strong>Perché è sbagliato:</strong> I nomi delle variabili non possono iniziare con una cifra e non possono contenere spazi. <code>1<em>voto</code> inizia con una cifra, quindi Python prova a leggerlo come numero (<code>1</em>000</code> è un numero valido) e non ci riesce. <code>media voti</code> contiene uno spazio, quindi sono due nomi separati.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code>voto_1 <span class="op">=</span> <span class="mi">28</span>
 media_voti <span class="op">=</span> <span class="mi">25.5</span></code></pre>
-<p><strong>Regola da ricordare:</strong> I nomi di variabile devono iniziare con una lettera o underscore, e non possono contenere spazi — usa l'underscore <code>_</code> per separare le parole.</p>
+<p><strong>Regola da ricordare:</strong> I nomi di variabile iniziano con una lettera o con <code><em></code> e non contengono spazi; per separare le parole si usa <code></em></code> (<code>media_voti</code>).</p>
 <hr>
 <h3>Errore 6: <code>print</code> senza parentesi</h3>
 <p><strong>Codice errato:</strong></p>
 <pre><code><span class="nb">print</span> <span class="st">&quot;Ciao mondo&quot;</span></code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code>SyntaxError: Missing parentheses <span class="kw">in</span> call to <span class="st">&#x27;print&#x27;</span>. Did you mean <span class="nb">print</span>(...)?</code></pre>
-<p><strong>Perché è sbagliato:</strong> In Python 3, <code>print</code> è una funzione e, come tutte le funzioni, richiede le parentesi per essere chiamata. Scrivere <code>print "Ciao"</code> era la sintassi di Python 2, ormai non più utilizzato. Molti tutorial vecchi o esempi trovati online usano ancora la vecchia sintassi.</p>
+<p><strong>Perché è sbagliato:</strong> In Python 3, <code>print</code> è una funzione e, come tutte le funzioni, richiede le parentesi per essere chiamata. Scrivere <code>print "Ciao"</code> era la sintassi di Python 2, non più supportato dal 2020. Molti tutorial ed esempi online usano ancora questa sintassi.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code><span class="nb">print</span>(<span class="st">&quot;Ciao mondo&quot;</span>)</code></pre>
 <p><strong>Regola da ricordare:</strong> <code>print()</code> è una funzione: il contenuto da stampare va sempre tra parentesi tonde.</p>
 <hr>
-<h3>Errore 7: Errore nell'uso delle f-string</h3>
+<h3>Errore 7: f-string senza <code>f</code> o senza graffe</h3>
 <p><strong>Codice errato:</strong></p>
 <pre><code>nome <span class="op">=</span> <span class="st">&quot;Giulia&quot;</span>
 eta <span class="op">=</span> <span class="mi">20</span>
-<span class="cm"># Errore 1: dimenticare la f prima delle virgolette</span>
+<span class="cm"># Manca la f prima delle virgolette</span>
 <span class="nb">print</span>(<span class="st">&quot;{nome} ha {eta} anni&quot;</span>)
 
-<span class="cm"># Errore 2: dimenticare le graffe</span>
+<span class="cm"># Mancano le graffe</span>
 <span class="nb">print</span>(<span class="st">f&quot;nome ha eta anni&quot;</span>)</code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code>{nome} ha {eta} anni

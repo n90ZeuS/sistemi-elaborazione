@@ -203,8 +203,8 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/T07_primi_passi_python.html">Dispensa</a> &bull; <a href="../errori_comuni/T07_errori.html">Errori comuni</a></nav>
 <h1>Autovalutazione — T07: Primi passi in Python</h1>
 
-<h1>Autovalutazione — T07: Variabili, Tipi e Stringhe</h1>
-<p>Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere <strong>prima</strong> di guardare la soluzione.</p>
+<h1>Autovalutazione — T07: Primi passi in Python</h1>
+<p>Per ogni esercizio scrivete la risposta prima di aprire la soluzione, poi verificatela eseguendo il codice.</p>
 <hr>
 <h2>Cosa stampa questo codice?</h2>
 <h3>Esercizio 1</h3>
@@ -216,7 +216,7 @@ x <span class="op">=</span> <span class="mi">20</span>
 <p><summary>Mostra la risposta</summary></p>
 <p><strong>Output:</strong></p>
 <pre><code><span class="mi">10</span></code></pre>
-<p><strong>Spiegazione:</strong> Quando scriviamo <code>y = x</code>, Python copia il <strong>valore</strong> di <code>x</code> (cioè <code>10</code>) e lo assegna a <code>y</code>. Da quel momento, <code>y</code> è un'etichetta indipendente che punta al valore <code>10</code>. Modificare <code>x</code> successivamente non ha alcun effetto su <code>y</code>.</p>
+<p><strong>Spiegazione:</strong> <code>y = x</code> non copia nulla: attacca l'etichetta <code>y</code> allo stesso oggetto <code>10</code> a cui punta <code>x</code>. Poi <code>x = 20</code> sposta l'etichetta <code>x</code> su un nuovo oggetto <code>20</code>; <code>y</code> resta attaccata a <code>10</code>. Riassegnare <code>x</code> non cambia l'oggetto a cui punta <code>y</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 2</h3>
@@ -231,7 +231,7 @@ b <span class="op">=</span> <span class="mi">3</span>
 <pre><code><span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#x27;str&#x27;</span><span class="op">&gt;</span>
 <span class="op">&lt;</span><span class="kw">class</span> <span class="st">&#x27;int&#x27;</span><span class="op">&gt;</span>
 <span class="mi">8</span></code></pre>
-<p><strong>Spiegazione:</strong> La variabile <code>a</code> contiene la <strong>stringa</strong> <code>"5"</code> (notare le virgolette), mentre <code>b</code> contiene l'<strong>intero</strong> <code>3</code>. La funzione <code>type()</code> ci mostra il tipo di ciascuna variabile. Con <code>int(a)</code> convertiamo la stringa <code>"5"</code> nell'intero <code>5</code>, e poi sommiamo <code>5 + 3 = 8</code>.</p>
+<p><strong>Spiegazione:</strong> La variabile <code>a</code> contiene la <strong>stringa</strong> <code>"5"</code> (notare le virgolette), mentre <code>b</code> contiene l'<strong>intero</strong> <code>3</code>. La funzione <code>type()</code> mostra il tipo dell'oggetto a cui punta ciascuna variabile. Con <code>int(a)</code> convertiamo la stringa <code>"5"</code> nell'intero <code>5</code>, e poi sommiamo <code>5 + 3 = 8</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 3</h3>
@@ -243,7 +243,7 @@ media <span class="op">=</span> <span class="mi">27.5</span>
 <p><summary>Mostra la risposta</summary></p>
 <p><strong>Output:</strong></p>
 <pre><code>Alice ha <span class="mi">22</span> anni e media <span class="mi">27.5</span></code></pre>
-<p><strong>Spiegazione:</strong> Le f-string (stringhe precedute da <code>f</code>) permettono di inserire variabili direttamente nel testo usando le parentesi graffe <code>{}</code>. Il formato <code>:.1f</code> indica di mostrare il numero float con <strong>1 cifra decimale</strong>. Siccome <code>27.5</code> ha già una sola cifra decimale, il risultato resta <code>27.5</code>.</p>
+<p><strong>Spiegazione:</strong> Le f-string (stringhe precedute da <code>f</code>) permettono di inserire variabili direttamente nel testo usando le parentesi graffe <code>{}</code>. Il formato <code>:.1f</code> indica di mostrare il numero float con <strong>1 cifra decimale</strong>. <code>27.5</code> ha già una sola cifra decimale, quindi il risultato resta <code>27.5</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 4</h3>
@@ -266,14 +266,14 @@ x <span class="op">=</span> <span class="nb">float</span>(x)
 <hr>
 <h2>Trova l'errore</h2>
 <h3>Esercizio 5</h3>
-<p>Il seguente codice dovrebbe convertire l'input utente in un numero intero, ma genera un errore. Quale?</p>
+<p>Il codice seguente dovrebbe convertire in intero un prezzo scritto come stringa, ma genera un errore. Quale?</p>
 <pre><code>prezzo <span class="op">=</span> <span class="st">&quot;3.14&quot;</span>
 prezzo_intero <span class="op">=</span> <span class="nb">int</span>(prezzo)
 <span class="nb">print</span>(prezzo_intero)</code></pre>
 <p><details></p>
 <p><summary>Mostra la risposta</summary></p>
 <p><strong>Errore:</strong> <code>ValueError: invalid literal for int() with base 10: '3.14'</code></p>
-<p><strong>Problema:</strong> <code>int()</code> non riesce a convertire direttamente una stringa che contiene un numero decimale. La stringa <code>"3.14"</code> non rappresenta un intero valido.</p>
+<p><strong>Problema:</strong> <code>int()</code> accetta solo stringhe che rappresentano un intero, come <code>"3"</code> o <code>"-12"</code>. La stringa <code>"3.14"</code> contiene un punto decimale, quindi non è un intero valido. (Con un numero, invece, <code>int(3.14)</code> funziona e restituisce <code>3</code>.)</p>
 <p><strong>Soluzione:</strong></p>
 <pre><code>prezzo <span class="op">=</span> <span class="st">&quot;3.14&quot;</span>
 prezzo_intero <span class="op">=</span> <span class="nb">int</span>(<span class="nb">float</span>(prezzo))  <span class="cm"># prima float, poi int</span>
@@ -288,15 +288,16 @@ prezzo_intero <span class="op">=</span> <span class="nb">int</span>(<span class=
 <p><details></p>
 <p><summary>Mostra la risposta</summary></p>
 <p><strong>Errore:</strong> <code>NameError: name 'Alice' is not defined</code></p>
+<p>Nelle versioni recenti di Python il messaggio può proseguire con un suggerimento, per esempio <code>Did you mean: 'slice'?</code>: Python propone un nome esistente simile, che qui non c'entra.</p>
 <p><strong>Problema:</strong> Mancano le virgolette attorno ad <code>Alice</code>. Senza virgolette, Python pensa che <code>Alice</code> sia il nome di una variabile (che non esiste).</p>
 <p><strong>Soluzione:</strong></p>
 <pre><code>nome <span class="op">=</span> <span class="st">&quot;Alice&quot;</span>
 <span class="nb">print</span>(<span class="st">&quot;Ciao, &quot;</span> <span class="op">+</span> nome)</code></pre>
-<p>Le stringhe di testo devono <strong>sempre</strong> essere racchiuse tra virgolette (singole <code>'...'</code> o doppie <code>"..."</code>).</p>
+<p>Il testo va racchiuso tra virgolette, singole <code>'...'</code> o doppie <code>"..."</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 7</h3>
-<p>Il codice dovrebbe stampare il risultato, ma produce un valore inatteso.</p>
+<p>Il codice dovrebbe calcolare il BMI (peso diviso altezza al quadrato), ma stampa un valore sbagliato. Perché?</p>
 <pre><code>peso <span class="op">=</span> <span class="mi">75</span>
 altezza <span class="op">=</span> <span class="mi">1.80</span>
 bmi <span class="op">=</span> peso <span class="op">/</span> altezza <span class="op">*</span> altezza
@@ -304,7 +305,7 @@ bmi <span class="op">=</span> peso <span class="op">/</span> altezza <span class
 <p><details></p>
 <p><summary>Mostra la risposta</summary></p>
 <p><strong>Output prodotto:</strong> <code>BMI: 75.0</code></p>
-<p><strong>Problema:</strong> La formula del BMI è <code>peso / altezza<em>*2</code>, cioè <code>peso / (altezza </em> altezza)</code>. Senza parentesi, Python esegue da sinistra a destra: prima <code>75 / 1.80 = 41.67</code>, poi <code>41.67 * 1.80 = 75.0</code>. Il risultato torna al peso originale!</p>
+<p><strong>Problema:</strong> La formula del BMI è <code>peso / altezza <em>* 2</code>, cioè <code>peso / (altezza </em> altezza)</code>. <code>/</code> e <code><em></code> hanno la stessa precedenza e senza parentesi vengono eseguiti da sinistra a destra: prima <code>75 / 1.80 = 41.67</code>, poi <code>41.67 </em> 1.80 = 75.0</code>. Il risultato è di nuovo il peso.</p>
 <p><strong>Soluzione:</strong></p>
 <pre><code>peso <span class="op">=</span> <span class="mi">75</span>
 altezza <span class="op">=</span> <span class="mi">1.80</span>
@@ -314,39 +315,30 @@ bmi <span class="op">=</span> peso <span class="op">/</span> (altezza <span clas
 <hr>
 <h2>Completa il codice</h2>
 <h3>Esercizio 8</h3>
-<p>Completa la funzione che restituisce una stringa formattata con le informazioni di uno studente.</p>
-<pre><code><span class="kw">def</span> <span class="fn">scheda_studente</span>(<span class="fn">nome</span>, matricola, media):
-    <span class="st">&quot;&quot;&quot;Restituisce una stringa con le info dello studente.
-
-    Esempio: scheda_studente(&quot;Luca&quot;, 12345, 26.7)
-    deve restituire: &quot;Studente: Luca (mat. 12345) — Media: 26.70&quot;
-    &quot;&quot;&quot;</span>
-    <span class="kw">return</span> _______________________________________________</code></pre>
+<p>Completate la f-string in modo che il programma stampi la riga indicata.</p>
+<pre><code>nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Luca&quot;</span>
+matricola: <span class="nb">int</span> <span class="op">=</span> <span class="mi">12345</span>
+media: <span class="nb">float</span> <span class="op">=</span> <span class="mi">26.7</span>
+<span class="nb">print</span>(<span class="st">f&quot;______________________________________&quot;</span>)
+<span class="cm"># deve stampare: Studente: Luca (mat. 12345) — Media: 26.70</span></code></pre>
 <p><details></p>
 <p><summary>Mostra la risposta</summary></p>
-<pre><code><span class="kw">def</span> <span class="fn">scheda_studente</span>(<span class="fn">nome</span>, matricola, media):
-    <span class="st">&quot;&quot;&quot;Restituisce una stringa con le info dello studente.&quot;&quot;&quot;</span>
-    <span class="kw">return</span> <span class="st">f&quot;Studente: {nome} (mat. {matricola}) — Media: {media:.2f}&quot;</span></code></pre>
-<p><strong>Spiegazione:</strong> Usiamo una f-string per comporre la stringa. Il formato <code>:.2f</code> formatta <code>media</code> con esattamente <strong>2 cifre decimali</strong>. Quindi <code>26.7</code> diventa <code>26.70</code>.</p>
+<pre><code><span class="nb">print</span>(<span class="st">f&quot;Studente: {nome} (mat. {matricola}) — Media: {media:.2f}&quot;</span>)</code></pre>
+<p><strong>Spiegazione:</strong> Ogni variabile va tra graffe <code>{}</code>. Il formato <code>:.2f</code> mostra <code>media</code> con 2 cifre decimali, quindi <code>26.7</code> diventa <code>26.70</code>. Con <code>:.1f</code> si otterrebbe <code>26.7</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 9</h3>
-<p>Completa la funzione che converte una temperatura da Fahrenheit a Celsius, restituendo un float arrotondato a 1 decimale.</p>
-<pre><code><span class="kw">def</span> <span class="fn">fahrenheit_a_celsius</span>(<span class="fn">temp_f</span>):
-    <span class="st">&quot;&quot;&quot;Converte Fahrenheit in Celsius.
-
-    Formula: C = (F - 32) * 5/9
-    Esempio: fahrenheit_a_celsius(98.6) deve restituire 37.0
-    &quot;&quot;&quot;</span>
-    temp_c <span class="op">=</span> _______________________
-    <span class="kw">return</span> <span class="nb">round</span>(_______, ___)</code></pre>
+<p>Completate il programma che converte una temperatura da Fahrenheit a Celsius con la formula C = (F - 32) × 5/9 e la stampa con 1 cifra decimale.</p>
+<pre><code>temp_f: <span class="nb">float</span> <span class="op">=</span> <span class="mi">98.6</span>
+temp_c: <span class="nb">float</span> <span class="op">=</span> _______________________
+<span class="nb">print</span>(<span class="st">f&quot;{temp_f}°F = {________}°C&quot;</span>)
+<span class="cm"># deve stampare: 98.6°F = 37.0°C</span></code></pre>
 <p><details></p>
 <p><summary>Mostra la risposta</summary></p>
-<pre><code><span class="kw">def</span> <span class="fn">fahrenheit_a_celsius</span>(<span class="fn">temp_f</span>):
-    <span class="st">&quot;&quot;&quot;Converte Fahrenheit in Celsius.&quot;&quot;&quot;</span>
-    temp_c <span class="op">=</span> (temp_f <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>
-    <span class="kw">return</span> <span class="nb">round</span>(temp_c, <span class="mi">1</span>)</code></pre>
-<p><strong>Spiegazione:</strong> Applichiamo la formula <code>(F - 32) * 5/9</code>. Le parentesi attorno a <code>temp_f - 32</code> sono fondamentali per la precedenza degli operatori. La funzione <code>round(valore, 1)</code> arrotonda a <strong>1 cifra decimale</strong>.</p>
+<pre><code>temp_f: <span class="nb">float</span> <span class="op">=</span> <span class="mi">98.6</span>
+temp_c: <span class="nb">float</span> <span class="op">=</span> (temp_f <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>
+<span class="nb">print</span>(<span class="st">f&quot;{temp_f}°F = {temp_c:.1f}°C&quot;</span>)</code></pre>
+<p><strong>Spiegazione:</strong> Le parentesi attorno a <code>temp<em>f - 32</code> servono perché la moltiplicazione viene eseguita prima della sottrazione: senza parentesi <code>temp</em>f - 32 * 5 / 9</code> vale <code>98.6 - 17.78 = 80.82</code>. Il formato <code>:.1f</code> mostra <code>temp_c</code> con una cifra decimale: <code>37.0</code>.</p>
 <p></details></p>
 <nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dal problema al programma: la sezione ponte</title>
+    <title>Dal problema al programma</title>
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
@@ -322,19 +322,19 @@
             <!-- ========== SLIDE 1: TITOLO ========== -->
             <section class="title-slide">
                 <h1>Dal problema al programma</h1>
-                <div class="subtitle">La sezione ponte</div>
+                <div class="subtitle">Algoritmi, linguaggi e Python</div>
                 <div class="course-info">
                     Sistemi di Elaborazione &mdash; Lezione 6<br>
                     Corso di Laurea in Scienze Statistiche
                 </div>
-                <aside class="notes">Questa lezione collega la parte hardware/architettura con la parte di programmazione. E' il cuore concettuale del corso.</aside>
+                <aside class="notes">Questa lezione viene dopo T03 (architettura) e prima di T07 (primi passi in Python): collega il funzionamento della macchina con la programmazione. Sistema operativo (T04) e rappresentazione dei dati (T05) si vedono più avanti.</aside>
             </section>
 
             <!-- ========== SLIDE 2: AGENDA ========== -->
             <section>
                 <h2>Agenda</h2>
                 <ol>
-                    <li class="fragment"><strong>L'algoritmo</strong> &mdash; definizione, storia, proprieta</li>
+                    <li class="fragment"><strong>L'algoritmo</strong> &mdash; definizione, storia, proprietà</li>
                     <li class="fragment"><strong>Programma e processo</strong> &mdash; dal testo statico all'esecuzione</li>
                     <li class="fragment"><strong>Pensiero computazionale</strong> &mdash; i quattro pilastri</li>
                     <li class="fragment"><strong>Strumenti di progettazione</strong> &mdash; pseudocodice, diagrammi, debugging</li>
@@ -342,7 +342,7 @@
                     <li class="fragment"><strong>Compilazione e interpretazione</strong></li>
                     <li class="fragment"><strong>Python</strong> &mdash; il nostro strumento</li>
                 </ol>
-                <aside class="notes">Panoramica dei temi della lezione. Oggi facciamo il salto: dalla macchina alla programmazione.</aside>
+                <aside class="notes">Panoramica dei temi della lezione: dalla macchina alla programmazione.</aside>
             </section>
 
             <!-- ========== SEZIONE: ALGORITMO ========== -->
@@ -358,9 +358,9 @@
                 <section>
                     <h2>Definizione di algoritmo</h2>
                     <div class="box box-blue">
-                        Un <strong>algoritmo</strong> e una sequenza finita e non ambigua di passi che, a partire da un insieme di dati in ingresso, produce un risultato in un tempo finito.
+                        Un <strong>algoritmo</strong> è una sequenza finita e non ambigua di passi che, a partire da un insieme di dati in ingresso, produce un risultato in un tempo finito.
                     </div>
-                    <p>Ogni parola conta:</p>
+                    <p>Le parti della definizione:</p>
                     <ul>
                         <li class="fragment"><strong>Sequenza finita</strong> &mdash; deve avere un numero finito di passi</li>
                         <li class="fragment"><strong>Non ambigua</strong> &mdash; ogni passo definito in modo preciso</li>
@@ -377,7 +377,7 @@
                             <p>La parola deriva da <strong>Muhammad ibn Musa al-Khwarizmi</strong> (ca. 780-850), matematico persiano della Casa della Saggezza a Baghdad.</p>
                             <ul>
                                 <li class="fragment">Il suo trattato diede il nome all'<strong>algebra</strong> (<em>al-jabr</em>)</li>
-                                <li class="fragment">La traduzione latina del suo nome (<em>Algoritmi</em>) origino la parola <strong>algoritmo</strong></li>
+                                <li class="fragment">Dalla forma latina del suo nome (<em>Algoritmi</em>), nella traduzione del suo trattato di aritmetica, deriva la parola <strong>algoritmo</strong></li>
                                 <li class="fragment">Descrisse procedure sistematiche e non ambigue per risolvere equazioni</li>
                             </ul>
                         </div>
@@ -393,44 +393,44 @@
                 <!-- Turing e il problema della fermata -->
                 <section>
                     <h2>Turing e i limiti del calcolo</h2>
-                    <p>La <strong>Macchina di Turing</strong>: un modello teorico che mostra che qualsiasi calcolo eseguibile da un essere umano seguendo regole fisse puo essere eseguito da questa macchina.</p>
+                    <p>La <strong>Macchina di Turing</strong> è un modello teorico. Secondo la <strong>tesi di Church-Turing</strong>, qualsiasi calcolo eseguibile da un essere umano seguendo regole fisse può essere eseguito da questa macchina.</p>
                     <div class="box box-red">
                         <h3>Il problema della fermata</h3>
-                        <p>Turing dimostro che <strong>esistono problemi che nessun algoritmo puo risolvere</strong>: e impossibile scrivere un programma che, dato un qualsiasi altro programma, determini se quest'ultimo terminera o andra in loop infinito.</p>
+                        <p>Turing dimostrò che <strong>esistono problemi che nessun algoritmo può risolvere</strong>: è impossibile scrivere un programma che, dato un qualsiasi altro programma, determini se quest'ultimo terminerà o andrà in loop infinito.</p>
                     </div>
-                    <aside class="notes">Questo risultato e fondamentale: mostra che ci sono limiti intrinseci a cio che si puo calcolare, indipendentemente dalla potenza del computer.</aside>
+                    <aside class="notes">Il risultato mostra che ci sono limiti a ciò che si può calcolare, indipendentemente dalla potenza del computer. La tesi di Church-Turing non è un teorema: non si può dimostrare perché "seguire regole fisse" non è un concetto matematico.</aside>
                 </section>
 
                 <!-- Cinque proprieta -->
                 <section>
-                    <h2>Le cinque proprieta fondamentali</h2>
+                    <h2>Le cinque proprietà</h2>
                     <table>
                         <thead>
-                            <tr><th>#</th><th>Proprieta</th><th>Significato</th></tr>
+                            <tr><th>#</th><th>Proprietà</th><th>Significato</th></tr>
                         </thead>
                         <tbody>
                             <tr class="fragment"><td>1</td><td><strong>Finitezza</strong></td><td>Deve terminare dopo un numero finito di passi</td></tr>
-                            <tr class="fragment"><td>2</td><td><strong>Determinismo</strong></td><td>Stesso input &rarr; stesso output, senza ambiguita</td></tr>
-                            <tr class="fragment"><td>3</td><td><strong>Input</strong></td><td>Riceve zero o piu dati in ingresso</td></tr>
-                            <tr class="fragment"><td>4</td><td><strong>Output</strong></td><td>Produce uno o piu risultati</td></tr>
-                            <tr class="fragment"><td>5</td><td><strong>Efficacia</strong></td><td>Ogni operazione e concretamente eseguibile in tempo finito</td></tr>
+                            <tr class="fragment"><td>2</td><td><strong>Determinismo</strong></td><td>Stesso input &rarr; stesso output, senza ambiguità</td></tr>
+                            <tr class="fragment"><td>3</td><td><strong>Input</strong></td><td>Riceve zero o più dati in ingresso</td></tr>
+                            <tr class="fragment"><td>4</td><td><strong>Output</strong></td><td>Produce uno o più risultati</td></tr>
+                            <tr class="fragment"><td>5</td><td><strong>Efficacia</strong></td><td>Ogni operazione è concretamente eseguibile in tempo finito</td></tr>
                         </tbody>
                     </table>
                     <div class="fragment box box-green">
-                        <strong>+ Generalita:</strong> un buon algoritmo risolve una <em>classe</em> di problemi, non un singolo caso.
+                        <strong>+ Generalità:</strong> un buon algoritmo risolve una <em>classe</em> di problemi, non un singolo caso.
                     </div>
                 </section>
 
                 <!-- Algoritmo di Euclide -->
                 <section>
                     <h2>Esempio: l'algoritmo di Euclide</h2>
-                    <p>Calcolo del <strong>Massimo Comun Divisore</strong> (MCD) &mdash; uno dei piu antichi algoritmi conosciuti (~300 a.C.)</p>
+                    <p>Calcolo del <strong>Massimo Comun Divisore</strong> (MCD) &mdash; uno dei più antichi algoritmi conosciuti (~300 a.C.)</p>
                     <pre><code class="language-plaintext">Dati due numeri a e b (con a > b > 0):
 1. Calcola r = resto della divisione di a per b
-2. Se r = 0, il MCD e b. FINE.
+2. Se r = 0, il MCD è b. FINE.
 3. Altrimenti, poni a = b e b = r, e torna al passo 1.</code></pre>
                     <div class="fragment box box-green">
-                        Verifica delle proprieta: <strong>finito</strong> (i numeri diminuiscono a ogni passo), <strong>deterministico</strong>, riceve <strong>input</strong>, produce <strong>output</strong>, <strong>generale</strong> (funziona per qualsiasi coppia di interi positivi).
+                        Verifica delle proprietà: <strong>finito</strong> (i numeri diminuiscono a ogni passo), <strong>deterministico</strong>, riceve <strong>input</strong>, produce <strong>output</strong>, <strong>generale</strong> (funziona per qualsiasi coppia di interi positivi).
                     </div>
                 </section>
 
@@ -448,7 +448,7 @@
                 <section>
                     <h2>Il programma</h2>
                     <div class="box box-blue">
-                        Un <strong>programma</strong> e un algoritmo espresso in un linguaggio comprensibile al computer. E un <strong>testo statico</strong>: un file che esiste sul disco anche quando nessuno lo esegue.
+                        Un <strong>programma</strong> è un algoritmo espresso in un linguaggio comprensibile al computer. È un <strong>testo statico</strong>: un file che esiste sul disco anche quando nessuno lo esegue.
                     </div>
                     <div class="fragment" style="margin-top: 1em;">
                         <h3>La formula di Wirth (1976)</h3>
@@ -457,14 +457,14 @@
                         </div>
                         <p style="margin-top: 0.5em;"><em>Niklaus Wirth (1934-2024), creatore del linguaggio Pascal</em></p>
                     </div>
-                    <aside class="notes">La scelta della struttura dati giusta e tanto importante quanto la scelta dell'algoritmo giusto.</aside>
+                    <aside class="notes">La scelta della struttura dati conta quanto la scelta dell'algoritmo.</aside>
                 </section>
 
                 <!-- Processo -->
                 <section>
                     <h2>Il processo</h2>
                     <div class="box box-blue">
-                        Un <strong>processo</strong> e un programma in esecuzione. E un'entita <strong>dinamica</strong>: ha uno stato che evolve nel tempo, occupa memoria, usa la CPU.
+                        Un <strong>processo</strong> è un programma in esecuzione. È un'entità <strong>dinamica</strong>: ha uno stato che evolve nel tempo, occupa memoria, usa la CPU.
                     </div>
                     <div class="columns fragment">
                         <div class="col">
@@ -480,7 +480,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="fragment">Lo stesso programma puo generare <strong>piu processi</strong>: due terminali che eseguono lo stesso script = un programma, due processi.</p>
+                    <p class="fragment">Lo stesso programma può generare <strong>più processi</strong>: due terminali che eseguono lo stesso script = un programma, due processi.</p>
                 </section>
 
                 <!-- Il percorso completo -->
@@ -514,10 +514,10 @@
                 <!-- L'idea -->
                 <section>
                     <h2>L'idea di Jeannette Wing</h2>
-                    <p><strong>Jeannette Wing</strong> (2006): il <strong>pensiero computazionale</strong> e una competenza fondamentale per tutti, al pari del leggere, scrivere e far di conto.</p>
+                    <p><strong>Jeannette Wing</strong> (2006): il <strong>pensiero computazionale</strong> è una competenza fondamentale per tutti, al pari del leggere, scrivere e far di conto.</p>
                     <div class="box box-yellow">
-                        Pensare computazionalmente <strong>non</strong> significa "pensare come un computer" &mdash; i computer non pensano.<br>
-                        Significa <strong>usare concetti e strategie dell'informatica</strong> per affrontare problemi complessi, in qualsiasi campo.
+                        Significa <strong>usare concetti e strategie dell'informatica</strong> per affrontare problemi complessi, in qualsiasi campo.<br>
+                        Non significa "pensare come un computer".
                     </div>
                 </section>
 
@@ -528,11 +528,11 @@
                         <div class="col">
                             <div class="fragment box box-blue">
                                 <h3>1. Decomposizione</h3>
-                                <p>Spezzare un problema complesso in sotto-problemi piu piccoli e gestibili</p>
+                                <p>Spezzare un problema complesso in sotto-problemi più piccoli e gestibili</p>
                             </div>
                             <div class="fragment box box-green">
                                 <h3>2. Pattern recognition</h3>
-                                <p>Individuare regolarita, somiglianze e strutture ricorrenti</p>
+                                <p>Individuare regolarità, somiglianze e strutture ricorrenti</p>
                             </div>
                         </div>
                         <div class="col">
@@ -546,7 +546,7 @@
                             </div>
                         </div>
                     </div>
-                    <aside class="notes">Per studenti di statistica: la decomposizione e il pattern recognition sono gia nel loro DNA. Un'analisi di dati si scompone in raccolta, pulizia, esplorazione, modellazione.</aside>
+                    <aside class="notes">La divisione in quattro pilastri è diffusa nella didattica ed è successiva all'articolo di Wing. Esempio statistico di decomposizione: un'analisi di dati si scompone in raccolta, pulizia, esplorazione, modellazione, interpretazione.</aside>
                 </section>
 
                 <!-- Problem solving strutturato -->
@@ -557,7 +557,7 @@
                         <li class="fragment"><strong>Pianificare la soluzione.</strong> Scegliere l'approccio, scomporre in passi.</li>
                         <li class="fragment"><strong>Implementare.</strong> Scrivere il codice, un pezzo alla volta.</li>
                         <li class="fragment"><strong>Verificare.</strong> Testare con casi noti, casi limite, casi patologici.</li>
-                        <li class="fragment"><strong>Riflettere.</strong> Il codice e chiaro? Efficiente? Si puo migliorare?</li>
+                        <li class="fragment"><strong>Rivedere.</strong> Il codice è chiaro? Efficiente? Si può migliorare?</li>
                     </ol>
                     <div class="fragment box box-green">
                         Questa sequenza ricalca il <strong>metodo scientifico</strong>: osservazione &rarr; ipotesi &rarr; esperimento &rarr; analisi &rarr; conclusione.
@@ -577,9 +577,9 @@
                 <!-- Pseudocodice -->
                 <section>
                     <h2>Pseudocodice</h2>
-                    <p>Descrizione dell'algoritmo in linguaggio naturale strutturato, a meta strada tra il pensiero e il codice.</p>
+                    <p>Descrizione dell'algoritmo in linguaggio naturale strutturato, a metà strada tra il pensiero e il codice.</p>
                     <pre><code class="language-plaintext">FUNZIONE calcolaMedia(voti)
-    SE la lista e vuota
+    SE la lista è vuota
         RESTITUISCI errore "lista vuota"
 
     somma &larr; 0
@@ -589,7 +589,7 @@
     media &larr; somma / lunghezza(voti)
     RESTITUISCI media</code></pre>
                     <div class="fragment box box-green">
-                        <strong>Vantaggio:</strong> e <strong>indipendente dal linguaggio</strong>. Concentra l'attenzione sulla logica, non sulla sintassi.
+                        <strong>Vantaggio:</strong> è <strong>indipendente dal linguaggio</strong>. Concentra l'attenzione sulla logica, non sulla sintassi.
                     </div>
                 </section>
 
@@ -603,7 +603,7 @@
                                 <thead><tr><th>Simbolo</th><th>Significato</th></tr></thead>
                                 <tbody>
                                     <tr><td><strong>Rettangolo</strong></td><td>Operazione / istruzione</td></tr>
-                                    <tr><td><strong>Rombo</strong></td><td>Decisione (si/no)</td></tr>
+                                    <tr><td><strong>Rombo</strong></td><td>Decisione (sì/no)</td></tr>
                                     <tr><td><strong>Parallelogramma</strong></td><td>Input / output</td></tr>
                                     <tr><td><strong>Ovale</strong></td><td>Inizio / fine</td></tr>
                                     <tr><td><strong>Frecce</strong></td><td>Flusso di esecuzione</td></tr>
@@ -613,7 +613,7 @@
                         <div class="col">
                             <div class="box box-yellow">
                                 <p>Utili per algoritmi semplici e per comunicare a persone non tecniche.</p>
-                                <p>Diventano <strong>controproducenti</strong> per algoritmi complessi (groviglio di frecce).</p>
+                                <p>Per algoritmi complessi diventano <strong>difficili da leggere</strong>: le frecce si moltiplicano e si incrociano.</p>
                             </div>
                         </div>
                     </div>
@@ -626,12 +626,12 @@
                         <div class="good">
                             <h3>Top-down</h3>
                             <p>Si parte dal problema complessivo e si <strong>scompone</strong> in sotto-problemi, fino ad arrivare a operazioni elementari.</p>
-                            <p><em>L'approccio naturale del pensiero.</em></p>
+                            <p><em>Utile in fase di progettazione.</em></p>
                         </div>
                         <div class="good">
                             <h3>Bottom-up</h3>
-                            <p>Si costruiscono prima i <strong>"mattoni" elementari</strong> (funzioni di base) e poi si assemblano in strutture piu complesse.</p>
-                            <p><em>L'approccio naturale della costruzione.</em></p>
+                            <p>Si costruiscono prima i <strong>"mattoni" elementari</strong> (funzioni di base) e poi si assemblano in strutture più complesse.</p>
+                            <p><em>Utile quando si scrive e si prova il codice.</em></p>
                         </div>
                     </div>
                     <div class="fragment box box-blue" style="margin-top: 0.8em;">
@@ -641,17 +641,17 @@
 
                 <!-- Debugging -->
                 <section>
-                    <h2>Il debugging come metodo scientifico</h2>
-                    <p>La ricerca e correzione degli errori non e "provare a caso". E un'indagine sistematica:</p>
+                    <h2>Il debugging</h2>
+                    <p>La ricerca e correzione degli errori si fa con un'indagine sistematica, non per tentativi a caso:</p>
                     <ol>
-                        <li class="fragment"><strong>Osserva</strong> il sintomo &mdash; cosa va storto? Qual e il messaggio di errore?</li>
+                        <li class="fragment"><strong>Osserva</strong> il sintomo &mdash; cosa va storto? Qual è il messaggio di errore?</li>
                         <li class="fragment"><strong>Formula un'ipotesi</strong> &mdash; cosa potrebbe causarlo?</li>
                         <li class="fragment"><strong>Progetta un esperimento</strong> &mdash; quale <code>print</code> o test devo inserire?</li>
                         <li class="fragment"><strong>Verifica</strong> i risultati e correggi</li>
                         <li class="fragment">Se l'ipotesi era sbagliata, <strong>formulane un'altra</strong></li>
                     </ol>
                     <div class="fragment box box-green">
-                        Per studenti di statistica, questo dovrebbe suonare familiare: e il <strong>metodo scientifico</strong> applicato al codice.
+                        È lo stesso schema del <strong>metodo scientifico</strong>, applicato al codice.
                     </div>
                 </section>
 
@@ -667,19 +667,19 @@
 
                 <!-- Codice macchina e Assembly -->
                 <section>
-                    <h2>I livelli piu bassi</h2>
+                    <h2>I livelli più bassi</h2>
                     <div class="columns">
                         <div class="col">
                             <div class="box box-red">
                                 <h3>Codice macchina</h3>
-                                <p>Sequenze di 0 e 1, l'unica cosa che la CPU capisce davvero.</p>
+                                <p>Sequenze di 0 e 1, l'unica forma che la CPU esegue direttamente.</p>
                                 <pre><code class="language-plaintext">10110000 01100001</code></pre>
                                 <p><em>Carica il valore 97 nel registro AL (x86)</em></p>
                             </div>
                         </div>
                         <div class="col">
                             <div class="box box-yellow">
-                                <h3>Assembly (anni '50)</h3>
+                                <h3>Assembly (fine anni '40)</h3>
                                 <p>Mnemonici leggibili al posto dei numeri.</p>
                                 <pre><code class="language-plaintext">MOV AL, 97</code></pre>
                                 <p><em>Legato alla specifica architettura: x86 &ne; ARM</em></p>
@@ -697,9 +697,9 @@
                         </thead>
                         <tbody>
                             <tr class="fragment"><td><strong>Fortran</strong></td><td>1957</td><td>John Backus (IBM)</td><td>Calcolo scientifico. Ancora usato nei supercomputer.</td></tr>
-                            <tr class="fragment"><td><strong>COBOL</strong></td><td>1959</td><td>Grace Hopper</td><td>Business. Nel 95% dei sistemi bancari mondiali.</td></tr>
-                            <tr class="fragment"><td><strong>C</strong></td><td>1972</td><td>Dennis Ritchie</td><td>Sistemi operativi. Unix, Linux, Python stesso sono scritti in C.</td></tr>
-                            <tr class="fragment"><td><strong>Python</strong></td><td>1991</td><td>Guido van Rossum</td><td>Generale. Dominante in data science e ML.</td></tr>
+                            <tr class="fragment"><td><strong>COBOL</strong></td><td>1959</td><td>Comitato CODASYL, Grace Hopper</td><td>Gestionale. Ancora usato in molti sistemi bancari.</td></tr>
+                            <tr class="fragment"><td><strong>C</strong></td><td>1972</td><td>Dennis Ritchie (Bell Labs)</td><td>Sistemi operativi. Unix, Linux e CPython sono scritti in C.</td></tr>
+                            <tr class="fragment"><td><strong>Python</strong></td><td>1991</td><td>Guido van Rossum</td><td>Generale. Molto diffuso in data science e machine learning.</td></tr>
                         </tbody>
                     </table>
                 </section>
@@ -715,11 +715,11 @@ float media = 0;
 for(int i=0; i&lt;n; i++) media += voti[i];
 media /= n;</code></pre>
                     <pre><code class="language-plaintext">; Assembly
-MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
+XOR EAX, EAX; XOR ECX, ECX; somma: ADD EAX, [ESI+ECX*4]; INC ECX; ...</code></pre>
                     <pre><code class="language-plaintext">; Macchina
 10001011 00000100 10001110 ...</code></pre>
                     <div class="fragment box box-blue">
-                        Non esiste "il linguaggio migliore": esiste il linguaggio piu adatto al <strong>contesto</strong>.
+                        Nessun linguaggio è il migliore in tutti i casi: la scelta dipende dal <strong>contesto</strong>.
                     </div>
                 </section>
 
@@ -731,14 +731,14 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                             <tr><th>Paradigma</th><th>Idea</th><th>Esempi</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td><strong>Imperativo</strong></td><td>"Fai questo, poi fai quello"</td><td>Il piu intuitivo</td></tr>
+                            <tr><td><strong>Imperativo</strong></td><td>"Fai questo, poi fai quello"</td><td>C, Fortran, Python</td></tr>
                             <tr><td><strong>Procedurale</strong></td><td>Imperativo + procedure/funzioni</td><td>C, Pascal</td></tr>
-                            <tr><td><strong>Orientato a oggetti</strong></td><td>Oggetti con proprieta e comportamenti</td><td>Java, C++, Python</td></tr>
+                            <tr><td><strong>Orientato a oggetti</strong></td><td>Oggetti con proprietà e comportamenti</td><td>Java, C++, Python</td></tr>
                             <tr><td><strong>Funzionale</strong></td><td>Trasformazioni di dati senza effetti collaterali</td><td>Haskell, Lisp</td></tr>
                         </tbody>
                     </table>
                     <div class="fragment box box-green">
-                        <strong>Python e multi-paradigma:</strong> supporta tutti questi approcci, lasciando liberta di scegliere lo stile piu adatto.
+                        <strong>Python è multi-paradigma:</strong> imperativo, procedurale, a oggetti, con elementi funzionali.
                     </div>
                 </section>
 
@@ -765,7 +765,7 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                                 <h3>Vantaggi</h3>
                                 <ul>
                                     <li>Programma veloce (codice nativo)</li>
-                                    <li>Errori di tipo scoperti prima</li>
+                                    <li>Molti errori scoperti prima</li>
                                 </ul>
                             </div>
                         </div>
@@ -773,7 +773,7 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                             <div class="box box-red">
                                 <h3>Svantaggi</h3>
                                 <ul>
-                                    <li>Ciclo edit-compile-run piu lungo</li>
+                                    <li>Ciclo edit-compile-run più lungo</li>
                                     <li>Eseguibile specifico per piattaforma</li>
                                 </ul>
                             </div>
@@ -785,7 +785,7 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                 <!-- Interpretazione -->
                 <section>
                     <h2>Interpretazione</h2>
-                    <p>L'<strong>interprete</strong> traduce e esegue il codice <strong>istruzione per istruzione</strong>, al momento dell'esecuzione.</p>
+                    <p>L'<strong>interprete</strong> traduce ed esegue il codice <strong>istruzione per istruzione</strong>, al momento dell'esecuzione.</p>
                     <div class="diagram">
                         Sorgente (.py) &rarr; [ Interprete ] &rarr; Risultato (passo per passo)
                     </div>
@@ -794,8 +794,8 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                             <div class="box box-green">
                                 <h3>Vantaggi</h3>
                                 <ul>
-                                    <li>Interattivita (REPL)</li>
-                                    <li>Portabilita</li>
+                                    <li>Interattività (REPL)</li>
+                                    <li>Portabilità</li>
                                     <li>Ciclo di sviluppo rapido</li>
                                 </ul>
                             </div>
@@ -804,8 +804,8 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                             <div class="box box-red">
                                 <h3>Svantaggi</h3>
                                 <ul>
-                                    <li>Piu lento in esecuzione</li>
-                                    <li>Errori scoperti solo a runtime</li>
+                                    <li>Più lento in esecuzione</li>
+                                    <li>Molti errori scoperti solo in esecuzione</li>
                                 </ul>
                             </div>
                         </div>
@@ -814,16 +814,16 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
 
                 <!-- Approcci ibridi -->
                 <section>
-                    <h2>La realta e sfumata</h2>
+                    <h2>Approcci ibridi</h2>
                     <p>Molti linguaggi moderni usano approcci <strong>ibridi</strong>:</p>
                     <div class="box box-blue">
                         <h3>Java</h3>
-                        <p>Codice &rarr; <strong>bytecode</strong> (compilazione) &rarr; <strong>JVM</strong> (interpretazione) + compilazione <strong>JIT</strong> al volo delle parti piu eseguite.</p>
+                        <p>Codice &rarr; <strong>bytecode</strong> (compilazione) &rarr; <strong>JVM</strong> (interpretazione) + compilazione <strong>JIT</strong> al volo delle parti più eseguite.</p>
                     </div>
                     <div class="fragment box box-yellow">
                         <h3>Python (CPython)</h3>
-                        <p>Codice .py &rarr; <strong>bytecode</strong> .pyc (compilazione automatica) &rarr; <strong>PVM</strong> (interpretazione del bytecode).</p>
-                        <p>Python e un linguaggio <strong>semi-compilato</strong>.</p>
+                        <p>Codice .py &rarr; <strong>bytecode</strong> (compilazione automatica) &rarr; <strong>PVM</strong> (interpretazione del bytecode).</p>
+                        <p>Python è un linguaggio <strong>semi-compilato</strong>.</p>
                     </div>
                 </section>
 
@@ -839,13 +839,13 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
 
                 <!-- Origini -->
                 <section>
-                    <h2>Chi e e da dove viene</h2>
+                    <h2>Origini di Python</h2>
                     <div class="columns">
                         <div class="col-60">
                             <ul>
                                 <li><strong>Guido van Rossum</strong>, programmatore olandese</li>
-                                <li class="fragment">Inizio lo sviluppo durante le vacanze di <strong>Natale 1989</strong> ad Amsterdam</li>
-                                <li class="fragment">Il nome non viene dal serpente ma dai <strong>Monty Python</strong>, il gruppo comico britannico</li>
+                                <li class="fragment">Iniziò lo sviluppo durante le vacanze di <strong>Natale 1989</strong> ad Amsterdam</li>
+                                <li class="fragment">Il nome viene dai <strong>Monty Python</strong>, il gruppo comico britannico, e non dal serpente</li>
                                 <li class="fragment">Prima release pubblica: <strong>1991</strong></li>
                             </ul>
                         </div>
@@ -865,15 +865,15 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                 <!-- CPython: come funziona -->
                 <section>
                     <h2>CPython: come funziona</h2>
-                    <p><strong>CPython</strong> e l'implementazione di riferimento, scritta in C.</p>
+                    <p><strong>CPython</strong> è l'implementazione di riferimento, scritta in C.</p>
                     <p>L'esecuzione avviene in tre fasi:</p>
                     <div class="diagram">
-                        Codice .py &rarr; <strong>1. Parsing</strong> (AST) &rarr; <strong>2. Compilazione</strong> (bytecode .pyc) &rarr; <strong>3. PVM</strong> (esecuzione)
+                        Codice .py &rarr; <strong>1. Parsing</strong> (AST) &rarr; <strong>2. Compilazione</strong> (bytecode) &rarr; <strong>3. PVM</strong> (esecuzione)
                     </div>
                     <div style="margin-top: 0.8em;">
                         <ol>
                             <li class="fragment"><strong>Parsing:</strong> analisi sintattica &rarr; Abstract Syntax Tree (AST)</li>
-                            <li class="fragment"><strong>Compilazione in bytecode:</strong> AST &rarr; file <code>.pyc</code> in <code>__pycache__/</code></li>
+                            <li class="fragment"><strong>Compilazione in bytecode:</strong> AST &rarr; bytecode (per i moduli importati, salvato in <code>.pyc</code> in <code>__pycache__/</code>)</li>
                             <li class="fragment"><strong>Esecuzione sulla PVM:</strong> la Python Virtual Machine interpreta il bytecode</li>
                         </ol>
                     </div>
@@ -883,13 +883,13 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                 <section>
                     <h2>Il GIL (Global Interpreter Lock)</h2>
                     <div class="box box-yellow">
-                        Il <strong>GIL</strong> e un blocco globale che impedisce a piu thread Python di eseguire bytecode contemporaneamente.
+                        Il <strong>GIL</strong> è un blocco globale che impedisce a più <strong>thread</strong> Python (flussi di esecuzione dentro un processo) di eseguire bytecode contemporaneamente.
                     </div>
                     <p class="fragment">Semplifica la gestione della memoria, ma <strong>limita il parallelismo</strong>.</p>
-                    <h3 class="fragment">Come aggirarlo:</h3>
+                    <h3 class="fragment">Soluzioni usuali:</h3>
                     <ul>
-                        <li class="fragment"><code>multiprocessing</code> &mdash; processi separati</li>
-                        <li class="fragment"><code>asyncio</code> &mdash; programmazione asincrona</li>
+                        <li class="fragment"><code>multiprocessing</code> &mdash; processi separati, ognuno con il suo GIL</li>
+                        <li class="fragment"><code>asyncio</code> &mdash; programmazione asincrona, utile per le attese di I/O</li>
                         <li class="fragment">Librerie che rilasciano il GIL (es. <strong>NumPy</strong>, quando esegue codice C)</li>
                     </ul>
                 </section>
@@ -903,36 +903,36 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                         </thead>
                         <tbody>
                             <tr><td><strong>CPython</strong> <span class="badge badge-blue">riferimento</span></td><td>Implementazione standard, scritta in C</td></tr>
-                            <tr><td><strong>PyPy</strong> <span class="badge badge-green">veloce</span></td><td>Con compilazione JIT, spesso 5-10x piu veloce</td></tr>
-                            <tr><td><strong>MicroPython</strong> <span class="badge badge-yellow">embedded</span></td><td>Python per microcontrollori (Arduino, ESP32)</td></tr>
-                            <tr><td><strong>Cython</strong> <span class="badge badge-red">ibrido</span></td><td>Codice simil-Python compilato in C</td></tr>
+                            <tr><td><strong>PyPy</strong> <span class="badge badge-green">veloce</span></td><td>Con compilazione JIT, spesso diverse volte più veloce</td></tr>
+                            <tr><td><strong>MicroPython</strong> <span class="badge badge-yellow">embedded</span></td><td>Python per microcontrollori (ESP32, Raspberry Pi Pico)</td></tr>
+                            <tr><td><strong>Cython</strong> <span class="badge badge-red">ibrido</span></td><td>Codice simile a Python tradotto in C e compilato</td></tr>
                         </tbody>
                     </table>
                 </section>
 
-                <!-- Perche Python e lento -->
+                <!-- Velocita di Python -->
                 <section>
-                    <h2>Python e "lento" &mdash; e spesso non importa</h2>
-                    <p>Python e circa 10-100x piu lento di C per il calcolo puro. Ma nella pratica:</p>
+                    <h2>Velocità di Python</h2>
+                    <p>Per il calcolo puro Python è circa 10-100 volte più lento di C. Nella pratica pesa meno:</p>
                     <ol>
-                        <li class="fragment">Il <strong>collo di bottiglia e la produttivita</strong> del programmatore, non la velocita del programma</li>
-                        <li class="fragment">Le parti intensive chiamano <strong>librerie C/Fortran</strong> (NumPy, Pandas, SciPy). Il codice Python e solo il collante.</li>
-                        <li class="fragment">La maggior parte del tempo si spende <strong>aspettando</strong> (I/O, rete, input utente), non calcolando</li>
+                        <li class="fragment">Spesso conta di più il <strong>tempo per scrivere</strong> il programma che il tempo di esecuzione</li>
+                        <li class="fragment">Le parti intensive chiamano <strong>librerie C/Fortran</strong> (NumPy, Pandas, SciPy). Il codice Python le chiama e collega i risultati.</li>
+                        <li class="fragment">Molti programmi passano gran parte del tempo <strong>in attesa</strong> (disco, rete, input utente)</li>
                     </ol>
                     <div class="fragment box box-green">
-                        Scrivere un'analisi in Python: <strong>ore</strong>. In C: <strong>giorni</strong>.
+                        La stessa analisi in Python richiede molte meno righe e molto meno tempo che in C.
                     </div>
                 </section>
 
                 <!-- Modalita di utilizzo -->
                 <section>
-                    <h2>Modalita di utilizzo</h2>
+                    <h2>Modalità di utilizzo</h2>
                     <div class="columns">
                         <div class="col">
                             <div class="box box-blue">
                                 <h3>REPL</h3>
                                 <p><em>Read-Eval-Print Loop</em></p>
-                                <p>Interprete interattivo. Perfetto per esplorare e provare.</p>
+                                <p>Interprete interattivo. Adatto per esplorare e provare.</p>
                             </div>
                         </div>
                         <div class="col">
@@ -945,7 +945,7 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                         <div class="col">
                             <div class="box box-yellow">
                                 <h3>Jupyter Notebook</h3>
-                                <p>Celle di codice, testo e visualizzazioni. Lo standard nella data science.</p>
+                                <p>Celle di codice, testo e grafici. Molto diffuso nella data science.</p>
                                 <p><em>Ju-lia + Py-thon + R</em></p>
                             </div>
                         </div>
@@ -954,16 +954,16 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
 
                 <!-- Perche Python per la statistica -->
                 <section>
-                    <h2>Perche Python per la statistica?</h2>
+                    <h2>Python per la statistica</h2>
                     <ul>
-                        <li class="fragment"><strong>Leggibilita:</strong> il codice si legge quasi come l'inglese</li>
+                        <li class="fragment"><strong>Leggibilità:</strong> il codice si legge quasi come l'inglese</li>
                         <li class="fragment"><strong>Ecosistema scientifico maturo:</strong> NumPy, Pandas, SciPy, scikit-learn, matplotlib</li>
-                        <li class="fragment"><strong>Comunita enorme:</strong> qualsiasi problema e gia stato risolto</li>
-                        <li class="fragment"><strong>Curva di apprendimento dolce:</strong> si e produttivi rapidamente</li>
+                        <li class="fragment"><strong>Comunità ampia:</strong> esempi e risposte per quasi tutti i problemi comuni</li>
+                        <li class="fragment"><strong>Curva di apprendimento dolce:</strong> si diventa produttivi in poco tempo</li>
                         <li class="fragment"><strong>Versatile:</strong> dallo scripting al web, dal machine learning all'automazione</li>
                     </ul>
                     <div class="fragment box box-blue">
-                        Python e: alto livello, multi-paradigma, interpretato (semi-compilato), tipizzato dinamicamente, garbage collected.
+                        Python è: alto livello, multi-paradigma, interpretato (semi-compilato), tipizzato dinamicamente, garbage collected.
                     </div>
                 </section>
 
@@ -986,20 +986,20 @@ MOV ECX, n; XOR EAX, EAX; loop: ADD EAX, [ESI+ECX*4]; ...</code></pre>
                     <div class="col">
                         <ul style="font-size: 0.85em;">
                             <li><strong>Pensiero computazionale:</strong> decomposizione, pattern, astrazione, algoritmo</li>
-                            <li><strong>Python:</strong> semi-compilato, multi-paradigma, ideale per la statistica</li>
+                            <li><strong>Python:</strong> semi-compilato, multi-paradigma, adatto alla statistica</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- ========== SLIDE: CITAZIONE FINALE ========== -->
+            <!-- ========== SLIDE: PROSSIMA LEZIONE ========== -->
             <section class="section-slide">
-                <h2>Da qui in poi, programmiamo.</h2>
-                <p style="margin-top: 1em;">Ma ricordate: prima di scrivere codice, <strong>pensate</strong>.</p>
-                <p>Il codice e l'ultimo passo, non il primo.</p>
+                <h2>Prossima lezione</h2>
+                <p style="margin-top: 1em;"><strong>T07 &mdash; Primi passi in Python</strong>: il primo programma, variabili, tipi di dato.</p>
+                <p>Prima di scrivere codice: capire il problema, progettare la soluzione, poi implementarla.</p>
                 <div class="box box-blue" style="display: inline-block; margin-top: 1.5em; text-align: center;">
                     <em>"Weeks of coding can save you hours of planning."</em><br>
-                    <span style="font-size: 0.8em;">&mdash; Detto popolare tra i programmatori</span>
+                    <span style="font-size: 0.8em;">&mdash; detto ironico tra i programmatori</span>
                 </div>
             </section>
 

@@ -1,6 +1,6 @@
-# Autovalutazione — T07: Variabili, Tipi e Stringhe
+# Autovalutazione — T07: Primi passi in Python
 
-Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere **prima** di guardare la soluzione.
+Per ogni esercizio scrivete la risposta prima di aprire la soluzione, poi verificatela eseguendo il codice.
 
 ---
 
@@ -23,7 +23,7 @@ print(y)
 10
 ```
 
-**Spiegazione:** Quando scriviamo `y = x`, Python copia il **valore** di `x` (cioè `10`) e lo assegna a `y`. Da quel momento, `y` è un'etichetta indipendente che punta al valore `10`. Modificare `x` successivamente non ha alcun effetto su `y`.
+**Spiegazione:** `y = x` non copia nulla: attacca l'etichetta `y` allo stesso oggetto `10` a cui punta `x`. Poi `x = 20` sposta l'etichetta `x` su un nuovo oggetto `20`; `y` resta attaccata a `10`. Riassegnare `x` non cambia l'oggetto a cui punta `y`.
 </details>
 
 ---
@@ -48,7 +48,7 @@ print(int(a) + b)
 8
 ```
 
-**Spiegazione:** La variabile `a` contiene la **stringa** `"5"` (notare le virgolette), mentre `b` contiene l'**intero** `3`. La funzione `type()` ci mostra il tipo di ciascuna variabile. Con `int(a)` convertiamo la stringa `"5"` nell'intero `5`, e poi sommiamo `5 + 3 = 8`.
+**Spiegazione:** La variabile `a` contiene la **stringa** `"5"` (notare le virgolette), mentre `b` contiene l'**intero** `3`. La funzione `type()` mostra il tipo dell'oggetto a cui punta ciascuna variabile. Con `int(a)` convertiamo la stringa `"5"` nell'intero `5`, e poi sommiamo `5 + 3 = 8`.
 </details>
 
 ---
@@ -70,7 +70,7 @@ print(f"{nome} ha {eta} anni e media {media:.1f}")
 Alice ha 22 anni e media 27.5
 ```
 
-**Spiegazione:** Le f-string (stringhe precedute da `f`) permettono di inserire variabili direttamente nel testo usando le parentesi graffe `{}`. Il formato `:.1f` indica di mostrare il numero float con **1 cifra decimale**. Siccome `27.5` ha già una sola cifra decimale, il risultato resta `27.5`.
+**Spiegazione:** Le f-string (stringhe precedute da `f`) permettono di inserire variabili direttamente nel testo usando le parentesi graffe `{}`. Il formato `:.1f` indica di mostrare il numero float con **1 cifra decimale**. `27.5` ha già una sola cifra decimale, quindi il risultato resta `27.5`.
 </details>
 
 ---
@@ -107,7 +107,7 @@ print(type(x))
 
 ### Esercizio 5
 
-Il seguente codice dovrebbe convertire l'input utente in un numero intero, ma genera un errore. Quale?
+Il codice seguente dovrebbe convertire in intero un prezzo scritto come stringa, ma genera un errore. Quale?
 
 ```python
 prezzo = "3.14"
@@ -120,7 +120,7 @@ print(prezzo_intero)
 
 **Errore:** `ValueError: invalid literal for int() with base 10: '3.14'`
 
-**Problema:** `int()` non riesce a convertire direttamente una stringa che contiene un numero decimale. La stringa `"3.14"` non rappresenta un intero valido.
+**Problema:** `int()` accetta solo stringhe che rappresentano un intero, come `"3"` o `"-12"`. La stringa `"3.14"` contiene un punto decimale, quindi non è un intero valido. (Con un numero, invece, `int(3.14)` funziona e restituisce `3`.)
 
 **Soluzione:**
 ```python
@@ -148,6 +148,8 @@ print("Ciao, " + nome)
 
 **Errore:** `NameError: name 'Alice' is not defined`
 
+Nelle versioni recenti di Python il messaggio può proseguire con un suggerimento, per esempio `Did you mean: 'slice'?`: Python propone un nome esistente simile, che qui non c'entra.
+
 **Problema:** Mancano le virgolette attorno ad `Alice`. Senza virgolette, Python pensa che `Alice` sia il nome di una variabile (che non esiste).
 
 **Soluzione:**
@@ -156,14 +158,14 @@ nome = "Alice"
 print("Ciao, " + nome)
 ```
 
-Le stringhe di testo devono **sempre** essere racchiuse tra virgolette (singole `'...'` o doppie `"..."`).
+Il testo va racchiuso tra virgolette, singole `'...'` o doppie `"..."`.
 </details>
 
 ---
 
 ### Esercizio 7
 
-Il codice dovrebbe stampare il risultato, ma produce un valore inatteso.
+Il codice dovrebbe calcolare il BMI (peso diviso altezza al quadrato), ma stampa un valore sbagliato. Perché?
 
 ```python
 peso = 75
@@ -177,7 +179,7 @@ print(f"BMI: {bmi:.1f}")
 
 **Output prodotto:** `BMI: 75.0`
 
-**Problema:** La formula del BMI è `peso / altezza**2`, cioè `peso / (altezza * altezza)`. Senza parentesi, Python esegue da sinistra a destra: prima `75 / 1.80 = 41.67`, poi `41.67 * 1.80 = 75.0`. Il risultato torna al peso originale!
+**Problema:** La formula del BMI è `peso / altezza ** 2`, cioè `peso / (altezza * altezza)`. `/` e `*` hanno la stessa precedenza e senza parentesi vengono eseguiti da sinistra a destra: prima `75 / 1.80 = 41.67`, poi `41.67 * 1.80 = 75.0`. Il risultato è di nuovo il peso.
 
 **Soluzione:**
 ```python
@@ -194,56 +196,47 @@ print(f"BMI: {bmi:.1f}")  # stampa BMI: 23.1
 
 ### Esercizio 8
 
-Completa la funzione che restituisce una stringa formattata con le informazioni di uno studente.
+Completate la f-string in modo che il programma stampi la riga indicata.
 
 ```python
-def scheda_studente(nome, matricola, media):
-    """Restituisce una stringa con le info dello studente.
-
-    Esempio: scheda_studente("Luca", 12345, 26.7)
-    deve restituire: "Studente: Luca (mat. 12345) — Media: 26.70"
-    """
-    return _______________________________________________
+nome: str = "Luca"
+matricola: int = 12345
+media: float = 26.7
+print(f"______________________________________")
+# deve stampare: Studente: Luca (mat. 12345) — Media: 26.70
 ```
 
 <details>
 <summary>Mostra la risposta</summary>
 
 ```python
-def scheda_studente(nome, matricola, media):
-    """Restituisce una stringa con le info dello studente."""
-    return f"Studente: {nome} (mat. {matricola}) — Media: {media:.2f}"
+print(f"Studente: {nome} (mat. {matricola}) — Media: {media:.2f}")
 ```
 
-**Spiegazione:** Usiamo una f-string per comporre la stringa. Il formato `:.2f` formatta `media` con esattamente **2 cifre decimali**. Quindi `26.7` diventa `26.70`.
+**Spiegazione:** Ogni variabile va tra graffe `{}`. Il formato `:.2f` mostra `media` con 2 cifre decimali, quindi `26.7` diventa `26.70`. Con `:.1f` si otterrebbe `26.7`.
 </details>
 
 ---
 
 ### Esercizio 9
 
-Completa la funzione che converte una temperatura da Fahrenheit a Celsius, restituendo un float arrotondato a 1 decimale.
+Completate il programma che converte una temperatura da Fahrenheit a Celsius con la formula C = (F - 32) × 5/9 e la stampa con 1 cifra decimale.
 
 ```python
-def fahrenheit_a_celsius(temp_f):
-    """Converte Fahrenheit in Celsius.
-
-    Formula: C = (F - 32) * 5/9
-    Esempio: fahrenheit_a_celsius(98.6) deve restituire 37.0
-    """
-    temp_c = _______________________
-    return round(_______, ___)
+temp_f: float = 98.6
+temp_c: float = _______________________
+print(f"{temp_f}°F = {________}°C")
+# deve stampare: 98.6°F = 37.0°C
 ```
 
 <details>
 <summary>Mostra la risposta</summary>
 
 ```python
-def fahrenheit_a_celsius(temp_f):
-    """Converte Fahrenheit in Celsius."""
-    temp_c = (temp_f - 32) * 5 / 9
-    return round(temp_c, 1)
+temp_f: float = 98.6
+temp_c: float = (temp_f - 32) * 5 / 9
+print(f"{temp_f}°F = {temp_c:.1f}°C")
 ```
 
-**Spiegazione:** Applichiamo la formula `(F - 32) * 5/9`. Le parentesi attorno a `temp_f - 32` sono fondamentali per la precedenza degli operatori. La funzione `round(valore, 1)` arrotonda a **1 cifra decimale**.
+**Spiegazione:** Le parentesi attorno a `temp_f - 32` servono perché la moltiplicazione viene eseguita prima della sottrazione: senza parentesi `temp_f - 32 * 5 / 9` vale `98.6 - 17.78 = 80.82`. Il formato `:.1f` mostra `temp_c` con una cifra decimale: `37.0`.
 </details>

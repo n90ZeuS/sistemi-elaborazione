@@ -2,40 +2,39 @@
 
 ## Introduzione
 
-Oggi scriviamo il nostro primo codice Python. Dopo cinque lezioni di fondamenti e una di ponte, avete tutti gli strumenti concettuali per capire non solo *come* si programma, ma *perché* le cose funzionano in un certo modo. Quando vedrete che Python usa `=` per l'assegnamento, saprete che dietro c'è un'operazione che modifica un riferimento in memoria. Quando vedrete che `0.1 + 0.2` non è esattamente `0.3`, saprete perché.
-
-Cominciamo.
+Nella lezione precedente (T06) abbiamo visto come si passa da un problema a un algoritmo e da un algoritmo a un programma, e che cosa fa l'interprete Python. Oggi scriviamo il primo codice Python: il programma "Hello, World!", le regole di indentazione e i commenti, le variabili e i tipi di dato fondamentali (`int`, `float`, `str`, `bool`, `None`).
 
 ---
 
 ## Il primo programma
 
-Per tradizione inaugurata nel 1978 da Brian Kernighan e Dennis Ritchie nel libro *"The C Programming Language"*, il primo programma in un nuovo linguaggio stampa il messaggio "Hello, World!":
+Per una tradizione resa popolare nel 1978 da Brian Kernighan e Dennis Ritchie con il libro *"The C Programming Language"*, il primo programma in un nuovo linguaggio stampa il messaggio "Hello, World!":
 
 ```python
 print("Hello, World!")
 ```
 
-Una sola riga, ma c'è molto da osservare:
+In questa riga ci sono già tre elementi da notare:
 
 - `print` è una **funzione** built-in di Python. Le funzioni si chiamano mettendo gli argomenti tra parentesi.
 - `"Hello, World!"` è una **stringa**: una sequenza di caratteri racchiusa tra virgolette (doppie `"` o singole `'`, in Python sono equivalenti).
-- Non c'è punto e virgola alla fine della riga. In Python, ogni istruzione occupa una riga (salvo eccezioni esplicite). Questo riduce il "rumore visivo" del codice.
+- Non c'è punto e virgola alla fine della riga. In Python, di norma, ogni istruzione occupa una riga e la fine della riga chiude l'istruzione.
 
 ### L'indentazione come sintassi
 
-In molti linguaggi (C, Java, JavaScript), i blocchi di codice sono delimitati da parentesi graffe `{}`. L'indentazione è opzionale e puramente estetica. In Python, **l'indentazione È la sintassi**: il livello di indentazione determina quali istruzioni appartengono a quale blocco.
+In molti linguaggi (C, Java, JavaScript), i blocchi di codice sono delimitati da parentesi graffe `{}` e l'indentazione serve solo alla leggibilità. In Python **l'indentazione fa parte della sintassi**: il livello di indentazione determina quali istruzioni appartengono a quale blocco.
 
 ```python
+temperatura: float = 32.0
 if temperatura > 30:
     print("Fa caldo!")      # questo è dentro l'if
     print("Accendi il ventilatore")  # anche questo
 print("Fine del programma")  # questo è fuori dall'if
 ```
 
-Questa è una scelta deliberata di Guido van Rossum: forza tutti a scrivere codice leggibile. Non esiste codice Python "funzionante ma illeggibile per l'indentazione" — se l'indentazione è sbagliata, il programma non funziona.
+È una scelta di Guido van Rossum, l'autore di Python: obbliga a scrivere il codice con un'indentazione ordinata. Un'indentazione incoerente produce un errore (`IndentationError`); un'istruzione indentata al livello sbagliato può invece finire nel blocco sbagliato, e il programma fa una cosa diversa da quella voluta. L'`if` verrà spiegato nella prossima lezione (T08).
 
-La convenzione è usare **4 spazi** per livello di indentazione (mai tabulazioni, per evitare ambiguità).
+La convenzione (PEP 8) è usare **4 spazi** per livello di indentazione, senza tabulazioni: mescolare spazi e tabulazioni nello stesso blocco produce un errore. VS Code inserisce 4 spazi quando si preme il tasto Tab in un file Python.
 
 ### I commenti
 
@@ -46,7 +45,7 @@ I commenti iniziano con `#` e vengono ignorati dall'interprete:
 temperatura: float = 23.5  # Commento a fine riga
 ```
 
-I commenti servono per spiegare il **perché**, non il **cosa**. Il codice stesso deve essere abbastanza chiaro da spiegare cosa fa. Un buon commento spiega l'intenzione, il ragionamento, o avverte di una trappola:
+Un commento utile spiega il **perché** di un'istruzione: l'intenzione, il ragionamento o un caso particolare. Che cosa fa l'istruzione si dovrebbe capire dal codice stesso, con nomi scelti bene:
 
 ```python
 # MALE: commento inutile, ripete il codice
@@ -60,11 +59,11 @@ i = i + 1  # salta l'intestazione del CSV (la prima riga non contiene dati)
 
 ## Variabili e assegnamento
 
-### Il modello mentale giusto
+### Variabili come nomi
 
-In molti corsi introduttivi, le variabili vengono presentate come "scatole che contengono valori". Questo modello è sbagliato in Python e porta a fraintendimenti.
+In molti corsi introduttivi le variabili vengono presentate come "scatole che contengono valori". Per Python questo modello è impreciso e porta a fraintendimenti.
 
-In Python, una variabile è un **nome (etichetta) che punta a un oggetto in memoria**. L'operatore `=` non "mette un valore in una scatola" — **attacca un'etichetta a un oggetto**.
+In Python una variabile è un **nome (etichetta) che si riferisce a un oggetto in memoria**. L'operatore `=` collega il nome a sinistra all'oggetto ottenuto valutando l'espressione a destra: **attacca un'etichetta a un oggetto**.
 
 ```python
 x: int = 42
@@ -81,10 +80,10 @@ Non viene creata una copia: `y` diventa un'altra etichetta attaccata **allo stes
 ```python
 x: int = 42
 y: int = x
-print(x is y)  # True: sono lo stesso oggetto!
+print(x is y)  # True: sono lo stesso oggetto
 ```
 
-Questo modello diventerà cruciale quando parleremo di liste e mutabilità — per ora, tenetelo a mente.
+L'operatore `is` restituisce `True` quando due nomi si riferiscono allo stesso oggetto. Questo modello servirà quando parleremo di liste e mutabilità.
 
 ### Assegnamento
 
@@ -93,12 +92,15 @@ L'operatore `=` è l'assegnamento. **Non è l'uguaglianza matematica** (per quel
 ```python
 contatore: int = 0          # assegnamento: contatore punta a 0
 contatore = contatore + 1   # riassegnamento: contatore ora punta a 1
-# In matematica "x = x + 1" è assurdo; in programmazione è normalissimo.
+# In matematica "x = x + 1" non ha soluzione; qui significa:
+# calcola contatore + 1 e collega il nome contatore al risultato.
 ```
 
 Esistono anche gli **operatori di assegnamento composto**:
 
 ```python
+totale: int = 100
+prodotto: int = 3
 contatore += 1   # equivale a contatore = contatore + 1
 totale -= 10     # equivale a totale = totale - 10
 prodotto *= 2    # equivale a prodotto = prodotto * 2
@@ -106,18 +108,20 @@ prodotto *= 2    # equivale a prodotto = prodotto * 2
 
 ### Assegnamento multiplo e unpacking
 
-Python permette assegnamenti eleganti:
+Python permette di assegnare più nomi in una sola istruzione:
 
 ```python
-# Assegnamento multiplo
-a: int = b: int = c: int = 0  # tutti puntano a 0
+# Assegnamento multiplo: tre nomi collegati allo stesso oggetto 0
+a = b = c = 0
 
-# In realtà, la forma più pythonica è:
-a, b, c = 1, 2, 3  # unpacking: a=1, b=2, c=3
+# Unpacking: a ogni nome a sinistra va il valore corrispondente a destra
+a, b, c = 1, 2, 3  # a=1, b=2, c=3
 
-# Scambio di variabili (in altri linguaggi serve una variabile temporanea!)
-a, b = b, a  # Python lo fa in un passo
+# Scambio di variabili: in altri linguaggi serve una variabile temporanea
+a, b = b, a  # ora a=2, b=1
 ```
+
+In queste forme non si possono scrivere i type hints (`a: int = b: int = 0` è un `SyntaxError`); se servono, si annotano i nomi in righe separate.
 
 ### Naming conventions (PEP 8)
 
@@ -139,7 +143,7 @@ a, b = b, a  # Python lo fa in un passo
       pass
   ```
 
-La regola più importante: **i nomi devono essere significativi**. Il nome di una variabile è una forma di documentazione:
+Oltre allo stile, conta il significato: **i nomi devono descrivere il contenuto**. Il nome di una variabile è una forma di documentazione:
 
 ```python
 # MALE: cosa significano x, y, z?
@@ -161,17 +165,17 @@ In Python, il **tipo appartiene all'oggetto, non alla variabile**. Una variabile
 
 ```python
 x = 42        # x punta a un int
-x = "ciao"    # ora x punta a una str (perfettamente legale)
+x = "ciao"    # ora x punta a una str (è consentito)
 ```
 
-Questo è diverso da linguaggi come C o Java, dove ogni variabile ha un tipo fisso dichiarato. La tipizzazione dinamica rende Python flessibile, ma può nascondere errori. Per questo useremo i **type hints**.
+Questo è diverso da linguaggi come C o Java, dove ogni variabile ha un tipo fisso dichiarato. La tipizzazione dinamica rende Python flessibile, ma alcuni errori di tipo emergono solo durante l'esecuzione. Per rendere esplicito il tipo atteso useremo i **type hints**.
 
 ### Type hints: il nostro approccio
 
-I type hints sono annotazioni **volontarie** che dichiarano il tipo atteso. Non cambiano il comportamento del programma, ma:
-- Rendono il codice **più leggibile** (capisco subito cosa contiene ogni variabile)
-- Permettono agli strumenti (**mypy**) di verificare la coerenza prima dell'esecuzione
-- Forzano a **pensare ai tipi**, una disciplina mentale preziosa
+I type hints sono annotazioni **facoltative** che dichiarano il tipo atteso. L'interprete non le controlla: `eta: int = "venti"` viene eseguito senza errori. Le annotazioni però:
+- rendono il codice **più leggibile** (si vede subito che cosa contiene ogni variabile);
+- permettono a strumenti come **mypy** (o all'editor) di segnalare incoerenze prima dell'esecuzione;
+- obbligano a **decidere il tipo** di ogni variabile mentre si scrive il codice.
 
 ```python
 # Senza type hints (funziona, ma meno chiaro):
@@ -186,7 +190,7 @@ media: float = 27.5
 iscritto: bool = True
 ```
 
-Li useremo **sempre**, fin da questa lezione. Non sono un fardello — sono una buona abitudine che vi renderà programmatori migliori.
+In questo corso li useremo **sempre**, a partire da questa lezione.
 
 ### I tipi fondamentali
 
@@ -198,7 +202,7 @@ popolazione: int = 59_000_000  # underscore come separatore delle migliaia (igno
 temperatura: int = -5
 ```
 
-Come visto nella lezione sulla rappresentazione dei dati, gli interi Python hanno **precisione arbitraria**: nessun overflow, nessun limite di dimensione.
+Gli interi Python hanno **precisione arbitraria**: non vanno in overflow e la loro dimensione è limitata solo dalla memoria disponibile. In C o Java, invece, un intero occupa un numero fisso di bit (ad esempio 32 o 64) e ha quindi un valore massimo; ne parleremo nella lezione sulla rappresentazione dei dati (T05).
 
 ```python
 grande: int = 2 ** 100  # funziona perfettamente
@@ -214,7 +218,14 @@ temperatura: float = -2.5
 notazione_scientifica: float = 6.022e23  # 6.022 × 10²³
 ```
 
-Sono numeri IEEE 754 a double precision (64 bit, ~15-16 cifre significative). Ricordate: `0.1 + 0.2 != 0.3`.
+Sono numeri IEEE 754 a doppia precisione (64 bit, circa 15-16 cifre decimali significative). Molti numeri decimali, come 0.1, non hanno una rappresentazione esatta in binario, quindi i calcoli possono avere piccoli errori di arrotondamento:
+
+```python
+print(0.1 + 0.2)         # 0.30000000000000004
+print(0.1 + 0.2 == 0.3)  # False
+```
+
+Il motivo verrà spiegato nella lezione sulla rappresentazione dei dati (T05).
 
 #### `str` — Stringhe
 
@@ -235,7 +246,7 @@ iscritto: bool = True
 esame_superato: bool = False
 ```
 
-`True` e `False` (con la maiuscola!). Un fatto curioso: `bool` è un sottotipo di `int`. `True` vale `1` e `False` vale `0`:
+`True` e `False` si scrivono con l'iniziale maiuscola. `bool` è un sottotipo di `int`: `True` vale `1` e `False` vale `0`:
 
 ```python
 print(True + True)   # 2
@@ -243,7 +254,7 @@ print(True * 10)     # 10
 print(False + 5)     # 5
 ```
 
-Perché? Retrocompatibilità e praticità: permette di contare gli elementi veri in una sequenza con `sum()`.
+Il motivo è storico: il tipo `bool` è stato aggiunto in Python 2.3, quando si usavano già 1 e 0 come valori di verità, e doveva restare compatibile con quel codice. In pratica permette di contare i valori veri di una sequenza con `sum()`: `sum([True, False, True])` vale 2.
 
 #### `NoneType` — L'assenza di valore
 
@@ -251,7 +262,7 @@ Perché? Retrocompatibilità e praticità: permette di contare gli elementi veri
 risultato: None = None
 ```
 
-`None` rappresenta l'assenza di valore. Non è zero, non è la stringa vuota, non è `False` — è "niente". Le funzioni che non restituiscono esplicitamente un valore restituiscono `None`.
+`None` rappresenta l'assenza di valore. È diverso da zero, dalla stringa vuota e da `False`: è l'unico valore del tipo `NoneType`. Le funzioni che non restituiscono esplicitamente un valore restituiscono `None`.
 
 ### La funzione `type()`
 
@@ -277,7 +288,7 @@ testo: str = str(42)           # "42"
 
 # Da int a float e viceversa
 x: float = float(42)           # 42.0
-y: int = int(3.99)             # 3 (tronca, non arrotonda!)
+y: int = int(3.99)             # 3 (tronca verso lo zero, non arrotonda)
 
 # Conversione a bool
 print(bool(0))       # False
@@ -288,16 +299,16 @@ print(bool("ciao"))  # True (qualsiasi stringa non vuota)
 
 ### Tutto è un oggetto
 
-In Python, tutto è un oggetto — anche i numeri:
+In Python ogni valore è un oggetto, anche i numeri:
 
 ```python
 print((42).bit_length())      # 6 (servono 6 bit per rappresentare 42)
 print((-7).bit_length())      # 3
-print("ciao".upper())         # "CIAO"
-print([1, 2, 3].append(4))    # None (modifica la lista in-place)
+print("ciao".upper())         # CIAO
+print([1, 2, 3].append(4))    # None (append modifica la lista e restituisce None)
 ```
 
-Questo significa che ogni valore ha **attributi** e **metodi** — funzioni associate all'oggetto che operano su di esso. La notazione col punto (`oggetto.metodo()`) è fondamentale in Python.
+Ogni valore ha quindi **attributi** e **metodi**, cioè funzioni associate all'oggetto che operano su di esso. Si chiamano con la notazione col punto (`oggetto.metodo()`), che useremo in tutto il corso.
 
 ---
 
@@ -394,18 +405,18 @@ Questo significa che ogni valore ha **attributi** e **metodi** — funzioni asso
    c: int = 257
    d: int = 257
    print(c == d)   # ?
-   print(c is d)    # ?  (Sorpresa! Perché?)
+   print(c is d)    # ?
    ```
-   Ricercate il concetto di "integer caching" in Python per spiegare il risultato.
+   Eseguite il codice una volta nella shell interattiva (una riga alla volta) e una volta come script (`python3 file.py`): i risultati di `c is d` possono essere diversi. Cercate il concetto di "integer caching" in CPython per spiegare il risultato.
 
 ---
 
 ## Osservazioni finali
 
-Oggi avete scritto il vostro primo codice Python. Può sembrare poco — variabili, tipi, assegnamenti — ma le fondamenta sono cruciali. Due concetti di questa lezione vi accompagneranno per tutto il corso e oltre:
+Oggi abbiamo visto il primo programma, le variabili, i tipi fondamentali e le conversioni. Due concetti torneranno per tutto il corso:
 
-1. **Le variabili sono etichette, non scatole.** Questo modello mentale diventerà essenziale quando lavorerete con liste e dizionari: capire che `b = a` non copia ma crea un alias vi risparmierà ore di debugging.
+1. **Le variabili sono nomi che si riferiscono a oggetti.** Con liste e dizionari questo modello sarà necessario: `b = a` non copia l'oggetto, ma crea un secondo nome (alias) per lo stesso oggetto.
 
-2. **I type hints come disciplina.** Annotare i tipi non è burocrazia — è pensare con chiarezza a cosa entra e cosa esce, a cosa contiene ogni variabile. È la differenza tra "funziona, non so perché" e "funziona, e so perché".
+2. **I type hints.** Annotare i tipi obbliga a stabilire che cosa contiene ogni variabile e rende il codice verificabile con strumenti come mypy.
 
-Nella prossima lezione aggiungeremo gli operatori, l'input/output e le strutture condizionali — e i vostri programmi inizieranno a prendere decisioni.
+Nella prossima lezione (T08) vedremo gli operatori, l'input/output e le strutture condizionali, con cui un programma può scegliere quali istruzioni eseguire in base ai dati.

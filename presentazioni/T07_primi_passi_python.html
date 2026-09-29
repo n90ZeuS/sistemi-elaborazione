@@ -327,7 +327,7 @@
                     <p>Sistemi di Elaborazione &mdash; Lezione 7</p>
                     <p>Corso di Laurea in Scienze Statistiche</p>
                 </div>
-                <aside class="notes">Oggi scriviamo il nostro primo codice Python. Dopo cinque lezioni di fondamenti e una di ponte, gli studenti hanno tutti gli strumenti concettuali per capire non solo come si programma, ma perché le cose funzionano in un certo modo.</aside>
+                <aside class="notes">Lezione precedente: T06, dal problema al programma (algoritmi, linguaggi, interprete Python). Oggi il primo codice Python: Hello World, variabili, tipi fondamentali. Prossima lezione: T08.</aside>
             </section>
 
             <!-- ========== SLIDE 2: AGENDA ========== -->
@@ -335,13 +335,13 @@
                 <h2>Agenda</h2>
                 <ol>
                     <li class="fragment"><strong>Il primo programma</strong> &mdash; Hello World, indentazione, commenti</li>
-                    <li class="fragment"><strong>Variabili e assegnamento</strong> &mdash; Etichette, non scatole</li>
+                    <li class="fragment"><strong>Variabili e assegnamento</strong> &mdash; Nomi che si riferiscono a oggetti</li>
                     <li class="fragment"><strong>Naming conventions</strong> &mdash; PEP 8 e nomi significativi</li>
                     <li class="fragment"><strong>Tipi di dato fondamentali</strong> &mdash; int, float, str, bool, None</li>
-                    <li class="fragment"><strong>Type hints</strong> &mdash; Annotazioni di tipo come disciplina</li>
+                    <li class="fragment"><strong>Type hints</strong> &mdash; Annotazioni del tipo atteso</li>
                     <li class="fragment"><strong>Conversioni e introspezione</strong> &mdash; Casting, type(), tutto è un oggetto</li>
                 </ol>
-                <aside class="notes">Panoramica della lezione. Ogni sezione costruisce sulla precedente.</aside>
+                <aside class="notes">Panoramica della lezione.</aside>
             </section>
 
             <!-- ========== SEZIONE: IL PRIMO PROGRAMMA ========== -->
@@ -350,20 +350,20 @@
                 <!-- Slide sezione -->
                 <section class="section-slide">
                     <h2>Il primo programma</h2>
-                    <p><em>Da Kernighan &amp; Ritchie (1978) a oggi</em></p>
+                    <p><em>Hello World, indentazione, commenti</em></p>
                 </section>
 
                 <!-- Hello World -->
                 <section>
                     <h2>Hello, World!</h2>
                     <pre><code class="language-python">print("Hello, World!")</code></pre>
-                    <p>Una sola riga, ma c'è molto da osservare:</p>
+                    <p>In questa riga ci sono tre elementi da notare:</p>
                     <ul>
                         <li class="fragment"><code>print</code> è una <strong>funzione built-in</strong>. Le funzioni si chiamano con gli argomenti tra parentesi.</li>
                         <li class="fragment"><code>"Hello, World!"</code> è una <strong>stringa</strong>: sequenza di caratteri tra virgolette (<code>"</code> o <code>'</code>, equivalenti in Python).</li>
-                        <li class="fragment"><strong>Niente punto e virgola</strong>: ogni istruzione occupa una riga. Meno rumore visivo.</li>
+                        <li class="fragment"><strong>Niente punto e virgola</strong>: di norma ogni istruzione occupa una riga.</li>
                     </ul>
-                    <aside class="notes">Tradizione inaugurata da Kernighan e Ritchie nel libro "The C Programming Language" del 1978.</aside>
+                    <aside class="notes">Tradizione resa popolare da Kernighan e Ritchie nel libro "The C Programming Language" del 1978.</aside>
                 </section>
 
                 <!-- Indentazione -->
@@ -373,12 +373,12 @@
                         <div class="col">
                             <h3>Altri linguaggi (C, Java...)</h3>
                             <p>I blocchi sono delimitati da <code>{}</code></p>
-                            <p>L'indentazione è <em>opzionale e cosmetica</em></p>
+                            <p>L'indentazione serve solo alla <em>leggibilità</em></p>
                         </div>
                         <div class="col">
                             <h3>Python</h3>
-                            <p>L'indentazione <strong>è la sintassi</strong></p>
-                            <p>Se è sbagliata, il programma <strong>non funziona</strong></p>
+                            <p>L'indentazione <strong>fa parte della sintassi</strong></p>
+                            <p>Stabilisce quali istruzioni stanno <strong>dentro un blocco</strong></p>
                         </div>
                     </div>
                     <pre><code class="language-python">if temperatura > 30:
@@ -386,9 +386,9 @@
     print("Accendi il ventilatore")  # dentro l'if
 print("Fine del programma")       # fuori dall'if</code></pre>
                     <div class="box box-blue">
-                        Convenzione: <strong>4 spazi</strong> per livello di indentazione (mai tabulazioni).
+                        Convenzione (PEP 8): <strong>4 spazi</strong> per livello di indentazione, senza tabulazioni.
                     </div>
-                    <aside class="notes">Scelta deliberata di Guido van Rossum: forza tutti a scrivere codice leggibile. Non esiste codice Python funzionante ma illeggibile per l'indentazione.</aside>
+                    <aside class="notes">Scelta di Guido van Rossum: obbliga a indentare in modo ordinato. Indentazione incoerente: IndentationError. Istruzione al livello sbagliato: il programma parte ma fa altro (es. togliere i 4 spazi al secondo print lo porta fuori dall'if). L'if si vede in T08; qui serve solo come esempio di blocco.</aside>
                 </section>
 
                 <!-- Commenti -->
@@ -399,7 +399,7 @@ print("Fine del programma")       # fuori dall'if</code></pre>
 temperatura: float = 23.5  # Commento a fine riga</code></pre>
                     <div class="fragment">
                         <div class="box box-yellow">
-                            I commenti servono per spiegare il <strong>perché</strong>, non il <strong>cosa</strong>.
+                            Un commento utile spiega il <strong>perché</strong> di un'istruzione; che cosa fa si legge nel codice.
                         </div>
                     </div>
                     <div class="compare fragment">
@@ -420,12 +420,12 @@ temperatura: float = 23.5  # Commento a fine riga</code></pre>
                 <!-- Slide sezione -->
                 <section class="section-slide">
                     <h2>Variabili e assegnamento</h2>
-                    <p><em>Etichette, non scatole</em></p>
+                    <p><em>Nomi, oggetti, assegnamento</em></p>
                 </section>
 
                 <!-- Modello mentale -->
                 <section>
-                    <h2>Il modello mentale giusto</h2>
+                    <h2>Scatole o etichette</h2>
                     <div class="compare">
                         <div class="bad">
                             <p>"Le variabili sono <strong>scatole</strong> che contengono valori"</p>
@@ -441,7 +441,7 @@ temperatura: float = 23.5  # Commento a fine riga</code></pre>
                         </div>
                     </div>
                     <div class="box box-blue fragment">
-                        In Python, l'operatore <code>=</code> non "mette un valore in una scatola" &mdash; <strong>attacca un'etichetta a un oggetto</strong>.
+                        In Python l'operatore <code>=</code> <strong>attacca un'etichetta (il nome) a un oggetto</strong>; il modello a scatole è impreciso.
                     </div>
                 </section>
 
@@ -452,13 +452,13 @@ temperatura: float = 23.5  # Commento a fine riga</code></pre>
 y: int = x      # attacca l'etichetta y allo STESSO oggetto</code></pre>
                     <div class="diagram fragment">
                         x ---&gt; ( 42 ) &lt;--- y<br>
-                        Stesso oggetto in memoria!
+                        Stesso oggetto in memoria
                     </div>
-                    <pre class="fragment"><code class="language-python">print(x is y)  # True: sono lo stesso oggetto!</code></pre>
+                    <pre class="fragment"><code class="language-python">print(x is y)  # True: sono lo stesso oggetto</code></pre>
                     <div class="box box-yellow fragment">
-                        Questo modello diventerà cruciale con liste e mutabilità.
+                        Questo modello servirà con liste e mutabilità.
                     </div>
-                    <aside class="notes">Non viene creata una copia: y diventa un'altra etichetta attaccata allo stesso oggetto. Sia x che y puntano al medesimo 42.</aside>
+                    <aside class="notes">is restituisce True se i due nomi si riferiscono allo stesso oggetto. Non viene creata una copia: y diventa un'altra etichetta attaccata allo stesso oggetto. Sia x che y puntano al medesimo 42.</aside>
                 </section>
 
                 <!-- Assegnamento -->
@@ -467,8 +467,8 @@ y: int = x      # attacca l'etichetta y allo STESSO oggetto</code></pre>
                     <p><code>=</code> è l'assegnamento. <strong>Non è l'uguaglianza matematica</strong> (per quella c'è <code>==</code>).</p>
                     <pre><code class="language-python">contatore: int = 0          # contatore punta a 0
 contatore = contatore + 1   # contatore ora punta a 1
-# In matematica "x = x + 1" è assurdo;
-# in programmazione è normalissimo.</code></pre>
+# In matematica "x = x + 1" non ha soluzione;
+# qui: calcola contatore + 1 e ricollega il nome.</code></pre>
                     <h3 class="fragment">Operatori di assegnamento composto</h3>
                     <pre class="fragment"><code class="language-python">contatore += 1   # equivale a: contatore = contatore + 1
 totale -= 10     # equivale a: totale = totale - 10
@@ -478,8 +478,8 @@ prodotto *= 2    # equivale a: prodotto = prodotto * 2</code></pre>
                 <!-- Assegnamento multiplo -->
                 <section>
                     <h2>Assegnamento multiplo e unpacking</h2>
-                    <pre><code class="language-python"># Unpacking: assegnamento parallelo
-a, b, c = 1, 2, 3    # a=1, b=2, c=3</code></pre>
+                    <pre><code class="language-python">a = b = c = 0        # tre nomi, stesso oggetto 0
+a, b, c = 1, 2, 3    # unpacking: a=1, b=2, c=3</code></pre>
                     <div class="fragment">
                         <h3>Scambio di variabili</h3>
                         <div class="columns">
@@ -491,11 +491,11 @@ b = temp</code></pre>
                             </div>
                             <div class="col">
                                 <p><strong>In Python:</strong></p>
-                                <pre><code class="language-python">a, b = b, a  # fatto!</code></pre>
+                                <pre><code class="language-python">a, b = b, a  # ora a=2, b=1</code></pre>
                             </div>
                         </div>
                     </div>
-                    <aside class="notes">Python permette assegnamenti eleganti grazie all'unpacking delle tuple.</aside>
+                    <aside class="notes">A destra si costruisce una tupla, poi i valori vengono assegnati ai nomi a sinistra (unpacking). In queste forme non si possono mettere type hints: a: int = b: int = 0 è un SyntaxError.</aside>
                 </section>
 
                 <!-- Naming conventions -->
@@ -569,7 +569,7 @@ b = temp</code></pre>
                     <h2>Il tipo appartiene all'oggetto</h2>
                     <p>In Python, il <strong>tipo appartiene all'oggetto</strong>, non alla variabile:</p>
                     <pre><code class="language-python">x = 42        # x punta a un int
-x = "ciao"    # ora x punta a una str (perfettamente legale)</code></pre>
+x = "ciao"    # ora x punta a una str (è consentito)</code></pre>
                     <div class="columns fragment">
                         <div class="col">
                             <div class="box box-green">
@@ -580,12 +580,12 @@ x = "ciao"    # ora x punta a una str (perfettamente legale)</code></pre>
                         <div class="col">
                             <div class="box box-red">
                                 <strong>Rischi</strong><br>
-                                Errori nascosti, difficoltà di manutenzione
+                                Errori di tipo scoperti solo durante l'esecuzione
                             </div>
                         </div>
                     </div>
                     <div class="box box-blue fragment">
-                        Soluzione: i <strong>type hints</strong> uniscono flessibilità e chiarezza.
+                        Nel corso annotiamo il tipo atteso con i <strong>type hints</strong>.
                     </div>
                 </section>
 
@@ -607,11 +607,11 @@ media: float = 27.5
 iscritto: bool = True</code></pre>
                         </div>
                     </div>
-                    <p class="fragment">I type hints <strong>non cambiano il comportamento</strong> del programma, ma:</p>
+                    <p class="fragment">I type hints <strong>non vengono controllati</strong> dall'interprete, ma:</p>
                     <ul>
                         <li class="fragment">Rendono il codice <strong>più leggibile</strong></li>
                         <li class="fragment">Permettono la verifica con strumenti come <strong>mypy</strong></li>
-                        <li class="fragment">Forzano a <strong>pensare ai tipi</strong> &mdash; una disciplina preziosa</li>
+                        <li class="fragment">Obbligano a <strong>decidere il tipo</strong> di ogni variabile</li>
                     </ul>
                 </section>
 
@@ -619,14 +619,14 @@ iscritto: bool = True</code></pre>
                 <section>
                     <h2><code>int</code> &mdash; Numeri interi</h2>
                     <pre><code class="language-python">eta: int = 25
-popolazione: int = 59_000_000   # underscore come separatore migliaia
+popolazione: int = 59_000_000   # _ separa le migliaia (ignorato)
 temperatura: int = -5</code></pre>
                     <div class="box box-green fragment">
-                        <strong>Precisione arbitraria</strong>: nessun overflow, nessun limite di dimensione!
+                        <strong>Precisione arbitraria</strong>: nessun overflow, il limite è solo la memoria disponibile.
                     </div>
                     <pre class="fragment"><code class="language-python">grande: int = 2 ** 100
 print(grande)  # 1267650600228229401496703205376</code></pre>
-                    <aside class="notes">Come visto nella lezione sulla rappresentazione dei dati, gli interi Python non hanno il problema dell'overflow tipico di C o Java.</aside>
+                    <aside class="notes">In C o Java un intero ha un numero fisso di bit (32 o 64) e quindi un valore massimo; in Python no. La rappresentazione degli interi si vedrà in T05 (rappresentazione dei dati).</aside>
                 </section>
 
                 <!-- float -->
@@ -637,11 +637,11 @@ pi: float = 3.14159265358979
 temperatura: float = -2.5
 notazione_scientifica: float = 6.022e23  # 6.022 x 10^23</code></pre>
                     <div class="box box-yellow fragment">
-                        IEEE 754, double precision (64 bit, ~15-16 cifre significative).
+                        IEEE 754, doppia precisione (64 bit, circa 15-16 cifre significative).
                     </div>
                     <pre class="fragment"><code class="language-python">print(0.1 + 0.2)       # 0.30000000000000004
-print(0.1 + 0.2 == 0.3)  # False!</code></pre>
-                    <p class="fragment"><em>Ricordate la lezione sulla rappresentazione dei dati?</em></p>
+print(0.1 + 0.2 == 0.3)  # False</code></pre>
+                    <p class="fragment"><em>0.1 non ha una rappresentazione binaria esatta: il motivo si vedrà in T05.</em></p>
                 </section>
 
                 <!-- str -->
@@ -667,15 +667,15 @@ occupa più righe"""</code></pre>
                     <h2><code>bool</code> &mdash; Booleani</h2>
                     <pre><code class="language-python">iscritto: bool = True
 esame_superato: bool = False</code></pre>
-                    <p class="fragment"><code>True</code> e <code>False</code> (con la maiuscola!)</p>
+                    <p class="fragment"><code>True</code> e <code>False</code> si scrivono con l'iniziale maiuscola.</p>
                     <div class="box box-yellow fragment">
-                        Fatto curioso: <code>bool</code> è un <strong>sottotipo di <code>int</code></strong>.
+                        <code>bool</code> è un <strong>sottotipo di <code>int</code></strong>.
                         <code>True</code> vale 1, <code>False</code> vale 0.
                     </div>
                     <pre class="fragment"><code class="language-python">print(True + True)   # 2
 print(True * 10)     # 10
 print(False + 5)     # 5</code></pre>
-                    <p class="fragment"><em>Perché? Retrocompatibilità e praticità: permette di contare elementi veri con</em> <code>sum()</code>.</p>
+                    <p class="fragment"><em>Motivo storico (compatibilità con il codice che usava 1 e 0); permette di contare i valori veri con</em> <code>sum()</code>.</p>
                 </section>
 
                 <!-- None -->
@@ -684,13 +684,13 @@ print(False + 5)     # 5</code></pre>
                     <pre><code class="language-python">risultato: None = None</code></pre>
                     <p><code>None</code> rappresenta <strong>l'assenza di valore</strong>.</p>
                     <div class="box box-red fragment">
-                        <code>None</code> NON è:
+                        <code>None</code> è diverso da:
                         <ul>
                             <li>lo zero (<code>0</code>)</li>
                             <li>la stringa vuota (<code>""</code>)</li>
                             <li><code>False</code></li>
                         </ul>
-                        È semplicemente "niente".
+                        È l'unico valore del tipo <code>NoneType</code>.
                     </div>
                     <p class="fragment">Le funzioni che non restituiscono esplicitamente un valore restituiscono <code>None</code>.</p>
                 </section>
@@ -771,16 +771,16 @@ testo: str = str(42)           # "42"
 
 # Da int a float e viceversa
 x: float = float(42)           # 42.0
-y: int = int(3.99)             # 3  (tronca, NON arrotonda!)</code></pre>
+y: int = int(3.99)             # 3  (tronca, non arrotonda)</code></pre>
                     <div class="box box-red fragment">
-                        Attenzione: <code>int(3.99)</code> restituisce <strong>3</strong>, non 4. Tronca verso lo zero!
+                        <code>int(3.99)</code> restituisce <strong>3</strong>, non 4: tronca verso lo zero (<code>int(-3.99)</code> è -3).
                     </div>
                 </section>
 
                 <!-- Conversione a bool -->
                 <section>
                     <h2>Conversione a <code>bool</code></h2>
-                    <p>Ogni tipo ha un valore "falso" e uno "vero":</p>
+                    <p>Ogni valore può essere convertito in <code>True</code> o <code>False</code>:</p>
                     <table>
                         <thead>
                             <tr>
@@ -813,26 +813,26 @@ y: int = int(3.99)             # 3  (tronca, NON arrotonda!)</code></pre>
                             <tr>
                                 <td><code>bool(None)</code></td>
                                 <td><code>False</code></td>
-                                <td>None è sempre falso</td>
+                                <td>None è falso</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="box box-blue fragment">
-                        Regola generale: <strong>zero, vuoto e None sono falsi</strong>. Tutto il resto è vero.
+                        Regola generale: <strong>zero, vuoto e None sono falsi</strong>; gli altri valori sono veri.
                     </div>
                 </section>
 
                 <!-- Tutto è un oggetto -->
                 <section>
                     <h2>Tutto è un oggetto</h2>
-                    <p>In Python, <strong>tutto è un oggetto</strong> &mdash; anche i numeri:</p>
+                    <p>In Python <strong>ogni valore è un oggetto</strong>, anche i numeri:</p>
                     <pre><code class="language-python">print((42).bit_length())    # 6 (servono 6 bit per 42)
 print((-7).bit_length())    # 3
-print("ciao".upper())       # "CIAO"</code></pre>
+print("ciao".upper())       # CIAO</code></pre>
                     <div class="fragment">
                         <p>Ogni valore ha <strong>attributi</strong> e <strong>metodi</strong> &mdash; funzioni associate all'oggetto.</p>
                         <div class="box box-blue">
-                            La notazione col punto <code>oggetto.metodo()</code> è fondamentale in Python.
+                            I metodi si chiamano con la notazione col punto: <code>oggetto.metodo()</code>.
                         </div>
                     </div>
                     <aside class="notes">Questo è diverso da linguaggi come C dove i tipi primitivi non sono oggetti. In Python non esistono "tipi primitivi" nel senso tradizionale.</aside>
@@ -851,23 +851,23 @@ print("ciao".upper())       # "CIAO"</code></pre>
 
                 <!-- Concetti chiave -->
                 <section>
-                    <h2>Concetti chiave di oggi</h2>
+                    <h2>Concetti chiave</h2>
                     <div class="columns">
                         <div class="col">
                             <div class="box box-blue">
                                 <h3>1. Variabili = etichette</h3>
-                                <p><code>b = a</code> non copia, crea un <strong>alias</strong>. Essenziale per liste e dizionari.</p>
+                                <p><code>b = a</code> non copia l'oggetto: crea un <strong>alias</strong>. Servirà con liste e dizionari.</p>
                             </div>
                         </div>
                         <div class="col">
                             <div class="box box-green">
-                                <h3>2. Type hints = disciplina</h3>
-                                <p>Annotare i tipi non è burocrazia &mdash; è pensare con <strong>chiarezza</strong>.</p>
+                                <h3>2. Type hints</h3>
+                                <p>Dichiarano il tipo atteso di ogni variabile e permettono la verifica con <strong>mypy</strong>.</p>
                             </div>
                         </div>
                     </div>
                     <div class="box box-yellow fragment" style="margin-top: 0.8em;">
-                        <strong>Prossima lezione:</strong> operatori, input/output e strutture condizionali &mdash; i programmi inizieranno a prendere decisioni.
+                        <strong>Prossima lezione (T08):</strong> operatori, input/output e strutture condizionali.
                     </div>
                 </section>
 
@@ -929,21 +929,22 @@ print(f"{celsius}°C = {fahrenheit:.1f}°F")</code></pre>
 
                 <!-- Sfida: is vs == -->
                 <section>
-                    <h2>Sfida: <code>is</code> vs <code>==</code></h2>
-                    <pre><code class="language-python">a: int = 256
+                    <h2><code>is</code> e <code>==</code></h2>
+                    <pre><code class="language-python"># nella shell interattiva, una riga alla volta
+a: int = 256
 b: int = 256
 print(a == b)   # True  (stesso valore)
-print(a is b)   # True  (stesso oggetto!)
+print(a is b)   # True  (stesso oggetto)
 
 c: int = 257
 d: int = 257
 print(c == d)   # True  (stesso valore)
-print(c is d)   # False (oggetti diversi!)</code></pre>
+print(c is d)   # False (oggetti diversi)</code></pre>
                     <div class="box box-yellow fragment">
-                        <strong>Perché?</strong> Python mantiene in cache gli interi da <strong>-5 a 256</strong> (integer caching).
-                        Oltre quel range, crea nuovi oggetti.
+                        CPython tiene in cache gli interi da <strong>-5 a 256</strong> (integer caching); oltre crea oggetti nuovi.
+                        Eseguito come script, <code>c is d</code> può dare <code>True</code>.
                     </div>
-                    <p class="fragment"><em>Morale: usate sempre</em> <code>==</code> <em>per confrontare valori!</em></p>
+                    <p class="fragment"><em>Per confrontare valori si usa</em> <code>==</code><em>;</em> <code>is</code> <em>confronta l'identità.</em></p>
                 </section>
 
             </section>

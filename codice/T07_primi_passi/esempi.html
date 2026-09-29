@@ -203,14 +203,18 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T07_primi_passi_python.html">Dispensa</a> &bull; <a href="../../presentazioni/T07_primi_passi_python.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
 <h1>T07_primi_passi/esempi.py</h1>
 <a class="download-link" href="esempi.py" download>Scarica file .py</a>
-<pre><code><span class="cm"># F07 — Primi passi in Python</span>
-<span class="cm"># Esempi per la lezione frontale 7</span>
+<pre><code><span class="cm"># T07 — Primi passi in Python</span>
+<span class="cm"># Esempi per la lezione T07</span>
 <span class="cm"># Variabili, tipi, type hints, casting, f-string</span>
+<span class="cm">#</span>
+<span class="cm"># Le righe che iniziano con assert controllano un risultato: se la condizione</span>
+<span class="cm"># è falsa il programma si ferma con AssertionError. Se il file arriva in fondo,</span>
+<span class="cm"># tutti i controlli sono passati.</span>
 
 <span class="cm"># =============================================================================</span>
 <span class="cm"># 1. Creazione di variabili con type hints</span>
 <span class="cm"># =============================================================================</span>
-<span class="cm"># In Python, una variabile e&#x27; un&#x27;etichetta che punta a un oggetto in memoria.</span>
+<span class="cm"># In Python, una variabile è un&#x27;etichetta che punta a un oggetto in memoria.</span>
 <span class="cm"># I type hints indicano il tipo atteso (ma non sono vincolanti a runtime).</span>
 
 nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Alice&quot;</span>
@@ -247,15 +251,16 @@ voto_esame: <span class="kw">None</span> <span class="op">=</span> <span class="
 <span class="kw">assert</span> <span class="nb">type</span>(studente) <span class="kw">is</span> <span class="nb">bool</span>
 <span class="kw">assert</span> <span class="nb">type</span>(voto_esame) <span class="kw">is</span> <span class="nb">type</span>(<span class="kw">None</span>)
 
-<span class="cm"># isinstance() e&#x27; spesso preferibile a type() per i controlli</span>
+<span class="cm"># isinstance(oggetto, tipo) risponde True se l&#x27;oggetto è di quel tipo</span>
 <span class="kw">assert</span> <span class="nb">isinstance</span>(nome, <span class="nb">str</span>)
 <span class="kw">assert</span> <span class="nb">isinstance</span>(eta, <span class="nb">int</span>)
 <span class="kw">assert</span> <span class="nb">isinstance</span>(altezza, <span class="nb">float</span>)
 <span class="kw">assert</span> <span class="nb">isinstance</span>(studente, <span class="nb">bool</span>)
 
-<span class="cm"># Nota: bool e&#x27; una sottoclasse di int in Python</span>
+<span class="cm"># bool è un sottotipo di int: True vale 1, False vale 0</span>
 <span class="kw">assert</span> <span class="nb">isinstance</span>(<span class="kw">True</span>, <span class="nb">int</span>)
-<span class="nb">print</span>(<span class="st">f&quot;\nbool e&#x27; sottoclasse di int: isinstance(True, int) = {isinstance(True, int)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;\nbool è sottotipo di int: isinstance(True, int) = {isinstance(True, int)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;True + True = {True + True}&quot;</span>)  <span class="cm"># 2</span>
 
 
 <span class="cm"># =============================================================================</span>
@@ -282,11 +287,11 @@ numero_float: <span class="nb">float</span> <span class="op">=</span> <span clas
 <span class="kw">assert</span> numero_float <span class="op">=</span><span class="op">=</span> <span class="mi">7.0</span>
 <span class="nb">print</span>(<span class="st">f&quot;float(7)    = {numero_float} (tipo: {type(numero_float).__name__})&quot;</span>)
 
-<span class="cm"># Da float a intero (troncamento, NON arrotondamento)</span>
+<span class="cm"># Da float a intero: int() tronca la parte decimale, non arrotonda</span>
 valore: <span class="nb">float</span> <span class="op">=</span> <span class="mi">9.87</span>
 valore_troncato: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(valore)
-<span class="kw">assert</span> valore_troncato <span class="op">=</span><span class="op">=</span> <span class="mi">9</span>  <span class="cm"># Tronca, non arrotonda!</span>
-<span class="nb">print</span>(<span class="st">f&quot;int(9.87)   = {valore_troncato} (troncamento!)&quot;</span>)
+<span class="kw">assert</span> valore_troncato <span class="op">=</span><span class="op">=</span> <span class="mi">9</span>  <span class="cm"># non 10</span>
+<span class="nb">print</span>(<span class="st">f&quot;int(9.87)   = {valore_troncato} (troncamento)&quot;</span>)
 
 <span class="cm"># Da numero a stringa</span>
 prezzo: <span class="nb">float</span> <span class="op">=</span> <span class="mi">19.99</span>
@@ -300,16 +305,19 @@ prezzo_str: <span class="nb">str</span> <span class="op">=</span> <span class="n
 <span class="kw">assert</span> <span class="nb">bool</span>(<span class="mi">1</span>) <span class="kw">is</span> <span class="kw">True</span>
 <span class="kw">assert</span> <span class="nb">bool</span>(<span class="st">&quot;&quot;</span>) <span class="kw">is</span> <span class="kw">False</span>
 <span class="kw">assert</span> <span class="nb">bool</span>(<span class="st">&quot;ciao&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
+<span class="kw">assert</span> <span class="nb">bool</span>(<span class="mi">0.0</span>) <span class="kw">is</span> <span class="kw">False</span>
+<span class="kw">assert</span> <span class="nb">bool</span>(<span class="mi">42</span>) <span class="kw">is</span> <span class="kw">True</span>
 <span class="kw">assert</span> <span class="nb">bool</span>(<span class="kw">None</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> <span class="nb">bool</span>([]) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> <span class="nb">bool</span>([<span class="mi">1</span>]) <span class="kw">is</span> <span class="kw">True</span>
-<span class="nb">print</span>(<span class="st">&quot;\nValori &#x27;falsy&#x27;: 0, &#x27;&#x27;, None, [], {}, set(), 0.0&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;Tutto il resto e&#x27; &#x27;truthy&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;\nbool() restituisce False per 0, 0.0, &#x27;&#x27; (stringa vuota) e None&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Per tutti gli altri valori visti oggi restituisce True&quot;</span>)
 
 
 <span class="cm"># =============================================================================</span>
-<span class="cm"># 4. f-string — formattazione avanzata</span>
+<span class="cm"># 4. f-string — formattazione</span>
 <span class="cm"># =============================================================================</span>
+<span class="cm"># A lezione abbiamo visto {valore:.1f} (una cifra decimale). Qui ci sono</span>
+<span class="cm"># anche altri formati, da usare come riferimento: allineamento, percentuali,</span>
+<span class="cm"># separatore delle migliaia.</span>
 <span class="nb">print</span>(<span class="st">&quot;\n--- 4. f-string ---&quot;</span>)
 
 nome_studente: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Marco&quot;</span>
@@ -325,9 +333,9 @@ messaggio: <span class="nb">str</span> <span class="op">=</span> <span class="st
 <span class="cm"># Formattazione numerica: cifre decimali</span>
 media_formattata: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;Media: {media_voti:.2f}&quot;</span>
 <span class="nb">print</span>(media_formattata)
-<span class="kw">assert</span> media_formattata <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Media: 27.35&quot;</span>  <span class="cm"># Arrotondamento!</span>
+<span class="kw">assert</span> media_formattata <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Media: 27.35&quot;</span>  <span class="cm"># :.2f arrotonda 27.3456 a 27.35</span>
 
-<span class="cm"># Allineamento e padding</span>
+<span class="cm"># Allineamento: :&lt;20 allinea a sinistra in 20 caratteri, :&gt;5 a destra in 5</span>
 <span class="nb">print</span>(<span class="st">f&quot;{&#x27;Esame&#x27;:&lt;20}{&#x27;Voto&#x27;:&gt;5}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;{&#x27;Analisi I&#x27;:&lt;20}{28:&gt;5}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;{&#x27;Programmazione&#x27;:&lt;20}{30:&gt;5}&quot;</span>)
@@ -338,16 +346,16 @@ a: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</sp
 b: <span class="nb">int</span> <span class="op">=</span> <span class="mi">3</span>
 <span class="nb">print</span>(<span class="st">f&quot;\n{a} + {b} = {a + b}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;{a} / {b} = {a / b:.4f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;{a} e&#x27; pari? {a % 2 == 0}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;{a} * {b} = {a * b}&quot;</span>)
 
-<span class="cm"># Percentuali</span>
+<span class="cm"># Percentuali: :.1% moltiplica per 100 e aggiunge il simbolo %</span>
 superati: <span class="nb">int</span> <span class="op">=</span> <span class="mi">18</span>
 totali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">25</span>
 percentuale: <span class="nb">float</span> <span class="op">=</span> superati <span class="op">/</span> totali
 <span class="nb">print</span>(<span class="st">f&quot;\nEsami superati: {percentuale:.1%}&quot;</span>)  <span class="cm"># 72.0%</span>
 <span class="kw">assert</span> <span class="st">f&quot;{percentuale:.1%}&quot;</span> <span class="op">=</span><span class="op">=</span> <span class="st">&quot;72.0%&quot;</span>
 
-<span class="cm"># Separatore delle migliaia</span>
+<span class="cm"># Separatore delle migliaia: :, (usa la virgola, come nella notazione inglese)</span>
 popolazione: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1_380_000_000</span>
 <span class="nb">print</span>(<span class="st">f&quot;Popolazione: {popolazione:,}&quot;</span>)  <span class="cm"># 1,380,000,000</span>
 
@@ -357,17 +365,18 @@ popolazione: <span class="nb">int</span> <span class="op">=</span> <span class="
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;\n--- 5. Assegnamento come etichetta → oggetto ---&quot;</span>)
 
-<span class="cm"># Due variabili possono puntare allo stesso oggetto</span>
+<span class="cm"># y = x attacca l&#x27;etichetta y allo stesso oggetto di x: nessuna copia</span>
 x: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
 y: <span class="nb">int</span> <span class="op">=</span> x
-<span class="kw">assert</span> x <span class="kw">is</span> y  <span class="cm"># Stesso oggetto in memoria (per interi piccoli, Python li &quot;interna&quot;)</span>
+<span class="kw">assert</span> x <span class="kw">is</span> y  <span class="cm"># stesso oggetto in memoria</span>
 <span class="nb">print</span>(<span class="st">f&quot;x = {x}, y = {y}, x is y = {x is y}&quot;</span>)
 
-<span class="cm"># Con liste, la condivisione e&#x27; evidente</span>
+<span class="cm"># Anticipazione (le liste si vedono in T11): con una lista, che si può</span>
+<span class="cm"># modificare, l&#x27;effetto della condivisione si vede</span>
 lista_a: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]
-lista_b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> lista_a  <span class="cm"># lista_b e&#x27; un ALIAS, non una copia!</span>
+lista_b: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> lista_a  <span class="cm"># lista_b è un alias di lista_a, non una copia</span>
 lista_b.append(<span class="mi">4</span>)
-<span class="kw">assert</span> lista_a <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]  <span class="cm"># Anche lista_a e&#x27; cambiata!</span>
+<span class="kw">assert</span> lista_a <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]  <span class="cm"># anche lista_a è cambiata</span>
 <span class="nb">print</span>(<span class="st">f&quot;lista_a = {lista_a}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;lista_b = {lista_b}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;lista_a is lista_b = {lista_a is lista_b}&quot;</span>)
@@ -375,17 +384,18 @@ lista_b.append(<span class="mi">4</span>)
 <span class="cm"># Per creare una copia indipendente:</span>
 lista_c: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> lista_a.copy()
 lista_c.append(<span class="mi">5</span>)
-<span class="kw">assert</span> lista_a <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]  <span class="cm"># lista_a NON cambia</span>
+<span class="kw">assert</span> lista_a <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]  <span class="cm"># lista_a non cambia</span>
 <span class="kw">assert</span> lista_c <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
-<span class="nb">print</span>(<span class="st">f&quot;\nDopo lista_c = lista_a.copy() e lista_c.append(5):&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;\nDopo lista_c = lista_a.copy() e lista_c.append(5):&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;lista_a = {lista_a}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;lista_c = {lista_c}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;lista_a is lista_c = {lista_a is lista_c}&quot;</span>)
 
-<span class="cm"># La funzione id() mostra l&#x27;indirizzo in memoria</span>
+<span class="cm"># id() restituisce un numero che identifica l&#x27;oggetto (in CPython è il suo</span>
+<span class="cm"># indirizzo in memoria); i valori cambiano a ogni esecuzione</span>
 <span class="nb">print</span>(<span class="st">f&quot;\nid(lista_a) = {id(lista_a)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;id(lista_b) = {id(lista_b)} (uguale!)&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;id(lista_c) = {id(lista_c)} (diverso!)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;id(lista_b) = {id(lista_b)} (uguale a lista_a)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;id(lista_c) = {id(lista_c)} (diverso)&quot;</span>)
 
 
 <span class="cm"># =============================================================================</span>
@@ -393,25 +403,26 @@ lista_c.append(<span class="mi">5</span>)
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;\n--- 6. Assegnamento multiplo ---&quot;</span>)
 
-<span class="cm"># Assegnamento multiplo</span>
-a, b, c <span class="op">=</span> <span class="mi">1</span>, <span class="mi">2.0</span>, <span class="st">&quot;tre&quot;</span>
-<span class="kw">assert</span> a <span class="op">=</span><span class="op">=</span> <span class="mi">1</span> <span class="kw">and</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">2.0</span> <span class="kw">and</span> c <span class="op">=</span><span class="op">=</span> <span class="st">&quot;tre&quot;</span>
-<span class="nb">print</span>(<span class="st">f&quot;a = {a}, b = {b}, c = {c}&quot;</span>)
+<span class="cm"># Assegnamento multiplo (unpacking): il primo valore va al primo nome, ecc.</span>
+primo, secondo, terzo <span class="op">=</span> <span class="mi">1</span>, <span class="mi">2.0</span>, <span class="st">&quot;tre&quot;</span>
+<span class="kw">assert</span> primo <span class="op">=</span><span class="op">=</span> <span class="mi">1</span> <span class="kw">and</span> secondo <span class="op">=</span><span class="op">=</span> <span class="mi">2.0</span> <span class="kw">and</span> terzo <span class="op">=</span><span class="op">=</span> <span class="st">&quot;tre&quot;</span>
+<span class="nb">print</span>(<span class="st">f&quot;primo = {primo}, secondo = {secondo}, terzo = {terzo}&quot;</span>)
 
-<span class="cm"># Scambio elegante di due variabili (senza variabile temporanea)</span>
-x: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
-y: <span class="nb">int</span> <span class="op">=</span> <span class="mi">20</span>
+<span class="cm"># Scambio di due variabili senza variabile temporanea</span>
+<span class="cm"># (x e y sono già state dichiarate int nella sezione 5)</span>
+x <span class="op">=</span> <span class="mi">10</span>
+y <span class="op">=</span> <span class="mi">20</span>
 x, y <span class="op">=</span> y, x
 <span class="kw">assert</span> x <span class="op">=</span><span class="op">=</span> <span class="mi">20</span> <span class="kw">and</span> y <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
-<span class="nb">print</span>(<span class="st">f&quot;Dopo scambio: x = {x}, y = {y}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dopo lo scambio: x = {x}, y = {y}&quot;</span>)
 
-<span class="cm"># Assegnamento ripetuto</span>
-a <span class="op">=</span> b <span class="op">=</span> c <span class="op">=</span> <span class="mi">0</span>
-<span class="kw">assert</span> a <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">and</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">and</span> c <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
-<span class="nb">print</span>(<span class="st">f&quot;a = b = c = {a}&quot;</span>)
+<span class="cm"># Stesso valore a più nomi: tutti e tre puntano all&#x27;oggetto 0</span>
+maschi <span class="op">=</span> femmine <span class="op">=</span> totale <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">assert</span> maschi <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">and</span> femmine <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">and</span> totale <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
+<span class="nb">print</span>(<span class="st">f&quot;maschi = femmine = totale = {maschi}&quot;</span>)
 
 
-<span class="nb">print</span>(<span class="st">&quot;\n✓ Tutti gli assert passati — esempi F07 completati con successo!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;\nTutti gli assert sono passati: esempi T07 completati.&quot;</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
 </body>

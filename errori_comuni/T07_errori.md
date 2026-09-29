@@ -1,7 +1,6 @@
 # Errori comuni — T07: Primi passi in Python
 
-Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione T07.
-Ogni errore include il codice sbagliato, la spiegazione e la correzione.
+Errori frequenti sugli argomenti della lezione T07. Per ogni errore: il codice sbagliato, il messaggio di Python (verificato con Python 3.13), la spiegazione e la correzione.
 
 ---
 
@@ -18,7 +17,7 @@ nome = "Mario"
 IndentationError: unexpected indent
 ```
 
-**Perché è sbagliato:** Python usa l'indentazione (gli spazi a inizio riga) per definire la struttura del codice. Se una riga è indentata senza motivo (cioè senza un `if`, `for`, `def` o simile che la precede), Python non sa come interpretarla e segnala un errore. A differenza di altri linguaggi, in Python gli spazi a inizio riga non sono solo estetici: hanno un significato preciso.
+**Perché è sbagliato:** Python usa l'indentazione (gli spazi a inizio riga) per definire la struttura del codice. Una riga può essere indentata solo se fa parte di un blocco, cioè se segue un'istruzione che termina con `:` come `if` (che vedremo in T08). Qui `print(nome)` è indentata senza un blocco che la contenga, quindi Python segnala l'errore. In Python gli spazi a inizio riga fanno parte della sintassi.
 
 **Codice corretto:**
 ```python
@@ -26,7 +25,7 @@ nome = "Mario"
 print(nome)
 ```
 
-**Regola da ricordare:** In Python, non indentare mai una riga a meno che non faccia parte di un blocco (dopo `if`, `for`, `while`, `def`, ecc.).
+**Regola da ricordare:** Si indenta una riga solo quando fa parte di un blocco (dopo `if`, e più avanti `for`, `while`, `def`). Le istruzioni del programma principale partono dalla colonna 1.
 
 ---
 
@@ -41,10 +40,10 @@ if voto = 30:
 
 **Cosa succede:**
 ```
-SyntaxError: invalid syntax
+SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
 ```
 
-**Perché è sbagliato:** L'operatore `=` serve per assegnare un valore a una variabile, non per confrontare due valori. Per verificare se due valori sono uguali si usa `==` (doppio uguale). È un errore molto comune perché in matematica usiamo un solo `=` per l'uguaglianza.
+**Perché è sbagliato:** L'operatore `=` assegna un valore a una variabile, non confronta due valori. Per verificare se due valori sono uguali si usa `==` (doppio uguale). L'errore è frequente perché in matematica si usa un solo `=` per l'uguaglianza. L'istruzione `if` la vediamo in T08; il messaggio di Python suggerisce già la correzione (`:=` è un operatore diverso, che in questo corso non useremo).
 
 **Codice corretto:**
 ```python
@@ -53,7 +52,7 @@ if voto == 30:
     print("Complimenti!")
 ```
 
-**Regola da ricordare:** Un solo `=` assegna, due `==` confrontano: sono due operazioni completamente diverse.
+**Regola da ricordare:** Un solo `=` assegna, due `==` confrontano.
 
 ---
 
@@ -69,7 +68,7 @@ numero = int("ciao")
 ValueError: invalid literal for int() with base 10: 'ciao'
 ```
 
-**Perché è sbagliato:** La funzione `int()` può convertire in intero solo stringhe che contengono effettivamente un numero (come `"42"` o `"7"`). Se la stringa contiene lettere o altri caratteri non numerici, Python non sa come trasformarla in un numero e genera un errore. Lo stesso vale per `float()` con stringhe non numeriche.
+**Perché è sbagliato:** La funzione `int()` può convertire in intero solo stringhe che contengono un numero intero (come `"42"` o `"-7"`). Se la stringa contiene lettere, o anche un punto decimale come `"3.14"`, Python genera un `ValueError`. Lo stesso vale per `float()` con stringhe non numeriche: `float("ciao")` dà `ValueError: could not convert string to float: 'ciao'`.
 
 **Codice corretto:**
 ```python
@@ -77,7 +76,7 @@ ValueError: invalid literal for int() with base 10: 'ciao'
 numero = int("42")
 print(numero)  # 42
 
-# Convertire un numero decimale in stringa
+# Convertire in float una stringa che contiene un numero decimale
 valore = float("3.14")
 print(valore)  # 3.14
 ```
@@ -99,7 +98,9 @@ print(messaggio)
 SyntaxError: invalid syntax
 ```
 
-**Perché è sbagliato:** In Python, il testo (le stringhe) deve essere racchiuso tra virgolette, singole (`'...'`) o doppie (`"..."`). Senza virgolette, Python interpreta `Ciao` come un nome di variabile e non trova nessuna variabile con quel nome. Il testo scritto senza virgolette non viene riconosciuto come stringa.
+(Con Python 3.14 il messaggio è `SyntaxError: invalid syntax. Did you mean 'and'?`: il suggerimento non è pertinente.)
+
+**Perché è sbagliato:** Il testo (le stringhe) va racchiuso tra virgolette, singole (`'...'`) o doppie (`"..."`). Senza virgolette Python legge `Ciao`, `a` e `tutti` come tre nomi di variabile scritti uno dopo l'altro, che non formano un'istruzione valida: per questo l'errore è di sintassi. Con una sola parola, per esempio `messaggio = Ciao`, la sintassi è valida ma Python cerca una variabile di nome `Ciao` e dà `NameError: name 'Ciao' is not defined`.
 
 **Codice corretto:**
 ```python
@@ -121,10 +122,12 @@ media voti = 25.5
 
 **Cosa succede:**
 ```
-SyntaxError: invalid syntax
+SyntaxError: invalid decimal literal
 ```
 
-**Perché è sbagliato:** I nomi delle variabili in Python devono rispettare regole precise: non possono iniziare con un numero e non possono contenere spazi. `1_voto` inizia con un numero, `media voti` contiene uno spazio. Python li considera sintassi non valida e non riesce a interpretare la riga.
+Python si ferma al primo errore, sulla riga `1_voto = 28`. Corretta quella, la riga `media voti = 25.5` dà `SyntaxError: invalid syntax`.
+
+**Perché è sbagliato:** I nomi delle variabili non possono iniziare con una cifra e non possono contenere spazi. `1_voto` inizia con una cifra, quindi Python prova a leggerlo come numero (`1_000` è un numero valido) e non ci riesce. `media voti` contiene uno spazio, quindi sono due nomi separati.
 
 **Codice corretto:**
 ```python
@@ -132,7 +135,7 @@ voto_1 = 28
 media_voti = 25.5
 ```
 
-**Regola da ricordare:** I nomi di variabile devono iniziare con una lettera o underscore, e non possono contenere spazi — usa l'underscore `_` per separare le parole.
+**Regola da ricordare:** I nomi di variabile iniziano con una lettera o con `_` e non contengono spazi; per separare le parole si usa `_` (`media_voti`).
 
 ---
 
@@ -148,7 +151,7 @@ print "Ciao mondo"
 SyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?
 ```
 
-**Perché è sbagliato:** In Python 3, `print` è una funzione e, come tutte le funzioni, richiede le parentesi per essere chiamata. Scrivere `print "Ciao"` era la sintassi di Python 2, ormai non più utilizzato. Molti tutorial vecchi o esempi trovati online usano ancora la vecchia sintassi.
+**Perché è sbagliato:** In Python 3, `print` è una funzione e, come tutte le funzioni, richiede le parentesi per essere chiamata. Scrivere `print "Ciao"` era la sintassi di Python 2, non più supportato dal 2020. Molti tutorial ed esempi online usano ancora questa sintassi.
 
 **Codice corretto:**
 ```python
@@ -159,16 +162,16 @@ print("Ciao mondo")
 
 ---
 
-### Errore 7: Errore nell'uso delle f-string
+### Errore 7: f-string senza `f` o senza graffe
 
 **Codice errato:**
 ```python
 nome = "Giulia"
 eta = 20
-# Errore 1: dimenticare la f prima delle virgolette
+# Manca la f prima delle virgolette
 print("{nome} ha {eta} anni")
 
-# Errore 2: dimenticare le graffe
+# Mancano le graffe
 print(f"nome ha eta anni")
 ```
 
