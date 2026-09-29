@@ -4,13 +4,15 @@
 
 ---
 
-## Fase 1 — Solo lezioni frontali (Fondamenti)
+## Blocco tematico — Fondamenti: la macchina e l'informazione
 
-*Le prime 6 lezioni costruiscono le fondamenta: dalla materia alla macchina, dalla macchina al pensiero computazionale, dal pensiero al linguaggio.*
+*Le sezioni qui sotto sono raggruppate per tema, non in ordine cronologico. L'ordine reale di svolgimento è nello schema in fondo alla pagina.*
 
 ---
 
-### Lezione 1 — Informazione, bit e sistemi di numerazione
+### T01 — Informazione, bit e sistemi di numerazione
+
+**Quando:** mercoledì 30 settembre 2026, 10:30-12:30 — P1 - Ricci Curbastro — nello stesso incontro anche T00, apertura del corso
 
 **Argomenti dal programma:** §1.1.1, §1.1.2
 
@@ -28,7 +30,9 @@
 
 ---
 
-### Lezione 2 — Logica booleana e storia del calcolo
+### T02 — Logica booleana e storia del calcolo
+
+**Quando:** venerdì 2 ottobre 2026, 12:30-14:30 — B - Complesso Piovego
 
 **Argomenti dal programma:** §1.1.3, §1.1.4
 
@@ -44,7 +48,9 @@
 
 ---
 
-### Lezione 3 — Architettura degli elaboratori
+### T03 — Architettura degli elaboratori
+
+**Quando:** mercoledì 7 ottobre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §1.2.1, §1.2.2, §1.2.3, §1.2.4
 
@@ -62,7 +68,9 @@
 
 ---
 
-### Lezione 4 — Sistemi operativi e software di sistema
+### T04 — Sistemi operativi e software di sistema
+
+**Quando:** mercoledì 2 dicembre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §1.3
 
@@ -82,7 +90,9 @@
 
 ---
 
-### Lezione 5 — Rappresentazione dei dati
+### T05 — Rappresentazione dei dati
+
+**Quando:** venerdì 4 dicembre 2026, 12:30-14:30 — B - Complesso Piovego
 
 **Argomenti dal programma:** §1.4
 
@@ -100,7 +110,9 @@
 
 ---
 
-### Lezione 6 — Dal problema al programma
+### T06 — Dal problema al programma
+
+**Quando:** venerdì 9 ottobre 2026, 12:30-14:30 — B - Complesso Piovego
 
 **Argomenti dal programma:** §P.1, §P.2, §P.3, §P.4
 
@@ -121,13 +133,15 @@
 
 ---
 
-## Fase 2 — Lezioni frontali + laboratori alternati
+## Blocco tematico — Python, strutture dati e librerie
 
-*Schema tipico: 2 frontali → 1 laboratorio. Gli studenti mettono in pratica ciò che hanno visto nelle frontali precedenti.*
+*Le sezioni qui sotto sono raggruppate per tema, non in ordine cronologico. L'ordine reale di svolgimento è nello schema in fondo alla pagina.*
 
 ---
 
-### Lezione 7 — Primi passi in Python
+### T07 — Primi passi in Python
+
+**Quando:** mercoledì 14 ottobre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.1.1, §2.1.2, §2.1.3
 
@@ -143,7 +157,9 @@
 
 ---
 
-### Lezione 8 — Operatori, I/O e strutture condizionali
+### T08 — Operatori, I/O e strutture condizionali
+
+**Quando:** venerdì 16 ottobre 2026, 12:30-14:30 — B - Complesso Piovego
 
 **Argomenti dal programma:** §2.1.4, §2.1.5, §2.2.1
 
@@ -159,7 +175,9 @@
 
 ---
 
-### 🖥️ Laboratorio 1 — Ambiente Python, variabili, tipi e condizionali
+### 🖥️ L01 — Ambiente Python, variabili, tipi e condizionali
+
+**Quando:** giovedì 22 ottobre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** F7, F8
 
@@ -175,7 +193,9 @@
 
 ---
 
-### Lezione 9 — Cicli
+### T09 — Cicli
+
+**Quando:** mercoledì 21 ottobre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.2.2, §2.2.3
 
@@ -192,7 +212,9 @@
 
 ---
 
-### Lezione 10 — Comprehension e stringhe
+### T10 — Comprehension e stringhe
+
+**Quando:** mercoledì 28 ottobre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.2.4, §2.3.6
 
@@ -210,7 +232,9 @@
 
 ---
 
-### 🖥️ Laboratorio 2 — Cicli, comprehension e stringhe
+### 🖥️ L02 — Cicli, comprehension e stringhe
+
+**Quando:** giovedì 29 ottobre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** F9, T10
 
@@ -224,7 +248,9 @@
 
 ---
 
-### Lezione 11 — Liste e tuple
+### T11 — Liste e tuple
+
+**Quando:** mercoledì 4 novembre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.3.1, §2.3.2
 
@@ -241,7 +267,9 @@
 
 ---
 
-### Lezione 12 — Dizionari, set e mutabilità
+### T12 — Dizionari, set e mutabilità
+
+**Quando:** venerdì 6 novembre 2026, 12:30-14:30 — B - Complesso Piovego
 
 **Argomenti dal programma:** §2.3.3, §2.3.4, §2.3.5
 
@@ -259,7 +287,9 @@
 
 ---
 
-### 🖥️ Laboratorio 3 — Strutture dati
+### 🖥️ L03 — Strutture dati
+
+**Quando:** giovedì 12 novembre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** T11, T12
 
@@ -274,7 +304,9 @@
 
 ---
 
-### Lezione 13 — Funzioni: fondamenti
+### T13 — Funzioni: fondamenti
+
+**Quando:** mercoledì 11 novembre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.4.1, §2.4.2, §2.4.3, §2.4.4
 
@@ -291,7 +323,9 @@
 
 ---
 
-### Lezione 14 — Funzioni avanzate, moduli e ambienti
+### T14 — Funzioni avanzate, moduli e ambienti
+
+**Quando:** mercoledì 18 novembre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.4.5, §2.4.6
 
@@ -309,7 +343,9 @@
 
 ---
 
-### 🖥️ Laboratorio 4 — Funzioni e modularità
+### 🖥️ L04 — Funzioni e modularità
+
+**Quando:** giovedì 19 novembre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** T13, T14
 
@@ -324,7 +360,9 @@
 
 ---
 
-### Lezione 15 — File, dati e gestione degli errori
+### T15 — File, dati e gestione degli errori
+
+**Quando:** mercoledì 25 novembre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.5.1, §2.5.2, §2.5.3, §2.5.4
 
@@ -342,7 +380,9 @@
 
 ---
 
-### 🖥️ Laboratorio 5 — File e gestione dati
+### 🖥️ L05 — File e gestione dati
+
+**Quando:** giovedì 10 dicembre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** T15
 
@@ -356,7 +396,9 @@
 
 ---
 
-### Lezione 16 — Programmazione orientata agli oggetti
+### T16 — Programmazione orientata agli oggetti
+
+**Quando:** mercoledì 9 dicembre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.6
 
@@ -374,7 +416,9 @@
 
 ---
 
-### 🖥️ Laboratorio 6 — Classi e oggetti
+### 🖥️ L06 — Classi e oggetti
+
+**Quando:** giovedì 17 dicembre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** T16
 
@@ -388,7 +432,9 @@
 
 ---
 
-### Lezione 17 — NumPy, Pandas e visualizzazione
+### T17 — NumPy, Pandas e visualizzazione
+
+**Quando:** mercoledì 16 dicembre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
 **Argomenti dal programma:** §2.7.1, §2.7.2, §2.7.3, §2.7.4 (cenni), §2.8 (cenni), §2.9 (consolidamento)
 
@@ -423,7 +469,9 @@
 
 ---
 
-### 🖥️ Laboratorio 7 — NumPy e Pandas
+### 🖥️ L07 — NumPy e Pandas
+
+**Quando:** giovedì 7 gennaio 2027, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** T17
 
@@ -438,7 +486,9 @@
 
 ---
 
-### 🖥️ Laboratorio 8 — Visualizzazione e progetto riepilogativo
+### 🖥️ L08 — Visualizzazione e progetto riepilogativo
+
+**Quando:** giovedì 14 gennaio 2027, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
 **Prerequisiti frontali:** T17
 
@@ -461,30 +511,34 @@
 
 ## Schema riassuntivo
 
-| # | Tipo | Titolo | Macro-area |
-|---|------|--------|------------|
-| 1 | Frontale | Informazione, bit e sistemi di numerazione | Architettura |
-| 2 | Frontale | Logica booleana e storia del calcolo | Architettura |
-| 3 | Frontale | Architettura degli elaboratori | Architettura |
-| 4 | Frontale | **Sistemi operativi e software di sistema** | Architettura |
-| 5 | Frontale | **Rappresentazione dei dati** | Architettura |
-| 6 | Frontale | Dal problema al programma  | Fondamenti |
-| 7 | Frontale | Primi passi in Python | Python base |
-| 8 | Frontale | Operatori, I/O e condizionali | Python base |
-| 9 | **Lab 1** | Ambiente, variabili, tipi, condizionali | Python base |
-| 10 | Frontale | Cicli | Python base |
-| 11 | Frontale | Comprehension e stringhe | Python base |
-| 12 | **Lab 2** | Cicli, comprehension, stringhe | Python base |
-| 13 | Frontale | Liste e tuple | Strutture dati |
-| 14 | Frontale | Dizionari, set e mutabilità | Strutture dati |
-| 15 | **Lab 3** | Strutture dati | Strutture dati |
-| 16 | Frontale | Funzioni: fondamenti | Funzioni |
-| 17 | Frontale | Funzioni avanzate, moduli, ambienti | Funzioni |
-| 18 | **Lab 4** | Funzioni e modularità | Funzioni |
-| 19 | Frontale | File, dati e gestione errori | File e dati |
-| 20 | **Lab 5** | File e gestione dati | File e dati |
-| 21 | Frontale | Programmazione orientata agli oggetti | OOP |
-| 22 | **Lab 6** | Classi e oggetti | OOP |
-| 23 | Frontale | NumPy, Pandas e visualizzazione | Librerie |
-| 24 | **Lab 7** | NumPy e Pandas | Librerie |
-| 25 | **Lab 8** | Visualizzazione e progetto riepilogativo | Chiusura |
+*Ordine reale di svolgimento, dall'orario ufficiale dell'Ateneo.*
+
+| # | Data | Tipo | Contenuto | Aula |
+|---|------|------|-----------|------|
+| 1 | mer 30/09 | Frontale | **T00** Introduzione al corso + **T01** Informazione, bit e sistemi di numerazione | P1 - Ricci Curbastro |
+| 2 | ven 02/10 | Frontale | **T02** Logica booleana e storia del calcolo | B - Complesso Piovego |
+| 3 | mer 07/10 | Frontale | **T03** Architettura degli elaboratori | P1 - Ricci Curbastro |
+| 4 | ven 09/10 | Frontale | **T06** Dal problema al programma | B - Complesso Piovego |
+| 5 | mer 14/10 | Frontale | **T07** Primi passi in Python | P1 - Ricci Curbastro |
+| 6 | ven 16/10 | Frontale | **T08** Operatori, I/O e strutture condizionali | B - Complesso Piovego |
+| 7 | mer 21/10 | Frontale | **T09** Cicli | P1 - Ricci Curbastro |
+| 8 | gio 22/10 | **Lab** | **L01** Ambiente Python, variabili, tipi e condizionali | SC140 |
+| 9 | mer 28/10 | Frontale | **T10** Comprehension e stringhe | P1 - Ricci Curbastro |
+| 10 | gio 29/10 | **Lab** | **L02** Cicli, comprehension e stringhe | SC140 |
+| 11 | mer 04/11 | Frontale | **T11** Liste e tuple | P1 - Ricci Curbastro |
+| 12 | ven 06/11 | Frontale | **T12** Dizionari, set e mutabilità | B - Complesso Piovego |
+| 13 | mer 11/11 | Frontale | **T13** Funzioni: fondamenti | P1 - Ricci Curbastro |
+| 14 | gio 12/11 | **Lab** | **L03** Strutture dati | SC140 |
+| 15 | mer 18/11 | Frontale | **T14** Funzioni avanzate, moduli e ambienti | P1 - Ricci Curbastro |
+| 16 | gio 19/11 | **Lab** | **L04** Funzioni e modularità | SC140 |
+| 17 | mer 25/11 | Frontale | **T15** File, dati e gestione degli errori | P1 - Ricci Curbastro |
+| 18 | mer 02/12 | Frontale | **T04** Sistemi operativi e software di sistema | P1 - Ricci Curbastro |
+| 19 | ven 04/12 | Frontale | **T05** Rappresentazione dei dati | B - Complesso Piovego |
+| 20 | mer 09/12 | Frontale | **T16** Programmazione orientata agli oggetti | P1 - Ricci Curbastro |
+| 21 | gio 10/12 | **Lab** | **L05** File e gestione dati | SC140 |
+| 22 | mer 16/12 | Frontale | **T17** NumPy, Pandas e visualizzazione | P1 - Ricci Curbastro |
+| 23 | gio 17/12 | **Lab** | **L06** Classi e oggetti | SC140 |
+| 24 | mer 23/12 | — | *riserva / recupero* | P1 - Ricci Curbastro |
+| 25 | gio 07/01 | **Lab** | **L07** NumPy e Pandas | SC140 |
+| 26 | mer 13/01 | — | *riserva / recupero* | P1 - Ricci Curbastro |
+| 27 | gio 14/01 | **Lab** | **L08** Visualizzazione e progetto riepilogativo | SC140 |

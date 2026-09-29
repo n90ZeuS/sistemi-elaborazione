@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informazione, bit e sistemi di numerazione</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="vendor/reveal.css">
+    <link rel="stylesheet" href="vendor/theme/white.css">
+    <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
     <style>
         /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
 
@@ -196,8 +196,11 @@
             flex: 1;
         }
 
-        .reveal .col-60 { flex: 3; }
-        .reveal .col-40 { flex: 2; }
+        .reveal .col-60 { flex: 6; }
+        .reveal .col-40 { flex: 4; }
+        .reveal .col-70 { flex: 7; }
+        .reveal .col-50 { flex: 5; }
+        .reveal .col-30 { flex: 3; }
 
         /* === CONFRONTO BUONO/MALE === */
         .reveal .compare {
@@ -248,6 +251,48 @@
             font-size: 0.8em;
             text-align: center;
             line-height: 1.8;
+        }
+
+        /* === FIGURE, FOTO E SVG === */
+        .reveal figure {
+            margin: 0;
+            text-align: center;
+        }
+
+        .reveal figure img {
+            max-width: 100%;
+            max-height: 44vh;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+        }
+
+        .reveal figcaption {
+            font-size: 0.55em;
+            color: var(--text-muted);
+            line-height: 1.35;
+            margin-top: 0.5em;
+        }
+
+        .reveal figcaption .credit {
+            display: block;
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .reveal .svg-figure {
+            text-align: center;
+            margin: 0.3em 0;
+        }
+
+        .reveal .svg-figure svg {
+            max-width: 100%;
+            height: auto;
+            max-height: 50vh;
+        }
+
+        .reveal .svg-figure text {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
 
         /* === BADGE / ETICHETTE === */
@@ -469,6 +514,52 @@
                     </div>
                     <aside class="notes">Collegamento con concetti statistici che vedranno in altri corsi.</aside>
                 </section>
+
+                <!-- L'entropia in un grafico -->
+                <section>
+                    <h2>L'entropia, in un grafico</h2>
+                    <p>Una moneta che esce testa con probabilita <strong>p</strong>: quanta incertezza c'e?</p>
+                    <div class="svg-figure">
+<svg viewBox="0 0 1000 400" role="img" aria-label="Curva dell'entropia di una variabile binaria: vale zero quando l'esito e certo, e raggiunge il massimo di 1 bit quando i due esiti sono equiprobabili">
+    <!-- griglia -->
+    <line x1="90" y1="50"  x2="950" y2="50"  stroke="#e2e8f0" stroke-width="1"/>
+    <line x1="90" y1="195" x2="950" y2="195" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="80" y="56"  text-anchor="end" font-size="15" fill="#64748b">1 bit</text>
+    <text x="80" y="201" text-anchor="end" font-size="15" fill="#64748b">0,5</text>
+    <text x="80" y="346" text-anchor="end" font-size="15" fill="#64748b">0</text>
+
+    <!-- assi -->
+    <line x1="90" y1="340" x2="950" y2="340" stroke="#cbd5e1" stroke-width="2"/>
+    <line x1="90" y1="40"  x2="90"  y2="340" stroke="#cbd5e1" stroke-width="2"/>
+
+    <!-- curva H(p) -->
+    <path d="M 90.0 340.0 L 107.2 299.0 L 124.4 269.7 L 141.6 245.0 L 158.8 223.4 L 176.0 204.0 L 193.2 186.5 L 210.4 170.6 L 227.6 156.1 L 244.8 142.8 L 262.0 130.6 L 279.2 119.6 L 296.4 109.4 L 313.6 100.2 L 330.8 91.9 L 348.0 84.4 L 365.2 77.7 L 382.4 71.8 L 399.6 66.6 L 416.8 62.2 L 434.0 58.4 L 451.2 55.4 L 468.4 53.0 L 485.6 51.3 L 502.8 50.3 L 520.0 50.0 L 537.2 50.3 L 554.4 51.3 L 571.6 53.0 L 588.8 55.4 L 606.0 58.4 L 623.2 62.2 L 640.4 66.6 L 657.6 71.8 L 674.8 77.7 L 692.0 84.4 L 709.2 91.9 L 726.4 100.2 L 743.6 109.4 L 760.8 119.6 L 778.0 130.6 L 795.2 142.8 L 812.4 156.1 L 829.6 170.6 L 846.8 186.5 L 864.0 204.0 L 881.2 223.4 L 898.4 245.0 L 915.6 269.7 L 932.8 299.0 L 950.0 340.0"
+          fill="none" stroke="#2563eb" stroke-width="3" stroke-linejoin="round"/>
+
+    <!-- massimo -->
+    <line x1="520" y1="50" x2="520" y2="340" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 4"/>
+    <circle cx="520" cy="50" r="6" fill="#16a34a" stroke="#ffffff" stroke-width="2"/>
+    <text x="520" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#15803d">massima incertezza</text>
+
+    <!-- estremi -->
+    <circle cx="90"  cy="340" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="950" cy="340" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+    <text x="150" y="318" font-size="17" fill="#b91c1c">esce sempre croce</text>
+    <text x="890" y="318" text-anchor="end" font-size="17" fill="#b91c1c">esce sempre testa</text>
+    <text x="520" y="318" text-anchor="middle" font-size="17" fill="#475569">moneta equa</text>
+
+    <!-- asse x -->
+    <text x="90"  y="366" text-anchor="middle" font-size="16" fill="#64748b">p = 0</text>
+    <text x="520" y="366" text-anchor="middle" font-size="16" fill="#64748b">p = 0,5</text>
+    <text x="950" y="366" text-anchor="middle" font-size="16" fill="#64748b">p = 1</text>
+    <text x="520" y="394" text-anchor="middle" font-size="16" font-style="italic" fill="#94a3b8">probabilita che esca testa</text>
+</svg>
+                    </div>
+                    <div class="box box-blue fragment">
+                        Il massimo vale <strong>esattamente 1 bit</strong>: e la quantita di informazione che serve per comunicare l'esito di un lancio equo. Se la moneta e truccata, serve <em>meno</em> di un bit.
+                    </div>
+                    <aside class="notes">Far notare che la curva e simmetrica: una moneta che esce testa il 90% delle volte e altrettanto prevedibile di una che esce croce il 90% delle volte. E che il massimo e piatto, quindi vicino a p=0,5 l'incertezza cambia poco.</aside>
+                </section>
             </section>
 
             <!-- ========== SEZIONE: DAL BIT AL BYTE ========== -->
@@ -531,12 +622,47 @@
 
                 <section>
                     <h2>Perche il disco da 1 TB mostra 931 GB</h2>
-                    <div class="diagram">
-                        Produttore (SI): 1 TB = 1.000.000.000.000 byte<br>
-                        <br>
-                        Sistema operativo (IEC): 1.000.000.000.000 / 1.073.741.824 &asymp; 931 GiB<br>
-                        <br>
-                        Visualizzato come: "931 GB"
+                    <p>Lo stesso disco, misurato con <strong>due righelli diversi</strong>.</p>
+                    <div class="svg-figure">
+<svg viewBox="0 0 1000 330" role="img" aria-label="Lo stesso disco da mille miliardi di byte misurato con due righelli: quello del produttore lo divide in 1000 gigabyte, quello del sistema operativo in 931 gibibyte">
+    <!-- righello SI (produttore) -->
+    <text x="60" y="26" font-size="18" font-weight="700" fill="#1e40af">Righello del produttore (SI)</text>
+    <text x="60" y="48" font-size="15" fill="#64748b">1 GB = 1.000.000.000 byte &#8594; 10 tacche da 100 GB</text>
+    <g stroke="#2563eb" stroke-width="2">
+        <line x1="60" y1="66" x2="940" y2="66"/>
+        <line x1="60"  y1="58" x2="60"  y2="96"/><line x1="148" y1="58" x2="148" y2="82"/>
+        <line x1="236" y1="58" x2="236" y2="82"/><line x1="324" y1="58" x2="324" y2="82"/>
+        <line x1="412" y1="58" x2="412" y2="82"/><line x1="500" y1="58" x2="500" y2="96"/>
+        <line x1="588" y1="58" x2="588" y2="82"/><line x1="676" y1="58" x2="676" y2="82"/>
+        <line x1="764" y1="58" x2="764" y2="82"/><line x1="852" y1="58" x2="852" y2="82"/>
+        <line x1="940" y1="58" x2="940" y2="96"/>
+    </g>
+    <text x="60"  y="114" text-anchor="middle" font-size="15" fill="#475569">0</text>
+    <text x="500" y="114" text-anchor="middle" font-size="15" fill="#475569">500 GB</text>
+    <text x="940" y="114" text-anchor="middle" font-size="17" font-weight="700" fill="#1e40af">1000 GB = 1 TB</text>
+
+    <!-- il disco -->
+    <rect x="60" y="130" width="880" height="64" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+    <text x="500" y="160" text-anchor="middle" font-size="19" font-weight="600" fill="#1e293b">1.000.000.000.000 byte</text>
+    <text x="500" y="182" text-anchor="middle" font-size="15" font-style="italic" fill="#64748b">il disco non cambia: e sempre lo stesso</text>
+
+    <!-- righello IEC (sistema operativo) -->
+    <g stroke="#d97706" stroke-width="2">
+        <line x1="60" y1="228" x2="940" y2="228"/>
+        <line x1="60"  y1="198" x2="60"  y2="236"/><line x1="154.5" y1="214" x2="154.5" y2="236"/>
+        <line x1="249" y1="214" x2="249" y2="236"/><line x1="343.5" y1="214" x2="343.5" y2="236"/>
+        <line x1="438" y1="214" x2="438" y2="236"/><line x1="532.5" y1="198" x2="532.5" y2="236"/>
+        <line x1="627" y1="214" x2="627" y2="236"/><line x1="721.4" y1="214" x2="721.4" y2="236"/>
+        <line x1="815.9" y1="214" x2="815.9" y2="236"/><line x1="910.4" y1="214" x2="910.4" y2="236"/>
+    </g>
+    <!-- l'avanzo che non completa la decima tacca -->
+    <rect x="910.4" y="218" width="29.6" height="20" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="60"  y="256" text-anchor="middle" font-size="15" fill="#475569">0</text>
+    <text x="532.5" y="256" text-anchor="middle" font-size="15" fill="#475569">500 GiB</text>
+    <text x="940" y="278" text-anchor="end" font-size="17" font-weight="700" fill="#b45309">931 GiB</text>
+    <text x="60" y="292" font-size="18" font-weight="700" fill="#b45309">Righello del sistema operativo (IEC)</text>
+    <text x="60" y="314" font-size="15" fill="#64748b">1 GiB = 1.073.741.824 byte &#8594; le tacche sono piu larghe del 7,4%, l'ultima non si completa</text>
+</svg>
                     </div>
                     <div class="box box-yellow fragment">
                         <strong>Nessuno imbroglia:</strong> e solo un'ambiguita di notazione. Ma genera lamentele online e persino cause legali (Apple fu citata in giudizio nel 2007).
@@ -780,21 +906,54 @@
                 <section>
                     <h2>Conversione binario &harr; esadecimale</h2>
                     <p>Basta raggruppare i bit a <strong>gruppi di 4</strong> (da destra).</p>
-                    <h3>Esempio: 11010110<sub>2</sub> &rarr; esadecimale</h3>
-                    <div class="diagram">
-                        1101 &nbsp; 0110<br>
-                        &darr; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &darr;<br>
-                        D &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6<br>
-                        <br>
-                        Risultato: <strong>0xD6</strong>
+                    <div class="svg-figure">
+<svg viewBox="0 0 1000 380" role="img" aria-label="Conversione fra binario ed esadecimale raggruppando i bit a quattro a quattro: 11010110 diventa D6, e 2A3 diventa 001010100011">
+    <defs>
+        <marker id="hex-freccia" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+        </marker>
+    </defs>
+
+    <!-- ===== binario -> esadecimale ===== -->
+    <text x="0" y="20" font-size="19" font-weight="700" fill="#1e40af">11010110 in binario &#8594; esadecimale</text>
+
+    <rect x="180" y="38" width="290" height="54" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="325" y="74" text-anchor="middle" font-size="30" font-weight="700" font-family="monospace" fill="#1e40af">1101</text>
+    <rect x="530" y="38" width="290" height="54" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="675" y="74" text-anchor="middle" font-size="30" font-weight="700" font-family="monospace" fill="#15803d">0110</text>
+
+    <line x1="325" y1="94" x2="325" y2="130" stroke="#64748b" stroke-width="2.5" marker-end="url(#hex-freccia)"/>
+    <line x1="675" y1="94" x2="675" y2="130" stroke="#64748b" stroke-width="2.5" marker-end="url(#hex-freccia)"/>
+    <text x="345" y="120" font-size="15" fill="#64748b">8+4+0+1 = 13</text>
+    <text x="695" y="120" font-size="15" fill="#64748b">0+4+2+0 = 6</text>
+
+    <text x="325" y="168" text-anchor="middle" font-size="34" font-weight="700" font-family="monospace" fill="#1e40af">D</text>
+    <text x="675" y="168" text-anchor="middle" font-size="34" font-weight="700" font-family="monospace" fill="#15803d">6</text>
+    <text x="870" y="168" font-size="24" font-weight="700" fill="#1e293b">= 0xD6</text>
+
+    <line x1="0" y1="196" x2="1000" y2="196" stroke="#e2e8f0" stroke-width="2"/>
+
+    <!-- ===== esadecimale -> binario ===== -->
+    <text x="0" y="228" font-size="19" font-weight="700" fill="#b45309">0x2A3 in esadecimale &#8594; binario</text>
+
+    <text x="215" y="278" text-anchor="middle" font-size="34" font-weight="700" font-family="monospace" fill="#b45309">2</text>
+    <text x="500" y="278" text-anchor="middle" font-size="34" font-weight="700" font-family="monospace" fill="#b45309">A</text>
+    <text x="785" y="278" text-anchor="middle" font-size="34" font-weight="700" font-family="monospace" fill="#b45309">3</text>
+
+    <line x1="215" y1="292" x2="215" y2="322" stroke="#64748b" stroke-width="2.5" marker-end="url(#hex-freccia)"/>
+    <line x1="500" y1="292" x2="500" y2="322" stroke="#64748b" stroke-width="2.5" marker-end="url(#hex-freccia)"/>
+    <line x1="785" y1="292" x2="785" y2="322" stroke="#64748b" stroke-width="2.5" marker-end="url(#hex-freccia)"/>
+
+    <rect x="90"  y="326" width="250" height="48" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <text x="215" y="359" text-anchor="middle" font-size="26" font-weight="700" font-family="monospace" fill="#b45309">0010</text>
+    <rect x="375" y="326" width="250" height="48" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <text x="500" y="359" text-anchor="middle" font-size="26" font-weight="700" font-family="monospace" fill="#b45309">1010</text>
+    <rect x="660" y="326" width="250" height="48" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <text x="785" y="359" text-anchor="middle" font-size="26" font-weight="700" font-family="monospace" fill="#b45309">0011</text>
+</svg>
                     </div>
-                    <h3 class="fragment">Esempio inverso: 0x2A3 &rarr; binario</h3>
-                    <div class="diagram fragment">
-                        2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3<br>
-                        &darr; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &darr; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &darr;<br>
-                        0010 &nbsp; 1010 &nbsp; 0011<br>
-                        <br>
-                        Risultato: <strong>001010100011</strong><sub>2</sub>
+                    <div class="box box-blue fragment">
+                        Ogni cifra esadecimale vale <strong>esattamente 4 bit</strong>: per questo la conversione si fa a occhio, senza calcoli. E il motivo per cui l'esadecimale esiste.
                     </div>
                 </section>
 
@@ -972,9 +1131,9 @@
         <div class="slide-footer">Sistemi di Elaborazione &mdash; T01</div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script src="vendor/reveal.js"></script>
+    <script src="vendor/plugin/highlight/highlight.js"></script>
+    <script src="vendor/plugin/notes/notes.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
