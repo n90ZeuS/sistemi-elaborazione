@@ -3,6 +3,7 @@ name: Pubblica sito
 # Ogni notte ricostruisce il sito: il materiale compare 7 giorni prima
 # della lezione (vedi calendario.json e pianifica.py). I file delle
 # lezioni non ancora pubblicate vengono rimossi dalla copia pubblicata.
+# Per il materiale pubblicato vengono generati i PDF (genera_pdf.mjs).
 
 on:
   push:
@@ -38,6 +39,19 @@ jobs:
         run: |
           python3 pianifica.py --pota
           rm -f pianifica.py converti_materiali.py
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: PDF di slide e dispense
+        working-directory: _site
+        env:
+          CHROME: /usr/bin/google-chrome
+        run: |
+          npm install --no-save --no-package-lock --silent puppeteer-core
+          node genera_pdf.mjs
+          rm -rf genera_pdf.mjs node_modules
 
       - uses: actions/upload-pages-artifact@v3
         with:

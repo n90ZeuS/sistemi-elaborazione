@@ -4,25 +4,23 @@
 
 Benvenuti al corso di **Sistemi di Elaborazione 1**, rivolto agli studenti del primo anno di Scienze Statistiche. Questo documento presenta il corso nella sua interezza: cosa imparerete, come si svolge, come viene valutato, e quali strumenti vi serviranno.
 
-Prima di entrare nel merito tecnico, vale la pena rispondere alla domanda che probabilmente vi state ponendo: *perche devo studiare informatica se ho scelto statistica?*
+La prima sezione spiega perché l'informatica serve a chi studia statistica.
 
 ---
 
-## Perche informatica per statistici
+## Perché informatica per statistici
 
-La statistica moderna non si fa piu con carta, penna e tavole dei logaritmi. Si fa con macchine che elaborano milioni di osservazioni in frazioni di secondo. Un futuro statistico che non capisce come funziona un elaboratore e come un chirurgo che non conosce l'anatomia: puo seguire le procedure, ma quando qualcosa va storto — e qualcosa va sempre storto — non sa dove guardare.
+Oggi le analisi statistiche si fanno al computer, su insiemi di dati che possono contenere milioni di osservazioni elaborate in frazioni di secondo. Chi usa questi strumenti senza sapere come funziona un elaboratore può seguire le procedure, ma quando un risultato è sbagliato fatica a capire dove cercare l'errore.
 
-### Esempi concreti
+### Casi reali
 
-Pensate a queste situazioni, tutte reali e frequenti:
+- **Ottobre 2020, Inghilterra.** 15.841 casi positivi al COVID non sono entrati nel conteggio ufficiale per circa una settimana. I risultati dei test passavano per un file in formato `.xls`, che accetta al massimo 65.536 righe: le righe in eccesso sono state scartate senza avvisi. I limiti dei formati e della rappresentazione dei dati sono l'argomento di T05.
 
-- State analizzando un dataset con 10 milioni di righe e il programma si blocca. Perche? Forse i dati non stanno in memoria. Ma quanta memoria serve? Come si calcola? Lo vedrete studiando la rappresentazione dei dati e l'architettura degli elaboratori.
+- **Numeri decimali.** In Python l'espressione `0.1 + 0.2 == 0.3` restituisce `False`. Il valore 0,1 non ha una rappresentazione esatta in binario, quindi la somma vale 0.30000000000000004. Per confrontare numeri decimali si usa una tolleranza, per esempio `math.isclose`. Lo vedrete studiando la virgola mobile.
 
-- Un calcolo statistico produce un risultato leggermente diverso su due computer. Non e un bug: e un problema di precisione numerica in virgola mobile. Lo capirete studiando come i numeri vengono rappresentati in binario.
+- **Nomi di geni trasformati in date.** Excel interpreta alcuni nomi di geni come date: SEPT2 diventa 2-set, MARCH1 diventa 1-mar. Uno studio del 2016 ha trovato questo errore in circa un quinto degli articoli di genomica che allegavano liste di geni in Excel. In un programma i tipi di dato si dichiarano e si controllano esplicitamente.
 
-- Dovete automatizzare un'analisi che fate ogni settimana su dati aggiornati. Senza saper programmare, la rifate a mano ogni volta. Con Python, scrivete uno script una volta e lo eseguite in un secondo.
-
-- Dovete pulire e trasformare dati provenienti da fonti diverse (CSV, JSON, database). La capacita di scrivere codice per manipolare dati e una competenza fondamentale che nessun foglio di calcolo puo sostituire completamente.
+- **Un errore in un foglio di calcolo.** Nel 2013 uno studente di dottorato ha provato a rifare i calcoli di un articolo di economia molto citato (Reinhart e Rogoff, sul rapporto tra debito pubblico e crescita). Ha trovato una formula Excel che escludeva cinque paesi dalla media. Un'analisi scritta come script si può rieseguire e controllare riga per riga.
 
 ### Cosa imparerete
 
@@ -43,7 +41,7 @@ Il corso si articola in **17 lezioni frontali** e **8 laboratori di programmazio
 
 ### Parte 1 — Fondamenti (T01-T06)
 
-Le prime sei lezioni costruiscono le basi teoriche dell'informatica:
+Queste sei lezioni costruiscono le basi teoriche dell'informatica:
 
 | Lezione | Argomento |
 |---------|-----------|
@@ -56,9 +54,11 @@ Le prime sei lezioni costruiscono le basi teoriche dell'informatica:
 
 Qui imparerete come funziona un computer "sotto il cofano": come rappresenta l'informazione, come ragiona (logica booleana), come è fatto fisicamente (CPU, memoria, bus), come il sistema operativo gestisce il tutto, come i dati vengono codificati in binario e come si passa da un problema a una soluzione algoritmica.
 
+L'ordine in cui si svolgono non segue la numerazione: T06 si tiene a ottobre, prima delle lezioni di Python, mentre T04 e T05 si tengono a dicembre, dopo T15. Il calendario aggiornato è sul portale.
+
 ### Parte 2 — Python (T07-T17)
 
-Il cuore pratico del corso: imparare a programmare in Python.
+La seconda parte insegna a programmare in Python.
 
 | Lezione | Argomento |
 |---------|-----------|
@@ -67,25 +67,25 @@ Il cuore pratico del corso: imparare a programmare in Python.
 | T09 | Cicli |
 | T10 | Comprehension e stringhe |
 | T11 | Liste e tuple |
-| T12 | Dizionari, set e mutabilita |
+| T12 | Dizionari, set e mutabilità |
 | T13 | Funzioni: fondamenti |
 | T14 | Funzioni avanzate e moduli |
 | T15 | File, dati e gestione errori |
 | T16 | Programmazione a oggetti |
 | T17 | NumPy, Pandas e visualizzazione |
 
-Si parte dalle basi assolute (variabili, tipi, stampa a schermo) e si arriva fino alle librerie scientifiche che userete per tutto il percorso universitario.
+Si parte dalle basi (variabili, tipi, stampa a schermo) e si arriva alle librerie scientifiche che userete nel resto del percorso universitario.
 
 ### Laboratori (L01-L08)
 
-Otto sessioni pratiche in cui mettete le mani sulla tastiera:
+Otto sessioni pratiche in cui scrivete ed eseguite programmi al computer:
 
 | Laboratorio | Argomento |
 |-------------|-----------|
 | L01 | Ambiente, variabili e condizionali |
 | L02 | Cicli, comprehension e stringhe |
 | L03 | Strutture dati |
-| L04 | Funzioni e modularita |
+| L04 | Funzioni e modularità |
 | L05 | File e gestione dati |
 | L06 | Classi e oggetti |
 | L07 | NumPy e Pandas |
@@ -93,40 +93,37 @@ Otto sessioni pratiche in cui mettete le mani sulla tastiera:
 
 I laboratori seguono le lezioni frontali e vi permettono di consolidare ogni argomento con esercizi guidati.
 
+Gli argomenti dei laboratori e delle ultime lezioni potrebbero cambiare durante il corso. Il portale riporta sempre la versione aggiornata.
+
 ### Corsi collegati
 
-Questo corso e il primo di un percorso che prosegue negli anni successivi:
+Questo corso è il primo di un percorso che prosegue negli anni successivi:
 
 - **Strutture dati e algoritmi** — I Anno, II Semestre (6 CFU)
 - **Sistemi di elaborazione 2** — III Anno, I Semestre (9 CFU)
 
 ---
 
-## Modalita d'esame
+## Modalità d'esame
 
-L'esame si compone di due prove, entrambe **obbligatorie**.
+L'esame si compone di due prove, entrambe **obbligatorie**: una prova scritta al PC e un quiz di teoria.
 
 ### Prova scritta al PC
 
 - **Durata**: 90 minuti
 - **Contenuto**: esercizi di programmazione in Python
-- **Modalita**: si svolge in laboratorio informatico (non si usa il proprio PC)
+- **Modalità**: si svolge in laboratorio informatico (non si usa il proprio PC)
 - **Consentiti**: appunti, libri, file personali
 - **Non consentiti**: chat, intelligenza artificiale, internet
-- **Voto minimo per accedere all'orale**: 17/30
 - **Appelli disponibili**: 5 nel corso dell'anno accademico
 
-La prova scritta verifica la vostra capacita di scrivere codice Python funzionante per risolvere problemi concreti. Non si tratta di domande teoriche a risposta multipla, ma di esercizi in cui dovete produrre programmi che vengono poi eseguiti e valutati.
+La prova scritta verifica la vostra capacità di scrivere codice Python funzionante per risolvere problemi concreti. Non si tratta di domande teoriche a risposta multipla, ma di esercizi in cui dovete produrre programmi che vengono poi eseguiti e valutati.
 
-### Prova orale
+### Quiz di teoria
 
-- **Requisito**: aver superato lo scritto con almeno 17/30
-- **Durata**: circa 10-15 minuti
-- **Contenuto**: domande di teoria e/o esercizi Python
-- **Modalita**: frontale, con eventuale uso di computer
-- **Punteggio**: puo modificare il voto dello scritto di **+/- 3 punti**
-
-L'orale serve a verificare la comprensione profonda degli argomenti. Non basta saper scrivere codice: dovete anche saper spiegare *perche* funziona e *come* ragionate.
+- **Novità**: con buona probabilità il quiz sostituisce la prova orale degli anni precedenti
+- **Contenuto**: domande sugli argomenti di teoria del corso
+- **Punteggio**: da definire; le regole saranno comunicate sul portale e su Moodle prima del primo appello
 
 ### Criteri di valutazione
 
@@ -134,8 +131,8 @@ Nello scritto si valutano:
 
 - **Correttezza**: il programma produce l'output atteso?
 - **Completezza**: tutti i casi sono gestiti?
-- **Stile**: il codice e leggibile, ben organizzato, con nomi di variabili sensati?
-- **Efficienza**: la soluzione e ragionevolmente efficiente? (non si richiede ottimizzazione estrema, ma neanche soluzioni inutilmente lente)
+- **Stile**: il codice è leggibile, ben organizzato, con nomi di variabili sensati?
+- **Efficienza**: la soluzione è ragionevolmente efficiente? (non si richiede ottimizzazione estrema, ma neanche soluzioni inutilmente lente)
 
 ---
 
@@ -148,13 +145,13 @@ Per seguire il corso e fare pratica avrete bisogno di tre strumenti, tutti gratu
 Il linguaggio di programmazione che useremo. Scaricatelo dal sito ufficiale:
 
 - **Windows/macOS**: https://www.python.org/downloads/ — scaricate l'ultima versione stabile (3.12 o successiva)
-- **Linux**: di solito e gia installato; verificate con `python3 --version` nel terminale
+- **Linux**: di solito è già installato; verificate con `python3 --version` nel terminale
 
-Durante l'installazione su Windows, **spuntate la casella "Add Python to PATH"**: e fondamentale.
+Durante l'installazione su Windows, **spuntate la casella "Add Python to PATH"**: senza questa opzione il terminale non trova il comando `python`.
 
 ### Editor di codice
 
-Vi consiglio **Visual Studio Code** (VS Code), un editor gratuito, potente e molto diffuso:
+Vi consiglio **Visual Studio Code** (VS Code), un editor gratuito e molto diffuso:
 
 - **Download**: https://code.visualstudio.com/
 - Dopo l'installazione, aggiungete l'estensione **Python** di Microsoft (la trovate nel marketplace delle estensioni)
@@ -163,7 +160,7 @@ VS Code vi offre: evidenziazione della sintassi, completamento automatico, esecu
 
 ### Terminale
 
-Il terminale (o "riga di comando") e l'interfaccia testuale del sistema operativo. Lo userete per eseguire i vostri programmi Python.
+Il terminale (o "riga di comando") è l'interfaccia testuale del sistema operativo. Lo userete per eseguire i vostri programmi Python.
 
 - **Windows**: cercate "Terminale" o "PowerShell" nel menu Start
 - **macOS**: aprite l'applicazione "Terminale" (in Utility)
@@ -198,9 +195,9 @@ Su questo portale trovate tutto il materiale organizzato per lezione:
 - **Dispense**: versione narrativa e approfondita di ogni lezione
 - **Codice**: esempi ed esercizi Python scaricabili
 - **Autovalutazione**: quiz per verificare la propria comprensione
-- **Errori comuni**: raccolta degli errori piu frequenti con spiegazioni
+- **Errori comuni**: raccolta degli errori più frequenti con spiegazioni
 - **Schede di confronto**: tabelle riassuntive su strutture dati, operatori, ecc.
-- **Mini-progetti guidati**: progetti completi per mettere insieme piu argomenti
+- **Mini-progetti guidati**: progetti completi per mettere insieme più argomenti
 - **Glossario**: definizioni dei termini tecnici usati nel corso
 - **Cheatsheet Python**: riferimento rapido della sintassi
 
@@ -208,32 +205,32 @@ Su questo portale trovate tutto il materiale organizzato per lezione:
 
 ## Consigli pratici per lo studio
 
-Programmare e un'abilita pratica, come suonare uno strumento o imparare una lingua. Non si impara solo leggendo o guardando: si impara **facendo**. Ecco alcuni consigli basati sull'esperienza.
+Programmare è un'abilità pratica, come suonare uno strumento o imparare una lingua: oltre a leggere e ascoltare, bisogna esercitarsi scrivendo codice. Ecco alcuni consigli.
 
 ### Programmate ogni giorno
 
-Anche solo 20-30 minuti al giorno sono piu efficaci di una maratona di 8 ore il giorno prima dell'esame. La programmazione richiede che certi schemi mentali diventino automatici, e questo avviene solo con la pratica regolare.
+Anche solo 20-30 minuti al giorno sono più efficaci di una maratona di 8 ore il giorno prima dell'esame. La programmazione richiede che certi schemi mentali diventino automatici, e questo avviene solo con la pratica regolare.
 
 ### Non copiate
 
-Copiare codice da un compagno o da internet senza capirlo e il modo piu sicuro per fallire l'esame. Potete (e dovete) leggere codice altrui, studiare soluzioni, chiedere aiuto — ma poi dovete essere in grado di riscrivere la soluzione da soli, senza guardare.
+Copiare codice da un compagno o da internet senza capirlo non prepara all'esame, dove le soluzioni vanno scritte da soli. Potete (e dovete) leggere codice altrui, studiare soluzioni, chiedere aiuto — ma poi dovete essere in grado di riscrivere la soluzione da soli, senza guardare.
 
-### Sbagliare e normale
+### Sbagliare è normale
 
-Nessun programmatore, nemmeno il piu esperto, scrive codice corretto al primo tentativo. Gli errori non sono un segno di incapacita: sono il meccanismo fondamentale dell'apprendimento. Quando il programma non funziona, leggete il messaggio di errore con attenzione: Python e piuttosto bravo a dirvi cosa e andato storto e dove.
+Nessun programmatore, nemmeno il più esperto, scrive codice corretto al primo tentativo: correggere gli errori fa parte del lavoro. Quando il programma non funziona, leggete il messaggio di errore: Python indica il tipo di errore e la riga in cui si è verificato.
 
 ### Usate le risorse del corso
 
-Le dispense, gli esercizi, le autovalutazioni e gli errori comuni sono stati progettati per accompagnarvi passo dopo passo. Non saltate gli esercizi pensando "questo lo so gia fare": provatelo davvero, e verificate che il vostro codice produca il risultato corretto.
+Le dispense, gli esercizi, le autovalutazioni e gli errori comuni sono stati progettati per accompagnarvi passo dopo passo. Non saltate gli esercizi pensando "questo lo so già fare": provateli e verificate che il vostro codice produca il risultato corretto.
 
 ### Fate domande
 
-Se qualcosa non e chiaro, chiedete. A lezione, in laboratorio, via email, al ricevimento. Non esiste una domanda stupida — esiste solo il rischio di restare indietro in silenzio.
+Se qualcosa non è chiaro, chiedete: a lezione, in laboratorio, via email o al ricevimento.
 
 ---
 
 ## Prossimi passi
 
-Nella prossima lezione (T01) entreremo nel vivo del corso, partendo dalle fondamenta teoriche: cos'e l'informazione, come si misura, e come i computer rappresentano i numeri. Preparatevi installando Python e VS Code, cosi al primo laboratorio sarete gia pronti per scrivere il vostro primo programma.
+Subito dopo questa introduzione inizia T01, la prima lezione di teoria: che cos'è l'informazione, come si misura e come i computer rappresentano i numeri. Prima del primo laboratorio installate Python e VS Code, così potrete scrivere subito il vostro primo programma.
 
 Buon corso a tutti!

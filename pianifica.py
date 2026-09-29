@@ -362,6 +362,29 @@ def pota(codici: dict[str, dict], oggi: dt.date, anticipo: int) -> None:
             rimossi += 1
     print(f"  Potatura: {rimossi} file/cartelle rimossi per {len(bloccati)} lezioni non pubblicate.")
 
+    # I link rimasti verso materiale rimosso (es. "T06 →" nella navigazione)
+    # diventano testo semplice, cosi' non portano a una pagina 404.
+    re_link = re.compile(r'<a ([^>]*?)href="([^"#:]+\.(?:html|pdf|py))"([^>]*)>(.*?)</a>', re.DOTALL)
+    disattivati = 0
+    for pagina in BASE.rglob("*.html"):
+        testo = pagina.read_text(encoding="utf-8")
+
+        def sost(m: re.Match) -> str:
+            nonlocal disattivati
+            destinazione = (pagina.parent / m.group(2)).resolve()
+            if destinazione.exists() or not any(
+                    Path(m.group(2)).name.startswith(f"{c}_") or f"/{c}_" in m.group(2)
+                    for c in bloccati):
+                return m.group(0)
+            disattivati += 1
+            return f'<span class="link-non-pubblicato" title="Non ancora pubblicato" ' \
+                   f'style="opacity: 0.5; cursor: not-allowed;">{m.group(4)}</span>'
+
+        nuovo = re_link.sub(sost, testo)
+        if nuovo != testo:
+            pagina.write_text(nuovo, encoding="utf-8")
+    print(f"  Link a materiale non pubblicato disattivati: {disattivati}")
+
 
 # ─── main ───
 

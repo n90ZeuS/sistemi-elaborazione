@@ -49,6 +49,22 @@ LEZIONI_LAB: list[tuple[str, str]] = [
 ]
 
 ALL_LEZIONI: list[tuple[str, str]] = LEZIONI_FRONTALI + LEZIONI_LAB
+TITOLI: dict[str, str] = dict(ALL_LEZIONI)
+
+
+def _ordine_calendario() -> list[str]:
+    """Codici nell'ordine reale di svolgimento (calendario.json), usato per i
+    link precedente/successiva. Se il calendario manca, ordine dei codici."""
+    import json
+    cal: Path = BASE / "calendario.json"
+    if not cal.exists():
+        return [c for c, _ in ALL_LEZIONI]
+    slot = sorted(json.loads(cal.read_text(encoding="utf-8"))["slot"], key=lambda s: s["data"])
+    ordine: list[str] = [c for s in slot for c in s["assegnato"] if c in TITOLI]
+    return ordine + [c for c, _ in ALL_LEZIONI if c not in ordine]
+
+
+ORDINE: list[str] = _ordine_calendario()
 
 # Mappa codice lezione → nome file presentazione
 PRES_FILES: dict[str, str] = {}
@@ -265,6 +281,13 @@ nav.bottom-nav a {
 }
 
 nav.bottom-nav a:hover { text-decoration: underline; }
+
+@media print {
+    nav.top-nav, nav.bottom-nav, .download-link { display: none; }
+    body { max-width: none; padding: 0; }
+    pre, table, blockquote { break-inside: avoid; }
+    h2, h3 { break-after: avoid; }
+}
 """
 
 
@@ -558,7 +581,8 @@ def inline_md(text: str) -> str:
 # ─── Generazione pagina HTML ───
 
 def make_html_page(title: str, body: str, nav_links: dict[str, str] | None = None,
-                   download_link: str | None = None) -> str:
+                   download_link: str | None = None,
+                   download_label: str = "Scarica file .py") -> str:
     """Crea una pagina HTML completa con CSS e navigazione."""
     nav_html: str = ""
     if nav_links:
@@ -569,7 +593,7 @@ def make_html_page(title: str, body: str, nav_links: dict[str, str] | None = Non
 
     download_html: str = ""
     if download_link:
-        download_html = f'<a class="download-link" href="{download_link}" download>Scarica file .py</a>'
+        download_html = f'<a class="download-link" href="{download_link}" download>{download_label}</a>'
 
     bottom_nav: str = ""
     if nav_links:
@@ -609,12 +633,12 @@ def get_nav_links(code: str, kind: str, base_path: str = "../../") -> dict[str, 
     """Genera i link di navigazione per una pagina."""
     nav: dict[str, str] = {"Home": f"{base_path}index.html"}
 
-    all_codes: list[str] = [c for c, _ in ALL_LEZIONI]
+    all_codes: list[str] = ORDINE
     if code in all_codes:
         idx: int = all_codes.index(code)
         if idx > 0:
             prev_code: str = all_codes[idx - 1]
-            prev_title: str = ALL_LEZIONI[idx - 1][1]
+            prev_title: str = TITOLI[prev_code]
             if kind == "dispensa":
                 subdir: str = "frontali" if prev_code.startswith("T") else "laboratori"
                 prev_file: str = DISP_FILES.get(prev_code, "")
@@ -627,7 +651,7 @@ def get_nav_links(code: str, kind: str, base_path: str = "../../") -> dict[str, 
 
         if idx < len(all_codes) - 1:
             next_code: str = all_codes[idx + 1]
-            next_title: str = ALL_LEZIONI[idx + 1][1]
+            next_title: str = TITOLI[next_code]
             if kind == "dispensa":
                 subdir = "frontali" if next_code.startswith("T") else "laboratori"
                 next_file: str = DISP_FILES.get(next_code, "")
@@ -663,7 +687,7 @@ def convert_dispense() -> None:
             body: str = md_to_html(md_text)
 
             nav: dict[str, str] = {"Home": "../../index.html"}
-            all_codes: list[str] = [c for c, _ in ALL_LEZIONI]
+            all_codes: list[str] = ORDINE
             if code in all_codes:
                 idx: int = all_codes.index(code)
                 if idx > 0:
@@ -690,7 +714,10 @@ def convert_dispense() -> None:
             if code in PRES_FILES:
                 nav["Presentazione"] = f"../../presentazioni/{PRES_FILES[code]}"
 
-            html_content: str = make_html_page(title, body, nav)
+            # Il PDF viene generato da genera_pdf.mjs al momento della pubblicazione
+            html_content: str = make_html_page(title, body, nav,
+                                               download_link=f"{md_file.stem}.pdf",
+                                               download_label="Scarica PDF")
             out_file: Path = md_file.with_suffix('.html')
             out_file.write_text(html_content, encoding="utf-8")
             print(f"  ✓ {out_file.relative_to(BASE)}")
@@ -874,29 +901,29 @@ def add_nav_to_presentations() -> None:
 
         content: str = pres_file.read_text(encoding="utf-8")
 
-        # Skip se la slide di navigazione è già presente
-        if 'class="nav-slide"' in content:
-            print(f"  ⊘ {pres_file.name} (navigazione già presente)")
-            continue
+        # Se la slide di navigazione c'è già, la si rigenera (l'ordine segue il calendario)
+        content = re.sub(r'\n*[ \t]*<!-- Slide di navigazione -->\s*<section class="nav-slide">.*?</section>\s*</section>\n?',
+                         '', content, count=1, flags=re.DOTALL)
 
         # Costruisci i link
-        all_codes: list[str] = [c for c, _ in ALL_LEZIONI]
+        all_codes: list[str] = ORDINE
         nav_items: list[str] = []
 
         nav_items.append('<a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a>')
+        nav_items.append(f'<a href="{pres_file.with_suffix(".pdf").name}" style="color: #475569;">&#11015; Scarica PDF</a>')
 
         if code in all_codes:
             idx: int = all_codes.index(code)
             if idx > 0:
                 prev_code: str = all_codes[idx - 1]
-                prev_name: str = ALL_LEZIONI[idx - 1][1]
+                prev_name: str = TITOLI[prev_code]
                 prev_file: str = PRES_FILES.get(prev_code, "")
                 if prev_file:
                     nav_items.append(f'<a href="{prev_file}" style="color: var(--accent);">&larr; {prev_code}: {prev_name}</a>')
 
             if idx < len(all_codes) - 1:
                 next_code: str = all_codes[idx + 1]
-                next_name: str = ALL_LEZIONI[idx + 1][1]
+                next_name: str = TITOLI[next_code]
                 next_file: str = PRES_FILES.get(next_code, "")
                 if next_file:
                     nav_items.append(f'<a href="{next_file}" style="color: var(--accent);">{next_code}: {next_name} &rarr;</a>')

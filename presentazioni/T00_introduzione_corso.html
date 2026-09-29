@@ -285,6 +285,8 @@
             color: var(--text-muted);
         }
 
+        .reveal .slide-footer a { color: inherit; }
+
         /* === SLIDE SEZIONE === */
         .reveal .section-slide {
             text-align: center;
@@ -305,9 +307,7 @@
 
         /* === PRINT === */
         @media print {
-            .reveal .slides {
-                font-size: 14px;
-            }
+            .reveal .slide-footer .pdf-link { display: none; }
             .reveal pre {
                 box-shadow: none;
                 border: 1px solid #ccc;
@@ -333,39 +333,42 @@
             <section>
                 <h2>Agenda</h2>
                 <ol>
-                    <li class="fragment"><strong>Perche questo corso</strong> &mdash; il legame tra statistica e informatica</li>
+                    <li class="fragment"><strong>Perché questo corso</strong> &mdash; il legame tra statistica e informatica</li>
                     <li class="fragment"><strong>Struttura del corso</strong> &mdash; lezioni, laboratori, mappa degli argomenti</li>
-                    <li class="fragment"><strong>Modalita d'esame</strong> &mdash; scritto al PC + orale obbligatorio</li>
+                    <li class="fragment"><strong>Modalità d'esame</strong> &mdash; prova al PC + quiz di teoria</li>
                     <li class="fragment"><strong>Strumenti</strong> &mdash; cosa installare e dove scaricarlo</li>
                     <li class="fragment"><strong>Risorse e consigli</strong> &mdash; come studiare e dove trovare aiuto</li>
                 </ol>
             </section>
 
-            <!-- ========== SEZIONE: PERCHE QUESTO CORSO ========== -->
+            <!-- ========== SEZIONE: PERCHÉ QUESTO CORSO ========== -->
             <section>
                 <section class="section-slide">
-                    <h2>Perche questo corso</h2>
+                    <h2>Perché questo corso</h2>
                     <p><em>Il legame tra statistica e informatica</em></p>
                 </section>
 
                 <section>
                     <h2>Statistici e computer</h2>
-                    <p>La statistica moderna si fa con macchine che elaborano <strong>milioni di osservazioni</strong> in frazioni di secondo.</p>
+                    <p>Le analisi statistiche si fanno al computer, su dati che possono contenere <strong>milioni di osservazioni</strong> elaborate in frazioni di secondo.</p>
                     <div class="box box-blue fragment">
-                        <strong>Analogia:</strong> Uno statistico che non capisce come funziona un elaboratore e come un chirurgo che non conosce l'anatomia &mdash; puo seguire le procedure, ma quando qualcosa va storto non sa dove guardare.
-                    </div>
-                    <div class="fragment">
-                        <h3>Situazioni reali</h3>
-                        <ul>
-                            <li>Il dataset da 10 milioni di righe blocca il programma &mdash; <em>quanta memoria serve?</em></li>
-                            <li>Due computer danno risultati diversi &mdash; <em>precisione in virgola mobile</em></li>
-                            <li>Analisi settimanale da ripetere a mano &mdash; <em>uno script Python la fa in un secondo</em></li>
-                        </ul>
+                        Chi usa questi strumenti senza sapere come funziona un elaboratore può seguire le procedure, ma quando un risultato è sbagliato fatica a capire dove cercare l'errore.
                     </div>
                 </section>
 
                 <section>
-                    <h2>Capacita acquisite</h2>
+                    <h2>Casi reali</h2>
+                    <ul>
+                        <li class="fragment">Ottobre 2020, Inghilterra: 15.841 positivi al COVID non entrano nel conteggio ufficiale. I dati passavano per un file <code>.xls</code>, che ha un limite di 65.536 righe.</li>
+                        <li class="fragment">In Python <code>0.1 + 0.2 == 0.3</code> restituisce <code>False</code>: 0,1 non ha una rappresentazione esatta in binario.</li>
+                        <li class="fragment">Excel trasforma alcuni nomi di geni in date (SEPT2 diventa 2-set). Nel 2016 l'errore era presente in circa un quinto degli articoli di genomica con liste di geni allegate in Excel.</li>
+                        <li class="fragment">2013: uno studente di dottorato rifà i calcoli di un articolo di economia molto citato (Reinhart e Rogoff) e trova una formula Excel che esclude cinque paesi dalla media.</li>
+                    </ul>
+                    <p class="fragment">Nel corso vedremo perché succedono: limiti dei formati, rappresentazione dei numeri, tipi di dato, analisi scritte come script ripetibili.</p>
+                </section>
+
+                <section>
+                    <h2>Capacità acquisite</h2>
                     <div class="columns">
                         <div class="col">
                             <div class="box box-blue">
@@ -411,7 +414,7 @@
                                     <tr><td><strong>T04</strong></td><td>Sistemi operativi</td></tr>
                                 </tbody>
                             </table>
-                            <h3 class="fragment"><span class="badge badge-yellow">Ponte</span> Dalla teoria alla pratica</h3>
+                            <h3 class="fragment"><span class="badge badge-yellow">Parte 1</span> Dati e algoritmi</h3>
                             <table class="fragment">
                                 <tbody>
                                     <tr><td><strong>T05</strong></td><td>Rappresentazione dei dati</td></tr>
@@ -428,7 +431,7 @@
                                     <tr><td><strong>T09</strong></td><td>Cicli</td></tr>
                                     <tr><td><strong>T10</strong></td><td>Comprehension e stringhe</td></tr>
                                     <tr><td><strong>T11</strong></td><td>Liste e tuple</td></tr>
-                                    <tr><td><strong>T12</strong></td><td>Dizionari, set e mutabilita</td></tr>
+                                    <tr><td><strong>T12</strong></td><td>Dizionari, set e mutabilità</td></tr>
                                     <tr><td><strong>T13-14</strong></td><td>Funzioni (base + avanzate)</td></tr>
                                     <tr><td><strong>T15</strong></td><td>File, dati e gestione errori</td></tr>
                                     <tr><td><strong>T16</strong></td><td>Programmazione a oggetti</td></tr>
@@ -450,13 +453,14 @@
                             <tr><td><strong>L01</strong></td><td>Ambiente, variabili e condizionali</td></tr>
                             <tr><td><strong>L02</strong></td><td>Cicli, comprehension e stringhe</td></tr>
                             <tr><td><strong>L03</strong></td><td>Strutture dati</td></tr>
-                            <tr><td><strong>L04</strong></td><td>Funzioni e modularita</td></tr>
+                            <tr><td><strong>L04</strong></td><td>Funzioni e modularità</td></tr>
                             <tr><td><strong>L05</strong></td><td>File e gestione dati</td></tr>
                             <tr><td><strong>L06</strong></td><td>Classi e oggetti</td></tr>
                             <tr><td><strong>L07</strong></td><td>NumPy e Pandas</td></tr>
                             <tr><td><strong>L08</strong></td><td>Visualizzazione e progetto</td></tr>
                         </tbody>
                     </table>
+                    <p class="fragment"><em>Gli argomenti dei laboratori e delle ultime lezioni potrebbero cambiare durante il corso. Il portale riporta sempre la versione aggiornata.</em></p>
                     <div class="box box-yellow fragment">
                         <strong>Corsi collegati:</strong> Strutture dati e algoritmi (I anno, II sem.) &mdash; Sistemi di elaborazione 2 (III anno, I sem.)
                     </div>
@@ -466,8 +470,8 @@
             <!-- ========== SEZIONE: ESAME ========== -->
             <section>
                 <section class="section-slide">
-                    <h2>Modalita d'esame</h2>
-                    <p><em>Scritto al PC + orale obbligatorio</em></p>
+                    <h2>Modalità d'esame</h2>
+                    <p><em>Prova scritta al PC + quiz di teoria</em></p>
                 </section>
 
                 <section>
@@ -483,18 +487,17 @@
                         </tbody>
                     </table>
                     <div class="box box-red fragment">
-                        <strong>Attenzione:</strong> L'uso di internet e AI durante la prova non e consentito.
+                        <strong>Attenzione:</strong> L'uso di internet e AI durante la prova non è consentito.
                     </div>
                 </section>
 
                 <section>
-                    <h2>Prova orale</h2>
+                    <h2>Quiz di teoria</h2>
                     <table>
                         <tbody>
-                            <tr><td><strong>Requisito</strong></td><td>Scritto superato con almeno <strong>17/30</strong></td></tr>
-                            <tr><td><strong>Durata</strong></td><td>Circa 10-15 minuti</td></tr>
-                            <tr><td><strong>Contenuto</strong></td><td>Domande di teoria e/o esercizi Python</td></tr>
-                            <tr><td><strong>Punteggio</strong></td><td><strong>&pm;3 punti</strong> rispetto al voto dello scritto</td></tr>
+                            <tr><td><strong>Novità</strong></td><td>Con buona probabilità sostituisce la prova orale</td></tr>
+                            <tr><td><strong>Contenuto</strong></td><td>Domande sugli argomenti di teoria del corso</td></tr>
+                            <tr><td><strong>Punteggio</strong></td><td>Da definire, sarà comunicato sul portale e su Moodle</td></tr>
                         </tbody>
                     </table>
                     <div class="fragment">
@@ -596,7 +599,7 @@
                         </div>
                         <div class="col">
                             <ul>
-                                <li><strong>Errori comuni</strong> &mdash; le trappole piu frequenti</li>
+                                <li><strong>Errori comuni</strong> &mdash; gli errori più frequenti</li>
                                 <li><strong>Schede</strong> &mdash; tabelle riassuntive</li>
                                 <li><strong>Mini-progetti</strong> &mdash; esercizi integrati</li>
                                 <li><strong>Glossario</strong> + <strong>Cheatsheet</strong></li>
@@ -609,40 +612,39 @@
                     <h2>Consigli per lo studio</h2>
                     <ul>
                         <li class="fragment">
-                            <strong>Programmate ogni giorno</strong> &mdash; anche solo 20-30 minuti battono una maratona pre-esame
+                            <strong>Programmate ogni giorno</strong> &mdash; 20-30 minuti al giorno valgono più di una maratona pre-esame
                         </li>
                         <li class="fragment">
                             <strong>Non copiate</strong> &mdash; leggete codice altrui, ma poi riscrivetelo da soli
                         </li>
                         <li class="fragment">
-                            <strong>Sbagliare e normale</strong> &mdash; gli errori sono il meccanismo fondamentale dell'apprendimento
+                            <strong>Sbagliare è normale</strong> &mdash; leggete il messaggio: indica tipo di errore e riga
                         </li>
                         <li class="fragment">
-                            <strong>Usate le risorse</strong> &mdash; dispense, esercizi, autovalutazioni: sono fatti per voi
+                            <strong>Usate le risorse</strong> &mdash; dispense, esercizi, autovalutazioni, errori comuni
                         </li>
                         <li class="fragment">
                             <strong>Fate domande</strong> &mdash; a lezione, in lab, via email, al ricevimento
                         </li>
                     </ul>
                     <div class="box box-blue fragment">
-                        <strong>Prossima lezione (T01):</strong> Informazione, bit e sistemi di numerazione &mdash; le fondamenta teoriche dell'informatica.
+                        <strong>Subito dopo (T01):</strong> Informazione, bit e sistemi di numerazione. Prima del primo laboratorio installate Python e VS Code.
                     </div>
                 </section>
             </section>
-
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">
                 <section>
                     <h2>Navigazione</h2>
                     <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
-                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T01_informazione_bit_numerazione.html" style="color: var(--accent);">T01: Informazione, bit e numerazione &rarr;</a></div><div><a href="../dispense/frontali/T00_introduzione_corso.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T00_introduzione_corso.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="T01_informazione_bit_numerazione.html" style="color: var(--accent);">T01: Informazione, bit e numerazione &rarr;</a></div><div><a href="../dispense/frontali/T00_introduzione_corso.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
                     </div>
                 </section>
             </section>
 
     </div>
-        <div class="slide-footer">Sistemi di Elaborazione &mdash; T00</div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; T00 &middot; <a class="pdf-link" href="T00_introduzione_corso.pdf">Scarica PDF</a></div>
     </div>
 
     <script src="vendor/reveal.js"></script>

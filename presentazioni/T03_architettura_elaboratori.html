@@ -330,6 +330,8 @@
             color: var(--text-muted);
         }
 
+        .reveal .slide-footer a { color: inherit; }
+
         /* === SLIDE SEZIONE === */
         .reveal .section-slide {
             text-align: center;
@@ -350,9 +352,7 @@
 
         /* === PRINT === */
         @media print {
-            .reveal .slides {
-                font-size: 14px;
-            }
+            .reveal .slide-footer .pdf-link { display: none; }
             .reveal pre {
                 box-shadow: none;
                 border: 1px solid #ccc;
@@ -383,7 +383,7 @@
                     <li class="fragment"><strong>La gerarchia di memoria</strong> &mdash; registri, cache, RAM, disco</li>
                     <li class="fragment"><strong>Parallelismo e architetture moderne</strong> &mdash; multi-core, GPU, quantum</li>
                 </ol>
-                <aside class="notes">Questa lezione fa il collegamento tra i circuiti logici (T02) e il software (T04). Oggi vediamo come i componenti si organizzano per formare un elaboratore.</aside>
+                <aside class="notes">Questa lezione fa il collegamento tra i circuiti logici (T02) e la programmazione (da T06). Oggi vediamo come i componenti si organizzano per formare un elaboratore.</aside>
             </section>
 
             <!-- ========== SEZIONE: VON NEUMANN ========== -->
@@ -392,7 +392,7 @@
                 <!-- Slide sezione -->
                 <section class="section-slide">
                     <h2>Il modello di von Neumann</h2>
-                    <p><em>L'architettura che ha definito l'informatica moderna</em></p>
+                    <p><em>Programma e dati nella stessa memoria</em></p>
                 </section>
 
                 <!-- Contesto storico -->
@@ -402,7 +402,7 @@
                         <div class="col-50">
                             <p><strong>1945</strong> &mdash; i primi computer elettronici (ENIAC):</p>
                             <ul>
-                                <li class="fragment">5.000 addizioni al secondo</li>
+                                <li class="fragment">Circa 5.000 addizioni al secondo</li>
                                 <li class="fragment">Per cambiare programma: <strong>ricablare fisicamente</strong> la macchina</li>
                                 <li class="fragment">Un cambio di programma poteva richiedere <strong>giorni</strong></li>
                             </ul>
@@ -426,20 +426,20 @@
 
                 <!-- L'intuizione di von Neumann -->
                 <section>
-                    <h2>L'intuizione rivoluzionaria</h2>
+                    <h2>Il programma memorizzato</h2>
                     <div class="columns">
                         <div class="col-70">
-                            <p><strong>John von Neumann</strong> (Princeton, 1945) &mdash; <em>"First Draft of a Report on the EDVAC"</em></p>
+                            <p><strong>John von Neumann</strong> (1945) &mdash; <em>"First Draft of a Report on the EDVAC"</em>, con il gruppo di Eckert e Mauchly</p>
                             <div class="box box-blue">
                                 <strong>Idea chiave:</strong> il programma deve essere memorizzato <strong>nella stessa memoria dei dati</strong>.
                             </div>
-                            <p class="fragment">Conseguenze profondissime &mdash; il programma diventa un dato:</p>
+                            <p class="fragment">Il programma diventa un dato come gli altri:</p>
                             <ul>
-                                <li class="fragment">Puo essere <strong>modificato</strong> a runtime</li>
-                                <li class="fragment">Puo essere <strong>copiato</strong> e <strong>trasmesso via rete</strong></li>
-                                <li class="fragment">Puo essere <strong>generato da un altro programma</strong></li>
+                                <li class="fragment">Può essere <strong>modificato</strong> durante l'esecuzione</li>
+                                <li class="fragment">Può essere <strong>copiato</strong> e <strong>trasmesso via rete</strong></li>
+                                <li class="fragment">Può essere <strong>generato da un altro programma</strong></li>
                             </ul>
-                            <p class="fragment"><em>Tutta l'informatica moderna discende da questa intuizione.</em></p>
+                            <p class="fragment"><em>Compilatori, sistemi operativi e installazione di app si basano su questa idea.</em></p>
                         </div>
                         <div class="col-30">
                             <figure>
@@ -505,13 +505,13 @@
     <text x="790" y="341" text-anchor="middle" font-size="19" fill="#1e293b">Disco &#183; rete</text>
 </svg>
                     </div>
-                    <aside class="notes">Questa struttura, con le dovute evoluzioni, e ancora alla base di praticamente ogni computer moderno.</aside>
+                    <aside class="notes">Questa struttura, con molte evoluzioni, è ancora alla base di quasi tutti i computer in uso. Le componenti sono quattro: CPU, memoria, I/O e il bus che le collega.</aside>
                 </section>
 
                 <!-- CPU in dettaglio -->
                 <section>
-                    <h2>La CPU: il "cervello" del computer</h2>
-                    <p>Tre sotto-componenti fondamentali:</p>
+                    <h2>La CPU</h2>
+                    <p>Tre sotto-componenti:</p>
                     <div class="columns">
                         <div class="col">
                             <div class="box box-blue">
@@ -521,14 +521,14 @@
                         </div>
                         <div class="col">
                             <div class="box box-green">
-                                <h3>Unita di Controllo</h3>
-                                Il "direttore d'orchestra": legge, interpreta e coordina l'esecuzione delle istruzioni
+                                <h3>Unità di controllo</h3>
+                                Legge le istruzioni, le interpreta e coordina le altre componenti per eseguirle
                             </div>
                         </div>
                         <div class="col">
                             <div class="box box-yellow">
                                 <h3>Registri</h3>
-                                Memorie ultra-veloci interne alla CPU (32 o 64 bit ciascuno)
+                                Memorie velocissime interne alla CPU (64 bit ciascuno nei processori attuali)
                             </div>
                         </div>
                     </div>
@@ -554,12 +554,12 @@
                             <tr>
                                 <td><strong>IR</strong></td>
                                 <td>Instruction Register</td>
-                                <td>Istruzione <strong>attualmente</strong> in esecuzione</td>
+                                <td>Istruzione <strong>in esecuzione</strong></td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="box box-blue fragment">
-                        Il <strong>Program Counter</strong> e il cuore del flusso di esecuzione: determina quale istruzione viene eseguita dopo.
+                        Il <strong>Program Counter</strong> determina quale istruzione viene eseguita dopo: un salto consiste nel cambiarne il valore.
                     </div>
                 </section>
 
@@ -570,7 +570,7 @@
                     <div class="columns">
                         <div class="col">
                             <ul>
-                                <li class="fragment"><strong>Veloce</strong> &mdash; molto piu dei dischi, ma piu lenta dei registri</li>
+                                <li class="fragment"><strong>Veloce</strong> &mdash; molto più dei dischi, ma più lenta dei registri</li>
                                 <li class="fragment"><strong>Volatile</strong> &mdash; si perde allo spegnimento</li>
                                 <li class="fragment"><strong>Limitata</strong> &mdash; tipicamente 8-32 GB oggi</li>
                             </ul>
@@ -582,7 +582,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="fragment">Contiene sia i <strong>dati</strong> che il <strong>programma</strong> &mdash; l'intuizione di von Neumann.</p>
+                    <p class="fragment">Contiene sia i <strong>dati</strong> sia il <strong>programma</strong>: è l'idea di von Neumann.</p>
                 </section>
 
                 <!-- I/O e Bus -->
@@ -596,7 +596,7 @@
                                 <li><strong>Output:</strong> schermo, stampante, altoparlante, rete</li>
                             </ul>
                             <div class="box box-red fragment">
-                                I dispositivi di I/O sono <strong>enormemente piu lenti</strong> della CPU.
+                                I dispositivi di I/O sono <strong>molto più lenti</strong> della CPU: una lettura da disco dura da centinaia di migliaia a decine di milioni di cicli di clock.
                             </div>
                         </div>
                         <div class="col">
@@ -617,12 +617,12 @@
                 <section>
                     <h2>Il collo di bottiglia di von Neumann</h2>
                     <div class="box box-red">
-                        <strong>Il problema:</strong> la CPU e la memoria comunicano attraverso un <strong>unico bus</strong>, ma la CPU e molto piu veloce della memoria.
+                        <strong>Il problema:</strong> la CPU e la memoria comunicano attraverso un <strong>unico canale</strong>, e la CPU è molto più veloce della memoria.
                     </div>
                     <p class="fragment">Risultato: la CPU spesso <strong>aspetta</strong> che i dati arrivino dalla memoria.</p>
-                    <p class="fragment">Identificato negli anni '70 da <strong>John Backus</strong> (inventore del Fortran).</p>
+                    <p class="fragment">Il nome è di <strong>John Backus</strong> (1977), che aveva guidato lo sviluppo del Fortran.</p>
                     <div class="box box-blue fragment">
-                        <strong>Soluzioni sviluppate negli ultimi 50 anni:</strong> cache, pipelining, esecuzione fuori ordine, prefetching.
+                        <strong>Tecniche sviluppate negli ultimi 50 anni:</strong> cache, pipelining, esecuzione fuori ordine, prefetching.
                     </div>
                 </section>
 
@@ -633,7 +633,7 @@
 
                 <section class="section-slide">
                     <h2>Il ciclo fetch-decode-execute</h2>
-                    <p><em>Il battito del computer: miliardi di volte al secondo</em></p>
+                    <p><em>Come la CPU esegue le istruzioni</em></p>
                 </section>
 
                 <!-- Le tre fasi -->
@@ -690,10 +690,10 @@
                             <strong>Fetch</strong> &mdash; La CPU legge dalla memoria l'istruzione all'indirizzo indicato dal PC. L'istruzione viene copiata nell'IR.
                         </li>
                         <li class="fragment">
-                            <strong>Decode</strong> &mdash; L'unita di controllo interpreta l'istruzione: che tipo di operazione? Quali operandi?
+                            <strong>Decode</strong> &mdash; L'unità di controllo interpreta l'istruzione: stabilisce il tipo di operazione e gli operandi.
                         </li>
                         <li class="fragment">
-                            <strong>Execute</strong> &mdash; L'operazione viene eseguita: ALU per la aritmetica, accesso memoria per lettura/scrittura, modifica del PC per i salti.
+                            <strong>Execute</strong> &mdash; L'operazione viene eseguita: ALU per l'aritmetica, accesso alla memoria per lettura/scrittura, modifica del PC per i salti.
                         </li>
                         <li class="fragment">
                             <strong>Aggiornamento PC</strong> &mdash; Il Program Counter punta alla prossima istruzione e il ciclo ricomincia.
@@ -704,19 +704,19 @@
                 <!-- Il clock -->
                 <section>
                     <h2>Il clock</h2>
-                    <p>Il ciclo e scandito da un segnale periodico: il <strong>clock</strong>.</p>
+                    <p>Il ciclo è scandito da un segnale periodico: il <strong>clock</strong>.</p>
                     <div class="box box-blue">
-                        <strong>3 GHz</strong> = 3 miliardi di battiti al secondo
+                        <strong>3 GHz</strong> = 3 miliardi di cicli al secondo (un ciclo dura circa 0,33 ns)
                     </div>
                     <div class="fragment">
-                        <h3>Ma attenzione:</h3>
+                        <h3>Limiti fisici:</h3>
                         <ul>
-                            <li class="fragment">Piu frequenza = piu <strong>calore</strong> (potenza ~ frequenza<sup>3</sup>)</li>
-                            <li class="fragment">Limiti fisici di propagazione dei segnali</li>
-                            <li class="fragment">Intorno al <strong>2005</strong>: il muro dei 4-5 GHz</li>
+                            <li class="fragment">Più frequenza = più <strong>calore</strong> (potenza circa ~ frequenza<sup>3</sup>)</li>
+                            <li class="fragment">Tempo di propagazione dei segnali nel circuito</li>
+                            <li class="fragment">Dal <strong>2004-2005</strong> la frequenza cresce poco (3,8 &rarr; ~5,7 GHz)</li>
                         </ul>
                     </div>
-                    <aside class="notes">La potenza dissipata cresce con il cubo della frequenza, rendendo impossibile continuare ad aumentare la velocita di clock.</aside>
+                    <aside class="notes">La potenza dissipata è proporzionale a frequenza &times; tensione al quadrato, e per salire di frequenza serve più tensione: in pratica cresce circa con il cubo della frequenza. Oltre i 4 GHz circa il calore diventa difficile da smaltire.</aside>
                 </section>
 
                 <!-- Pipelining -->
@@ -778,19 +778,19 @@
 </svg>
                     </div>
                     <div class="box box-green fragment">
-                        Ogni singola istruzione richiede lo stesso tempo, ma il <strong>throughput</strong> (istruzioni completate per unita di tempo) aumenta significativamente.
+                        Ogni singola istruzione richiede lo stesso tempo, ma il <strong>throughput</strong> (istruzioni completate per unità di tempo) aumenta: 3 istruzioni in 5 cicli invece di 9.
                     </div>
                 </section>
 
                 <!-- Dalla teoria alla pratica -->
                 <section>
                     <h2>Dalla teoria alla pratica</h2>
-                    <p>Cosa succede quando scrivete <code>x = 3 + 5</code> in Python?</p>
+                    <p>Cosa succede quando scrivete <code>x = 3 + 5</code> in Python (semplificato):</p>
                     <ol>
                         <li class="fragment">L'interprete Python legge la riga di codice (testo)</li>
                         <li class="fragment">La traduce in <strong>bytecode</strong> (Python Virtual Machine)</li>
                         <li class="fragment">La PVM interpreta il bytecode e chiama le routine C</li>
-                        <li class="fragment">Il compilatore C le ha tradotte in <strong>codice macchina</strong></li>
+                        <li class="fragment">Le routine C sono già tradotte in <strong>codice macchina</strong></li>
                         <li class="fragment">La CPU esegue via fetch-decode-execute:
                             <pre><code class="language-python"># A livello CPU (semplificato):
 # LOAD  R1, 3      &larr; carica 3 nel registro R1
@@ -799,7 +799,7 @@
 # STORE R3, [x]    &larr; salva il risultato in memoria</code></pre>
                         </li>
                     </ol>
-                    <p class="fragment"><em>Tutto in meno di un milionesimo di secondo.</em></p>
+                    <p class="fragment"><em>L'esecuzione della riga richiede meno di un milionesimo di secondo.</em></p>
                 </section>
 
             </section>
@@ -809,14 +809,14 @@
 
                 <section class="section-slide">
                     <h2>La gerarchia di memoria</h2>
-                    <p><em>Il compromesso tra velocita, capacita e costo</em></p>
+                    <p><em>Il compromesso tra velocità, capacità e costo</em></p>
                 </section>
 
                 <!-- Il compromesso fondamentale -->
                 <section>
                     <h2>Il compromesso fondamentale</h2>
                     <div class="box box-red">
-                        <strong>Limite fisico:</strong> non e possibile costruire una memoria che sia contemporaneamente velocissima, enorme e a basso costo.
+                        <strong>Il compromesso:</strong> non si riesce a costruire una memoria che sia contemporaneamente molto veloce, molto grande ed economica.
                     </div>
                     <div class="columns fragment">
                         <div class="col">
@@ -851,11 +851,11 @@
         </marker>
     </defs>
 
-    <!-- Asse: verso l'alto piu veloce e piu costosa -->
+    <!-- Asse: verso l'alto più veloce e più costosa -->
     <line x1="22" y1="384" x2="22" y2="28" stroke="#94a3b8" stroke-width="2" marker-end="url(#pir-arrow)"/>
     <text transform="rotate(-90 14 206)" x="14" y="206" text-anchor="middle" font-size="15" fill="#64748b">pi&#249; veloce &#183; pi&#249; costosa per byte</text>
 
-    <!-- Livelli della piramide (dal piu veloce al piu capiente) -->
+    <!-- Livelli della piramide (dal più veloce al più capiente) -->
     <path d="M 290 20 L 390 20 L 425.7 72 L 254.3 72 Z" fill="#1e40af" stroke="#ffffff" stroke-width="2"/>
     <path d="M 254.3 72 L 425.7 72 L 461.4 124 L 218.6 124 Z" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
     <path d="M 218.6 124 L 461.4 124 L 497.1 176 L 182.9 176 Z" fill="#3b82f6" stroke="#ffffff" stroke-width="2"/>
@@ -882,16 +882,16 @@
     <text x="682" y="312" font-size="19" font-weight="700" fill="#1e293b">SSD</text>
     <text x="682" y="364" font-size="19" font-weight="700" fill="#1e293b">HDD</text>
 
-    <text x="820" y="52"  font-size="16" fill="#64748b">~1 ns &#183; 1 KB</text>
-    <text x="820" y="104" font-size="16" fill="#64748b">~1-2 ns &#183; 64 KB</text>
-    <text x="820" y="156" font-size="16" fill="#64748b">~5-10 ns &#183; 1 MB</text>
-    <text x="820" y="208" font-size="16" fill="#64748b">~20-30 ns &#183; 32 MB</text>
+    <text x="820" y="52"  font-size="16" fill="#64748b">&lt;1 ns &#183; 1 KB</text>
+    <text x="820" y="104" font-size="16" fill="#64748b">~1 ns &#183; 64 KB</text>
+    <text x="820" y="156" font-size="16" fill="#64748b">~3-5 ns &#183; 2 MB</text>
+    <text x="820" y="208" font-size="16" fill="#64748b">~10-20 ns &#183; 32 MB</text>
     <text x="820" y="260" font-size="16" fill="#64748b">~100 ns &#183; 32 GB</text>
     <text x="820" y="312" font-size="16" fill="#64748b">~0,1 ms &#183; 1 TB</text>
     <text x="820" y="364" font-size="16" fill="#64748b">~5-10 ms &#183; 10 TB</text>
 </svg>
                     </div>
-                    <aside class="notes">Ogni livello scendendo e piu lento ma piu capiente e piu economico. Il sistema sposta automaticamente i dati tra i livelli: il programmatore quasi non se ne accorge, ma le prestazioni dipendono da quanto il codice rispetta questa gerarchia.</aside>
+                    <aside class="notes">Scendendo, ogni livello è più lento ma più capiente e più economico. L'hardware e il sistema operativo spostano automaticamente i dati tra i livelli; il programmatore non lo vede, ma le prestazioni dipendono da quanto il codice rispetta questa gerarchia.</aside>
                 </section>
 
                 <!-- Tabella gerarchia -->
@@ -902,39 +902,39 @@
                             <tr>
                                 <th>Livello</th>
                                 <th>Tempo di accesso</th>
-                                <th>Capacita tipica</th>
+                                <th>Capacità tipica</th>
                                 <th>Costo</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><strong>Registri</strong></td>
-                                <td>~1 ns</td>
+                                <td>&lt; 1 ns</td>
                                 <td>~1 KB</td>
                                 <td><span class="badge badge-red">Altissimo</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Cache L1</strong></td>
-                                <td>~1-2 ns</td>
+                                <td>~1 ns</td>
                                 <td>32-64 KB / core</td>
                                 <td><span class="badge badge-red">Molto alto</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Cache L2</strong></td>
-                                <td>~5-10 ns</td>
-                                <td>256 KB - 1 MB / core</td>
+                                <td>~3-5 ns</td>
+                                <td>1-3 MB / core</td>
                                 <td><span class="badge badge-yellow">Alto</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Cache L3</strong></td>
-                                <td>~20-30 ns</td>
+                                <td>~10-20 ns</td>
                                 <td>8-64 MB (condivisa)</td>
                                 <td><span class="badge badge-yellow">Medio-alto</span></td>
                             </tr>
                             <tr>
                                 <td><strong>RAM</strong></td>
                                 <td>~50-100 ns</td>
-                                <td>8-64 GB</td>
+                                <td>8-32 GB</td>
                                 <td><span class="badge badge-blue">Medio</span></td>
                             </tr>
                             <tr>
@@ -946,32 +946,32 @@
                             <tr>
                                 <td><strong>HDD</strong></td>
                                 <td>~5-10 ms</td>
-                                <td>1-20 TB</td>
+                                <td>1-30 TB</td>
                                 <td><span class="badge badge-green">Molto basso</span></td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="box box-yellow fragment">
-                        Tra registri e HDD c'e un fattore di <strong>10 milioni</strong>. Come prendere un libro dalla scrivania vs. ordinarlo da una libreria all'estero.
+                        Tra registri e HDD c'è un fattore di circa <strong>10 milioni</strong>: come prendere un libro dalla scrivania oppure ordinarlo da una libreria all'estero.
                     </div>
                 </section>
 
-                <!-- Cache e principio di localita -->
+                <!-- Cache e principio di località -->
                 <section>
                     <h2>La cache</h2>
-                    <p>Memoria piccola e veloce tra CPU e RAM. Funziona grazie al <strong>principio di localita</strong>:</p>
+                    <p>Memoria piccola e veloce tra CPU e RAM. Funziona grazie al <strong>principio di località</strong>:</p>
                     <div class="columns">
                         <div class="col">
                             <div class="box box-blue">
-                                <h3>Localita temporale</h3>
-                                Se un dato e stato usato di recente, sara probabilmente usato <strong>di nuovo a breve</strong>.<br>
+                                <h3>Località temporale</h3>
+                                Se un dato è stato usato di recente, sarà probabilmente usato <strong>di nuovo a breve</strong>.<br>
                                 <em>Es: variabile contatore in un ciclo</em>
                             </div>
                         </div>
                         <div class="col">
                             <div class="box box-green">
-                                <h3>Localita spaziale</h3>
-                                Se un dato e stato usato, i dati <strong>vicini in memoria</strong> saranno usati presto.<br>
+                                <h3>Località spaziale</h3>
+                                Se un dato è stato usato, i dati <strong>vicini in memoria</strong> saranno probabilmente usati presto.<br>
                                 <em>Es: scorrere gli elementi di un array</em>
                             </div>
                         </div>
@@ -982,7 +982,7 @@
                 <section>
                     <h2>Cache hit e cache miss</h2>
                     <div class="svg-figure">
-<svg viewBox="0 0 1000 360" role="img" aria-label="Diagramma di flusso: se il dato cercato dalla CPU e in cache si ha un cache hit in circa 2 nanosecondi, altrimenti un cache miss che richiede la lettura dalla RAM in circa 100 nanosecondi">
+<svg viewBox="0 0 1000 360" role="img" aria-label="Diagramma di flusso: se il dato cercato dalla CPU è in cache si ha un cache hit in circa 1 nanosecondo, altrimenti un cache miss che richiede la lettura dalla RAM in circa 100 nanosecondi">
     <defs>
         <marker id="cache-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
@@ -1003,7 +1003,7 @@
     <text x="545" y="140" text-anchor="middle" font-size="19" font-weight="700" fill="#16a34a">S&#204;</text>
     <rect x="610" y="112" width="330" height="82" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/>
     <text x="775" y="148" text-anchor="middle" font-size="24" font-weight="700" fill="#15803d">Cache HIT</text>
-    <text x="775" y="176" text-anchor="middle" font-size="19" fill="#475569">~2 ns</text>
+    <text x="775" y="176" text-anchor="middle" font-size="19" fill="#475569">~1 ns (L1)</text>
 
     <!-- Ramo NO -->
     <line x1="350" y1="202" x2="350" y2="242" stroke="#64748b" stroke-width="2.5" marker-end="url(#cache-arrow)"/>
@@ -1021,19 +1021,19 @@
 </svg>
                     </div>
                     <div class="box box-blue fragment">
-                        <strong>I processori moderni</strong> hanno 3 livelli: L1 (dati + istruzioni, per core), L2 (per core), L3 (condivisa tra tutti i core).
+                        <strong>I processori moderni</strong> hanno 3 livelli: L1 (dati + istruzioni, per core), L2 (di solito per core), L3 (condivisa tra tutti i core).
                     </div>
                 </section>
 
                 <!-- SSD vs HDD -->
                 <section>
-                    <h2>SSD vs HDD</h2>
+                    <h2>SSD e HDD</h2>
                     <div class="compare">
                         <div class="good">
                             <h3>SSD (Solid State Drive)</h3>
                             <ul>
                                 <li>Memoria flash, nessuna parte meccanica</li>
-                                <li>Fino a <strong>100x piu veloce</strong> per accessi casuali</li>
+                                <li>Accesso casuale <strong>50-100 volte più rapido</strong> (0,1 ms contro 5-10 ms)</li>
                                 <li>Resistente agli urti, silenzioso</li>
                             </ul>
                         </div>
@@ -1042,7 +1042,7 @@
                             <ul>
                                 <li>Piatti magnetici rotanti + testina</li>
                                 <li>Lento: la testina deve <strong>spostarsi fisicamente</strong></li>
-                                <li>Piu economico per GB, ma fragile</li>
+                                <li>Più economico per GB, ma sensibile agli urti</li>
                             </ul>
                         </div>
                     </div>
@@ -1050,11 +1050,11 @@
 
                 <!-- Applicazioni per la statistica -->
                 <section>
-                    <h2>Perche importa a uno statistico?</h2>
+                    <h2>Conseguenze per la statistica</h2>
                     <ul>
-                        <li class="fragment"><strong>Pandas <code>read_csv()</code></strong>: carica tutto in RAM. Se il dataset non ci sta, il sistema usa lo <strong>swap</strong> (disco come RAM) e tutto rallenta drasticamente.</li>
-                        <li class="fragment"><strong>NumPy</strong>: dati in blocchi contigui di memoria (array C-style) &rarr; sfrutta la <strong>localita spaziale</strong> e la cache al massimo.</li>
-                        <li class="fragment"><strong>Liste Python</strong>: oggetti sparsi in memoria &rarr; pessimo per la cache.</li>
+                        <li class="fragment"><strong>Pandas <code>read_csv()</code></strong>: carica tutto in RAM. Se il dataset non ci sta, il sistema usa lo <strong>swap</strong> (disco come RAM) e tutto rallenta molto, oppure si ha un errore di memoria.</li>
+                        <li class="fragment"><strong>NumPy</strong>: dati in blocchi contigui di memoria (array C-style) &rarr; sfrutta bene la <strong>località spaziale</strong> e la cache.</li>
+                        <li class="fragment"><strong>Liste Python</strong>: puntatori a oggetti sparsi in memoria &rarr; uso meno efficiente della cache.</li>
                     </ul>
                     <div class="compare fragment">
                         <div class="good">
@@ -1063,7 +1063,7 @@
                         </div>
                         <div class="bad">
                             <code>list</code> Python<br>
-                            Puntatori sparsi in memoria &rarr; molti cache miss
+                            Puntatori a oggetti sparsi &rarr; più cache miss
                         </div>
                     </div>
                 </section>
@@ -1075,7 +1075,7 @@
 
                 <section class="section-slide">
                     <h2>Parallelismo e architetture moderne</h2>
-                    <p><em>Oltre il modello classico</em></p>
+                    <p><em>Multi-core, GPU, architetture specializzate</em></p>
                 </section>
 
                 <!-- Fine della corsa ai GHz -->
@@ -1084,17 +1084,17 @@
                     <div class="columns">
                         <div class="col-60">
                             <p>Per decenni: <strong>aumentare la frequenza del clock</strong>.</p>
-                            <p class="fragment">I programmi diventavano piu veloci <em>senza cambiare una riga di codice</em>.</p>
-                            <p class="fragment"><strong>Intorno al 2005</strong>: muro a 4-5 GHz.</p>
+                            <p class="fragment">I programmi diventavano più veloci senza modifiche al codice.</p>
+                            <p class="fragment"><strong>Intorno al 2004-2005</strong>: la frequenza si ferma attorno ai 4 GHz.</p>
                             <ul>
-                                <li class="fragment">Dissipazione termica ingestibile</li>
-                                <li class="fragment">Densita di potenza prossima alla superficie del sole</li>
+                                <li class="fragment">Il calore prodotto cresce circa con il cubo della frequenza</li>
+                                <li class="fragment">Oltre questa soglia i normali dissipatori non riescono a smaltirlo</li>
                             </ul>
                         </div>
                         <div class="col-40 fragment">
                             <div class="box box-green">
                                 <strong>Nuova strategia:</strong><br>
-                                Non processori singoli piu veloci, ma <strong>piu processori</strong> (core) sullo stesso chip.
+                                Invece di un singolo processore più veloce, <strong>più processori</strong> (core) sullo stesso chip.
                             </div>
                         </div>
                     </div>
@@ -1162,16 +1162,16 @@
     <text x="90" y="398" font-size="14" fill="#94a3b8">Frequenza massima dei processori desktop di punta. Scala verticale logaritmica: ogni tacca vale x10.</text>
 </svg>
                     </div>
-                    <aside class="notes">Notate la scala logaritmica: la crescita fino al 2004 e una retta su scala log, quindi esponenziale. Dopo il 2004 la curva si appiattisce bruscamente. Non e un limite di ingegno ma di fisica: la potenza dissipata cresce con il cubo della frequenza.</aside>
+                    <aside class="notes">Notate la scala logaritmica: fino al 2004 la crescita è circa una retta su scala log, quindi esponenziale. Dopo il 2004 la curva si appiattisce. Il limite è fisico: la potenza dissipata cresce circa con il cubo della frequenza. I valori recenti sono frequenze turbo massime, raggiunte per brevi periodi.</aside>
                 </section>
 
                 <!-- Multi-core -->
                 <section>
                     <h2>Processori multi-core</h2>
-                    <p>2, 4, 8 o piu CPU indipendenti sullo stesso chip.</p>
+                    <p>2, 4, 8 o più unità di elaborazione (core) indipendenti sullo stesso chip.</p>
                     <div class="box box-red fragment">
-                        <strong>Attenzione:</strong> 8 core ≠ 8 volte piu veloce!<br>
-                        Il <strong>software</strong> deve essere scritto per sfruttare il parallelismo.
+                        8 core non rendono un programma 8 volte più veloce.<br>
+                        Il <strong>software</strong> deve dividere il lavoro tra i core.
                     </div>
                     <div class="columns fragment">
                         <div class="col">
@@ -1217,7 +1217,7 @@
     <rect x="254" y="187" width="85" height="85" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
     <rect x="351" y="187" width="85" height="85" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
 
-    <text x="248" y="302" text-anchor="middle" font-size="19" font-weight="600" fill="#1e293b">4-16 core</text>
+    <text x="248" y="302" text-anchor="middle" font-size="19" font-weight="600" fill="#1e293b">4-24 core</text>
     <text x="248" y="326" text-anchor="middle" font-size="16" fill="#64748b">compiti diversi, anche sequenziali</text>
 
     <!-- GPU -->
@@ -1230,7 +1230,7 @@
     <text x="748" y="326" text-anchor="middle" font-size="16" fill="#64748b">stessa operazione su dati diversi</text>
 </svg>
                     </div>
-                    <aside class="notes">Il disegno e in scala solo qualitativamente: una GPU moderna ha oltre diecimila core, qui ne vedete centosessanta. Il punto e il rapporto, non il numero.</aside>
+                    <aside class="notes">Il disegno è in scala solo qualitativamente: una GPU di fascia alta ha oltre diecimila core, qui ne vedete circa centocinquanta. Conta il rapporto tra i due, non il numero esatto.</aside>
                 </section>
 
                 <!-- GPU -->
@@ -1238,7 +1238,7 @@
                     <h2>GPU: da videogiochi a deep learning</h2>
                     <div class="columns">
                         <div class="col">
-                            <p><strong>Anni '90:</strong> calcolare pixel indipendenti per i videogiochi.</p>
+                            <p><strong>Anni '90:</strong> calcolare i pixel dei videogiochi, indipendenti tra loro.</p>
                             <p class="fragment"><strong>Architettura:</strong> <em>migliaia</em> di core semplici che eseguono la stessa operazione su dati diversi.</p>
                             <p class="fragment"><strong>Machine learning:</strong> moltiplicazioni di matrici e trasformazioni vettoriali hanno la <em>stessa struttura</em>.</p>
                         </div>
@@ -1246,7 +1246,7 @@
                             <table>
                                 <thead><tr><th>Caratteristica</th><th>CPU</th><th>GPU</th></tr></thead>
                                 <tbody>
-                                    <tr><td>Core</td><td>4-16</td><td>migliaia</td></tr>
+                                    <tr><td>Core</td><td>4-24</td><td>migliaia</td></tr>
                                     <tr><td>Core singolo</td><td>potente</td><td>semplice</td></tr>
                                     <tr><td>Adatta a</td><td>task vari</td><td>calcolo parallelo massivo</td></tr>
                                 </tbody>
@@ -1254,7 +1254,7 @@
                         </div>
                     </div>
                     <div class="box box-blue fragment">
-                        <strong>NVIDIA CUDA</strong> (2006): la piattaforma che ha reso possibile il GPGPU (General-Purpose computing on GPU). Senza GPU, l'addestramento di modelli come GPT sarebbe impossibile.
+                        <strong>NVIDIA CUDA</strong> (2006): la piattaforma per programmare le GPU per scopi generici (GPGPU). Oggi i grandi modelli come GPT si addestrano su GPU o acceleratori simili.
                     </div>
                 </section>
 
@@ -1271,34 +1271,34 @@
                         <div class="col">
                             <div class="box box-green">
                                 <h3>ARM <span class="badge badge-green">Mobile</span></h3>
-                                Design RISC a basso consumo. Domina il mondo smartphone: potenza + batteria che dura tutto il giorno.
+                                Architettura RISC nota per il basso consumo. Usata in quasi tutti gli smartphone.
                             </div>
                         </div>
                     </div>
                     <div class="box box-yellow fragment" style="margin-top:0.5em;">
-                        <h3>Apple Silicon (M1/M2/M3/M4) <span class="badge badge-yellow">SoC</span></h3>
-                        Architettura ARM nei laptop/desktop. CPU + GPU + Neural Engine + memoria sullo stesso chip (<em>System on a Chip</em>). Distanze ridotte, basso consumo, alte prestazioni.
+                        <h3>Apple Silicon (serie M, dal 2020) <span class="badge badge-yellow">SoC</span></h3>
+                        Architettura ARM nei laptop/desktop. CPU + GPU + Neural Engine sullo stesso chip, memoria nello stesso package (<em>System on a Chip</em>). Distanze ridotte, basso consumo.
                     </div>
                 </section>
 
                 <!-- Quantum computing -->
                 <section>
-                    <h2>Prospettiva futura: quantum computing</h2>
+                    <h2>Computer quantistici</h2>
                     <div class="columns">
                         <div class="col-60">
-                            <p>Il <strong>qubit</strong> (quantum bit): a differenza del bit classico (0 o 1), puo trovarsi in <strong>sovrapposizione</strong> di entrambi gli stati.</p>
-                            <p class="fragment">Piu qubit <strong>entangled</strong> &rarr; stati rappresentabili crescono <em>esponenzialmente</em>.</p>
-                            <h3 class="fragment">Applicazioni promettenti:</h3>
+                            <p>Il <strong>qubit</strong> (quantum bit): a differenza del bit classico (0 o 1), può trovarsi in una <strong>sovrapposizione</strong> dei due stati.</p>
+                            <p class="fragment">Lo stato di n qubit <strong>entangled</strong> è descritto da 2<sup>n</sup> numeri: cresce <em>esponenzialmente</em>.</p>
+                            <h3 class="fragment">Possibili applicazioni:</h3>
                             <ul>
-                                <li class="fragment">Crittografia (fattorizzazione)</li>
+                                <li class="fragment">Crittografia (fattorizzazione, algoritmo di Shor)</li>
                                 <li class="fragment">Simulazione molecolare (farmacologia)</li>
-                                <li class="fragment">Ottimizzazione combinatoria</li>
+                                <li class="fragment">Ottimizzazione combinatoria (vantaggio non ancora dimostrato)</li>
                             </ul>
                         </div>
                         <div class="col-40">
                             <div class="box box-yellow fragment">
                                 <strong>Stato attuale:</strong><br>
-                                Qubit fragili, temperature prossime allo zero assoluto, alti tassi di errore. Progresso rapido, ma ancora nelle fasi iniziali.
+                                Qubit fragili, spesso a temperature prossime allo zero assoluto, alti tassi di errore. Tecnologia ancora nelle fasi iniziali.
                             </div>
                         </div>
                     </div>
@@ -1318,23 +1318,23 @@
                         <tbody>
                             <tr><td><strong>von Neumann</strong></td><td>Programma memorizzato nella stessa memoria dei dati</td></tr>
                             <tr><td><strong>Ciclo FDE</strong></td><td>Fetch &rarr; Decode &rarr; Execute, scandito dal clock</td></tr>
-                            <tr><td><strong>Gerarchia memoria</strong></td><td>Registri &rarr; Cache &rarr; RAM &rarr; Disco (10M x differenza)</td></tr>
-                            <tr><td><strong>Cache</strong></td><td>Sfrutta localita temporale e spaziale</td></tr>
-                            <tr><td><strong>Multi-core</strong></td><td>Piu core, ma serve software parallelo</td></tr>
-                            <tr><td><strong>GPU</strong></td><td>Migliaia di core semplici, motore del deep learning</td></tr>
+                            <tr><td><strong>Gerarchia memoria</strong></td><td>Registri &rarr; Cache &rarr; RAM &rarr; Disco (fattore ~10 milioni)</td></tr>
+                            <tr><td><strong>Cache</strong></td><td>Sfrutta località temporale e spaziale</td></tr>
+                            <tr><td><strong>Multi-core</strong></td><td>Più core, ma serve software parallelo</td></tr>
+                            <tr><td><strong>GPU</strong></td><td>Migliaia di core semplici, usate per il deep learning</td></tr>
                         </tbody>
                     </table>
                 </section>
 
                 <!-- Lezione pratica per statistici -->
                 <section>
-                    <h2>La lezione per lo statistico</h2>
+                    <h2>Dati e prestazioni</h2>
                     <div class="box box-blue" style="font-size:1.05em;">
-                        <strong>Sapere dove risiedono i vostri dati</strong> (RAM, disco, cloud) <strong>e come sono organizzati in memoria determina direttamente la velocita delle vostre analisi.</strong>
+                        La velocità di un'analisi dipende da <strong>dove si trovano i dati</strong> (RAM, disco, rete) e da <strong>come sono disposti in memoria</strong>.
                     </div>
-                    <p class="fragment">Quando userete NumPy e Pandas, ricorderete che la loro velocita non e magia &mdash; e <strong>architettura</strong>.</p>
+                    <p class="fragment">NumPy e Pandas sono veloci anche perché tengono i dati contigui in memoria e sfruttano la <strong>cache</strong>.</p>
                     <div class="box box-green fragment">
-                        <strong>Prossima lezione:</strong> il sistema operativo &mdash; il "direttore d'orchestra" che permette a programmi, utenti e hardware di convivere.
+                        <strong>Prossima lezione (T06):</strong> dal problema al programma &mdash; algoritmi e linguaggi. Il sistema operativo (T04) lo vedremo più avanti.
                     </div>
                 </section>
 
@@ -1342,31 +1342,32 @@
                 <section>
                     <h2>Domande di verifica</h2>
                     <ol style="font-size:0.85em;">
-                        <li class="fragment">Qual e l'idea rivoluzionaria di von Neumann rispetto all'ENIAC?</li>
+                        <li class="fragment">Quale idea introduce von Neumann rispetto all'ENIAC?</li>
                         <li class="fragment">Descrivete le quattro componenti del modello e il ruolo di ciascuna.</li>
-                        <li class="fragment">Cosa fa ciascuna fase del ciclo FDE? Qual e il ruolo del PC?</li>
-                        <li class="fragment">Cos'e il "collo di bottiglia di von Neumann"?</li>
-                        <li class="fragment">Spiegate il principio di localita e come la cache lo sfrutta.</li>
-                        <li class="fragment">Perche la corsa ai GHz si e fermata? Quale alternativa e stata adottata?</li>
-                        <li class="fragment">Perche le GPU sono fondamentali per il machine learning?</li>
+                        <li class="fragment">Cosa fa ciascuna fase del ciclo FDE? Qual è il ruolo del PC?</li>
+                        <li class="fragment">Cos'è il "collo di bottiglia di von Neumann"?</li>
+                        <li class="fragment">Spiegate il principio di località e come la cache lo sfrutta.</li>
+                        <li class="fragment">Perché la corsa ai GHz si è fermata? Quale alternativa e stata adottata?</li>
+                        <li class="fragment">Perché le GPU sono fondamentali per il machine learning?</li>
                     </ol>
                 </section>
 
             </section>
 
     
+
             <!-- Slide di navigazione -->
             <section class="nav-slide">
                 <section>
                     <h2>Navigazione</h2>
                     <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
-                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T02_logica_booleana_storia.html" style="color: var(--accent);">&larr; T02: Logica booleana e storia del calcolo</a></div><div><a href="T04_sistemi_operativi.html" style="color: var(--accent);">T04: Sistemi operativi &rarr;</a></div><div><a href="../dispense/frontali/T03_architettura_elaboratori.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T03_architettura_elaboratori.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="T02_logica_booleana_storia.html" style="color: var(--accent);">&larr; T02: Logica booleana e storia del calcolo</a></div><div><a href="T06_dal_problema_al_programma.html" style="color: var(--accent);">T06: Dal problema al programma &rarr;</a></div><div><a href="../dispense/frontali/T03_architettura_elaboratori.html" style="color: #16a34a;">&#128214; Dispensa</a></div>
                     </div>
                 </section>
             </section>
 
     </div>
-        <div class="slide-footer">Sistemi di Elaborazione &mdash; T03</div>
+        <div class="slide-footer">Sistemi di Elaborazione &mdash; T03 &middot; <a class="pdf-link" href="T03_architettura_elaboratori.pdf">Scarica PDF</a></div>
     </div>
 
     <script src="vendor/reveal.js"></script>

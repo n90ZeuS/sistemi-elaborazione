@@ -4,7 +4,7 @@
 
 **Corso di Laurea:** Scienze Statistiche (Statistica per l'Economia e l'Impresa / Statistiche per le Scienze e le Tecnologie)
 **Anno:** Primo
-**Docente:** Prof. Nicola
+**Docente:** Prof. Nicola Salmaso
 
 ---
 

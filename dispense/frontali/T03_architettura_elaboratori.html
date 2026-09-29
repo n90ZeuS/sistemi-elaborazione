@@ -190,50 +190,57 @@ nav.bottom-nav a {
 }
 
 nav.bottom-nav a:hover { text-decoration: underline; }
+
+@media print {
+    nav.top-nav, nav.bottom-nav, .download-link { display: none; }
+    body { max-width: none; padding: 0; }
+    pre, table, blockquote { break-inside: avoid; }
+    h2, h3 { break-after: avoid; }
+}
 </style>
 </head>
 <body>
-<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="T02_logica_booleana_storia.html">← T02</a> &bull; <a href="T04_sistemi_operativi.html">T04 →</a> &bull; <a href="../../presentazioni/T03_architettura_elaboratori.html">Presentazione</a></nav>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="T02_logica_booleana_storia.html">← T02</a> &bull; <a href="T06_dal_problema_al_programma.html">T06 →</a> &bull; <a href="../../presentazioni/T03_architettura_elaboratori.html">Presentazione</a></nav>
 <h1>T03 — Architettura degli elaboratori</h1>
-
+<a class="download-link" href="T03_architettura_elaboratori.pdf" download>Scarica PDF</a>
 <h1>Lezione 3 — Architettura degli elaboratori</h1>
 <h2>Introduzione</h2>
-<p>Nelle lezioni precedenti abbiamo visto come l'informazione può essere rappresentata con i bit e come la logica booleana permette di costruire circuiti capaci di eseguire operazioni. Oggi facciamo il passo successivo: come sono organizzate queste componenti per formare un <strong>elaboratore</strong>, cioè una macchina capace di eseguire programmi.</p>
-<p>La risposta a questa domanda ha un nome e un cognome: <strong>John von Neumann</strong>. Il modello che propose nel 1945 è talmente elegante e potente che, con le dovute evoluzioni, è ancora alla base di praticamente ogni computer esistente — dal vostro smartphone al supercomputer più potente del mondo.</p>
+<p>Nelle lezioni precedenti abbiamo visto come l'informazione può essere rappresentata con i bit e come la logica booleana permette di costruire circuiti capaci di eseguire operazioni. Oggi vediamo come queste componenti sono organizzate per formare un <strong>elaboratore</strong>, cioè una macchina capace di eseguire programmi.</p>
+<p>Lo schema di riferimento è quello descritto da <strong>John von Neumann</strong> nel 1945. Con molte evoluzioni, è ancora alla base di quasi tutti i computer in uso, dallo smartphone ai supercomputer.</p>
 <hr>
 <h2>Il modello di von Neumann</h2>
 <h3>Il contesto storico</h3>
-<p>Siamo nel 1945. La Seconda Guerra Mondiale sta finendo, e i primi computer elettronici — come l'ENIAC — sono appena nati. L'ENIAC era una macchina straordinaria per l'epoca: poteva eseguire 5.000 addizioni al secondo. Ma aveva un problema enorme: per cambiare programma, bisognava fisicamente <strong>ricablare</strong> la macchina, spostando cavi e interruttori. Cambiare un programma poteva richiedere giorni.</p>
-<p>John von Neumann, matematico di origine ungherese che lavorava all'Institute for Advanced Study di Princeton, ebbe un'intuizione che cambiò tutto. Nel suo celebre documento <em>"First Draft of a Report on the EDVAC"</em> (1945), propose un'idea rivoluzionaria: <strong>il programma deve essere memorizzato nella stessa memoria dei dati</strong>. Prima di von Neumann, il programma era qualcosa di "esterno" alla macchina — un cablaggio, una sequenza di schede perforate. Dopo von Neumann, il programma diventa un dato come gli altri: una sequenza di numeri nella memoria.</p>
-<p>Questa idea, apparentemente semplice, ha conseguenze profondissime: se il programma è in memoria, può essere modificato, copiato, trasmesso via rete, generato da un altro programma. Tutta l'informatica moderna — dai sistemi operativi ai compilatori, dall'intelligenza artificiale agli app store — discende da questa intuizione.</p>
+<p>Nel 1945 i primi computer elettronici, come l'ENIAC, erano appena nati. L'ENIAC poteva eseguire circa 5.000 addizioni al secondo, ma per cambiare programma bisognava <strong>ricablare</strong> fisicamente la macchina, spostando cavi e interruttori. Un cambio di programma poteva richiedere giorni.</p>
+<p>John von Neumann, matematico di origine ungherese dell'Institute for Advanced Study di Princeton, partecipava come consulente al progetto del successore dell'ENIAC, l'EDVAC. Nel documento <em>"First Draft of a Report on the EDVAC"</em> (1945) descrisse l'idea, maturata nel gruppo di progetto insieme a J. Presper Eckert e John Mauchly, che <strong>il programma deve essere memorizzato nella stessa memoria dei dati</strong>. Prima il programma era "esterno" alla macchina: un cablaggio, una sequenza di schede perforate. Con questa idea il programma diventa un dato come gli altri: una sequenza di numeri nella memoria.</p>
+<p>Ne segue che un programma, stando in memoria, può essere modificato, copiato, trasmesso via rete e generato da un altro programma. Compilatori, sistemi operativi e l'installazione di un'app si basano su questa possibilità.</p>
 <h3>Le componenti fondamentali</h3>
-<p>Il modello di von Neumann descrive un elaboratore composto da quattro componenti principali, collegate tra loro da canali di comunicazione chiamati <strong>bus</strong>.</p>
+<p>Il modello di von Neumann descrive un elaboratore composto da quattro componenti principali: la CPU, la memoria, i dispositivi di input/output e il <strong>bus</strong>, cioè i canali di comunicazione che collegano le altre tre.</p>
 <h4>La CPU (Central Processing Unit)</h4>
-<p>La CPU è il "cervello" del computer: è il componente che esegue le istruzioni. Al suo interno troviamo tre sotto-componenti:</p>
+<p>La CPU è il componente che esegue le istruzioni. Al suo interno troviamo tre sotto-componenti:</p>
 <ul>
-<li><strong>ALU (Arithmetic Logic Unit):</strong> esegue le operazioni aritmetiche (somma, sottrazione, moltiplicazione, divisione) e logiche (AND, OR, NOT, confronti). È qui che la logica booleana studiata nella lezione precedente prende vita nel silicio.</li>
+<li><strong>ALU (Arithmetic Logic Unit):</strong> esegue le operazioni aritmetiche (somma, sottrazione, moltiplicazione, divisione) e logiche (AND, OR, NOT, confronti). L'ALU è costruita con le porte logiche viste nella lezione precedente.</li>
 </ul>
 <ul>
-<li><strong>Unità di controllo:</strong> è il "direttore d'orchestra" della CPU. Legge le istruzioni dalla memoria, le interpreta e coordina tutte le altre componenti per eseguirle. Decide cosa fare, quando farlo e in quale ordine.</li>
+<li><strong>Unità di controllo:</strong> legge le istruzioni dalla memoria, le interpreta e coordina le altre componenti per eseguirle, stabilendo quali operazioni fare e in quale ordine.</li>
 </ul>
 <ul>
-<li><strong>Registri:</strong> piccole memorie ultra-veloci interne alla CPU. Servono per conservare temporaneamente i dati su cui la CPU sta lavorando in quel preciso istante. Un registro tipico contiene 32 o 64 bit. Tra i registri più importanti c'è il <strong>Program Counter (PC)</strong>, che contiene l'indirizzo in memoria della prossima istruzione da eseguire, e l'<strong>Instruction Register (IR)</strong>, che contiene l'istruzione attualmente in esecuzione.</li>
+<li><strong>Registri:</strong> piccole memorie velocissime interne alla CPU. Conservano i dati su cui la CPU sta lavorando in quel momento. Nei processori attuali un registro generale contiene 64 bit (32 nei modelli più vecchi o più semplici). Due registri hanno un ruolo speciale: il <strong>Program Counter (PC)</strong>, che contiene l'indirizzo in memoria della prossima istruzione da eseguire, e l'<strong>Instruction Register (IR)</strong>, che contiene l'istruzione in esecuzione.</li>
 </ul>
 <h4>La memoria principale (RAM)</h4>
-<p>La RAM (<em>Random Access Memory</em>) è la memoria di lavoro del computer. "Random Access" significa che qualsiasi posizione è accessibile in tempo costante — non bisogna scorrere sequenzialmente come in un nastro magnetico. La RAM è:</p>
+<p>La RAM (<em>Random Access Memory</em>) è la memoria di lavoro del computer. "Random Access" significa che si può leggere qualsiasi posizione in un tempo che non dipende dalla posizione, senza scorrere i dati in sequenza come su un nastro magnetico. La RAM è:</p>
 <ul>
-<li><strong>Veloce:</strong> molto più veloce di un disco, ma molto più lenta dei registri.</li>
+<li><strong>Veloce:</strong> molto più veloce di un disco, ma più lenta dei registri.</li>
 <li><strong>Volatile:</strong> quando si spegne il computer, il contenuto della RAM si perde.</li>
-<li><strong>Limitata:</strong> ha una capacità finita (tipicamente 8-32 GB in un computer moderno).</li>
+<li><strong>Limitata:</strong> ha una capacità finita (tipicamente 8-32 GB in un computer attuale).</li>
 </ul>
-<p>Nella RAM risiedono sia i <strong>dati</strong> che il <strong>programma</strong> in esecuzione — questa è esattamente l'intuizione di von Neumann. La memoria è organizzata come una sequenza di celle, ciascuna identificata da un <strong>indirizzo</strong> numerico. Ogni cella contiene tipicamente un byte (8 bit).</p>
+<p>Nella RAM si trovano sia i <strong>dati</strong> sia il <strong>programma</strong> in esecuzione: è l'idea di von Neumann. La memoria è organizzata come una sequenza di celle, ciascuna identificata da un <strong>indirizzo</strong> numerico. Ogni cella contiene un byte (8 bit).</p>
 <h4>I dispositivi di Input/Output (I/O)</h4>
-<p>Sono i componenti che permettono al computer di comunicare con il mondo esterno:</p>
+<p>Sono i componenti che permettono al computer di comunicare con l'esterno:</p>
 <ul>
 <li><strong>Input:</strong> tastiera, mouse, microfono, sensori, connessione di rete, disco (in lettura).</li>
 <li><strong>Output:</strong> schermo, stampante, altoparlante, connessione di rete, disco (in scrittura).</li>
 </ul>
-<p>I dispositivi di I/O sono enormemente più lenti della CPU — questa asimmetria è una delle sfide fondamentali dell'architettura dei computer.</p>
+<p>I dispositivi di I/O sono molto più lenti della CPU: una lettura da disco dura quanto centinaia di migliaia di cicli di clock (SSD) o decine di milioni (disco magnetico).</p>
 <h4>Il bus di sistema</h4>
 <p>Il bus è l'insieme dei canali di comunicazione che collegano le componenti. Si divide in:</p>
 <ul>
@@ -242,45 +249,45 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <li><strong>Bus di controllo:</strong> trasporta i segnali di coordinamento (lettura/scrittura, interruzioni).</li>
 </ul>
 <h3>Il collo di bottiglia di von Neumann</h3>
-<p>Il modello è elegante, ma ha un limite intrinseco: la CPU e la memoria comunicano attraverso un unico bus, e la CPU è molto più veloce della memoria. Il risultato è che la CPU spesso <strong>aspetta</strong> che i dati arrivino dalla memoria. Questo limite si chiama il <em>"von Neumann bottleneck"</em> ed è stato identificato già negli anni '70 da John Backus (l'inventore del Fortran).</p>
-<p>Gran parte dell'evoluzione dell'architettura dei computer negli ultimi 50 anni è stata dedicata ad aggirare questo collo di bottiglia: la cache, il pipelining, l'esecuzione fuori ordine, il prefetching. Ne parleremo tra poco.</p>
+<p>Il modello ha un limite: la CPU e la memoria comunicano attraverso un unico canale, e la CPU è molto più veloce della memoria. Per questo la CPU spesso <strong>aspetta</strong> che i dati arrivino dalla memoria. Il limite si chiama <em>"von Neumann bottleneck"</em>; il nome è stato proposto nel 1977 da John Backus, che aveva guidato lo sviluppo del Fortran.</p>
+<p>Gran parte dell'evoluzione dell'architettura dei computer negli ultimi 50 anni è servita ad aggirare questo limite: la cache, il pipelining, l'esecuzione fuori ordine, il prefetching (caricare in anticipo i dati che probabilmente serviranno). Alcune di queste tecniche le vediamo più avanti in questa lezione.</p>
 <hr>
 <h2>Il ciclo fetch-decode-execute</h2>
-<p>Il funzionamento della CPU si riduce a un ciclo semplicissimo che si ripete miliardi di volte al secondo:</p>
+<p>La CPU lavora ripetendo un ciclo semplice, miliardi di volte al secondo:</p>
 <h3>1. Fetch (prelievo)</h3>
 <p>La CPU legge dalla memoria l'istruzione che si trova all'indirizzo indicato dal Program Counter. L'istruzione viene copiata nell'Instruction Register.</p>
 <h3>2. Decode (decodifica)</h3>
-<p>L'unità di controllo interpreta l'istruzione: capisce che tipo di operazione è (aritmetica? salto? lettura dalla memoria?) e quali operandi coinvolge.</p>
+<p>L'unità di controllo interpreta l'istruzione: stabilisce che tipo di operazione è (aritmetica, salto, lettura dalla memoria...) e quali operandi coinvolge.</p>
 <h3>3. Execute (esecuzione)</h3>
-<p>L'operazione viene effettivamente eseguita. Se è un'operazione aritmetica, la esegue l'ALU. Se è un accesso alla memoria, vengono letti o scritti dati. Se è un salto, viene modificato il Program Counter.</p>
+<p>L'operazione viene eseguita. Se è un'operazione aritmetica, la esegue l'ALU. Se è un accesso alla memoria, vengono letti o scritti dati. Se è un salto, viene modificato il Program Counter.</p>
 <h3>4. Aggiornamento del Program Counter</h3>
-<p>Il Program Counter viene aggiornato per puntare all'istruzione successiva (normalmente l'indirizzo successivo, a meno di un salto) e il ciclo ricomincia.</p>
+<p>Il Program Counter viene aggiornato per puntare all'istruzione successiva (normalmente quella all'indirizzo seguente, a meno di un salto) e il ciclo ricomincia.</p>
 <h3>Il clock</h3>
-<p>Il ciclo fetch-decode-execute è scandito da un segnale periodico chiamato <strong>clock</strong>. La frequenza del clock si misura in <strong>Hertz (Hz)</strong>: un clock a 3 GHz (3 miliardi di Hertz) batte 3 miliardi di volte al secondo. Ogni battito definisce un intervallo di tempo minimo in cui può avvenire un'operazione elementare.</p>
-<p>Attenzione però: un clock più veloce non significa automaticamente un computer più veloce. Ci sono limiti fisici: aumentare la frequenza genera più calore (la potenza dissipata cresce con il cubo della frequenza), e i segnali elettrici hanno bisogno di tempo per propagarsi nel circuito. Intorno al 2005, la corsa ai GHz si è sostanzialmente fermata intorno ai 4-5 GHz — un muro che ha cambiato la direzione dell'intera industria, come vedremo.</p>
+<p>Il ciclo fetch-decode-execute è scandito da un segnale periodico chiamato <strong>clock</strong>. La frequenza del clock si misura in <strong>Hertz (Hz)</strong>: un clock a 3 GHz (3 miliardi di Hertz) batte 3 miliardi di volte al secondo, quindi un ciclo dura circa 0,33 ns. Ogni ciclo è l'intervallo di tempo in cui avviene un'operazione elementare.</p>
+<p>Aumentare la frequenza ha però dei limiti fisici. La potenza dissipata cresce con la frequenza e con il quadrato della tensione, e per salire di frequenza serve anche più tensione: in pratica il calore prodotto cresce circa con il cubo della frequenza. Inoltre i segnali elettrici hanno bisogno di tempo per propagarsi nel circuito. Intorno al 2004-2005 la crescita della frequenza si è fermata poco sotto i 4 GHz; da allora è salita lentamente, fino ai 5-6 GHz che i processori di punta raggiungono oggi per brevi periodi (modalità turbo). Come vedremo, questo ha cambiato il modo di progettare i processori.</p>
 <h3>Cenni sul pipelining</h3>
-<p>Un'idea geniale per aumentare le prestazioni senza aumentare la frequenza è il <strong>pipelining</strong>: sovrapporre le fasi del ciclo, proprio come in una catena di montaggio.</p>
-<p>Immaginate una lavanderia: lavare richiede 30 minuti, asciugare 30 minuti, piegare 30 minuti. Senza pipeline, tre carichi richiedono 270 minuti (3 × 90). Con il pipeline, mentre il primo carico asciuga, il secondo lava; mentre il primo piega, il secondo asciuga e il terzo lava. I tre carichi finiscono in 150 minuti.</p>
-<p>Allo stesso modo, mentre la CPU esegue un'istruzione, sta già decodificando la successiva e prelevando quella dopo ancora. Il risultato netto è che, anche se ogni singola istruzione richiede lo stesso tempo, il <strong>throughput</strong> (numero di istruzioni completate per unità di tempo) aumenta significativamente.</p>
+<p>Un modo per aumentare le prestazioni senza aumentare la frequenza è il <strong>pipelining</strong>: sovrapporre le fasi del ciclo, come in una catena di montaggio.</p>
+<p>Pensate a una lavanderia: lavare richiede 30 minuti, asciugare 30 minuti, piegare 30 minuti. Senza pipeline, tre carichi richiedono 270 minuti (3 × 90). Con la pipeline, mentre il primo carico asciuga, il secondo lava; mentre il primo viene piegato, il secondo asciuga e il terzo lava. I tre carichi finiscono in 150 minuti (90 + 30 + 30).</p>
+<p>Allo stesso modo, mentre la CPU esegue un'istruzione, sta già decodificando la successiva e prelevando quella dopo ancora. Ogni singola istruzione richiede lo stesso tempo, ma il <strong>throughput</strong> (numero di istruzioni completate per unità di tempo) aumenta: con tre fasi da un ciclo ciascuna, tre istruzioni richiedono 5 cicli invece di 9.</p>
 <h3>Dalla teoria alla pratica</h3>
-<p>Cosa succede concretamente quando scrivete <code>x = 3 + 5</code> in Python? Il percorso è lungo ma istruttivo:</p>
+<p>Cosa succede quando scrivete <code>x = 3 + 5</code> in Python? In modo semplificato:</p>
 <ol>
 <li>L'interprete Python legge la riga di codice (testo).</li>
-<li>La traduce in <strong>bytecode</strong> (istruzioni per la Python Virtual Machine).</li>
+<li>La traduce in <strong>bytecode</strong> (istruzioni per la Python Virtual Machine, PVM).</li>
 <li>La PVM interpreta il bytecode e chiama le routine C appropriate.</li>
-<li>Il compilatore C le ha già tradotte in <strong>codice macchina</strong> (istruzioni native della CPU).</li>
+<li>Queste routine sono state tradotte in anticipo dal compilatore C in <strong>codice macchina</strong> (istruzioni native della CPU).</li>
 <li>La CPU esegue queste istruzioni attraverso il ciclo fetch-decode-execute: carica il valore 3 in un registro, carica il valore 5 in un altro registro, somma i due registri, memorizza il risultato.</li>
 </ol>
-<p>Tutto questo avviene in meno di un milionesimo di secondo.</p>
+<p>L'esecuzione di questa riga richiede meno di un milionesimo di secondo.</p>
 <hr>
 <h2>La gerarchia di memoria</h2>
 <h3>Il compromesso fondamentale</h3>
-<p>Esiste un problema fisico ineludibile: <strong>non è possibile costruire una memoria che sia contemporaneamente velocissima, enorme e a basso costo</strong>. La fisica impone un compromesso:</p>
+<p>Non si riesce a costruire una memoria che sia contemporaneamente molto veloce, molto grande ed economica. Bisogna scegliere:</p>
 <ul>
 <li>Le memorie più veloci (registri, cache) sono piccole e costose.</li>
 <li>Le memorie più grandi (dischi, cloud) sono lente ed economiche.</li>
 </ul>
-<p>La soluzione è organizzare la memoria come una <strong>piramide gerarchica</strong>, dove ogni livello è più grande ma più lento del precedente:</p>
+<p>La soluzione è organizzare la memoria come una <strong>piramide gerarchica</strong>, in cui ogni livello è più grande ma più lento del precedente. I valori della tabella sono ordini di grandezza tipici per un computer attuale:</p>
 <table>
 <thead><tr>
 <th>Livello</th>
@@ -290,32 +297,32 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </tr></thead><tbody>
 <tr>
 <td><strong>Registri</strong></td>
-<td>~1 ns</td>
+<td>< 1 ns (1 ciclo)</td>
 <td>~1 KB (decine di registri)</td>
 <td>Altissimo</td>
 </tr>
 <tr>
 <td><strong>Cache L1</strong></td>
-<td>~1-2 ns</td>
+<td>~1 ns</td>
 <td>32-64 KB per core</td>
 <td>Molto alto</td>
 </tr>
 <tr>
 <td><strong>Cache L2</strong></td>
-<td>~5-10 ns</td>
-<td>256 KB - 1 MB per core</td>
+<td>~3-5 ns</td>
+<td>1-3 MB per core</td>
 <td>Alto</td>
 </tr>
 <tr>
 <td><strong>Cache L3</strong></td>
-<td>~20-30 ns</td>
+<td>~10-20 ns</td>
 <td>8-64 MB (condivisa)</td>
 <td>Medio-alto</td>
 </tr>
 <tr>
 <td><strong>RAM</strong></td>
 <td>~50-100 ns</td>
-<td>8-64 GB</td>
+<td>8-32 GB</td>
 <td>Medio</td>
 </tr>
 <tr>
@@ -327,78 +334,78 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <tr>
 <td><strong>HDD</strong></td>
 <td>~5-10 ms</td>
-<td>1-20 TB</td>
+<td>1-30 TB</td>
 <td>Molto basso</td>
 </tr>
 <tr>
 <td><strong>Cloud/Archivi</strong></td>
 <td>ms - secondi</td>
-<td>Virtualmente illimitata</td>
+<td>Praticamente illimitata</td>
 <td>Variabile</td>
 </tr>
 </tbody></table>
-<p>Guardate i numeri: tra un registro e un disco rigido c'è un fattore di <strong>10 milioni</strong>. È come la differenza tra prendere un libro dalla scrivania (registri) e ordinarlo da una libreria all'estero e aspettare la consegna (HDD).</p>
+<p>Tra un registro e un disco rigido c'è un fattore di circa <strong>10 milioni</strong>. È come la differenza tra prendere un libro dalla scrivania (registri) e ordinarlo da una libreria all'estero e aspettare la consegna (HDD).</p>
 <h3>La cache e il principio di località</h3>
-<p>La cache è una memoria piccola e veloce che si interpone tra la CPU e la RAM. Il suo funzionamento si basa su un'osservazione empirica fondamentale chiamata <strong>principio di località</strong>:</p>
+<p>La cache è una memoria piccola e veloce che si trova tra la CPU e la RAM. Funziona grazie a un'osservazione empirica chiamata <strong>principio di località</strong>:</p>
 <ul>
-<li><strong>Località temporale:</strong> se un dato è stato usato di recente, è probabile che verrà usato di nuovo a breve. Esempio: una variabile contatore in un ciclo viene letta e scritta ad ogni iterazione.</li>
+<li><strong>Località temporale:</strong> se un dato è stato usato di recente, è probabile che venga usato di nuovo a breve. Esempio: una variabile contatore in un ciclo viene letta e scritta a ogni iterazione.</li>
 </ul>
 <ul>
-<li><strong>Località spaziale:</strong> se un dato è stato usato, è probabile che i dati vicini in memoria verranno usati presto. Esempio: scorrere gli elementi di un array significa accedere a posizioni consecutive di memoria.</li>
+<li><strong>Località spaziale:</strong> se un dato è stato usato, è probabile che i dati vicini in memoria vengano usati presto. Esempio: scorrere gli elementi di un array significa accedere a posizioni consecutive di memoria.</li>
 </ul>
-<p>Quando la CPU ha bisogno di un dato, lo cerca prima nella cache. Se lo trova (<strong>cache hit</strong>), lo ottiene velocemente. Se non lo trova (<strong>cache miss</strong>), deve andare a cercarlo nella RAM (molto più lento) e ne approfitta per copiare in cache anche i dati vicini (sfruttando la località spaziale).</p>
-<p>I processori moderni hanno tipicamente tre livelli di cache (L1, L2, L3), ciascuno più grande e leggermente più lento del precedente. La cache L1 è separata in cache dati e cache istruzioni, entrambe interne al singolo core. La cache L3 è generalmente condivisa tra tutti i core.</p>
-<h3>SSD vs HDD: la rivoluzione della memoria flash</h3>
-<p>I dischi rigidi tradizionali (HDD, <em>Hard Disk Drive</em>) conservano i dati su piatti magnetici rotanti, letti da una testina meccanica. Sono economici e capienti, ma lenti: la testina deve fisicamente spostarsi sulla posizione giusta.</p>
-<p>Gli SSD (<em>Solid State Drive</em>) usano memoria flash (la stessa tecnologia delle chiavette USB), senza parti meccaniche in movimento. Sono enormemente più veloci per gli accessi casuali (fino a 100 volte), più resistenti agli urti, silenziosi, ma più costosi per gigabyte.</p>
+<p>Quando la CPU ha bisogno di un dato, lo cerca prima nella cache. Se lo trova (<strong>cache hit</strong>), lo ottiene in circa 1 ns. Se non lo trova (<strong>cache miss</strong>), deve leggerlo dalla RAM (circa 100 ns) e ne approfitta per copiare in cache anche i dati vicini (sfruttando la località spaziale).</p>
+<p>I processori attuali hanno in genere tre livelli di cache (L1, L2, L3), ciascuno più grande e più lento del precedente. La cache L1 è separata in cache dati e cache istruzioni, entrambe interne al singolo core; la L2 è di solito dedicata a un core; la L3 è condivisa tra tutti i core.</p>
+<h3>SSD e HDD</h3>
+<p>I dischi rigidi tradizionali (HDD, <em>Hard Disk Drive</em>) conservano i dati su piatti magnetici rotanti, letti da una testina meccanica. Sono economici e capienti, ma lenti: la testina deve spostarsi fisicamente sulla posizione giusta.</p>
+<p>Gli SSD (<em>Solid State Drive</em>) usano memoria flash (la stessa tecnologia delle chiavette USB), senza parti meccaniche in movimento. Negli accessi casuali hanno un tempo di accesso circa 50-100 volte più basso (0,1 ms contro 5-10 ms); sono inoltre più resistenti agli urti e silenziosi, ma costano di più per gigabyte.</p>
 <h3>Applicazione per la statistica</h3>
-<p>Perché tutto questo è rilevante per uno statistico? Perché la gerarchia di memoria determina direttamente le prestazioni delle vostre analisi:</p>
+<p>La gerarchia di memoria incide direttamente sui tempi delle vostre analisi:</p>
 <ul>
-<li><strong>Caricare un dataset intero in RAM</strong> (come fa Pandas con <code>read_csv()</code>) è veloce per le operazioni successive, ma richiede che il dataset stia nella RAM disponibile. Se non ci sta, il sistema operativo inizia a usare lo swap (disco come estensione della RAM) e tutto rallenta drasticamente.</li>
+<li><strong>Caricare un dataset intero in RAM</strong> (come fa Pandas con <code>read_csv()</code>) rende veloci le operazioni successive, ma richiede che il dataset stia nella RAM disponibile. Se non ci sta, il sistema operativo inizia a usare lo swap (una parte del disco usata come estensione della RAM) e tutto rallenta molto, oppure il programma si ferma con un errore di memoria esaurita.</li>
 </ul>
 <ul>
-<li><strong>NumPy</strong> organizza i dati in <strong>blocchi contigui di memoria</strong> (array C-style), sfruttando al massimo la località spaziale e quindi la cache. Le liste Python, al contrario, disperdono gli oggetti in posizioni sparse della memoria. Ecco perché NumPy è ordini di grandezza più veloce per il calcolo numerico.</li>
+<li><strong>NumPy</strong> organizza i dati in <strong>blocchi contigui di memoria</strong> (array in stile C) e quindi sfrutta bene la località spaziale e la cache. Una lista Python, invece, contiene puntatori a oggetti che possono trovarsi in posizioni sparse della memoria. Questo è uno dei motivi per cui NumPy è molto più veloce nel calcolo numerico (l'altro è che i suoi cicli sono eseguiti in codice C compilato).</li>
 </ul>
 <ul>
-<li>Quando lavorate con un dataset molto grande, la scelta tra leggerlo tutto in RAM o elaborarlo riga per riga ("streaming") dipende esattamente da questo compromesso.</li>
+<li>Quando lavorate con un dataset molto grande, la scelta tra leggerlo tutto in RAM o elaborarlo a pezzi, riga per riga o blocco per blocco ("streaming"), dipende da questo compromesso.</li>
 </ul>
 <hr>
 <h2>Parallelismo e architetture moderne</h2>
 <h3>La fine della corsa ai GHz</h3>
-<p>Per decenni, l'industria dei processori ha seguito una strategia semplice: aumentare la frequenza del clock. Ogni anno, i processori diventavano più veloci, e i programmi ne beneficiavano automaticamente senza dover cambiare una riga di codice.</p>
-<p>Intorno al 2005, questo approccio ha raggiunto un muro: a 4-5 GHz, la dissipazione termica diventa ingestibile. Un processore a frequenze più alte genererebbe tanto calore da non poter essere raffreddato con sistemi convenzionali. La densità di potenza si avvicinerebbe a quella della superficie del sole.</p>
-<p>L'industria ha quindi cambiato strategia: non più processori singoli più veloci, ma <strong>più processori</strong> (core) sullo stesso chip. È nata l'era multi-core.</p>
+<p>Per decenni l'industria dei processori ha aumentato la frequenza del clock. Ogni anno i processori diventavano più veloci, e i programmi ne beneficiavano senza modifiche al codice.</p>
+<p>Intorno al 2004-2005 questo approccio si è fermato: oltre i 4 GHz circa il chip produce più calore di quanto i normali sistemi di raffreddamento riescano a smaltire.</p>
+<p>L'industria ha quindi cambiato strategia: invece di un singolo processore più veloce, <strong>più processori</strong> (core) sullo stesso chip. Sono nati i processori multi-core.</p>
 <h3>Multi-core</h3>
-<p>Un processore <strong>multi-core</strong> contiene due, quattro, otto o più CPU indipendenti sullo stesso chip. Ogni core può eseguire un flusso di istruzioni separato.</p>
-<p>Ma c'è un problema fondamentale: avere 8 core non significa automaticamente che il programma va 8 volte più veloce. Bisogna che il <strong>software</strong> sia scritto per sfruttare il parallelismo — dividere il lavoro in parti indipendenti che possono essere eseguite contemporaneamente. Non tutti i problemi si prestano a questa divisione: se il passo 2 dipende dal risultato del passo 1, non si può parallelizzare.</p>
+<p>Un processore <strong>multi-core</strong> contiene due, quattro, otto o più unità di elaborazione indipendenti (core) sullo stesso chip. Ogni core può eseguire un flusso di istruzioni separato.</p>
+<p>Avere 8 core, però, non rende automaticamente un programma 8 volte più veloce. Il <strong>software</strong> deve essere scritto per sfruttare il parallelismo, cioè dividere il lavoro in parti indipendenti da eseguire contemporaneamente. Non tutti i problemi si prestano a questa divisione: se il passo 2 dipende dal risultato del passo 1, i due passi non si possono eseguire in parallelo.</p>
 <h3>GPU (Graphics Processing Unit)</h3>
-<p>Le GPU nacquero negli anni '90 per un compito specifico: calcolare le immagini dei videogiochi in tempo reale. Ogni pixel sullo schermo richiede calcoli indipendenti dagli altri pixel, quindi le GPU furono progettate con <strong>migliaia di core semplici</strong> capaci di eseguire la stessa operazione su dati diversi contemporaneamente.</p>
-<p>I ricercatori di machine learning si accorsero che le operazioni fondamentali delle reti neurali — moltiplicazioni di matrici, trasformazioni vettoriali — hanno esattamente la stessa struttura: migliaia di operazioni identiche su dati diversi. Così le GPU, nate per i giochi, sono diventate il motore del deep learning e dell'intelligenza artificiale moderna.</p>
-<p>NVIDIA, con la sua piattaforma <strong>CUDA</strong> (2006), ha reso possibile programmare le GPU per scopi generici (<em>GPGPU, General-Purpose computing on GPU</em>). Oggi, l'addestramento di modelli come GPT o i sistemi di riconoscimento di immagini sarebbe impossibile senza GPU.</p>
+<p>Le GPU sono nate negli anni '90 per un compito specifico: calcolare le immagini dei videogiochi in tempo reale. Il colore di ogni pixel si calcola in modo indipendente dagli altri, quindi le GPU sono state progettate con molte unità di calcolo semplici che eseguono la stessa operazione su dati diversi contemporaneamente; oggi una GPU ha migliaia di core.</p>
+<p>Le operazioni fondamentali delle reti neurali (moltiplicazioni di matrici, trasformazioni vettoriali) hanno la stessa struttura: tante operazioni identiche su dati diversi. Per questo le GPU, nate per i giochi, sono diventate lo strumento principale per il deep learning.</p>
+<p>NVIDIA, con la piattaforma <strong>CUDA</strong> (2006), ha reso possibile programmare le GPU per scopi generici (<em>GPGPU, General-Purpose computing on GPU</em>). Oggi i grandi modelli, come GPT o i sistemi di riconoscimento di immagini, si addestrano su GPU o su acceleratori simili.</p>
 <h3>Cenni su architetture specializzate</h3>
 <ul>
-<li><strong>TPU (Tensor Processing Unit):</strong> chip progettati da Google specificamente per il deep learning. Ottimizzati per le operazioni tensoriali (moltiplicazioni di matrici di grandi dimensioni), usati nei data center di Google per addestrare e servire i loro modelli AI.</li>
+<li><strong>TPU (Tensor Processing Unit):</strong> chip progettati da Google per il deep learning, ottimizzati per le operazioni tensoriali (moltiplicazioni di matrici di grandi dimensioni). Sono usati nei data center di Google per addestrare ed eseguire i loro modelli.</li>
 </ul>
 <ul>
-<li><strong>Chip ARM:</strong> architettura basata su un design a basso consumo energetico (<em>RISC, Reduced Instruction Set Computer</em>). Domina il mondo mobile: praticamente tutti gli smartphone usano processori ARM. Il vostro telefono è potente ma la batteria dura tutto il giorno grazie a questa architettura.</li>
+<li><strong>Chip ARM:</strong> architettura di tipo <em>RISC</em> (<em>Reduced Instruction Set Computer</em>, con un insieme ridotto di istruzioni semplici), nota per il basso consumo energetico. Quasi tutti gli smartphone usano processori ARM, e il basso consumo è uno dei motivi per cui la batteria dura una giornata.</li>
 </ul>
 <ul>
-<li><strong>Apple Silicon (M1/M2/M3/M4):</strong> Apple ha portato l'architettura ARM nei computer portatili e desktop, integrando CPU, GPU, acceleratore per il machine learning ("Neural Engine") e memoria sullo stesso chip. Questo approccio (<em>System on a Chip, SoC</em>) riduce le distanze fisiche tra i componenti e il consumo energetico, con prestazioni sorprendenti.</li>
+<li><strong>Apple Silicon (serie M, dal 2020):</strong> Apple ha portato l'architettura ARM nei computer portatili e desktop, integrando CPU, GPU e acceleratore per il machine learning ("Neural Engine") sullo stesso chip, con la memoria nello stesso contenitore (<em>package</em>). Questo approccio (<em>System on a Chip, SoC</em>) riduce le distanze fisiche tra i componenti e il consumo energetico.</li>
 </ul>
 <h3>Prospettiva futura: il quantum computing</h3>
-<p>I computer quantistici sfruttano le leggi della meccanica quantistica per eseguire calcoli impossibili per i computer classici. Il <strong>qubit</strong> (quantum bit), a differenza del bit classico che è 0 o 1, può trovarsi in una <strong>sovrapposizione</strong> di entrambi gli stati contemporaneamente. Quando più qubit sono <strong>entangled</strong> (correlati quantisticamente), il numero di stati rappresentabili cresce esponenzialmente.</p>
-<p>Per certi problemi — come la fattorizzazione di numeri grandi (crittografia), la simulazione di molecole (chimica e farmacologia), l'ottimizzazione combinatoria — i computer quantistici promettono di essere esponenzialmente più veloci. Per la maggior parte dei compiti quotidiani, però, i computer classici resteranno la scelta giusta.</p>
-<p>Il quantum computing è ancora nelle fasi iniziali: i qubit attuali sono fragili, richiedono temperature prossime allo zero assoluto, e i tassi di errore sono alti. Ma il progresso è rapido e le implicazioni per la statistica e il machine learning potrebbero essere profonde.</p>
+<p>I computer quantistici sfruttano le leggi della meccanica quantistica. Il <strong>qubit</strong> (quantum bit), a differenza del bit classico che vale 0 o 1, può trovarsi in una <strong>sovrapposizione</strong> dei due stati. Per descrivere lo stato di n qubit <strong>entangled</strong> (correlati quantisticamente) servono 2ⁿ numeri: con 50 qubit sono circa un milione di miliardi.</p>
+<p>Per alcuni problemi sono noti algoritmi quantistici molto più veloci dei migliori algoritmi classici: la fattorizzazione di numeri grandi (algoritmo di Shor, rilevante per la crittografia) e la simulazione di molecole (chimica e farmacologia). Per l'ottimizzazione combinatoria il vantaggio è ancora oggetto di ricerca. Per la maggior parte dei compiti quotidiani i computer classici restano la scelta giusta.</p>
+<p>Il quantum computing è ancora nelle fasi iniziali: i qubit attuali sono fragili, molte tecnologie richiedono temperature prossime allo zero assoluto, e i tassi di errore sono alti.</p>
 <hr>
 <h2>Domande di verifica</h2>
 <ol>
-<li><strong>Qual è l'idea rivoluzionaria introdotta dal modello di von Neumann rispetto ai computer precedenti come l'ENIAC?</strong></li>
+<li><strong>Quale idea introduce il modello di von Neumann rispetto ai computer precedenti come l'ENIAC?</strong></li>
 </ol>
 <ol>
 <li><strong>Descrivete le quattro componenti principali del modello di von Neumann e il ruolo di ciascuna.</strong></li>
 </ol>
 <ol>
-<li><strong>Cosa fa ciascuna delle tre fasi del ciclo fetch-decode-execute? Qual è il ruolo del Program Counter?</strong></li>
+<li><strong>Cosa fa ciascuna delle fasi del ciclo fetch-decode-execute? Qual è il ruolo del Program Counter?</strong></li>
 </ol>
 <ol>
 <li><strong>Cos'è il "collo di bottiglia di von Neumann" e perché è ancora un problema rilevante?</strong></li>
@@ -429,7 +436,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </ol>
 <h3>Intermedio</h3>
 <ol>
-<li>Un dataset occupa 16 GB. La RAM disponibile è di 8 GB. <strong>Cosa succede</strong> quando provate a caricarlo interamente in memoria? Quale componente della gerarchia di memoria entra in gioco e perché le prestazioni degradano?</li>
+<li>Un dataset occupa 16 GB. La RAM disponibile è di 8 GB. <strong>Cosa succede</strong> quando provate a caricarlo interamente in memoria? Quale componente della gerarchia di memoria entra in gioco e perché le prestazioni peggiorano?</li>
 </ol>
 <ol>
 <li>Spiegate con un esempio concreto (non quello del testo) il concetto di <strong>località spaziale</strong> e come la cache ne trae vantaggio.</li>
@@ -446,10 +453,10 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </ol>
 <hr>
 <h2>Osservazioni finali</h2>
-<p>In questa lezione abbiamo visto come i componenti fisici di un elaboratore — CPU, memoria, bus, dispositivi — si organizzano per eseguire programmi. Il modello di von Neumann, con la sua idea geniale del programma memorizzato, è ancora il fondamento dell'informatica moderna dopo ottant'anni.</p>
-<p>Ma abbiamo anche visto i limiti: il collo di bottiglia della memoria, il muro dei GHz, la sfida del parallelismo. Questi limiti non sono fallimenti — sono i motori dell'innovazione. Ogni generazione di ingegneri ha trovato modi creativi per aggirarli: la cache, il pipelining, il multi-core, le GPU, e forse domani il quantum computing.</p>
-<p>Per uno statistico, la lezione più importante è pratica: <strong>sapere dove risiedono i vostri dati (RAM, disco, cloud) e come sono organizzati in memoria determina direttamente la velocità delle vostre analisi.</strong> Quando tra qualche lezione userete NumPy e Pandas, ricorderete che la loro velocità non è magia — è architettura.</p>
-<p>Nella prossima lezione parleremo del software che gestisce tutto questo: il <strong>sistema operativo</strong>, il "direttore d'orchestra" che permette a programmi, utenti e hardware di convivere.</p>
-<nav class="bottom-nav"><span><a href="T02_logica_booleana_storia.html">← T02</a></span><span><a href="../../index.html">Home</a></span><span><a href="T04_sistemi_operativi.html">T04 →</a></span></nav>
+<p>In questa lezione abbiamo visto come i componenti fisici di un elaboratore (CPU, memoria, bus, dispositivi di I/O) si organizzano per eseguire programmi. Il modello di von Neumann, con il programma memorizzato nella stessa memoria dei dati, è ancora il riferimento dopo ottant'anni.</p>
+<p>Abbiamo visto anche i suoi limiti: il collo di bottiglia tra CPU e memoria, il limite termico alla frequenza del clock, la difficoltà di scrivere software parallelo. Cache, pipelining, multi-core e GPU sono le soluzioni adottate finora.</p>
+<p>Per uno statistico la conseguenza pratica è questa: la velocità di un'analisi dipende da dove si trovano i dati (RAM, disco, rete) e da come sono disposti in memoria. Quando userete NumPy e Pandas, una parte della loro velocità si spiega con quanto visto oggi: dati contigui in memoria e buon uso della cache.</p>
+<p>Nella prossima lezione passiamo dalla macchina ai programmi: vedremo che cos'è un algoritmo e come si passa <strong>dal problema al programma</strong>. Il sistema operativo, il software che gestisce le risorse della macchina, sarà l'argomento di una lezione successiva (T04).</p>
+<nav class="bottom-nav"><span><a href="T02_logica_booleana_storia.html">← T02</a></span><span><a href="../../index.html">Home</a></span><span><a href="T06_dal_problema_al_programma.html">T06 →</a></span></nav>
 </body>
 </html>
