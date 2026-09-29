@@ -780,7 +780,9 @@ def convert_root_docs() -> None:
         md_text: str = md_file.read_text(encoding="utf-8")
         body: str = md_to_html(md_text)
         nav: dict[str, str] = {"Home": "index.html"}
-        html_content: str = make_html_page(title, body, nav)
+        html_content: str = make_html_page(title, body, nav,
+                                           download_link=f"{md_file.stem}.pdf",
+                                           download_label="Scarica PDF")
         out_file: Path = md_file.with_suffix('.html')
         out_file.write_text(html_content, encoding="utf-8")
         print(f"  ✓ {out_file.relative_to(BASE)}")
@@ -842,7 +844,9 @@ def convert_supplementary() -> None:
             md_text = md_file.read_text(encoding="utf-8")
             body = md_to_html(md_text)
             nav = {"Home": "../index.html"}
-            html_content = make_html_page(title, body, nav)
+            html_content = make_html_page(title, body, nav,
+                                          download_link=f"{md_file.stem}.pdf",
+                                          download_label="Scarica PDF")
             out_file = md_file.with_suffix('.html')
             out_file.write_text(html_content, encoding="utf-8")
             print(f"  ✓ {out_file.relative_to(BASE)}")
@@ -874,7 +878,9 @@ def convert_supplementary() -> None:
         md_text = glossario_md.read_text(encoding="utf-8")
         body = md_to_html(md_text)
         nav = {"Home": "index.html"}
-        html_content = make_html_page("Glossario Python", body, nav)
+        html_content = make_html_page("Glossario Python", body, nav,
+                                      download_link="glossario.pdf",
+                                      download_label="Scarica PDF")
         out_file = glossario_md.with_suffix('.html')
         out_file.write_text(html_content, encoding="utf-8")
         print(f"  ✓ {out_file.relative_to(BASE)}")

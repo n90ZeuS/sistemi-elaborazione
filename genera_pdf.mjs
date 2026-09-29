@@ -4,6 +4,7 @@
  *
  * presentazioni/T07_xxx.html  -> presentazioni/T07_xxx.pdf   (16:9, una pagina per slide)
  * dispense/<dir>/T07_xxx.html -> dispense/<dir>/T07_xxx.pdf  (A4)
+ * cheatsheet, glossario, programma, calendario, schede   -> PDF A4 accanto all'HTML
  *
  * Viene eseguito dalla GitHub Action sulla copia del sito, dopo la potatura,
  * quindi produce solo i PDF del materiale gia' pubblicato.
@@ -48,6 +49,17 @@ const dispense = ["frontali", "laboratori"].flatMap((d) => {
     : [];
 });
 
+// Materiali trasversali: cheatsheet, glossario, programma, calendario, schede
+const TRASVERSALI = ["cheatsheet_python.html", "glossario.html",
+  "programma_sistemi_elaborazione.html", "calendario_lezioni.html"];
+const trasversali = filtro.size ? [] : [
+  ...TRASVERSALI.map((f) => path.join(BASE, f)),
+  ...(fs.existsSync(path.join(BASE, "schede"))
+    ? fs.readdirSync(path.join(BASE, "schede")).filter((f) => f.endsWith(".html")).sort()
+        .map((f) => path.join(BASE, "schede", f))
+    : []),
+].filter((f) => fs.existsSync(f));
+
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: true,
@@ -55,7 +67,7 @@ const browser = await puppeteer.launch({
 });
 
 let ok = 0;
-const totale = presentazioni.length + dispense.length;
+const totale = presentazioni.length + dispense.length + trasversali.length;
 
 async function stampa(url, pdf, opzioni, viewport = { width: 1280, height: 720 }) {
   const page = await browser.newPage();
@@ -91,7 +103,7 @@ for (const html of presentazioni) {
   }
 }
 
-for (const html of dispense) {
+for (const html of [...dispense, ...trasversali]) {
   await stampa(pathToFileURL(html).href, html.replace(/\.html$/, ".pdf"), {
     format: "A4",
     margin: { top: "18mm", bottom: "18mm", left: "16mm", right: "16mm" },
