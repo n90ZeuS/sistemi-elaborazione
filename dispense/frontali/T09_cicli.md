@@ -214,13 +214,19 @@ print(f"Sufficienze: {sufficienze} su {len(voti)}")
 Trovare un elemento specifico:
 
 ```python
-def contiene(lista: list[int], obiettivo: int) -> bool:
-    """Verifica se obiettivo è presente nella lista."""
-    for elemento in lista:
-        if elemento == obiettivo:
-            return True
-    return False
+lista: list[int] = [28, 30, 25, 27, 22]
+obiettivo: int = 25
+
+trovato: bool = False       # finché non lo vediamo, non c'è
+for elemento in lista:
+    if elemento == obiettivo:
+        trovato = True
+        break               # inutile guardare gli altri
+
+print(f"Trovato: {trovato}")
 ```
+
+`trovato` parte da `False` e diventa `True` solo se l'elemento c'è; `break` ferma il ciclo appena lo trova. Se il ciclo finisce senza trovarlo, `trovato` resta `False`.
 
 ### Pattern filtro
 
@@ -242,66 +248,55 @@ print(f"Voti sufficienti: {sufficienti}")
 Trovare il minimo o il massimo:
 
 ```python
-def trova_massimo(valori: list[float]) -> float:
-    """Trova il valore massimo nella lista."""
-    if not valori:
-        raise ValueError("Lista vuota")
+valori: list[int] = [4, 9, 2, 11, 7]
 
-    massimo: float = valori[0]  # inizializza col primo elemento
-    for valore in valori[1:]:   # scorre dal secondo in poi
-        if valore > massimo:
-            massimo = valore
-    return massimo
+massimo: int = valori[0]    # inizializza col primo elemento
+for valore in valori[1:]:   # scorre dal secondo in poi
+    if valore > massimo:
+        massimo = valore
+
+print(f"Massimo: {massimo}")
 ```
+
+Perché inizializzare con `valori[0]` e non con `0`? Se tutti i valori fossero negativi (es. `[-3, -7, -1]`), partendo da 0 otterremmo un massimo sbagliato.
 
 (Python ha `max()` e `min()` built-in, ma è istruttivo capire come funzionano.)
 
 ### Esempio completo: statistiche descrittive
 
 ```python
-def statistiche(valori: list[float]) -> dict[str, float]:
-    """Calcola statistiche descrittive base."""
-    n: int = len(valori)
-    if n == 0:
-        raise ValueError("Lista vuota")
-
-    # Media
-    somma: float = 0.0
-    for v in valori:
-        somma += v
-    media: float = somma / n
-
-    # Varianza
-    somma_scarti_quadrati: float = 0.0
-    for v in valori:
-        somma_scarti_quadrati += (v - media) ** 2
-    varianza: float = somma_scarti_quadrati / n
-
-    # Min e max
-    minimo: float = valori[0]
-    massimo: float = valori[0]
-    for v in valori[1:]:
-        if v < minimo:
-            minimo = v
-        if v > massimo:
-            massimo = v
-
-    return {
-        "n": n,
-        "media": media,
-        "varianza": varianza,
-        "minimo": minimo,
-        "massimo": massimo
-    }
-
-# Test
 dati: list[float] = [23.5, 21.0, 25.3, 19.8, 22.1]
-risultati: dict[str, float] = statistiche(dati)
-for chiave, valore in risultati.items():
-    print(f"{chiave}: {valore:.2f}")
+n: int = len(dati)
+
+# Media
+somma: float = 0.0
+for v in dati:
+    somma += v
+media: float = somma / n
+
+# Varianza
+somma_scarti_quadrati: float = 0.0
+for v in dati:
+    somma_scarti_quadrati += (v - media) ** 2
+varianza: float = somma_scarti_quadrati / n
+
+# Min e max
+minimo: float = dati[0]
+massimo: float = dati[0]
+for v in dati[1:]:
+    if v < minimo:
+        minimo = v
+    if v > massimo:
+        massimo = v
+
+print(f"n: {n}")
+print(f"media: {media:.2f}")
+print(f"varianza: {varianza:.2f}")
+print(f"minimo: {minimo:.2f}")
+print(f"massimo: {massimo:.2f}")
 ```
 
-Più avanti vedremo che NumPy fa tutto questo in una riga (`np.mean()`, `np.var()`, ecc.) — ma è fondamentale capire cosa succede *sotto*.
+Nella lezione sulle funzioni (T13) trasformeremo questo programma in una funzione riutilizzabile. Più avanti vedremo che NumPy fa tutto questo in una riga (`np.mean()`, `np.var()`, ecc.) — ma è fondamentale capire cosa succede *sotto*.
 
 ---
 

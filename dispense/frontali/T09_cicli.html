@@ -341,12 +341,17 @@ sufficienze: <span class="nb">int</span> <span class="op">=</span> <span class="
 <span class="nb">print</span>(<span class="st">f&quot;Sufficienze: {sufficienze} su {len(voti)}&quot;</span>)</code></pre>
 <h3>Pattern ricerca</h3>
 <p>Trovare un elemento specifico:</p>
-<pre><code><span class="kw">def</span> <span class="fn">contiene</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>], obiettivo: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
-    <span class="st">&quot;&quot;&quot;Verifica se obiettivo è presente nella lista.&quot;&quot;&quot;</span>
-    <span class="kw">for</span> elemento <span class="kw">in</span> lista:
-        <span class="kw">if</span> elemento <span class="op">=</span><span class="op">=</span> obiettivo:
-            <span class="kw">return</span> <span class="kw">True</span>
-    <span class="kw">return</span> <span class="kw">False</span></code></pre>
+<pre><code>lista: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>]
+obiettivo: <span class="nb">int</span> <span class="op">=</span> <span class="mi">25</span>
+
+trovato: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>       <span class="cm"># finché non lo vediamo, non c&#x27;è</span>
+<span class="kw">for</span> elemento <span class="kw">in</span> lista:
+    <span class="kw">if</span> elemento <span class="op">=</span><span class="op">=</span> obiettivo:
+        trovato <span class="op">=</span> <span class="kw">True</span>
+        <span class="kw">break</span>               <span class="cm"># inutile guardare gli altri</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;Trovato: {trovato}&quot;</span>)</code></pre>
+<p><code>trovato</code> parte da <code>False</code> e diventa <code>True</code> solo se l'elemento c'è; <code>break</code> ferma il ciclo appena lo trova. Se il ciclo finisce senza trovarlo, <code>trovato</code> resta <code>False</code>.</p>
 <h3>Pattern filtro</h3>
 <p>Selezionare gli elementi che soddisfano un criterio:</p>
 <pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>, <span class="mi">27</span>, <span class="mi">22</span>, <span class="mi">15</span>, <span class="mi">12</span>]
@@ -359,59 +364,47 @@ sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span cla
 <span class="nb">print</span>(<span class="st">f&quot;Voti sufficienti: {sufficienti}&quot;</span>)</code></pre>
 <h3>Pattern min/max</h3>
 <p>Trovare il minimo o il massimo:</p>
-<pre><code><span class="kw">def</span> <span class="fn">trova_massimo</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-    <span class="st">&quot;&quot;&quot;Trova il valore massimo nella lista.&quot;&quot;&quot;</span>
-    <span class="kw">if</span> <span class="kw">not</span> valori:
-        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+<pre><code>valori: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">4</span>, <span class="mi">9</span>, <span class="mi">2</span>, <span class="mi">11</span>, <span class="mi">7</span>]
 
-    massimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]  <span class="cm"># inizializza col primo elemento</span>
-    <span class="kw">for</span> valore <span class="kw">in</span> valori[<span class="mi">1</span>:]:   <span class="cm"># scorre dal secondo in poi</span>
-        <span class="kw">if</span> valore <span class="op">&gt;</span> massimo:
-            massimo <span class="op">=</span> valore
-    <span class="kw">return</span> massimo</code></pre>
+massimo: <span class="nb">int</span> <span class="op">=</span> valori[<span class="mi">0</span>]    <span class="cm"># inizializza col primo elemento</span>
+<span class="kw">for</span> valore <span class="kw">in</span> valori[<span class="mi">1</span>:]:   <span class="cm"># scorre dal secondo in poi</span>
+    <span class="kw">if</span> valore <span class="op">&gt;</span> massimo:
+        massimo <span class="op">=</span> valore
+
+<span class="nb">print</span>(<span class="st">f&quot;Massimo: {massimo}&quot;</span>)</code></pre>
+<p>Perché inizializzare con <code>valori[0]</code> e non con <code>0</code>? Se tutti i valori fossero negativi (es. <code>[-3, -7, -1]</code>), partendo da 0 otterremmo un massimo sbagliato.</p>
 <p>(Python ha <code>max()</code> e <code>min()</code> built-in, ma è istruttivo capire come funzionano.)</p>
 <h3>Esempio completo: statistiche descrittive</h3>
-<pre><code><span class="kw">def</span> <span class="fn">statistiche</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]:
-    <span class="st">&quot;&quot;&quot;Calcola statistiche descrittive base.&quot;&quot;&quot;</span>
-    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
-    <span class="kw">if</span> n <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Lista vuota&quot;</span>)
+<pre><code>dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">23.5</span>, <span class="mi">21.0</span>, <span class="mi">25.3</span>, <span class="mi">19.8</span>, <span class="mi">22.1</span>]
+n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(dati)
 
-    <span class="cm"># Media</span>
-    somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
-    <span class="kw">for</span> v <span class="kw">in</span> valori:
-        somma <span class="op">+</span><span class="op">=</span> v
-    media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
+<span class="cm"># Media</span>
+somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+<span class="kw">for</span> v <span class="kw">in</span> dati:
+    somma <span class="op">+</span><span class="op">=</span> v
+media: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
 
-    <span class="cm"># Varianza</span>
-    somma_scarti_quadrati: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
-    <span class="kw">for</span> v <span class="kw">in</span> valori:
-        somma_scarti_quadrati <span class="op">+</span><span class="op">=</span> (v <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
-    varianza: <span class="nb">float</span> <span class="op">=</span> somma_scarti_quadrati <span class="op">/</span> n
+<span class="cm"># Varianza</span>
+somma_scarti_quadrati: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
+<span class="kw">for</span> v <span class="kw">in</span> dati:
+    somma_scarti_quadrati <span class="op">+</span><span class="op">=</span> (v <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+varianza: <span class="nb">float</span> <span class="op">=</span> somma_scarti_quadrati <span class="op">/</span> n
 
-    <span class="cm"># Min e max</span>
-    minimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]
-    massimo: <span class="nb">float</span> <span class="op">=</span> valori[<span class="mi">0</span>]
-    <span class="kw">for</span> v <span class="kw">in</span> valori[<span class="mi">1</span>:]:
-        <span class="kw">if</span> v <span class="op">&lt;</span> minimo:
-            minimo <span class="op">=</span> v
-        <span class="kw">if</span> v <span class="op">&gt;</span> massimo:
-            massimo <span class="op">=</span> v
+<span class="cm"># Min e max</span>
+minimo: <span class="nb">float</span> <span class="op">=</span> dati[<span class="mi">0</span>]
+massimo: <span class="nb">float</span> <span class="op">=</span> dati[<span class="mi">0</span>]
+<span class="kw">for</span> v <span class="kw">in</span> dati[<span class="mi">1</span>:]:
+    <span class="kw">if</span> v <span class="op">&lt;</span> minimo:
+        minimo <span class="op">=</span> v
+    <span class="kw">if</span> v <span class="op">&gt;</span> massimo:
+        massimo <span class="op">=</span> v
 
-    <span class="kw">return</span> {
-        <span class="st">&quot;n&quot;</span>: n,
-        <span class="st">&quot;media&quot;</span>: media,
-        <span class="st">&quot;varianza&quot;</span>: varianza,
-        <span class="st">&quot;minimo&quot;</span>: minimo,
-        <span class="st">&quot;massimo&quot;</span>: massimo
-    }
-
-<span class="cm"># Test</span>
-dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">23.5</span>, <span class="mi">21.0</span>, <span class="mi">25.3</span>, <span class="mi">19.8</span>, <span class="mi">22.1</span>]
-risultati: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> statistiche(dati)
-<span class="kw">for</span> chiave, valore <span class="kw">in</span> risultati.items():
-    <span class="nb">print</span>(<span class="st">f&quot;{chiave}: {valore:.2f}&quot;</span>)</code></pre>
-<p>Più avanti vedremo che NumPy fa tutto questo in una riga (<code>np.mean()</code>, <code>np.var()</code>, ecc.) — ma è fondamentale capire cosa succede <em>sotto</em>.</p>
+<span class="nb">print</span>(<span class="st">f&quot;n: {n}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;media: {media:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;varianza: {varianza:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;minimo: {minimo:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;massimo: {massimo:.2f}&quot;</span>)</code></pre>
+<p>Nella lezione sulle funzioni (T13) trasformeremo questo programma in una funzione riutilizzabile. Più avanti vedremo che NumPy fa tutto questo in una riga (<code>np.mean()</code>, <code>np.var()</code>, ecc.) — ma è fondamentale capire cosa succede <em>sotto</em>.</p>
 <hr>
 <h2>Domande di verifica</h2>
 <ol>
