@@ -119,30 +119,87 @@ html.proiettore .reveal .diagram {
 html.proiettore .reveal .compare .good,
 html.proiettore .reveal .compare .bad { border-width: 3px; }
 
-/* --- Pulsante --- */
+/* --- Icona del proiettore, stile cartoon (pulsante senza aspetto da pulsante) --- */
 .pulsante-proiettore {
     position: fixed;
-    top: 10px;
-    right: 12px;
+    top: 6px;
+    right: 8px;
     z-index: 40;
-    font: 600 13px/1 'Inter', 'Segoe UI', system-ui, sans-serif;
-    color: #334155;
-    background: #f8fafc;
-    border: 1px solid #cbd5e1;
-    border-radius: 999px;
-    padding: 6px 11px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
     cursor: pointer;
-    opacity: 0.4;
-    transition: opacity 0.2s;
+    line-height: 0;
+    opacity: 0.55;
+    transition: opacity 0.25s, transform 0.2s;
 }
 
 .pulsante-proiettore:hover,
-.pulsante-proiettore:focus-visible { opacity: 1; }
+.pulsante-proiettore:focus-visible { opacity: 1; transform: scale(1.06); }
+.pulsante-proiettore:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; border-radius: 6px; }
 
-html.proiettore .pulsante-proiettore {
-    color: #ffffff;
-    background: #1d4ed8;
-    border-color: #1d4ed8;
+.pulsante-proiettore svg { width: 92px; height: 48px; overflow: visible; }
+
+.pulsante-proiettore .macchina { filter: grayscale(1); transition: filter 0.3s; }
+
+.pulsante-proiettore .tratto { stroke: #1e293b; stroke-width: 2.6; stroke-linejoin: round; }
+.pulsante-proiettore .tratto-sottile { stroke: #1e293b; stroke-width: 1.8; }
+
+.pulsante-proiettore .corpo { fill: #3b82f6; }
+.pulsante-proiettore .riflesso { fill: #ffffff; opacity: 0.55; }
+.pulsante-proiettore .piede { fill: #1e40af; }
+.pulsante-proiettore .bobina { fill: #f59e0b; }
+.pulsante-proiettore .foro { fill: #fff7ed; }
+.pulsante-proiettore .perno { fill: #fde68a; }
+.pulsante-proiettore .canna { fill: #475569; }
+.pulsante-proiettore .vetro { fill: #bfdbfe; transition: fill 0.3s; }
+.pulsante-proiettore .pellicola { fill: none; stroke: #1e293b; stroke-width: 2.4; stroke-linecap: round; }
+
+.pulsante-proiettore .occhio { fill: #1e293b; }
+.pulsante-proiettore .luccichio { fill: #ffffff; }
+.pulsante-proiettore .guancia { fill: #f9a8d4; opacity: 0.8; }
+.pulsante-proiettore .occhio-chiuso,
+.pulsante-proiettore .bocca { fill: none; stroke: #1e293b; stroke-width: 2; stroke-linecap: round; }
+.pulsante-proiettore .zeta { font: 700 11px/1 'Inter', 'Segoe UI', sans-serif; fill: #64748b; }
+.pulsante-proiettore .zeta.piccola { font-size: 8px; }
+
+.pulsante-proiettore .sveglio { display: none; }
+
+.pulsante-proiettore .fascio {
+    opacity: 0;
+    transform: scaleX(0.2);
+    transform-origin: right center;
+    transform-box: fill-box;
+    transition: opacity 0.3s, transform 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+.pulsante-proiettore .scintilla { fill: #ffffff; }
+
+.pulsante-proiettore .bobina-gruppo {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+/* acceso */
+html.proiettore .pulsante-proiettore { opacity: 1; }
+html.proiettore .pulsante-proiettore .macchina {
+    filter: none;
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: proiettore-vibra 0.35s ease-in-out infinite alternate;
+}
+html.proiettore .pulsante-proiettore .vetro { fill: #fde047; }
+html.proiettore .pulsante-proiettore .dorme { display: none; }
+html.proiettore .pulsante-proiettore .sveglio { display: inline; }
+html.proiettore .pulsante-proiettore .fascio { opacity: 1; transform: scaleX(1); }
+html.proiettore .pulsante-proiettore .bobina-gruppo { animation: bobina-gira 2s linear infinite; }
+
+@keyframes bobina-gira { to { transform: rotate(360deg); } }
+@keyframes proiettore-vibra { to { transform: translateY(-0.6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+    html.proiettore .pulsante-proiettore .bobina-gruppo,
+    html.proiettore .pulsante-proiettore .macchina { animation: none; }
 }
 
 .print-pdf .pulsante-proiettore { display: none; }
