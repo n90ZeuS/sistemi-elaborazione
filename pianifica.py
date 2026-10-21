@@ -4,7 +4,7 @@ Pubblicazione progressiva dei materiali del corso.
 
 Legge calendario.json (sorgente unica di date e assegnazioni) e allinea index.html:
   - aggiunge la colonna "Data" alle tabelle di lezioni e laboratori
-  - il materiale diventa cliccabile ANTICIPO giorni prima della lezione (default 7)
+  - il materiale diventa cliccabile ANTICIPO giorni prima della lezione (default 21)
   - le lezioni piu' lontane compaiono disattivate, con la loro data
 
 L'operazione e' reversibile e ripetibile: rilanciare lo script dopo aver
@@ -36,7 +36,7 @@ CALENDARIO_MD = BASE / "calendario_lezioni.md"
 
 TITOLI_EXTRA = {"T00": "Introduzione al corso"}
 
-ANTICIPO_DEFAULT = 7   # giorni di anticipo con cui il materiale viene pubblicato
+ANTICIPO_DEFAULT = 21  # giorni di anticipo con cui il materiale viene pubblicato
 
 GIORNI = ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"]
 MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",

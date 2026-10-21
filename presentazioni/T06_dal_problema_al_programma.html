@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="proiettore.css">
     <style>
         /* ===== TEMA PERSONALIZZATO — Sistemi di Elaborazione ===== */
 
@@ -619,6 +620,124 @@
                     </div>
                 </section>
 
+                <!-- Esempio: maggiore tra due numeri — diagramma di flusso -->
+                <section>
+                    <h2>Esempio: diagramma di flusso</h2>
+                    <p style="font-size: 0.8em; margin-bottom: 0.2em;">Problema: dati due numeri <code>a</code> e <code>b</code>, dire se <code>a</code> è maggiore di <code>b</code>.</p>
+                    <svg viewBox="0 0 720 510" style="display: block; margin: 0 auto; height: 500px;" font-family="Inter, 'Segoe UI', sans-serif" font-size="19" text-anchor="middle">
+                        <defs>
+                            <marker id="fc-freccia" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+                            </marker>
+                        </defs>
+                        <g stroke="#334155" stroke-width="2" fill="none" marker-end="url(#fc-freccia)">
+                            <line x1="360" y1="54" x2="360" y2="80"/>
+                            <line x1="360" y1="130" x2="360" y2="160"/>
+                            <polyline points="470,215 590,215 590,300"/>
+                            <polyline points="250,215 130,215 130,300"/>
+                            <polyline points="590,360 590,420 368,420" marker-end="none"/>
+                            <polyline points="130,360 130,420 352,420" marker-end="none"/>
+                            <line x1="360" y1="420" x2="360" y2="451"/>
+                        </g>
+                        <ellipse cx="360" cy="30" rx="80" ry="24" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
+                        <text x="360" y="37">Inizio</text>
+                        <polygon points="280,80 460,80 440,130 260,130" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                        <text x="360" y="112">Leggi a, b</text>
+                        <polygon points="360,160 470,215 360,270 250,215" fill="#fef3c7" stroke="#92400e" stroke-width="2"/>
+                        <text x="360" y="222" font-weight="600">a &gt; b ?</text>
+                        <text x="505" y="205" fill="#166534" font-weight="600">sì</text>
+                        <text x="215" y="205" fill="#991b1b" font-weight="600">no</text>
+                        <polygon points="490,300 710,300 690,360 470,360" fill="#dcfce7" stroke="#166534" stroke-width="2"/>
+                        <text x="590" y="326" font-size="16">Scrivi</text>
+                        <text x="590" y="348" font-size="16">"a è maggiore di b"</text>
+                        <polygon points="30,300 250,300 230,360 10,360" fill="#fee2e2" stroke="#991b1b" stroke-width="2"/>
+                        <text x="130" y="326" font-size="16">Scrivi</text>
+                        <text x="130" y="348" font-size="16">"a non è maggiore di b"</text>
+                        <circle cx="360" cy="420" r="5" fill="#334155"/>
+                        <ellipse cx="360" cy="476" rx="80" ry="24" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
+                        <text x="360" y="483">Fine</text>
+                    </svg>
+                    <aside class="notes">⏱ 4' · blocco «Esempio: a maggiore di b»
+Da dire: lo stesso algoritmo lo vediamo in tre forme: diagramma, pseudocodice, Python. Si parte da Inizio, si leggono i due numeri (parallelogramma = input/output), il rombo è la decisione: una domanda con risposta sì o no. Le due strade si riuniscono prima di Fine.
+Chiedere / fare: seguire il diagramma con a = 7, b = 3 (strada del sì) e con a = 2, b = 5 (strada del no). Poi chiedere: con a = 4, b = 4 quale strada si prende? Risposta: no, perché 4 &gt; 4 è falso.</aside>
+                </section>
+
+                <!-- Esempio: pseudocodice -->
+                <section>
+                    <h2>Esempio: pseudocodice</h2>
+                    <p style="font-size: 0.8em;">Lo stesso algoritmo scritto a parole, con poche parole chiave in maiuscolo.</p>
+                    <pre><code class="language-plaintext">INIZIO
+    LEGGI a
+    LEGGI b
+    SE a &gt; b ALLORA
+        SCRIVI "a è maggiore di b"
+    ALTRIMENTI
+        SCRIVI "a non è maggiore di b"
+    FINE SE
+FINE</code></pre>
+                    <div class="fragment box box-blue">
+                        Ogni blocco del diagramma diventa una riga. Il rombo diventa <strong>SE … ALLORA … ALTRIMENTI</strong>; il rientro indica quali righe dipendono dalla condizione.
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Esempio: a maggiore di b»
+Da dire: le parole chiave (LEGGI, SCRIVI, SE, ALTRIMENTI) non hanno una sintassi fissa: l'importante è che chiunque le legga capisca cosa fare. FINE SE chiude il blocco della condizione.
+Chiedere / fare: far indicare, per ogni riga, il blocco corrispondente del diagramma della slide precedente.</aside>
+                </section>
+
+                <!-- Esempio: Python -->
+                <section>
+                    <h2>Esempio: Python</h2>
+                    <p style="font-size: 0.8em;">Lo stesso algoritmo scritto in un linguaggio che il computer può eseguire.</p>
+                    <pre><code class="language-python">a = float(input("Primo numero: "))
+b = float(input("Secondo numero: "))
+
+if a &gt; b:
+    print("a è maggiore di b")
+else:
+    print("a non è maggiore di b")</code></pre>
+                    <div class="fragment box box-green">
+                        Esecuzione con a = 7 e b = 3: stampa <code>a è maggiore di b</code>.<br>
+                        Esecuzione con a = 2 e b = 5: stampa <code>a non è maggiore di b</code>.
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Esempio: a maggiore di b»
+Da dire: input legge quello che si scrive da tastiera, come testo; float lo trasforma in un numero (anche con la virgola, che in Python si scrive col punto: 2.5). print scrive sullo schermo. I dettagli si vedono nella prossima lezione.
+Chiedere / fare: chiedere cosa stampa con a = 4 e b = 4 (a non è maggiore di b).</aside>
+                </section>
+
+                <!-- Esempio: pseudocodice e Python affiancati -->
+                <section>
+                    <h2>Pseudocodice e Python a confronto</h2>
+                    <style>
+                        .reveal .affianca { display: grid; grid-template-columns: 38% 62%; gap: 5px 12px; font-family: 'JetBrains Mono', Menlo, Consolas, monospace; font-size: 0.7em; margin-top: 0.3em; }
+                        .reveal .affianca .th { font-family: 'Inter', 'Segoe UI', sans-serif; font-weight: 600; color: var(--text-muted); font-size: 1.1em; padding: 0 0.5em; }
+                        .reveal .affianca .c { padding: 0.25em 0.6em; border-radius: 6px; white-space: pre; }
+                        .reveal .affianca .io { background: #dbeafe; }
+                        .reveal .affianca .se { background: #fef3c7; }
+                        .reveal .affianca .si { background: #dcfce7; }
+                        .reveal .affianca .no { background: #fee2e2; }
+                        .reveal .affianca .ff { background: #f1f5f9; }
+                        .reveal .affianca .nulla { background: #f1f5f9; color: var(--text-muted); font-family: 'Inter', 'Segoe UI', sans-serif; font-style: italic; }
+                        .reveal .affianca b { color: var(--accent-dark); }
+                    </style>
+                    <div class="affianca">
+                        <div class="th">Pseudocodice</div><div class="th">Python</div>
+                        <div class="c ff"><b>INIZIO</b></div><div class="c nulla">la prima riga del file</div>
+                        <div class="c io">    <b>LEGGI</b> a</div><div class="c io">a = float(<b>input</b>("Primo numero: "))</div>
+                        <div class="c io">    <b>LEGGI</b> b</div><div class="c io">b = float(<b>input</b>("Secondo numero: "))</div>
+                        <div class="c se">    <b>SE</b> a &gt; b <b>ALLORA</b></div><div class="c se"><b>if</b> a &gt; b<b>:</b></div>
+                        <div class="c si">        <b>SCRIVI</b> "a è maggiore di b"</div><div class="c si">    <b>print</b>("a è maggiore di b")</div>
+                        <div class="c no">    <b>ALTRIMENTI</b></div><div class="c no"><b>else:</b></div>
+                        <div class="c no">        <b>SCRIVI</b> "a non è maggiore di b"</div><div class="c no">    <b>print</b>("a non è maggiore di b")</div>
+                        <div class="c ff">    <b>FINE SE</b></div><div class="c nulla">nessuna riga: il blocco finisce quando finisce il rientro</div>
+                        <div class="c ff"><b>FINE</b></div><div class="c nulla">l'ultima riga del file</div>
+                    </div>
+                    <div class="fragment box box-yellow" style="font-size: 0.75em;">
+                        Stesse righe, stesso ordine, stesso rientro. Cambiano le parole: LEGGI &rarr; <code>input</code>, SCRIVI &rarr; <code>print</code>, SE … ALLORA &rarr; <code>if …:</code>, ALTRIMENTI &rarr; <code>else:</code>.
+                    </div>
+                    <aside class="notes">⏱ 4' · blocco «Esempio: a maggiore di b»
+Da dire: i colori sono gli stessi del diagramma di flusso: azzurro input, giallo decisione, verde strada del sì, rosso strada del no. In Python il rientro (4 spazi) è obbligatorio: è quello che indica quali istruzioni stanno dentro l'if e quali dentro l'else. I due punti alla fine di if ed else prendono il posto di ALLORA.
+Chiedere / fare: chiedere cosa succede se togliamo il rientro prima del primo print (errore: IndentationError). Poi mostrare la demo visiva: inserire a e b e seguire il percorso evidenziato nel diagramma.</aside>
+                </section>
+
                 <!-- Top-down vs bottom-up -->
                 <section>
                     <h2>Top-down vs bottom-up</h2>
@@ -1022,6 +1141,7 @@ XOR EAX, EAX; XOR ECX, ECX; somma: ADD EAX, [ESI+ECX*4]; INC ECX; ...</code></pr
     <script src="vendor/reveal.js"></script>
     <script src="vendor/plugin/highlight/highlight.js"></script>
     <script src="vendor/plugin/notes/notes.js"></script>
+    <script src="proiettore.js"></script>
     <script>
         Reveal.initialize({
             hash: true,

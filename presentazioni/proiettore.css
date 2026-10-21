@@ -1,0 +1,152 @@
+/* ===== MODALITÀ PROIETTORE =====
+   Attiva con il pulsante in alto a destra o con il tasto C (vedi proiettore.js).
+   Il proiettore schiarisce gli sfondi scuri e "mangia" i grigi chiari:
+   il codice passa su fondo chiaro con colori scuri e saturi, i testi
+   secondari diventano più scuri, bordi e riquadri più marcati. */
+
+html.proiettore {
+    --text: #0f172a;
+    --text-muted: #334155;
+    --accent: #1d4ed8;
+    --accent-dark: #1e3a8a;
+}
+
+/* --- Codice: fondo chiaro, testo scuro --- */
+html.proiettore .reveal pre {
+    box-shadow: none;
+    border: 2px solid #334155;
+}
+
+html.proiettore .reveal pre code,
+html.proiettore .reveal pre code.hljs {
+    background: #ffffff;
+    color: #0f172a;
+    font-weight: 500;
+}
+
+html.proiettore .reveal .hljs-comment,
+html.proiettore .reveal .hljs-quote {
+    color: #166534;
+    font-style: normal;
+    font-weight: 600;
+}
+
+html.proiettore .reveal .hljs-keyword,
+html.proiettore .reveal .hljs-selector-tag,
+html.proiettore .reveal .hljs-tag,
+html.proiettore .reveal .hljs-name {
+    color: #1d4ed8;
+    font-weight: 700;
+}
+
+html.proiettore .reveal .hljs-literal,
+html.proiettore .reveal .hljs-built_in,
+html.proiettore .reveal .hljs-builtin-name,
+html.proiettore .reveal .hljs-type {
+    color: #6b21a8;
+    font-weight: 600;
+}
+
+html.proiettore .reveal .hljs-string,
+html.proiettore .reveal .hljs-regexp,
+html.proiettore .reveal .hljs-subst {
+    color: #b91c1c;
+}
+
+html.proiettore .reveal .hljs-number,
+html.proiettore .reveal .hljs-symbol,
+html.proiettore .reveal .hljs-bullet {
+    color: #9a3412;
+    font-weight: 600;
+}
+
+html.proiettore .reveal .hljs-title,
+html.proiettore .reveal .hljs-section,
+html.proiettore .reveal .hljs-class .hljs-title,
+html.proiettore .reveal .hljs-title.function_,
+html.proiettore .reveal .hljs-title.class_ {
+    color: #0f766e;
+    font-weight: 700;
+}
+
+html.proiettore .reveal .hljs-params,
+html.proiettore .reveal .hljs-variable,
+html.proiettore .reveal .hljs-attr,
+html.proiettore .reveal .hljs-attribute,
+html.proiettore .reveal .hljs-property {
+    color: #0f172a;
+}
+
+html.proiettore .reveal .hljs-meta,
+html.proiettore .reveal .hljs-meta .hljs-keyword,
+html.proiettore .reveal .hljs-doctag {
+    color: #92400e;
+}
+
+html.proiettore .reveal .hljs-emphasis { font-style: normal; }
+
+/* righe evidenziate con data-line-numbers: le altre restano leggibili */
+html.proiettore .reveal .hljs.has-highlights tr:not(.highlight-line) {
+    opacity: 0.55;
+}
+
+/* codice in linea */
+html.proiettore .reveal code:not(pre code) {
+    background: #bfdbfe;
+    color: #1e3a8a;
+    font-weight: 600;
+}
+
+/* --- Testi secondari --- */
+html.proiettore .reveal em { color: #334155; }
+html.proiettore .reveal .slide-footer { color: #334155; }
+
+/* --- Riquadri, tabelle, schemi: bordi più marcati --- */
+html.proiettore .reveal .box { border-left-width: 8px; }
+html.proiettore .reveal .box-blue { background: #dbeafe; }
+html.proiettore .reveal .box-green { background: #dcfce7; }
+html.proiettore .reveal .box-yellow { background: #fef3c7; }
+html.proiettore .reveal .box-red { background: #fee2e2; }
+
+html.proiettore .reveal table td { border-bottom: 2px solid #94a3b8; }
+html.proiettore .reveal table tr:nth-child(even) td { background: #e2e8f0; }
+
+html.proiettore .reveal .diagram {
+    border: 2px solid #334155;
+    color: #0f172a;
+}
+
+html.proiettore .reveal .compare .good,
+html.proiettore .reveal .compare .bad { border-width: 3px; }
+
+/* --- Pulsante --- */
+.pulsante-proiettore {
+    position: fixed;
+    top: 10px;
+    right: 12px;
+    z-index: 40;
+    font: 600 13px/1 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: #334155;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 6px 11px;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.pulsante-proiettore:hover,
+.pulsante-proiettore:focus-visible { opacity: 1; }
+
+html.proiettore .pulsante-proiettore {
+    color: #ffffff;
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.print-pdf .pulsante-proiettore { display: none; }
+
+@media print {
+    .pulsante-proiettore { display: none; }
+}
