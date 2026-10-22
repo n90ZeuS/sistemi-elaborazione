@@ -206,218 +206,134 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <pre><code><span class="cm"># T09 — Cicli</span>
 <span class="cm"># Esercizi per la lezione frontale 9</span>
 <span class="cm"># Fattoriale, somma pari, numeri primi, tavola pitagorica, FizzBuzz, indovina il numero</span>
+<span class="cm">#</span>
+<span class="cm"># Ogni esercizio parte da dati scritti nel codice: cambiate i valori</span>
+<span class="cm"># e rilanciate il programma per provare casi diversi.</span>
+<span class="cm"># Accanto a ogni risultato trovate, in commento, il valore atteso.</span>
 
 <span class="cm"># =============================================================================</span>
 <span class="cm"># Esercizio 1: Fattoriale</span>
-<span class="cm"># Calcolare n! sia con un ciclo for sia ricorsivamente.</span>
+<span class="cm"># Calcolare n! = 1 * 2 * ... * n sia con for sia con while (pattern accumulatore).</span>
+<span class="cm"># Per definizione 0! = 1.</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Fattoriale ---&quot;</span>)
 
+n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
 
-<span class="kw">def</span> <span class="fn">fattoriale_iterativo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-    <span class="st">&quot;&quot;&quot;Calcola n! con un ciclo for (pattern accumulatore).&quot;&quot;&quot;</span>
-    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
-        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il fattoriale non e&#x27; definito per numeri negativi&quot;</span>)
-    risultato: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+<span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">&quot;  Errore: il fattoriale non e&#x27; definito per numeri negativi&quot;</span>)
+<span class="kw">else</span>:
+    <span class="cm"># Versione con for</span>
+    fattoriale_for: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
     <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, n <span class="op">+</span> <span class="mi">1</span>):
-        risultato <span class="op">*</span><span class="op">=</span> i
-    <span class="kw">return</span> risultato
+        fattoriale_for <span class="op">*</span><span class="op">=</span> i
 
+    <span class="cm"># Versione con while: stesso risultato, contatore gestito a mano</span>
+    fattoriale_while: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+    k: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
+    <span class="kw">while</span> k <span class="op">&lt;</span><span class="op">=</span> n:
+        fattoriale_while <span class="op">*</span><span class="op">=</span> k
+        k <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
 
-<span class="kw">def</span> <span class="fn">fattoriale_ricorsivo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-    <span class="st">&quot;&quot;&quot;Calcola n! ricorsivamente (caso base: 0! = 1).&quot;&quot;&quot;</span>
-    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">0</span>:
-        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Il fattoriale non e&#x27; definito per numeri negativi&quot;</span>)
-    <span class="kw">if</span> n <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>:
-        <span class="kw">return</span> <span class="mi">1</span>
-    <span class="kw">return</span> n <span class="op">*</span> fattoriale_ricorsivo(n <span class="op">-</span> <span class="mi">1</span>)
-
-
-<span class="cm"># Test</span>
-<span class="kw">assert</span> fattoriale_iterativo(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> fattoriale_iterativo(<span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> fattoriale_iterativo(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">120</span>
-<span class="kw">assert</span> fattoriale_iterativo(<span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3628800</span>
-
-<span class="kw">assert</span> fattoriale_ricorsivo(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> fattoriale_ricorsivo(<span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">120</span>
-<span class="kw">assert</span> fattoriale_ricorsivo(<span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3628800</span>
-
-<span class="cm"># Verifica che le due versioni diano lo stesso risultato</span>
-<span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">15</span>):
-    <span class="kw">assert</span> fattoriale_iterativo(n) <span class="op">=</span><span class="op">=</span> fattoriale_ricorsivo(n)
-
-<span class="nb">print</span>(<span class="st">f&quot;  5!  = {fattoriale_iterativo(5)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  10! = {fattoriale_iterativo(10)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  15! = {fattoriale_iterativo(15)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 1 superato!\n&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  {n}! con for   = {fattoriale_for}&quot;</span>)    <span class="cm"># atteso: 3628800</span>
+    <span class="nb">print</span>(<span class="st">f&quot;  {n}! con while = {fattoriale_while}&quot;</span>)  <span class="cm"># atteso: 3628800</span>
+<span class="cm"># Altri casi da provare: 0 -&gt; 1, 5 -&gt; 120, 15 -&gt; 1307674368000</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
 <span class="cm"># Esercizio 2: Somma dei numeri pari</span>
-<span class="cm"># Somma di tutti i numeri pari in un intervallo [a, b].</span>
+<span class="cm"># Somma di tutti i numeri pari nell&#x27;intervallo [inizio, fine].</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Somma dei numeri pari ---&quot;</span>)
 
+inizio: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+fine: <span class="nb">int</span> <span class="op">=</span> <span class="mi">100</span>
 
-<span class="kw">def</span> <span class="fn">somma_pari</span>(<span class="fn">a</span>: <span class="nb">int</span>, b: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-    <span class="st">&quot;&quot;&quot;Somma tutti i numeri pari nell&#x27;intervallo [a, b] inclusi.&quot;&quot;&quot;</span>
-    totale: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-    <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(a, b <span class="op">+</span> <span class="mi">1</span>):
-        <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            totale <span class="op">+</span><span class="op">=</span> n
-    <span class="kw">return</span> totale
+<span class="cm"># Versione 1: scorro tutti i numeri e tengo solo i pari (pattern filtro)</span>
+somma: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> numero <span class="kw">in</span> <span class="nb">range</span>(inizio, fine <span class="op">+</span> <span class="mi">1</span>):
+    <span class="kw">if</span> numero <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        somma <span class="op">+</span><span class="op">=</span> numero
 
+<span class="cm"># Versione 2: parto dal primo pari e salto di 2 in 2</span>
+primo_pari: <span class="nb">int</span> <span class="op">=</span> inizio
+<span class="kw">if</span> primo_pari <span class="op">%</span> <span class="mi">2</span> <span class="op">!</span><span class="op">=</span> <span class="mi">0</span>:
+    primo_pari <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+somma_passo: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> numero <span class="kw">in</span> <span class="nb">range</span>(primo_pari, fine <span class="op">+</span> <span class="mi">1</span>, <span class="mi">2</span>):
+    somma_passo <span class="op">+</span><span class="op">=</span> numero
 
-<span class="kw">def</span> <span class="fn">somma_pari_formula</span>(<span class="fn">a</span>: <span class="nb">int</span>, b: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-    <span class="st">&quot;&quot;&quot;Somma dei pari con formula chiusa (per verifica).&quot;&quot;&quot;</span>
-    <span class="cm"># Il primo pari &gt;= a</span>
-    primo: <span class="nb">int</span> <span class="op">=</span> a <span class="kw">if</span> a <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">else</span> a <span class="op">+</span> <span class="mi">1</span>
-    <span class="cm"># L&#x27;ultimo pari &lt;= b</span>
-    ultimo: <span class="nb">int</span> <span class="op">=</span> b <span class="kw">if</span> b <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">else</span> b <span class="op">-</span> <span class="mi">1</span>
-    <span class="kw">if</span> primo <span class="op">&gt;</span> ultimo:
-        <span class="kw">return</span> <span class="mi">0</span>
-    <span class="cm"># Numero di pari nell&#x27;intervallo</span>
-    n_pari: <span class="nb">int</span> <span class="op">=</span> (ultimo <span class="op">-</span> primo) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span> <span class="op">+</span> <span class="mi">1</span>
-    <span class="cm"># Formula della somma aritmetica</span>
-    <span class="kw">return</span> n_pari <span class="op">*</span> (primo <span class="op">+</span> ultimo) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
-
-
-<span class="cm"># Test</span>
-<span class="kw">assert</span> somma_pari(<span class="mi">1</span>, <span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span> <span class="op">+</span> <span class="mi">4</span> <span class="op">+</span> <span class="mi">6</span> <span class="op">+</span> <span class="mi">8</span> <span class="op">+</span> <span class="mi">10</span>  <span class="cm"># = 30</span>
-<span class="kw">assert</span> somma_pari(<span class="mi">1</span>, <span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>
-<span class="kw">assert</span> somma_pari(<span class="mi">1</span>, <span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>    <span class="cm"># Nessun pari</span>
-<span class="kw">assert</span> somma_pari(<span class="mi">2</span>, <span class="mi">2</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>    <span class="cm"># Un solo pari</span>
-<span class="kw">assert</span> somma_pari(<span class="mi">1</span>, <span class="mi">100</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">2550</span>
-
-<span class="cm"># Verifica con formula</span>
-<span class="kw">for</span> a_test, b_test <span class="kw">in</span> [(<span class="mi">1</span>, <span class="mi">10</span>), (<span class="mi">5</span>, <span class="mi">50</span>), (<span class="mi">1</span>, <span class="mi">100</span>), (<span class="mi">3</span>, <span class="mi">3</span>), (<span class="mi">0</span>, <span class="mi">0</span>)]:
-    <span class="kw">assert</span> somma_pari(a_test, b_test) <span class="op">=</span><span class="op">=</span> somma_pari_formula(a_test, b_test)
-
-<span class="nb">print</span>(<span class="st">f&quot;  Somma pari [1, 10]  = {somma_pari(1, 10)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Somma pari [1, 100] = {somma_pari(1, 100)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 2 superato!\n&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Somma pari in [{inizio}, {fine}]: {somma}&quot;</span>)     <span class="cm"># atteso: 2550</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Con range a passo 2:        {somma_passo}&quot;</span>)      <span class="cm"># atteso: 2550</span>
+<span class="cm"># Altri casi da provare: [1, 10] -&gt; 30, [1, 1] -&gt; 0, [2, 2] -&gt; 2</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
-<span class="cm"># Esercizio 3: Verifica numeri primi</span>
-<span class="cm"># Determinare se un numero e&#x27; primo e trovare i primi N numeri primi.</span>
+<span class="cm"># Esercizio 3: Numeri primi</span>
+<span class="cm"># 3a) Stabilire se un numero e&#x27; primo (pattern ricerca: trovato + break).</span>
+<span class="cm"># 3b) Trovare tutti i primi fino a un limite (cicli annidati).</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Numeri primi ---&quot;</span>)
 
+<span class="cm"># 3a) Un numero e&#x27; primo se e&#x27; &gt;= 2 e non ha divisori tra 2 e la sua radice</span>
+candidato: <span class="nb">int</span> <span class="op">=</span> <span class="mi">97</span>
 
-<span class="kw">def</span> <span class="fn">is_primo</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
-    <span class="st">&quot;&quot;&quot;Verifica se n e&#x27; un numero primo.&quot;&quot;&quot;</span>
-    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">2</span>:
-        <span class="kw">return</span> <span class="kw">False</span>
-    <span class="kw">if</span> n <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>:
-        <span class="kw">return</span> <span class="kw">True</span>
-    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-        <span class="kw">return</span> <span class="kw">False</span>
-    <span class="cm"># Basta controllare i divisori dispari fino a sqrt(n)</span>
-    d: <span class="nb">int</span> <span class="op">=</span> <span class="mi">3</span>
-    <span class="kw">while</span> d <span class="op">*</span> d <span class="op">&lt;</span><span class="op">=</span> n:
-        <span class="kw">if</span> n <span class="op">%</span> d <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            <span class="kw">return</span> <span class="kw">False</span>
-        d <span class="op">+</span><span class="op">=</span> <span class="mi">2</span>
-    <span class="kw">return</span> <span class="kw">True</span>
+primo: <span class="nb">bool</span> <span class="op">=</span> candidato <span class="op">&gt;</span><span class="op">=</span> <span class="mi">2</span>
+d: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
+<span class="kw">while</span> d <span class="op">*</span> d <span class="op">&lt;</span><span class="op">=</span> candidato:
+    <span class="kw">if</span> candidato <span class="op">%</span> d <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        primo <span class="op">=</span> <span class="kw">False</span>
+        <span class="kw">break</span>               <span class="cm"># trovato un divisore: inutile continuare</span>
+    d <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
 
+<span class="nb">print</span>(<span class="st">f&quot;  {candidato} e&#x27; primo? {primo}&quot;</span>)  <span class="cm"># atteso: True</span>
+<span class="cm"># Altri casi da provare: 0, 1 -&gt; False   2, 17 -&gt; True   18, 100 -&gt; False</span>
 
-<span class="kw">def</span> <span class="fn">primi_n_numeri</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;Restituisce i primi n numeri primi.&quot;&quot;&quot;</span>
-    primi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
-    candidato: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
-    <span class="kw">while</span> <span class="nb">len</span>(primi) <span class="op">&lt;</span> n:
-        <span class="kw">if</span> is_primo(candidato):
-            primi.append(candidato)
-        candidato <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-    <span class="kw">return</span> primi
+<span class="cm"># 3b) Stesso controllo, ripetuto per ogni numero fino al limite</span>
+limite: <span class="nb">int</span> <span class="op">=</span> <span class="mi">50</span>
+primi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">for</span> numero <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, limite <span class="op">+</span> <span class="mi">1</span>):
+    e_primo: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+    divisore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
+    <span class="kw">while</span> divisore <span class="op">*</span> divisore <span class="op">&lt;</span><span class="op">=</span> numero:
+        <span class="kw">if</span> numero <span class="op">%</span> divisore <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            e_primo <span class="op">=</span> <span class="kw">False</span>
+            <span class="kw">break</span>
+        divisore <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">if</span> e_primo:
+        primi.append(numero)
 
-
-<span class="kw">def</span> <span class="fn">primi_fino_a</span>(<span class="fn">limite</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;Restituisce tutti i numeri primi fino a &#x27;limite&#x27; incluso.&quot;&quot;&quot;</span>
-    primi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
-    <span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, limite <span class="op">+</span> <span class="mi">1</span>):
-        <span class="kw">if</span> is_primo(n):
-            primi.append(n)
-    <span class="kw">return</span> primi
-
-
-<span class="cm"># Test is_primo</span>
-<span class="kw">assert</span> is_primo(<span class="mi">0</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> is_primo(<span class="mi">1</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> is_primo(<span class="mi">2</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> is_primo(<span class="mi">3</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> is_primo(<span class="mi">4</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> is_primo(<span class="mi">17</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> is_primo(<span class="mi">18</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> is_primo(<span class="mi">97</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> is_primo(<span class="mi">100</span>) <span class="kw">is</span> <span class="kw">False</span>
-
-<span class="cm"># Test primi_n_numeri</span>
-primi_10: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> primi_n_numeri(<span class="mi">10</span>)
-<span class="kw">assert</span> primi_10 <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">11</span>, <span class="mi">13</span>, <span class="mi">17</span>, <span class="mi">19</span>, <span class="mi">23</span>, <span class="mi">29</span>]
-
-<span class="cm"># Test primi_fino_a</span>
-<span class="kw">assert</span> primi_fino_a(<span class="mi">20</span>) <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">11</span>, <span class="mi">13</span>, <span class="mi">17</span>, <span class="mi">19</span>]
-<span class="kw">assert</span> <span class="nb">len</span>(primi_fino_a(<span class="mi">100</span>)) <span class="op">=</span><span class="op">=</span> <span class="mi">25</span>  <span class="cm"># Ci sono 25 primi sotto 100</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;  Primi 10 numeri primi: {primi_10}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Primi fino a 50: {primi_fino_a(50)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Quanti primi &lt; 100: {len(primi_fino_a(100))}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 3 superato!\n&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Primi fino a {limite}: {primi}&quot;</span>)
+<span class="cm"># atteso: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Quanti sono: {len(primi)}&quot;</span>)  <span class="cm"># atteso: 15 (con limite 100: 25)</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
 <span class="cm"># Esercizio 4: Tavola pitagorica</span>
-<span class="cm"># Generare la tavola pitagorica NxN come matrice (lista di liste).</span>
+<span class="cm"># Stampare la tavola pitagorica N x N con intestazione (cicli annidati).</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Tavola pitagorica ---&quot;</span>)
 
+lato: <span class="nb">int</span> <span class="op">=</span> <span class="mi">7</span>
 
-<span class="kw">def</span> <span class="fn">tavola_pitagorica</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]]:
-    <span class="st">&quot;&quot;&quot;Genera la tavola pitagorica NxN (da 1 a n).&quot;&quot;&quot;</span>
-    tavola: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> []
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>):
-        riga: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
-        <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>):
-            riga.append(i <span class="op">*</span> j)
-        tavola.append(riga)
-    <span class="kw">return</span> tavola
+<span class="cm"># Intestazione</span>
+<span class="nb">print</span>(<span class="st">&quot;    &quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+<span class="kw">for</span> colonna <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, lato <span class="op">+</span> <span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{colonna:&gt;4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+<span class="nb">print</span>()
+<span class="nb">print</span>(<span class="st">&quot;    &quot;</span> <span class="op">+</span> <span class="st">&quot;-&quot;</span> <span class="op">*</span> (<span class="mi">4</span> <span class="op">*</span> lato))
 
-
-<span class="kw">def</span> <span class="fn">stampa_tavola</span>(<span class="fn">tavola</span>: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-    <span class="st">&quot;&quot;&quot;Stampa la tavola pitagorica in formato tabellare.&quot;&quot;&quot;</span>
-    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(tavola)
-    <span class="cm"># Intestazione</span>
-    <span class="nb">print</span>(<span class="st">&quot;    &quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>):
-        <span class="nb">print</span>(<span class="st">f&quot;{j:&gt;4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+<span class="cm"># Righe</span>
+<span class="kw">for</span> riga <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, lato <span class="op">+</span> <span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;  {riga:&gt;2}|&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+    <span class="kw">for</span> colonna <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, lato <span class="op">+</span> <span class="mi">1</span>):
+        <span class="nb">print</span>(<span class="st">f&quot;{riga * colonna:&gt;4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
     <span class="nb">print</span>()
-    <span class="nb">print</span>(<span class="st">&quot;    &quot;</span> <span class="op">+</span> <span class="st">&quot;-&quot;</span> <span class="op">*</span> (<span class="mi">4</span> <span class="op">*</span> n))
-    <span class="cm"># Righe</span>
-    <span class="kw">for</span> i, riga <span class="kw">in</span> <span class="nb">enumerate</span>(tavola, start<span class="op">=</span><span class="mi">1</span>):
-        <span class="nb">print</span>(<span class="st">f&quot;  {i:&gt;2}|&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
-        <span class="kw">for</span> val <span class="kw">in</span> riga:
-            <span class="nb">print</span>(<span class="st">f&quot;{val:&gt;4}&quot;</span>, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
-        <span class="nb">print</span>()
-
-
-<span class="cm"># Test</span>
-tavola_3: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> tavola_pitagorica(<span class="mi">3</span>)
-<span class="kw">assert</span> tavola_3 <span class="op">=</span><span class="op">=</span> [
-    [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>],
-    [<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>],
-    [<span class="mi">3</span>, <span class="mi">6</span>, <span class="mi">9</span>],
-]
-
-tavola_5: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> tavola_pitagorica(<span class="mi">5</span>)
-<span class="kw">assert</span> tavola_5[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
-<span class="kw">assert</span> tavola_5[<span class="mi">4</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">5</span>, <span class="mi">10</span>, <span class="mi">15</span>, <span class="mi">20</span>, <span class="mi">25</span>]
-<span class="kw">assert</span> tavola_5[<span class="mi">2</span>][<span class="mi">3</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">12</span>  <span class="cm"># 3 * 4</span>
-
-stampa_tavola(tavola_pitagorica(<span class="mi">7</span>))
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 4 superato!\n&quot;</span>)
+<span class="cm"># atteso: l&#x27;ultima riga termina con 49 (7 * 7)</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
@@ -426,125 +342,69 @@ stampa_tavola(tavola_pitagorica(<span class="mi">7</span>))
 <span class="cm">#   - multiplo di 3 e 5 → &quot;FizzBuzz&quot;</span>
 <span class="cm">#   - multiplo di 3     → &quot;Fizz&quot;</span>
 <span class="cm">#   - multiplo di 5     → &quot;Buzz&quot;</span>
-<span class="cm">#   - altrimenti        → il numero stesso (come stringa)</span>
+<span class="cm">#   - altrimenti        → il numero stesso</span>
+<span class="cm"># Contare anche quante volte compare ciascuna parola (pattern contatore).</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: FizzBuzz ---&quot;</span>)
 
+limite_fb: <span class="nb">int</span> <span class="op">=</span> <span class="mi">15</span>
+n_fizz: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+n_buzz: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+n_fizzbuzz: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
 
-<span class="kw">def</span> <span class="fn">fizzbuzz</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
-    <span class="st">&quot;&quot;&quot;Genera la sequenza FizzBuzz da 1 a n.&quot;&quot;&quot;</span>
-    risultato: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>):
-        <span class="kw">if</span> i <span class="op">%</span> <span class="mi">15</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:  <span class="cm"># Multiplo di 3 E 5</span>
-            risultato.append(<span class="st">&quot;FizzBuzz&quot;</span>)
-        <span class="kw">elif</span> i <span class="op">%</span> <span class="mi">3</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            risultato.append(<span class="st">&quot;Fizz&quot;</span>)
-        <span class="kw">elif</span> i <span class="op">%</span> <span class="mi">5</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            risultato.append(<span class="st">&quot;Buzz&quot;</span>)
-        <span class="kw">else</span>:
-            risultato.append(<span class="nb">str</span>(i))
-    <span class="kw">return</span> risultato
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, limite_fb <span class="op">+</span> <span class="mi">1</span>):
+    <span class="kw">if</span> i <span class="op">%</span> <span class="mi">15</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:  <span class="cm"># multiplo di 3 E di 5: va controllato per primo</span>
+        <span class="nb">print</span>(<span class="st">&quot;FizzBuzz&quot;</span>, end<span class="op">=</span><span class="st">&quot; &quot;</span>)
+        n_fizzbuzz <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> i <span class="op">%</span> <span class="mi">3</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Fizz&quot;</span>, end<span class="op">=</span><span class="st">&quot; &quot;</span>)
+        n_fizz <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> i <span class="op">%</span> <span class="mi">5</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Buzz&quot;</span>, end<span class="op">=</span><span class="st">&quot; &quot;</span>)
+        n_buzz <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">else</span>:
+        <span class="nb">print</span>(i, end<span class="op">=</span><span class="st">&quot; &quot;</span>)
+<span class="nb">print</span>()
 
-
-<span class="cm"># Test</span>
-fb_15: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> fizzbuzz(<span class="mi">15</span>)
-<span class="kw">assert</span> fb_15[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;1&quot;</span>
-<span class="kw">assert</span> fb_15[<span class="mi">2</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Fizz&quot;</span>       <span class="cm"># 3</span>
-<span class="kw">assert</span> fb_15[<span class="mi">4</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Buzz&quot;</span>       <span class="cm"># 5</span>
-<span class="kw">assert</span> fb_15[<span class="mi">5</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Fizz&quot;</span>       <span class="cm"># 6</span>
-<span class="kw">assert</span> fb_15[<span class="mi">9</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Buzz&quot;</span>       <span class="cm"># 10</span>
-<span class="kw">assert</span> fb_15[<span class="mi">14</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;FizzBuzz&quot;</span>  <span class="cm"># 15</span>
-
-<span class="cm"># Contiamo i vari tipi</span>
-fb_100: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> fizzbuzz(<span class="mi">100</span>)
-n_fizz: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> x <span class="kw">in</span> fb_100 <span class="kw">if</span> x <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Fizz&quot;</span>)
-n_buzz: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> x <span class="kw">in</span> fb_100 <span class="kw">if</span> x <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Buzz&quot;</span>)
-n_fizzbuzz: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> x <span class="kw">in</span> fb_100 <span class="kw">if</span> x <span class="op">=</span><span class="op">=</span> <span class="st">&quot;FizzBuzz&quot;</span>)
-n_numeri: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(<span class="mi">1</span> <span class="kw">for</span> x <span class="kw">in</span> fb_100 <span class="kw">if</span> x <span class="kw">not</span> <span class="kw">in</span> (<span class="st">&quot;Fizz&quot;</span>, <span class="st">&quot;Buzz&quot;</span>, <span class="st">&quot;FizzBuzz&quot;</span>))
-
-<span class="kw">assert</span> n_fizz <span class="op">+</span> n_buzz <span class="op">+</span> n_fizzbuzz <span class="op">+</span> n_numeri <span class="op">=</span><span class="op">=</span> <span class="mi">100</span>
-<span class="kw">assert</span> n_fizzbuzz <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>   <span class="cm"># 15, 30, 45, 60, 75, 90</span>
-<span class="kw">assert</span> n_fizz <span class="op">=</span><span class="op">=</span> <span class="mi">27</span>      <span class="cm"># Multipli di 3 non di 5: 33 - 6 = 27</span>
-<span class="kw">assert</span> n_buzz <span class="op">=</span><span class="op">=</span> <span class="mi">14</span>       <span class="cm"># Multipli di 5 non di 3: 20 - 6 = 14</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;  FizzBuzz(15): {fb_15}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Su 100: Fizz={n_fizz}, Buzz={n_buzz}, FizzBuzz={n_fizzbuzz}, numeri={n_numeri}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 5 superato!\n&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Fizz={n_fizz}, Buzz={n_buzz}, FizzBuzz={n_fizzbuzz}&quot;</span>)
+<span class="cm"># atteso: 1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz</span>
+<span class="cm">#         Fizz=4, Buzz=2, FizzBuzz=1</span>
+<span class="cm"># Con limite_fb = 100: Fizz=27, Buzz=14, FizzBuzz=6</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
 <span class="cm"># Esercizio 6: Simulazione &quot;Indovina il numero&quot;</span>
-<span class="cm"># Simula un gioco in cui un algoritmo cerca di indovinare un numero</span>
-<span class="cm"># usando la ricerca binaria (senza input dell&#x27;utente).</span>
+<span class="cm"># Il programma indovina un numero segreto con la ricerca binaria:</span>
+<span class="cm"># prova sempre il valore a meta&#x27; dell&#x27;intervallo e scarta la meta&#x27; sbagliata.</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 6: Indovina il numero (simulazione) ---&quot;</span>)
 
+segreto: <span class="nb">int</span> <span class="op">=</span> <span class="mi">73</span>
+basso: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+alto: <span class="nb">int</span> <span class="op">=</span> <span class="mi">100</span>
 
-<span class="kw">def</span> <span class="fn">indovina_numero</span>(
-    segreto: <span class="nb">int</span>, minimo: <span class="nb">int</span>, massimo: <span class="nb">int</span>
-) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">list</span>[<span class="nb">int</span>]]:
-    <span class="st">&quot;&quot;&quot;
-    Simula il gioco &#x27;indovina il numero&#x27; con ricerca binaria.
-    Restituisce (numero di tentativi, lista dei tentativi).
-    &quot;&quot;&quot;</span>
-    tentativi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
-    basso: <span class="nb">int</span> <span class="op">=</span> minimo
-    alto: <span class="nb">int</span> <span class="op">=</span> massimo
+tentativi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">while</span> basso <span class="op">&lt;</span><span class="op">=</span> alto:
+    tentativo: <span class="nb">int</span> <span class="op">=</span> (basso <span class="op">+</span> alto) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
+    tentativi.append(tentativo)
 
-    <span class="kw">while</span> basso <span class="op">&lt;</span><span class="op">=</span> alto:
-        tentativo: <span class="nb">int</span> <span class="op">=</span> (basso <span class="op">+</span> alto) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>
-        tentativi.append(tentativo)
+    <span class="kw">if</span> tentativo <span class="op">=</span><span class="op">=</span> segreto:
+        <span class="kw">break</span>
+    <span class="kw">elif</span> tentativo <span class="op">&lt;</span> segreto:
+        basso <span class="op">=</span> tentativo <span class="op">+</span> <span class="mi">1</span>
+    <span class="kw">else</span>:
+        alto <span class="op">=</span> tentativo <span class="op">-</span> <span class="mi">1</span>
 
-        <span class="kw">if</span> tentativo <span class="op">=</span><span class="op">=</span> segreto:
-            <span class="kw">break</span>
-        <span class="kw">elif</span> tentativo <span class="op">&lt;</span> segreto:
-            basso <span class="op">=</span> tentativo <span class="op">+</span> <span class="mi">1</span>
-        <span class="kw">else</span>:
-            alto <span class="op">=</span> tentativo <span class="op">-</span> <span class="mi">1</span>
-
-    <span class="kw">return</span> <span class="nb">len</span>(tentativi), tentativi
+<span class="nb">print</span>(<span class="st">f&quot;  Numero segreto: {segreto}, intervallo [1, 100]&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Tentativi: {tentativi}&quot;</span>)             <span class="cm"># atteso: [50, 75, 62, 68, 71, 73]</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Indovinato in {len(tentativi)} tentativi&quot;</span>)  <span class="cm"># atteso: 6</span>
+<span class="cm"># Con [1, 100] non servono mai piu&#x27; di 7 tentativi (2^7 = 128 &gt; 100).</span>
+<span class="cm"># Provate segreto = 1 o segreto = 100 e alto = 1000.</span>
+<span class="nb">print</span>()
 
 
-<span class="cm"># Test: il numero segreto e&#x27; 73, intervallo [1, 100]</span>
-n_tentativi, lista_tentativi <span class="op">=</span> indovina_numero(<span class="mi">73</span>, <span class="mi">1</span>, <span class="mi">100</span>)
-<span class="kw">assert</span> lista_tentativi[<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">73</span>  <span class="cm"># L&#x27;ultimo tentativo deve essere corretto</span>
-<span class="kw">assert</span> n_tentativi <span class="op">&lt;</span><span class="op">=</span> <span class="mi">7</span>           <span class="cm"># log2(100) ≈ 7, mai piu&#x27; di 7 tentativi</span>
-
-<span class="cm"># Test: caso estremo — indovinare 1 nell&#x27;intervallo [1, 1000]</span>
-n2, t2 <span class="op">=</span> indovina_numero(<span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">1000</span>)
-<span class="kw">assert</span> t2[<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> n2 <span class="op">&lt;</span><span class="op">=</span> <span class="mi">10</span>  <span class="cm"># log2(1000) ≈ 10</span>
-
-<span class="cm"># Test: caso medio</span>
-n3, t3 <span class="op">=</span> indovina_numero(<span class="mi">500</span>, <span class="mi">1</span>, <span class="mi">1000</span>)
-<span class="kw">assert</span> t3[<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">500</span>
-
-<span class="cm"># Simulazione con output dettagliato</span>
-segreto_test: <span class="nb">int</span> <span class="op">=</span> <span class="mi">73</span>
-n_tent, tentativi_test <span class="op">=</span> indovina_numero(segreto_test, <span class="mi">1</span>, <span class="mi">100</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Numero segreto: {segreto_test}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Intervallo: [1, 100]&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Tentativi: {tentativi_test}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Indovinato in {n_tent} tentativi&quot;</span>)
-
-<span class="cm"># Statistiche: quanti tentativi servono mediamente per [1, 100]?</span>
-totale_tentativi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-max_tentativi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-<span class="kw">for</span> numero <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">101</span>):
-    n_t, _ <span class="op">=</span> indovina_numero(numero, <span class="mi">1</span>, <span class="mi">100</span>)
-    totale_tentativi <span class="op">+</span><span class="op">=</span> n_t
-    <span class="kw">if</span> n_t <span class="op">&gt;</span> max_tentativi:
-        max_tentativi <span class="op">=</span> n_t
-
-media_tentativi: <span class="nb">float</span> <span class="op">=</span> totale_tentativi <span class="op">/</span> <span class="mi">100</span>
-<span class="kw">assert</span> max_tentativi <span class="op">&lt;</span><span class="op">=</span> <span class="mi">7</span>
-<span class="nb">print</span>(<span class="st">f&quot;\n  Statistiche su [1, 100]:&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;    Media tentativi: {media_tentativi:.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;    Max tentativi:   {max_tentativi}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 6 superato!\n&quot;</span>)
-
-
-<span class="nb">print</span>(<span class="st">&quot;Tutti gli esercizi T09 completati con successo!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi T09&quot;</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
 </body>

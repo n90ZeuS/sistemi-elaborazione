@@ -1,146 +1,81 @@
 # T08 — Operatori, I/O e condizionali
 # Esercizi per la lezione frontale 8
 # Calcolatrice, classificatore voti, anno bisestile, discriminante
+#
+# Ogni esercizio parte da dati scritti nel codice: cambiate i valori
+# e rilanciate il programma per provare casi diversi.
+# Accanto a ogni risultato trovate, in commento, il valore atteso.
 
 # =============================================================================
-# Esercizio 1: Calcolatrice con quattro operazioni
-# Implementare una funzione che esegue le quattro operazioni base
-# e gestisce la divisione per zero.
+# Esercizio 1: Calcolatrice
+# Dati due numeri e un'operazione, stampare il risultato.
+# Gestire la divisione per zero e le operazioni non riconosciute.
 # =============================================================================
 print("--- Esercizio 1: Calcolatrice ---")
 
+a: float = 10
+b: float = 3
+operazione: str = "//"
 
-def calcolatrice(a: float, b: float, operazione: str) -> float | str:
-    """
-    Esegue un'operazione aritmetica tra due numeri.
-    Restituisce il risultato come float, oppure un messaggio di errore (str)
-    in caso di operazione non valida o divisione per zero.
-    """
-    if operazione == "+":
-        risultato: float = a + b
-    elif operazione == "-":
-        risultato = a - b
-    elif operazione == "*":
-        risultato = a * b
+if operazione == "+":
+    print(f"  {a} + {b} = {a + b}")
+elif operazione == "-":
+    print(f"  {a} - {b} = {a - b}")
+elif operazione == "*":
+    print(f"  {a} * {b} = {a * b}")
+elif operazione == "**":
+    print(f"  {a} ** {b} = {a ** b}")
+elif operazione == "/" or operazione == "//" or operazione == "%":
+    # Le tre divisioni hanno lo stesso problema: b non puo' essere zero
+    if b == 0:
+        print("  Errore: divisione per zero")
     elif operazione == "/":
-        if b == 0:
-            return "Errore: divisione per zero"
-        risultato = a / b
+        print(f"  {a} / {b} = {a / b:.4f}")
     elif operazione == "//":
-        if b == 0:
-            return "Errore: divisione per zero"
-        risultato = a // b
-    elif operazione == "%":
-        if b == 0:
-            return "Errore: divisione per zero"
-        risultato = a % b
-    elif operazione == "**":
-        risultato = a ** b
+        print(f"  {a} // {b} = {a // b}")
     else:
-        return f"Errore: operazione '{operazione}' non riconosciuta"
-    return risultato
-
-
-# Test operazioni base
-assert calcolatrice(10, 3, "+") == 13
-assert calcolatrice(10, 3, "-") == 7
-assert calcolatrice(10, 3, "*") == 30
-assert abs(calcolatrice(10, 3, "/") - 3.3333333) < 1e-5
-assert calcolatrice(10, 3, "//") == 3
-assert calcolatrice(10, 3, "%") == 1
-assert calcolatrice(2, 10, "**") == 1024
-
-# Test divisione per zero
-assert calcolatrice(5, 0, "/") == "Errore: divisione per zero"
-assert calcolatrice(5, 0, "//") == "Errore: divisione per zero"
-assert calcolatrice(5, 0, "%") == "Errore: divisione per zero"
-
-# Test operazione non valida
-assert "Errore" in str(calcolatrice(5, 3, "§"))
-
-# Dimostrazione
-operazioni: list[str] = ["+", "-", "*", "/", "//", "%", "**"]
-for op in operazioni:
-    risultato = calcolatrice(10, 3, op)
-    print(f"  10 {op:>2} 3 = {risultato}")
-
-print("  Esercizio 1 superato!\n")
+        print(f"  {a} % {b} = {a % b}")
+else:
+    print(f"  Errore: operazione '{operazione}' non riconosciuta")
+# atteso: 10 // 3 = 3
+# Altri casi da provare:
+#   "/"  -> 3.3333     "%" -> 1     "**" -> 1000
+#   b = 0 con "/"      -> Errore: divisione per zero
+#   "§"                -> Errore: operazione '§' non riconosciuta
+print()
 
 
 # =============================================================================
-# Esercizio 2: Classificatore di voti con statistiche
-# Data una lista di voti, classificare ciascuno e produrre statistiche.
+# Esercizio 2: Classificatore di voti
+# Classificare un voto in trentesimi (sistema universitario italiano).
 # =============================================================================
 print("--- Esercizio 2: Classificatore di voti ---")
 
+voto: int = 24
 
-def classifica_voto(voto: int) -> str:
-    """Classifica un voto in scala 0-30 (sistema universitario italiano)."""
-    if voto < 0 or voto > 30:
-        return "Non valido"
-    elif voto < 18:
-        return "Insufficiente"
-    elif voto < 22:
-        return "Sufficiente"
-    elif voto < 26:
-        return "Discreto"
-    elif voto < 29:
-        return "Buono"
-    elif voto <= 30:
-        return "Ottimo"
-    return "Non valido"  # Non raggiungibile, ma per completezza
+giudizio: str
+if voto < 0 or voto > 30:
+    giudizio = "Non valido"
+elif voto < 18:
+    giudizio = "Insufficiente"
+elif voto < 22:
+    giudizio = "Sufficiente"
+elif voto < 26:
+    giudizio = "Discreto"
+elif voto < 29:
+    giudizio = "Buono"
+else:
+    giudizio = "Ottimo"
 
+promosso: bool = voto >= 18 and voto <= 30
 
-def statistiche_classe(voti: list[int]) -> dict[str, float | int]:
-    """Calcola statistiche aggregate di una lista di voti."""
-    validi: list[int] = [v for v in voti if 0 <= v <= 30]
-    sufficienti: list[int] = [v for v in validi if v >= 18]
-
-    n_totali: int = len(validi)
-    n_sufficienti: int = len(sufficienti)
-    media: float = sum(validi) / n_totali if n_totali > 0 else 0.0
-    tasso_promozione: float = n_sufficienti / n_totali * 100 if n_totali > 0 else 0.0
-
-    return {
-        "n_totali": n_totali,
-        "n_sufficienti": n_sufficienti,
-        "media": round(media, 2),
-        "min": min(validi),
-        "max": max(validi),
-        "tasso_promozione": round(tasso_promozione, 1),
-    }
-
-
-# Test classificazione singola
-assert classifica_voto(30) == "Ottimo"
-assert classifica_voto(28) == "Buono"
-assert classifica_voto(24) == "Discreto"
-assert classifica_voto(19) == "Sufficiente"
-assert classifica_voto(10) == "Insufficiente"
-assert classifica_voto(-1) == "Non valido"
-assert classifica_voto(31) == "Non valido"
-
-# Test statistiche
-voti_classe: list[int] = [28, 30, 18, 15, 22, 27, 30, 10, 25, 20, 19, 24]
-stats: dict[str, float | int] = statistiche_classe(voti_classe)
-
-assert stats["n_totali"] == 12
-assert stats["n_sufficienti"] == 10  # 15 e 10 sono insufficienti
-assert stats["min"] == 10
-assert stats["max"] == 30
-assert stats["media"] == 22.33
-
-print(f"  Voti: {voti_classe}")
-print(f"  Statistiche: {stats}")
-
-# Distribuzione per categoria
-categorie: dict[str, int] = {}
-for v in voti_classe:
-    cat: str = classifica_voto(v)
-    categorie[cat] = categorie.get(cat, 0) + 1
-
-print(f"  Distribuzione: {categorie}")
-print("  Esercizio 2 superato!\n")
+print(f"  Voto {voto}: {giudizio}")   # atteso: Discreto
+print(f"  Promosso? {promosso}")      # atteso: True
+# Altri casi da provare:
+#   30 -> Ottimo   28 -> Buono   19 -> Sufficiente
+#   10 -> Insufficiente, promosso False
+#   31 -> Non valido, promosso False
+print()
 
 
 # =============================================================================
@@ -151,122 +86,66 @@ print("  Esercizio 2 superato!\n")
 # =============================================================================
 print("--- Esercizio 3: Anno bisestile ---")
 
+anno: int = 1900
 
-def is_bisestile(anno: int) -> bool:
-    """Verifica se un anno e' bisestile."""
-    risultato: bool = (anno % 4 == 0) and (anno % 100 != 0 or anno % 400 == 0)
-    return risultato
+bisestile: bool = (anno % 4 == 0) and (anno % 100 != 0 or anno % 400 == 0)
 
-
-# Test casi noti
-assert is_bisestile(2000) is True    # Divisibile per 400
-assert is_bisestile(1900) is False   # Divisibile per 100 ma non per 400
-assert is_bisestile(2024) is True    # Divisibile per 4 ma non per 100
-assert is_bisestile(2023) is False   # Non divisibile per 4
-assert is_bisestile(2100) is False   # Divisibile per 100 ma non per 400
-assert is_bisestile(2400) is True    # Divisibile per 400
-assert is_bisestile(1) is False
-
-# Contare quanti anni bisestili ci sono in un secolo
-bisestili_xxi: list[int] = [a for a in range(2000, 2100) if is_bisestile(a)]
-assert len(bisestili_xxi) == 25
-assert bisestili_xxi[0] == 2000
-assert bisestili_xxi[-1] == 2096
-
-print(f"  2000 bisestile? {is_bisestile(2000)}")
-print(f"  1900 bisestile? {is_bisestile(1900)}")
-print(f"  2024 bisestile? {is_bisestile(2024)}")
-print(f"  Anni bisestili nel XXI secolo (2000-2099): {len(bisestili_xxi)}")
-print(f"  Primi 5: {bisestili_xxi[:5]}")
-print("  Esercizio 3 superato!\n")
+if bisestile:
+    print(f"  {anno} e' bisestile: febbraio ha 29 giorni")
+else:
+    print(f"  {anno} non e' bisestile: febbraio ha 28 giorni")
+# atteso: 1900 non e' bisestile (divisibile per 100 ma non per 400)
+# Altri casi da provare:
+#   2000 -> bisestile (divisibile per 400)
+#   2024 -> bisestile (divisibile per 4, non per 100)
+#   2023 -> non bisestile
+#   2100 -> non bisestile
+print()
 
 
 # =============================================================================
 # Esercizio 4: Discriminante dell'equazione quadratica
-# Data ax^2 + bx + c = 0, calcolare il discriminante e classificare le soluzioni.
+# Data ax^2 + bx + c = 0, calcolare il discriminante e le soluzioni.
 # Delta = b^2 - 4ac
+# La radice quadrata si calcola con ** 0.5
 # =============================================================================
 print("--- Esercizio 4: Discriminante equazione quadratica ---")
 
-import math
+coeff_a: float = 1
+coeff_b: float = -5
+coeff_c: float = 6
 
+print(f"  Equazione: {coeff_a}x^2 + {coeff_b}x + {coeff_c} = 0")
 
-def analizza_equazione(
-    a: float, b: float, c: float
-) -> dict[str, float | str | tuple[float, ...] | None]:
-    """
-    Analizza l'equazione ax^2 + bx + c = 0.
-    Restituisce un dizionario con il discriminante, il tipo di soluzione e le soluzioni.
-    """
-    if a == 0:
-        # Non e' un'equazione di secondo grado
-        if b == 0:
-            tipo: str = "degenere"
-            soluzioni: tuple[float, ...] | None = None
-        else:
-            tipo = "lineare"
-            soluzioni = (-c / b,)
-        return {"delta": None, "tipo": tipo, "soluzioni": soluzioni}
-
-    delta: float = b ** 2 - 4 * a * c
+if coeff_a == 0:
+    # Non e' un'equazione di secondo grado
+    if coeff_b == 0:
+        print("  Equazione degenere: nessuna incognita")
+    else:
+        x: float = -coeff_c / coeff_b
+        print(f"  Equazione lineare: x = {x}")
+else:
+    delta: float = coeff_b ** 2 - 4 * coeff_a * coeff_c
+    print(f"  Delta = {delta}")
 
     if delta > 0:
-        tipo = "due reali distinte"
-        x1: float = (-b + math.sqrt(delta)) / (2 * a)
-        x2: float = (-b - math.sqrt(delta)) / (2 * a)
-        soluzioni = (round(x1, 6), round(x2, 6))
+        x1: float = (-coeff_b + delta ** 0.5) / (2 * coeff_a)
+        x2: float = (-coeff_b - delta ** 0.5) / (2 * coeff_a)
+        print(f"  Due soluzioni reali distinte: x1 = {x1}, x2 = {x2}")
     elif delta == 0:
-        tipo = "due reali coincidenti"
-        x1 = -b / (2 * a)
-        soluzioni = (round(x1, 6),)
+        x1 = -coeff_b / (2 * coeff_a)
+        print(f"  Due soluzioni reali coincidenti: x = {x1}")
     else:
-        tipo = "complesse coniugate"
-        parte_reale: float = -b / (2 * a)
-        parte_imm: float = math.sqrt(-delta) / (2 * a)
-        # Restituiamo la rappresentazione come stringhe
-        soluzioni = None  # Le soluzioni complesse non sono float
-
-    return {"delta": round(delta, 6), "tipo": tipo, "soluzioni": soluzioni}
-
-
-# Test: x^2 - 5x + 6 = 0 → x = 2, x = 3
-r1: dict = analizza_equazione(1, -5, 6)
-assert r1["delta"] == 1.0
-assert r1["tipo"] == "due reali distinte"
-assert r1["soluzioni"] == (3.0, 2.0)
-
-# Test: x^2 - 4x + 4 = 0 → x = 2 (doppia)
-r2: dict = analizza_equazione(1, -4, 4)
-assert r2["delta"] == 0.0
-assert r2["tipo"] == "due reali coincidenti"
-assert r2["soluzioni"] == (2.0,)
-
-# Test: x^2 + 1 = 0 → soluzioni complesse
-r3: dict = analizza_equazione(1, 0, 1)
-assert r3["delta"] == -4.0
-assert r3["tipo"] == "complesse coniugate"
-
-# Test: caso lineare (a=0)
-r4: dict = analizza_equazione(0, 2, -6)
-assert r4["tipo"] == "lineare"
-assert r4["soluzioni"] == (3.0,)
-
-# Stampa risultati
-equazioni: list[tuple[float, float, float]] = [
-    (1, -5, 6),
-    (1, -4, 4),
-    (1, 0, 1),
-    (2, -7, 3),
-]
-
-for a_coeff, b_coeff, c_coeff in equazioni:
-    ris: dict = analizza_equazione(a_coeff, b_coeff, c_coeff)
-    eq_str: str = f"{a_coeff}x^2 + {b_coeff}x + {c_coeff} = 0"
-    print(f"  {eq_str:<25} delta={str(ris['delta']):>8}  → {ris['tipo']}")
-    if ris["soluzioni"]:
-        print(f"  {'':25} soluzioni: {ris['soluzioni']}")
-
-print("  Esercizio 4 superato!\n")
+        parte_reale: float = -coeff_b / (2 * coeff_a)
+        parte_immaginaria: float = (-delta) ** 0.5 / (2 * coeff_a)
+        print(f"  Soluzioni complesse coniugate: {parte_reale} ± {parte_immaginaria}i")
+# atteso: Delta = 1, x1 = 3.0, x2 = 2.0
+# Altri casi da provare:
+#   1, -4, 4  -> Delta = 0, x = 2.0
+#   1, 0, 1   -> Delta = -4, soluzioni -0.0 ± 1.0i (-0.0 e 0.0 sono lo stesso numero)
+#   2, -7, 3  -> Delta = 25, x1 = 3.0, x2 = 0.5
+#   0, 2, -6  -> lineare, x = 3.0
+print()
 
 
-print("Tutti gli esercizi T08 completati con successo!")
+print("Fine degli esercizi T08")

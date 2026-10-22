@@ -206,146 +206,81 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <pre><code><span class="cm"># T08 — Operatori, I/O e condizionali</span>
 <span class="cm"># Esercizi per la lezione frontale 8</span>
 <span class="cm"># Calcolatrice, classificatore voti, anno bisestile, discriminante</span>
+<span class="cm">#</span>
+<span class="cm"># Ogni esercizio parte da dati scritti nel codice: cambiate i valori</span>
+<span class="cm"># e rilanciate il programma per provare casi diversi.</span>
+<span class="cm"># Accanto a ogni risultato trovate, in commento, il valore atteso.</span>
 
 <span class="cm"># =============================================================================</span>
-<span class="cm"># Esercizio 1: Calcolatrice con quattro operazioni</span>
-<span class="cm"># Implementare una funzione che esegue le quattro operazioni base</span>
-<span class="cm"># e gestisce la divisione per zero.</span>
+<span class="cm"># Esercizio 1: Calcolatrice</span>
+<span class="cm"># Dati due numeri e un&#x27;operazione, stampare il risultato.</span>
+<span class="cm"># Gestire la divisione per zero e le operazioni non riconosciute.</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Calcolatrice ---&quot;</span>)
 
+a: <span class="nb">float</span> <span class="op">=</span> <span class="mi">10</span>
+b: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3</span>
+operazione: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;//&quot;</span>
 
-<span class="kw">def</span> <span class="fn">calcolatrice</span>(<span class="fn">a</span>: <span class="nb">float</span>, b: <span class="nb">float</span>, operazione: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span> <span class="op">|</span> <span class="nb">str</span>:
-    <span class="st">&quot;&quot;&quot;
-    Esegue un&#x27;operazione aritmetica tra due numeri.
-    Restituisce il risultato come float, oppure un messaggio di errore (str)
-    in caso di operazione non valida o divisione per zero.
-    &quot;&quot;&quot;</span>
-    <span class="kw">if</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;+&quot;</span>:
-        risultato: <span class="nb">float</span> <span class="op">=</span> a <span class="op">+</span> b
-    <span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;-&quot;</span>:
-        risultato <span class="op">=</span> a <span class="op">-</span> b
-    <span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;*&quot;</span>:
-        risultato <span class="op">=</span> a <span class="op">*</span> b
+<span class="kw">if</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;+&quot;</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  {a} + {b} = {a + b}&quot;</span>)
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;-&quot;</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  {a} - {b} = {a - b}&quot;</span>)
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;*&quot;</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  {a} * {b} = {a * b}&quot;</span>)
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;**&quot;</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  {a} ** {b} = {a ** b}&quot;</span>)
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;/&quot;</span> <span class="kw">or</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;//&quot;</span> <span class="kw">or</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;%&quot;</span>:
+    <span class="cm"># Le tre divisioni hanno lo stesso problema: b non puo&#x27; essere zero</span>
+    <span class="kw">if</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;  Errore: divisione per zero&quot;</span>)
     <span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;/&quot;</span>:
-        <span class="kw">if</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            <span class="kw">return</span> <span class="st">&quot;Errore: divisione per zero&quot;</span>
-        risultato <span class="op">=</span> a <span class="op">/</span> b
+        <span class="nb">print</span>(<span class="st">f&quot;  {a} / {b} = {a / b:.4f}&quot;</span>)
     <span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;//&quot;</span>:
-        <span class="kw">if</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            <span class="kw">return</span> <span class="st">&quot;Errore: divisione per zero&quot;</span>
-        risultato <span class="op">=</span> a <span class="op">/</span><span class="op">/</span> b
-    <span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;%&quot;</span>:
-        <span class="kw">if</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            <span class="kw">return</span> <span class="st">&quot;Errore: divisione per zero&quot;</span>
-        risultato <span class="op">=</span> a <span class="op">%</span> b
-    <span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;**&quot;</span>:
-        risultato <span class="op">=</span> a <span class="op">*</span><span class="op">*</span> b
+        <span class="nb">print</span>(<span class="st">f&quot;  {a} // {b} = {a // b}&quot;</span>)
     <span class="kw">else</span>:
-        <span class="kw">return</span> <span class="st">f&quot;Errore: operazione &#x27;{operazione}&#x27; non riconosciuta&quot;</span>
-    <span class="kw">return</span> risultato
-
-
-<span class="cm"># Test operazioni base</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">10</span>, <span class="mi">3</span>, <span class="st">&quot;+&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">13</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">10</span>, <span class="mi">3</span>, <span class="st">&quot;-&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">7</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">10</span>, <span class="mi">3</span>, <span class="st">&quot;*&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>
-<span class="kw">assert</span> <span class="nb">abs</span>(calcolatrice(<span class="mi">10</span>, <span class="mi">3</span>, <span class="st">&quot;/&quot;</span>) <span class="op">-</span> <span class="mi">3.3333333</span>) <span class="op">&lt;</span> <span class="mi">1e</span><span class="op">-</span><span class="mi">5</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">10</span>, <span class="mi">3</span>, <span class="st">&quot;//&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">10</span>, <span class="mi">3</span>, <span class="st">&quot;%&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">2</span>, <span class="mi">10</span>, <span class="st">&quot;**&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1024</span>
-
-<span class="cm"># Test divisione per zero</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">5</span>, <span class="mi">0</span>, <span class="st">&quot;/&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Errore: divisione per zero&quot;</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">5</span>, <span class="mi">0</span>, <span class="st">&quot;//&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Errore: divisione per zero&quot;</span>
-<span class="kw">assert</span> calcolatrice(<span class="mi">5</span>, <span class="mi">0</span>, <span class="st">&quot;%&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Errore: divisione per zero&quot;</span>
-
-<span class="cm"># Test operazione non valida</span>
-<span class="kw">assert</span> <span class="st">&quot;Errore&quot;</span> <span class="kw">in</span> <span class="nb">str</span>(calcolatrice(<span class="mi">5</span>, <span class="mi">3</span>, <span class="st">&quot;§&quot;</span>))
-
-<span class="cm"># Dimostrazione</span>
-operazioni: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;+&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;*&quot;</span>, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;//&quot;</span>, <span class="st">&quot;%&quot;</span>, <span class="st">&quot;**&quot;</span>]
-<span class="kw">for</span> op <span class="kw">in</span> operazioni:
-    risultato <span class="op">=</span> calcolatrice(<span class="mi">10</span>, <span class="mi">3</span>, op)
-    <span class="nb">print</span>(<span class="st">f&quot;  10 {op:&gt;2} 3 = {risultato}&quot;</span>)
-
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 1 superato!\n&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  {a} % {b} = {a % b}&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  Errore: operazione &#x27;{operazione}&#x27; non riconosciuta&quot;</span>)
+<span class="cm"># atteso: 10 // 3 = 3</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   &quot;/&quot;  -&gt; 3.3333     &quot;%&quot; -&gt; 1     &quot;**&quot; -&gt; 1000</span>
+<span class="cm">#   b = 0 con &quot;/&quot;      -&gt; Errore: divisione per zero</span>
+<span class="cm">#   &quot;§&quot;                -&gt; Errore: operazione &#x27;§&#x27; non riconosciuta</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
-<span class="cm"># Esercizio 2: Classificatore di voti con statistiche</span>
-<span class="cm"># Data una lista di voti, classificare ciascuno e produrre statistiche.</span>
+<span class="cm"># Esercizio 2: Classificatore di voti</span>
+<span class="cm"># Classificare un voto in trentesimi (sistema universitario italiano).</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Classificatore di voti ---&quot;</span>)
 
+voto: <span class="nb">int</span> <span class="op">=</span> <span class="mi">24</span>
 
-<span class="kw">def</span> <span class="fn">classifica_voto</span>(<span class="fn">voto</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-    <span class="st">&quot;&quot;&quot;Classifica un voto in scala 0-30 (sistema universitario italiano).&quot;&quot;&quot;</span>
-    <span class="kw">if</span> voto <span class="op">&lt;</span> <span class="mi">0</span> <span class="kw">or</span> voto <span class="op">&gt;</span> <span class="mi">30</span>:
-        <span class="kw">return</span> <span class="st">&quot;Non valido&quot;</span>
-    <span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">18</span>:
-        <span class="kw">return</span> <span class="st">&quot;Insufficiente&quot;</span>
-    <span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">22</span>:
-        <span class="kw">return</span> <span class="st">&quot;Sufficiente&quot;</span>
-    <span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">26</span>:
-        <span class="kw">return</span> <span class="st">&quot;Discreto&quot;</span>
-    <span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">29</span>:
-        <span class="kw">return</span> <span class="st">&quot;Buono&quot;</span>
-    <span class="kw">elif</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
-        <span class="kw">return</span> <span class="st">&quot;Ottimo&quot;</span>
-    <span class="kw">return</span> <span class="st">&quot;Non valido&quot;</span>  <span class="cm"># Non raggiungibile, ma per completezza</span>
+giudizio: <span class="nb">str</span>
+<span class="kw">if</span> voto <span class="op">&lt;</span> <span class="mi">0</span> <span class="kw">or</span> voto <span class="op">&gt;</span> <span class="mi">30</span>:
+    giudizio <span class="op">=</span> <span class="st">&quot;Non valido&quot;</span>
+<span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">18</span>:
+    giudizio <span class="op">=</span> <span class="st">&quot;Insufficiente&quot;</span>
+<span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">22</span>:
+    giudizio <span class="op">=</span> <span class="st">&quot;Sufficiente&quot;</span>
+<span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">26</span>:
+    giudizio <span class="op">=</span> <span class="st">&quot;Discreto&quot;</span>
+<span class="kw">elif</span> voto <span class="op">&lt;</span> <span class="mi">29</span>:
+    giudizio <span class="op">=</span> <span class="st">&quot;Buono&quot;</span>
+<span class="kw">else</span>:
+    giudizio <span class="op">=</span> <span class="st">&quot;Ottimo&quot;</span>
 
+promosso: <span class="nb">bool</span> <span class="op">=</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span> <span class="kw">and</span> voto <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>
 
-<span class="kw">def</span> <span class="fn">statistiche_classe</span>(<span class="fn">voti</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;Calcola statistiche aggregate di una lista di voti.&quot;&quot;&quot;</span>
-    validi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> <span class="mi">0</span> <span class="op">&lt;</span><span class="op">=</span> v <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>]
-    sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> validi <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
-
-    n_totali: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(validi)
-    n_sufficienti: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(sufficienti)
-    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(validi) <span class="op">/</span> n_totali <span class="kw">if</span> n_totali <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">else</span> <span class="mi">0.0</span>
-    tasso_promozione: <span class="nb">float</span> <span class="op">=</span> n_sufficienti <span class="op">/</span> n_totali <span class="op">*</span> <span class="mi">100</span> <span class="kw">if</span> n_totali <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">else</span> <span class="mi">0.0</span>
-
-    <span class="kw">return</span> {
-        <span class="st">&quot;n_totali&quot;</span>: n_totali,
-        <span class="st">&quot;n_sufficienti&quot;</span>: n_sufficienti,
-        <span class="st">&quot;media&quot;</span>: <span class="nb">round</span>(media, <span class="mi">2</span>),
-        <span class="st">&quot;min&quot;</span>: <span class="nb">min</span>(validi),
-        <span class="st">&quot;max&quot;</span>: <span class="nb">max</span>(validi),
-        <span class="st">&quot;tasso_promozione&quot;</span>: <span class="nb">round</span>(tasso_promozione, <span class="mi">1</span>),
-    }
-
-
-<span class="cm"># Test classificazione singola</span>
-<span class="kw">assert</span> classifica_voto(<span class="mi">30</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Ottimo&quot;</span>
-<span class="kw">assert</span> classifica_voto(<span class="mi">28</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Buono&quot;</span>
-<span class="kw">assert</span> classifica_voto(<span class="mi">24</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Discreto&quot;</span>
-<span class="kw">assert</span> classifica_voto(<span class="mi">19</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Sufficiente&quot;</span>
-<span class="kw">assert</span> classifica_voto(<span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Insufficiente&quot;</span>
-<span class="kw">assert</span> classifica_voto(<span class="op">-</span><span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Non valido&quot;</span>
-<span class="kw">assert</span> classifica_voto(<span class="mi">31</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Non valido&quot;</span>
-
-<span class="cm"># Test statistiche</span>
-voti_classe: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">18</span>, <span class="mi">15</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">10</span>, <span class="mi">25</span>, <span class="mi">20</span>, <span class="mi">19</span>, <span class="mi">24</span>]
-stats: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="nb">int</span>] <span class="op">=</span> statistiche_classe(voti_classe)
-
-<span class="kw">assert</span> stats[<span class="st">&quot;n_totali&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">12</span>
-<span class="kw">assert</span> stats[<span class="st">&quot;n_sufficienti&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>  <span class="cm"># 15 e 10 sono insufficienti</span>
-<span class="kw">assert</span> stats[<span class="st">&quot;min&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
-<span class="kw">assert</span> stats[<span class="st">&quot;max&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>
-<span class="kw">assert</span> stats[<span class="st">&quot;media&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">22.33</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;  Voti: {voti_classe}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Statistiche: {stats}&quot;</span>)
-
-<span class="cm"># Distribuzione per categoria</span>
-categorie: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
-<span class="kw">for</span> v <span class="kw">in</span> voti_classe:
-    cat: <span class="nb">str</span> <span class="op">=</span> classifica_voto(v)
-    categorie[cat] <span class="op">=</span> categorie.get(cat, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;  Distribuzione: {categorie}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 2 superato!\n&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Voto {voto}: {giudizio}&quot;</span>)   <span class="cm"># atteso: Discreto</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Promosso? {promosso}&quot;</span>)      <span class="cm"># atteso: True</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   30 -&gt; Ottimo   28 -&gt; Buono   19 -&gt; Sufficiente</span>
+<span class="cm">#   10 -&gt; Insufficiente, promosso False</span>
+<span class="cm">#   31 -&gt; Non valido, promosso False</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
@@ -356,125 +291,69 @@ categorie: <span class="nb">dict</span>[<span class="nb">str</span>, <span class
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Anno bisestile ---&quot;</span>)
 
+anno: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1900</span>
 
-<span class="kw">def</span> <span class="fn">is_bisestile</span>(<span class="fn">anno</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
-    <span class="st">&quot;&quot;&quot;Verifica se un anno e&#x27; bisestile.&quot;&quot;&quot;</span>
-    risultato: <span class="nb">bool</span> <span class="op">=</span> (anno <span class="op">%</span> <span class="mi">4</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>) <span class="kw">and</span> (anno <span class="op">%</span> <span class="mi">100</span> <span class="op">!</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> anno <span class="op">%</span> <span class="mi">400</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>)
-    <span class="kw">return</span> risultato
+bisestile: <span class="nb">bool</span> <span class="op">=</span> (anno <span class="op">%</span> <span class="mi">4</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>) <span class="kw">and</span> (anno <span class="op">%</span> <span class="mi">100</span> <span class="op">!</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> anno <span class="op">%</span> <span class="mi">400</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>)
 
-
-<span class="cm"># Test casi noti</span>
-<span class="kw">assert</span> is_bisestile(<span class="mi">2000</span>) <span class="kw">is</span> <span class="kw">True</span>    <span class="cm"># Divisibile per 400</span>
-<span class="kw">assert</span> is_bisestile(<span class="mi">1900</span>) <span class="kw">is</span> <span class="kw">False</span>   <span class="cm"># Divisibile per 100 ma non per 400</span>
-<span class="kw">assert</span> is_bisestile(<span class="mi">2024</span>) <span class="kw">is</span> <span class="kw">True</span>    <span class="cm"># Divisibile per 4 ma non per 100</span>
-<span class="kw">assert</span> is_bisestile(<span class="mi">2023</span>) <span class="kw">is</span> <span class="kw">False</span>   <span class="cm"># Non divisibile per 4</span>
-<span class="kw">assert</span> is_bisestile(<span class="mi">2100</span>) <span class="kw">is</span> <span class="kw">False</span>   <span class="cm"># Divisibile per 100 ma non per 400</span>
-<span class="kw">assert</span> is_bisestile(<span class="mi">2400</span>) <span class="kw">is</span> <span class="kw">True</span>    <span class="cm"># Divisibile per 400</span>
-<span class="kw">assert</span> is_bisestile(<span class="mi">1</span>) <span class="kw">is</span> <span class="kw">False</span>
-
-<span class="cm"># Contare quanti anni bisestili ci sono in un secolo</span>
-bisestili_xxi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [a <span class="kw">for</span> a <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2000</span>, <span class="mi">2100</span>) <span class="kw">if</span> is_bisestile(a)]
-<span class="kw">assert</span> <span class="nb">len</span>(bisestili_xxi) <span class="op">=</span><span class="op">=</span> <span class="mi">25</span>
-<span class="kw">assert</span> bisestili_xxi[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2000</span>
-<span class="kw">assert</span> bisestili_xxi[<span class="op">-</span><span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2096</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;  2000 bisestile? {is_bisestile(2000)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  1900 bisestile? {is_bisestile(1900)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  2024 bisestile? {is_bisestile(2024)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Anni bisestili nel XXI secolo (2000-2099): {len(bisestili_xxi)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Primi 5: {bisestili_xxi[:5]}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 3 superato!\n&quot;</span>)
+<span class="kw">if</span> bisestile:
+    <span class="nb">print</span>(<span class="st">f&quot;  {anno} e&#x27; bisestile: febbraio ha 29 giorni&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  {anno} non e&#x27; bisestile: febbraio ha 28 giorni&quot;</span>)
+<span class="cm"># atteso: 1900 non e&#x27; bisestile (divisibile per 100 ma non per 400)</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   2000 -&gt; bisestile (divisibile per 400)</span>
+<span class="cm">#   2024 -&gt; bisestile (divisibile per 4, non per 100)</span>
+<span class="cm">#   2023 -&gt; non bisestile</span>
+<span class="cm">#   2100 -&gt; non bisestile</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># =============================================================================</span>
 <span class="cm"># Esercizio 4: Discriminante dell&#x27;equazione quadratica</span>
-<span class="cm"># Data ax^2 + bx + c = 0, calcolare il discriminante e classificare le soluzioni.</span>
+<span class="cm"># Data ax^2 + bx + c = 0, calcolare il discriminante e le soluzioni.</span>
 <span class="cm"># Delta = b^2 - 4ac</span>
+<span class="cm"># La radice quadrata si calcola con ** 0.5</span>
 <span class="cm"># =============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Discriminante equazione quadratica ---&quot;</span>)
 
-<span class="kw">import</span> math
+coeff_a: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1</span>
+coeff_b: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span><span class="mi">5</span>
+coeff_c: <span class="nb">float</span> <span class="op">=</span> <span class="mi">6</span>
 
+<span class="nb">print</span>(<span class="st">f&quot;  Equazione: {coeff_a}x^2 + {coeff_b}x + {coeff_c} = 0&quot;</span>)
 
-<span class="kw">def</span> <span class="fn">analizza_equazione</span>(
-    a: <span class="nb">float</span>, b: <span class="nb">float</span>, c: <span class="nb">float</span>
-) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="nb">str</span> <span class="op">|</span> <span class="nb">tuple</span>[<span class="nb">float</span>, ...] <span class="op">|</span> <span class="kw">None</span>]:
-    <span class="st">&quot;&quot;&quot;
-    Analizza l&#x27;equazione ax^2 + bx + c = 0.
-    Restituisce un dizionario con il discriminante, il tipo di soluzione e le soluzioni.
-    &quot;&quot;&quot;</span>
-    <span class="kw">if</span> a <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-        <span class="cm"># Non e&#x27; un&#x27;equazione di secondo grado</span>
-        <span class="kw">if</span> b <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            tipo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;degenere&quot;</span>
-            soluzioni: <span class="nb">tuple</span>[<span class="nb">float</span>, ...] <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> <span class="kw">None</span>
-        <span class="kw">else</span>:
-            tipo <span class="op">=</span> <span class="st">&quot;lineare&quot;</span>
-            soluzioni <span class="op">=</span> (<span class="op">-</span>c <span class="op">/</span> b,)
-        <span class="kw">return</span> {<span class="st">&quot;delta&quot;</span>: <span class="kw">None</span>, <span class="st">&quot;tipo&quot;</span>: tipo, <span class="st">&quot;soluzioni&quot;</span>: soluzioni}
-
-    delta: <span class="nb">float</span> <span class="op">=</span> b <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">4</span> <span class="op">*</span> a <span class="op">*</span> c
+<span class="kw">if</span> coeff_a <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+    <span class="cm"># Non e&#x27; un&#x27;equazione di secondo grado</span>
+    <span class="kw">if</span> coeff_b <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;  Equazione degenere: nessuna incognita&quot;</span>)
+    <span class="kw">else</span>:
+        x: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span>coeff_c <span class="op">/</span> coeff_b
+        <span class="nb">print</span>(<span class="st">f&quot;  Equazione lineare: x = {x}&quot;</span>)
+<span class="kw">else</span>:
+    delta: <span class="nb">float</span> <span class="op">=</span> coeff_b <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">4</span> <span class="op">*</span> coeff_a <span class="op">*</span> coeff_c
+    <span class="nb">print</span>(<span class="st">f&quot;  Delta = {delta}&quot;</span>)
 
     <span class="kw">if</span> delta <span class="op">&gt;</span> <span class="mi">0</span>:
-        tipo <span class="op">=</span> <span class="st">&quot;due reali distinte&quot;</span>
-        x1: <span class="nb">float</span> <span class="op">=</span> (<span class="op">-</span>b <span class="op">+</span> math.sqrt(delta)) <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> a)
-        x2: <span class="nb">float</span> <span class="op">=</span> (<span class="op">-</span>b <span class="op">-</span> math.sqrt(delta)) <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> a)
-        soluzioni <span class="op">=</span> (<span class="nb">round</span>(x1, <span class="mi">6</span>), <span class="nb">round</span>(x2, <span class="mi">6</span>))
+        x1: <span class="nb">float</span> <span class="op">=</span> (<span class="op">-</span>coeff_b <span class="op">+</span> delta <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>) <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> coeff_a)
+        x2: <span class="nb">float</span> <span class="op">=</span> (<span class="op">-</span>coeff_b <span class="op">-</span> delta <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>) <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> coeff_a)
+        <span class="nb">print</span>(<span class="st">f&quot;  Due soluzioni reali distinte: x1 = {x1}, x2 = {x2}&quot;</span>)
     <span class="kw">elif</span> delta <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-        tipo <span class="op">=</span> <span class="st">&quot;due reali coincidenti&quot;</span>
-        x1 <span class="op">=</span> <span class="op">-</span>b <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> a)
-        soluzioni <span class="op">=</span> (<span class="nb">round</span>(x1, <span class="mi">6</span>),)
+        x1 <span class="op">=</span> <span class="op">-</span>coeff_b <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> coeff_a)
+        <span class="nb">print</span>(<span class="st">f&quot;  Due soluzioni reali coincidenti: x = {x1}&quot;</span>)
     <span class="kw">else</span>:
-        tipo <span class="op">=</span> <span class="st">&quot;complesse coniugate&quot;</span>
-        parte_reale: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span>b <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> a)
-        parte_imm: <span class="nb">float</span> <span class="op">=</span> math.sqrt(<span class="op">-</span>delta) <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> a)
-        <span class="cm"># Restituiamo la rappresentazione come stringhe</span>
-        soluzioni <span class="op">=</span> <span class="kw">None</span>  <span class="cm"># Le soluzioni complesse non sono float</span>
-
-    <span class="kw">return</span> {<span class="st">&quot;delta&quot;</span>: <span class="nb">round</span>(delta, <span class="mi">6</span>), <span class="st">&quot;tipo&quot;</span>: tipo, <span class="st">&quot;soluzioni&quot;</span>: soluzioni}
-
-
-<span class="cm"># Test: x^2 - 5x + 6 = 0 → x = 2, x = 3</span>
-r1: <span class="nb">dict</span> <span class="op">=</span> analizza_equazione(<span class="mi">1</span>, <span class="op">-</span><span class="mi">5</span>, <span class="mi">6</span>)
-<span class="kw">assert</span> r1[<span class="st">&quot;delta&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1.0</span>
-<span class="kw">assert</span> r1[<span class="st">&quot;tipo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;due reali distinte&quot;</span>
-<span class="kw">assert</span> r1[<span class="st">&quot;soluzioni&quot;</span>] <span class="op">=</span><span class="op">=</span> (<span class="mi">3.0</span>, <span class="mi">2.0</span>)
-
-<span class="cm"># Test: x^2 - 4x + 4 = 0 → x = 2 (doppia)</span>
-r2: <span class="nb">dict</span> <span class="op">=</span> analizza_equazione(<span class="mi">1</span>, <span class="op">-</span><span class="mi">4</span>, <span class="mi">4</span>)
-<span class="kw">assert</span> r2[<span class="st">&quot;delta&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">0.0</span>
-<span class="kw">assert</span> r2[<span class="st">&quot;tipo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;due reali coincidenti&quot;</span>
-<span class="kw">assert</span> r2[<span class="st">&quot;soluzioni&quot;</span>] <span class="op">=</span><span class="op">=</span> (<span class="mi">2.0</span>,)
-
-<span class="cm"># Test: x^2 + 1 = 0 → soluzioni complesse</span>
-r3: <span class="nb">dict</span> <span class="op">=</span> analizza_equazione(<span class="mi">1</span>, <span class="mi">0</span>, <span class="mi">1</span>)
-<span class="kw">assert</span> r3[<span class="st">&quot;delta&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">4.0</span>
-<span class="kw">assert</span> r3[<span class="st">&quot;tipo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;complesse coniugate&quot;</span>
-
-<span class="cm"># Test: caso lineare (a=0)</span>
-r4: <span class="nb">dict</span> <span class="op">=</span> analizza_equazione(<span class="mi">0</span>, <span class="mi">2</span>, <span class="op">-</span><span class="mi">6</span>)
-<span class="kw">assert</span> r4[<span class="st">&quot;tipo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;lineare&quot;</span>
-<span class="kw">assert</span> r4[<span class="st">&quot;soluzioni&quot;</span>] <span class="op">=</span><span class="op">=</span> (<span class="mi">3.0</span>,)
-
-<span class="cm"># Stampa risultati</span>
-equazioni: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]] <span class="op">=</span> [
-    (<span class="mi">1</span>, <span class="op">-</span><span class="mi">5</span>, <span class="mi">6</span>),
-    (<span class="mi">1</span>, <span class="op">-</span><span class="mi">4</span>, <span class="mi">4</span>),
-    (<span class="mi">1</span>, <span class="mi">0</span>, <span class="mi">1</span>),
-    (<span class="mi">2</span>, <span class="op">-</span><span class="mi">7</span>, <span class="mi">3</span>),
-]
-
-<span class="kw">for</span> a_coeff, b_coeff, c_coeff <span class="kw">in</span> equazioni:
-    ris: <span class="nb">dict</span> <span class="op">=</span> analizza_equazione(a_coeff, b_coeff, c_coeff)
-    eq_str: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;{a_coeff}x^2 + {b_coeff}x + {c_coeff} = 0&quot;</span>
-    <span class="nb">print</span>(<span class="st">f&quot;  {eq_str:&lt;25} delta={str(ris[&#x27;delta&#x27;]):&gt;8}  → {ris[&#x27;tipo&#x27;]}&quot;</span>)
-    <span class="kw">if</span> ris[<span class="st">&quot;soluzioni&quot;</span>]:
-        <span class="nb">print</span>(<span class="st">f&quot;  {&#x27;&#x27;:25} soluzioni: {ris[&#x27;soluzioni&#x27;]}&quot;</span>)
-
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 4 superato!\n&quot;</span>)
+        parte_reale: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span>coeff_b <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> coeff_a)
+        parte_immaginaria: <span class="nb">float</span> <span class="op">=</span> (<span class="op">-</span>delta) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span> <span class="op">/</span> (<span class="mi">2</span> <span class="op">*</span> coeff_a)
+        <span class="nb">print</span>(<span class="st">f&quot;  Soluzioni complesse coniugate: {parte_reale} ± {parte_immaginaria}i&quot;</span>)
+<span class="cm"># atteso: Delta = 1, x1 = 3.0, x2 = 2.0</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   1, -4, 4  -&gt; Delta = 0, x = 2.0</span>
+<span class="cm">#   1, 0, 1   -&gt; Delta = -4, soluzioni -0.0 ± 1.0i (-0.0 e 0.0 sono lo stesso numero)</span>
+<span class="cm">#   2, -7, 3  -&gt; Delta = 25, x1 = 3.0, x2 = 0.5</span>
+<span class="cm">#   0, 2, -6  -&gt; lineare, x = 3.0</span>
+<span class="nb">print</span>()
 
 
-<span class="nb">print</span>(<span class="st">&quot;Tutti gli esercizi T08 completati con successo!&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi T08&quot;</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
 </body>
