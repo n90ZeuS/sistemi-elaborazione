@@ -206,42 +206,185 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <pre><code><span class="cm"># L01 — Ambiente, variabili, condizionali</span>
 <span class="cm"># Esercizi per il laboratorio 01</span>
 <span class="cm">#</span>
-<span class="cm"># Esercizi pratici su variabili, tipi, operatori e condizionali.</span>
-<span class="cm"># Ogni esercizio parte da dati scritti nel codice: cambiate i valori</span>
-<span class="cm"># e rilanciate il programma per provare casi diversi.</span>
-<span class="cm"># Accanto a ogni risultato trovate, in commento, il valore atteso.</span>
+<span class="cm"># Esercizi 1-4: soluzioni della traccia (Parte 5 e Sfida di slide e dispensa).</span>
+<span class="cm"># Esercizi 5-7: esercizi aggiuntivi per chi ha finito.</span>
+<span class="cm">#</span>
+<span class="cm"># Nella traccia ogni programma legge i dati con input(); qui i dati sono</span>
+<span class="cm"># scritti nel codice, cosi&#x27; il file si esegue tutto in una volta.</span>
+<span class="cm"># La riga con input() e&#x27; riportata in commento: per provarla, toglietele</span>
+<span class="cm"># il # e commentate la riga sotto. Cambiate i valori e rilanciate per</span>
+<span class="cm"># provare casi diversi. Accanto a ogni risultato c&#x27;e&#x27; il valore atteso.</span>
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 1: Conversione di temperature</span>
+<span class="cm"># ESERCIZIO 1 (base): conversione di temperatura — temperatura.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="cm"># Convertire una temperatura tra Celsius, Fahrenheit e Kelvin.</span>
-<span class="cm">#   F = C * 9/5 + 32</span>
-<span class="cm">#   C = (F - 32) * 5/9</span>
-<span class="cm">#   K = C + 273.15</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Conversione temperature ---&quot;</span>)
+<span class="cm"># Convertire una temperatura da Celsius a Fahrenheit: F = C * 9/5 + 32</span>
+<span class="cm"># Stampare il risultato con una cifra decimale.</span>
+<span class="cm"># In piu&#x27;: conversione in Kelvin (K = C + 273.15) e ritorno a Celsius.</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Conversione di temperatura ---&quot;</span>)
 
-celsius: <span class="nb">float</span> <span class="op">=</span> <span class="mi">37.5</span>
+<span class="cm"># celsius: float = float(input(&quot;Temperatura in Celsius: &quot;))</span>
+celsius: <span class="nb">float</span> <span class="op">=</span> <span class="mi">25.0</span>
 
 fahrenheit: <span class="nb">float</span> <span class="op">=</span> celsius <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>
+<span class="nb">print</span>(<span class="st">f&quot;  {celsius:.1f}°C = {fahrenheit:.1f}°F&quot;</span>)   <span class="cm"># atteso: 25.0°C = 77.0°F</span>
+
 kelvin: <span class="nb">float</span> <span class="op">=</span> celsius <span class="op">+</span> <span class="mi">273.15</span>
+<span class="nb">print</span>(<span class="st">f&quot;  {celsius:.1f}°C = {kelvin:.2f} K&quot;</span>)       <span class="cm"># atteso: 25.0°C = 298.15 K</span>
 
 <span class="cm"># Riconvertendo all&#x27;indietro si deve tornare al valore di partenza</span>
 celsius_da_fahrenheit: <span class="nb">float</span> <span class="op">=</span> (fahrenheit <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>
 celsius_da_kelvin: <span class="nb">float</span> <span class="op">=</span> kelvin <span class="op">-</span> <span class="mi">273.15</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;  {celsius:.2f} °C = {fahrenheit:.2f} °F&quot;</span>)   <span class="cm"># atteso: 99.50 °F</span>
-<span class="nb">print</span>(<span class="st">f&quot;  {celsius:.2f} °C = {kelvin:.2f} K&quot;</span>)        <span class="cm"># atteso: 310.65 K</span>
-<span class="nb">print</span>(<span class="st">f&quot;  Da °F a °C: {celsius_da_fahrenheit:.2f}&quot;</span>)   <span class="cm"># atteso: 37.50</span>
-<span class="nb">print</span>(<span class="st">f&quot;  Da K a °C:  {celsius_da_kelvin:.2f}&quot;</span>)       <span class="cm"># atteso: 37.50</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Da °F a °C: {celsius_da_fahrenheit:.1f}&quot;</span>)   <span class="cm"># atteso: 25.0</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Da K a °C:  {celsius_da_kelvin:.1f}&quot;</span>)       <span class="cm"># atteso: 25.0</span>
+<span class="cm"># Altri casi da provare: 0 -&gt; 32.0°F, 100 -&gt; 212.0°F, 37.5 -&gt; 99.5°F</span>
 <span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 2: Calcolo dell&#x27;interesse composto</span>
+<span class="cm"># ESERCIZIO 2 (intermedio): calcolo IMC con classificazione — imc.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># IMC = peso (kg) / altezza (m) ** 2</span>
+<span class="cm"># Fasce OMS:</span>
+<span class="cm">#   IMC &lt; 18.5         -&gt; &quot;Sottopeso&quot;</span>
+<span class="cm">#   18.5 &lt;= IMC &lt; 25   -&gt; &quot;Normopeso&quot;</span>
+<span class="cm">#   25 &lt;= IMC &lt; 30     -&gt; &quot;Sovrappeso&quot;</span>
+<span class="cm">#   IMC &gt;= 30          -&gt; &quot;Obesita&quot;</span>
+<span class="cm"># Validazione: peso e altezza positivi, altezza non oltre 2.50 m.</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Calcolo IMC ---&quot;</span>)
+
+<span class="cm"># peso_kg: float = float(input(&quot;Peso (kg): &quot;))</span>
+<span class="cm"># altezza_m: float = float(input(&quot;Altezza (m): &quot;))</span>
+peso_kg: <span class="nb">float</span> <span class="op">=</span> <span class="mi">72.0</span>
+altezza_m: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1.75</span>
+
+<span class="kw">if</span> peso_kg <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> altezza_m <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">&quot;  Errore: peso e altezza devono essere positivi&quot;</span>)
+<span class="kw">elif</span> altezza_m <span class="op">&gt;</span> <span class="mi">2.50</span>:
+    <span class="nb">print</span>(<span class="st">&quot;  Errore: l&#x27;altezza non puo&#x27; superare 2.50 m&quot;</span>)
+<span class="kw">else</span>:
+    imc: <span class="nb">float</span> <span class="op">=</span> peso_kg <span class="op">/</span> altezza_m <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
+
+    classificazione: <span class="nb">str</span>
+    <span class="kw">if</span> imc <span class="op">&lt;</span> <span class="mi">18.5</span>:
+        classificazione <span class="op">=</span> <span class="st">&quot;Sottopeso&quot;</span>
+    <span class="kw">elif</span> imc <span class="op">&lt;</span> <span class="mi">25.0</span>:
+        classificazione <span class="op">=</span> <span class="st">&quot;Normopeso&quot;</span>
+    <span class="kw">elif</span> imc <span class="op">&lt;</span> <span class="mi">30.0</span>:
+        classificazione <span class="op">=</span> <span class="st">&quot;Sovrappeso&quot;</span>
+    <span class="kw">else</span>:
+        classificazione <span class="op">=</span> <span class="st">&quot;Obesita&quot;</span>
+
+    <span class="nb">print</span>(<span class="st">f&quot;  IMC: {imc:.1f} — {classificazione}&quot;</span>)  <span class="cm"># atteso: IMC: 23.5 — Normopeso</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   80 kg, 1.80 m -&gt; 24.7 Normopeso</span>
+<span class="cm">#   50 kg, 1.80 m -&gt; 15.4 Sottopeso</span>
+<span class="cm">#   95 kg, 1.75 m -&gt; 31.0 Obesita</span>
+<span class="cm">#   70 kg, 0 m    -&gt; errore valori non positivi</span>
+<span class="cm">#   70 kg, 2.60 m -&gt; errore altezza</span>
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 3 (avanzato): simulazione bancomat — bancomat.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># Saldo iniziale 1000.00 EUR, costante nel codice.</span>
+<span class="cm"># Menu: D = deposito, P = prelievo, S = saldo (maiuscole o minuscole).</span>
+<span class="cm"># Errori da gestire: operazione non riconosciuta, importo negativo o zero,</span>
+<span class="cm"># prelievo superiore al saldo.</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Simulazione bancomat ---&quot;</span>)
+
+saldo: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1000.00</span>
+
+<span class="nb">print</span>(<span class="st">&quot;  === BANCOMAT ===&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Saldo attuale: {saldo:,.2f} EUR&quot;</span>)
+
+<span class="cm"># operazione: str = input(&quot;Operazione (D=Deposito, P=Prelievo, S=Saldo): &quot;).upper()</span>
+operazione: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;p&quot;</span>.upper()
+
+<span class="kw">if</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;S&quot;</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  Saldo disponibile: {saldo:,.2f} EUR&quot;</span>)
+<span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;D&quot;</span> <span class="kw">or</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;P&quot;</span>:
+    <span class="cm"># importo: float = float(input(&quot;Importo: &quot;))</span>
+    importo: <span class="nb">float</span> <span class="op">=</span> <span class="mi">250.0</span>
+
+    <span class="kw">if</span> importo <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;  Errore: l&#x27;importo deve essere positivo&quot;</span>)
+    <span class="kw">elif</span> operazione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;D&quot;</span>:
+        saldo <span class="op">=</span> saldo <span class="op">+</span> importo
+        <span class="nb">print</span>(<span class="st">f&quot;  Deposito di {importo:,.2f} EUR effettuato.&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Nuovo saldo: {saldo:,.2f} EUR&quot;</span>)
+    <span class="kw">elif</span> importo <span class="op">&gt;</span> saldo:
+        <span class="nb">print</span>(<span class="st">f&quot;  Errore: saldo insufficiente ({saldo:,.2f} EUR disponibili)&quot;</span>)
+    <span class="kw">else</span>:
+        saldo <span class="op">=</span> saldo <span class="op">-</span> importo
+        <span class="nb">print</span>(<span class="st">f&quot;  Prelievo di {importo:,.2f} EUR effettuato.&quot;</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;  Nuovo saldo: {saldo:,.2f} EUR&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;  Errore: operazione &#x27;{operazione}&#x27; non riconosciuta&quot;</span>)
+<span class="cm"># atteso: Prelievo di 250.00 EUR effettuato. Nuovo saldo: 750.00 EUR</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   &quot;d&quot;, 500   -&gt; Nuovo saldo: 1,500.00 EUR</span>
+<span class="cm">#   &quot;P&quot;, 2000  -&gt; saldo insufficiente</span>
+<span class="cm">#   &quot;P&quot;, -10   -&gt; importo non positivo</span>
+<span class="cm">#   &quot;X&quot;        -&gt; operazione non riconosciuta</span>
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 4 (sfida): convertitore e classificatore — sfida_temperatura.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="cm"># Convertire Celsius in Fahrenheit e classificare la percezione:</span>
+<span class="cm">#   C &lt;= -10        -&gt; Gelido</span>
+<span class="cm">#   -10 &lt; C &lt;= 5    -&gt; Freddo</span>
+<span class="cm">#   5 &lt; C &lt;= 18     -&gt; Mite</span>
+<span class="cm">#   18 &lt; C &lt;= 30    -&gt; Caldo</span>
+<span class="cm">#   C &gt; 30          -&gt; Torrido</span>
+<span class="cm"># Sotto lo zero assoluto (-273.15) stampare un errore e non proseguire.</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Sfida temperatura ---&quot;</span>)
+
+ZERO_ASSOLUTO: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span><span class="mi">273.15</span>
+
+<span class="cm"># temperatura_c: float = float(input(&quot;Temperatura in Celsius: &quot;))</span>
+temperatura_c: <span class="nb">float</span> <span class="op">=</span> <span class="mi">22.0</span>
+
+<span class="kw">if</span> temperatura_c <span class="op">&lt;</span> ZERO_ASSOLUTO:
+    <span class="nb">print</span>(<span class="st">f&quot;  Errore: {temperatura_c}°C e&#x27; sotto lo zero assoluto ({ZERO_ASSOLUTO}°C)&quot;</span>)
+<span class="kw">else</span>:
+    temperatura_f: <span class="nb">float</span> <span class="op">=</span> temperatura_c <span class="op">*</span> <span class="mi">9</span> <span class="op">/</span> <span class="mi">5</span> <span class="op">+</span> <span class="mi">32</span>
+
+    percezione: <span class="nb">str</span>
+    <span class="kw">if</span> temperatura_c <span class="op">&lt;</span><span class="op">=</span> <span class="op">-</span><span class="mi">10</span>:
+        percezione <span class="op">=</span> <span class="st">&quot;Gelido&quot;</span>
+    <span class="kw">elif</span> temperatura_c <span class="op">&lt;</span><span class="op">=</span> <span class="mi">5</span>:
+        percezione <span class="op">=</span> <span class="st">&quot;Freddo&quot;</span>
+    <span class="kw">elif</span> temperatura_c <span class="op">&lt;</span><span class="op">=</span> <span class="mi">18</span>:
+        percezione <span class="op">=</span> <span class="st">&quot;Mite&quot;</span>
+    <span class="kw">elif</span> temperatura_c <span class="op">&lt;</span><span class="op">=</span> <span class="mi">30</span>:
+        percezione <span class="op">=</span> <span class="st">&quot;Caldo&quot;</span>
+    <span class="kw">else</span>:
+        percezione <span class="op">=</span> <span class="st">&quot;Torrido&quot;</span>
+
+    <span class="nb">print</span>(<span class="st">&quot;  === REPORT TEMPERATURA ===&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  Celsius:       {temperatura_c:.1f}°C&quot;</span>)   <span class="cm"># atteso: 22.0°C</span>
+    <span class="nb">print</span>(<span class="st">f&quot;  Fahrenheit:    {temperatura_f:.1f}°F&quot;</span>)   <span class="cm"># atteso: 71.6°F</span>
+    <span class="nb">print</span>(<span class="st">f&quot;  Percezione:    {percezione}&quot;</span>)            <span class="cm"># atteso: Caldo</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   -15 -&gt; Gelido   0 -&gt; Freddo   18 -&gt; Mite (18 e&#x27; incluso in Mite)</span>
+<span class="cm">#   35  -&gt; Torrido  -300 -&gt; errore zero assoluto</span>
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZI AGGIUNTIVI</span>
+<span class="cm"># ============================================================================</span>
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 5: calcolo dell&#x27;interesse composto</span>
 <span class="cm"># ============================================================================</span>
 <span class="cm"># Formula: A = P * (1 + r/n) ** (n*t)</span>
 <span class="cm"># P = capitale iniziale, r = tasso annuo, n = composizioni/anno, t = anni</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Interesse composto ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: Interesse composto ---&quot;</span>)
 
 capitale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1000.0</span>
 tasso_annuo: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.05</span>        <span class="cm"># 5% scritto come decimale</span>
@@ -259,14 +402,14 @@ interesse: <span class="nb">float</span> <span class="op">=</span> montante <spa
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 3: Classificazione di un triangolo per lati</span>
+<span class="cm"># ESERCIZIO 6: classificazione di un triangolo per lati</span>
 <span class="cm"># ============================================================================</span>
 <span class="cm"># Dato un triangolo con lati a, b, c:</span>
 <span class="cm"># - Non valido: un lato non positivo, oppure un lato &gt;= somma degli altri due</span>
 <span class="cm"># - Equilatero: tutti i lati uguali</span>
 <span class="cm"># - Isoscele: esattamente due lati uguali</span>
 <span class="cm"># - Scaleno: tutti i lati diversi</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Classificazione triangolo ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 6: Classificazione triangolo ---&quot;</span>)
 
 a: <span class="nb">float</span> <span class="op">=</span> <span class="mi">5.0</span>
 b: <span class="nb">float</span> <span class="op">=</span> <span class="mi">3.0</span>
@@ -295,45 +438,7 @@ tipo: <span class="nb">str</span>
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 4: Calcolatore BMI con categorie</span>
-<span class="cm"># ============================================================================</span>
-<span class="cm"># BMI = peso (kg) / altezza (m) ** 2</span>
-<span class="cm"># Categorie OMS:</span>
-<span class="cm">#   BMI &lt; 18.5        -&gt; &quot;sottopeso&quot;</span>
-<span class="cm">#   18.5 &lt;= BMI &lt; 25  -&gt; &quot;normopeso&quot;</span>
-<span class="cm">#   25 &lt;= BMI &lt; 30    -&gt; &quot;sovrappeso&quot;</span>
-<span class="cm">#   BMI &gt;= 30         -&gt; &quot;obesità&quot;</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: BMI ---&quot;</span>)
-
-peso_kg: <span class="nb">float</span> <span class="op">=</span> <span class="mi">80.0</span>
-altezza_m: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1.80</span>
-
-<span class="kw">if</span> peso_kg <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> altezza_m <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
-    <span class="nb">print</span>(<span class="st">&quot;  Errore: peso e altezza devono essere positivi&quot;</span>)
-<span class="kw">else</span>:
-    bmi: <span class="nb">float</span> <span class="op">=</span> peso_kg <span class="op">/</span> altezza_m <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
-
-    categoria: <span class="nb">str</span>
-    <span class="kw">if</span> bmi <span class="op">&lt;</span> <span class="mi">18.5</span>:
-        categoria <span class="op">=</span> <span class="st">&quot;sottopeso&quot;</span>
-    <span class="kw">elif</span> bmi <span class="op">&lt;</span> <span class="mi">25.0</span>:
-        categoria <span class="op">=</span> <span class="st">&quot;normopeso&quot;</span>
-    <span class="kw">elif</span> bmi <span class="op">&lt;</span> <span class="mi">30.0</span>:
-        categoria <span class="op">=</span> <span class="st">&quot;sovrappeso&quot;</span>
-    <span class="kw">else</span>:
-        categoria <span class="op">=</span> <span class="st">&quot;obesità&quot;</span>
-
-    <span class="nb">print</span>(<span class="st">f&quot;  Peso {peso_kg} kg, altezza {altezza_m} m&quot;</span>)
-    <span class="nb">print</span>(<span class="st">f&quot;  BMI: {bmi:.1f} — {categoria}&quot;</span>)  <span class="cm"># atteso: 24.7 — normopeso</span>
-<span class="cm"># Altri casi da provare:</span>
-<span class="cm">#   70 kg, 1.75 m -&gt; 22.9 normopeso</span>
-<span class="cm">#   50 kg, 1.80 m -&gt; 15.4 sottopeso</span>
-<span class="cm">#   70 kg, 0 m    -&gt; messaggio di errore</span>
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 5: Calcolatore di tasse semplificato (a scaglioni)</span>
+<span class="cm"># ESERCIZIO 7: calcolatore di tasse semplificato (a scaglioni)</span>
 <span class="cm"># ============================================================================</span>
 <span class="cm"># Sistema a scaglioni IRPEF semplificato:</span>
 <span class="cm">#   Fino a 15.000      -&gt; 23%</span>
@@ -346,7 +451,7 @@ altezza_m: <span class="nb">float</span> <span class="op">=</span> <span class="
 <span class="cm">#   primo scaglione pieno:   15000 * 0.23 = 3450</span>
 <span class="cm">#   secondo scaglione pieno: 13000 * 0.25 = 3250</span>
 <span class="cm">#   terzo scaglione pieno:   22000 * 0.35 = 7700</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: IRPEF a scaglioni ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 7: IRPEF a scaglioni ---&quot;</span>)
 
 reddito: <span class="nb">float</span> <span class="op">=</span> <span class="mi">60_000.0</span>
 
