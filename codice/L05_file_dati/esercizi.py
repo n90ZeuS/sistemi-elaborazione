@@ -283,44 +283,212 @@ print()
 
 
 # ============================================================================
-# SFIDA: pm10 a padova — pipeline_pm10.py
+# CHALLENGE MERCATI E FINANZA: il portafoglio: prezzi da file — ch_mercati.py
 # ============================================================================
-print("--- Sfida: PM10 a Padova ---")
+print("--- Challenge Mercati e finanza: Il portafoglio: prezzi da file ---")
 import csv
 import json
 from collections import defaultdict
 from pathlib import Path
 
-LIMITE: float = 50.0     # limite giornaliero PM10 in µg/m³
-
-def pulisci(percorso: Path) -> tuple[dict[str, list[float]], int]:
-    misure: defaultdict[str, list[float]] = defaultdict(list)
+def leggi(percorso: Path) -> tuple[dict[str, list[float]], int]:
+    """Prezzi validi per titolo e numero di righe scartate."""
+    prezzi: defaultdict[str, list[float]] = defaultdict(list)
     scartate: int = 0
     with open(percorso, "r", encoding="utf-8") as f:
         for riga in csv.DictReader(f, delimiter=";"):
-            stazione: str = riga["stazione"].strip().title()
             try:
-                pm10: float = float(riga["pm10"].replace(",", "."))
+                prezzi[riga["titolo"]].append(float(riga["prezzo"]))
             except ValueError:
-                pm10 = -1.0      # illeggibile: verrà scartata
-            if stazione == "" or pm10 < 0:
                 scartate += 1
-            else:
-                misure[stazione].append(pm10)
-    return misure, scartate
+    return prezzi, scartate
 
 if __name__ == "__main__":
-    misure, scartate = pulisci(Path("rilevazioni.csv"))
-    report: dict[str, dict[str, float]] = {}
-    for stazione, valori in sorted(misure.items()):
-        report[stazione] = {
-            "media": round(sum(valori) / len(valori), 1),
-            "massimo": max(valori),
-            "giorni_oltre": len([v for v in valori if v > LIMITE])}
-        print(f"{stazione}: {report[stazione]}")
-    with open(Path("pm10.json"), "w", encoding="utf-8") as f:
-        json.dump(report, f, indent=2, ensure_ascii=False)
-    print(f"Righe scartate: {scartate}. Salvato pm10.json")
+    try:
+        prezzi, scartate = leggi(Path("chiusure.csv"))
+    except FileNotFoundError as e:
+        print(f"File non trovato: {e.filename}")
+    else:
+        riepilogo: dict[str, dict[str, float]] = {}
+        for nome, valori in sorted(prezzi.items()):
+            n: int = len(valori)
+            media: float = round(sum(valori) / n, 2)
+            rend: float = (valori[-1] - valori[0]) / valori[0]
+            riepilogo[nome] = {"prezzi": n, "media": media,
+                               "rendimento": round(rend, 4)}
+            print(f"{nome}: {n} prezzi, media {media:.2f}, "
+                  f"rendimento {rend:.1%}")
+        with open(Path("titoli.json"), "w", encoding="utf-8") as f:
+            json.dump(riepilogo, f, indent=2, ensure_ascii=False)
+        print(f"Righe scartate: {scartate}. Salvato titoli.json")
+print()
+
+
+# ============================================================================
+# CHALLENGE SPORT: il campionato: tempi da file — ch_sport.py
+# ============================================================================
+print("--- Challenge Sport: Il campionato: tempi da file ---")
+import csv
+import json
+from collections import defaultdict
+from pathlib import Path
+
+def leggi(percorso: Path) -> tuple[dict[str, list[float]], int]:
+    """Tempi validi per pilota e numero di righe scartate."""
+    tempi: defaultdict[str, list[float]] = defaultdict(list)
+    scartate: int = 0
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            try:
+                tempi[riga["pilota"]].append(float(riga["tempo"]))
+            except ValueError:
+                scartate += 1
+    return tempi, scartate
+
+if __name__ == "__main__":
+    try:
+        tempi, scartate = leggi(Path("giri.csv"))
+    except FileNotFoundError as e:
+        print(f"File non trovato: {e.filename}")
+    else:
+        riepilogo: dict[str, dict[str, float]] = {}
+        for nome, valori in sorted(tempi.items()):
+            n: int = len(valori)
+            media: float = round(sum(valori) / n, 2)
+            migliore: float = min(valori)
+            riepilogo[nome] = {"giri": n, "media": media,
+                               "migliore": migliore}
+            print(f"{nome}: {n} giri, media {media:.2f}, "
+                  f"migliore {migliore:.2f}")
+        with open(Path("piloti.json"), "w", encoding="utf-8") as f:
+            json.dump(riepilogo, f, indent=2, ensure_ascii=False)
+        print(f"Righe scartate: {scartate}. Salvato piloti.json")
+print()
+
+
+# ============================================================================
+# CHALLENGE IMPRESE E MARKETING: il negozio online: ordini da file — ch_negozio.py
+# ============================================================================
+print("--- Challenge Imprese e marketing: Il negozio online: ordini da file ---")
+import csv
+import json
+from collections import defaultdict
+from pathlib import Path
+
+def leggi(percorso: Path) -> tuple[dict[str, list[float]], int]:
+    """Importi validi per citta e numero di righe scartate."""
+    importi: defaultdict[str, list[float]] = defaultdict(list)
+    scartate: int = 0
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            try:
+                importi[riga["citta"]].append(float(riga["importo"]))
+            except ValueError:
+                scartate += 1
+    return importi, scartate
+
+if __name__ == "__main__":
+    try:
+        importi, scartate = leggi(Path("ordini.csv"))
+    except FileNotFoundError as e:
+        print(f"File non trovato: {e.filename}")
+    else:
+        riepilogo: dict[str, dict[str, float]] = {}
+        for nome, valori in sorted(importi.items()):
+            n: int = len(valori)
+            media: float = round(sum(valori) / n, 2)
+            totale: float = sum(valori)
+            riepilogo[nome] = {"ordini": n, "media": media,
+                               "totale": round(totale, 2)}
+            print(f"{nome}: {n} ordini, media {media:.2f}, "
+                  f"totale {totale:.2f}")
+        with open(Path("citta.json"), "w", encoding="utf-8") as f:
+            json.dump(riepilogo, f, indent=2, ensure_ascii=False)
+        print(f"Righe scartate: {scartate}. Salvato citta.json")
+print()
+
+
+# ============================================================================
+# CHALLENGE SALUTE E SCIENZA: lo studio clinico: misure da file — ch_salute.py
+# ============================================================================
+print("--- Challenge Salute e scienza: Lo studio clinico: misure da file ---")
+import csv
+import json
+from collections import defaultdict
+from pathlib import Path
+
+def leggi(percorso: Path) -> tuple[dict[str, list[float]], int]:
+    """Pressioni valide per gruppo e numero di righe scartate."""
+    dati: defaultdict[str, list[float]] = defaultdict(list)
+    scartate: int = 0
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            try:
+                dati[riga["gruppo"]].append(float(riga["sistolica"]))
+            except ValueError:
+                scartate += 1
+    return dati, scartate
+
+if __name__ == "__main__":
+    try:
+        misure, scartate = leggi(Path("pressione.csv"))
+    except FileNotFoundError as e:
+        print(f"File non trovato: {e.filename}")
+    else:
+        riepilogo: dict[str, dict[str, float]] = {}
+        for nome, valori in sorted(misure.items()):
+            n: int = len(valori)
+            media: float = round(sum(valori) / n, 1)
+            quota: float = len([v for v in valori if v < 140]) / n
+            riepilogo[nome] = {"pazienti": n, "media": media,
+                               "sotto_140": round(quota, 3)}
+            print(f"{nome}: {n} pazienti, media {media:.1f} mmHg, "
+                  f"sotto 140: {quota:.1%}")
+        with open(Path("gruppi.json"), "w", encoding="utf-8") as f:
+            json.dump(riepilogo, f, indent=2, ensure_ascii=False)
+        print(f"Righe scartate: {scartate}. Salvato gruppi.json")
+print()
+
+
+# ============================================================================
+# CHALLENGE CASO E PROBABILITÀ: il tavolo da gioco: lanci da file — ch_probabilita.py
+# ============================================================================
+print("--- Challenge Caso e probabilità: Il tavolo da gioco: lanci da file ---")
+import csv
+import json
+from collections import defaultdict
+from pathlib import Path
+
+def leggi(percorso: Path) -> tuple[dict[str, list[int]], int]:
+    """Lanci validi per giocatore e numero di righe scartate."""
+    lanci: defaultdict[str, list[int]] = defaultdict(list)
+    scartate: int = 0
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            try:
+                lanci[riga["giocatore"]].append(int(riga["dado"]))
+            except ValueError:
+                scartate += 1
+    return lanci, scartate
+
+if __name__ == "__main__":
+    try:
+        lanci, scartate = leggi(Path("lanci.csv"))
+    except FileNotFoundError as e:
+        print(f"File non trovato: {e.filename}")
+    else:
+        riepilogo: dict[str, dict[str, float]] = {}
+        for nome, valori in sorted(lanci.items()):
+            n: int = len(valori)
+            media: float = round(sum(valori) / n, 2)
+            quota: float = valori.count(6) / n
+            riepilogo[nome] = {"lanci": n, "media": media,
+                               "quota_sei": round(quota, 3)}
+            print(f"{nome}: {n} lanci, media {media:.2f}, "
+                  f"quota di 6: {quota:.1%}")
+        with open(Path("giocatori.json"), "w", encoding="utf-8") as f:
+            json.dump(riepilogo, f, indent=2, ensure_ascii=False)
+        print(f"Righe scartate: {scartate}. Salvato giocatori.json")
 print()
 
 

@@ -204,434 +204,680 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <h1>L07 — NumPy e Pandas</h1>
 <a class="download-link" href="L07_numpy_pandas.pdf" download>Scarica PDF</a>
 <h1>Laboratorio 7 — NumPy e Pandas</h1>
-<p><strong>Prerequisiti:</strong> Frontale T17 (NumPy, Pandas, analisi dati)</p>
+<p><strong>Prerequisiti:</strong> lezioni T17 (NumPy, Pandas e visualizzazione).</p>
+<p>Oggi ci sono solo esercizi, in ordine di difficoltà: i primi quattro con NumPy, gli altri con Pandas. Per ogni esercizio create un file <code>.py</code> con il nome indicato e importate <code>numpy as np</code> e <code>pandas as pd</code> all'inizio. I file CSV sono scritti nella slide dell'esercizio: create il file con l'editor nella stessa cartella e copiate il contenuto, compresa l'intestazione. Quando i dati sono casuali usate il seed indicato e fate le estrazioni nell'ordine della consegna: così i numeri coincidono con l'esempio. Alla fine c'è una challenge a scelta tra 5 temi.</p>
+<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio del laboratorio L08.</p>
+<table>
+<thead><tr>
+<th>#</th>
+<th>File</th>
+<th>Esercizio</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td><code>voti_numpy.py</code></td>
+<td>I voti in un array</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>ore_studio.py</code></td>
+<td>Le ore di studio</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>altezze.py</code></td>
+<td>Altezze simulate</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>test_crocette.py</code></td>
+<td>Rispondere a caso</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>libretto.py</code></td>
+<td>Il libretto in un DataFrame</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>esami_csv.py</code></td>
+<td>Esplorare un CSV</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>pulizia_questionario.py</code></td>
+<td>Pulire un questionario</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>esami<em>primo</em>anno.py</code></td>
+<td>Gli esami del primo anno</td>
+</tr>
+<tr>
+<td>Challenge</td>
+<td>a scelta</td>
+<td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td>
+</tr>
+</tbody></table>
 <hr>
-<h2>Obiettivo del laboratorio</h2>
-<p>In questo laboratorio imparerete a usare le due librerie fondamentali dell'ecosistema Python per l'analisi dei dati: <strong>NumPy</strong> per il calcolo numerico vettorizzato e <strong>Pandas</strong> per la manipolazione di dati tabulari. Ogni esercizio guidato va eseguito cella per cella, osservando l'output e sperimentando variazioni.</p>
+<h2>Promemoria</h2>
+<p>Gli strumenti che servono oggi. Con NumPy le operazioni si fanno su tutto l'array, senza cicli: <code>voti + 1</code>, <code>voti >= 18</code>, <code>np.mean(voti)</code>. Un array di booleani usato tra parentesi quadre filtra gli elementi; sommato conta i <code>True</code>. Con Pandas una colonna di un DataFrame è una Series: si calcola, si filtra e si raggruppa allo stesso modo. Niente <code>pivot_table</code> e niente grafici: arrivano in L08.</p>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">17</span>, <span class="mi">30</span>, <span class="mi">24</span>])
+<span class="nb">print</span>(voti <span class="op">+</span> <span class="mi">1</span>, np.mean(voti))         <span class="cm"># [29 18 31 25] 24.75</span>
+<span class="nb">print</span>(voti[voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>])                <span class="cm"># filtro: [28 30 24]</span>
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">42</span>)        <span class="cm"># stesso seed, stessi numeri</span>
+dadi: np.ndarray <span class="op">=</span> rng.integers(<span class="mi">1</span>, <span class="mi">7</span>, size<span class="op">=</span><span class="mi">1000</span>)
+<span class="nb">print</span>(np.mean(dadi <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>))              <span class="cm"># stima di 1/6</span>
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({<span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Info&quot;</span>],
+                                 <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">24</span>, <span class="mi">30</span>]})
+df[<span class="st">&quot;promosso&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>      <span class="cm"># colonna calcolata</span>
+<span class="nb">print</span>(df[df[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span> <span class="mi">25</span>])             <span class="cm"># righe filtrate</span>
+<span class="nb">print</span>(df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>].mean())  <span class="cm"># media per gruppo</span></code></pre>
 <hr>
-<h2>Parte 1 — Esercizi guidati</h2>
-<h3>1.1 NumPy: creare array e operazioni vettorizzate</h3>
-<p>NumPy introduce il tipo <code>ndarray</code>, un contenitore di dati omogenei che permette di eseguire operazioni su interi vettori senza scrivere cicli espliciti.</p>
-<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
-
-<span class="cm"># Creare array da liste Python</span>
-voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">24</span>])
-<span class="nb">print</span>(<span class="st">f&quot;Array: {voti}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Tipo: {type(voti)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Dtype: {voti.dtype}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Shape: {voti.shape}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Dimensione: {voti.size}&quot;</span>)
-
-<span class="cm"># Array con funzioni di creazione</span>
-zeri: np.ndarray <span class="op">=</span> np.zeros(<span class="mi">10</span>)
-uni: np.ndarray <span class="op">=</span> np.ones(<span class="mi">5</span>)
-sequenza: np.ndarray <span class="op">=</span> np.arange(<span class="mi">0</span>, <span class="mi">100</span>, <span class="mi">5</span>)        <span class="cm"># da 0 a 95, passo 5</span>
-lineare: np.ndarray <span class="op">=</span> np.linspace(<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">11</span>)         <span class="cm"># 11 punti equispaziati tra 0 e 1</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;Zeri: {zeri}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Uni: {uni}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Sequenza: {sequenza}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Lineare: {lineare}&quot;</span>)</code></pre>
-<p>Le operazioni aritmetiche si applicano <strong>elemento per elemento</strong>, senza bisogno di cicli:</p>
-<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
-
-voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">24</span>])
-
-<span class="cm"># Operazioni vettorizzate</span>
-voti_normalizzati: np.ndarray <span class="op">=</span> voti <span class="op">/</span> <span class="mi">30.0</span>
-voti_scalati: np.ndarray <span class="op">=</span> voti <span class="op">*</span> <span class="mi">10</span> <span class="op">/</span> <span class="mi">3</span>
-voti_bonus: np.ndarray <span class="op">=</span> voti <span class="op">+</span> <span class="mi">2</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;Normalizzati (0-1): {voti_normalizzati}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Scalati (0-100):    {np.round(voti_scalati, 1)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Con bonus +2:       {voti_bonus}&quot;</span>)
-
-<span class="cm"># Operazioni tra array</span>
-pesi: np.ndarray <span class="op">=</span> np.array([<span class="mi">0.1</span>, <span class="mi">0.1</span>, <span class="mi">0.2</span>, <span class="mi">0.1</span>, <span class="mi">0.15</span>, <span class="mi">0.1</span>, <span class="mi">0.15</span>, <span class="mi">0.1</span>])
-media_pesata: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.<span class="nb">sum</span>(voti <span class="op">*</span> pesi))
-<span class="nb">print</span>(<span class="st">f&quot;Media pesata: {media_pesata:.2f}&quot;</span>)
-
-<span class="cm"># Confronti vettorizzati (restituiscono array di bool)</span>
-sufficienti: np.ndarray <span class="op">=</span> voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>
-eccellenti: np.ndarray <span class="op">=</span> voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">28</span>
-<span class="nb">print</span>(<span class="st">f&quot;Sufficienti: {sufficienti}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Numero eccellenti: {np.sum(eccellenti)}&quot;</span>)
-
-<span class="cm"># Indicizzazione booleana (filtering)</span>
-voti_alti: np.ndarray <span class="op">=</span> voti[voti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">27</span>]
-<span class="nb">print</span>(<span class="st">f&quot;Voti &gt;= 27: {voti_alti}&quot;</span>)</code></pre>
-<h3>1.2 Statistiche con NumPy e confronto di prestazioni</h3>
-<p>NumPy fornisce funzioni statistiche ottimizzate. Confrontiamole con l'equivalente Python puro per apprezzare la differenza di velocita.</p>
-<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
-
-voti: np.ndarray <span class="op">=</span> np.array([<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">27</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">24</span>, <span class="mi">26</span>, <span class="mi">29</span>])
-
-<span class="cm"># Statistiche descrittive</span>
-<span class="nb">print</span>(<span class="st">f&quot;Media:              {np.mean(voti):.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Mediana:            {np.median(voti):.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Deviazione standard:{np.std(voti):.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Varianza:           {np.var(voti):.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Minimo:             {np.min(voti)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Massimo:            {np.max(voti)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Percentile 25:      {np.percentile(voti, 25):.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Percentile 75:      {np.percentile(voti, 75):.2f}&quot;</span>)</code></pre>
-<p>Ora confrontiamo le prestazioni: ciclo Python vs operazione vettorizzata NumPy.</p>
-<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> time
-
-<span class="cm"># Creare un array grande</span>
-n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1_000_000</span>
-dati_np: np.ndarray <span class="op">=</span> np.random.randn(n)
-dati_lista: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> dati_np.tolist()
-
-<span class="cm"># Calcolo media con ciclo Python</span>
-inizio: <span class="nb">float</span> <span class="op">=</span> time.time()
-somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
-<span class="kw">for</span> valore <span class="kw">in</span> dati_lista:
-    somma <span class="op">+</span><span class="op">=</span> valore
-media_ciclo: <span class="nb">float</span> <span class="op">=</span> somma <span class="op">/</span> n
-tempo_ciclo: <span class="nb">float</span> <span class="op">=</span> time.time() <span class="op">-</span> inizio
-
-<span class="cm"># Calcolo media con NumPy</span>
-inizio <span class="op">=</span> time.time()
-media_numpy: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.mean(dati_np))
-tempo_numpy: <span class="nb">float</span> <span class="op">=</span> time.time() <span class="op">-</span> inizio
-
-<span class="nb">print</span>(<span class="st">f&quot;Media (ciclo):  {media_ciclo:.6f}  — tempo: {tempo_ciclo:.4f} s&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Media (NumPy):  {media_numpy:.6f}  — tempo: {tempo_numpy:.6f} s&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;NumPy è circa {tempo_ciclo / tempo_numpy:.0f}x più veloce&quot;</span>)</code></pre>
-<p>Il vantaggio di NumPy cresce con la dimensione dei dati: le operazioni sono implementate in C e operano su blocchi contigui di memoria.</p>
-<h3>1.3 NumPy random e simulazione Monte Carlo</h3>
-<p>NumPy offre un generatore di numeri pseudocasuali molto piu efficiente di quello della libreria standard.</p>
-<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
-
-<span class="cm"># Generatore con seed per riproducibilita</span>
-rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
-
-<span class="cm"># Campione da distribuzione uniforme</span>
-uniforme: np.ndarray <span class="op">=</span> rng.uniform(low<span class="op">=</span><span class="mi">0.0</span>, high<span class="op">=</span><span class="mi">1.0</span>, size<span class="op">=</span><span class="mi">10</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Uniforme [0,1]: {np.round(uniforme, 3)}&quot;</span>)
-
-<span class="cm"># Campione da distribuzione normale</span>
-normale: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">25.0</span>, scale<span class="op">=</span><span class="mi">3.0</span>, size<span class="op">=</span><span class="mi">10</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Normale (mu=25, sigma=3): {np.round(normale, 2)}&quot;</span>)
-
-<span class="cm"># Campione da distribuzione di Poisson</span>
-poisson: np.ndarray <span class="op">=</span> rng.poisson(lam<span class="op">=</span><span class="mi">5</span>, size<span class="op">=</span><span class="mi">10</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Poisson (lambda=5): {poisson}&quot;</span>)
-
-<span class="cm"># Statistiche del campione normale grande</span>
-campione: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">170</span>, scale<span class="op">=</span><span class="mi">10</span>, size<span class="op">=</span><span class="mi">10_000</span>)
-<span class="nb">print</span>(<span class="st">f&quot;\nCampione N(170, 10) con n=10000:&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Media campionaria:  {np.mean(campione):.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Dev. std campionaria: {np.std(campione):.2f}&quot;</span>)</code></pre>
-<p><strong>Stimare pi greco con il metodo Monte Carlo:</strong> generiamo punti casuali in un quadrato di lato 2 centrato nell'origine e contiamo quanti cadono nel cerchio unitario.</p>
-<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
-
-<span class="kw">def</span> <span class="fn">stima_pi_montecarlo</span>(<span class="fn">n_punti</span>: <span class="nb">int</span>, seed: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-    <span class="st">&quot;&quot;&quot;Stima pi greco con il metodo Monte Carlo.
-
-    Genera punti casuali nel quadrato [-1,1] x [-1,1] e conta
-    la frazione che cade nel cerchio unitario.
-
-    Args:
-        n_punti: Numero di punti da generare.
-        seed: Seed per la riproducibilita.
-
-    Returns:
-        Stima di pi greco.
-    &quot;&quot;&quot;</span>
-    rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>seed)
-    x: np.ndarray <span class="op">=</span> rng.uniform(<span class="op">-</span><span class="mi">1</span>, <span class="mi">1</span>, size<span class="op">=</span>n_punti)
-    y: np.ndarray <span class="op">=</span> rng.uniform(<span class="op">-</span><span class="mi">1</span>, <span class="mi">1</span>, size<span class="op">=</span>n_punti)
-
-    <span class="cm"># Distanza dall&#x27;origine</span>
-    distanza_quadrata: np.ndarray <span class="op">=</span> x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="op">+</span> y<span class="op">*</span><span class="op">*</span><span class="mi">2</span>
-
-    <span class="cm"># Punti dentro il cerchio unitario</span>
-    dentro: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(np.<span class="nb">sum</span>(distanza_quadrata <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1.0</span>))
-
-    <span class="cm"># Area cerchio / Area quadrato = pi/4</span>
-    pi_stimato: <span class="nb">float</span> <span class="op">=</span> <span class="mi">4.0</span> <span class="op">*</span> dentro <span class="op">/</span> n_punti
-    <span class="kw">return</span> pi_stimato
-
-
-<span class="cm"># Proviamo con dimensioni crescenti</span>
-<span class="kw">for</span> n <span class="kw">in</span> [<span class="mi">100</span>, <span class="mi">1_000</span>, <span class="mi">10_000</span>, <span class="mi">100_000</span>, <span class="mi">1_000_000</span>]:
-    stima: <span class="nb">float</span> <span class="op">=</span> stima_pi_montecarlo(n)
-    errore: <span class="nb">float</span> <span class="op">=</span> <span class="nb">abs</span>(stima <span class="op">-</span> np.pi)
-    <span class="nb">print</span>(<span class="st">f&quot;n = {n:&gt;10,}  -&gt;  pi ≈ {stima:.6f}  (errore: {errore:.6f})&quot;</span>)</code></pre>
-<h3>1.4 Pandas: caricare e esplorare un dataset CSV</h3>
-<p>Passiamo ora a Pandas, la libreria per dati tabulari. Useremo un dataset di esempio che creiamo direttamente.</p>
-<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
-<span class="kw">import</span> numpy <span class="kw">as</span> np
-
-<span class="cm"># Creare un dataset di esempio (simulando un CSV reale)</span>
-rng: np.random.Generator <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="mi">42</span>)
-n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">200</span>
-
-df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
-    <span class="st">&quot;id_studente&quot;</span>: <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>),
-    <span class="st">&quot;nome&quot;</span>: [<span class="st">f&quot;Studente_{i}&quot;</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>)],
-    <span class="st">&quot;corso&quot;</span>: rng.choice(
-        [<span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Economia&quot;</span>, <span class="st">&quot;Sociologia&quot;</span>, <span class="st">&quot;Informatica&quot;</span>],
-        size<span class="op">=</span>n
-    ),
-    <span class="st">&quot;anno&quot;</span>: rng.choice([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], size<span class="op">=</span>n),
-    <span class="st">&quot;voto_medio&quot;</span>: np.<span class="nb">round</span>(rng.normal(<span class="mi">25</span>, <span class="mi">3</span>, size<span class="op">=</span>n).clip(<span class="mi">18</span>, <span class="mi">30</span>), <span class="mi">1</span>),
-    <span class="st">&quot;crediti&quot;</span>: rng.choice([<span class="mi">30</span>, <span class="mi">60</span>, <span class="mi">90</span>, <span class="mi">120</span>, <span class="mi">150</span>, <span class="mi">180</span>], size<span class="op">=</span>n),
-    <span class="st">&quot;regione&quot;</span>: rng.choice(
-        [<span class="st">&quot;Lombardia&quot;</span>, <span class="st">&quot;Lazio&quot;</span>, <span class="st">&quot;Campania&quot;</span>, <span class="st">&quot;Sicilia&quot;</span>,
-         <span class="st">&quot;Veneto&quot;</span>, <span class="st">&quot;Emilia-Romagna&quot;</span>, <span class="st">&quot;Toscana&quot;</span>],
-        size<span class="op">=</span>n
-    ),
-})
-
-<span class="cm"># Salviamo il CSV per usarlo dopo</span>
-df.to_csv(<span class="st">&quot;studenti.csv&quot;</span>, index<span class="op">=</span><span class="kw">False</span>)
-<span class="nb">print</span>(<span class="st">&quot;Dataset salvato come &#x27;studenti.csv&#x27;&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Dimensioni: {df.shape[0]} righe x {df.shape[1]} colonne&quot;</span>)</code></pre>
-<p>Ora esploriamolo con i metodi fondamentali di Pandas:</p>
-<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
-
-<span class="cm"># Caricare il CSV</span>
-df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;studenti.csv&quot;</span>)
-
-<span class="cm"># Le prime 5 righe</span>
-<span class="nb">print</span>(<span class="st">&quot;=== HEAD ===&quot;</span>)
-<span class="nb">print</span>(df.head())
-<span class="nb">print</span>()
-
-<span class="cm"># Informazioni sulla struttura</span>
-<span class="nb">print</span>(<span class="st">&quot;=== INFO ===&quot;</span>)
-df.info()
-<span class="nb">print</span>()
-
-<span class="cm"># Statistiche descrittive (solo colonne numeriche)</span>
-<span class="nb">print</span>(<span class="st">&quot;=== DESCRIBE ===&quot;</span>)
-<span class="nb">print</span>(df.describe())
-<span class="nb">print</span>()
-
-<span class="cm"># Conteggio valori per una colonna categoriale</span>
-<span class="nb">print</span>(<span class="st">&quot;=== VALUE COUNTS (corso) ===&quot;</span>)
-<span class="nb">print</span>(df[<span class="st">&quot;corso&quot;</span>].value_counts())
-<span class="nb">print</span>()
-
-<span class="cm"># Conteggio valori per regione</span>
-<span class="nb">print</span>(<span class="st">&quot;=== VALUE COUNTS (regione) ===&quot;</span>)
-<span class="nb">print</span>(df[<span class="st">&quot;regione&quot;</span>].value_counts())</code></pre>
-<h3>1.5 Pandas: gestire valori mancanti, duplicati e tipi sbagliati</h3>
-<p>I dati reali sono quasi sempre "sporchi". Simuliamo un dataset con problemi tipici.</p>
-<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
-<span class="kw">import</span> numpy <span class="kw">as</span> np
-
-<span class="cm"># Dataset con problemi intenzionali</span>
-dati_sporchi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>] <span class="op">=</span> {
-    <span class="st">&quot;nome&quot;</span>: [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Luca&quot;</span>, <span class="kw">None</span>, <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Elena&quot;</span>],
-    <span class="st">&quot;eta&quot;</span>: [<span class="st">&quot;22&quot;</span>, <span class="st">&quot;25&quot;</span>, <span class="st">&quot;22&quot;</span>, <span class="st">&quot;abc&quot;</span>, <span class="st">&quot;30&quot;</span>, <span class="st">&quot;28&quot;</span>, <span class="st">&quot;25&quot;</span>, <span class="st">&quot;24&quot;</span>],
-    <span class="st">&quot;voto&quot;</span>: [<span class="mi">28</span>, <span class="mi">25</span>, <span class="mi">28</span>, <span class="mi">30</span>, np.nan, <span class="mi">22</span>, <span class="mi">25</span>, np.nan],
-    <span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Econ&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Stat&quot;</span>, <span class="st">&quot;Econ&quot;</span>, <span class="st">&quot;stat&quot;</span>, <span class="st">&quot;Econ&quot;</span>, <span class="st">&quot;STAT&quot;</span>],
-}
-
-df: pd.DataFrame <span class="op">=</span> pd.DataFrame(dati_sporchi)
-<span class="nb">print</span>(<span class="st">&quot;=== Dataset originale ===&quot;</span>)
-<span class="nb">print</span>(df)
-<span class="nb">print</span>()
-
-<span class="cm"># 1. Individuare valori mancanti</span>
-<span class="nb">print</span>(<span class="st">&quot;=== Valori mancanti per colonna ===&quot;</span>)
-<span class="nb">print</span>(df.isnull().<span class="nb">sum</span>())
-<span class="nb">print</span>()
-
-<span class="cm"># 2. Rimuovere duplicati</span>
-<span class="nb">print</span>(<span class="st">f&quot;Righe duplicate: {df.duplicated().sum()}&quot;</span>)
-df_no_dup: pd.DataFrame <span class="op">=</span> df.drop_duplicates()
-<span class="nb">print</span>(<span class="st">f&quot;Righe dopo rimozione duplicati: {len(df_no_dup)}&quot;</span>)
-<span class="nb">print</span>()
-
-<span class="cm"># 3. Correggere tipi sbagliati</span>
-<span class="cm"># La colonna &quot;eta&quot; e&#x27; una stringa, deve diventare un intero</span>
-df_pulito: pd.DataFrame <span class="op">=</span> df_no_dup.copy()
-df_pulito[<span class="st">&quot;eta&quot;</span>] <span class="op">=</span> pd.to_numeric(df_pulito[<span class="st">&quot;eta&quot;</span>], errors<span class="op">=</span><span class="st">&quot;coerce&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;=== Eta dopo conversione (errori -&gt; NaN) ===&quot;</span>)
-<span class="nb">print</span>(df_pulito[<span class="st">&quot;eta&quot;</span>])
-<span class="nb">print</span>()
-
-<span class="cm"># 4. Normalizzare stringhe (maiuscole/minuscole inconsistenti)</span>
-df_pulito[<span class="st">&quot;corso&quot;</span>] <span class="op">=</span> df_pulito[<span class="st">&quot;corso&quot;</span>].<span class="nb">str</span>.strip().<span class="nb">str</span>.capitalize()
-<span class="nb">print</span>(<span class="st">&quot;=== Corsi normalizzati ===&quot;</span>)
-<span class="nb">print</span>(df_pulito[<span class="st">&quot;corso&quot;</span>].value_counts())
-<span class="nb">print</span>()
-
-<span class="cm"># 5. Gestire i valori mancanti</span>
-<span class="cm"># Strategia 1: rimuovere righe con nome mancante</span>
-df_pulito <span class="op">=</span> df_pulito.dropna(subset<span class="op">=</span>[<span class="st">&quot;nome&quot;</span>])
-
-<span class="cm"># Strategia 2: riempire voti mancanti con la mediana</span>
-mediana_voto: <span class="nb">float</span> <span class="op">=</span> df_pulito[<span class="st">&quot;voto&quot;</span>].median()
-df_pulito[<span class="st">&quot;voto&quot;</span>] <span class="op">=</span> df_pulito[<span class="st">&quot;voto&quot;</span>].fillna(mediana_voto)
-
-<span class="cm"># Strategia 3: riempire eta mancante con la media</span>
-media_eta: <span class="nb">float</span> <span class="op">=</span> df_pulito[<span class="st">&quot;eta&quot;</span>].mean()
-df_pulito[<span class="st">&quot;eta&quot;</span>] <span class="op">=</span> df_pulito[<span class="st">&quot;eta&quot;</span>].fillna(<span class="nb">round</span>(media_eta))
-
-<span class="nb">print</span>(<span class="st">&quot;=== Dataset pulito ===&quot;</span>)
-<span class="nb">print</span>(df_pulito)
-<span class="nb">print</span>()
-<span class="nb">print</span>(<span class="st">&quot;Valori mancanti residui:&quot;</span>)
-<span class="nb">print</span>(df_pulito.isnull().<span class="nb">sum</span>())</code></pre>
-<h3>1.6 Pandas: groupby per statistiche per categoria</h3>
-<p>Il metodo <code>groupby</code> e lo strumento principale per calcolare statistiche suddivise per gruppi, operazione fondamentale nell'analisi statistica.</p>
-<pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
-
-<span class="cm"># Ricaricare il dataset pulito</span>
-df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;studenti.csv&quot;</span>)
-
-<span class="cm"># Statistiche per corso</span>
-<span class="nb">print</span>(<span class="st">&quot;=== Media voto per corso ===&quot;</span>)
-media_per_corso: pd.DataFrame <span class="op">=</span> (
-    df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto_medio&quot;</span>]
-    .mean()
-    .<span class="nb">round</span>(<span class="mi">2</span>)
-    .sort_values(ascending<span class="op">=</span><span class="kw">False</span>)
-)
-<span class="nb">print</span>(media_per_corso)
-<span class="nb">print</span>()
-
-<span class="cm"># Statistiche multiple per corso</span>
-<span class="nb">print</span>(<span class="st">&quot;=== Statistiche multiple per corso ===&quot;</span>)
-stats_corso: pd.DataFrame <span class="op">=</span> (
-    df.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto_medio&quot;</span>]
-    .agg([<span class="st">&quot;count&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;std&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>])
-    .<span class="nb">round</span>(<span class="mi">2</span>)
-)
-<span class="nb">print</span>(stats_corso)
-<span class="nb">print</span>()
-
-<span class="cm"># Groupby con piu colonne</span>
-<span class="nb">print</span>(<span class="st">&quot;=== Media voto per corso e anno ===&quot;</span>)
-media_corso_anno: pd.DataFrame <span class="op">=</span> (
-    df.groupby([<span class="st">&quot;corso&quot;</span>, <span class="st">&quot;anno&quot;</span>])[<span class="st">&quot;voto_medio&quot;</span>]
-    .mean()
-    .<span class="nb">round</span>(<span class="mi">2</span>)
-    .unstack()
-)
-<span class="nb">print</span>(media_corso_anno)
-<span class="nb">print</span>()
-
-<span class="cm"># Filtro + groupby: media crediti per regione, solo studenti con voto &gt;= 27</span>
-bravi: pd.DataFrame <span class="op">=</span> df[df[<span class="st">&quot;voto_medio&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">27</span>]
-<span class="nb">print</span>(<span class="st">&quot;=== Media crediti studenti con voto &gt;= 27, per regione ===&quot;</span>)
-crediti_regione: pd.Series <span class="op">=</span> (
-    bravi.groupby(<span class="st">&quot;regione&quot;</span>)[<span class="st">&quot;crediti&quot;</span>]
-    .mean()
-    .<span class="nb">round</span>(<span class="mi">1</span>)
-    .sort_values(ascending<span class="op">=</span><span class="kw">False</span>)
-)
-<span class="nb">print</span>(crediti_regione)</code></pre>
+<h2>Esercizio 1 — I voti in un array (<code>voti_numpy.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Create l'array <code>voti</code> con i voti di un appello: 28, 17, 30, 24, 15, 21, 27, 19, 30, 23. Stampate la forma (<code>.shape</code>) e il tipo degli elementi (<code>.dtype</code>).</li>
+<li>Calcolate media e mediana con un decimale e la deviazione standard campionaria (<code>np.std(voti, ddof=1)</code>) con due decimali.</li>
+<li>Con il filtro <code>voti[voti >= 18]</code> ottenete i voti dei promossi. Contateli con <code>np.sum(voti >= 18)</code>, perché ogni <code>True</code> vale 1, e stampate la percentuale, i voti e la loro media.</li>
+<li>Senza cicli calcolate gli scarti dalla media (<code>voti - media</code>), stampateli arrotondati con <code>np.round(scarti, 1)</code> e stampate la loro somma con un decimale.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Forma: (<span class="mi">10</span>,), tipo: int64
+Media: <span class="mi">23.4</span>, mediana: <span class="mi">23.5</span>
+Dev. std campionaria: <span class="mi">5.36</span>
+Promossi: <span class="mi">8</span> su <span class="mi">10</span> (<span class="mi">80.0</span><span class="op">%</span>)
+Voti dei promossi: [<span class="mi">28</span> <span class="mi">30</span> <span class="mi">24</span> <span class="mi">21</span> <span class="mi">27</span> <span class="mi">19</span> <span class="mi">30</span> <span class="mi">23</span>]
+Media dei promossi: <span class="mi">25.2</span>
+Scarti dalla media: [ <span class="mi">4.6</span> <span class="op">-</span><span class="mi">6.4</span>  <span class="mi">6.6</span>  <span class="mi">0.6</span> <span class="op">-</span><span class="mi">8.4</span> <span class="op">-</span><span class="mi">2.4</span>  <span class="mi">3.6</span> <span class="op">-</span><span class="mi">4.4</span>  <span class="mi">6.6</span> <span class="op">-</span><span class="mi">0.4</span>]
+Somma degli scarti: <span class="mi">0.0</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete il voto 18 → <code>Promossi: 9 su 11 (81.8%)</code>, <code>Media dei promossi: 24.4</code>; la somma degli scarti esce <code>-0.0</code>, per l'arrotondamento dei float</li>
+<li>togliete <code>ddof=1</code> → <code>5.08</code>: <code>np.std</code> divide per n invece che per n − 1</li>
+</ul>
 <hr>
-<h2>Parte 2 — Esercizi autonomi</h2>
-<p>Risolvete gli esercizi seguenti senza guardare le soluzioni degli esercizi guidati. Usate sempre type hints.</p>
-<h3>Base</h3>
-<p><strong>Esercizio 1 — Statistiche di un array NumPy</strong></p>
-<p>Create un array NumPy di 1000 valori estratti da una distribuzione normale con media 170 e deviazione standard 8 (simulando altezze in cm). Calcolate e stampate: media, mediana, deviazione standard, minimo, massimo, percentile 5 e percentile 95. Contate quanti valori cadono nell'intervallo [media - 2<em>std, media + 2</em>std] e verificate che la percentuale sia vicina al 95%.</p>
-<p><strong>Esercizio 2 — Selezione e filtro con Pandas</strong></p>
-<p>Caricate il file <code>studenti.csv</code> creato negli esercizi guidati. Eseguite le seguenti operazioni:</p>
+<h2>Esercizio 2 — Le ore di studio (<code>ore_studio.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Una matrice contiene le ore di studio di 4 settimane (righe) per 3 corsi (colonne: Statistica, Analisi, Informatica). Le righe sono <code>[6, 4, 3]</code>, <code>[8, 5, 2]</code>, <code>[5, 7, 4]</code> e <code>[10, 6, 5]</code>.</li>
+<li>Stampate forma e ore totali. Sommate per corso con <code>np.sum(ore, axis=0)</code> e per settimana con <code>axis=1</code>.</li>
+<li>Dividete le ore per corso per il totale (un array diviso uno scalare) e stampate la quota di ogni corso, scorrendo nomi e quote con <code>zip</code>.</li>
+<li>Create i numeri delle settimane con <code>np.arange(1, ore.shape[0] + 1)</code> e filtrate quelle con più di 15 ore.</li>
+<li>Calcolate la media per corso (<code>np.mean(ore, axis=0)</code>) e sottraetela a tutta la matrice: con il broadcasting la riga delle medie viene ripetuta su ogni settimana. Stampate le medie e la matrice degli scarti.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Forma: (<span class="mi">4</span>, <span class="mi">3</span>), ore totali: <span class="mi">65</span>
+Ore per corso: [<span class="mi">29</span> <span class="mi">22</span> <span class="mi">14</span>]
+Ore per settimana: [<span class="mi">13</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">21</span>]
+Statistica: <span class="mi">44.6</span><span class="op">%</span>
+Analisi: <span class="mi">33.8</span><span class="op">%</span>
+Informatica: <span class="mi">21.5</span><span class="op">%</span>
+Settimane oltre <span class="mi">15</span> ore: [<span class="mi">3</span> <span class="mi">4</span>]
+Medie per corso: [<span class="mi">7.25</span> <span class="mi">5.5</span>  <span class="mi">3.5</span> ]
+Scarti dalla media <span class="kw">del</span> corso:
+[[<span class="op">-</span><span class="mi">1.25</span> <span class="op">-</span><span class="mi">1.5</span>  <span class="op">-</span><span class="mi">0.5</span> ]
+ [ <span class="mi">0.75</span> <span class="op">-</span><span class="mi">0.5</span>  <span class="op">-</span><span class="mi">1.5</span> ]
+ [<span class="op">-</span><span class="mi">2.25</span>  <span class="mi">1.5</span>   <span class="mi">0.5</span> ]
+ [ <span class="mi">2.75</span>  <span class="mi">0.5</span>   <span class="mi">1.5</span> ]]</code></pre>
+<p><strong>Provate anche</strong></p>
 <ul>
-<li>Selezionate solo le colonne <code>nome</code>, <code>corso</code>, <code>voto_medio</code>.</li>
-<li>Filtrate gli studenti del corso "Statistica" con voto medio superiore a 26.</li>
-<li>Ordinate il risultato per voto medio decrescente.</li>
-<li>Stampate le prime 10 righe.</li>
+<li>aggiungete la settimana <code>[7, 3, 6]</code> → <code>Forma: (5, 3), ore totali: 81</code>, <code>Settimane oltre 15 ore: [3 4 5]</code></li>
+<li>sommate la matrice degli scarti con <code>axis=0</code> → <code>[0. 0. 0.]</code>: in ogni colonna gli scarti dalla media si compensano</li>
 </ul>
-<p><strong>Esercizio 3 — Nuova colonna calcolata</strong></p>
-<p>Caricate <code>studenti.csv</code> e aggiungete una nuova colonna <code>fascia_voto</code> che vale:</p>
+<hr>
+<h2>Esercizio 3 — Altezze simulate (<code>altezze.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Create il generatore <code>rng = np.random.default_rng(42)</code> e simulate 500 altezze in cm con <code>rng.normal(loc=170, scale=10, size=500)</code>. Stampate le prime 5 (<code>altezze[:5]</code>) arrotondate a un decimale.</li>
+<li>Stampate media, deviazione standard campionaria, minimo e massimo con un decimale.</li>
+<li>Standardizzate senza cicli: <code>z = (altezze - media) / dev</code>. Controllate che la deviazione standard degli z sia 1.</li>
+<li><code>np.abs(z) <= 1</code> è un array di booleani e <code>np.mean</code> ne dà la quota di <code>True</code>. Stampate la quota entro 1 deviazione standard e quella oltre 2, accanto ai valori teorici della normale: 68.3% e 4.6%.</li>
+<li>Contate le altezze tra 185 cm (incluso) e 195 cm con un filtro combinato: <code>(altezze >= 185) & (altezze < 195)</code>.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Prime <span class="mi">5</span> altezze: [<span class="mi">173.</span>  <span class="mi">159.6</span> <span class="mi">177.5</span> <span class="mi">179.4</span> <span class="mi">150.5</span>]
+Media: <span class="mi">169.9</span> cm, dev. std: <span class="mi">9.6</span> cm
+Minimo: <span class="mi">144.3</span>, massimo: <span class="mi">199.1</span>
+Dev. std degli z: <span class="mi">1.00</span>
+Entro <span class="mi">1</span> dev. std: <span class="mi">69.0</span><span class="op">%</span> (teorica <span class="mi">68.3</span><span class="op">%</span>)
+Oltre <span class="mi">2</span> dev. std: <span class="mi">5.2</span><span class="op">%</span> (teorica <span class="mi">4.6</span><span class="op">%</span>)
+Tra <span class="mi">185</span> e <span class="mi">195</span> cm: <span class="mi">27</span></code></pre>
+<p><strong>Provate anche</strong></p>
 <ul>
-<li><code>"insufficiente"</code> se il voto medio e' sotto 20</li>
-<li><code>"sufficiente"</code> se e' tra 20 e 24 (inclusi)</li>
-<li><code>"buono"</code> se e' tra 25 e 27 (inclusi)</li>
-<li><code>"ottimo"</code> se e' 28 o superiore</li>
+<li>rieseguite il programma: i numeri sono gli stessi. Con seed 1 → <code>Prime 5 altezze: [173.5 178.2 173.3 157.  179.1]</code>, <code>Entro 1 dev. std: 70.0%</code></li>
+<li>500 → 100 000 altezze → <code>Entro 1 dev. std: 68.4%</code>, <code>Oltre 2 dev. std: 4.6%</code>: con più dati le quote si avvicinano a quelle teoriche</li>
+<li>togliete le parentesi nel filtro combinato → <code>TypeError</code>: <code>&</code> viene calcolato prima di <code>>=</code> e <code><</code></li>
 </ul>
-<p>Stampate il conteggio per ogni fascia con <code>value_counts()</code>.</p>
-<h3>Intermedio</h3>
-<p><strong>Esercizio 4 — Confronto tra gruppi</strong></p>
-<p>Caricate <code>studenti.csv</code> e rispondete alle seguenti domande usando <code>groupby</code>:</p>
+<hr>
+<h2>Esercizio 4 — Rispondere a caso (<code>test_crocette.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Un test ha 10 domande con 4 risposte possibili, una sola giusta, e si supera con almeno 6 risposte giuste. Simulate 100 000 studenti che rispondono a caso, con <code>rng = np.random.default_rng(2027)</code>.</li>
+<li><code>rng.integers(0, 4, size=(N, 10))</code> è una matrice con una riga per studente e una colonna per domanda. La risposta giusta è sempre la 0: <code>np.sum(risposte == 0, axis=1)</code> conta le risposte giuste di ogni studente.</li>
+<li>Stampate le giuste dei primi 5 studenti, la media (teorica 10 · 0.25 = 2.5), la quota di studenti senza risposte giuste e la quota di chi supera il test.</li>
+<li>Stimate di nuovo la quota con <code>rng.binomial(n=10, p=0.25, size=N)</code> e calcolate la probabilità esatta con <code>math.comb</code>: la somma di C(10, k) · 0.25^k · 0.75^(10 − k) per k da 6 a 10.</li>
+<li>Con una penalità di 1/3 di punto per ogni risposta sbagliata il punteggio è <code>giuste - (10 - giuste) / 3</code>. Stampate il punteggio medio e la quota di punteggi negativi.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Giuste dei primi <span class="mi">5</span> studenti: [<span class="mi">3</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span>]
+Media di risposte giuste: <span class="mi">2.50</span> (teorica <span class="mi">2.50</span>)
+Nessuna risposta giusta: <span class="mi">5.6</span><span class="op">%</span>
+Test superato (simulato): <span class="mi">1.97</span><span class="op">%</span>
+Test superato (binomiale): <span class="mi">1.95</span><span class="op">%</span>
+Test superato (esatta): <span class="mi">1.97</span><span class="op">%</span>
+Punteggio medio con penalità: <span class="mi">0.00</span>
+Punteggio negativo: <span class="mi">52.5</span><span class="op">%</span></code></pre>
+<p><strong>Provate anche</strong></p>
 <ul>
-<li>Qual e' il corso con la media voti piu alta?</li>
-<li>Qual e' la regione con il numero medio di crediti piu alto?</li>
-<li>C'e' differenza significativa nella media dei voti tra studenti del primo e del terzo anno?</li>
+<li>soglia 5 → simulato <code>7.78%</code>, binomiale <code>7.79%</code>, esatta <code>7.81%</code></li>
+<li>100 000 → 1000 studenti → simulato <code>1.80%</code>, binomiale <code>2.50%</code>: con pochi studenti le stime si allontanano dal valore esatto</li>
 </ul>
-<p>Presentate i risultati in modo chiaro, con stampe formattate.</p>
-<p><strong>Esercizio 5 — Merge di DataFrame</strong></p>
-<p>Create due DataFrame:</p>
+<hr>
+<h2>Esercizio 5 — Il libretto in un DataFrame (<code>libretto.py</code>)</h2>
+<p><strong>Consegna</strong></p>
 <ol>
-<li><code>esami</code>: con colonne <code>id_studente</code>, <code>materia</code>, <code>voto</code>, <code>data</code> (almeno 20 righe).</li>
-<li><code>anagrafica</code>: con colonne <code>id_studente</code>, <code>nome</code>, <code>cognome</code>, <code>corso</code> (almeno 8 studenti, alcuni con piu esami).</li>
+<li>Create un DataFrame da un dizionario di liste con gli esami di una studentessa (tabella): colonne <code>esame</code>, <code>anno</code>, <code>crediti</code>, <code>voto</code>. Stampatelo con la sua forma.</li>
+<li>Aggiungete la colonna calcolata <code>pesato</code>, voto per crediti.</li>
+<li>Stampate i crediti totali, la media aritmetica e la media ponderata (somma di <code>pesato</code> diviso crediti totali) con due decimali, e la base di laurea: media ponderata / 30 · 110.</li>
+<li>Selezionate gli esami con voto almeno 26, ordinateli con <code>sort_values("voto", ascending=False)</code> e stampate solo le colonne <code>esame</code> e <code>voto</code>.</li>
+<li>Contate gli esami da 9 crediti del primo anno con un filtro combinato con <code>&</code>.</li>
 </ol>
-<p>Eseguite un merge (join) tra i due DataFrame sulla colonna <code>id_studente</code>. Poi calcolate la media voti per ogni studente e la media voti per ogni materia.</p>
-<p><strong>Esercizio 6 — Pivot table</strong></p>
-<p>Partendo dal DataFrame unito dell'esercizio precedente, create una pivot table che mostri la media dei voti con:</p>
+<table>
+<thead><tr>
+<th>esame</th>
+<th>anno</th>
+<th>crediti</th>
+<th>voto</th>
+</tr></thead><tbody>
+<tr>
+<td>Analisi I</td>
+<td>1</td>
+<td>9</td>
+<td>24</td>
+</tr>
+<tr>
+<td>Statistica I</td>
+<td>1</td>
+<td>9</td>
+<td>28</td>
+</tr>
+<tr>
+<td>Informatica</td>
+<td>1</td>
+<td>6</td>
+<td>30</td>
+</tr>
+<tr>
+<td>Economia</td>
+<td>1</td>
+<td>9</td>
+<td>22</td>
+</tr>
+<tr>
+<td>Probabilità</td>
+<td>2</td>
+<td>9</td>
+<td>26</td>
+</tr>
+<tr>
+<td>Demografia</td>
+<td>2</td>
+<td>6</td>
+<td>27</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>          esame  anno  crediti  voto
+<span class="mi">0</span>     Analisi I     <span class="mi">1</span>        <span class="mi">9</span>    <span class="mi">24</span>
+<span class="mi">1</span>  Statistica I     <span class="mi">1</span>        <span class="mi">9</span>    <span class="mi">28</span>
+<span class="mi">2</span>   Informatica     <span class="mi">1</span>        <span class="mi">6</span>    <span class="mi">30</span>
+<span class="mi">3</span>      Economia     <span class="mi">1</span>        <span class="mi">9</span>    <span class="mi">22</span>
+<span class="mi">4</span>   Probabilità     <span class="mi">2</span>        <span class="mi">9</span>    <span class="mi">26</span>
+<span class="mi">5</span>    Demografia     <span class="mi">2</span>        <span class="mi">6</span>    <span class="mi">27</span>
+Righe e colonne: (<span class="mi">6</span>, <span class="mi">4</span>)
+Crediti: <span class="mi">48</span>
+Media aritmetica: <span class="mi">26.17</span>, ponderata: <span class="mi">25.88</span>
+Base di laurea: <span class="mi">94.9</span>
+          esame  voto
+<span class="mi">2</span>   Informatica    <span class="mi">30</span>
+<span class="mi">1</span>  Statistica I    <span class="mi">28</span>
+<span class="mi">5</span>    Demografia    <span class="mi">27</span>
+<span class="mi">4</span>   Probabilità    <span class="mi">26</span>
+Esami da <span class="mi">9</span> crediti <span class="kw">del</span> primo anno: <span class="mi">3</span></code></pre>
+<p><strong>Provate anche</strong></p>
 <ul>
-<li>righe: <code>corso</code></li>
-<li>colonne: <code>materia</code></li>
-<li>valori: <code>voto</code> (media)</li>
+<li>aggiungete <code>Algebra</code>, anno 2, 6 crediti, voto 30 → <code>Crediti: 54</code>, <code>ponderata: 26.33</code>, <code>Base di laurea: 96.6</code></li>
+<li>nel dizionario scrivete <code>"voti"</code> al posto di <code>"voto"</code> → <code>KeyError: 'voto'</code> alla prima riga che usa la colonna</li>
 </ul>
-<p>Usate <code>pd.pivot_table()</code>. Sostituite eventuali <code>NaN</code> con la stringa <code>"-"</code> per la stampa.</p>
-<h3>Avanzato</h3>
-<p><strong>Esercizio 7 — Sfida: analisi completa di un dataset</strong></p>
-<p>Svolgete un'analisi completa seguendo questo schema:</p>
+<hr>
+<h2>Esercizio 6 — Esplorare un CSV (<code>esami_csv.py</code>)</h2>
+<p><strong>Consegna</strong></p>
 <ol>
-<li><strong>Creazione del dataset.</strong> Generate un DataFrame di almeno 500 righe che simuli i dati di un'indagine sulla soddisfazione lavorativa, con colonne: <code>id</code>, <code>settore</code> (Tecnologia, Sanita, Istruzione, Finanza, Commercio), <code>anni<em>esperienza</code> (1-40, distribuzione realistica), <code>stipendio</code> (correlato al settore e all'esperienza, con rumore), <code>soddisfazione</code> (scala 1-10), <code>regione</code>, <code>titolo</em>studio</code> (Diploma, Laurea triennale, Laurea magistrale, Dottorato).</li>
+<li>Il file <code>esami.csv</code> contiene 10 esami di studenti di Scienze Statistiche. Leggetelo con <code>pd.read_csv("esami.csv", sep=";")</code>.</li>
+<li>Esplorate i dati: stampate le prime 3 righe (<code>head(3)</code>), la forma, i nomi delle colonne (<code>columns.tolist()</code>), le statistiche del voto con <code>describe().round(1)</code> e il numero di esami per corso con <code>value_counts()</code>.</li>
+<li>Contate i promossi (voto almeno 18) e stampate le matricole di Statistica del secondo anno, con un filtro combinato e <code>.tolist()</code>.</li>
+<li>Stampate il voto medio per corso con <code>groupby("corso")["voto"].mean().round(1)</code>.</li>
 </ol>
-<ol>
-<li><strong>Esplorazione.</strong> Stampate le dimensioni, i tipi, le prime righe, le statistiche descrittive e il conteggio per ogni variabile categoriale.</li>
-</ol>
-<ol>
-<li><strong>Pulizia.</strong> Inserite intenzionalmente il 5% di valori mancanti in <code>stipendio</code> e <code>soddisfazione</code>. Poi gestite i mancanti con strategie appropriate (mediana per stipendio, moda per soddisfazione).</li>
-</ol>
-<ol>
-<li><strong>Analisi per gruppi.</strong> Calcolate:</li>
-</ol>
+<p><strong>File <code>esami.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>matricola;corso;anno;voto
+<span class="mi">2101234</span>;Statistica;<span class="mi">1</span>;<span class="mi">28</span>
+<span class="mi">2101567</span>;Analisi;<span class="mi">1</span>;<span class="mi">17</span>
+<span class="mi">2102001</span>;Informatica;<span class="mi">1</span>;<span class="mi">30</span>
+<span class="mi">2102345</span>;Statistica;<span class="mi">1</span>;<span class="mi">24</span>
+<span class="mi">2102890</span>;Analisi;<span class="mi">1</span>;<span class="mi">21</span>
+<span class="mi">2103112</span>;Statistica;<span class="mi">2</span>;<span class="mi">19</span>
+<span class="mi">2103456</span>;Informatica;<span class="mi">2</span>;<span class="mi">27</span>
+<span class="mi">2103789</span>;Analisi;<span class="mi">2</span>;<span class="mi">15</span>
+<span class="mi">2104012</span>;Statistica;<span class="mi">2</span>;<span class="mi">26</span>
+<span class="mi">2104333</span>;Informatica;<span class="mi">1</span>;<span class="mi">23</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>   matricola        corso  anno  voto
+<span class="mi">0</span>    <span class="mi">2101234</span>   Statistica     <span class="mi">1</span>    <span class="mi">28</span>
+<span class="mi">1</span>    <span class="mi">2101567</span>      Analisi     <span class="mi">1</span>    <span class="mi">17</span>
+<span class="mi">2</span>    <span class="mi">2102001</span>  Informatica     <span class="mi">1</span>    <span class="mi">30</span>
+Righe e colonne: (<span class="mi">10</span>, <span class="mi">4</span>)
+Colonne: [<span class="st">&#x27;matricola&#x27;</span>, <span class="st">&#x27;corso&#x27;</span>, <span class="st">&#x27;anno&#x27;</span>, <span class="st">&#x27;voto&#x27;</span>]
+count    <span class="mi">10.0</span>
+mean     <span class="mi">23.0</span>
+std       <span class="mi">4.9</span>
+<span class="nb">min</span>      <span class="mi">15.0</span>
+<span class="mi">25</span><span class="op">%</span>      <span class="mi">19.5</span>
+<span class="mi">50</span><span class="op">%</span>      <span class="mi">23.5</span>
+<span class="mi">75</span><span class="op">%</span>      <span class="mi">26.8</span>
+<span class="nb">max</span>      <span class="mi">30.0</span>
+Name: voto, dtype: float64
+corso
+Statistica     <span class="mi">4</span>
+Analisi        <span class="mi">3</span>
+Informatica    <span class="mi">3</span>
+Name: count, dtype: int64
+Promossi: <span class="mi">8</span> su <span class="mi">10</span>
+Statistica, secondo anno: [<span class="mi">2103112</span>, <span class="mi">2104012</span>]
+corso
+Analisi        <span class="mi">17.7</span>
+Informatica    <span class="mi">26.7</span>
+Statistica     <span class="mi">24.2</span>
+Name: voto, dtype: float64</code></pre>
+<p><strong>Provate anche</strong></p>
 <ul>
-<li>Stipendio medio e mediano per settore.</li>
-<li>Soddisfazione media per titolo di studio.</li>
-<li>Correlazione tra anni di esperienza e stipendio (usate <code>np.corrcoef</code> o il metodo <code>.corr()</code> di Pandas).</li>
+<li>aggiungete la riga <code>2104555;Analisi;2;29</code> → <code>Righe e colonne: (11, 4)</code>, <code>Promossi: 9 su 11</code>, Analisi <code>20.5</code></li>
+<li>togliete <code>sep=";"</code> → c'è una sola colonna, <code>matricola;corso;anno;voto</code>, e poi <code>KeyError: 'voto'</code></li>
+<li>aggiungete <code>esami.info()</code>: per ogni colonna mostra tipo e valori non nulli; <code>corso</code> è di tipo testo (<code>object</code>, o <code>str</code> con Pandas 3)</li>
 </ul>
+<hr>
+<h2>Esercizio 7 — Pulire un questionario (<code>pulizia_questionario.py</code>)</h2>
+<p><strong>Consegna</strong></p>
 <ol>
-<li><strong>Export.</strong> Salvate il dataset pulito come CSV e un riepilogo statistico come secondo CSV.</li>
+<li>Il file <code>questionario.csv</code> contiene le ore di studio settimanali e il voto di alcuni studenti. C'è una riga ripetuta e mancano alcuni valori, scritti in tre modi: campo vuoto, <code>NA</code> e <code>?</code>.</li>
+<li>Leggetelo con <code>na_values=["", "NA", "?"]</code> e stampate le righe lette e i valori mancanti per colonna (<code>isna().sum()</code>).</li>
+<li>Contate e togliete le righe duplicate (<code>duplicated().sum()</code>, <code>drop_duplicates()</code>), poi togliete le righe senza voto con <code>dropna(subset=["voto"])</code>.</li>
+<li>Sostituite le ore mancanti con la media delle ore arrotondata a un decimale (<code>fillna({"ore_studio": ...})</code>) e convertite il voto in intero con <code>astype(int)</code>.</li>
+<li>Stampate le righe rimaste, i mancanti rimasti (<code>isna().sum().sum()</code>), voto e ore medi con due decimali e le medie per corso di ore e voto con <code>groupby</code> e <code>round(1)</code>.</li>
 </ol>
+<p><strong>File <code>questionario.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>matricola;corso;ore_studio;voto
+<span class="mi">2101234</span>;Statistica;<span class="mi">12</span>;<span class="mi">28</span>
+<span class="mi">2101567</span>;Analisi;;<span class="mi">24</span>
+<span class="mi">2102001</span>;Statistica;<span class="mi">8</span>;NA
+<span class="mi">2102345</span>;Informatica;<span class="mi">15</span>;<span class="mi">30</span>
+<span class="mi">2102890</span>;Analisi;<span class="mi">6</span>;<span class="mi">18</span>
+<span class="mi">2102345</span>;Informatica;<span class="mi">15</span>;<span class="mi">30</span>
+<span class="mi">2103112</span>;Statistica;?;<span class="mi">22</span>
+<span class="mi">2103456</span>;Informatica;<span class="mi">10</span>;
+<span class="mi">2103789</span>;Analisi;<span class="mi">9</span>;<span class="mi">21</span>
+<span class="mi">2104012</span>;Statistica;<span class="mi">14</span>;<span class="mi">27</span>
+<span class="mi">2104333</span>;Informatica;<span class="mi">11</span>;<span class="mi">26</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Righe lette: <span class="mi">11</span>
+Valori mancanti per colonna:
+matricola     <span class="mi">0</span>
+corso         <span class="mi">0</span>
+ore_studio    <span class="mi">2</span>
+voto          <span class="mi">2</span>
+dtype: int64
+Righe duplicate tolte: <span class="mi">1</span>
+Righe senza voto tolte: <span class="mi">2</span>
+Ore mancanti sostituite con la media: <span class="mi">11.2</span>
+Righe pulite: <span class="mi">8</span>, mancanti: <span class="mi">0</span>
+Voto medio: <span class="mi">24.50</span>
+Ore medie: <span class="mi">11.18</span>
+             ore_studio  voto
+corso                        
+Analisi             <span class="mi">8.7</span>  <span class="mi">21.0</span>
+Informatica        <span class="mi">13.0</span>  <span class="mi">28.0</span>
+Statistica         <span class="mi">12.4</span>  <span class="mi">25.7</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>togliete <code>na<em>values</code> → <code>?</code> resta come testo, la colonna <code>ore</em>studio</code> diventa di testo e <code>mean()</code> dà <code>TypeError</code></li>
+<li>togliete <code>drop_duplicates()</code> → <code>Righe pulite: 9</code>, <code>Voto medio: 25.11</code>: la riga ripetuta pesa due volte</li>
+<li>al posto di <code>fillna</code> scrivete <code>q = q.dropna()</code> → <code>Righe pulite: 6</code>, <code>Voto medio: 25.00</code></li>
+</ul>
+<hr>
+<h2>Esercizio 8 — Gli esami del primo anno (<code>esami<em>primo</em>anno.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Generate 150 esami con <code>rng = np.random.default_rng(2026)</code>: prima i voti con <code>np.round(rng.normal(23, 5, size=150))</code>, poi il corso con <code>rng.choice(CORSI, size=150)</code>, dove <code>CORSI</code> contiene Analisi, Statistica e Informatica. Cambiando l'ordine cambiano i numeri.</li>
+<li>Mettete tutto nel DataFrame <code>esami</code>: i voti oltre 30 diventano 30 con <code>np.minimum(voti, 30)</code>, poi <code>astype(int)</code>. Stampate il numero di esami e di 30.</li>
+<li>Aggiungete la colonna <code>promosso</code> (voto almeno 18) e stampate la quota di promossi per corso con <code>groupby("corso")["promosso"].mean()</code>: la media di booleani è una quota. Scorrete il risultato con <code>.items()</code>.</li>
+<li>Create la tabella <code>corsi</code> con i crediti: Analisi 9, Statistica 9, Informatica 6, Economia 9. Con una catena di metodi unite le tabelle (<code>merge(corsi, on="corso", how="left")</code>), tenete i promossi (<code>query("promosso")</code>) e stampate i crediti acquisiti in totale.</li>
+<li>Con un'altra catena calcolate per corso numero, media, minimo e massimo dei voti dei promossi (<code>agg(["count", "mean", "min", "max"])</code>, poi <code>round(1)</code>) e stampate la tabella.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Esami: <span class="mi">150</span>, voti <span class="mi">30</span>: <span class="mi">21</span>
+Analisi: promossi <span class="mi">87.3</span><span class="op">%</span>
+Informatica: promossi <span class="mi">88.4</span><span class="op">%</span>
+Statistica: promossi <span class="mi">86.5</span><span class="op">%</span>
+Crediti acquisiti: <span class="mi">1065</span>
+             count  mean  <span class="nb">min</span>  <span class="nb">max</span>
+corso                             
+Analisi         <span class="mi">48</span>  <span class="mi">24.2</span>   <span class="mi">18</span>   <span class="mi">30</span>
+Informatica     <span class="mi">38</span>  <span class="mi">24.4</span>   <span class="mi">18</span>   <span class="mi">30</span>
+Statistica      <span class="mi">45</span>  <span class="mi">24.2</span>   <span class="mi">18</span>   <span class="mi">30</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>how="inner"</code> → stesso risultato: tutti i corsi degli esami sono in <code>corsi</code>. Economia non compare perché non ha esami</li>
+<li>seed 1 → <code>voti 30: 6</code>, <code>Crediti acquisiti: 1029</code></li>
+<li><code>query("voto >= 27")</code> → <code>Crediti acquisiti: 330</code> e tutti i minimi a 27</li>
+</ul>
+<hr>
+<h2>Challenge a scelta</h2>
+<p>Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.</p>
+<table>
+<thead><tr>
+<th>Tema</th>
+<th>Challenge</th>
+<th>File</th>
+</tr></thead><tbody>
+<tr>
+<td>Mercati e finanza</td>
+<td>Il portafoglio simulato</td>
+<td><code>ch_mercati.py</code></td>
+</tr>
+<tr>
+<td>Sport</td>
+<td>La gara simulata</td>
+<td><code>ch_sport.py</code></td>
+</tr>
+<tr>
+<td>Imprese e marketing</td>
+<td>Un mese di vendite</td>
+<td><code>ch_negozio.py</code></td>
+</tr>
+<tr>
+<td>Salute e scienza</td>
+<td>Lo studio simulato</td>
+<td><code>ch_salute.py</code></td>
+</tr>
+<tr>
+<td>Caso e probabilità</td>
+<td>Dadi e porte</td>
+<td><code>ch_probabilita.py</code></td>
+</tr>
+</tbody></table>
+<p><strong>Tutte le challenge chiedono:</strong></p>
+<ul>
+<li>Generate i dati del tema con <code>rng = np.random.default_rng(seed)</code>, con il seed indicato e le estrazioni nell'ordine della consegna, così l'output coincide con l'esempio.</li>
+<li>Almeno un calcolo vettorizzato su un array o una matrice, senza cicli <code>for</code>.</li>
+<li>Almeno un filtro booleano: <code>array[condizione]</code> oppure <code>np.sum(condizione)</code>.</li>
+<li>Una simulazione Monte Carlo di 10 000 ripetizioni, anche questa senza cicli, che stima una probabilità.</li>
+<li>Un DataFrame Pandas costruito da un dizionario o da un array, con una colonna calcolata.</li>
+<li>Una statistica per gruppo con <code>groupby</code>.</li>
+<li>Type hints sulle variabili principali; niente <code>pivot_table</code> e niente grafici.</li>
+</ul>
+<hr>
+<h3>Challenge · Mercati e finanza — Il portafoglio simulato (<code>ch_mercati.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Lo studente investitore ha diviso 10 000 EUR tra ENRG, BANK e TECH con i pesi della tabella. Simulate 20 giorni di rendimenti con <code>rng = np.random.default_rng(7)</code> e <code>rng.normal(MEDIE, VOL, size=(20, 3))</code>: una riga per giorno, una colonna per titolo. Gli array <code>MEDIE</code> e <code>VOL</code> valgono colonna per colonna (broadcasting).</li>
+<li>Stampate la volatilità di ogni titolo, cioè la deviazione standard campionaria per colonna (<code>axis=0</code>), in percentuale con due decimali.</li>
+<li>Il rendimento giornaliero del portafoglio è <code>np.sum(rend * PESI, axis=1)</code> e il valore finale è 10 000 · <code>np.prod(1 + port)</code>. Stampate il valore finale, i giorni in perdita (filtro) e il peggior giorno.</li>
+<li>Monte Carlo: simulate 10 000 mesi di 20 giorni di TECH (<code>size=(10_000, 20)</code>), sommate i rendimenti di ogni mese e stimate la probabilità che TECH perda più del 5%.</li>
+<li>Mettete i rendimenti in un DataFrame con <code>pd.DataFrame(rend, columns=TITOLI)</code>, aggiungete le colonne <code>settimana</code> (<code>np.arange(20) // 5 + 1</code>) e <code>portafoglio</code>, e stampate il rendimento medio del portafoglio per settimana con <code>groupby</code>.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Titolo</th>
+<th>Rendimento medio giornaliero</th>
+<th>Volatilità giornaliera</th>
+<th>Peso</th>
+</tr></thead><tbody>
+<tr>
+<td>ENRG</td>
+<td>0.10%</td>
+<td>1.2%</td>
+<td>30%</td>
+</tr>
+<tr>
+<td>BANK</td>
+<td>0.05%</td>
+<td>0.9%</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>TECH</td>
+<td>0.20%</td>
+<td>2.5%</td>
+<td>20%</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Volatilità ENRG: <span class="mi">0.88</span><span class="op">%</span>
+Volatilità BANK: <span class="mi">0.86</span><span class="op">%</span>
+Volatilità TECH: <span class="mi">2.21</span><span class="op">%</span>
+Valore finale di <span class="mi">10000</span> EUR: <span class="mi">9682.07</span> EUR
+Giorni <span class="kw">in</span> perdita: <span class="mi">11</span> su <span class="mi">20</span>
+Peggior giorno: <span class="op">-</span><span class="mi">2.09</span><span class="op">%</span>
+P(TECH perde più <span class="kw">del</span> <span class="mi">5</span><span class="op">%</span> <span class="kw">in</span> un mese): <span class="mi">21.1</span><span class="op">%</span>
+Settimana <span class="mi">1</span>: rendimento medio <span class="op">-</span><span class="mi">0.08</span><span class="op">%</span>
+Settimana <span class="mi">2</span>: rendimento medio <span class="op">-</span><span class="mi">0.85</span><span class="op">%</span>
+Settimana <span class="mi">3</span>: rendimento medio <span class="op">-</span><span class="mi">0.12</span><span class="op">%</span>
+Settimana <span class="mi">4</span>: rendimento medio <span class="mi">0.41</span><span class="op">%</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>tutto su TECH (<code>PESI = [0.0, 0.0, 1.0]</code>) → <code>Valore finale di 10000 EUR: 8892.68 EUR</code>, <code>Peggior giorno: -6.09%</code></li>
+<li>mesi di 60 giorni nella simulazione → <code>18.6%</code>: su un periodo più lungo pesa di più il rendimento medio positivo</li>
+<li>seed 8 → <code>Volatilità TECH: 2.65%</code>, <code>Valore finale di 10000 EUR: 9897.43 EUR</code></li>
+</ul>
+<hr>
+<h3>Challenge · Sport — La gara simulata (<code>ch_sport.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Simulate i tempi sul giro di una gara di 15 giri per Ferri, Lanza, Moro e Neri con <code>rng = np.random.default_rng(15)</code> e <code>rng.normal(BASE, 0.6, size=(15, 4))</code>: una riga per giro, una colonna per pilota. <code>BASE</code> contiene il passo di ogni pilota (tabella).</li>
+<li>Al giro 8 tutti fanno il pit stop: aggiungete 20 secondi alla riga <code>tempi[7]</code>. Contate i giri anomali (oltre 100 s) e, per ogni pilota, i giri sotto i 92 s con <code>np.sum(tempi < 92, axis=0)</code>.</li>
+<li>Monte Carlo: simulate 10 000 gare di 15 giri per Ferri (passo 92.0 s) e poi per Moro (92.2 s), sempre con deviazione standard 0.6, sommate i tempi di ogni gara e stimate la probabilità che Moro arrivi davanti a Ferri.</li>
+<li>Create un DataFrame con pilota, scuderia, tempo totale e giro migliore (<code>np.min(tempi, axis=0)</code>), aggiungete la colonna <code>distacco</code> dal più veloce e stampatelo ordinato per tempo totale, con <code>round(1)</code>.</li>
+<li>Stampate il tempo totale medio di ogni scuderia con <code>groupby</code>.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Pilota</th>
+<th>Scuderia</th>
+<th>Passo (s)</th>
+</tr></thead><tbody>
+<tr>
+<td>Ferri</td>
+<td>Scuderia Rossa</td>
+<td>92.0</td>
+</tr>
+<tr>
+<td>Lanza</td>
+<td>Scuderia Rossa</td>
+<td>92.4</td>
+</tr>
+<tr>
+<td>Moro</td>
+<td>Scuderia Blu</td>
+<td>92.2</td>
+</tr>
+<tr>
+<td>Neri</td>
+<td>Scuderia Blu</td>
+<td>92.6</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Giri anomali (oltre <span class="mi">100</span> s): <span class="mi">4</span>
+Ferri, giri sotto i <span class="mi">92</span> s: <span class="mi">7</span>
+Lanza, giri sotto i <span class="mi">92</span> s: <span class="mi">5</span>
+Moro, giri sotto i <span class="mi">92</span> s: <span class="mi">1</span>
+Neri, giri sotto i <span class="mi">92</span> s: <span class="mi">1</span>
+P(Moro batte Ferri): <span class="mi">18.5</span><span class="op">%</span>
+  pilota        scuderia  totale  migliore  distacco
+<span class="mi">0</span>  Ferri  Scuderia Rossa  <span class="mi">1399.1</span>      <span class="mi">91.0</span>       <span class="mi">0.0</span>
+<span class="mi">1</span>  Lanza  Scuderia Rossa  <span class="mi">1405.4</span>      <span class="mi">91.4</span>       <span class="mi">6.3</span>
+<span class="mi">2</span>   Moro    Scuderia Blu  <span class="mi">1405.6</span>      <span class="mi">91.3</span>       <span class="mi">6.5</span>
+<span class="mi">3</span>   Neri    Scuderia Blu  <span class="mi">1409.2</span>      <span class="mi">91.8</span>      <span class="mi">10.1</span>
+scuderia
+Scuderia Blu      <span class="mi">1407.4</span>
+Scuderia Rossa    <span class="mi">1402.3</span>
+Name: totale, dtype: float64</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>safety car al giro 4 (<code>tempi[3]</code> più 15 s) → <code>Giri anomali (oltre 100 s): 8</code> e tutti i totali crescono di 15 s</li>
+<li>Moro con passo 92.6 nella simulazione → <code>P(Moro batte Ferri): 0.2%</code></li>
+<li>deviazione standard 0.3 sui giri della gara → Moro passa davanti a Lanza con distacco <code>4.8</code></li>
+</ul>
+<hr>
+<h3>Challenge · Imprese e marketing — Un mese di vendite (<code>ch_negozio.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Simulate i pezzi venduti in 30 giorni per i 5 prodotti del negozio con <code>rng = np.random.default_rng(30)</code> e <code>rng.integers(0, 6, size=(30, 5))</code>: una riga per giorno, una colonna per prodotto, nell'ordine della tabella.</li>
+<li>L'incasso di ogni giorno è <code>np.sum(pezzi * PREZZI, axis=1)</code>. Stampate il fatturato del mese, l'incasso medio giornaliero e i giorni sopra 300 EUR.</li>
+<li>Monte Carlo per il test A/B: ogni versione della pagina ha 1000 visitatori; la A converte con probabilità 4%, la B con 5%. Simulate 10 000 volte gli acquisti con <code>rng.binomial</code>, prima per A e poi per B, e stimate la probabilità che B venda più di A.</li>
+<li>Create un DataFrame dei prodotti con categoria, pezzi venduti (<code>np.sum(pezzi, axis=0)</code>), prezzo e costo. Aggiungete la colonna <code>margine</code>, pezzi per (prezzo − costo), e stampate prodotto, pezzi e margine con <code>round(2)</code>.</li>
+<li>Stampate il margine totale per categoria con <code>groupby</code>.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Prodotto</th>
+<th>Categoria</th>
+<th>Prezzo (EUR)</th>
+<th>Costo (EUR)</th>
+</tr></thead><tbody>
+<tr>
+<td>zaino</td>
+<td>scuola</td>
+<td>39.90</td>
+<td>22.00</td>
+</tr>
+<tr>
+<td>borraccia</td>
+<td>casa</td>
+<td>14.50</td>
+<td>6.00</td>
+</tr>
+<tr>
+<td>quaderno</td>
+<td>scuola</td>
+<td>3.20</td>
+<td>1.10</td>
+</tr>
+<tr>
+<td>cuffie</td>
+<td>tech</td>
+<td>59.00</td>
+<td>38.00</td>
+</tr>
+<tr>
+<td>lampada</td>
+<td>casa</td>
+<td>24.90</td>
+<td>13.50</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Fatturato <span class="kw">del</span> mese: <span class="mi">9588.20</span> EUR
+Incasso medio giornaliero: <span class="mi">319.61</span> EUR
+Giorni sopra <span class="mi">300</span> EUR: <span class="mi">18</span> su <span class="mi">30</span>
+P(la pagina B vende più della A): <span class="mi">84.7</span><span class="op">%</span>
+    prodotto  pezzi  margine
+<span class="mi">0</span>      zaino     <span class="mi">71</span>   <span class="mi">1270.9</span>
+<span class="mi">1</span>  borraccia     <span class="mi">73</span>    <span class="mi">620.5</span>
+<span class="mi">2</span>   quaderno     <span class="mi">74</span>    <span class="mi">155.4</span>
+<span class="mi">3</span>     cuffie     <span class="mi">63</span>   <span class="mi">1323.0</span>
+<span class="mi">4</span>    lampada     <span class="mi">70</span>    <span class="mi">798.0</span>
+categoria
+casa      <span class="mi">1418.5</span>
+scuola    <span class="mi">1426.3</span>
+tech      <span class="mi">1323.0</span>
+Name: margine, dtype: float64</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>5000 visitatori per versione → <code>99.2%</code>: con più visitatori il test distingue meglio le due pagine</li>
+<li>zaino a 35.90 EUR → <code>Fatturato del mese: 9304.20 EUR</code>, margine di <code>scuola</code> <code>1142.3</code></li>
+</ul>
+<hr>
+<h3>Challenge · Salute e scienza — Lo studio simulato (<code>ch_salute.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Simulate 20 pazienti, da <code>P01</code> a <code>P20</code> (<code>"P" + str(i).zfill(2)</code>): i primi 10 nel gruppo <code>trattamento</code>, gli altri nel <code>controllo</code>. Con <code>rng = np.random.default_rng(11)</code> estraete in quest'ordine l'età (<code>rng.integers(35, 71, size=20)</code>), la pressione sistolica prima (<code>np.round(rng.normal(150, 12, size=20))</code>) e il calo (<code>rng.normal(2 + 6 * (gruppo == "trattamento"), 5)</code>): in media 8 mmHg nel trattamento e 2 nel controllo.</li>
+<li>Calcolate senza cicli la pressione dopo (<code>np.round(prima - calo)</code>) e la differenza prima − dopo. Un paziente è migliorato se la pressione scende di almeno 5 mmHg. Stampate il calo medio, i migliorati di ogni gruppo (filtro sul gruppo) e la quota complessiva di migliorati.</li>
+<li>Monte Carlo: se l'integratore non avesse effetto, ogni paziente migliorerebbe con la stessa probabilità, pari alla quota complessiva. Simulate 10 000 gruppi di 10 pazienti con <code>rng.binomial</code> e stimate la probabilità di avere almeno tanti migliorati quanti nel gruppo trattamento.</li>
+<li>Create un DataFrame con codice, età, gruppo, pressione prima e dopo, aggiungete la colonna <code>differenza</code> e stampate le prime 3 righe.</li>
+<li>Stampate età media e differenza media per gruppo con <code>groupby</code> e <code>round(1)</code>.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Calo medio: <span class="mi">4.6</span> mmHg
+Migliorati trattamento: <span class="mi">8</span> su <span class="mi">10</span>
+Migliorati controllo: <span class="mi">2</span> su <span class="mi">10</span>
+Migliorati <span class="kw">in</span> tutto: <span class="mi">50</span><span class="op">%</span>
+P(almeno <span class="mi">8</span> su <span class="mi">10</span> senza effetto): <span class="mi">5.3</span><span class="op">%</span>
+  codice  eta       gruppo  prima   dopo  differenza
+<span class="mi">0</span>    P01   <span class="mi">39</span>  trattamento  <span class="mi">169.0</span>  <span class="mi">157.0</span>        <span class="mi">12.0</span>
+<span class="mi">1</span>    P02   <span class="mi">39</span>  trattamento  <span class="mi">149.0</span>  <span class="mi">142.0</span>         <span class="mi">7.0</span>
+<span class="mi">2</span>    P03   <span class="mi">63</span>  trattamento  <span class="mi">158.0</span>  <span class="mi">154.0</span>         <span class="mi">4.0</span>
+              eta  differenza
+gruppo                       
+controllo    <span class="mi">55.9</span>         <span class="mi">0.6</span>
+trattamento  <span class="mi">49.3</span>         <span class="mi">8.6</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>soglia di 10 mmHg → <code>Migliorati trattamento: 5 su 10</code>, <code>Migliorati controllo: 0 su 10</code>, <code>P(almeno 5 su 10 senza effetto): 7.5%</code></li>
+<li>integratore senza effetto (<code>2 + 0 * (gruppo == "trattamento")</code>) → <code>Migliorati trattamento: 4 su 10</code>, <code>34.8%</code></li>
+</ul>
+<hr>
+<h3>Challenge · Caso e probabilità — Dadi e porte (<code>ch_probabilita.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Simulate 1000 lanci di due dadi con <code>rng = np.random.default_rng(6)</code>: prima <code>dado1</code>, poi <code>dado2</code>, ciascuno con <code>rng.integers(1, 7, size=1000)</code>. Calcolate la somma senza cicli.</li>
+<li>Stampate la somma media e la frequenza della somma 7, delle somme almeno 10 (con un filtro) e dei doppi, accanto alle probabilità esatte 6/36, 6/36 e 1/6.</li>
+<li>Monte Carlo per Monty Hall: in 10 000 partite estraete la porta dell'auto e la prima scelta del giocatore, ciascuna con <code>rng.integers(0, 3, size=10_000)</code>. Chi resta vince quando le due porte coincidono, chi cambia vince negli altri casi: stimate le due probabilità.</li>
+<li>Mettete i lanci in un DataFrame con le colonne <code>dado1</code> e <code>dado2</code> e aggiungete la colonna <code>somma</code>.</li>
+<li>Stampate la somma media per ogni valore del primo dado con <code>groupby</code>, accanto al valore teorico (faccia + 3.5).</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Somma media: <span class="mi">7.05</span> (teorica <span class="mi">7.00</span>)
+Somma <span class="mi">7</span>: <span class="mi">15.1</span><span class="op">%</span> (esatta <span class="mi">16.7</span><span class="op">%</span>)
+Somma almeno <span class="mi">10</span>: <span class="mi">188</span> lanci (<span class="mi">18.8</span><span class="op">%</span>, esatta <span class="mi">16.7</span><span class="op">%</span>)
+Doppi: <span class="mi">16.8</span><span class="op">%</span> (esatta <span class="mi">16.7</span><span class="op">%</span>)
+Monty Hall, vince chi resta: <span class="mi">33.8</span><span class="op">%</span>
+Monty Hall, vince chi cambia: <span class="mi">66.2</span><span class="op">%</span>
+Primo dado <span class="mi">1</span>: somma media <span class="mi">4.30</span> (teorica <span class="mi">4.50</span>)
+Primo dado <span class="mi">2</span>: somma media <span class="mi">5.70</span> (teorica <span class="mi">5.50</span>)
+Primo dado <span class="mi">3</span>: somma media <span class="mi">6.26</span> (teorica <span class="mi">6.50</span>)
+Primo dado <span class="mi">4</span>: somma media <span class="mi">7.60</span> (teorica <span class="mi">7.50</span>)
+Primo dado <span class="mi">5</span>: somma media <span class="mi">8.54</span> (teorica <span class="mi">8.50</span>)
+Primo dado <span class="mi">6</span>: somma media <span class="mi">9.60</span> (teorica <span class="mi">9.50</span>)</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>100 000 lanci → <code>Somma 7: 16.6%</code>, <code>Somma almeno 10: 16493 lanci (16.5%, esatta 16.7%)</code> e medie per gruppo vicine a quelle teoriche</li>
+<li>raggruppate per il secondo dado → stessi valori teorici, medie diverse (<code>Secondo dado 3: somma media 6.37</code>)</li>
+</ul>
 <hr>
 <h2>Domande di verifica</h2>
 <ol>
-<li>Qual e' la differenza principale tra una lista Python e un array NumPy? Perche le operazioni NumPy sono piu veloci?</li>
+<li>In <code>voti_numpy.py</code>, cosa contiene <code>voti >= 18</code>? Perché <code>voti[voti >= 18]</code> non ha bisogno di un ciclo?</li>
+<li>In <code>ore_studio.py</code>, che differenza c'è tra <code>axis=0</code> e <code>axis=1</code>? Quale serve per la media di ogni corso?</li>
+<li>Perché <code>np.mean(np.abs(z) > 2)</code> è una quota? Cosa diventano <code>True</code> e <code>False</code> nel calcolo?</li>
+<li>A cosa serve il seed in <code>np.random.default_rng(42)</code>? Perché conviene fissarlo quando si consegna un'analisi?</li>
+<li>In <code>test_crocette.py</code>, perché il punteggio medio con la penalità di 1/3 è circa 0?</li>
+<li>In <code>pulizia_questionario.py</code>, quando conviene togliere le righe con valori mancanti e quando sostituirli con la media?</li>
+<li>Che differenza c'è tra <code>how="left"</code> e <code>how="inner"</code> in <code>merge</code>? Quando danno lo stesso risultato?</li>
 </ol>
-<ol>
-<li>Cosa fa il metodo <code>np.sum(array > 5)</code>? Perche funziona, dato che il confronto produce booleani?</li>
-</ol>
-<ol>
-<li>Spiegate la differenza tra <code>dropna()</code> e <code>fillna()</code> in Pandas. Quando preferireste l'uno all'altro?</li>
-</ol>
-<ol>
-<li>Qual e' la differenza tra <code>df["colonna"]</code> e <code>df[["colonna"]]</code>? Che tipo restituisce ciascuna?</li>
-</ol>
-<ol>
-<li>Come funziona il metodo <code>groupby</code>? Descrivete il pattern "split-apply-combine" con un esempio.</li>
-</ol>
-<ol>
-<li>Cosa succede se fate un merge tra due DataFrame e una chiave del DataFrame sinistro non ha corrispondenza nel destro? Come cambia il risultato con <code>how="inner"</code> vs <code>how="left"</code>?</li>
-</ol>
-<ol>
-<li>Perche nel metodo Monte Carlo per stimare pi greco l'errore diminuisce aumentando il numero di punti? A quale velocita diminuisce (in termini di n)?</li>
-</ol>
-<ol>
-<li>Cosa fa <code>pd.to_numeric(colonna, errors="coerce")</code>? Perche e' preferibile a un cast diretto come <code>colonna.astype(int)</code>?</li>
-</ol>
-<hr>
-<h2>Osservazioni finali</h2>
-<p>In questo laboratorio avete sperimentato due strumenti che trasformano Python da linguaggio di programmazione generico a piattaforma per l'analisi dei dati.</p>
-<p><strong>NumPy</strong> vi ha mostrato il concetto di <em>vettorizzazione</em>: sostituire i cicli espliciti con operazioni su interi array. Non e' solo una questione di comodita sintattica, ma di prestazioni: le operazioni NumPy sono tipicamente 50-100 volte piu veloci dei cicli Python equivalenti. Questo perche NumPy delega il lavoro a codice C ottimizzato che opera su blocchi contigui di memoria, sfruttando le istruzioni SIMD del processore.</p>
-<p><strong>Pandas</strong> vi ha dato gli strumenti per l'intero ciclo di vita dei dati tabulari: caricamento, esplorazione, pulizia, trasformazione e aggregazione. Il metodo <code>groupby</code>, in particolare, implementa il pattern <em>split-apply-combine</em> che e' alla base di gran parte dell'analisi statistica: dividere i dati in gruppi omogenei, applicare una funzione a ciascun gruppo, ricombinare i risultati.</p>
-<p>Un punto importante: in questo laboratorio avete visto che i dati reali sono quasi sempre "sporchi" — valori mancanti, tipi sbagliati, stringhe inconsistenti, duplicati. La pulizia dei dati non e' un passaggio preliminare fastidioso, ma una fase critica dell'analisi. Decisioni prese in questa fase (come riempire un valore mancante con la mediana piuttosto che eliminare la riga) possono influenzare significativamente i risultati finali.</p>
-<p>Nel prossimo laboratorio aggiungeremo la visualizzazione: imparerete a trasformare numeri e tabelle in grafici che comunicano i risultati in modo immediato ed efficace.</p>
 <nav class="bottom-nav"><span><a href="L06_classi_oggetti.html">← L06</a></span><span><a href="../../index.html">Home</a></span><span><a href="L08_visualizzazione_progetto.html">L08 →</a></span></nav>
 </body>
 </html>

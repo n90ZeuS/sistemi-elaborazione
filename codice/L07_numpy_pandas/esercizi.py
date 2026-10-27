@@ -1,395 +1,461 @@
 # L07 — NumPy e Pandas
-# Esercizi per il laboratorio 07
+# Soluzioni degli esercizi del laboratorio 07
 #
-# Esercizi pratici di calcolo numerico con NumPy e manipolazione dati con Pandas.
-# Le importazioni sono protette da try/except per gestire ambienti senza le librerie.
-# Ogni esercizio include assert per verificare la correttezza.
+# Ogni esercizio corrisponde a un file della traccia (nome tra parentesi).
+# Per provarne uno solo, copiatelo in un file a parte.
+# I file di dati usati dagli esercizi sono in questa stessa cartella.
 
+
+# ============================================================================
+# ESERCIZIO 1: i voti in un array — voti_numpy.py
+# ============================================================================
+print("--- Esercizio 1: I voti in un array ---")
+import numpy as np
+
+voti: np.ndarray = np.array([28, 17, 30, 24, 15, 21, 27, 19, 30, 23])
+
+print(f"Forma: {voti.shape}, tipo: {voti.dtype}")
+media: float = np.mean(voti)
+print(f"Media: {media:.1f}, mediana: {np.median(voti):.1f}")
+print(f"Dev. std campionaria: {np.std(voti, ddof=1):.2f}")
+
+promossi: np.ndarray = voti[voti >= 18]       # filtro booleano
+quota: float = np.sum(voti >= 18) / voti.size  # True conta 1
+print(f"Promossi: {promossi.size} su {voti.size} ({quota:.1%})")
+print(f"Voti dei promossi: {promossi}")
+print(f"Media dei promossi: {np.mean(promossi):.1f}")
+
+scarti: np.ndarray = voti - media              # senza cicli
+print(f"Scarti dalla media: {np.round(scarti, 1)}")
+print(f"Somma degli scarti: {np.sum(scarti):.1f}")
+print()
+
+
+# ============================================================================
+# ESERCIZIO 2: le ore di studio — ore_studio.py
+# ============================================================================
+print("--- Esercizio 2: Le ore di studio ---")
+import numpy as np
+
+corsi: list[str] = ["Statistica", "Analisi", "Informatica"]
+# righe = settimane, colonne = corsi
+ore: np.ndarray = np.array([[6, 4, 3],
+                            [8, 5, 2],
+                            [5, 7, 4],
+                            [10, 6, 5]])
+
+print(f"Forma: {ore.shape}, ore totali: {np.sum(ore)}")
+per_corso: np.ndarray = np.sum(ore, axis=0)
+per_settimana: np.ndarray = np.sum(ore, axis=1)
+print(f"Ore per corso: {per_corso}")
+print(f"Ore per settimana: {per_settimana}")
+
+quote: np.ndarray = per_corso / np.sum(ore)    # array / scalare
+for corso, q in zip(corsi, quote):
+    print(f"{corso}: {q:.1%}")
+
+settimane: np.ndarray = np.arange(1, ore.shape[0] + 1)
+print(f"Settimane oltre 15 ore: {settimane[per_settimana > 15]}")
+
+medie: np.ndarray = np.mean(ore, axis=0)
+print(f"Medie per corso: {medie}")
+print("Scarti dalla media del corso:")
+print(ore - medie)                             # broadcasting
+print()
+
+
+# ============================================================================
+# ESERCIZIO 3: altezze simulate — altezze.py
+# ============================================================================
+print("--- Esercizio 3: Altezze simulate ---")
+import numpy as np
+
+SEED: int = 42
+N: int = 500
+
+rng = np.random.default_rng(SEED)
+altezze: np.ndarray = rng.normal(loc=170, scale=10, size=N)
+print(f"Prime 5 altezze: {np.round(altezze[:5], 1)}")
+
+media: float = np.mean(altezze)
+dev: float = np.std(altezze, ddof=1)
+print(f"Media: {media:.1f} cm, dev. std: {dev:.1f} cm")
+print(f"Minimo: {np.min(altezze):.1f}, "
+      f"massimo: {np.max(altezze):.1f}")
+
+z: np.ndarray = (altezze - media) / dev        # z-score
+print(f"Dev. std degli z: {np.std(z, ddof=1):.2f}")
+
+entro_1: float = np.mean(np.abs(z) <= 1)       # quota di True
+oltre_2: float = np.mean(np.abs(z) > 2)
+print(f"Entro 1 dev. std: {entro_1:.1%} (teorica 68.3%)")
+print(f"Oltre 2 dev. std: {oltre_2:.1%} (teorica 4.6%)")
+
+alti: np.ndarray = altezze[(altezze >= 185) & (altezze < 195)]
+print(f"Tra 185 e 195 cm: {alti.size}")
+print()
+
+
+# ============================================================================
+# ESERCIZIO 4: rispondere a caso — test_crocette.py
+# ============================================================================
+print("--- Esercizio 4: Rispondere a caso ---")
 import math
+import numpy as np
 
-# ============================================================================
-# Importazione sicura delle librerie
-# ============================================================================
+DOMANDE: int = 10
+P: float = 0.25          # 4 opzioni, una giusta
+SOGLIA: int = 6          # risposte giuste per superare il test
+N: int = 100_000         # studenti simulati
 
-try:
-    import numpy as np
-    NUMPY_DISPONIBILE: bool = True
-except ImportError:
-    NUMPY_DISPONIBILE = False
-    print("ATTENZIONE: NumPy non e' installato. Installa con: pip install numpy")
+rng = np.random.default_rng(2027)
+# l'opzione 0 è quella giusta: ogni riga è uno studente
+risposte: np.ndarray = rng.integers(0, 4, size=(N, DOMANDE))
+giuste: np.ndarray = np.sum(risposte == 0, axis=1)
+print(f"Giuste dei primi 5 studenti: {giuste[:5]}")
+print(f"Media di risposte giuste: {np.mean(giuste):.2f} "
+      f"(teorica {DOMANDE * P:.2f})")
+print(f"Nessuna risposta giusta: {np.mean(giuste == 0):.1%}")
+print(f"Test superato (simulato): {np.mean(giuste >= SOGLIA):.2%}")
 
-try:
-    import pandas as pd
-    PANDAS_DISPONIBILE: bool = True
-except ImportError:
-    PANDAS_DISPONIBILE = False
-    print("ATTENZIONE: Pandas non e' installato. Installa con: pip install pandas")
+binom: np.ndarray = rng.binomial(n=DOMANDE, p=P, size=N)
+print(f"Test superato (binomiale): {np.mean(binom >= SOGLIA):.2%}")
+esatta: float = sum([math.comb(DOMANDE, k) * P**k
+                     * (1 - P)**(DOMANDE - k)
+                     for k in range(SOGLIA, DOMANDE + 1)])
+print(f"Test superato (esatta): {esatta:.2%}")
 
-
-# ============================================================================
-# ESERCIZIO 1: Operazioni su matrici con NumPy
-# ============================================================================
-
-if NUMPY_DISPONIBILE:
-
-    def crea_matrice_identita(n: int) -> np.ndarray:
-        """Crea una matrice identita' n x n."""
-        return np.eye(n)
-
-    def somma_matrici_np(a: np.ndarray, b: np.ndarray) -> np.ndarray:
-        """Somma elemento per elemento di due matrici."""
-        if a.shape != b.shape:
-            raise ValueError(f"Dimensioni incompatibili: {a.shape} vs {b.shape}")
-        return a + b
-
-    def prodotto_matrici_np(a: np.ndarray, b: np.ndarray) -> np.ndarray:
-        """Prodotto matriciale (dot product)."""
-        if a.shape[1] != b.shape[0]:
-            raise ValueError(
-                f"Colonne di A ({a.shape[1]}) != Righe di B ({b.shape[0]})"
-            )
-        return a @ b  # equivalente a np.dot(a, b)
-
-    def trasposta_np(matrice: np.ndarray) -> np.ndarray:
-        """Calcola la trasposta di una matrice."""
-        return matrice.T
-
-    def determinante_np(matrice: np.ndarray) -> float:
-        """Calcola il determinante di una matrice quadrata."""
-        if matrice.shape[0] != matrice.shape[1]:
-            raise ValueError("Il determinante e' definito solo per matrici quadrate")
-        return float(np.linalg.det(matrice))
-
-    def inversa_np(matrice: np.ndarray) -> np.ndarray:
-        """Calcola l'inversa di una matrice quadrata."""
-        det: float = determinante_np(matrice)
-        if abs(det) < 1e-10:
-            raise ValueError("La matrice e' singolare (determinante = 0)")
-        return np.linalg.inv(matrice)
-
-    def risolvi_sistema(a: np.ndarray, b: np.ndarray) -> np.ndarray:
-        """
-        Risolve il sistema lineare Ax = b.
-        Restituisce il vettore x.
-        """
-        return np.linalg.solve(a, b)
-
-    # --- Test operazioni matrici NumPy ---
-    m1: np.ndarray = np.array([[1, 2], [3, 4]], dtype=float)
-    m2: np.ndarray = np.array([[5, 6], [7, 8]], dtype=float)
-
-    # Somma
-    somma: np.ndarray = somma_matrici_np(m1, m2)
-    assert np.array_equal(somma, np.array([[6, 8], [10, 12]]))
-
-    # Prodotto: [[1*5+2*7, 1*6+2*8], [3*5+4*7, 3*6+4*8]] = [[19, 22], [43, 50]]
-    prodotto: np.ndarray = prodotto_matrici_np(m1, m2)
-    assert np.array_equal(prodotto, np.array([[19, 22], [43, 50]]))
-
-    # Trasposta
-    t: np.ndarray = trasposta_np(m1)
-    assert np.array_equal(t, np.array([[1, 3], [2, 4]]))
-
-    # Determinante di m1: 1*4 - 2*3 = -2
-    det: float = determinante_np(m1)
-    assert abs(det - (-2.0)) < 1e-9
-
-    # Inversa: A * A^(-1) = I
-    inv_m1: np.ndarray = inversa_np(m1)
-    identita_calcolata: np.ndarray = prodotto_matrici_np(m1, inv_m1)
-    identita_attesa: np.ndarray = crea_matrice_identita(2)
-    assert np.allclose(identita_calcolata, identita_attesa)
-
-    # Risolvi sistema: 2x + y = 5, x + 3y = 7 -> x = 1.6, y = 1.8
-    a_sist: np.ndarray = np.array([[2, 1], [1, 3]], dtype=float)
-    b_sist: np.ndarray = np.array([5, 7], dtype=float)
-    x_sist: np.ndarray = risolvi_sistema(a_sist, b_sist)
-    assert abs(x_sist[0] - 1.6) < 1e-9
-    assert abs(x_sist[1] - 1.8) < 1e-9
-
-    print("Esercizio 1 (Matrici NumPy): SUPERATO")
-else:
-    print("Esercizio 1 (Matrici NumPy): SALTATO (NumPy non disponibile)")
+punteggio: np.ndarray = giuste - (DOMANDE - giuste) / 3
+print(f"Punteggio medio con penalità: {np.mean(punteggio):.2f}")
+print(f"Punteggio negativo: {np.mean(punteggio < 0):.1%}")
+print()
 
 
 # ============================================================================
-# ESERCIZIO 2: Analisi statistica con NumPy
+# ESERCIZIO 5: il libretto in un dataframe — libretto.py
 # ============================================================================
+print("--- Esercizio 5: Il libretto in un DataFrame ---")
+import pandas as pd
 
-if NUMPY_DISPONIBILE:
+libretto: pd.DataFrame = pd.DataFrame({
+    "esame": ["Analisi I", "Statistica I", "Informatica",
+              "Economia", "Probabilità", "Demografia"],
+    "anno": [1, 1, 1, 1, 2, 2],
+    "crediti": [9, 9, 6, 9, 9, 6],
+    "voto": [24, 28, 30, 22, 26, 27],
+})
+print(libretto)
+print(f"Righe e colonne: {libretto.shape}")
 
-    def statistiche_numpy(dati: np.ndarray) -> dict[str, float]:
-        """
-        Calcola statistiche descrittive di un array con NumPy.
-        Piu' efficiente e preciso delle implementazioni manuali.
-        """
-        return {
-            "n": float(len(dati)),
-            "media": float(np.mean(dati)),
-            "mediana": float(np.median(dati)),
-            "dev_std": float(np.std(dati, ddof=1)),     # campionaria
-            "varianza": float(np.var(dati, ddof=1)),     # campionaria
-            "minimo": float(np.min(dati)),
-            "massimo": float(np.max(dati)),
-            "q1": float(np.percentile(dati, 25)),
-            "q3": float(np.percentile(dati, 75)),
-        }
+libretto["pesato"] = libretto["voto"] * libretto["crediti"]
+crediti: int = libretto["crediti"].sum()
+media: float = libretto["voto"].mean()
+ponderata: float = libretto["pesato"].sum() / crediti
+print(f"Crediti: {crediti}")
+print(f"Media aritmetica: {media:.2f}, ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {ponderata / 30 * 110:.1f}")
 
-    def genera_dati_normali(
-        media: float, dev_std: float, n: int, seed: int = 42
-    ) -> np.ndarray:
-        """Genera n dati da una distribuzione normale."""
-        rng: np.random.Generator = np.random.default_rng(seed)
-        return rng.normal(media, dev_std, n)
-
-    def normalizza(dati: np.ndarray) -> np.ndarray:
-        """Normalizzazione z-score: (x - media) / dev_std."""
-        m: float = float(np.mean(dati))
-        s: float = float(np.std(dati))
-        if s == 0:
-            raise ValueError("Deviazione standard zero: impossibile normalizzare")
-        return (dati - m) / s
-
-    def correlazione(x: np.ndarray, y: np.ndarray) -> float:
-        """Calcola il coefficiente di correlazione di Pearson tra x e y."""
-        if len(x) != len(y):
-            raise ValueError("Le serie devono avere la stessa lunghezza")
-        matrice_corr: np.ndarray = np.corrcoef(x, y)
-        return float(matrice_corr[0, 1])
-
-    # --- Test analisi statistica ---
-    # Genera dati con seed per riproducibilita'
-    dati_norm: np.ndarray = genera_dati_normali(100.0, 15.0, 1000, seed=42)
-
-    stats: dict[str, float] = statistiche_numpy(dati_norm)
-    assert stats["n"] == 1000.0
-    # Con 1000 campioni, la media dovrebbe essere vicina a 100
-    assert abs(stats["media"] - 100.0) < 2.0, f"Media troppo lontana da 100: {stats['media']}"
-    # La dev_std dovrebbe essere vicina a 15
-    assert abs(stats["dev_std"] - 15.0) < 2.0, f"Dev std troppo lontana da 15: {stats['dev_std']}"
-
-    # Normalizzazione: i dati normalizzati devono avere media ~0 e std ~1
-    dati_normalizzati: np.ndarray = normalizza(dati_norm)
-    assert abs(float(np.mean(dati_normalizzati))) < 1e-10
-    assert abs(float(np.std(dati_normalizzati)) - 1.0) < 1e-10
-
-    # Correlazione: dati perfettamente correlati
-    x_test: np.ndarray = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
-    y_test: np.ndarray = np.array([2.0, 4.0, 6.0, 8.0, 10.0])  # y = 2x
-    assert abs(correlazione(x_test, y_test) - 1.0) < 1e-9  # correlazione perfetta
-
-    # Correlazione negativa
-    y_neg: np.ndarray = np.array([10.0, 8.0, 6.0, 4.0, 2.0])
-    assert abs(correlazione(x_test, y_neg) - (-1.0)) < 1e-9
-
-    print("Esercizio 2 (Statistiche NumPy): SUPERATO")
-else:
-    print("Esercizio 2 (Statistiche NumPy): SALTATO (NumPy non disponibile)")
+migliori: pd.DataFrame = libretto[libretto["voto"] >= 26]
+migliori = migliori.sort_values("voto", ascending=False)
+print(migliori[["esame", "voto"]])
+primo: pd.DataFrame = libretto[(libretto["anno"] == 1)
+                               & (libretto["crediti"] == 9)]
+print(f"Esami da 9 crediti del primo anno: {len(primo)}")
+print()
 
 
 # ============================================================================
-# ESERCIZIO 3: Manipolazione DataFrame con Pandas
+# ESERCIZIO 6: esplorare un csv — esami_csv.py
 # ============================================================================
+print("--- Esercizio 6: Esplorare un CSV ---")
+import pandas as pd
 
-if PANDAS_DISPONIBILE:
+esami: pd.DataFrame = pd.read_csv("esami.csv", sep=";")
+print(esami.head(3))
+print(f"Righe e colonne: {esami.shape}")
+print(f"Colonne: {esami.columns.tolist()}")
+print(esami["voto"].describe().round(1))
+print(esami["corso"].value_counts())
 
-    def crea_dataframe_studenti() -> pd.DataFrame:
-        """
-        Crea un DataFrame di esempio con dati di studenti.
-        Colonne: nome, cognome, eta, voto_medio, corso_laurea, anno
-        """
-        dati: dict[str, list] = {
-            "nome": ["Alice", "Bob", "Carla", "Davide", "Eva",
-                     "Fabio", "Giulia", "Hasan", "Irene", "Luca"],
-            "cognome": ["Rossi", "Bianchi", "Verdi", "Neri", "Gialli",
-                        "Blu", "Rosa", "Marroni", "Viola", "Grigi"],
-            "eta": [22, 24, 21, 23, 22, 25, 21, 23, 24, 22],
-            "voto_medio": [28.5, 24.0, 29.0, 22.5, 27.0,
-                           25.5, 30.0, 23.0, 26.5, 28.0],
-            "corso_laurea": ["Informatica", "Matematica", "Informatica",
-                             "Fisica", "Informatica", "Matematica",
-                             "Informatica", "Fisica", "Matematica", "Informatica"],
-            "anno": [2, 3, 1, 2, 2, 3, 1, 2, 3, 2],
-        }
-        return pd.DataFrame(dati)
-
-    def filtra_per_corso(df: pd.DataFrame, corso: str) -> pd.DataFrame:
-        """Filtra il DataFrame per corso di laurea."""
-        return df[df["corso_laurea"] == corso].reset_index(drop=True)
-
-    def media_per_corso(df: pd.DataFrame) -> pd.Series:
-        """Calcola la media del voto_medio raggruppata per corso."""
-        return df.groupby("corso_laurea")["voto_medio"].mean().round(2)
-
-    def studenti_migliori(df: pd.DataFrame, n: int = 3) -> pd.DataFrame:
-        """Restituisce i top n studenti per voto_medio."""
-        return df.nlargest(n, "voto_medio")[["nome", "cognome", "voto_medio"]].reset_index(drop=True)
-
-    def aggiungi_colonna_lode(df: pd.DataFrame) -> pd.DataFrame:
-        """Aggiunge una colonna 'lode' che e' True se voto_medio >= 28."""
-        df_copia: pd.DataFrame = df.copy()
-        df_copia["lode"] = df_copia["voto_medio"] >= 28.0
-        return df_copia
-
-    def statistiche_per_gruppo(df: pd.DataFrame, colonna_gruppo: str) -> pd.DataFrame:
-        """Calcola statistiche aggregate per gruppo."""
-        return df.groupby(colonna_gruppo)["voto_medio"].agg(
-            ["mean", "std", "min", "max", "count"]
-        ).round(2)
-
-    # --- Test DataFrame ---
-    df: pd.DataFrame = crea_dataframe_studenti()
-    assert len(df) == 10
-    assert list(df.columns) == ["nome", "cognome", "eta", "voto_medio", "corso_laurea", "anno"]
-
-    # Filtra per corso
-    info: pd.DataFrame = filtra_per_corso(df, "Informatica")
-    assert len(info) == 5
-    assert all(info["corso_laurea"] == "Informatica")
-
-    # Media per corso
-    medie: pd.Series = media_per_corso(df)
-    assert "Informatica" in medie.index
-    assert "Matematica" in medie.index
-    # Informatica: (28.5+29+27+30+28)/5 = 28.5
-    assert abs(medie["Informatica"] - 28.5) < 0.01
-
-    # Top studenti
-    top: pd.DataFrame = studenti_migliori(df, 3)
-    assert len(top) == 3
-    assert top.iloc[0]["nome"] == "Giulia"  # voto 30.0
-
-    # Colonna lode
-    df_lode: pd.DataFrame = aggiungi_colonna_lode(df)
-    assert "lode" in df_lode.columns
-    num_con_lode: int = int(df_lode["lode"].sum())
-    assert num_con_lode == 4  # Alice(28.5), Carla(29), Giulia(30), Luca(28)
-
-    # Statistiche per gruppo
-    stats_gruppo: pd.DataFrame = statistiche_per_gruppo(df, "corso_laurea")
-    assert "Informatica" in stats_gruppo.index
-    assert "mean" in stats_gruppo.columns
-
-    print("Esercizio 3 (DataFrame Pandas): SUPERATO")
-else:
-    print("Esercizio 3 (DataFrame Pandas): SALTATO (Pandas non disponibile)")
+promossi: pd.DataFrame = esami[esami["voto"] >= 18]
+print(f"Promossi: {len(promossi)} su {len(esami)}")
+stat_2: pd.DataFrame = esami[(esami["corso"] == "Statistica")
+                             & (esami["anno"] == 2)]
+print(f"Statistica, secondo anno: {stat_2['matricola'].tolist()}")
+print(esami.groupby("corso")["voto"].mean().round(1))
+print()
 
 
 # ============================================================================
-# ESERCIZIO 4: Pulizia dati (Data Cleaning)
+# ESERCIZIO 7: pulire un questionario — pulizia_questionario.py
 # ============================================================================
+print("--- Esercizio 7: Pulire un questionario ---")
+import pandas as pd
 
-if PANDAS_DISPONIBILE and NUMPY_DISPONIBILE:
+q: pd.DataFrame = pd.read_csv("questionario.csv", sep=";",
+                              na_values=["", "NA", "?"])
+print(f"Righe lette: {len(q)}")
+print("Valori mancanti per colonna:")
+print(q.isna().sum())
 
-    def crea_dati_sporchi() -> pd.DataFrame:
-        """
-        Crea un DataFrame con dati 'sporchi' per praticare la pulizia:
-        - valori mancanti (NaN)
-        - duplicati
-        - tipi inconsistenti
-        - outlier
-        """
-        dati: dict[str, list] = {
-            "id": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 3, 5],
-            "temperatura": [36.5, 37.0, np.nan, 38.2, 36.8,
-                            99.9, 37.1, np.nan, 36.9, 37.5, 36.5, 36.8],
-            "pressione": [120, 130, 125, np.nan, 118,
-                          122, 135, 128, np.nan, 115, 125, 118],
-            "frequenza_cardiaca": [72, 80, 68, 75, np.nan,
-                                   85, 90, 73, 78, 65, 68, np.nan],
-            "note": ["ok", "ok", "ok", "febbre", "ok",
-                     "errore sensore", "ok", "ok", "ok", "ok", "ok", "ok"],
-        }
-        return pd.DataFrame(dati)
+doppi: int = q.duplicated().sum()
+q = q.drop_duplicates()
+print(f"Righe duplicate tolte: {doppi}")
 
-    def rimuovi_duplicati(df: pd.DataFrame, colonna_id: str) -> pd.DataFrame:
-        """Rimuove le righe duplicate basandosi sulla colonna ID, tenendo la prima."""
-        return df.drop_duplicates(subset=[colonna_id], keep="first").reset_index(drop=True)
+senza_voto: int = q["voto"].isna().sum()
+q = q.dropna(subset=["voto"])
+print(f"Righe senza voto tolte: {senza_voto}")
 
-    def riempi_mancanti_media(df: pd.DataFrame, colonne: list[str]) -> pd.DataFrame:
-        """Riempie i valori mancanti con la media della colonna."""
-        df_pulito: pd.DataFrame = df.copy()
-        for col in colonne:
-            if col in df_pulito.columns:
-                media_col: float = df_pulito[col].mean()
-                df_pulito[col] = df_pulito[col].fillna(media_col).round(1)
-        return df_pulito
+media_ore: float = q["ore_studio"].mean()
+q = q.fillna({"ore_studio": round(media_ore, 1)})
+q["voto"] = q["voto"].astype(int)
+print(f"Ore mancanti sostituite con la media: {media_ore:.1f}")
 
-    def rimuovi_outlier_iqr(df: pd.DataFrame, colonna: str) -> pd.DataFrame:
-        """
-        Rimuove outlier usando il metodo IQR (InterQuartile Range).
-        Outlier = valori sotto Q1 - 1.5*IQR o sopra Q3 + 1.5*IQR
-        """
-        q1: float = float(df[colonna].quantile(0.25))
-        q3: float = float(df[colonna].quantile(0.75))
-        iqr: float = q3 - q1
-        limite_inf: float = q1 - 1.5 * iqr
-        limite_sup: float = q3 + 1.5 * iqr
-
-        maschera: pd.Series = (df[colonna] >= limite_inf) & (df[colonna] <= limite_sup)
-        return df[maschera].reset_index(drop=True)
-
-    def pipeline_pulizia(df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Pipeline completa di pulizia dati:
-        1. Rimuovi duplicati
-        2. Rimuovi outlier dalla temperatura
-        3. Riempi valori mancanti con la media
-        """
-        # Passo 1: rimuovi duplicati
-        df_clean: pd.DataFrame = rimuovi_duplicati(df, "id")
-
-        # Passo 2: rimuovi outlier dalla temperatura (prima di calcolare la media)
-        df_clean = rimuovi_outlier_iqr(df_clean, "temperatura")
-
-        # Passo 3: riempi valori mancanti
-        df_clean = riempi_mancanti_media(
-            df_clean, ["temperatura", "pressione", "frequenza_cardiaca"]
-        )
-
-        return df_clean
-
-    # --- Test pulizia dati ---
-    df_sporco: pd.DataFrame = crea_dati_sporchi()
-    assert len(df_sporco) == 12  # include duplicati
-
-    # Test rimuovi duplicati
-    df_no_dup: pd.DataFrame = rimuovi_duplicati(df_sporco, "id")
-    assert len(df_no_dup) == 10  # rimossi 2 duplicati
-
-    # Test pipeline completa
-    df_pulito: pd.DataFrame = pipeline_pulizia(df_sporco)
-
-    # Non ci devono essere NaN dopo la pulizia
-    assert df_pulito["temperatura"].isna().sum() == 0
-    assert df_pulito["pressione"].isna().sum() == 0
-    assert df_pulito["frequenza_cardiaca"].isna().sum() == 0
-
-    # L'outlier 99.9 deve essere stato rimosso
-    assert (df_pulito["temperatura"] > 50).sum() == 0
-
-    # Non ci devono essere duplicati
-    assert df_pulito["id"].is_unique
-
-    print("Esercizio 4 (Pulizia dati): SUPERATO")
-else:
-    print("Esercizio 4 (Pulizia dati): SALTATO (NumPy/Pandas non disponibili)")
+print(f"Righe pulite: {len(q)}, mancanti: {q.isna().sum().sum()}")
+print(f"Voto medio: {q['voto'].mean():.2f}")
+print(f"Ore medie: {q['ore_studio'].mean():.2f}")
+print(q.groupby("corso")[["ore_studio", "voto"]].mean().round(1))
+print()
 
 
 # ============================================================================
-esercizi_superati: int = 0
-totale: int = 4
-if NUMPY_DISPONIBILE:
-    esercizi_superati += 2
-if PANDAS_DISPONIBILE:
-    esercizi_superati += 1
-if PANDAS_DISPONIBILE and NUMPY_DISPONIBILE:
-    esercizi_superati += 1
+# ESERCIZIO 8: gli esami del primo anno — esami_primo_anno.py
+# ============================================================================
+print("--- Esercizio 8: Gli esami del primo anno ---")
+import numpy as np
+import pandas as pd
 
-print("\n" + "=" * 60)
-print(f"LABORATORIO 07: {esercizi_superati}/{totale} ESERCIZI SUPERATI")
-if esercizi_superati == totale:
-    print("TUTTI GLI ESERCIZI DEL LABORATORIO 07 SUPERATI!")
-else:
-    print("Installa le librerie mancanti per completare tutti gli esercizi.")
+N: int = 150
+CORSI: list[str] = ["Analisi", "Statistica", "Informatica"]
+
+rng = np.random.default_rng(2026)
+voti: np.ndarray = np.round(rng.normal(23, 5, size=N))
+esami: pd.DataFrame = pd.DataFrame({
+    "corso": rng.choice(CORSI, size=N),
+    "voto": np.minimum(voti, 30).astype(int),
+})
+corsi: pd.DataFrame = pd.DataFrame({
+    "corso": ["Analisi", "Statistica", "Informatica", "Economia"],
+    "crediti": [9, 9, 6, 9],
+})
+print(f"Esami: {len(esami)}, voti 30: {np.sum(esami['voto'] == 30)}")
+
+esami["promosso"] = esami["voto"] >= 18
+for corso, quota in esami.groupby("corso")["promosso"].mean().items():
+    print(f"{corso}: promossi {quota:.1%}")
+
+promossi: pd.DataFrame = (
+    esami
+    .merge(corsi, on="corso", how="left")
+    .query("promosso")
+)
+print(f"Crediti acquisiti: {promossi['crediti'].sum()}")
+riepilogo: pd.DataFrame = (
+    promossi
+    .groupby("corso")["voto"]
+    .agg(["count", "mean", "min", "max"])
+    .round(1)
+)
+print(riepilogo)
+print()
+
+
+# ============================================================================
+# CHALLENGE MERCATI E FINANZA: il portafoglio simulato — ch_mercati.py
+# ============================================================================
+print("--- Challenge Mercati e finanza: Il portafoglio simulato ---")
+import numpy as np
+import pandas as pd
+
+TITOLI: list[str] = ["ENRG", "BANK", "TECH"]
+MEDIE: np.ndarray = np.array([0.001, 0.0005, 0.002])
+VOL: np.ndarray = np.array([0.012, 0.009, 0.025])
+PESI: np.ndarray = np.array([0.3, 0.5, 0.2])
+GIORNI: int = 20
+N: int = 10_000
+
+rng = np.random.default_rng(7)
+# righe = giorni, colonne = titoli
+rend: np.ndarray = rng.normal(MEDIE, VOL, size=(GIORNI, 3))
+vol: np.ndarray = np.std(rend, axis=0, ddof=1)
+for titolo, v in zip(TITOLI, vol):
+    print(f"Volatilità {titolo}: {v:.2%}")
+port: np.ndarray = np.sum(rend * PESI, axis=1)   # broadcasting
+valore: float = 10_000 * np.prod(1 + port)
+print(f"Valore finale di 10000 EUR: {valore:.2f} EUR")
+print(f"Giorni in perdita: {np.sum(port < 0)} su {GIORNI}")
+print(f"Peggior giorno: {np.min(port):.2%}")
+
+sim: np.ndarray = rng.normal(MEDIE[2], VOL[2], size=(N, GIORNI))
+mese: np.ndarray = np.sum(sim, axis=1)
+perdita: float = np.mean(mese < -0.05)
+print(f"P(TECH perde più del 5% in un mese): {perdita:.1%}")
+
+df: pd.DataFrame = pd.DataFrame(rend, columns=TITOLI)
+df["settimana"] = np.arange(GIORNI) // 5 + 1
+df["portafoglio"] = port
+medie_sett: pd.Series = df.groupby("settimana")["portafoglio"].mean()
+for sett, m in medie_sett.items():
+    print(f"Settimana {sett}: rendimento medio {m:.2%}")
+print()
+
+
+# ============================================================================
+# CHALLENGE SPORT: la gara simulata — ch_sport.py
+# ============================================================================
+print("--- Challenge Sport: La gara simulata ---")
+import numpy as np
+import pandas as pd
+
+PILOTI: list[str] = ["Ferri", "Lanza", "Moro", "Neri"]
+SCUDERIE: list[str] = ["Scuderia Rossa"] * 2 + ["Scuderia Blu"] * 2
+BASE: np.ndarray = np.array([92.0, 92.4, 92.2, 92.6])
+GIRI: int = 15
+N: int = 10_000
+
+rng = np.random.default_rng(15)
+# righe = giri, colonne = piloti
+tempi: np.ndarray = rng.normal(BASE, 0.6, size=(GIRI, 4))
+tempi[7] = tempi[7] + 20               # pit stop al giro 8
+print(f"Giri anomali (oltre 100 s): {np.sum(tempi > 100)}")
+sotto_92: np.ndarray = np.sum(tempi < 92, axis=0)
+for pilota, n in zip(PILOTI, sotto_92):
+    print(f"{pilota}, giri sotto i 92 s: {n}")
+
+ferri: np.ndarray = rng.normal(92.0, 0.6, size=(N, GIRI))
+moro: np.ndarray = rng.normal(92.2, 0.6, size=(N, GIRI))
+vince: np.ndarray = np.sum(moro, axis=1) < np.sum(ferri, axis=1)
+print(f"P(Moro batte Ferri): {np.mean(vince):.1%}")
+
+gara: pd.DataFrame = pd.DataFrame({
+    "pilota": PILOTI, "scuderia": SCUDERIE,
+    "totale": np.sum(tempi, axis=0),
+    "migliore": np.min(tempi, axis=0),
+})
+gara["distacco"] = gara["totale"] - gara["totale"].min()
+print(gara.sort_values("totale").round(1))
+print(gara.groupby("scuderia")["totale"].mean().round(1))
+print()
+
+
+# ============================================================================
+# CHALLENGE IMPRESE E MARKETING: un mese di vendite — ch_negozio.py
+# ============================================================================
+print("--- Challenge Imprese e marketing: Un mese di vendite ---")
+import numpy as np
+import pandas as pd
+
+PRODOTTI: list[str] = ["zaino", "borraccia", "quaderno",
+                       "cuffie", "lampada"]
+CATEGORIE: list[str] = ["scuola", "casa", "scuola", "tech", "casa"]
+PREZZI: np.ndarray = np.array([39.9, 14.5, 3.2, 59.0, 24.9])
+COSTI: np.ndarray = np.array([22.0, 6.0, 1.1, 38.0, 13.5])
+GIORNI: int = 30
+N: int = 10_000
+
+rng = np.random.default_rng(30)
+# righe = giorni, colonne = prodotti: pezzi venduti
+pezzi: np.ndarray = rng.integers(0, 6, size=(GIORNI, 5))
+incasso: np.ndarray = np.sum(pezzi * PREZZI, axis=1)  # broadcasting
+print(f"Fatturato del mese: {np.sum(incasso):.2f} EUR")
+print(f"Incasso medio giornaliero: {np.mean(incasso):.2f} EUR")
+print(f"Giorni sopra 300 EUR: {np.sum(incasso > 300)} su {GIORNI}")
+
+conv_a: np.ndarray = rng.binomial(n=1000, p=0.04, size=N)
+conv_b: np.ndarray = rng.binomial(n=1000, p=0.05, size=N)
+print(f"P(la pagina B vende più della A): "
+      f"{np.mean(conv_b > conv_a):.1%}")
+
+negozio: pd.DataFrame = pd.DataFrame({
+    "prodotto": PRODOTTI, "categoria": CATEGORIE,
+    "pezzi": np.sum(pezzi, axis=0), "prezzo": PREZZI, "costo": COSTI,
+})
+negozio["margine"] = negozio["pezzi"] * (
+    negozio["prezzo"] - negozio["costo"])
+print(negozio[["prodotto", "pezzi", "margine"]].round(2))
+print(negozio.groupby("categoria")["margine"].sum().round(2))
+print()
+
+
+# ============================================================================
+# CHALLENGE SALUTE E SCIENZA: lo studio simulato — ch_salute.py
+# ============================================================================
+print("--- Challenge Salute e scienza: Lo studio simulato ---")
+import numpy as np
+import pandas as pd
+
+SOGLIA: int = 5          # calo minimo in mmHg per dire "migliorato"
+N: int = 10_000
+
+codici: list[str] = ["P" + str(i).zfill(2) for i in range(1, 21)]
+gruppo: np.ndarray = np.array(["trattamento"] * 10
+                              + ["controllo"] * 10)
+rng = np.random.default_rng(11)
+eta: np.ndarray = rng.integers(35, 71, size=20)
+prima: np.ndarray = np.round(rng.normal(150, 12, size=20))
+calo: np.ndarray = rng.normal(2 + 6 * (gruppo == "trattamento"), 5)
+dopo: np.ndarray = np.round(prima - calo)
+
+diff: np.ndarray = prima - dopo                   # vettorizzato
+migliorato: np.ndarray = diff >= SOGLIA
+tratt: np.ndarray = gruppo == "trattamento"
+k: int = np.sum(migliorato[tratt])
+p0: float = np.mean(migliorato)                  # quota complessiva
+print(f"Calo medio: {np.mean(diff):.1f} mmHg")
+print(f"Migliorati trattamento: {k} su 10")
+print(f"Migliorati controllo: {np.sum(migliorato[~tratt])} su 10")
+print(f"Migliorati in tutto: {p0:.0%}")
+
+sim: np.ndarray = rng.binomial(n=10, p=p0, size=N)
+print(f"P(almeno {k} su 10 senza effetto): {np.mean(sim >= k):.1%}")
+
+studio: pd.DataFrame = pd.DataFrame({
+    "codice": codici, "eta": eta, "gruppo": gruppo,
+    "prima": prima, "dopo": dopo,
+})
+studio["differenza"] = studio["prima"] - studio["dopo"]
+print(studio.head(3))
+print(studio.groupby("gruppo")[["eta", "differenza"]].mean().round(1))
+print()
+
+
+# ============================================================================
+# CHALLENGE CASO E PROBABILITÀ: dadi e porte — ch_probabilita.py
+# ============================================================================
+print("--- Challenge Caso e probabilità: Dadi e porte ---")
+import numpy as np
+import pandas as pd
+
+LANCI: int = 1000
+N: int = 10_000
+
+rng = np.random.default_rng(6)
+dado1: np.ndarray = rng.integers(1, 7, size=LANCI)
+dado2: np.ndarray = rng.integers(1, 7, size=LANCI)
+somma: np.ndarray = dado1 + dado2                 # vettorizzato
+print(f"Somma media: {np.mean(somma):.2f} (teorica 7.00)")
+print(f"Somma 7: {np.mean(somma == 7):.1%} (esatta {6 / 36:.1%})")
+alte: np.ndarray = somma[somma >= 10]
+print(f"Somma almeno 10: {alte.size} lanci "
+      f"({alte.size / LANCI:.1%}, esatta {6 / 36:.1%})")
+print(f"Doppi: {np.mean(dado1 == dado2):.1%} (esatta {1 / 6:.1%})")
+
+auto: np.ndarray = rng.integers(0, 3, size=N)    # porta dell'auto
+scelta: np.ndarray = rng.integers(0, 3, size=N)  # prima scelta
+resta: float = np.mean(auto == scelta)
+print(f"Monty Hall, vince chi resta: {resta:.1%}")
+print(f"Monty Hall, vince chi cambia: {1 - resta:.1%}")
+
+tavolo: pd.DataFrame = pd.DataFrame({"dado1": dado1, "dado2": dado2})
+tavolo["somma"] = tavolo["dado1"] + tavolo["dado2"]
+medie: pd.Series = tavolo.groupby("dado1")["somma"].mean()
+for faccia, m in medie.items():
+    print(f"Primo dado {faccia}: somma media {m:.2f} "
+          f"(teorica {faccia + 3.5:.2f})")
+print()
+
+
+# ============================================================================
+print("=" * 60)
+print("Fine degli esercizi del laboratorio 07")
 print("=" * 60)

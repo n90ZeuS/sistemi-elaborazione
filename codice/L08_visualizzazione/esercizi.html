@@ -200,552 +200,464 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
-<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L08_visualizzazione_progetto.html">Dispensa</a> &bull; <a href="../../presentazioni/L08_visualizzazione_progetto.html">Presentazione</a></nav>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L08_visualizzazione_progetto.html">Dispensa</a> &bull; <a href="../../presentazioni/L08_visualizzazione_progetto.html">Presentazione</a> &bull; <a href="genera_dati.html">Genera_dati</a></nav>
 <h1>L08_visualizzazione/esercizi.py</h1>
 <a class="download-link" href="esercizi.py" download>Scarica file .py</a>
 <pre><code><span class="cm"># L08 — Visualizzazione e progetto</span>
-<span class="cm"># Esercizi per il laboratorio 08</span>
+<span class="cm"># Soluzioni degli esercizi del laboratorio 08</span>
 <span class="cm">#</span>
-<span class="cm"># Esercizi pratici su creazione di grafici con matplotlib e un mini-progetto</span>
-<span class="cm"># di analisi dati. I grafici vengono salvati su file (plt.savefig).</span>
-<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
-
-<span class="kw">import</span> os
-<span class="kw">import</span> tempfile
-<span class="kw">import</span> math
-<span class="kw">from</span> typing <span class="kw">import</span> Any
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># Importazione sicura delle librerie</span>
-<span class="cm"># ============================================================================</span>
-
-<span class="kw">try</span>:
-    <span class="kw">import</span> numpy <span class="kw">as</span> np
-    NUMPY_DISPONIBILE: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
-<span class="kw">except</span> ImportError:
-    NUMPY_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
-    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: NumPy non e&#x27; installato. Installa con: pip install numpy&quot;</span>)
-
-<span class="kw">try</span>:
-    <span class="kw">import</span> matplotlib
-    matplotlib.use(<span class="st">&quot;Agg&quot;</span>)  <span class="cm"># Backend non interattivo: salva su file senza aprire finestre</span>
-    <span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
-    MATPLOTLIB_DISPONIBILE: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
-<span class="kw">except</span> ImportError:
-    MATPLOTLIB_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
-    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: Matplotlib non e&#x27; installato. Installa con: pip install matplotlib&quot;</span>)
-
-<span class="kw">try</span>:
-    <span class="kw">import</span> pandas <span class="kw">as</span> pd
-    PANDAS_DISPONIBILE: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
-<span class="kw">except</span> ImportError:
-    PANDAS_DISPONIBILE <span class="op">=</span> <span class="kw">False</span>
-    <span class="nb">print</span>(<span class="st">&quot;ATTENZIONE: Pandas non e&#x27; installato. Installa con: pip install pandas&quot;</span>)
+<span class="cm"># Ogni esercizio corrisponde a un file della traccia (nome tra parentesi).</span>
+<span class="cm"># Per provarne uno solo, copiatelo in un file a parte.</span>
+<span class="cm"># I file di dati usati dagli esercizi sono in questa stessa cartella.</span>
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 1: Creazione di diversi tipi di grafici</span>
+<span class="cm"># ESERCIZIO 1: immatricolati e laureati — immatricolati.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Immatricolati e laureati ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-<span class="kw">if</span> MATPLOTLIB_DISPONIBILE <span class="kw">and</span> NUMPY_DISPONIBILE:
+anni: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> <span class="nb">list</span>(<span class="nb">range</span>(<span class="mi">2018</span>, <span class="mi">2026</span>))
+immatricolati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">182</span>, <span class="mi">195</span>, <span class="mi">210</span>, <span class="mi">204</span>, <span class="mi">231</span>, <span class="mi">248</span>, <span class="mi">240</span>, <span class="mi">262</span>]
+laureati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">118</span>, <span class="mi">126</span>, <span class="mi">131</span>, <span class="mi">140</span>, <span class="mi">137</span>, <span class="mi">152</span>, <span class="mi">160</span>, <span class="mi">171</span>]
 
-    <span class="cm"># Cartella temporanea per salvare i grafici</span>
-    dir_grafici: <span class="nb">str</span> <span class="op">=</span> tempfile.mkdtemp(prefix<span class="op">=</span><span class="st">&quot;grafici_lab08_&quot;</span>)
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+plt.plot(anni, immatricolati, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>, label<span class="op">=</span><span class="st">&quot;Immatricolati&quot;</span>)
+plt.plot(anni, laureati, marker<span class="op">=</span><span class="st">&quot;s&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, label<span class="op">=</span><span class="st">&quot;Laureati&quot;</span>)
+plt.title(<span class="st">&quot;Corso di laurea in Statistica&quot;</span>)
+plt.xlabel(<span class="st">&quot;Anno accademico (inizio)&quot;</span>)
+plt.ylabel(<span class="st">&quot;Studenti&quot;</span>)
+plt.legend()
+plt.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;immatricolati.png&quot;</span>)
 
-    <span class="cm"># --- 1a) Grafico a barre ---</span>
-    <span class="kw">def</span> <span class="fn">crea_grafico_barre</span>(
-        categorie: <span class="nb">list</span>[<span class="nb">str</span>],
-        valori: <span class="nb">list</span>[<span class="nb">float</span>],
-        titolo: <span class="nb">str</span>,
-        etichetta_x: <span class="nb">str</span>,
-        etichetta_y: <span class="nb">str</span>,
-        percorso_file: <span class="nb">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-        <span class="st">&quot;&quot;&quot;
-        Crea un grafico a barre e lo salva su file.
-        Restituisce il percorso del file creato.
-        &quot;&quot;&quot;</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-
-        <span class="cm"># Colori diversi per ogni barra</span>
-        colori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;#2196F3&quot;</span>, <span class="st">&quot;#4CAF50&quot;</span>, <span class="st">&quot;#FF9800&quot;</span>, <span class="st">&quot;#E91E63&quot;</span>,
-                             <span class="st">&quot;#9C27B0&quot;</span>, <span class="st">&quot;#00BCD4&quot;</span>, <span class="st">&quot;#FF5722&quot;</span>, <span class="st">&quot;#607D8B&quot;</span>]
-        colori_barre: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [colori[i <span class="op">%</span> <span class="nb">len</span>(colori)] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(categorie))]
-
-        barre <span class="op">=</span> ax.bar(categorie, valori, color<span class="op">=</span>colori_barre, edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>, linewidth<span class="op">=</span><span class="mi">0.5</span>)
-
-        <span class="cm"># Aggiungi etichette sopra le barre</span>
-        <span class="kw">for</span> barra, valore <span class="kw">in</span> <span class="nb">zip</span>(barre, valori):
-            ax.text(
-                barra.get_x() <span class="op">+</span> barra.get_width() <span class="op">/</span> <span class="mi">2.0</span>,
-                barra.get_height() <span class="op">+</span> <span class="nb">max</span>(valori) <span class="op">*</span> <span class="mi">0.01</span>,
-                <span class="st">f&quot;{valore:.1f}&quot;</span>,
-                ha<span class="op">=</span><span class="st">&quot;center&quot;</span>, va<span class="op">=</span><span class="st">&quot;bottom&quot;</span>, fontsize<span class="op">=</span><span class="mi">9</span>,
-            )
-
-        ax.set_title(titolo, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_xlabel(etichetta_x, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.set_ylabel(etichetta_y, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.grid(axis<span class="op">=</span><span class="st">&quot;y&quot;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        <span class="kw">return</span> percorso_file
-
-    <span class="cm"># --- 1b) Grafico a dispersione (scatter) ---</span>
-    <span class="kw">def</span> <span class="fn">crea_grafico_scatter</span>(
-        x: np.ndarray,
-        y: np.ndarray,
-        titolo: <span class="nb">str</span>,
-        etichetta_x: <span class="nb">str</span>,
-        etichetta_y: <span class="nb">str</span>,
-        percorso_file: <span class="nb">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-        <span class="st">&quot;&quot;&quot;Crea un grafico a dispersione e lo salva su file.&quot;&quot;&quot;</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-
-        ax.scatter(x, y, alpha<span class="op">=</span><span class="mi">0.6</span>, c<span class="op">=</span>y, cmap<span class="op">=</span><span class="st">&quot;viridis&quot;</span>, edgecolors<span class="op">=</span><span class="st">&quot;black&quot;</span>, linewidth<span class="op">=</span><span class="mi">0.3</span>, s<span class="op">=</span><span class="mi">40</span>)
-
-        <span class="cm"># Linea di tendenza (regressione lineare)</span>
-        coefficienti: np.ndarray <span class="op">=</span> np.polyfit(x, y, <span class="mi">1</span>)
-        linea_tendenza: np.ndarray <span class="op">=</span> np.polyval(coefficienti, x)
-        pendenza: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(coefficienti[<span class="mi">0</span>])
-        intercetta: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(coefficienti[<span class="mi">1</span>])
-        ax.plot(
-            np.sort(x), np.polyval(coefficienti, np.sort(x)),
-            color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>,
-            label<span class="op">=</span><span class="st">f&quot;Tendenza: y = {pendenza:.2f}x + {intercetta:.2f}&quot;</span>,
-        )
-
-        ax.set_title(titolo, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_xlabel(etichetta_x, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.set_ylabel(etichetta_y, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.legend(fontsize<span class="op">=</span><span class="mi">10</span>)
-        ax.grid(alpha<span class="op">=</span><span class="mi">0.3</span>)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        <span class="kw">return</span> percorso_file
-
-    <span class="cm"># --- 1c) Istogramma ---</span>
-    <span class="kw">def</span> <span class="fn">crea_istogramma</span>(
-        dati: np.ndarray,
-        n_bins: <span class="nb">int</span>,
-        titolo: <span class="nb">str</span>,
-        etichetta_x: <span class="nb">str</span>,
-        percorso_file: <span class="nb">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-        <span class="st">&quot;&quot;&quot;Crea un istogramma con curva di densita&#x27; e lo salva su file.&quot;&quot;&quot;</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-
-        <span class="cm"># Istogramma normalizzato</span>
-        conteggi, bordi, patches <span class="op">=</span> ax.hist(
-            dati, bins<span class="op">=</span>n_bins, density<span class="op">=</span><span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.7</span>,
-            color<span class="op">=</span><span class="st">&quot;#2196F3&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>, linewidth<span class="op">=</span><span class="mi">0.5</span>,
-        )
-
-        <span class="cm"># Curva di densita&#x27; gaussiana sovrapposta</span>
-        media_dati: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.mean(dati))
-        std_dati: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(np.std(dati))
-        x_curva: np.ndarray <span class="op">=</span> np.linspace(<span class="nb">float</span>(np.<span class="nb">min</span>(dati)), <span class="nb">float</span>(np.<span class="nb">max</span>(dati)), <span class="mi">200</span>)
-        y_curva: np.ndarray <span class="op">=</span> (
-            <span class="mi">1</span> <span class="op">/</span> (std_dati <span class="op">*</span> np.sqrt(<span class="mi">2</span> <span class="op">*</span> np.pi))
-            <span class="op">*</span> np.exp(<span class="op">-</span><span class="mi">0.5</span> <span class="op">*</span> ((x_curva <span class="op">-</span> media_dati) <span class="op">/</span> std_dati) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
-        )
-        ax.plot(x_curva, y_curva, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>,
-                label<span class="op">=</span><span class="st">f&quot;Gaussiana (mu={media_dati:.1f}, sigma={std_dati:.1f})&quot;</span>)
-
-        <span class="cm"># Linea verticale per la media</span>
-        ax.axvline(media_dati, color<span class="op">=</span><span class="st">&quot;green&quot;</span>, linewidth<span class="op">=</span><span class="mi">1.5</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>,
-                   label<span class="op">=</span><span class="st">f&quot;Media = {media_dati:.1f}&quot;</span>)
-
-        ax.set_title(titolo, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_xlabel(etichetta_x, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.set_ylabel(<span class="st">&quot;Densita&#x27;&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.legend(fontsize<span class="op">=</span><span class="mi">10</span>)
-        ax.grid(alpha<span class="op">=</span><span class="mi">0.3</span>)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        <span class="kw">return</span> percorso_file
-
-    <span class="cm"># --- 1d) Boxplot ---</span>
-    <span class="kw">def</span> <span class="fn">crea_boxplot</span>(
-        dati_gruppi: <span class="nb">list</span>[np.ndarray],
-        etichette_gruppi: <span class="nb">list</span>[<span class="nb">str</span>],
-        titolo: <span class="nb">str</span>,
-        percorso_file: <span class="nb">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-        <span class="st">&quot;&quot;&quot;Crea un boxplot comparativo e lo salva su file.&quot;&quot;&quot;</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-
-        bp <span class="op">=</span> ax.boxplot(
-            dati_gruppi, tick_labels<span class="op">=</span>etichette_gruppi, patch_artist<span class="op">=</span><span class="kw">True</span>,
-            medianprops<span class="op">=</span><span class="nb">dict</span>(color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>),
-        )
-
-        <span class="cm"># Colori diversi per ogni box</span>
-        colori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;#2196F3&quot;</span>, <span class="st">&quot;#4CAF50&quot;</span>, <span class="st">&quot;#FF9800&quot;</span>, <span class="st">&quot;#E91E63&quot;</span>]
-        <span class="kw">for</span> patch, colore <span class="kw">in</span> <span class="nb">zip</span>(bp[<span class="st">&quot;boxes&quot;</span>], colori):
-            patch.set_facecolor(colore)
-            patch.set_alpha(<span class="mi">0.6</span>)
-
-        ax.set_title(titolo, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_ylabel(<span class="st">&quot;Valori&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.grid(axis<span class="op">=</span><span class="st">&quot;y&quot;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        <span class="kw">return</span> percorso_file
-
-    <span class="cm"># --- Test grafici ---</span>
-    <span class="cm"># 1a) Grafico a barre: voti medi per materia</span>
-    materie: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Algebra&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Chimica&quot;</span>]
-    voti_medi: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">25.3</span>, <span class="mi">23.8</span>, <span class="mi">26.1</span>, <span class="mi">28.5</span>, <span class="mi">24.0</span>]
-    path_barre: <span class="nb">str</span> <span class="op">=</span> crea_grafico_barre(
-        materie, voti_medi,
-        <span class="st">&quot;Voto medio per materia&quot;</span>, <span class="st">&quot;Materia&quot;</span>, <span class="st">&quot;Voto medio&quot;</span>,
-        os.path.join(dir_grafici, <span class="st">&quot;barre.png&quot;</span>),
-    )
-    <span class="kw">assert</span> os.path.exists(path_barre), <span class="st">&quot;Il file del grafico a barre non e&#x27; stato creato&quot;</span>
-    <span class="kw">assert</span> os.path.getsize(path_barre) <span class="op">&gt;</span> <span class="mi">0</span>, <span class="st">&quot;Il file del grafico a barre e&#x27; vuoto&quot;</span>
-
-    <span class="cm"># 1b) Scatter: relazione ore studio / voto</span>
-    rng: np.random.Generator <span class="op">=</span> np.random.default_rng(<span class="mi">42</span>)
-    ore_studio: np.ndarray <span class="op">=</span> rng.uniform(<span class="mi">1</span>, <span class="mi">10</span>, <span class="mi">100</span>)
-    voti_scatter: np.ndarray <span class="op">=</span> <span class="mi">18</span> <span class="op">+</span> ore_studio <span class="op">*</span> <span class="mi">1.2</span> <span class="op">+</span> rng.normal(<span class="mi">0</span>, <span class="mi">2</span>, <span class="mi">100</span>)
-    path_scatter: <span class="nb">str</span> <span class="op">=</span> crea_grafico_scatter(
-        ore_studio, voti_scatter,
-        <span class="st">&quot;Relazione ore di studio - Voto&quot;</span>, <span class="st">&quot;Ore di studio&quot;</span>, <span class="st">&quot;Voto&quot;</span>,
-        os.path.join(dir_grafici, <span class="st">&quot;scatter.png&quot;</span>),
-    )
-    <span class="kw">assert</span> os.path.exists(path_scatter)
-
-    <span class="cm"># 1c) Istogramma: distribuzione altezze</span>
-    altezze: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">170</span>, <span class="mi">10</span>, <span class="mi">500</span>)
-    path_isto: <span class="nb">str</span> <span class="op">=</span> crea_istogramma(
-        altezze, <span class="mi">30</span>,
-        <span class="st">&quot;Distribuzione delle altezze&quot;</span>, <span class="st">&quot;Altezza (cm)&quot;</span>,
-        os.path.join(dir_grafici, <span class="st">&quot;istogramma.png&quot;</span>),
-    )
-    <span class="kw">assert</span> os.path.exists(path_isto)
-
-    <span class="cm"># 1d) Boxplot: confronto voti tra corsi</span>
-    voti_info: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">27</span>, <span class="mi">3</span>, <span class="mi">50</span>)
-    voti_mat: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">24</span>, <span class="mi">4</span>, <span class="mi">50</span>)
-    voti_fis: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">25</span>, <span class="mi">3.5</span>, <span class="mi">50</span>)
-    voti_chim: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">23</span>, <span class="mi">5</span>, <span class="mi">50</span>)
-    path_box: <span class="nb">str</span> <span class="op">=</span> crea_boxplot(
-        [voti_info, voti_mat, voti_fis, voti_chim],
-        [<span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Matematica&quot;</span>, <span class="st">&quot;Fisica&quot;</span>, <span class="st">&quot;Chimica&quot;</span>],
-        <span class="st">&quot;Distribuzione voti per corso di laurea&quot;</span>,
-        os.path.join(dir_grafici, <span class="st">&quot;boxplot.png&quot;</span>),
-    )
-    <span class="kw">assert</span> os.path.exists(path_box)
-
-    <span class="nb">print</span>(<span class="st">f&quot;Esercizio 1 (Grafici): SUPERATO&quot;</span>)
-    <span class="nb">print</span>(<span class="st">f&quot;  Grafici salvati in: {dir_grafici}&quot;</span>)
-
-    <span class="cm"># Pulizia file temporanei dei grafici</span>
-    <span class="kw">for</span> nome_file <span class="kw">in</span> os.listdir(dir_grafici):
-        os.unlink(os.path.join(dir_grafici, nome_file))
-    os.rmdir(dir_grafici)
-
-<span class="kw">else</span>:
-    <span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Grafici): SALTATO (Matplotlib/NumPy non disponibili)&quot;</span>)
+i: <span class="nb">int</span> <span class="op">=</span> immatricolati.index(<span class="nb">max</span>(immatricolati))
+<span class="nb">print</span>(<span class="st">f&quot;Anno con più immatricolati: {anni[i]} ({immatricolati[i]})&quot;</span>)
+crescita: <span class="nb">float</span> <span class="op">=</span> immatricolati[<span class="op">-</span><span class="mi">1</span>] <span class="op">/</span> immatricolati[<span class="mi">0</span>] <span class="op">-</span> <span class="mi">1</span>
+<span class="nb">print</span>(<span class="st">f&quot;Variazione {anni[0]}-{anni[-1]}: {crescita:.1%}&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 2: Mini-progetto di analisi dati</span>
+<span class="cm"># ESERCIZIO 2: i voti dell&#x27;appello — voti.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="cm"># Un progetto completo che legge dati, calcola statistiche, e genera un report.</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: I voti dell&#x27;appello ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
 
-<span class="kw">if</span> MATPLOTLIB_DISPONIBILE <span class="kw">and</span> NUMPY_DISPONIBILE <span class="kw">and</span> PANDAS_DISPONIBILE:
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">14</span>)
+tutti: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">23.5</span>, <span class="mi">4</span>, <span class="mi">250</span>).<span class="nb">round</span>().clip(<span class="nb">max</span><span class="op">=</span><span class="mi">30</span>)
+voti: np.ndarray <span class="op">=</span> tutti[tutti <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+media: <span class="nb">float</span> <span class="op">=</span> voti.mean()
 
-    <span class="kw">def</span> <span class="fn">genera_dati_vendite</span>(<span class="fn">n_righe</span>: <span class="nb">int</span> <span class="op">=</span> <span class="mi">200</span>, seed: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
-        <span class="st">&quot;&quot;&quot;
-        Genera un dataset simulato di vendite per il mini-progetto.
-        Colonne: data, prodotto, categoria, quantita, prezzo_unitario, citta
-        &quot;&quot;&quot;</span>
-        rng_loc: np.random.Generator <span class="op">=</span> np.random.default_rng(seed)
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+plt.hist(voti, bins<span class="op">=</span>np.arange(<span class="mi">17.5</span>, <span class="mi">31</span>), color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>,
+         edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+plt.axvline(media, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, label<span class="op">=</span><span class="st">&quot;Media&quot;</span>)
+plt.title(<span class="st">&quot;Voti dei promossi all&#x27;appello di Statistica&quot;</span>)
+plt.xlabel(<span class="st">&quot;Voto&quot;</span>)
+plt.ylabel(<span class="st">&quot;Studenti&quot;</span>)
+plt.legend()
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;voti.png&quot;</span>)
 
-        prodotti_per_cat: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">str</span>]] <span class="op">=</span> {
-            <span class="st">&quot;Elettronica&quot;</span>: [<span class="st">&quot;Laptop&quot;</span>, <span class="st">&quot;Smartphone&quot;</span>, <span class="st">&quot;Tablet&quot;</span>, <span class="st">&quot;Cuffie&quot;</span>],
-            <span class="st">&quot;Abbigliamento&quot;</span>: [<span class="st">&quot;Maglietta&quot;</span>, <span class="st">&quot;Jeans&quot;</span>, <span class="st">&quot;Giacca&quot;</span>, <span class="st">&quot;Scarpe&quot;</span>],
-            <span class="st">&quot;Alimentari&quot;</span>: [<span class="st">&quot;Pasta&quot;</span>, <span class="st">&quot;Olio&quot;</span>, <span class="st">&quot;Caffe&quot;</span>, <span class="st">&quot;Biscotti&quot;</span>],
-        }
-
-        citta_lista: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Milano&quot;</span>, <span class="st">&quot;Roma&quot;</span>, <span class="st">&quot;Napoli&quot;</span>, <span class="st">&quot;Torino&quot;</span>, <span class="st">&quot;Bologna&quot;</span>]
-
-        righe: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, Any]] <span class="op">=</span> []
-        <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(n_righe):
-            categoria: <span class="nb">str</span> <span class="op">=</span> rng_loc.choice(<span class="nb">list</span>(prodotti_per_cat.keys()))
-            prodotto: <span class="nb">str</span> <span class="op">=</span> rng_loc.choice(prodotti_per_cat[categoria])
-            citta: <span class="nb">str</span> <span class="op">=</span> rng_loc.choice(citta_lista)
-            quantita: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(rng_loc.integers(<span class="mi">1</span>, <span class="mi">20</span>))
-
-            <span class="cm"># Prezzi dipendono dalla categoria</span>
-            prezzi_base: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]] <span class="op">=</span> {
-                <span class="st">&quot;Elettronica&quot;</span>: (<span class="mi">100.0</span>, <span class="mi">1500.0</span>),
-                <span class="st">&quot;Abbigliamento&quot;</span>: (<span class="mi">15.0</span>, <span class="mi">200.0</span>),
-                <span class="st">&quot;Alimentari&quot;</span>: (<span class="mi">1.0</span>, <span class="mi">15.0</span>),
-            }
-            p_min, p_max <span class="op">=</span> prezzi_base[categoria]
-            prezzo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">round</span>(<span class="nb">float</span>(rng_loc.uniform(p_min, p_max)), <span class="mi">2</span>)
-
-            <span class="cm"># Data casuale nel 2024</span>
-            mese: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(rng_loc.integers(<span class="mi">1</span>, <span class="mi">13</span>))
-            giorno: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(rng_loc.integers(<span class="mi">1</span>, <span class="mi">29</span>))
-            data: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;2024-{mese:02d}-{giorno:02d}&quot;</span>
-
-            righe.append({
-                <span class="st">&quot;data&quot;</span>: data,
-                <span class="st">&quot;prodotto&quot;</span>: prodotto,
-                <span class="st">&quot;categoria&quot;</span>: categoria,
-                <span class="st">&quot;quantita&quot;</span>: quantita,
-                <span class="st">&quot;prezzo_unitario&quot;</span>: prezzo,
-                <span class="st">&quot;citta&quot;</span>: citta,
-            })
-
-        df: pd.DataFrame <span class="op">=</span> pd.DataFrame(righe)
-        df[<span class="st">&quot;fatturato&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;quantita&quot;</span>] <span class="op">*</span> df[<span class="st">&quot;prezzo_unitario&quot;</span>]
-        df[<span class="st">&quot;data&quot;</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">&quot;data&quot;</span>])
-        <span class="kw">return</span> df
-
-    <span class="kw">def</span> <span class="fn">analisi_vendite</span>(<span class="fn">df</span>: pd.DataFrame) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, Any]:
-        <span class="st">&quot;&quot;&quot;
-        Esegue un&#x27;analisi completa delle vendite:
-        - fatturato totale e medio
-        - fatturato per categoria
-        - fatturato per citta&#x27;
-        - prodotto piu&#x27; venduto (per quantita&#x27;)
-        - mese con piu&#x27; fatturato
-        &quot;&quot;&quot;</span>
-        fatturato_totale: <span class="nb">float</span> <span class="op">=</span> <span class="nb">round</span>(<span class="nb">float</span>(df[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>()), <span class="mi">2</span>)
-        fatturato_medio: <span class="nb">float</span> <span class="op">=</span> <span class="nb">round</span>(<span class="nb">float</span>(df[<span class="st">&quot;fatturato&quot;</span>].mean()), <span class="mi">2</span>)
-
-        <span class="cm"># Per categoria</span>
-        fatt_categoria: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;categoria&quot;</span>)[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>().<span class="nb">round</span>(<span class="mi">2</span>)
-
-        <span class="cm"># Per citta&#x27;</span>
-        fatt_citta: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;citta&quot;</span>)[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>().<span class="nb">round</span>(<span class="mi">2</span>)
-
-        <span class="cm"># Prodotto piu&#x27; venduto per quantita&#x27;</span>
-        vendite_prodotto: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;prodotto&quot;</span>)[<span class="st">&quot;quantita&quot;</span>].<span class="nb">sum</span>()
-        prodotto_top: <span class="nb">str</span> <span class="op">=</span> <span class="nb">str</span>(vendite_prodotto.idxmax())
-        quantita_top: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(vendite_prodotto.<span class="nb">max</span>())
-
-        <span class="cm"># Mese con piu&#x27; fatturato</span>
-        df_copia: pd.DataFrame <span class="op">=</span> df.copy()
-        df_copia[<span class="st">&quot;mese&quot;</span>] <span class="op">=</span> df_copia[<span class="st">&quot;data&quot;</span>].dt.month
-        fatt_mese: pd.Series <span class="op">=</span> df_copia.groupby(<span class="st">&quot;mese&quot;</span>)[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>()
-        mese_top: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(fatt_mese.idxmax())
-
-        <span class="kw">return</span> {
-            <span class="st">&quot;fatturato_totale&quot;</span>: fatturato_totale,
-            <span class="st">&quot;fatturato_medio&quot;</span>: fatturato_medio,
-            <span class="st">&quot;fatturato_per_categoria&quot;</span>: fatt_categoria.to_dict(),
-            <span class="st">&quot;fatturato_per_citta&quot;</span>: fatt_citta.to_dict(),
-            <span class="st">&quot;prodotto_piu_venduto&quot;</span>: prodotto_top,
-            <span class="st">&quot;quantita_prodotto_top&quot;</span>: quantita_top,
-            <span class="st">&quot;mese_migliore&quot;</span>: mese_top,
-            <span class="st">&quot;num_transazioni&quot;</span>: <span class="nb">len</span>(df),
-        }
-
-    <span class="kw">def</span> <span class="fn">genera_report_grafici</span>(<span class="fn">df</span>: pd.DataFrame, cartella: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
-        <span class="st">&quot;&quot;&quot;
-        Genera una serie di grafici per il report e li salva nella cartella.
-        Restituisce la lista dei percorsi dei file creati.
-        &quot;&quot;&quot;</span>
-        percorsi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-
-        <span class="cm"># --- Grafico 1: Fatturato per categoria (barre) ---</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-        fatt_cat: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;categoria&quot;</span>)[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>().sort_values(ascending<span class="op">=</span><span class="kw">False</span>)
-        colori_cat: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;#2196F3&quot;</span>, <span class="st">&quot;#4CAF50&quot;</span>, <span class="st">&quot;#FF9800&quot;</span>]
-        fatt_cat.plot(kind<span class="op">=</span><span class="st">&quot;bar&quot;</span>, ax<span class="op">=</span>ax, color<span class="op">=</span>colori_cat[:<span class="nb">len</span>(fatt_cat)], edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>)
-        ax.set_title(<span class="st">&quot;Fatturato totale per categoria&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_ylabel(<span class="st">&quot;Fatturato (EUR)&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.set_xlabel(<span class="st">&quot;Categoria&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        plt.xticks(rotation<span class="op">=</span><span class="mi">0</span>)
-        ax.grid(axis<span class="op">=</span><span class="st">&quot;y&quot;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
-        plt.tight_layout()
-        path_1: <span class="nb">str</span> <span class="op">=</span> os.path.join(cartella, <span class="st">&quot;fatturato_categoria.png&quot;</span>)
-        plt.savefig(path_1, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        percorsi.append(path_1)
-
-        <span class="cm"># --- Grafico 2: Fatturato per citta&#x27; (barre orizzontali) ---</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-        fatt_citta: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;citta&quot;</span>)[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>().sort_values()
-        fatt_citta.plot(kind<span class="op">=</span><span class="st">&quot;barh&quot;</span>, ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">&quot;#E91E63&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>)
-        ax.set_title(<span class="st">&quot;Fatturato totale per citta&#x27;&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_xlabel(<span class="st">&quot;Fatturato (EUR)&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.grid(axis<span class="op">=</span><span class="st">&quot;x&quot;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
-        plt.tight_layout()
-        path_2: <span class="nb">str</span> <span class="op">=</span> os.path.join(cartella, <span class="st">&quot;fatturato_citta.png&quot;</span>)
-        plt.savefig(path_2, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        percorsi.append(path_2)
-
-        <span class="cm"># --- Grafico 3: Distribuzione fatturato per transazione (istogramma) ---</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-        ax.hist(df[<span class="st">&quot;fatturato&quot;</span>], bins<span class="op">=</span><span class="mi">30</span>, color<span class="op">=</span><span class="st">&quot;#9C27B0&quot;</span>, alpha<span class="op">=</span><span class="mi">0.7</span>, edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>)
-        media_fatt: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(df[<span class="st">&quot;fatturato&quot;</span>].mean())
-        ax.axvline(media_fatt, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>,
-                   label<span class="op">=</span><span class="st">f&quot;Media = {media_fatt:.0f} EUR&quot;</span>)
-        ax.set_title(<span class="st">&quot;Distribuzione del fatturato per transazione&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_xlabel(<span class="st">&quot;Fatturato (EUR)&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.set_ylabel(<span class="st">&quot;Frequenza&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.legend(fontsize<span class="op">=</span><span class="mi">10</span>)
-        ax.grid(alpha<span class="op">=</span><span class="mi">0.3</span>)
-        plt.tight_layout()
-        path_3: <span class="nb">str</span> <span class="op">=</span> os.path.join(cartella, <span class="st">&quot;distribuzione_fatturato.png&quot;</span>)
-        plt.savefig(path_3, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        percorsi.append(path_3)
-
-        <span class="cm"># --- Grafico 4: Boxplot fatturato per categoria ---</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">6</span>))
-        categorie_uniche: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">sorted</span>(df[<span class="st">&quot;categoria&quot;</span>].unique().tolist())
-        dati_box: <span class="nb">list</span>[np.ndarray] <span class="op">=</span> [
-            df[df[<span class="st">&quot;categoria&quot;</span>] <span class="op">=</span><span class="op">=</span> cat][<span class="st">&quot;fatturato&quot;</span>].values <span class="kw">for</span> cat <span class="kw">in</span> categorie_uniche
-        ]
-        bp <span class="op">=</span> ax.boxplot(dati_box, tick_labels<span class="op">=</span>categorie_uniche, patch_artist<span class="op">=</span><span class="kw">True</span>,
-                        medianprops<span class="op">=</span><span class="nb">dict</span>(color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>))
-        colori_box: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;#2196F3&quot;</span>, <span class="st">&quot;#4CAF50&quot;</span>, <span class="st">&quot;#FF9800&quot;</span>]
-        <span class="kw">for</span> patch, colore <span class="kw">in</span> <span class="nb">zip</span>(bp[<span class="st">&quot;boxes&quot;</span>], colori_box):
-            patch.set_facecolor(colore)
-            patch.set_alpha(<span class="mi">0.6</span>)
-        ax.set_title(<span class="st">&quot;Distribuzione fatturato per categoria&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_ylabel(<span class="st">&quot;Fatturato (EUR)&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.grid(axis<span class="op">=</span><span class="st">&quot;y&quot;</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
-        plt.tight_layout()
-        path_4: <span class="nb">str</span> <span class="op">=</span> os.path.join(cartella, <span class="st">&quot;boxplot_categorie.png&quot;</span>)
-        plt.savefig(path_4, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        percorsi.append(path_4)
-
-        <span class="cm"># --- Grafico 5: Fatturato mensile (linea) ---</span>
-        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="mi">12</span>, <span class="mi">6</span>))
-        df_copia: pd.DataFrame <span class="op">=</span> df.copy()
-        df_copia[<span class="st">&quot;mese&quot;</span>] <span class="op">=</span> df_copia[<span class="st">&quot;data&quot;</span>].dt.month
-        fatt_mensile: pd.Series <span class="op">=</span> df_copia.groupby(<span class="st">&quot;mese&quot;</span>)[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>()
-        ax.plot(fatt_mensile.index, fatt_mensile.values, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>, linewidth<span class="op">=</span><span class="mi">2</span>,
-                color<span class="op">=</span><span class="st">&quot;#2196F3&quot;</span>, markersize<span class="op">=</span><span class="mi">8</span>)
-        ax.fill_between(fatt_mensile.index, fatt_mensile.values, alpha<span class="op">=</span><span class="mi">0.2</span>, color<span class="op">=</span><span class="st">&quot;#2196F3&quot;</span>)
-        ax.set_title(<span class="st">&quot;Andamento fatturato mensile&quot;</span>, fontsize<span class="op">=</span><span class="mi">14</span>, fontweight<span class="op">=</span><span class="st">&quot;bold&quot;</span>)
-        ax.set_xlabel(<span class="st">&quot;Mese&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.set_ylabel(<span class="st">&quot;Fatturato (EUR)&quot;</span>, fontsize<span class="op">=</span><span class="mi">12</span>)
-        ax.set_xticks(<span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">13</span>))
-        ax.set_xticklabels([<span class="st">&quot;Gen&quot;</span>, <span class="st">&quot;Feb&quot;</span>, <span class="st">&quot;Mar&quot;</span>, <span class="st">&quot;Apr&quot;</span>, <span class="st">&quot;Mag&quot;</span>, <span class="st">&quot;Giu&quot;</span>,
-                            <span class="st">&quot;Lug&quot;</span>, <span class="st">&quot;Ago&quot;</span>, <span class="st">&quot;Set&quot;</span>, <span class="st">&quot;Ott&quot;</span>, <span class="st">&quot;Nov&quot;</span>, <span class="st">&quot;Dic&quot;</span>])
-        ax.grid(alpha<span class="op">=</span><span class="mi">0.3</span>)
-        plt.tight_layout()
-        path_5: <span class="nb">str</span> <span class="op">=</span> os.path.join(cartella, <span class="st">&quot;fatturato_mensile.png&quot;</span>)
-        plt.savefig(path_5, dpi<span class="op">=</span><span class="mi">150</span>)
-        plt.close(fig)
-        percorsi.append(path_5)
-
-        <span class="kw">return</span> percorsi
-
-    <span class="kw">def</span> <span class="fn">genera_report_testuale</span>(<span class="fn">analisi</span>: <span class="nb">dict</span>[<span class="nb">str</span>, Any]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-        <span class="st">&quot;&quot;&quot;Genera un report testuale dell&#x27;analisi.&quot;&quot;&quot;</span>
-        linee: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
-            <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>,
-            <span class="st">&quot;REPORT ANALISI VENDITE&quot;</span>,
-            <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>,
-            <span class="st">&quot;&quot;</span>,
-            <span class="st">f&quot;Numero transazioni: {analisi[&#x27;num_transazioni&#x27;]}&quot;</span>,
-            <span class="st">f&quot;Fatturato totale: EUR {analisi[&#x27;fatturato_totale&#x27;]:,.2f}&quot;</span>,
-            <span class="st">f&quot;Fatturato medio per transazione: EUR {analisi[&#x27;fatturato_medio&#x27;]:,.2f}&quot;</span>,
-            <span class="st">&quot;&quot;</span>,
-            <span class="st">&quot;--- Fatturato per categoria ---&quot;</span>,
-        ]
-
-        <span class="kw">for</span> cat, fatt <span class="kw">in</span> analisi[<span class="st">&quot;fatturato_per_categoria&quot;</span>].items():
-            linee.append(<span class="st">f&quot;  {cat}: EUR {fatt:,.2f}&quot;</span>)
-
-        linee.append(<span class="st">&quot;&quot;</span>)
-        linee.append(<span class="st">&quot;--- Fatturato per citta&#x27; ---&quot;</span>)
-        <span class="kw">for</span> citta, fatt <span class="kw">in</span> analisi[<span class="st">&quot;fatturato_per_citta&quot;</span>].items():
-            linee.append(<span class="st">f&quot;  {citta}: EUR {fatt:,.2f}&quot;</span>)
-
-        linee.extend([
-            <span class="st">&quot;&quot;</span>,
-            <span class="st">f&quot;Prodotto piu&#x27; venduto: {analisi[&#x27;prodotto_piu_venduto&#x27;]} &quot;</span>
-            <span class="st">f&quot;({analisi[&#x27;quantita_prodotto_top&#x27;]} unita&#x27;)&quot;</span>,
-            <span class="st">f&quot;Mese migliore: {analisi[&#x27;mese_migliore&#x27;]}&quot;</span>,
-            <span class="st">&quot;&quot;</span>,
-            <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>,
-        ])
-
-        <span class="kw">return</span> <span class="st">&quot;\n&quot;</span>.join(linee)
-
-    <span class="cm"># --- Test mini-progetto ---</span>
-    <span class="cm"># Genera dati</span>
-    df_vendite: pd.DataFrame <span class="op">=</span> genera_dati_vendite(<span class="mi">200</span>, seed<span class="op">=</span><span class="mi">42</span>)
-    <span class="kw">assert</span> <span class="nb">len</span>(df_vendite) <span class="op">=</span><span class="op">=</span> <span class="mi">200</span>
-    <span class="kw">assert</span> <span class="st">&quot;fatturato&quot;</span> <span class="kw">in</span> df_vendite.columns
-    <span class="kw">assert</span> df_vendite[<span class="st">&quot;fatturato&quot;</span>].<span class="nb">sum</span>() <span class="op">&gt;</span> <span class="mi">0</span>
-
-    <span class="cm"># Analisi</span>
-    risultati: <span class="nb">dict</span>[<span class="nb">str</span>, Any] <span class="op">=</span> analisi_vendite(df_vendite)
-    <span class="kw">assert</span> risultati[<span class="st">&quot;num_transazioni&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">200</span>
-    <span class="kw">assert</span> risultati[<span class="st">&quot;fatturato_totale&quot;</span>] <span class="op">&gt;</span> <span class="mi">0</span>
-    <span class="kw">assert</span> risultati[<span class="st">&quot;fatturato_medio&quot;</span>] <span class="op">&gt;</span> <span class="mi">0</span>
-    <span class="kw">assert</span> <span class="nb">len</span>(risultati[<span class="st">&quot;fatturato_per_categoria&quot;</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-    <span class="kw">assert</span> <span class="nb">len</span>(risultati[<span class="st">&quot;fatturato_per_citta&quot;</span>]) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
-    <span class="kw">assert</span> risultati[<span class="st">&quot;prodotto_piu_venduto&quot;</span>] <span class="op">!</span><span class="op">=</span> <span class="st">&quot;&quot;</span>
-    <span class="kw">assert</span> <span class="mi">1</span> <span class="op">&lt;</span><span class="op">=</span> risultati[<span class="st">&quot;mese_migliore&quot;</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="mi">12</span>
-
-    <span class="cm"># Report testuale</span>
-    report_testo: <span class="nb">str</span> <span class="op">=</span> genera_report_testuale(risultati)
-    <span class="kw">assert</span> <span class="st">&quot;REPORT ANALISI VENDITE&quot;</span> <span class="kw">in</span> report_testo
-    <span class="kw">assert</span> <span class="st">&quot;EUR&quot;</span> <span class="kw">in</span> report_testo
-
-    <span class="cm"># Genera grafici</span>
-    dir_report: <span class="nb">str</span> <span class="op">=</span> tempfile.mkdtemp(prefix<span class="op">=</span><span class="st">&quot;report_lab08_&quot;</span>)
-    percorsi_grafici: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> genera_report_grafici(df_vendite, dir_report)
-
-    <span class="kw">assert</span> <span class="nb">len</span>(percorsi_grafici) <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
-    <span class="kw">for</span> percorso <span class="kw">in</span> percorsi_grafici:
-        <span class="kw">assert</span> os.path.exists(percorso), <span class="st">f&quot;Grafico non trovato: {percorso}&quot;</span>
-        <span class="kw">assert</span> os.path.getsize(percorso) <span class="op">&gt;</span> <span class="mi">0</span>, <span class="st">f&quot;Grafico vuoto: {percorso}&quot;</span>
-
-    <span class="cm"># Stampa il report</span>
-    <span class="nb">print</span>(report_testo)
-    <span class="nb">print</span>(<span class="st">f&quot;\nGrafici salvati in: {dir_report}&quot;</span>)
-
-    <span class="cm"># Pulizia file temporanei</span>
-    <span class="kw">for</span> nome_file <span class="kw">in</span> os.listdir(dir_report):
-        os.unlink(os.path.join(dir_report, nome_file))
-    os.rmdir(dir_report)
-
-    <span class="nb">print</span>(<span class="st">&quot;\nEsercizio 2 (Mini-progetto analisi dati): SUPERATO&quot;</span>)
-
-<span class="kw">else</span>:
-    <span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Mini-progetto): SALTATO (librerie non disponibili)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Promossi: {len(voti)} su {len(tutti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media dei promossi: {media:.1f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Voti da 27 in su: {(voti &gt;= 27).mean():.1%}&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-esercizi_superati: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-totale: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
-<span class="kw">if</span> MATPLOTLIB_DISPONIBILE <span class="kw">and</span> NUMPY_DISPONIBILE:
-    esercizi_superati <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">if</span> MATPLOTLIB_DISPONIBILE <span class="kw">and</span> NUMPY_DISPONIBILE <span class="kw">and</span> PANDAS_DISPONIBILE:
-    esercizi_superati <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+<span class="cm"># ESERCIZIO 3: ore di studio e voto — studio.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Ore di studio e voto ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
 
-<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
-<span class="nb">print</span>(<span class="st">f&quot;LABORATORIO 08: {esercizi_superati}/{totale} ESERCIZI SUPERATI&quot;</span>)
-<span class="kw">if</span> esercizi_superati <span class="op">=</span><span class="op">=</span> totale:
-    <span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 08 SUPERATI!&quot;</span>)
-<span class="kw">else</span>:
-    <span class="nb">print</span>(<span class="st">&quot;Installa le librerie mancanti per completare tutti gli esercizi.&quot;</span>)
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">7</span>)
+ore: np.ndarray <span class="op">=</span> rng.uniform(<span class="mi">20</span>, <span class="mi">120</span>, <span class="mi">80</span>).<span class="nb">round</span>()
+voto: np.ndarray <span class="op">=</span> (<span class="mi">17</span> <span class="op">+</span> <span class="mi">0.09</span> <span class="op">*</span> ore <span class="op">+</span> rng.normal(<span class="mi">0</span>, <span class="mi">2.5</span>, <span class="mi">80</span>)).<span class="nb">round</span>()
+voto <span class="op">=</span> voto.clip(<span class="mi">18</span>, <span class="mi">30</span>)
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+plt.scatter(ore, voto, alpha<span class="op">=</span><span class="mi">0.6</span>, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+plt.title(<span class="st">&quot;Ore di studio e voto all&#x27;esame&quot;</span>)
+plt.xlabel(<span class="st">&quot;Ore di studio&quot;</span>)
+plt.ylabel(<span class="st">&quot;Voto&quot;</span>)
+plt.grid(<span class="kw">True</span>, alpha<span class="op">=</span><span class="mi">0.3</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;studio.png&quot;</span>)
+
+r: <span class="nb">float</span> <span class="op">=</span> np.corrcoef(ore, voto)[<span class="mi">0</span>, <span class="mi">1</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Studenti: {len(ore)}, correlazione: {r:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Voto medio con più di 80 ore: {voto[ore &gt; 80].mean():.1f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Voto medio con 80 ore o meno: {voto[ore &lt;= 80].mean():.1f}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 4: l&#x27;attesa in mensa — mensa.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: L&#x27;attesa in mensa ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">3</span>)
+giorni: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;lun&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;mer&quot;</span>, <span class="st">&quot;gio&quot;</span>, <span class="st">&quot;ven&quot;</span>]
+attesa_tipica: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">12</span>, <span class="mi">15</span>, <span class="mi">14</span>, <span class="mi">16</span>, <span class="mi">8</span>]
+df: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;giorno&quot;</span>: giorni <span class="op">*</span> <span class="mi">20</span>,
+    <span class="st">&quot;attesa&quot;</span>: np.tile(attesa_tipica, <span class="mi">20</span>) <span class="op">+</span> rng.normal(<span class="mi">0</span>, <span class="mi">3</span>, <span class="mi">100</span>)})
+
+medie: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;giorno&quot;</span>, sort<span class="op">=</span><span class="kw">False</span>)[<span class="st">&quot;attesa&quot;</span>].mean()
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+plt.bar(medie.index, medie.values, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+plt.title(<span class="st">&quot;Attesa media alla mensa&quot;</span>)
+plt.xlabel(<span class="st">&quot;Giorno&quot;</span>)
+plt.ylabel(<span class="st">&quot;Minuti&quot;</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;mensa.png&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;Rilevazioni: {len(df)}, media: {df[&#x27;attesa&#x27;].mean():.1f} min&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Giorno peggiore: {medie.idxmax()} ({medie.max():.1f} min)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Giorno migliore: {medie.idxmin()} ({medie.min():.1f} min)&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 5: il tragitto per l&#x27;università — tragitto.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: Il tragitto per l&#x27;università ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">11</span>)
+tempi: <span class="nb">dict</span>[<span class="nb">str</span>, np.ndarray] <span class="op">=</span> {
+    <span class="st">&quot;bici&quot;</span>: rng.normal(<span class="mi">22</span>, <span class="mi">3</span>, <span class="mi">40</span>).<span class="nb">round</span>(),
+    <span class="st">&quot;autobus&quot;</span>: rng.normal(<span class="mi">28</span>, <span class="mi">7</span>, <span class="mi">40</span>).<span class="nb">round</span>(),
+    <span class="st">&quot;treno&quot;</span>: rng.normal(<span class="mi">35</span>, <span class="mi">4</span>, <span class="mi">40</span>).<span class="nb">round</span>()}
+
+plt.figure(figsize<span class="op">=</span>(<span class="mi">7</span>, <span class="mi">4</span>))
+plt.boxplot(<span class="nb">list</span>(tempi.values()), tick_labels<span class="op">=</span><span class="nb">list</span>(tempi.keys()))
+plt.title(<span class="st">&quot;Tempo per arrivare in università&quot;</span>)
+plt.xlabel(<span class="st">&quot;Mezzo&quot;</span>)
+plt.ylabel(<span class="st">&quot;Minuti&quot;</span>)
+plt.tight_layout()
+plt.savefig(<span class="st">&quot;tragitto.png&quot;</span>)
+
+<span class="kw">for</span> mezzo, t <span class="kw">in</span> tempi.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{mezzo}: mediana {np.median(t):.0f} min, &quot;</span>
+          <span class="st">f&quot;oltre 30 min {(t &gt; 30).mean():.1%}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 6: gennaio in due grafici — meteo.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 6: Gennaio in due grafici ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">1</span>)
+giorni: np.ndarray <span class="op">=</span> np.arange(<span class="mi">1</span>, <span class="mi">32</span>)
+minime: np.ndarray <span class="op">=</span> rng.normal(<span class="mi">0</span>, <span class="mi">2.5</span>, <span class="mi">31</span>).<span class="nb">round</span>(<span class="mi">1</span>)
+massime: np.ndarray <span class="op">=</span> (minime <span class="op">+</span> rng.normal(<span class="mi">7</span>, <span class="mi">1.8</span>, <span class="mi">31</span>)).<span class="nb">round</span>(<span class="mi">1</span>)
+
+fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="mi">1</span>, <span class="mi">2</span>, figsize<span class="op">=</span>(<span class="mi">10</span>, <span class="mi">4</span>))
+ax1.plot(giorni, massime, color<span class="op">=</span><span class="st">&quot;tomato&quot;</span>, label<span class="op">=</span><span class="st">&quot;Massima&quot;</span>)
+ax1.plot(giorni, minime, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>, label<span class="op">=</span><span class="st">&quot;Minima&quot;</span>)
+ax1.set_title(<span class="st">&quot;Temperature di gennaio a Padova&quot;</span>)
+ax1.set_xlabel(<span class="st">&quot;Giorno&quot;</span>)
+ax1.set_ylabel(<span class="st">&quot;°C&quot;</span>)
+ax1.legend()
+ax2.hist(massime <span class="op">-</span> minime, bins<span class="op">=</span><span class="mi">8</span>, color<span class="op">=</span><span class="st">&quot;gray&quot;</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+ax2.set_title(<span class="st">&quot;Escursione termica&quot;</span>)
+ax2.set_xlabel(<span class="st">&quot;Massima - minima (°C)&quot;</span>)
+ax2.set_ylabel(<span class="st">&quot;Giorni&quot;</span>)
+fig.tight_layout()
+fig.savefig(<span class="st">&quot;meteo.png&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Giorni con la minima sotto zero: {(minime &lt; 0).sum()}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Escursione media: {(massime - minime).mean():.1f} °C&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE MERCATI E FINANZA: due mesi di borsa — ch_mercati.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Mercati e finanza: Due mesi di borsa ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+
+<span class="kw">def</span> <span class="fn">salva</span>(<span class="fn">nome</span>: <span class="nb">str</span>, titolo: <span class="nb">str</span>, x: <span class="nb">str</span>, y: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Mette titolo ed etichette al grafico e lo salva in PNG.&quot;&quot;&quot;</span>
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;prezzi.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>)
+df: pd.DataFrame <span class="op">=</span> grezzo.drop_duplicates().dropna()
+df <span class="op">=</span> df[df[<span class="st">&quot;prezzo&quot;</span>] <span class="op">&gt;</span> <span class="mi">0</span>].copy()
+<span class="nb">print</span>(<span class="st">f&quot;Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}&quot;</span>)
+df[<span class="st">&quot;rendimento&quot;</span>] <span class="op">=</span> df.groupby(<span class="st">&quot;titolo&quot;</span>)[<span class="st">&quot;prezzo&quot;</span>].pct_change()
+prezzi <span class="op">=</span> df.groupby(<span class="st">&quot;titolo&quot;</span>)[<span class="st">&quot;prezzo&quot;</span>]
+rend: pd.Series <span class="op">=</span> prezzi.last() <span class="op">/</span> prezzi.first() <span class="op">-</span> <span class="mi">1</span>
+vol: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;titolo&quot;</span>)[<span class="st">&quot;rendimento&quot;</span>].std()
+mib: pd.DataFrame <span class="op">=</span> df[df[<span class="st">&quot;titolo&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;MIB&quot;</span>]
+<span class="kw">for</span> t <span class="kw">in</span> rend.index:
+    <span class="nb">print</span>(<span class="st">f&quot;{t}: rendimento {rend[t]:.1%}, volatilità {vol[t]:.1%}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Giorni con il MIB in calo oltre l&#x27;1%:&quot;</span>,
+      (mib[<span class="st">&quot;rendimento&quot;</span>] <span class="op">&lt;</span> <span class="op">-</span><span class="mi">0.01</span>).<span class="nb">sum</span>())
+plt.hist(df[<span class="st">&quot;rendimento&quot;</span>].dropna(), bins<span class="op">=</span><span class="mi">20</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+salva(<span class="st">&quot;rendimenti.png&quot;</span>, <span class="st">&quot;Rendimenti giornalieri&quot;</span>, <span class="st">&quot;Rendimento&quot;</span>,
+      <span class="st">&quot;Giorni&quot;</span>)
+<span class="kw">for</span> t <span class="kw">in</span> [<span class="st">&quot;ENRG&quot;</span>, <span class="st">&quot;BANK&quot;</span>, <span class="st">&quot;TECH&quot;</span>]:
+    plt.plot(df[df[<span class="st">&quot;titolo&quot;</span>] <span class="op">=</span><span class="op">=</span> t][<span class="st">&quot;prezzo&quot;</span>].values, label<span class="op">=</span>t)
+plt.legend()
+salva(<span class="st">&quot;prezzi.png&quot;</span>, <span class="st">&quot;Prezzi di chiusura&quot;</span>, <span class="st">&quot;Giorno&quot;</span>, <span class="st">&quot;Prezzo (EUR)&quot;</span>)
+plt.bar(vol.index, vol.values, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+salva(<span class="st">&quot;volatilita.png&quot;</span>, <span class="st">&quot;Volatilità&quot;</span>, <span class="st">&quot;Titolo&quot;</span>, <span class="st">&quot;Deviazione std&quot;</span>)
+titoli: pd.Series <span class="op">=</span> rend.drop(<span class="st">&quot;MIB&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Il migliore è {titoli.idxmax()} ({titoli.max():.1%}), &quot;</span>
+      <span class="st">f&quot;il peggiore {titoli.idxmin()} ({titoli.min():.1%}).&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Il più volatile è {vol.idxmax()}, con {vol.max():.1%} al &quot;</span>
+      <span class="st">f&quot;giorno; il MIB si ferma a {vol[&#x27;MIB&#x27;]:.1%}.&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Il MIB rende {rend[&#x27;MIB&#x27;]:.1%}: &quot;</span>
+      <span class="st">f&quot;{(titoli &gt; rend[&#x27;MIB&#x27;]).sum()} titoli su 3 fanno meglio.&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE SPORT: il passo gara — ch_sport.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Sport: Il passo gara ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+
+<span class="kw">def</span> <span class="fn">salva</span>(<span class="fn">nome</span>: <span class="nb">str</span>, titolo: <span class="nb">str</span>, x: <span class="nb">str</span>, y: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Mette titolo ed etichette al grafico e lo salva in PNG.&quot;&quot;&quot;</span>
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;tempi_giro.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>)
+df: pd.DataFrame <span class="op">=</span> grezzo.drop_duplicates().dropna()
+df <span class="op">=</span> df[(df[<span class="st">&quot;tempo&quot;</span>] <span class="op">&gt;</span> <span class="mi">60</span>) <span class="op">&amp;</span> (df[<span class="st">&quot;tempo&quot;</span>] <span class="op">&lt;</span> <span class="mi">180</span>)].copy()
+<span class="nb">print</span>(<span class="st">f&quot;Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}&quot;</span>)
+df[<span class="st">&quot;lento&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;tempo&quot;</span>] <span class="op">&gt;</span> <span class="mi">100</span>
+normali: pd.DataFrame <span class="op">=</span> df[<span class="op">~</span>df[<span class="st">&quot;lento&quot;</span>]]
+media: pd.Series <span class="op">=</span> normali.groupby(<span class="st">&quot;pilota&quot;</span>)[<span class="st">&quot;tempo&quot;</span>].mean()
+distacco: pd.Series <span class="op">=</span> media <span class="op">-</span> media.<span class="nb">min</span>()
+top: pd.Series <span class="op">=</span> df.loc[df[<span class="st">&quot;tempo&quot;</span>].idxmin()]
+<span class="nb">print</span>(<span class="st">f&quot;Giro più veloce: {top[&#x27;pilota&#x27;]}, gara {top[&#x27;gara&#x27;]}, &quot;</span>
+      <span class="st">f&quot;giro {top[&#x27;giro&#x27;]}, {top[&#x27;tempo&#x27;]:.1f} s&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Giri lenti (pit stop e safety car): {df[&#x27;lento&#x27;].mean():.1%}&quot;</span>)
+<span class="kw">for</span> p <span class="kw">in</span> media.index:
+    <span class="nb">print</span>(<span class="st">f&quot;{p}: media sui giri normali {media[p]:.2f} s&quot;</span>)
+plt.hist(df[<span class="st">&quot;tempo&quot;</span>], bins<span class="op">=</span><span class="mi">25</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+salva(<span class="st">&quot;hist_tempi.png&quot;</span>, <span class="st">&quot;Tempi sul giro&quot;</span>, <span class="st">&quot;Tempo (s)&quot;</span>, <span class="st">&quot;Giri&quot;</span>)
+gara1: pd.DataFrame <span class="op">=</span> normali[normali[<span class="st">&quot;gara&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>]
+<span class="kw">for</span> p <span class="kw">in</span> media.index:
+    s: pd.DataFrame <span class="op">=</span> gara1[gara1[<span class="st">&quot;pilota&quot;</span>] <span class="op">=</span><span class="op">=</span> p]
+    plt.plot(s[<span class="st">&quot;giro&quot;</span>], s[<span class="st">&quot;tempo&quot;</span>], marker<span class="op">=</span><span class="st">&quot;o&quot;</span>, label<span class="op">=</span>p)
+plt.legend()
+salva(<span class="st">&quot;gara1.png&quot;</span>, <span class="st">&quot;Gara 1, giri normali&quot;</span>, <span class="st">&quot;Giro&quot;</span>, <span class="st">&quot;Tempo (s)&quot;</span>)
+plt.bar(distacco.index, distacco.values, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+salva(<span class="st">&quot;distacchi.png&quot;</span>, <span class="st">&quot;Distacco dal più veloce&quot;</span>, <span class="st">&quot;Pilota&quot;</span>, <span class="st">&quot;s&quot;</span>)
+costo: <span class="nb">float</span> <span class="op">=</span> df[df[<span class="st">&quot;lento&quot;</span>]][<span class="st">&quot;tempo&quot;</span>].mean() <span class="op">-</span> media.mean()
+<span class="nb">print</span>(<span class="st">f&quot;Sul passo gara il più veloce è {media.idxmin()}; &quot;</span>
+      <span class="st">f&quot;{media.idxmax()} perde {distacco.max():.2f} s al giro.&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Un giro lento costa {costo:.1f} s in più e va escluso.&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Gara 1: i tempi crescono fino al pit stop (usura gomme).&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE IMPRESE E MARKETING: quattro mesi di ordini — ch_negozio.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Imprese e marketing: Quattro mesi di ordini ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+
+<span class="kw">def</span> <span class="fn">salva</span>(<span class="fn">nome</span>: <span class="nb">str</span>, titolo: <span class="nb">str</span>, x: <span class="nb">str</span>, y: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Mette titolo ed etichette al grafico e lo salva in PNG.&quot;&quot;&quot;</span>
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;ordini.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>)
+df: pd.DataFrame <span class="op">=</span> grezzo.drop_duplicates().dropna()
+df <span class="op">=</span> df[df[<span class="st">&quot;quantita&quot;</span>] <span class="op">&gt;</span> <span class="mi">0</span>].copy()
+<span class="nb">print</span>(<span class="st">f&quot;Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}&quot;</span>)
+df[<span class="st">&quot;importo&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;quantita&quot;</span>] <span class="op">*</span> df[<span class="st">&quot;prezzo&quot;</span>]
+df[<span class="st">&quot;mese&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;data&quot;</span>].<span class="nb">str</span>[:<span class="mi">7</span>]
+citta: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;citta&quot;</span>)[<span class="st">&quot;importo&quot;</span>].<span class="nb">sum</span>()
+mesi: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;mese&quot;</span>)[<span class="st">&quot;importo&quot;</span>].<span class="nb">sum</span>()
+pezzi: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;prodotto&quot;</span>)[<span class="st">&quot;quantita&quot;</span>].<span class="nb">sum</span>()
+ricavi: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;prodotto&quot;</span>)[<span class="st">&quot;importo&quot;</span>].<span class="nb">sum</span>()
+top: <span class="nb">str</span> <span class="op">=</span> pezzi.idxmax()
+<span class="nb">print</span>(<span class="st">f&quot;Fatturato: {df[&#x27;importo&#x27;].sum():.2f} EUR, &quot;</span>
+      <span class="st">f&quot;ordine medio: {df[&#x27;importo&#x27;].mean():.2f} EUR&quot;</span>)
+<span class="kw">for</span> c <span class="kw">in</span> citta.index:
+    <span class="nb">print</span>(<span class="st">f&quot;{c}: {citta[c]:.2f} EUR ({citta[c] / citta.sum():.1%})&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Prodotto più venduto: {top}, {pezzi[top]:.0f} pezzi&quot;</span>)
+plt.hist(df[<span class="st">&quot;importo&quot;</span>], bins<span class="op">=</span><span class="mi">15</span>, edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+salva(<span class="st">&quot;hist_importi.png&quot;</span>, <span class="st">&quot;Importo degli ordini&quot;</span>, <span class="st">&quot;Euro&quot;</span>, <span class="st">&quot;Ordini&quot;</span>)
+plt.plot(mesi.index, mesi.values, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)
+salva(<span class="st">&quot;mesi.png&quot;</span>, <span class="st">&quot;Fatturato mensile&quot;</span>, <span class="st">&quot;Mese&quot;</span>, <span class="st">&quot;Euro&quot;</span>)
+plt.bar(citta.index, citta.values, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+salva(<span class="st">&quot;citta.png&quot;</span>, <span class="st">&quot;Fatturato per città&quot;</span>, <span class="st">&quot;Città&quot;</span>, <span class="st">&quot;Euro&quot;</span>)
+tot: <span class="nb">float</span> <span class="op">=</span> citta.<span class="nb">sum</span>()
+<span class="nb">print</span>(<span class="st">f&quot;{citta.idxmax()} vale {citta.max() / tot:.1%} del fatturato, &quot;</span>
+      <span class="st">f&quot;{citta.idxmin()} solo {citta.min() / tot:.1%}.&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Il mese migliore è {mesi.idxmax()} ({mesi.max():.2f} EUR), &quot;</span>
+      <span class="st">f&quot;il peggiore {mesi.idxmin()} ({mesi.min():.2f} EUR).&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Prodotto {top}: {pezzi[top] / pezzi.sum():.1%} dei pezzi, &quot;</span>
+      <span class="st">f&quot;ma {ricavi[top] / ricavi.sum():.1%} del fatturato.&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE SALUTE E SCIENZA: l&#x27;effetto dell&#x27;integratore — ch_salute.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Salute e scienza: L&#x27;effetto dell&#x27;integratore ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+
+<span class="kw">def</span> <span class="fn">salva</span>(<span class="fn">nome</span>: <span class="nb">str</span>, titolo: <span class="nb">str</span>, x: <span class="nb">str</span>, y: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Mette titolo ed etichette al grafico e lo salva in PNG.&quot;&quot;&quot;</span>
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;pazienti.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>)
+df: pd.DataFrame <span class="op">=</span> grezzo.drop_duplicates().dropna()
+df <span class="op">=</span> df[df[<span class="st">&quot;pressione_prima&quot;</span>].between(<span class="mi">80</span>, <span class="mi">250</span>)
+        <span class="op">&amp;</span> df[<span class="st">&quot;pressione_dopo&quot;</span>].between(<span class="mi">80</span>, <span class="mi">250</span>)].copy()
+<span class="nb">print</span>(<span class="st">f&quot;Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}&quot;</span>)
+df[<span class="st">&quot;differenza&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;pressione_dopo&quot;</span>] <span class="op">-</span> df[<span class="st">&quot;pressione_prima&quot;</span>]
+df[<span class="st">&quot;migliorato&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;differenza&quot;</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="op">-</span><span class="mi">10</span>
+calo: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;gruppo&quot;</span>)[<span class="st">&quot;differenza&quot;</span>].mean()
+quota: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;gruppo&quot;</span>)[<span class="st">&quot;migliorato&quot;</span>].mean()
+rr: <span class="nb">float</span> <span class="op">=</span> quota[<span class="st">&quot;trattamento&quot;</span>] <span class="op">/</span> quota[<span class="st">&quot;controllo&quot;</span>]
+<span class="kw">for</span> g <span class="kw">in</span> calo.index:
+    <span class="nb">print</span>(<span class="st">f&quot;{g}: variazione media {calo[g]:.1f} mmHg, &quot;</span>
+          <span class="st">f&quot;migliorati {quota[g]:.1%}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Rischio relativo di miglioramento: {rr:.2f}&quot;</span>)
+plt.boxplot([df[df[<span class="st">&quot;gruppo&quot;</span>] <span class="op">=</span><span class="op">=</span> g][<span class="st">&quot;differenza&quot;</span>] <span class="kw">for</span> g <span class="kw">in</span> calo.index],
+            tick_labels<span class="op">=</span>calo.index)
+salva(<span class="st">&quot;variazione.png&quot;</span>, <span class="st">&quot;Dopo meno prima&quot;</span>, <span class="st">&quot;Gruppo&quot;</span>, <span class="st">&quot;mmHg&quot;</span>)
+<span class="kw">for</span> g <span class="kw">in</span> calo.index:
+    s: pd.DataFrame <span class="op">=</span> df[df[<span class="st">&quot;gruppo&quot;</span>] <span class="op">=</span><span class="op">=</span> g]
+    plt.scatter(s[<span class="st">&quot;pressione_prima&quot;</span>], s[<span class="st">&quot;pressione_dopo&quot;</span>], label<span class="op">=</span>g)
+plt.legend()
+salva(<span class="st">&quot;prima_dopo.png&quot;</span>, <span class="st">&quot;Pressione sistolica&quot;</span>, <span class="st">&quot;Prima (mmHg)&quot;</span>,
+      <span class="st">&quot;Dopo (mmHg)&quot;</span>)
+plt.bar(quota.index, quota.values, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+salva(<span class="st">&quot;migliorati.png&quot;</span>, <span class="st">&quot;Quota di migliorati&quot;</span>, <span class="st">&quot;Gruppo&quot;</span>, <span class="st">&quot;Quota&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;La pressione cambia di {calo[&#x27;trattamento&#x27;]:.1f} mmHg con &quot;</span>
+      <span class="st">f&quot;l&#x27;integratore e di {calo[&#x27;controllo&#x27;]:.1f} senza.&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;I migliorati sono {rr:.2f} volte quelli del controllo.&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Anche il controllo migliora: per questo serve un confronto.&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE CASO E PROBABILITÀ: il dado sospetto — ch_probabilita.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Caso e probabilità: Il dado sospetto ---&quot;</span>)
+<span class="kw">import</span> matplotlib
+matplotlib.use(<span class="st">&quot;Agg&quot;</span>)
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+
+<span class="kw">def</span> <span class="fn">salva</span>(<span class="fn">nome</span>: <span class="nb">str</span>, titolo: <span class="nb">str</span>, x: <span class="nb">str</span>, y: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Mette titolo ed etichette al grafico e lo salva in PNG.&quot;&quot;&quot;</span>
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;lanci.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>)
+df: pd.DataFrame <span class="op">=</span> grezzo.drop_duplicates().dropna()
+df <span class="op">=</span> df[df[<span class="st">&quot;dado2&quot;</span>].between(<span class="mi">1</span>, <span class="mi">6</span>)].copy()
+<span class="nb">print</span>(<span class="st">f&quot;Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}&quot;</span>)
+df[<span class="st">&quot;somma&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;dado1&quot;</span>] <span class="op">+</span> df[<span class="st">&quot;dado2&quot;</span>]
+df[<span class="st">&quot;sei&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;dado2&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">6</span>
+media: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;giocatore&quot;</span>)[<span class="st">&quot;somma&quot;</span>].mean()
+sei: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quot;giocatore&quot;</span>)[<span class="st">&quot;sei&quot;</span>].mean()
+<span class="nb">print</span>(<span class="st">f&quot;Media della somma: {df[&#x27;somma&#x27;].mean():.2f} (teorica 7.00)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Somma 7: {(df[&#x27;somma&#x27;] == 7).mean():.1%} dei lanci &quot;</span>
+      <span class="st">f&quot;(teorica {6 / 36:.1%})&quot;</span>)
+<span class="kw">for</span> g <span class="kw">in</span> media.index:
+    <span class="nb">print</span>(<span class="st">f&quot;{g}: media {media[g]:.2f}, sei sul dado 2 {sei[g]:.1%}&quot;</span>)
+plt.hist(df[<span class="st">&quot;somma&quot;</span>], bins<span class="op">=</span>np.arange(<span class="mi">1.5</span>, <span class="mi">13</span>), edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)
+salva(<span class="st">&quot;somme.png&quot;</span>, <span class="st">&quot;Somma dei due dadi&quot;</span>, <span class="st">&quot;Somma&quot;</span>, <span class="st">&quot;Lanci&quot;</span>)
+lanci: np.ndarray <span class="op">=</span> np.arange(<span class="mi">1</span>, <span class="nb">len</span>(df) <span class="op">+</span> <span class="mi">1</span>)
+plt.plot(lanci, df[<span class="st">&quot;somma&quot;</span>].cumsum() <span class="op">/</span> lanci)
+plt.axhline(<span class="mi">7</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>, label<span class="op">=</span><span class="st">&quot;valore teorico&quot;</span>)
+plt.legend()
+salva(<span class="st">&quot;media_cumulata.png&quot;</span>, <span class="st">&quot;Media della somma&quot;</span>, <span class="st">&quot;Lanci&quot;</span>, <span class="st">&quot;Media&quot;</span>)
+plt.bar(sei.index, sei.values, color<span class="op">=</span><span class="st">&quot;steelblue&quot;</span>)
+plt.axhline(<span class="mi">1</span> <span class="op">/</span> <span class="mi">6</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, linestyle<span class="op">=</span><span class="st">&quot;--&quot;</span>)
+salva(<span class="st">&quot;sei.png&quot;</span>, <span class="st">&quot;Quota di 6 sul dado 2&quot;</span>, <span class="st">&quot;Giocatore&quot;</span>, <span class="st">&quot;Quota&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Dopo {len(df)} lanci la media cumulata è &quot;</span>
+      <span class="st">f&quot;{df[&#x27;somma&#x27;].mean():.2f}; il valore teorico è 7.&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;{sei.idxmax()} fa 6 sul dado 2 nel {sei.max():.1%} dei lanci &quot;</span>
+      <span class="st">f&quot;e la sua somma media è {media[sei.idxmax()]:.2f}.&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Con un dado regolare sarebbe {1 / 6:.1%}: va controllato.&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi del laboratorio 08&quot;</span>)
 <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>

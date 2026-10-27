@@ -1,608 +1,498 @@
-# Laboratorio 6 --- Classi e oggetti
+# Laboratorio 6 — Classi e oggetti
 
-**Prerequisiti**: Frontale T16 (Classi e programmazione orientata agli oggetti)
+**Prerequisiti:** lezioni T16 (Programmazione a oggetti).
 
-**Obiettivo**: mettere in pratica la definizione di classi in Python, con attributi, metodi, metodi speciali (`__str__`, `__repr__`, `__eq__`, `__lt__`), validazione dei dati e composizione di oggetti.
+Oggi ci sono solo esercizi, in ordine di difficoltà, su classi e oggetti. Per ogni esercizio create un file `.py` con il nome indicato: dentro definite le classi richieste, con type hints su attributi e metodi, e poi usatele sui dati della consegna stampando i risultati. Non serve `input()`: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file. Alla fine c'è una challenge a scelta tra 5 temi: sceglietene uno.
 
----
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio del laboratorio L07.
 
-## Esercizio guidato 1 --- `Punto2D`: coordinate, distanza, `__str__`
-
-Iniziamo con una classe semplice che rappresenta un punto nel piano cartesiano.
-
-### Passo 1: definire la classe base
-
-```python
-import math
-
-
-class Punto2D:
-    """Rappresenta un punto nel piano cartesiano."""
-
-    def __init__(self, x: float, y: float) -> None:
-        """Inizializza un punto con coordinate x e y.
-
-        Args:
-            x: Coordinata orizzontale.
-            y: Coordinata verticale.
-        """
-        self.x: float = x
-        self.y: float = y
-
-    def distanza_da(self, altro: "Punto2D") -> float:
-        """Calcola la distanza euclidea da un altro punto.
-
-        Args:
-            altro: Un altro punto nel piano.
-
-        Returns:
-            La distanza euclidea tra i due punti.
-        """
-        dx: float = self.x - altro.x
-        dy: float = self.y - altro.y
-        return math.sqrt(dx ** 2 + dy ** 2)
-
-    def distanza_da_origine(self) -> float:
-        """Calcola la distanza dall'origine (0, 0).
-
-        Returns:
-            La distanza euclidea dall'origine.
-        """
-        return self.distanza_da(Punto2D(0.0, 0.0))
-
-    def __str__(self) -> str:
-        """Restituisce una rappresentazione leggibile del punto."""
-        return f"({self.x}, {self.y})"
-
-
-# --- Prova ---
-if __name__ == "__main__":
-    p1: Punto2D = Punto2D(3.0, 4.0)
-    p2: Punto2D = Punto2D(0.0, 0.0)
-
-    print(f"Punto 1: {p1}")             # Usa __str__
-    print(f"Punto 2: {p2}")
-    print(f"Distanza p1-p2: {p1.distanza_da(p2):.2f}")
-    print(f"Distanza p1 dall'origine: {p1.distanza_da_origine():.2f}")
-```
-
-**Output atteso**:
-
-```
-Punto 1: (3.0, 4.0)
-Punto 2: (0.0, 0.0)
-Distanza p1-p2: 5.00
-Distanza p1 dall'origine: 5.00
-```
-
-**Cosa notiamo**:
-
-- `__init__` e' il costruttore: viene chiamato automaticamente quando scriviamo `Punto2D(3.0, 4.0)`.
-- `self` e' il riferimento all'oggetto corrente: ogni metodo lo riceve come primo parametro.
-- `__str__` viene invocato automaticamente da `print()` e dalle f-string.
-- `distanza_da_origine` riusa `distanza_da` --- un metodo puo' chiamare altri metodi dello stesso oggetto.
-
-### Passo 2: aggiungere `__repr__`
-
-```python
-    def __repr__(self) -> str:
-        """Restituisce una rappresentazione tecnica del punto.
-
-        La convenzione e' che repr() produca una stringa che,
-        incollata nell'interprete, ricrei l'oggetto.
-        """
-        return f"Punto2D({self.x}, {self.y})"
-```
-
-La differenza: `__str__` e' per gli umani (`print`), `__repr__` e' per i programmatori (debug, interprete interattivo, rappresentazione nelle liste).
-
-```python
-    punti: list[Punto2D] = [Punto2D(1, 2), Punto2D(3, 4)]
-    print(punti)  # Usa __repr__ per ogni elemento: [Punto2D(1, 2), Punto2D(3, 4)]
-    print(punti[0])  # Usa __str__: (1, 2)
-```
+| # | File | Esercizio |
+|---|---|---|
+| 1 | `esame.py` | Un esame del libretto |
+| 2 | `tessera_mensa.py` | La tessera della mensa |
+| 3 | `segreteria.py` | La coda in segreteria |
+| 4 | `erasmus.py` | La graduatoria Erasmus |
+| 5 | `campione.py` | Un campione di misure |
+| 6 | `libretto.py` | Il libretto: un oggetto che contiene oggetti |
+| 7 | `abbonamenti.py` | Abbonamenti ai mezzi pubblici |
+| 8 | `biblioteca.py` | La biblioteca di dipartimento |
+| Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
 
 ---
 
-## Esercizio guidato 2 --- `Studente`: nome, cognome, matricola, voti, `aggiungi_voto`
+## Promemoria
 
-Costruiamo una classe piu' ricca, con validazione dei dati.
+Gli strumenti che servono oggi. `__init__` riceve i dati e li salva negli attributi con `self.`; ogni metodo ha `self` come primo parametro, ma quando lo chiamate non lo scrivete. `__str__` decide cosa stampa `print`, `__lt__` dice a `sorted` quale oggetto viene prima. Se i dati non sono validi, `__init__` solleva un errore con `raise ValueError(...)`.
 
 ```python
 class Studente:
-    """Rappresenta uno studente universitario con i suoi voti."""
-
-    def __init__(
-        self,
-        nome: str,
-        cognome: str,
-        matricola: str,
-    ) -> None:
-        """Inizializza uno studente.
-
-        Args:
-            nome: Nome dello studente.
-            cognome: Cognome dello studente.
-            matricola: Codice matricola univoco.
-
-        Raises:
-            ValueError: Se nome, cognome o matricola sono vuoti.
-        """
-        if not nome.strip():
-            raise ValueError("Il nome non puo' essere vuoto")
-        if not cognome.strip():
-            raise ValueError("Il cognome non puo' essere vuoto")
-        if not matricola.strip():
-            raise ValueError("La matricola non puo' essere vuota")
-
-        self.nome: str = nome.strip()
-        self.cognome: str = cognome.strip()
-        self.matricola: str = matricola.strip()
-        self.voti: list[int] = []
-
-    def aggiungi_voto(self, voto: int) -> None:
-        """Aggiunge un voto alla lista dei voti dello studente.
-
-        Args:
-            voto: Un voto tra 18 e 30 (inclusi).
-
-        Raises:
-            ValueError: Se il voto non e' nell'intervallo 18-30.
-            TypeError: Se il voto non e' un intero.
-        """
-        if not isinstance(voto, int):
-            raise TypeError(f"Il voto deve essere un intero, ricevuto {type(voto).__name__}")
-        if voto < 18 or voto > 30:
-            raise ValueError(f"Il voto deve essere tra 18 e 30, ricevuto {voto}")
-        self.voti.append(voto)
-
-    def media(self) -> float:
-        """Calcola la media aritmetica dei voti.
-
-        Returns:
-            La media dei voti.
-
-        Raises:
-            ValueError: Se non ci sono voti registrati.
-        """
-        if not self.voti:
-            raise ValueError(
-                f"Nessun voto registrato per {self.nome} {self.cognome}"
-            )
+    def __init__(self, nome: str, voti: list[int]) -> None:
+        self.nome: str = nome                       # attributi
+        self.voti: list[int] = voti
+    def media(self) -> float:                       # metodo
         return sum(self.voti) / len(self.voti)
+    def __str__(self) -> str:                       # usato da print
+        return f"{self.nome}: {self.media():.1f}"
+    def __lt__(self, altro: "Studente") -> bool:    # usato da sorted
+        return self.media() < altro.media()
 
-    def numero_esami(self) -> int:
-        """Restituisce il numero di esami sostenuti."""
-        return len(self.voti)
-
-    def __str__(self) -> str:
-        """Rappresentazione leggibile dello studente."""
-        n_esami: int = self.numero_esami()
-        if n_esami > 0:
-            return (
-                f"{self.nome} {self.cognome} ({self.matricola}) "
-                f"- {n_esami} esami, media: {self.media():.2f}"
-            )
-        return f"{self.nome} {self.cognome} ({self.matricola}) - nessun esame"
-
-
-# --- Prova ---
-if __name__ == "__main__":
-    s: Studente = Studente("Anna", "Rossi", "MAT001")
-    print(s)  # Nessun esame
-
-    s.aggiungi_voto(28)
-    s.aggiungi_voto(25)
-    s.aggiungi_voto(30)
-    print(s)  # Con media
-
-    # Test validazione
-    try:
-        s.aggiungi_voto(15)  # Troppo basso
-    except ValueError as e:
-        print(f"Errore catturato: {e}")
-
-    try:
-        s.aggiungi_voto(25.5)  # Non intero
-    except TypeError as e:
-        print(f"Errore catturato: {e}")
+gruppo: list[Studente] = [Studente("Anna", [28, 30]),
+                          Studente("Luca", [24, 26])]
+for s in sorted(gruppo):
+    print(s)                                        # Luca: 25.0 ...
 ```
-
-**Output atteso**:
-
-```
-Anna Rossi (MAT001) - nessun esame
-Anna Rossi (MAT001) - 3 esami, media: 27.67
-Errore catturato: Il voto deve essere tra 18 e 30, ricevuto 15
-Errore catturato: Il voto deve essere un intero, ricevuto float
-```
-
-**Punto chiave**: la validazione nel metodo `aggiungi_voto` garantisce che l'oggetto sia sempre in uno stato coerente. Non e' possibile inserire un voto di 15 o un valore decimale. Questa e' la potenza dell'incapsulamento: la classe protegge i propri dati.
 
 ---
 
-## Esercizio guidato 3 --- `__repr__`, `__eq__`, `__lt__` su `Studente`
+## Esercizio 1 — Un esame del libretto (`esame.py`)
 
-Aggiungiamo i metodi speciali che permettono di confrontare e ordinare gli studenti.
+**Consegna**
 
-```python
-class Studente:
-    """Rappresenta uno studente universitario con i suoi voti."""
+1. Definite una classe `Esame` con `__init__(self, nome: str, cfu: int, voto: int)` che salva i tre valori in tre attributi.
+2. Aggiungete un metodo `punti(self) -> int` che restituisce il voto moltiplicato per i crediti.
+3. Create una lista con tre esami: Analisi 1 (12 CFU, 26), Statistica 1 (9 CFU, 29), Informatica (6 CFU, 30).
+4. Con un ciclo stampate ogni esame, usando gli attributi, e sommate crediti e punti. Alla fine stampate i CFU totali e la media ponderata con due decimali.
 
-    def __init__(
-        self,
-        nome: str,
-        cognome: str,
-        matricola: str,
-    ) -> None:
-        if not nome.strip():
-            raise ValueError("Il nome non puo' essere vuoto")
-        if not cognome.strip():
-            raise ValueError("Il cognome non puo' essere vuoto")
-        if not matricola.strip():
-            raise ValueError("La matricola non puo' essere vuota")
-
-        self.nome: str = nome.strip()
-        self.cognome: str = cognome.strip()
-        self.matricola: str = matricola.strip()
-        self.voti: list[int] = []
-
-    def aggiungi_voto(self, voto: int) -> None:
-        if not isinstance(voto, int):
-            raise TypeError(
-                f"Il voto deve essere un intero, ricevuto {type(voto).__name__}"
-            )
-        if voto < 18 or voto > 30:
-            raise ValueError(
-                f"Il voto deve essere tra 18 e 30, ricevuto {voto}"
-            )
-        self.voti.append(voto)
-
-    def media(self) -> float:
-        if not self.voti:
-            raise ValueError(
-                f"Nessun voto registrato per {self.nome} {self.cognome}"
-            )
-        return sum(self.voti) / len(self.voti)
-
-    def numero_esami(self) -> int:
-        return len(self.voti)
-
-    def __str__(self) -> str:
-        n_esami: int = self.numero_esami()
-        if n_esami > 0:
-            return (
-                f"{self.nome} {self.cognome} ({self.matricola}) "
-                f"- {n_esami} esami, media: {self.media():.2f}"
-            )
-        return f"{self.nome} {self.cognome} ({self.matricola}) - nessun esame"
-
-    def __repr__(self) -> str:
-        """Rappresentazione tecnica: permette di ricreare l'oggetto."""
-        return f"Studente('{self.nome}', '{self.cognome}', '{self.matricola}')"
-
-    def __eq__(self, altro: object) -> bool:
-        """Due studenti sono uguali se hanno la stessa matricola.
-
-        La matricola e' l'identificatore univoco: due studenti con
-        la stessa matricola sono la stessa persona, indipendentemente
-        da eventuali differenze nei campi nome/cognome (errori di battitura).
-        """
-        if not isinstance(altro, Studente):
-            return NotImplemented
-        return self.matricola == altro.matricola
-
-    def __lt__(self, altro: "Studente") -> bool:
-        """Ordinamento per cognome, poi per nome.
-
-        Questo permette di usare sorted() su liste di studenti.
-        """
-        if not isinstance(altro, Studente):
-            return NotImplemented
-        if self.cognome == altro.cognome:
-            return self.nome < altro.nome
-        return self.cognome < altro.cognome
-
-
-# --- Prova ---
-if __name__ == "__main__":
-    s1: Studente = Studente("Anna", "Rossi", "MAT001")
-    s2: Studente = Studente("Marco", "Bianchi", "MAT002")
-    s3: Studente = Studente("Anna", "Rossi", "MAT001")  # Stessa matricola di s1
-    s4: Studente = Studente("Lucia", "Bianchi", "MAT004")
-
-    # __repr__
-    print(repr(s1))  # Studente('Anna', 'Rossi', 'MAT001')
-
-    # __eq__
-    print(f"s1 == s3? {s1 == s3}")  # True (stessa matricola)
-    print(f"s1 == s2? {s1 == s2}")  # False
-
-    # __lt__ e ordinamento
-    print(f"s2 < s1? {s2 < s1}")   # True (Bianchi < Rossi)
-
-    # sorted() funziona grazie a __lt__
-    studenti: list[Studente] = [s1, s2, s4]
-    ordinati: list[Studente] = sorted(studenti)
-    print("\nStudenti ordinati per cognome e nome:")
-    for s in ordinati:
-        print(f"  {s}")
-```
-
-**Output atteso**:
+**Esempio di esecuzione**
 
 ```
-Studente('Anna', 'Rossi', 'MAT001')
-s1 == s3? True
-s1 == s2? False
-s2 < s1? True
-
-Studenti ordinati per cognome e nome:
-  Lucia Bianchi (MAT004) - nessun esame
-  Marco Bianchi (MAT002) - nessun esame
-  Anna Rossi (MAT001) - nessun esame
+Analisi 1: 26 (12 CFU)
+Statistica 1: 29 (9 CFU)
+Informatica: 30 (6 CFU)
+CFU: 27, media ponderata: 27.89
 ```
 
-**Dettagli importanti**:
+**Provate anche**
 
-- `__eq__` restituisce `NotImplemented` (non `False`) quando il tipo e' sbagliato: questo permette a Python di provare il confronto nell'altro senso.
-- `__lt__` e' sufficiente per far funzionare `sorted()`: Python usa internamente solo `<` per l'ordinamento.
-- Definire l'uguaglianza sulla matricola e' una scelta di modellazione: due record con la stessa matricola sono lo stesso studente.
+- aggiungete `Esame("Algebra lineare", 9, 24)` → `CFU: 36, media ponderata: 26.92`
+- prima del ciclo scrivete `esami[0].voto = 28` → `Analisi 1: 28 (12 CFU)`, `media ponderata: 28.78`
+- `print(esami[0])` → `<__main__.Esame object at 0x...>`: per una stampa leggibile serve `__str__` (esercizio 2)
 
 ---
 
-## Esercizio guidato 4 --- `sorted()` su lista di studenti
+## Esercizio 2 — La tessera della mensa (`tessera_mensa.py`)
 
-Approfondiamo l'ordinamento con criteri diversi, usando sia `__lt__` sia il parametro `key` di `sorted()`.
+**Consegna**
 
-```python
-def crea_classe_esempio() -> list[Studente]:
-    """Crea una lista di studenti di esempio con voti."""
-    dati: list[tuple[str, str, str, list[int]]] = [
-        ("Anna", "Rossi", "MAT001", [28, 25, 30]),
-        ("Marco", "Bianchi", "MAT002", [22, 24, 26]),
-        ("Lucia", "Verdi", "MAT003", [30, 30, 28]),
-        ("Giuseppe", "Neri", "MAT004", [18, 20, 22]),
-        ("Francesca", "Rossi", "MAT005", [27, 29]),
-    ]
+1. Definite una classe `Tessera` con titolare e saldo. Se il saldo iniziale è negativo, `__init__` solleva `ValueError("Il saldo iniziale è negativo")`.
+2. Aggiungete `ricarica(self, importo: float)`, che solleva `ValueError` se l'importo non è positivo, e `paga(self, prezzo: float)`, che solleva `ValueError` se il saldo non basta. Nel messaggio scrivete il saldo con due decimali.
+3. Aggiungete `__str__` che restituisce titolare e saldo, come nell'esempio.
+4. Create la tessera di Anna Rossi con 10 EUR e provate a pagare tre pasti da 4.50 EUR, ognuno in un `try`. Poi ricaricate 20 EUR e stampate la tessera.
 
-    studenti: list[Studente] = []
-    for nome, cognome, matricola, voti in dati:
-        s: Studente = Studente(nome, cognome, matricola)
-        for voto in voti:
-            s.aggiungi_voto(voto)
-        studenti.append(s)
+**Esempio di esecuzione**
 
-    return studenti
-
-
-def stampa_classifica(studenti: list[Studente], titolo: str) -> None:
-    """Stampa una lista numerata di studenti."""
-    print(f"\n{titolo}")
-    print("=" * 60)
-    for i, s in enumerate(studenti, start=1):
-        print(f"  {i}. {s}")
-
-
-if __name__ == "__main__":
-    classe: list[Studente] = crea_classe_esempio()
-
-    # Ordinamento predefinito: per cognome e nome (usa __lt__)
-    stampa_classifica(
-        sorted(classe),
-        "Ordine alfabetico (cognome, nome)"
-    )
-
-    # Ordinamento per media (decrescente)
-    per_media: list[Studente] = sorted(
-        classe,
-        key=lambda s: s.media(),
-        reverse=True,
-    )
-    stampa_classifica(per_media, "Classifica per media (decrescente)")
-
-    # Ordinamento per numero di esami
-    per_esami: list[Studente] = sorted(
-        classe,
-        key=lambda s: s.numero_esami(),
-    )
-    stampa_classifica(per_esami, "Per numero di esami (crescente)")
-
-    # Ordinamento per matricola
-    per_matricola: list[Studente] = sorted(
-        classe,
-        key=lambda s: s.matricola,
-    )
-    stampa_classifica(per_matricola, "Per matricola")
+```
+Tessera di Anna Rossi: 10.00 EUR
+Pagato 4.50 EUR, restano 5.50
+Pagato 4.50 EUR, restano 1.00
+Saldo insufficiente: 1.00
+Tessera di Anna Rossi: 21.00 EUR
 ```
 
-**Punto chiave**: `sorted()` usa `__lt__` come criterio predefinito, ma il parametro `key` permette di ordinare per qualsiasi attributo o calcolo. La funzione passata a `key` viene chiamata una volta per ogni elemento e il risultato viene usato per il confronto.
+**Provate anche**
+
+- saldo iniziale `15.0` → tre pagamenti riusciti e alla fine `Tessera di Anna Rossi: 21.50 EUR`
+- `Tessera("Marco Bianchi", -5.0)` → `ValueError: Il saldo iniziale è negativo`
+- `tessera.ricarica(0)` → `ValueError: La ricarica deve essere positiva`
 
 ---
 
-## Esercizi autonomi
+## Esercizio 3 — La coda in segreteria (`segreteria.py`)
 
-### Base
+**Consegna**
 
-**Esercizio 1 --- Classe `Rettangolo`**
+1. Definite una classe `Ticket` con due attributi di classe: la tupla `SERVIZI = ("iscrizioni", "tasse", "esami")` e il contatore `emessi = 0`.
+2. `__init__(self, servizio: str)` solleva `ValueError` se il servizio non è in `SERVIZI`; altrimenti aumenta `Ticket.emessi` di 1 e lo salva nell'attributo di istanza `numero`.
+3. Aggiungete `__str__` (`Numero 1 (esami)`) e `__repr__` (`Ticket(1, 'esami')`).
+4. Create i biglietti per esami, tasse, esami, iscrizioni, esami e metteteli in una lista. Stampate la lista, il primo biglietto, il numero di biglietti emessi e quanti ce ne sono per ogni servizio.
 
-Definite una classe `Rettangolo` con:
+**Esempio di esecuzione**
 
-- `__init__(self, base: float, altezza: float) -> None` --- validare che base e altezza siano positive.
-- `area(self) -> float` --- restituisce l'area.
-- `perimetro(self) -> float` --- restituisce il perimetro.
-- `e_quadrato(self) -> bool` --- restituisce `True` se base e altezza sono uguali.
-- `__str__(self) -> str` --- es. `"Rettangolo(base=5.0, altezza=3.0)"`.
-- `__repr__(self) -> str` --- es. `"Rettangolo(5.0, 3.0)"`.
-- `__eq__(self, altro: object) -> bool` --- due rettangoli sono uguali se hanno stessa area.
-- `__lt__(self, altro: "Rettangolo") -> bool` --- confronto per area.
-
-Testate la classe creando una lista di rettangoli e ordinandoli con `sorted()`.
-
----
-
-### Base
-
-**Esercizio 2 --- Classe `ContoCorrente`**
-
-Definite una classe `ContoCorrente` con:
-
-- `__init__(self, titolare: str, saldo_iniziale: float = 0.0) -> None` --- validare che il saldo iniziale non sia negativo.
-- `deposita(self, importo: float) -> None` --- aggiunge al saldo; l'importo deve essere positivo.
-- `preleva(self, importo: float) -> None` --- sottrae dal saldo; l'importo deve essere positivo e non deve superare il saldo disponibile (`ValueError` altrimenti).
-- `saldo(self) -> float` --- restituisce il saldo corrente (proprieta' o metodo, a scelta).
-- `storico(self) -> list[str]` --- restituisce la lista delle operazioni nel formato `"DEPOSITO: +100.00"` oppure `"PRELIEVO: -50.00"`.
-- `__str__(self) -> str` --- es. `"Conto di Mario Rossi: saldo 1250.00 EUR"`.
-
-Testate la classe simulando una sequenza di operazioni e stampando lo storico.
-
----
-
-### Intermedio
-
-**Esercizio 3 --- Classe `Corso`**
-
-Definite una classe `Corso` che gestisce una lista di studenti (usando la classe `Studente` costruita negli esercizi guidati). La classe deve avere:
-
-- `__init__(self, nome: str, codice: str) -> None`.
-- `iscrivi(self, studente: Studente) -> None` --- aggiunge lo studente al corso; se la matricola e' gia' presente, solleva `ValueError`.
-- `cerca_studente(self, matricola: str) -> Studente | None` --- restituisce lo studente con quella matricola, o `None`.
-- `media_corso(self) -> float` --- media di tutte le medie degli studenti che hanno almeno un voto.
-- `migliore(self) -> Studente` --- restituisce lo studente con la media piu' alta.
-- `classifica(self) -> list[Studente]` --- restituisce gli studenti ordinati per media decrescente.
-- `__len__(self) -> int` --- numero di studenti iscritti (permette di scrivere `len(corso)`).
-- `__str__(self) -> str` --- riepilogo del corso.
-
----
-
-### Intermedio
-
-**Esercizio 4 --- Classe `Temperatura`**
-
-Definite una classe `Temperatura` che rappresenta una temperatura e permette conversioni tra scale.
-
-- `__init__(self, gradi: float, scala: str = "C") -> None` --- la scala puo' essere `"C"` (Celsius), `"F"` (Fahrenheit) o `"K"` (Kelvin). Validare la scala e verificare che la temperatura non sia sotto lo zero assoluto.
-- `in_celsius(self) -> float`, `in_fahrenheit(self) -> float`, `in_kelvin(self) -> float`.
-- `__str__(self) -> str` --- es. `"20.0 C"`.
-- `__eq__(self, altro: object) -> bool` --- due temperature sono uguali se rappresentano lo stesso valore fisico (confronto in Kelvin).
-- `__lt__(self, altro: "Temperatura") -> bool` --- confronto in Kelvin.
-
-Testate creando temperature in scale diverse e verificando che `sorted()` le ordini correttamente.
-
----
-
-### Avanzato
-
-**Esercizio 5 --- Classe `Inventario`**
-
-Definite una classe `Prodotto` con `codice: str`, `nome: str`, `prezzo: float`, `quantita: int`. Poi definite una classe `Inventario` con:
-
-- `aggiungi(self, prodotto: Prodotto) -> None` --- aggiunge o aggiorna la quantita' se il codice esiste gia'.
-- `rimuovi(self, codice: str, quantita: int) -> None` --- riduce la quantita'; solleva `ValueError` se la quantita' e' insufficiente.
-- `cerca(self, nome: str) -> list[Prodotto]` --- cerca prodotti il cui nome contiene la stringa (case-insensitive).
-- `valore_totale(self) -> float` --- somma di (prezzo * quantita) per tutti i prodotti.
-- `sotto_scorta(self, soglia: int = 5) -> list[Prodotto]` --- prodotti con quantita' inferiore alla soglia.
-- `__len__(self) -> int` --- numero di prodotti distinti.
-- `__str__(self) -> str` --- riepilogo dell'inventario.
-
----
-
-## Sfida finale --- Classe `Dataset`: un mini-Pandas
-
-Costruite una classe `Dataset` che imita (in modo molto semplificato) il comportamento di un DataFrame Pandas. La classe deve permettere di caricare dati da CSV, filtrarli, raggrupparli e calcolare statistiche.
-
-### Specifiche
-
-La classe `Dataset` deve avere i seguenti metodi:
-
-- `__init__(self, intestazione: list[str], righe: list[dict[str, str]]) -> None` --- inizializza con nomi di colonne e dati.
-
-- `carica_da_csv(percorso: Path, delimiter: str = ",") -> "Dataset"` --- metodo statico (`@staticmethod`) che crea un `Dataset` leggendo un file CSV. Gestire `FileNotFoundError` e encoding.
-
-- `n_righe(self) -> int` --- numero di righe.
-
-- `n_colonne(self) -> int` --- numero di colonne.
-
-- `colonna(self, nome: str) -> list[str]` --- restituisce tutti i valori di una colonna come lista di stringhe. Solleva `KeyError` se la colonna non esiste.
-
-- `colonna_numerica(self, nome: str) -> list[float | None]` --- come `colonna`, ma converte i valori in `float` (i non convertibili diventano `None`).
-
-- `filtra(self, colonna: str, valore: str) -> "Dataset"` --- restituisce un *nuovo* `Dataset` contenente solo le righe in cui la colonna ha il valore specificato.
-
-- `raggruppa(self, colonna: str) -> dict[str, "Dataset"]` --- restituisce un dizionario che associa ogni valore distinto della colonna a un `Dataset` contenente le righe corrispondenti.
-
-- `statistiche(self, colonna: str) -> dict[str, float | int | None]` --- per una colonna numerica, calcola e restituisce: `conteggio`, `media`, `minimo`, `massimo`, `somma`. Ignora i valori `None`.
-
-- `salva_csv(self, percorso: Path, delimiter: str = ",") -> None` --- salva il dataset in un file CSV.
-
-- `__str__(self) -> str` --- mostra le prime 5 righe in formato tabellare.
-
-- `__len__(self) -> int` --- numero di righe.
-
-### Esempio d'uso atteso
-
-```python
-from pathlib import Path
-
-# Caricamento
-ds: Dataset = Dataset.carica_da_csv(Path("vendite.csv"), delimiter=";")
-print(f"Dataset: {ds.n_righe()} righe, {ds.n_colonne()} colonne")
-print(ds)
-
-# Filtraggio
-roma: Dataset = ds.filtra("citta", "Roma")
-print(f"\nVendite a Roma: {roma.n_righe()} righe")
-
-# Raggruppamento e statistiche
-per_citta: dict[str, Dataset] = ds.raggruppa("citta")
-for citta, sottoinsieme in per_citta.items():
-    stats: dict[str, float | int | None] = sottoinsieme.statistiche("importo")
-    print(f"{citta}: media={stats['media']:.2f}, totale={stats['somma']:.2f}")
-
-# Salvataggio
-roma.salva_csv(Path("output") / "vendite_roma.csv", delimiter=";")
+```
+[Ticket(1, 'esami'), Ticket(2, 'tasse'), Ticket(3, 'esami'), Ticket(4, 'iscrizioni'), Ticket(5, 'esami')]
+Prossimo: Numero 1 (esami)
+Biglietti emessi: 5
+iscrizioni: 1
+tasse: 1
+esami: 3
 ```
 
-### Suggerimenti
+**Provate anche**
 
-- Internamente, memorizzate i dati come `list[dict[str, str]]`: ogni dizionario e' una riga con chiavi = nomi di colonna.
-- `filtra` e `raggruppa` devono restituire *nuovi* oggetti `Dataset`, senza modificare l'originale.
-- Per `statistiche`, convertite la colonna con `colonna_numerica` e poi calcolate le metriche ignorando i `None`.
-- Per `__str__`, formattate le prime 5 righe in colonne allineate.
+- `Ticket("mensa")` → `ValueError: Servizio sconosciuto: mensa`, e `Ticket.emessi` resta 5
+- `print(coda[3].numero, coda[3].emessi)` → `4 5`: l'attributo di classe si legge anche dall'oggetto
+- togliete `__repr__`: la lista si stampa come `[<__main__.Ticket object at 0x...>, ...]`
+
+---
+
+## Esercizio 4 — La graduatoria Erasmus (`erasmus.py`)
+
+**Consegna**
+
+1. Definite una classe `Candidato` con nome, media e CFU sostenuti, e un `__str__` come nell'esempio.
+2. Aggiungete `__eq__`: due candidati sono a pari merito se hanno la stessa media e gli stessi CFU. Se l'altro oggetto non è un `Candidato` restituite `NotImplemented`.
+3. Aggiungete `__lt__`: viene prima chi ha la media più alta e, a parità di media, chi ha più CFU.
+4. Ordinate i candidati con `sorted`, stampate la graduatoria numerata con `enumerate` e controllate con `==` se il primo e il secondo, e il terzo e il quarto, sono a pari merito.
+
+| Candidato | Media, CFU |
+|---|---|
+| Luca | 27.4, 90 |
+| Sara | 28.1, 84 |
+| Paolo | 27.4, 102 |
+| Elena | 26.9, 120 |
+| Davide | 28.1, 84 |
+
+**Esempio di esecuzione**
+
+```
+1. Sara (media 28.10, 84 CFU)
+2. Davide (media 28.10, 84 CFU)
+3. Paolo (media 27.40, 102 CFU)
+4. Luca (media 27.40, 90 CFU)
+5. Elena (media 26.90, 120 CFU)
+Pari merito tra 1 e 2: True
+Pari merito tra 3 e 4: False
+```
+
+**Provate anche**
+
+- aggiungete `Candidato("Marta", 29.0, 60)` → `1. Marta (media 29.00, 60 CFU)`
+- `print(classifica[0] == "Sara")` → `False`: una stringa non è un `Candidato`
+- togliete `__lt__` → `TypeError: '<' not supported between instances of 'Candidato' and 'Candidato'`
+
+---
+
+## Esercizio 5 — Un campione di misure (`campione.py`)
+
+**Consegna**
+
+1. Definite una classe `Campione` con un nome e una lista `_valori`, vuota all'inizio. L'underscore indica che la lista si usa solo dentro la classe.
+2. Aggiungete il metodo `aggiungi(self, x: float)`.
+3. Con `@property` definite `n` (numero di valori), `media` e `varianza` (campionaria, con divisore n − 1).
+4. Create il campione `Altezze (cm)` con 172, 165, 180, 158, 175 e stampate n, media, varianza e deviazione standard (`** 0.5`) con due decimali. Poi provate ad assegnare `altezze.media = 175.0` in un `try` e catturate `AttributeError`.
+
+**Esempio di esecuzione**
+
+```
+Altezze (cm): 5 valori
+Media: 170.00, varianza: 74.50
+Deviazione standard: 8.63
+La media non si assegna: è calcolata dai valori
+```
+
+**Provate anche**
+
+- aggiungete 190 → `6 valori`, `Media: 173.33, varianza: 126.27`
+- `statistics.variance([172, 165, 180, 158, 175])` → `74.5`, come la vostra
+- `print(altezze._valori)` funziona lo stesso: l'underscore è una convenzione, non un divieto
+
+---
+
+## Esercizio 6 — Il libretto: un oggetto che contiene oggetti (`libretto.py`)
+
+**Consegna**
+
+1. Riprendete la classe `Esame` dell'esercizio 1 e aggiungete `__str__` come nell'esempio.
+2. Definite una classe `Libretto` con il nome dello studente e una lista `esami`, vuota all'inizio: il libretto contiene degli esami (composizione).
+3. Aggiungete `cerca(self, nome: str) -> Esame | None`, che restituisce l'esame con quel nome oppure `None`, e `aggiungi(self, esame: Esame)`, che usa `cerca` e solleva `ValueError` se l'esame è già presente.
+4. Aggiungete `media(self) -> float` con la media ponderata. Inserite i tre esami dell'esercizio 1, provate a inserire di nuovo Informatica (con 28) in un `try`, cercate Statistica 1 e stampate numero di esami e media.
+
+**Esempio di esecuzione**
+
+```
+Informatica è già nel libretto
+Statistica 1: 29 (9 CFU)
+Esami: 3, media ponderata 27.89
+```
+
+**Provate anche**
+
+- `print(lib.cerca("Algebra"))` → `None`
+- aggiungete `Esame("Algebra lineare", 9, 24)` → `Esami: 4, media ponderata 26.92`
+- `Libretto("Marco").media()` → `ZeroDivisionError`: un libretto vuoto non ha media
+
+---
+
+## Esercizio 7 — Abbonamenti ai mezzi pubblici (`abbonamenti.py`)
+
+**Consegna**
+
+1. Definite una classe `Abbonamento` con titolare e numero di mesi (da 1 a 12, altrimenti `ValueError`) e l'attributo di classe `PREZZO_MESE = 40.0`.
+2. Aggiungete `prezzo(self) -> float` (prezzo al mese per mesi) e `__str__` come nell'esempio.
+3. Definite la sottoclasse `AbbonamentoStudente(Abbonamento)` con la matricola in più e l'attributo di classe `SCONTO = 0.3`. Il suo `__init__` chiama `super().__init__(...)`; `prezzo` e `__str__` riusano quelli della classe madre con `super()`.
+4. Mettete in una lista gli abbonamenti della tabella, stampateli e stampate l'incasso totale.
+
+| Titolare | Abbonamento |
+|---|---|
+| Marco Bianchi | 12 mesi |
+| Anna Rossi | 10 mesi, studente 2101234 |
+| Luca Russo | 3 mesi, studente 2102345 |
+| Elena Romano | 2 mesi |
+
+**Esempio di esecuzione**
+
+```
+Marco Bianchi, 12 mesi: 480.00 EUR
+Anna Rossi, 10 mesi: 280.00 EUR, matricola 2101234
+Luca Russo, 3 mesi: 84.00 EUR, matricola 2102345
+Elena Romano, 2 mesi: 80.00 EUR
+Incasso: 924.00 EUR
+```
+
+**Provate anche**
+
+- `AbbonamentoStudente("Sara Ferrari", 13, "2102890")` → `ValueError: Durata non valida: 13 mesi`: il controllo è ereditato
+- prima della lista scrivete `AbbonamentoStudente.SCONTO = 0.5` → Anna `200.00 EUR`, Luca `60.00 EUR`, `Incasso: 820.00 EUR`
+- contate gli abbonamenti studente con `isinstance(a, AbbonamentoStudente)` → `2`
+
+---
+
+## Esercizio 8 — La biblioteca di dipartimento (`biblioteca.py`)
+
+**Consegna**
+
+1. Definite una classe `Pubblicazione` con titolo e anno, l'attributo di classe `GIORNI = 30` (durata del prestito), un `__str__` come nell'esempio e un `__lt__` che ordina per anno.
+2. Definite la sottoclasse `Rivista(Pubblicazione)`, che cambia solo `GIORNI = 7`. Nel `__str__` usate `self.GIORNI`: così ogni oggetto prende il valore della sua classe.
+3. Definite una classe `Biblioteca` con una lista `_catalogo` e i metodi `aggiungi`, `cerca(self, parola: str)`, che restituisce le pubblicazioni con quella parola nel titolo (senza distinguere maiuscole e minuscole), e `in_ordine`, che restituisce il catalogo ordinato con `sorted`.
+4. Inserite le pubblicazioni della tabella, stampate il catalogo in ordine e il numero di titoli che contengono `statistica`.
+
+| Titolo | Tipo, anno |
+|---|---|
+| Statistica di base | libro, 2019 |
+| Rivista di statistica applicata | rivista, 2024 |
+| Probabilità e inferenza | libro, 2015 |
+| Bollettino di demografia | rivista, 2023 |
+
+**Esempio di esecuzione**
+
+```
+2015 Probabilità e inferenza: 30 giorni
+2019 Statistica di base: 30 giorni
+2023 Bollettino di demografia: 7 giorni
+2024 Rivista di statistica applicata: 7 giorni
+Titoli con 'statistica': 2
+```
+
+**Provate anche**
+
+- aggiungete `Rivista("Statistica in medicina", 2021)` → compare `2021 Statistica in medicina: 7 giorni` e `Titoli con 'statistica': 3`
+- `Rivista.GIORNI = 14` prima delle stampe → le riviste hanno 14 giorni, i libri restano a 30
+- `bib.cerca("STATISTICA")` → gli stessi 2 risultati
+
+---
+
+## Challenge a scelta
+
+Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.
+
+| Tema | Challenge | File |
+|---|---|---|
+| Mercati e finanza | Il portafoglio a oggetti | `ch_mercati.py` |
+| Sport | Il campionato a oggetti | `ch_sport.py` |
+| Imprese e marketing | Il negozio online a oggetti | `ch_negozio.py` |
+| Salute e scienza | Lo studio clinico a oggetti | `ch_salute.py` |
+| Caso e probabilità | Il tavolo da gioco a oggetti | `ch_probabilita.py` |
+
+**Tutte le challenge chiedono:**
+
+- Definite una classe per l'elemento del tema. `__init__` riceve i dati e li controlla: se non sono validi solleva `ValueError` con un messaggio che contiene il nome dell'elemento; altrimenti li salva in attributi con type hints.
+- La classe ha due metodi che calcolano qualcosa dai dati, un `__str__` per la stampa e un `__lt__` per ordinare gli oggetti con `sorted`.
+- Definite una classe contenitore che ha come attributo una lista di oggetti della prima classe (composizione), con i metodi `aggiungi`, `cerca` (restituisce l'oggetto oppure `None`) e un metodo che calcola una statistica su tutti gli oggetti.
+- Create gli oggetti con i dati della consegna in un ciclo e aggiungeteli al contenitore. Uno dei dati è sbagliato: catturate il `ValueError` con `try/except` e stampatene il messaggio.
+- Stampate gli oggetti in ordine con `sorted`, il risultato di due ricerche (una riuscita e una no) e la statistica.
+
+---
+
+### Challenge · Mercati e finanza — Il portafoglio a oggetti (`ch_mercati.py`)
+
+**Consegna**
+
+1. Classe `Titolo` con sigla, numero di azioni e lista dei prezzi di chiusura. Se le azioni non sono positive o un prezzo non è positivo (o ci sono meno di due prezzi), `ValueError("MIB: azioni o prezzi non validi")`.
+2. Metodi `rendimento()`, dal primo all'ultimo prezzo, e `valore()`, azioni per ultimo prezzo. `__lt__` confronta i rendimenti.
+3. Classe `Portafoglio` con il titolare e una lista di titoli; metodi `aggiungi`, `cerca(sigla)` e `valore_totale()`.
+4. Create il portafoglio di Giulia con i titoli della tabella e stampate i titoli dal rendimento più alto (`reverse=True`), le ricerche di `BANK` e `MIB` e il valore totale.
+
+| Titolo, azioni | Prezzi 01/12 – 04/12 |
+|---|---|
+| ENRG, 20 | 24.10, 24.60, 25.30, 25.10 |
+| BANK, 50 | 12.40, 12.20, 12.70, 12.90 |
+| TECH, 10 | 48.00, 49.20, 50.40, 51.20 |
+| MIB, 0 | 33.50, 33.90, 34.20, 34.10 |
+
+**Esempio di esecuzione**
+
+```
+MIB: azioni o prezzi non validi
+TECH: valore 512.00, rendimento 6.7%
+ENRG: valore 502.00, rendimento 4.1%
+BANK: valore 645.00, rendimento 4.0%
+BANK: valore 645.00, rendimento 4.0%
+None
+Valore totale: 1659.00
+```
+
+**Provate anche**
+
+- MIB con 5 azioni → `MIB: valore 170.50, rendimento 1.8%` in fondo, `Valore totale: 1829.50`
+- ENRG con 40 azioni → `ENRG: valore 1004.00, rendimento 4.1%`, `Valore totale: 2161.00`
+- `print(port.cerca("ENRG") < port.cerca("TECH"))` → `True`
+
+---
+
+### Challenge · Sport — Il campionato a oggetti (`ch_sport.py`)
+
+**Consegna**
+
+1. Classe `Pilota` con nome, scuderia e lista dei tempi sul giro. Se la lista è vuota o un tempo non è positivo, `ValueError("Neri: tempi non validi")`.
+2. Metodi `media()` e `migliore()` (il tempo minimo). `__lt__` confronta le medie: viene prima il pilota più veloce.
+3. Classe `Gara` con il circuito e una lista di piloti; metodi `aggiungi`, `cerca(nome)` e `giro_veloce()`, il miglior tempo tra tutti i piloti.
+4. Create la gara di Monza con i piloti della tabella e stampate i piloti in ordine, le ricerche di `Lanza` e `Neri` e il giro più veloce.
+
+| Pilota, scuderia | Tempi dei giri 1-3 |
+|---|---|
+| Ferri, Scuderia Rossa | 92.4, 92.1, 92.6 |
+| Lanza, Scuderia Rossa | 92.9, 92.7, 92.5 |
+| Moro, Scuderia Blu | 93.1, 92.8, 92.3 |
+| Neri, Scuderia Blu | 93.6, 93.0, 0.0 |
+
+**Esempio di esecuzione**
+
+```
+Neri: tempi non validi
+Ferri: media 92.37, migliore 92.10
+Lanza: media 92.70, migliore 92.50
+Moro: media 92.73, migliore 92.30
+Lanza: media 92.70, migliore 92.50
+None
+Giro più veloce: 92.10
+```
+
+**Provate anche**
+
+- terzo giro di Neri `93.4` → `Neri: media 93.33, migliore 93.00` in fondo
+- terzo giro di Moro `91.9` → `Giro più veloce: 91.90` e Moro passa davanti a Lanza
+- `print(gara.cerca("Ferri") < gara.cerca("Moro"))` → `True`
+
+---
+
+### Challenge · Imprese e marketing — Il negozio online a oggetti (`ch_negozio.py`)
+
+**Consegna**
+
+1. Classe `Prodotto` con nome, prezzo e lista dei pezzi venduti ogni settimana. Se il prezzo non è positivo o una vendita è negativa (o la lista è vuota), `ValueError("lampada: prezzo o vendite non validi")`.
+2. Metodi `pezzi()`, il totale venduto, e `fatturato()`, prezzo per pezzi. `__lt__` confronta i fatturati.
+3. Classe `Negozio` con il nome e una lista di prodotti; metodi `aggiungi`, `cerca(nome)` e `fatturato_totale()`.
+4. Create il negozio con i prodotti della tabella e stampate i prodotti dal fatturato più alto (`reverse=True`), le ricerche di `cuffie` e `lampada` e il fatturato totale.
+
+| Prodotto, prezzo | Vendite settimana 1-3 |
+|---|---|
+| zaino, 39.90 | 3, 5, 4 |
+| borraccia, 14.50 | 10, 8, 12 |
+| quaderno, 3.20 | 30, 25, 30 |
+| cuffie, 59.00 | 2, 4, 2 |
+| lampada, 24.90 | 2, −1, 3 |
+
+**Esempio di esecuzione**
+
+```
+lampada: prezzo o vendite non validi
+zaino: 12 pezzi, fatturato 478.80
+cuffie: 8 pezzi, fatturato 472.00
+borraccia: 30 pezzi, fatturato 435.00
+quaderno: 85 pezzi, fatturato 272.00
+cuffie: 8 pezzi, fatturato 472.00
+None
+Fatturato totale: 1657.80
+```
+
+**Provate anche**
+
+- vendite della lampada `[2, 1, 3]` → `lampada: 6 pezzi, fatturato 149.40` in fondo, `Fatturato totale: 1807.20`
+- cuffie a `49.00` → `cuffie: 8 pezzi, fatturato 392.00`, dopo la borraccia
+- `print(negozio.cerca("quaderno") < negozio.cerca("zaino"))` → `True`
+
+---
+
+### Challenge · Salute e scienza — Lo studio clinico a oggetti (`ch_salute.py`)
+
+**Consegna**
+
+1. Classe `Paziente` con codice, gruppo e lista delle pressioni sistoliche misurate a ogni visita. Se ci sono meno di due misure o una misura è fuori da 60–250 mmHg, `ValueError("P05: misure non valide")`.
+2. Metodi `variazione()`, ultima misura meno prima, e `migliorato()`, vero se la pressione è scesa di almeno 10 mmHg. `__lt__` confronta le variazioni: viene prima chi è sceso di più.
+3. Classe `Studio` con il nome e una lista di pazienti; metodi `aggiungi`, `cerca(codice)` e `quota_migliorati()`.
+4. Create lo studio con i pazienti della tabella e stampate i pazienti in ordine, le ricerche di `P02` e `P05` e la quota di migliorati.
+
+| Paziente, gruppo | Misure (mmHg) |
+|---|---|
+| P01, trattamento | 152, 146, 138 |
+| P02, controllo | 148, 147, 145 |
+| P03, trattamento | 160, 151, 149 |
+| P04, controllo | 155, 150, 144 |
+| P05, trattamento | 145, 0, 139 |
+
+**Esempio di esecuzione**
+
+```
+P05: misure non valide
+P01 (trattamento): variazione -14.0 mmHg
+P03 (trattamento): variazione -11.0 mmHg
+P04 (controllo): variazione -11.0 mmHg
+P02 (controllo): variazione -3.0 mmHg
+P02 (controllo): variazione -3.0 mmHg
+None
+Migliorati: 75.0%
+```
+
+**Provate anche**
+
+- seconda misura di P05 `141` → `P05 (trattamento): variazione -6.0 mmHg` prima di P02, `Migliorati: 60.0%`
+- `print(studio.cerca("P03").migliorato())` → `True`
+- `print(studio.cerca("P01") < studio.cerca("P02"))` → `True`
+
+---
+
+### Challenge · Caso e probabilità — Il tavolo da gioco a oggetti (`ch_probabilita.py`)
+
+**Consegna**
+
+1. Classe `Dado` con il colore e la lista dei risultati dei lanci, registrati a mano. Se la lista è vuota o un risultato è fuori da 1–6, `ValueError("bianco: lanci non validi")`.
+2. Metodi `media()` e `quota(faccia)`, la frequenza relativa di una faccia. `__lt__` confronta le medie.
+3. Classe `Tavolo` con il nome e una lista di dadi; metodi `aggiungi`, `cerca(colore)` e `media_generale()`, la media di tutti i lanci di tutti i dadi.
+4. Create il tavolo con i dadi della tabella e stampate i dadi dalla media più alta (`reverse=True`), con la quota di 6, le ricerche di `blu` e `bianco` e la media generale.
+
+| Dado | Lanci |
+|---|---|
+| rosso | 4, 6, 1, 6, 3, 6 |
+| blu | 2, 5, 3, 1, 4, 6 |
+| verde | 6, 2, 5, 3, 3, 1 |
+| bianco | 1, 4, 7, 2, 5, 3 |
+
+**Esempio di esecuzione**
+
+```
+bianco: lanci non validi
+rosso: media 4.33, quota di 6: 50.0%
+blu: media 3.50, quota di 6: 16.7%
+verde: media 3.33, quota di 6: 16.7%
+blu: media 3.50, quota di 6: 16.7%
+None
+Media di tutti i lanci: 3.72
+```
+
+**Provate anche**
+
+- terzo lancio del bianco `6` → `bianco: media 3.50, quota di 6: 16.7%` dopo il blu, `Media di tutti i lanci: 3.67`
+- `print(tavolo.cerca("verde").quota(3))` → `0.3333333333333333`
+- `print(tavolo.cerca("verde") < tavolo.cerca("rosso"))` → `True`
 
 ---
 
 ## Domande di verifica
 
-1. Qual e' la differenza tra `__str__` e `__repr__`? Quando viene chiamato ciascuno? Se definite solo uno dei due, quale scegliete e perche'?
-
-2. Perche' il metodo `__eq__` deve restituire `NotImplemented` (e non `False`) quando il tipo dell'altro oggetto e' sbagliato?
-
-3. Spiegate perche' basta definire `__lt__` per far funzionare `sorted()` su una lista di oggetti. Quali altri metodi di confronto potremmo definire?
-
-4. Nel metodo `aggiungi_voto` della classe `Studente`, perche' usiamo `isinstance(voto, int)` per il controllo del tipo invece di `type(voto) == int`?
-
-5. Cosa significa che `self` e' "implicito" nelle chiamate ai metodi? Scrivete l'equivalente esplicito di `s.aggiungi_voto(28)`.
-
-6. Nella classe `Dataset` della sfida, perche' e' importante che `filtra()` restituisca un nuovo oggetto invece di modificare quello esistente?
-
-7. Qual e' la differenza tra un metodo normale e un metodo statico (`@staticmethod`)? Perche' `carica_da_csv` e' un buon candidato per essere statico?
-
----
-
-## Osservazioni finali
-
-In questo laboratorio avete costruito le vostre prime classi da zero, partendo da un semplice `Punto2D` fino alla sfida di un `Dataset` che imita il comportamento di Pandas. Il percorso e' stato pensato per farvi toccare con mano i concetti chiave della programmazione orientata agli oggetti:
-
-- **Incapsulamento**: i dati (attributi) e le operazioni su di essi (metodi) vivono insieme. La validazione in `aggiungi_voto` protegge l'integrita' dell'oggetto.
-- **Metodi speciali**: `__str__`, `__repr__`, `__eq__`, `__lt__` permettono ai vostri oggetti di integrarsi con il linguaggio --- potete stamparli, confrontarli, ordinarli come se fossero tipi built-in.
-- **Composizione**: un `Corso` contiene una lista di `Studente`, un `Dataset` contiene righe e colonne. Costruire sistemi complessi componendo oggetti semplici e' il cuore della progettazione orientata agli oggetti.
-
-I punti da portare con se':
-
-- **Validazione nel costruttore e nei metodi**: non fidatevi mai dei dati in ingresso. Un oggetto deve essere sempre in uno stato coerente.
-- **`__repr__` per il debug**: quando qualcosa non funziona, `repr()` vi mostra esattamente cosa contiene un oggetto.
-- **`__eq__` e `__lt__` per i confronti**: definirli permette di usare `==`, `sorted()`, `min()`, `max()` sui vostri oggetti.
-- **Restituire nuovi oggetti** (come in `filtra`): non modificate l'originale, create una copia filtrata. Questo rende il codice piu' prevedibile e meno soggetto a bug.
-
-Nelle prossime lezioni vedrete come Pandas usa esattamente questi principi --- metodi che restituiscono nuovi DataFrame, operatori sovraccaricati, composizione di strutture --- per costruire uno strumento di analisi dati potentissimo.
+1. Che differenza c'è tra la classe `Esame` e l'oggetto `Esame("Analisi 1", 12, 26)`? Quanti oggetti crea `esame.py`?
+2. Ogni metodo ha `self` come primo parametro, ma in `e.punti()` non lo scrivete. Chi lo passa?
+3. In `segreteria.py` il contatore si aggiorna con `Ticket.emessi += 1`. Cosa succederebbe scrivendo `self.emessi += 1`?
+4. Che differenza c'è tra `__str__` e `__repr__`? Quale usa `print(coda)` per gli elementi della lista?
+5. In `erasmus.py`, perché `__lt__` confronta con `>` (`self.media > altro.media`)?
+6. In `campione.py`, perché `media` è una `@property` e non un attributo calcolato una volta in `__init__`?
+7. Il libretto contiene esami (composizione); un abbonamento studente è un abbonamento (ereditarietà). Fate un altro esempio per ciascuna.

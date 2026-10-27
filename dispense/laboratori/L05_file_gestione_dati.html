@@ -206,7 +206,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <h1>Laboratorio 5 — File e gestione dati</h1>
 <p><strong>Prerequisiti:</strong> lezioni T15 (File, dati ed errori).</p>
 <p>Oggi si lavora con dati che stanno nei file: testo, CSV e JSON. Per ogni esercizio create un file <code>.py</code> con il nome indicato, nella stessa cartella dei file di dati. I file di dati sono scritti nella slide dell'esercizio: create il file con l'editor e copiate il contenuto, compresa la riga di intestazione, e lasciate un a capo dopo l'ultima riga. Le classi non servono.</p>
-<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T17.</p>
+<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T17.</p>
 <table>
 <thead><tr>
 <th>#</th>
@@ -254,9 +254,9 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <td>Configurazione in JSON</td>
 </tr>
 <tr>
-<td>Sfida</td>
-<td><code>pipeline_pm10.py</code></td>
-<td>PM10 a Padova</td>
+<td>Challenge</td>
+<td>a scelta</td>
+<td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td>
 </tr>
 </tbody></table>
 <hr>
@@ -530,62 +530,214 @@ Romano, Rossi, Verdi</code></pre>
 <li>togliete la virgola dopo <code>"voto"</code> → <code>config.json non valido alla riga 4</code>; <code>"colonna": "cognome"</code> → la colonna non contiene numeri</li>
 </ul>
 <hr>
-<h2>Sfida — PM10 a Padova (<code>pipeline_pm10.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Il file <code>rilevazioni.csv</code> contiene le misure giornaliere di PM10 (µg/m³) di tre stazioni di Padova, scritte a mano e con diversi problemi (vedi tabella).</li>
-<li>Scrivete una funzione <code>pulisci(percorso: Path)</code> che restituisce un dizionario stazione → lista di misure valide (<code>defaultdict(list)</code>) e il numero di righe scartate.</li>
-<li>Nel blocco <code>if <em>_name</em><em> == "</em><em>main</em>_":</code> calcolate per ogni stazione, in ordine alfabetico, media (<code>round(..., 1)</code>), massimo e giorni oltre il limite di 50, e stampate il dizionario di ogni stazione.</li>
-<li>Salvate tutto in <code>pm10.json</code> (un dizionario di dizionari) e stampate il numero di righe scartate.</li>
-</ol>
+<h2>Challenge a scelta</h2>
+<p>Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.</p>
 <table>
 <thead><tr>
-<th>Problema</th>
-<th>Cosa fare</th>
+<th>Tema</th>
+<th>Challenge</th>
+<th>File</th>
 </tr></thead><tbody>
 <tr>
-<td>spazi e maiuscole nel nome</td>
-<td><code>strip()</code> e <code>title()</code></td>
+<td>Mercati e finanza</td>
+<td>Il portafoglio: prezzi da file</td>
+<td><code>ch_mercati.py</code></td>
 </tr>
 <tr>
-<td>stazione vuota</td>
-<td>scartare la riga</td>
+<td>Sport</td>
+<td>Il campionato: tempi da file</td>
+<td><code>ch_sport.py</code></td>
 </tr>
 <tr>
-<td>virgola decimale</td>
-<td><code>replace(",", ".")</code> prima di <code>float()</code></td>
+<td>Imprese e marketing</td>
+<td>Il negozio online: ordini da file</td>
+<td><code>ch_negozio.py</code></td>
 </tr>
 <tr>
-<td><code>N/D</code> o campo vuoto</td>
-<td>scartare la riga</td>
+<td>Salute e scienza</td>
+<td>Lo studio clinico: misure da file</td>
+<td><code>ch_salute.py</code></td>
 </tr>
 <tr>
-<td>valore negativo</td>
-<td>scartare la riga</td>
+<td>Caso e probabilità</td>
+<td>Il tavolo da gioco: lanci da file</td>
+<td><code>ch_probabilita.py</code></td>
 </tr>
 </tbody></table>
-<p><strong>File <code>rilevazioni.csv</code></strong> (createlo nella cartella del programma)</p>
-<pre><code>stazione;data;pm10
-Mandria;<span class="mi">01</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">38</span>,<span class="mi">5</span>
-Arcella;<span class="mi">01</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">52</span>
- mandria ;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">61</span>,<span class="mi">2</span>
-Arcella;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;N<span class="op">/</span>D
-;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">44</span>
-Granze;<span class="mi">01</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">27</span>,<span class="mi">8</span>
-Granze;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;
-ARCELLA;<span class="mi">03</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">48</span>,<span class="mi">9</span>
-Mandria;<span class="mi">03</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">55</span>
-Granze;<span class="mi">03</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="op">-</span><span class="mi">3</span></code></pre>
+<p><strong>Tutte le challenge chiedono:</strong></p>
+<ul>
+<li>Create il file CSV della consegna con l'editor, nella stessa cartella del programma: copiate anche l'intestazione e lasciate un a capo dopo l'ultima riga. Una o due righe contengono un valore sbagliato.</li>
+<li>Scrivete una funzione <code>leggi(percorso: Path)</code> che legge il file con <code>csv.DictReader(f, delimiter=";")</code> e restituisce una tupla: un <code>defaultdict(list)</code> con i valori raggruppati e il numero di righe scartate.</li>
+<li>Dentro la funzione convertite il valore di ogni riga in un <code>try</code>: se c'è <code>ValueError</code> contate la riga come scartata e passate alla successiva.</li>
+<li>Nel blocco <code>if <em>_name</em><em> == "</em><em>main</em>_":</code> chiamate la funzione dentro un <code>try</code>. Se il file non esiste (<code>FileNotFoundError</code>) stampate <code>File non trovato:</code> e il nome del file (<code>e.filename</code>).</li>
+<li>Per ogni gruppo, in ordine alfabetico, stampate una riga con le statistiche richieste. Mettete le stesse statistiche in un dizionario di dizionari e salvatelo in JSON con <code>json.dump(..., indent=2, ensure_ascii=False)</code>.</li>
+<li>Alla fine stampate il numero di righe scartate e il nome del file JSON salvato.</li>
+</ul>
+<hr>
+<h3>Challenge · Mercati e finanza — Il portafoglio: prezzi da file (<code>ch_mercati.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>chiusure.csv</code> contiene i prezzi di chiusura di <code>ENRG</code>, <code>BANK</code> e <code>TECH</code> dal 1° al 4 dicembre, copiati a mano. In due righe il prezzo manca o non è un numero.</li>
+<li>La funzione <code>leggi</code> raggruppa i prezzi per titolo, nell'ordine del file.</li>
+<li>Per ogni titolo stampate il numero di prezzi validi, la media con due decimali e il rendimento dal primo all'ultimo prezzo, <code>(ultimo - primo) / primo</code>, in percentuale con un decimale.</li>
+<li>Salvate il riepilogo in <code>titoli.json</code>: per ogni titolo <code>prezzi</code>, <code>media</code> (arrotondata a 2 decimali) e <code>rendimento</code> (arrotondato a 4).</li>
+</ol>
+<p><strong>File <code>chiusure.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>giorno;titolo;prezzo
+<span class="mi">01</span><span class="op">/</span><span class="mi">12</span>;ENRG;<span class="mi">24.10</span>
+<span class="mi">01</span><span class="op">/</span><span class="mi">12</span>;BANK;<span class="mi">12.40</span>
+<span class="mi">01</span><span class="op">/</span><span class="mi">12</span>;TECH;<span class="mi">48.00</span>
+<span class="mi">02</span><span class="op">/</span><span class="mi">12</span>;ENRG;<span class="mi">24.60</span>
+<span class="mi">02</span><span class="op">/</span><span class="mi">12</span>;BANK;<span class="mi">12.20</span>
+<span class="mi">02</span><span class="op">/</span><span class="mi">12</span>;TECH;sospeso
+<span class="mi">03</span><span class="op">/</span><span class="mi">12</span>;ENRG;<span class="mi">25.30</span>
+<span class="mi">03</span><span class="op">/</span><span class="mi">12</span>;BANK;<span class="mi">12.70</span>
+<span class="mi">03</span><span class="op">/</span><span class="mi">12</span>;TECH;<span class="mi">50.40</span>
+<span class="mi">04</span><span class="op">/</span><span class="mi">12</span>;BANK;
+<span class="mi">04</span><span class="op">/</span><span class="mi">12</span>;TECH;<span class="mi">51.20</span></code></pre>
 <p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Arcella: {<span class="st">&#x27;media&#x27;</span>: <span class="mi">50.5</span>, <span class="st">&#x27;massimo&#x27;</span>: <span class="mi">52.0</span>, <span class="st">&#x27;giorni_oltre&#x27;</span>: <span class="mi">1</span>}
-Granze: {<span class="st">&#x27;media&#x27;</span>: <span class="mi">27.8</span>, <span class="st">&#x27;massimo&#x27;</span>: <span class="mi">27.8</span>, <span class="st">&#x27;giorni_oltre&#x27;</span>: <span class="mi">0</span>}
-Mandria: {<span class="st">&#x27;media&#x27;</span>: <span class="mi">51.6</span>, <span class="st">&#x27;massimo&#x27;</span>: <span class="mi">61.2</span>, <span class="st">&#x27;giorni_oltre&#x27;</span>: <span class="mi">2</span>}
-Righe scartate: <span class="mi">4.</span> Salvato pm10.json</code></pre>
+<pre><code>BANK: <span class="mi">3</span> prezzi, media <span class="mi">12.43</span>, rendimento <span class="mi">2.4</span><span class="op">%</span>
+ENRG: <span class="mi">3</span> prezzi, media <span class="mi">24.67</span>, rendimento <span class="mi">5.0</span><span class="op">%</span>
+TECH: <span class="mi">3</span> prezzi, media <span class="mi">49.87</span>, rendimento <span class="mi">6.7</span><span class="op">%</span>
+Righe scartate: <span class="mi">2.</span> Salvato titoli.json</code></pre>
 <p><strong>Provate anche</strong></p>
 <ul>
-<li>aggiungete <code>Granze;04/12/2026;71,0</code> → <code>Granze: {'media': 49.4, 'massimo': 71.0, 'giorni_oltre': 1}</code></li>
-<li>un file con la sola intestazione → <code>Righe scartate: 0</code> e <code>pm10.json</code> contiene <code>{}</code></li>
-<li>aggiungete al JSON il numero di misure valide di ogni stazione</li>
+<li>aggiungete la riga <code>04/12;ENRG;25.10</code> → <code>ENRG: 4 prezzi, media 24.78, rendimento 4.1%</code></li>
+<li>aggiungete invece <code>04/12;ENRG;25,10</code>, con la virgola → <code>Righe scartate: 3</code> e la riga di ENRG non cambia</li>
+<li>rinominate il file in <code>chiusure2.csv</code> → <code>File non trovato: chiusure.csv</code></li>
+</ul>
+<hr>
+<h3>Challenge · Sport — Il campionato: tempi da file (<code>ch_sport.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>giri.csv</code> contiene i tempi sul giro, in secondi, dei primi tre giri di una gara, scritti dal cronometrista. In due righe al posto del tempo c'è una nota (<code>SC</code> per safety car, <code>box</code> per il pit stop).</li>
+<li>La funzione <code>leggi</code> raggruppa i tempi per pilota.</li>
+<li>Per ogni pilota stampate il numero di giri validi, il tempo medio e il giro migliore (<code>min</code>), con due decimali.</li>
+<li>Salvate il riepilogo in <code>piloti.json</code>: per ogni pilota <code>giri</code>, <code>media</code> (arrotondata a 2 decimali) e <code>migliore</code>.</li>
+</ol>
+<p><strong>File <code>giri.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>giro;pilota;tempo
+<span class="mi">1</span>;Ferri;<span class="mi">92.4</span>
+<span class="mi">1</span>;Lanza;<span class="mi">92.9</span>
+<span class="mi">1</span>;Moro;<span class="mi">93.1</span>
+<span class="mi">1</span>;Neri;<span class="mi">93.6</span>
+<span class="mi">2</span>;Ferri;<span class="mi">92.1</span>
+<span class="mi">2</span>;Lanza;SC
+<span class="mi">2</span>;Moro;<span class="mi">92.8</span>
+<span class="mi">2</span>;Neri;<span class="mi">93.0</span>
+<span class="mi">3</span>;Ferri;<span class="mi">92.6</span>
+<span class="mi">3</span>;Lanza;<span class="mi">92.5</span>
+<span class="mi">3</span>;Moro;box</code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Ferri: <span class="mi">3</span> giri, media <span class="mi">92.37</span>, migliore <span class="mi">92.10</span>
+Lanza: <span class="mi">2</span> giri, media <span class="mi">92.70</span>, migliore <span class="mi">92.50</span>
+Moro: <span class="mi">2</span> giri, media <span class="mi">92.95</span>, migliore <span class="mi">92.80</span>
+Neri: <span class="mi">2</span> giri, media <span class="mi">93.30</span>, migliore <span class="mi">93.00</span>
+Righe scartate: <span class="mi">2.</span> Salvato piloti.json</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete la riga <code>3;Neri;93.4</code> → <code>Neri: 3 giri, media 93.33, migliore 93.00</code></li>
+<li>aggiungete invece <code>3;Neri;1:33.4</code> → <code>Righe scartate: 3</code> e la riga di Neri non cambia</li>
+<li>rinominate il file in <code>giri2.csv</code> → <code>File non trovato: giri.csv</code></li>
+</ul>
+<hr>
+<h3>Challenge · Imprese e marketing — Il negozio online: ordini da file (<code>ch_negozio.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>ordini.csv</code> contiene gli ordini di una settimana: cliente, città e importo in euro. In due righe l'importo manca o non è un numero.</li>
+<li>La funzione <code>leggi</code> raggruppa gli importi per città.</li>
+<li>Per ogni città stampate il numero di ordini validi, l'importo medio e il totale, con due decimali.</li>
+<li>Salvate il riepilogo in <code>citta.json</code>: per ogni città <code>ordini</code>, <code>media</code> e <code>totale</code>, arrotondati a 2 decimali.</li>
+</ol>
+<p><strong>File <code>ordini.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>cliente;citta;importo
+Giulia;Padova;<span class="mi">45.90</span>
+Marco;Venezia;<span class="mi">18.50</span>
+Sara;Padova;<span class="mi">32.00</span>
+Luca;Verona;<span class="mi">64.80</span>
+Elena;Vicenza;<span class="mi">12.90</span>
+Paolo;Venezia;omaggio
+Anna;Padova;<span class="mi">27.40</span>
+Davide;Verona;<span class="mi">29.90</span>
+Marta;Vicenza;<span class="mi">38.00</span>
+Giulia;Padova;
+Marco;Venezia;<span class="mi">22.00</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Padova: <span class="mi">3</span> ordini, media <span class="mi">35.10</span>, totale <span class="mi">105.30</span>
+Venezia: <span class="mi">2</span> ordini, media <span class="mi">20.25</span>, totale <span class="mi">40.50</span>
+Verona: <span class="mi">2</span> ordini, media <span class="mi">47.35</span>, totale <span class="mi">94.70</span>
+Vicenza: <span class="mi">2</span> ordini, media <span class="mi">25.45</span>, totale <span class="mi">50.90</span>
+Righe scartate: <span class="mi">2.</span> Salvato citta.json</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>completate la riga di Giulia con <code>Giulia;Padova;15.50</code> → <code>Padova: 4 ordini, media 30.20, totale 120.80</code>, <code>Righe scartate: 1</code></li>
+<li>aggiungete <code>Sara;Padova;20 EUR</code> → <code>Righe scartate: 3</code> e la riga di Padova non cambia</li>
+<li>rinominate il file in <code>ordini2.csv</code> → <code>File non trovato: ordini.csv</code></li>
+</ul>
+<hr>
+<h3>Challenge · Salute e scienza — Lo studio clinico: misure da file (<code>ch_salute.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>pressione.csv</code> contiene la pressione sistolica (mmHg) dei pazienti dello studio alla fine del trattamento. Per due pazienti la misura manca.</li>
+<li>La funzione <code>leggi</code> raggruppa le misure per gruppo (<code>trattamento</code> o <code>controllo</code>).</li>
+<li>Per ogni gruppo stampate il numero di pazienti con una misura valida, la media con un decimale e la quota di pazienti sotto 140 mmHg, in percentuale con un decimale.</li>
+<li>Salvate il riepilogo in <code>gruppi.json</code>: per ogni gruppo <code>pazienti</code>, <code>media</code> (arrotondata a 1 decimale) e <code>sotto_140</code> (arrotondata a 3).</li>
+</ol>
+<p><strong>File <code>pressione.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>paziente;gruppo;sistolica
+P01;trattamento;<span class="mi">128</span>
+P02;controllo;<span class="mi">142</span>
+P03;trattamento;<span class="mi">135</span>
+P04;controllo;<span class="mi">138</span>
+P05;trattamento;n.d.
+P06;controllo;<span class="mi">151</span>
+P07;trattamento;<span class="mi">131</span>
+P08;controllo;
+P09;trattamento;<span class="mi">144</span>
+P10;controllo;<span class="mi">135</span>
+P11;trattamento;<span class="mi">126</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>controllo: <span class="mi">4</span> pazienti, media <span class="mi">141.5</span> mmHg, sotto <span class="mi">140</span>: <span class="mi">50.0</span><span class="op">%</span>
+trattamento: <span class="mi">5</span> pazienti, media <span class="mi">132.8</span> mmHg, sotto <span class="mi">140</span>: <span class="mi">80.0</span><span class="op">%</span>
+Righe scartate: <span class="mi">2.</span> Salvato gruppi.json</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>completate la riga di P08 con <code>P08;controllo;139</code> → <code>controllo: 5 pazienti, media 141.0 mmHg, sotto 140: 60.0%</code>, <code>Righe scartate: 1</code></li>
+<li>aggiungete <code>P12;trattamento;130 mmHg</code> → <code>Righe scartate: 3</code> e la riga del trattamento non cambia</li>
+<li>rinominate il file in <code>pressione2.csv</code> → <code>File non trovato: pressione.csv</code></li>
+</ul>
+<hr>
+<h3>Challenge · Caso e probabilità — Il tavolo da gioco: lanci da file (<code>ch_probabilita.py</code>)</h3>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>lanci.csv</code> contiene i lanci di un dado fatti da tre giocatori e registrati a mano. In due righe il risultato manca o è scritto in lettere.</li>
+<li>La funzione <code>leggi</code> raggruppa i risultati per giocatore; convertiteli con <code>int()</code>.</li>
+<li>Per ogni giocatore stampate il numero di lanci validi, la media con due decimali e la quota di 6 (<code>count(6)</code>), in percentuale con un decimale.</li>
+<li>Salvate il riepilogo in <code>giocatori.json</code>: per ogni giocatore <code>lanci</code>, <code>media</code> (arrotondata a 2 decimali) e <code>quota_sei</code> (arrotondata a 3).</li>
+</ol>
+<p><strong>File <code>lanci.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>lancio;giocatore;dado
+<span class="mi">1</span>;Anna;<span class="mi">4</span>
+<span class="mi">2</span>;Marco;<span class="mi">6</span>
+<span class="mi">3</span>;Giulia;<span class="mi">2</span>
+<span class="mi">4</span>;Anna;<span class="mi">6</span>
+<span class="mi">5</span>;Marco;<span class="mi">3</span>
+<span class="mi">6</span>;Giulia;sei
+<span class="mi">7</span>;Anna;<span class="mi">1</span>
+<span class="mi">8</span>;Marco;<span class="mi">6</span>
+<span class="mi">9</span>;Giulia;<span class="mi">5</span>
+<span class="mi">10</span>;Anna;
+<span class="mi">11</span>;Giulia;<span class="mi">6</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Anna: <span class="mi">3</span> lanci, media <span class="mi">3.67</span>, quota di <span class="mi">6</span>: <span class="mi">33.3</span><span class="op">%</span>
+Giulia: <span class="mi">3</span> lanci, media <span class="mi">4.33</span>, quota di <span class="mi">6</span>: <span class="mi">33.3</span><span class="op">%</span>
+Marco: <span class="mi">3</span> lanci, media <span class="mi">5.00</span>, quota di <span class="mi">6</span>: <span class="mi">66.7</span><span class="op">%</span>
+Righe scartate: <span class="mi">2.</span> Salvato giocatori.json</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>completate la riga 10 con <code>10;Anna;6</code> → <code>Anna: 4 lanci, media 4.25, quota di 6: 50.0%</code>, <code>Righe scartate: 1</code></li>
+<li>aggiungete <code>12;Marco;4.5</code> → <code>int("4.5")</code> dà <code>ValueError</code>: <code>Righe scartate: 3</code></li>
+<li>rinominate il file in <code>lanci2.csv</code> → <code>File non trovato: lanci.csv</code></li>
 </ul>
 <hr>
 <h2>Domande di verifica</h2>

@@ -1,536 +1,384 @@
-# Laboratorio 8 — Visualizzazione e progetto riepilogativo
+# Laboratorio 8 — Visualizzazione e progetto
 
-**Prerequisiti:** Frontale T17 (NumPy, Pandas, analisi dati), Laboratorio 7
+**Prerequisiti:** lezioni T17 (NumPy, Pandas e visualizzazione) e laboratorio L07.
+
+Ultimo laboratorio, in due parti. Nella prima ci sono sei esercizi brevi sui grafici con Matplotlib, dal più semplice al più articolato: ognuno salva un'immagine PNG e stampa poche righe di controllo. Nella seconda c'è il progetto finale: scegliete uno dei 5 temi e analizzate un file CSV dal caricamento alla conclusione. Per ogni esercizio create un file `.py` con il nome indicato. Le soluzioni iniziano con `matplotlib.use("Agg")`, che salva i grafici senza aprire finestre: a casa potete toglierlo e aggiungere `plt.show()` dopo `plt.savefig(...)` per vedere il grafico.
+
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni vengono pubblicate sul portale dopo il laboratorio.
+
+| # | File | Esercizio |
+|---|---|---|
+| 1 | `immatricolati.py` | Immatricolati e laureati |
+| 2 | `voti.py` | I voti dell'appello |
+| 3 | `studio.py` | Ore di studio e voto |
+| 4 | `mensa.py` | L'attesa in mensa |
+| 5 | `tragitto.py` | Il tragitto per l'università |
+| 6 | `meteo.py` | Gennaio in due grafici |
+| Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
 
 ---
 
-## Obiettivo del laboratorio
+## Promemoria
 
-Questo laboratorio ha due parti. Nella prima imparerete a creare grafici con **Matplotlib** e **Seaborn**, le librerie di visualizzazione piu usate in Python. Nella seconda, un **mini-progetto riepilogativo** vi chiedera di combinare tutto cio che avete appreso nel corso: funzioni, type hints, strutture dati, file, Pandas e visualizzazione.
-
----
-
-## Parte 1 — Esercizi guidati: visualizzazione
-
-### 1.1 Matplotlib: istogramma, scatter plot, grafico a barre
-
-Matplotlib e la libreria di visualizzazione di riferimento. Il modulo `pyplot` offre un'interfaccia simile a MATLAB.
+Ogni grafico segue gli stessi passi: nuova figura, disegno, titolo, etichette degli assi con l'unità di misura, `tight_layout()` e salvataggio. `plt.savefig` va chiamato prima di `plt.show()`, che alla chiusura della finestra svuota la figura. Per disegnare un risultato di `groupby` si passano `index` (le etichette) e `values` (i numeri).
 
 ```python
+import matplotlib
+matplotlib.use("Agg")                 # a casa si può togliere
 import matplotlib.pyplot as plt
-import numpy as np
-
-# Generare dati
-rng: np.random.Generator = np.random.default_rng(seed=42)
-altezze: np.ndarray = rng.normal(loc=170, scale=10, size=500)
-
-# --- Istogramma ---
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.hist(altezze, bins=25, color="steelblue", edgecolor="white", alpha=0.8)
-ax.set_title("Distribuzione delle altezze")
-ax.set_xlabel("Altezza (cm)")
-ax.set_ylabel("Frequenza")
-plt.tight_layout()
-plt.savefig("istogramma_altezze.png", dpi=150)
-plt.show()
-```
-
-```python
-import matplotlib.pyplot as plt
-import numpy as np
-
-# --- Scatter plot ---
-rng: np.random.Generator = np.random.default_rng(seed=42)
-ore_studio: np.ndarray = rng.uniform(2, 40, size=100)
-voti: np.ndarray = 18 + 0.3 * ore_studio + rng.normal(0, 2, size=100)
-voti = np.clip(voti, 18, 30)
-
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.scatter(ore_studio, voti, alpha=0.6, color="coral", edgecolors="darkred", s=40)
-ax.set_title("Ore di studio vs voto")
-ax.set_xlabel("Ore di studio settimanali")
-ax.set_ylabel("Voto medio")
-plt.tight_layout()
-plt.savefig("scatter_studio_voti.png", dpi=150)
-plt.show()
-```
-
-```python
-import matplotlib.pyplot as plt
-import numpy as np
-
-# --- Grafico a barre ---
-corsi: list[str] = ["Statistica", "Economia", "Sociologia", "Informatica"]
-media_voti: list[float] = [26.3, 24.8, 25.1, 27.2]
-
-fig, ax = plt.subplots(figsize=(8, 5))
-colori: list[str] = ["#4C72B0", "#55A868", "#C44E52", "#8172B2"]
-barre = ax.bar(corsi, media_voti, color=colori, edgecolor="black", width=0.6)
-
-# Aggiungere etichette sopra le barre
-for barra, valore in zip(barre, media_voti):
-    ax.text(
-        barra.get_x() + barra.get_width() / 2,
-        barra.get_height() + 0.1,
-        f"{valore:.1f}",
-        ha="center", va="bottom", fontsize=11
-    )
-
-ax.set_title("Voto medio per corso di laurea")
-ax.set_ylabel("Voto medio")
-ax.set_ylim(22, 29)
-plt.tight_layout()
-plt.savefig("barre_corsi.png", dpi=150)
-plt.show()
-```
-
-### 1.2 Personalizzazione: titoli, etichette, legende, colori, griglia
-
-Un grafico senza etichette e un grafico inutile. Vediamo come personalizzare ogni aspetto.
-
-```python
-import matplotlib.pyplot as plt
-import numpy as np
-
-rng: np.random.Generator = np.random.default_rng(seed=42)
-x: np.ndarray = np.linspace(0, 10, 100)
-y1: np.ndarray = np.sin(x)
-y2: np.ndarray = np.cos(x)
-y3: np.ndarray = np.sin(x) * np.exp(-x / 5)
-
-fig, ax = plt.subplots(figsize=(10, 6))
-
-# Tre linee con stili diversi
-ax.plot(x, y1, color="#E74C3C", linewidth=2, linestyle="-",
-        label="sin(x)")
-ax.plot(x, y2, color="#3498DB", linewidth=2, linestyle="--",
-        label="cos(x)")
-ax.plot(x, y3, color="#2ECC71", linewidth=2, linestyle="-.",
-        label="sin(x) · e^(-x/5)")
-
-# Personalizzazione
-ax.set_title("Funzioni trigonometriche", fontsize=16, fontweight="bold")
-ax.set_xlabel("x", fontsize=13)
-ax.set_ylabel("f(x)", fontsize=13)
-ax.legend(fontsize=11, loc="upper right", framealpha=0.9)
-ax.grid(True, alpha=0.3, linestyle="--")
-ax.set_xlim(0, 10)
-ax.set_ylim(-1.5, 1.5)
-ax.axhline(y=0, color="black", linewidth=0.5)
-ax.tick_params(labelsize=11)
-
-plt.tight_layout()
-plt.savefig("funzioni_personalizzate.png", dpi=150)
-plt.show()
-```
-
-### 1.3 Seaborn: boxplot per confronto gruppi e heatmap
-
-Seaborn e costruita sopra Matplotlib e semplifica la creazione di grafici statistici. Lavora direttamente con i DataFrame Pandas.
-
-```python
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
-import numpy as np
 
-# Creare un dataset di esempio
-rng: np.random.Generator = np.random.default_rng(seed=42)
-n: int = 300
-df: pd.DataFrame = pd.DataFrame({
-    "corso": rng.choice(
-        ["Statistica", "Economia", "Sociologia", "Informatica"],
-        size=n
-    ),
-    "voto": np.round(rng.normal(25, 3, size=n).clip(18, 30), 1),
-    "ore_studio": np.round(rng.exponential(15, size=n).clip(2, 45), 1),
-    "eta": rng.integers(19, 35, size=n),
-    "stipendio_atteso": np.round(
-        rng.normal(28000, 5000, size=n).clip(15000, 50000), 0
-    ),
-})
-
-# --- Boxplot: confronto voti per corso ---
-fig, ax = plt.subplots(figsize=(9, 5))
-sns.boxplot(
-    data=df,
-    x="corso",
-    y="voto",
-    palette="Set2",
-    ax=ax
-)
-ax.set_title("Distribuzione dei voti per corso", fontsize=14)
-ax.set_xlabel("Corso di laurea")
-ax.set_ylabel("Voto medio")
-plt.tight_layout()
-plt.savefig("boxplot_voti_corso.png", dpi=150)
-plt.show()
-```
-
-```python
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-import numpy as np
-
-# Riutilizziamo il DataFrame df creato sopra (o ricrearlo)
-rng: np.random.Generator = np.random.default_rng(seed=42)
-n: int = 300
-df: pd.DataFrame = pd.DataFrame({
-    "voto": np.round(rng.normal(25, 3, size=n).clip(18, 30), 1),
-    "ore_studio": np.round(rng.exponential(15, size=n).clip(2, 45), 1),
-    "eta": rng.integers(19, 35, size=n),
-    "stipendio_atteso": np.round(
-        rng.normal(28000, 5000, size=n).clip(15000, 50000), 0
-    ),
-})
-
-# --- Heatmap della matrice di correlazione ---
-colonne_numeriche: list[str] = ["voto", "ore_studio", "eta", "stipendio_atteso"]
-matrice_corr: pd.DataFrame = df[colonne_numeriche].corr()
-
-fig, ax = plt.subplots(figsize=(7, 6))
-sns.heatmap(
-    matrice_corr,
-    annot=True,
-    fmt=".2f",
-    cmap="coolwarm",
-    center=0,
-    square=True,
-    linewidths=1,
-    ax=ax
-)
-ax.set_title("Matrice di correlazione", fontsize=14)
-plt.tight_layout()
-plt.savefig("heatmap_correlazione.png", dpi=150)
-plt.show()
-```
-
-### 1.4 Subplots: quattro grafici in una figura (dashboard)
-
-Combinare piu grafici in una sola figura e essenziale per creare dashboard sintetiche.
-
-```python
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-import numpy as np
-
-# Generare il dataset
-rng: np.random.Generator = np.random.default_rng(seed=42)
-n: int = 400
-df: pd.DataFrame = pd.DataFrame({
-    "corso": rng.choice(
-        ["Statistica", "Economia", "Sociologia", "Informatica"],
-        size=n
-    ),
-    "voto": np.round(rng.normal(25, 3, size=n).clip(18, 30), 1),
-    "ore_studio": np.round(rng.exponential(15, size=n).clip(2, 45), 1),
-    "eta": rng.integers(19, 35, size=n),
-    "stipendio_atteso": np.round(
-        rng.normal(28000, 5000, size=n).clip(15000, 50000), 0
-    ),
-})
-
-# Creare una figura con 4 sottografici (2x2)
-fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-fig.suptitle("Dashboard: analisi studenti universitari",
-             fontsize=16, fontweight="bold", y=1.02)
-
-# Pannello 1: istogramma dei voti
-axes[0, 0].hist(df["voto"], bins=20, color="steelblue",
-                edgecolor="white", alpha=0.8)
-axes[0, 0].set_title("Distribuzione dei voti")
-axes[0, 0].set_xlabel("Voto medio")
-axes[0, 0].set_ylabel("Frequenza")
-axes[0, 0].axvline(df["voto"].mean(), color="red",
-                   linestyle="--", label=f"Media: {df['voto'].mean():.1f}")
-axes[0, 0].legend()
-
-# Pannello 2: boxplot per corso
-sns.boxplot(data=df, x="corso", y="voto", palette="Set2",
-            ax=axes[0, 1])
-axes[0, 1].set_title("Voti per corso")
-axes[0, 1].set_xlabel("")
-axes[0, 1].tick_params(axis="x", rotation=30)
-
-# Pannello 3: scatter ore studio vs voto
-axes[1, 0].scatter(df["ore_studio"], df["voto"],
-                   alpha=0.4, color="coral", s=20)
-axes[1, 0].set_title("Ore di studio vs voto")
-axes[1, 0].set_xlabel("Ore di studio settimanali")
-axes[1, 0].set_ylabel("Voto medio")
-
-# Pannello 4: grafico a barre del conteggio per corso
-conteggi: pd.Series = df["corso"].value_counts()
-axes[1, 1].bar(conteggi.index, conteggi.values,
-               color=["#4C72B0", "#55A868", "#C44E52", "#8172B2"],
-               edgecolor="black")
-axes[1, 1].set_title("Numero studenti per corso")
-axes[1, 1].set_ylabel("Conteggio")
-axes[1, 1].tick_params(axis="x", rotation=30)
-
-plt.tight_layout()
-plt.savefig("dashboard_studenti.png", dpi=150, bbox_inches="tight")
-plt.show()
+df = pd.read_csv("dati.csv", sep=";")  # carica
+df = df.drop_duplicates().dropna()     # pulisce
+medie = df.groupby("gruppo")["valore"].mean()
+plt.figure(figsize=(7, 4))             # nuova figura
+plt.bar(medie.index, medie.values)     # oppure plot, hist, scatter
+plt.title("Valore medio per gruppo")   # titolo ed etichette
+plt.xlabel("Gruppo")
+plt.ylabel("Valore medio")
+plt.tight_layout()                     # niente etichette tagliate
+plt.savefig("grafico.png")             # prima di plt.show()
 ```
 
 ---
 
-## Parte 2 — Mini-progetto riepilogativo
+## Esercizio 1 — Immatricolati e laureati (`immatricolati.py`)
 
-Questo progetto vi chiede di svolgere un'analisi end-to-end di un dataset, integrando tutte le competenze acquisite nel corso. Il codice deve essere organizzato in **funzioni** con **type hints** e **docstring**.
+**Consegna**
 
-### Istruzioni
+1. Scrivete i dati nel codice: `anni = list(range(2018, 2026))`, `immatricolati = [182, 195, 210, 204, 231, 248, 240, 262]`, `laureati = [118, 126, 131, 140, 137, 152, 160, 171]`.
+2. Create la figura con `plt.figure(figsize=(7, 4))` e disegnate le due serie con `plt.plot`: per ognuna un `marker` e una `label` diversi, i laureati con `linestyle="--"`.
+3. Aggiungete titolo, etichette degli assi, legenda e una griglia leggera (`plt.grid(True, alpha=0.3)`), poi salvate con `plt.savefig("immatricolati.png")`. A casa potete aggiungere `plt.show()` dopo il salvataggio.
+4. Stampate l'anno con più immatricolati (`immatricolati.index(max(immatricolati))`) e la variazione tra il primo e l'ultimo anno.
 
-Costruite un programma completo che esegue i cinque passi descritti di seguito. Ogni passo deve essere implementato in una o piu funzioni dedicate. Il programma principale (blocco `if __name__ == "__main__"`) deve richiamare le funzioni in sequenza.
+**Esempio di esecuzione**
 
-#### Passo 1 — Generazione e caricamento del dataset
-
-Create (o caricate) un dataset CSV che simuli un'indagine su 500 dipendenti di diverse aziende. Il dataset deve contenere almeno le seguenti colonne:
-
-| Colonna | Tipo | Descrizione |
-|---------|------|-------------|
-| `id` | int | Identificativo univoco |
-| `settore` | str | Tecnologia, Sanita, Istruzione, Finanza, Commercio |
-| `ruolo` | str | Junior, Mid, Senior, Manager |
-| `anni_esperienza` | int | Da 0 a 35 |
-| `stipendio` | float | In euro, correlato a settore e esperienza |
-| `soddisfazione` | int | Scala 1-10 |
-| `ore_settimanali` | float | Ore lavorate a settimana |
-| `regione` | str | Almeno 5 regioni italiane |
-
-Scrivete una funzione che genera il dataset e lo salva come CSV:
-
-```python
-def genera_dataset(n: int, percorso: str, seed: int = 42) -> pd.DataFrame:
-    """Genera un dataset simulato di dipendenti e lo salva come CSV.
-
-    Args:
-        n: Numero di righe da generare.
-        percorso: Percorso del file CSV di output.
-        seed: Seed per la riproducibilita.
-
-    Returns:
-        Il DataFrame generato.
-    """
-    ...
+```
+Anno con più immatricolati: 2025 (262)
+Variazione 2018-2025: 44.0%
 ```
 
-Scrivete una funzione separata per il caricamento:
+**Provate anche**
 
-```python
-def carica_dataset(percorso: str) -> pd.DataFrame:
-    """Carica il dataset da un file CSV.
-
-    Args:
-        percorso: Percorso del file CSV.
-
-    Returns:
-        Il DataFrame caricato.
-    """
-    ...
-```
-
-#### Passo 2 — Esplorazione
-
-Scrivete una funzione che stampa un riepilogo completo del dataset:
-
-```python
-def esplora_dataset(df: pd.DataFrame) -> None:
-    """Stampa un riepilogo esplorativo del dataset.
-
-    Mostra: dimensioni, tipi delle colonne, prime righe,
-    statistiche descrittive, conteggio valori per ogni
-    colonna categoriale, conteggio valori mancanti.
-
-    Args:
-        df: Il DataFrame da esplorare.
-    """
-    ...
-```
-
-#### Passo 3 — Pulizia
-
-Inserite intenzionalmente dei "difetti" nel dataset (5-10% di valori mancanti nello stipendio, qualche valore anomalo nelle ore settimanali, stringhe con capitalizzazione inconsistente nei settori). Poi scrivete una funzione che pulisce il dataset:
-
-```python
-def pulisci_dataset(df: pd.DataFrame) -> pd.DataFrame:
-    """Pulisce il dataset: gestisce mancanti, anomali, inconsistenze.
-
-    Strategia:
-    - Stipendio mancante: sostituito con la mediana del settore.
-    - Ore settimanali > 80 o < 5: sostituite con la mediana.
-    - Stringhe: normalizzate con strip() e capitalize().
-
-    Args:
-        df: Il DataFrame da pulire.
-
-    Returns:
-        Il DataFrame pulito.
-    """
-    ...
-```
-
-#### Passo 4 — Analisi per gruppi
-
-Scrivete una funzione che produce le statistiche richieste:
-
-```python
-def analisi_per_gruppi(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
-    """Calcola statistiche aggregate per diversi raggruppamenti.
-
-    Analisi da produrre:
-    - Stipendio medio e mediano per settore.
-    - Soddisfazione media per ruolo.
-    - Stipendio medio per settore e ruolo (pivot table).
-    - Correlazione tra anni_esperienza, stipendio e soddisfazione.
-
-    Args:
-        df: Il DataFrame pulito.
-
-    Returns:
-        Dizionario con nome analisi -> DataFrame risultato.
-    """
-    ...
-```
-
-#### Passo 5 — Visualizzazioni
-
-Scrivete una funzione che crea una dashboard con 4 grafici in una singola figura:
-
-```python
-def crea_dashboard(df: pd.DataFrame, percorso_output: str) -> None:
-    """Crea una dashboard con 4 grafici e la salva come immagine.
-
-    Grafici:
-    1. Istogramma della distribuzione degli stipendi.
-    2. Boxplot degli stipendi per settore.
-    3. Scatter plot anni_esperienza vs stipendio, colorato per settore.
-    4. Heatmap della correlazione tra variabili numeriche.
-
-    Args:
-        df: Il DataFrame pulito.
-        percorso_output: Percorso del file immagine di output.
-    """
-    ...
-```
-
-#### Struttura del programma principale
-
-Il programma completo deve avere questa struttura:
-
-```python
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-
-# Le funzioni definite sopra: genera_dataset, carica_dataset,
-# esplora_dataset, pulisci_dataset, analisi_per_gruppi, crea_dashboard
-
-
-def main() -> None:
-    """Funzione principale: esegue l'analisi completa."""
-    # 1. Generazione
-    percorso_csv: str = "dipendenti.csv"
-    df: pd.DataFrame = genera_dataset(500, percorso_csv)
-
-    # 2. Caricamento (per dimostrare il ciclo salva/carica)
-    df = carica_dataset(percorso_csv)
-
-    # 3. Esplorazione
-    esplora_dataset(df)
-
-    # 4. Pulizia
-    df_pulito: pd.DataFrame = pulisci_dataset(df)
-
-    # 5. Analisi
-    risultati: dict[str, pd.DataFrame] = analisi_per_gruppi(df_pulito)
-    for nome, tabella in risultati.items():
-        print(f"\n{'=' * 50}")
-        print(f"  {nome}")
-        print(f"{'=' * 50}")
-        print(tabella)
-
-    # 6. Visualizzazione
-    crea_dashboard(df_pulito, "dashboard_dipendenti.png")
-
-    # 7. Export risultati
-    df_pulito.to_csv("dipendenti_pulito.csv", index=False)
-    print("\nDataset pulito salvato come 'dipendenti_pulito.csv'")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-#### Criteri di qualita
-
-Il progetto e completo quando:
-
-- [ ] Ogni funzione ha type hints su tutti i parametri e sul valore di ritorno.
-- [ ] Ogni funzione ha una docstring che spiega cosa fa, i parametri e il valore restituito.
-- [ ] Il dataset generato e realistico (correlazione stipendio-esperienza, stipendi diversi per settore).
-- [ ] La pulizia gestisce almeno tre tipi di problema (mancanti, anomali, inconsistenze).
-- [ ] L'analisi produce almeno 4 tabelle statistiche di riepilogo.
-- [ ] La dashboard contiene 4 grafici diversi, tutti con titolo, etichette e legende.
-- [ ] Il programma e eseguibile da terminale senza errori.
-- [ ] Il codice non contiene variabili globali: tutto passa attraverso parametri e valori di ritorno.
+- ultimo valore `230` invece di `262` → `Anno con più immatricolati: 2023 (248)`, `Variazione 2018-2025: 26.4%`
+- togliete `plt.legend()`: le linee restano, ma non si sa quale serie sia quale
 
 ---
 
-## Parte 3 — Interpretazione dei risultati
+## Esercizio 2 — I voti dell'appello (`voti.py`)
 
-Dopo aver completato il mini-progetto, rispondete per iscritto alle seguenti domande, basandovi sui risultati della vostra analisi:
+**Consegna**
 
-1. Quale settore ha lo stipendio medio piu alto? E' anche quello con la soddisfazione piu alta? Se no, come lo spiegate?
+1. Generate i voti con `rng = np.random.default_rng(14)` e `tutti = rng.normal(23.5, 4, 250).round().clip(max=30)`: 250 voti interi, al massimo 30.
+2. Tenete i promossi con un filtro booleano: `voti = tutti[tutti >= 18]`.
+3. Disegnate l'istogramma con una barra per ogni voto (`bins=np.arange(17.5, 31)`) e `edgecolor="white"`. Aggiungete una linea verticale tratteggiata sulla media con `plt.axvline` e la legenda.
+4. Salvate `voti.png` e stampate promossi, media dei promossi e quota di voti da 27 in su.
 
-2. Osservando lo scatter plot esperienza-stipendio, la relazione vi sembra lineare? Ci sono pattern diversi per settori diversi?
+**Esempio di esecuzione**
 
-3. Dalla heatmap di correlazione, quali coppie di variabili sono piu correlate? Quali sono indipendenti?
+```
+Promossi: 233 su 250
+Media dei promossi: 24.1
+Voti da 27 in su: 26.2%
+```
 
-4. I boxplot mostrano outlier? In quale settore la variabilita degli stipendi e maggiore? Cosa potrebbe significare?
+**Provate anche**
 
-5. Se doveste comunicare i risultati a un committente non tecnico, quali due grafici scegliereste e perche?
+- seed `15` → `Promossi: 232 su 250`, `Media dei promossi: 24.2`, `Voti da 27 in su: 28.4%`
+- deviazione standard `6` → `Promossi: 211 su 250`: l'istogramma si allarga e la barra del 30 si alza
+- `bins=5`: ogni barra raccoglie più voti e la forma cambia
+
+---
+
+## Esercizio 3 — Ore di studio e voto (`studio.py`)
+
+**Consegna**
+
+1. Generate i dati di 80 studenti: `rng = np.random.default_rng(7)`, `ore = rng.uniform(20, 120, 80).round()`, `voto = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round().clip(18, 30)`.
+2. Disegnate un grafico di dispersione con `plt.scatter(ore, voto, alpha=0.6)`: la trasparenza mostra i punti sovrapposti.
+3. Aggiungete titolo, etichette e griglia leggera e salvate `studio.png`.
+4. Stampate la correlazione (`np.corrcoef(ore, voto)[0, 1]`) e il voto medio di chi ha studiato più di 80 ore e di chi ne ha studiate 80 o meno.
+
+**Esempio di esecuzione**
+
+```
+Studenti: 80, correlazione: 0.67
+Voto medio con più di 80 ore: 25.2
+Voto medio con 80 ore o meno: 21.6
+```
+
+**Provate anche**
+
+- rumore `rng.normal(0, 5, 80)` → `correlazione: 0.28`, medie `24.3` e `22.0`: i punti sono più sparsi
+- togliete `alpha=0.6`: dove i punti si sovrappongono non si vede quanti sono
+
+---
+
+## Esercizio 4 — L'attesa in mensa (`mensa.py`)
+
+**Consegna**
+
+1. Costruite un DataFrame con 20 settimane di rilevazioni dell'attesa in mensa (minuti): `rng = np.random.default_rng(3)`, `giorni = ["lun", "mar", "mer", "gio", "ven"]`, attese tipiche `[12, 15, 14, 16, 8]`.
+2. Colonne: `"giorno": giorni * 20` e `"attesa": np.tile(attesa_tipica, 20) + rng.normal(0, 3, 100)`.
+3. Calcolate l'attesa media per giorno con `df.groupby("giorno", sort=False)["attesa"].mean()`: `sort=False` mantiene i giorni nell'ordine della settimana.
+4. Disegnate le barre con `plt.bar(medie.index, medie.values)`, aggiungete titolo ed etichette, salvate `mensa.png` e stampate le rilevazioni, la media generale e i giorni con l'attesa più lunga e più corta (`idxmax`, `idxmin`).
+
+**Esempio di esecuzione**
+
+```
+Rilevazioni: 100, media: 12.8 min
+Giorno peggiore: gio (15.8 min)
+Giorno migliore: ven (7.4 min)
+```
+
+**Provate anche**
+
+- senza `sort=False` le righe stampate non cambiano, ma le barre sono in ordine alfabetico: `gio`, `lun`, `mar`, `mer`, `ven`
+- aggiungete `plt.axhline(df["attesa"].mean(), color="red", linestyle="--")`: si vedono i giorni sopra la media
+
+---
+
+## Esercizio 5 — Il tragitto per l'università (`tragitto.py`)
+
+**Consegna**
+
+1. Generate i tempi (minuti) di 40 tragitti per mezzo con `rng = np.random.default_rng(11)` e un dizionario: `"bici": rng.normal(22, 3, 40).round()`, `"autobus": rng.normal(28, 7, 40).round()`, `"treno": rng.normal(35, 4, 40).round()`.
+2. Disegnate un boxplot con `plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))`. Con Matplotlib precedente alla 3.9 il parametro si chiama `labels`.
+3. Aggiungete titolo ed etichette e salvate `tragitto.png`.
+4. Per ogni mezzo stampate la mediana (`np.median`) e la quota di tragitti oltre 30 minuti.
+
+**Esempio di esecuzione**
+
+```
+bici: mediana 22 min, oltre 30 min 0.0%
+autobus: mediana 30 min, oltre 30 min 47.5%
+treno: mediana 35 min, oltre 30 min 82.5%
+```
+
+**Provate anche**
+
+- autobus con `rng.normal(28, 2, 40)` → `autobus: mediana 29 min, oltre 30 min 7.5%`: la scatola si stringe
+- il treno ha la mediana più alta ma una scatola più stretta dell'autobus: è più lento ma più regolare
+
+---
+
+## Esercizio 6 — Gennaio in due grafici (`meteo.py`)
+
+**Consegna**
+
+1. Generate le temperature di 31 giorni: `rng = np.random.default_rng(1)`, `minime = rng.normal(0, 2.5, 31).round(1)`, `massime = (minime + rng.normal(7, 1.8, 31)).round(1)`.
+2. Create due grafici affiancati con `fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))`. Sugli assi si usano `ax1.plot(...)`, `ax1.set_title(...)`, `ax1.set_xlabel(...)`.
+3. A sinistra le linee delle massime e delle minime giorno per giorno, con legenda; a destra l'istogramma dell'escursione termica (`massime - minime`, `bins=8`).
+4. Chiudete con `fig.tight_layout()` e `fig.savefig("meteo.png")`, poi stampate i giorni con la minima sotto zero e l'escursione media.
+
+**Esempio di esecuzione**
+
+```
+Giorni con la minima sotto zero: 13
+Escursione media: 6.8 °C
+```
+
+**Provate anche**
+
+- seed `2` → `Giorni con la minima sotto zero: 15`, `Escursione media: 7.4 °C`
+- `plt.subplots(2, 1, figsize=(7, 7))`: i due grafici uno sopra l'altro
+
+---
+
+## Challenge a scelta
+
+Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.
+
+| Tema | Challenge | File |
+|---|---|---|
+| Mercati e finanza | Due mesi di borsa | `ch_mercati.py` |
+| Sport | Il passo gara | `ch_sport.py` |
+| Imprese e marketing | Quattro mesi di ordini | `ch_negozio.py` |
+| Salute e scienza | L'effetto dell'integratore | `ch_salute.py` |
+| Caso e probabilità | Il dado sospetto | `ch_probabilita.py` |
+
+**Tutte le challenge chiedono:**
+
+- Scaricate dal portale il file CSV del vostro tema e mettetelo nella cartella del programma. Il separatore è `;`.
+- Caricate: `grezzo = pd.read_csv(..., sep=";")`. Tenete il DataFrame originale per contare le righe lette.
+- Pulite: togliete le righe doppie (`drop_duplicates()`), quelle con valori mancanti (`dropna()`) e quelle con valori impossibili, con un filtro booleano. Aggiungete `.copy()` all'ultimo filtro, prima di creare nuove colonne. Stampate righe lette e righe rimaste.
+- Calcolate le colonne e le 3 statistiche indicate nel vostro tema: almeno una con `groupby`.
+- Disegnate 3 grafici con titolo ed etichette degli assi e salvateli in PNG: un istogramma o boxplot, un grafico a linee o di dispersione, un grafico a barre per gruppo. Conviene una funzione `salva(nome: str, titolo: str, x: str, y: str) -> None` che mette titolo ed etichette, chiama `tight_layout()` e `savefig` e chiude la figura con `plt.close()`.
+- Concludete con 3 righe stampate che commentano i risultati. I numeri vengono dalle variabili calcolate, non scritti a mano: se cambiano i dati, la conclusione si aggiorna.
+
+---
+
+### Challenge · Mercati e finanza — Due mesi di borsa (`ch_mercati.py`)
+
+**Consegna**
+
+1. `prezzi.csv` contiene i prezzi di chiusura di ENRG, BANK, TECH e dell'indice MIB, giorno per giorno, a settembre e ottobre 2026. Colonne: `data`, `titolo`, `prezzo`. Ci sono giorni ripetuti, prezzi mancanti e prezzi non positivi da scartare.
+2. Dopo la pulizia aggiungete la colonna `rendimento` con `df.groupby("titolo")["prezzo"].pct_change()`: per ogni titolo calcola (p_oggi − p_ieri) / p_ieri. Il primo giorno di ogni titolo resta vuoto.
+3. Statistiche: per ogni titolo il rendimento nel periodo (con `g = df.groupby("titolo")["prezzo"]`, `g.last() / g.first() - 1`) e la volatilità (deviazione standard dei rendimenti); i giorni in cui il MIB perde più dell'1%.
+4. Grafici: `rendimenti.png`, istogramma dei rendimenti (con `dropna()`); `prezzi.png`, linee dei prezzi di ENRG, BANK e TECH con legenda (il MIB ha un'altra scala); `volatilita.png`, barre della volatilità per titolo.
+5. Conclusione: titolo migliore e peggiore escluso il MIB (`rend.drop("MIB")`, `idxmax`, `idxmin`); il più volatile a confronto con il MIB; quanti titoli hanno reso più dell'indice.
+
+**File di dati:** `prezzi.csv`, da scaricare dal portale (cartella del codice di L08).
+
+**Esempio di esecuzione**
+
+```
+Righe lette: 179, dopo la pulizia: 172
+BANK: rendimento 14.6%, volatilità 1.6%
+ENRG: rendimento -10.6%, volatilità 1.2%
+MIB: rendimento 1.9%, volatilità 0.9%
+TECH: rendimento 21.6%, volatilità 2.2%
+Giorni con il MIB in calo oltre l'1%: 4
+Il migliore è TECH (21.6%), il peggiore ENRG (-10.6%).
+Il più volatile è TECH, con 2.2% al giorno; il MIB si ferma a 0.9%.
+Il MIB rende 1.9%: 2 titoli su 3 fanno meglio.
+```
+
+**Provate anche**
+
+- senza `drop_duplicates()` → `dopo la pulizia: 175`; un giorno ripetuto dà rendimento 0 e le statistiche cambiano di poco
+- senza il filtro sui prezzi → volatilità di ENRG `nan%` e di MIB `154.2%`, poi l'istogramma si ferma con `ValueError`: un prezzo 0 produce un rendimento infinito
+
+---
+
+### Challenge · Sport — Il passo gara (`ch_sport.py`)
+
+**Consegna**
+
+1. `tempi_giro.csv` contiene i tempi sul giro (secondi) di Ferri, Lanza, Moro e Neri in 3 gare da 15 giri. Colonne: `gara`, `pilota`, `giro`, `tempo`. Ci sono righe doppie, tempi mancanti e tempi impossibili: tenete solo quelli tra 60 e 180 secondi.
+2. Aggiungete la colonna `lento` (`True` se il tempo supera 100 s: pit stop o safety car) e create `normali = df[~df["lento"]]`; `~` inverte i valori booleani.
+3. Statistiche: il giro più veloce con pilota, gara e giro (`df.loc[df["tempo"].idxmin()]`); la quota di giri lenti; la media sui giri normali per pilota.
+4. Grafici: `hist_tempi.png`, istogramma di tutti i tempi; `gara1.png`, linee dei giri normali della gara 1, una per pilota, con `marker="o"` e legenda; `distacchi.png`, barre del distacco di ogni pilota dal più veloce (media − media minima).
+5. Conclusione: il più veloce sul passo gara e quanto perde al giro il più lento; quanti secondi costa in media un giro lento rispetto ai giri normali; cosa mostra il grafico della gara 1.
+
+**File di dati:** `tempi_giro.csv`, da scaricare dal portale (cartella del codice di L08).
+
+**Esempio di esecuzione**
+
+```
+Righe lette: 183, dopo la pulizia: 176
+Giro più veloce: Moro, gara 2, giro 12, 88.3 s
+Giri lenti (pit stop e safety car): 11.4%
+Ferri: media sui giri normali 92.46 s
+Lanza: media sui giri normali 93.01 s
+Moro: media sui giri normali 92.68 s
+Neri: media sui giri normali 93.22 s
+Sul passo gara il più veloce è Ferri; Neri perde 0.76 s al giro.
+Un giro lento costa 16.3 s in più e va escluso.
+Gara 1: i tempi crescono fino al pit stop (usura gomme).
+```
+
+**Provate anche**
+
+- senza il filtro sui tempi → `Giro più veloce: Lanza, gara 3, giro 13, 0.0 s` e Lanza risulta il più veloce sul passo gara
+- senza `drop_duplicates()` → `dopo la pulizia: 179`, `Giri lenti (pit stop e safety car): 11.7%`
+
+---
+
+### Challenge · Imprese e marketing — Quattro mesi di ordini (`ch_negozio.py`)
+
+**Consegna**
+
+1. `ordini.csv` contiene gli ordini del negozio online da settembre a dicembre 2026. Colonne: `ordine`, `data`, `cliente`, `citta`, `prodotto`, `quantita`, `prezzo`. Ci sono ordini registrati due volte, quantità mancanti e quantità non positive da scartare.
+2. Aggiungete le colonne `importo` (quantità × prezzo) e `mese`, i primi 7 caratteri della data (`df["data"].str[:7]`, per esempio `2026-09`).
+3. Statistiche: fatturato totale e importo medio per ordine; fatturato per città con la quota sul totale; prodotto più venduto per numero di pezzi.
+4. Grafici: `hist_importi.png`, istogramma degli importi; `mesi.png`, linea del fatturato per mese con `marker="o"`; `citta.png`, barre del fatturato per città.
+5. Conclusione: città con la quota più alta e più bassa; mese migliore e peggiore; per il prodotto più venduto, quota dei pezzi e quota del fatturato.
+
+**File di dati:** `ordini.csv`, da scaricare dal portale (cartella del codice di L08).
+
+**Esempio di esecuzione**
+
+```
+Righe lette: 154, dopo la pulizia: 146
+Fatturato: 5438.80 EUR, ordine medio: 37.25 EUR
+Padova: 1639.10 EUR (30.1%)
+Venezia: 1466.00 EUR (27.0%)
+Verona: 1934.00 EUR (35.6%)
+Vicenza: 399.70 EUR (7.3%)
+Prodotto più venduto: quaderno, 124 pezzi
+Verona vale 35.6% del fatturato, Vicenza solo 7.3%.
+Il mese migliore è 2026-09 (1871.90 EUR), il peggiore 2026-11 (806.70 EUR).
+Prodotto quaderno: 41.6% dei pezzi, ma 11.2% del fatturato.
+```
+
+**Provate anche**
+
+- senza il filtro sulle quantità → `dopo la pulizia: 148`, `Fatturato: 5389.00 EUR`: l'ordine con quantità -2 toglie fatturato
+- senza `drop_duplicates()` → `dopo la pulizia: 150`, `Fatturato: 5572.50 EUR`
+
+---
+
+### Challenge · Salute e scienza — L'effetto dell'integratore (`ch_salute.py`)
+
+**Consegna**
+
+1. `pazienti.csv` contiene i dati dello studio sull'integratore: `codice`, `sesso`, `eta`, `gruppo` (`trattamento` o `controllo`), `pressione_prima` e `pressione_dopo` in mmHg. Ci sono pazienti registrati due volte, pressioni mancanti (pazienti usciti dallo studio) e pressioni impossibili: tenete solo i valori tra 80 e 250 (`between(80, 250)`), sia prima sia dopo.
+2. Aggiungete le colonne `differenza` (dopo − prima) e `migliorato` (`True` se la pressione è scesa di almeno 10 mmHg).
+3. Statistiche: per gruppo la variazione media e la quota di migliorati (media della colonna booleana); il rischio relativo, cioè la quota di migliorati con il trattamento divisa per quella del controllo.
+4. Grafici: `variazione.png`, boxplot della differenza per gruppo (`tick_labels=`); `prima_dopo.png`, dispersione della pressione prima e dopo, un colore per gruppo e legenda; `migliorati.png`, barre della quota di migliorati per gruppo.
+5. Conclusione: variazione media nei due gruppi; rischio relativo; perché serve il gruppo di controllo.
+
+**File di dati:** `pazienti.csv`, da scaricare dal portale (cartella del codice di L08).
+
+**Esempio di esecuzione**
+
+```
+Righe lette: 123, dopo la pulizia: 115
+controllo: variazione media -5.4 mmHg, migliorati 27.3%
+trattamento: variazione media -10.2 mmHg, migliorati 51.7%
+Rischio relativo di miglioramento: 1.89
+La pressione cambia di -10.2 mmHg con l'integratore e di -5.4 senza.
+I migliorati sono 1.89 volte quelli del controllo.
+Anche il controllo migliora: per questo serve un confronto.
+```
+
+**Provate anche**
+
+- senza il filtro sulle pressioni → `controllo: variazione media -31.4 mmHg`: due valori sbagliati ribaltano il confronto
+- soglia di miglioramento a 5 mmHg → migliorati `50.9%` e `83.3%`, rischio relativo `1.64`
+- solo pazienti da 60 anni in su (`df[df["eta"] >= 60]`) → `dopo la pulizia: 46`, rischio relativo `2.18`
+
+---
+
+### Challenge · Caso e probabilità — Il dado sospetto (`ch_probabilita.py`)
+
+**Consegna**
+
+1. `lanci.csv` è il registro di 180 lanci di due dadi, fatti a turno da Ada, Bruno, Carla e Dario. Colonne: `lancio`, `giocatore`, `dado1`, `dado2`. Ci sono lanci copiati due volte, valori mancanti e valori impossibili del secondo dado: tenete solo quelli tra 1 e 6 (`between(1, 6)`).
+2. Aggiungete le colonne `somma` (dado1 + dado2) e `sei` (`True` se il secondo dado vale 6).
+3. Statistiche: media della somma (teorica 7); quota di lanci con somma 7 (teorica 6/36); per giocatore, media della somma e quota di 6 sul secondo dado.
+4. Grafici: `somme.png`, istogramma della somma con una barra per valore (`bins=np.arange(1.5, 13)`); `media_cumulata.png`, linea della media dopo ogni lancio (`df["somma"].cumsum()` diviso per `np.arange(1, len(df) + 1)`) con una linea orizzontale a 7 (`plt.axhline`); `sei.png`, barre della quota di 6 per giocatore con una linea a 1/6.
+5. Conclusione: media finale a confronto con 7; il giocatore con più 6 sul secondo dado e la sua somma media; il confronto con 1/6.
+
+**File di dati:** `lanci.csv`, da scaricare dal portale (cartella del codice di L08).
+
+**Esempio di esecuzione**
+
+```
+Righe lette: 183, dopo la pulizia: 176
+Media della somma: 7.20 (teorica 7.00)
+Somma 7: 18.2% dei lanci (teorica 16.7%)
+Ada: media 6.73, sei sul dado 2 6.7%
+Bruno: media 7.24, sei sul dado 2 15.6%
+Carla: media 6.95, sei sul dado 2 21.4%
+Dario: media 7.86, sei sul dado 2 43.2%
+Dopo 176 lanci la media cumulata è 7.20; il valore teorico è 7.
+Dario fa 6 sul dado 2 nel 43.2% dei lanci e la sua somma media è 7.86.
+Con un dado regolare sarebbe 16.7%: va controllato.
+```
+
+**Provate anche**
+
+- senza il filtro sul secondo dado → `dopo la pulizia: 178`, `Media della somma: 7.18 (teorica 7.00)`
+- togliete i lanci di Dario prima dei calcoli → `Media della somma: 6.98`; ora la conclusione indica Carla, con 21.4% su 42 lanci: uno scarto così piccolo può dipendere dal caso
 
 ---
 
 ## Domande di verifica
 
-1. Qual e' la differenza tra `plt.plot()` e `ax.plot()`? Perche l'approccio con `fig, ax = plt.subplots()` e preferibile?
-
-2. Cosa fa il parametro `alpha` nei grafici? Quando e' utile?
-
-3. Spiegate la differenza tra un istogramma e un grafico a barre. Quando si usa l'uno e quando l'altro?
-
-4. Perche la heatmap di correlazione ha sempre 1.0 sulla diagonale? Cosa indica un valore vicino a 0?
-
-5. In un boxplot, cosa rappresentano la linea centrale, i bordi della scatola, i "baffi" e i punti isolati?
-
-6. Qual e' il vantaggio di organizzare il codice in funzioni piuttosto che scriverlo in un unico blocco sequenziale?
-
-7. Perche `plt.tight_layout()` e importante? Cosa succede se non lo usate con i subplots?
-
-8. Cosa significa `dpi=150` in `plt.savefig()`? Quando usereste un valore piu alto?
-
----
-
-## Osservazioni finali
-
-Con questo laboratorio si chiude il percorso pratico del corso. Ripercorriamo la strada fatta.
-
-Siete partiti dai **primi passi in Python**: variabili, tipi, assegnamenti. Avete poi imparato a far prendere **decisioni** ai programmi con le strutture condizionali, e a **ripetere operazioni** con i cicli. Avete organizzato il codice in **funzioni** riutilizzabili, e avete scoperto le **strutture dati** fondamentali — liste, dizionari, tuple, insiemi — che permettono di modellare informazioni complesse. Avete imparato a far dialogare i programmi con il **filesystem**, leggendo e scrivendo file CSV e JSON, e a proteggervi dagli errori con le **eccezioni**. Infine, in questi ultimi due laboratori, avete usato **NumPy** per il calcolo vettorizzato, **Pandas** per l'analisi tabellare, e **Matplotlib/Seaborn** per la visualizzazione.
-
-Il mini-progetto di oggi vi ha chiesto di mettere insieme tutti questi pezzi in un programma coerente. Questa capacita di integrazione e esattamente cio che vi servira nella pratica: un'analisi statistica reale non e mai "solo" caricare un file, o "solo" fare un grafico. E un flusso che parte dai dati grezzi e arriva a risultati interpretabili, passando per pulizia, trasformazione, calcolo e comunicazione visiva.
-
-Tre lezioni da portare con se:
-
-1. **I dati vanno sempre esplorati prima di analizzarli.** Un `head()`, un `describe()`, un istogramma: bastano pochi secondi per evitare ore di lavoro su dati sbagliati.
-
-2. **Il codice deve essere organizzato in funzioni con interfacce chiare.** Type hints e docstring non sono un lusso: sono il modo in cui il codice comunica le proprie intenzioni a chi lo legge (incluso il vostro se futuro).
-
-3. **Un grafico senza etichette e un grafico inutile.** Titolo, assi, legenda, unita di misura: ogni grafico deve essere comprensibile anche senza leggere il codice che lo ha generato.
-
-Il linguaggio e le librerie sono strumenti. La vera competenza e saper formulare la domanda giusta, scegliere l'analisi appropriata e comunicare il risultato in modo onesto e chiaro. Buon lavoro.
+1. Perché `plt.savefig` va chiamato prima di `plt.show()`? Cosa contiene il PNG se si inverte l'ordine?
+2. Quando si usa un istogramma e quando un grafico a barre? Fate un esempio per ciascuno con i dati di oggi.
+3. In `mensa.py` le barre partono da 0. Come cambierebbe l'impressione se l'asse verticale partisse da 7 minuti?
+4. In `studio.py` la correlazione è 0.67. Basta per dire che studiare di più fa prendere voti più alti?
+5. Nel vostro progetto, quale statistica cambia di più se togliete il filtro sui valori impossibili? Perché?

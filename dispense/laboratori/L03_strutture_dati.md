@@ -4,7 +4,7 @@
 
 Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli. Le funzioni servono solo negli ultimi esercizi.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T14.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T14.
 
 | # | File | Esercizio |
 |---|---|---|
@@ -16,7 +16,7 @@ Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare
 | 6 | `sessione.py` | La sessione invernale |
 | 7 | `contingenza.py` | Scuola di provenienza ed esito |
 | 8 | `descrittive.py` | Ore di studio |
-| Sfida | `compagni.py` | Compagni di corsi a scelta |
+| Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
 
 ---
 
@@ -288,37 +288,209 @@ Terzo anno: media 18.5, mediana 17.0, dev. std 10.25
 
 ---
 
-## Sfida — Compagni di corsi a scelta (`compagni.py`)
+## Challenge a scelta
+
+Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.
+
+| Tema | Challenge | File |
+|---|---|---|
+| Mercati e finanza | Il portafoglio | `ch_mercati.py` |
+| Sport | Il campionato | `ch_sport.py` |
+| Imprese e marketing | Il negozio online | `ch_negozio.py` |
+| Salute e scienza | Lo studio clinico | `ch_salute.py` |
+| Caso e probabilità | Il tavolo da gioco | `ch_probabilita.py` |
+
+**Tutte le challenge chiedono:**
+
+- Ogni challenge usa: una lista di tuple con i dati, scritta nel codice copiando la tabella o la consegna.
+- Un raggruppamento con `defaultdict(list)` e un `Counter`, letto con `most_common(1)`.
+- Una list comprehension con filtro e una percentuale stampata con `.1%`.
+- Un'operazione tra set (`-`, `&` o `|`), stampata con `sorted()` così l'ordine è sempre lo stesso.
+- Una funzione `def` con type hints e docstring che restituisce una tupla di due valori, spacchettata da chi la chiama.
+- L'unico import è `from collections import Counter, defaultdict`; niente `random`, `lambda`, `sorted` con `key` e `try`. L'output ha da 6 a 7 righe, come nell'esempio.
+
+---
+
+### Challenge · Mercati e finanza — Il portafoglio (`ch_mercati.py`)
 
 **Consegna**
 
-1. Scrivete il dizionario `scelte: dict[str, set[str]]` con i corsi a scelta di ogni studente (tabella).
-2. Scrivete la funzione `jaccard(a, b)` che restituisce la similarità di Jaccard tra due set: elementi in comune diviso elementi totali.
-3. Con due cicli annidati sui nomi in ordine alfabetico, con `j` che parte da `i + 1`, confrontate ogni coppia una volta sola e stampate la coppia più simile con la similarità a due decimali.
-4. Chiedete il nome di uno studente, trovate il compagno più simile e stampate i corsi che il compagno segue e lui no. Se il nome non c'è, stampate `Studente non trovato`.
+1. Uno studente investe su tre titoli fittizi: `ENRG` (energia), `BANK` (banca) e `TECH` (tecnologia). Scrivete i suoi ordini come lista di tuple (titolo, quantità, prezzo), `ordini: list[tuple[str, int, float]]`, con i dati della tabella. Una quantità negativa è una vendita.
+2. Scrivete `escursione(prezzi: list[float]) -> tuple[float, float]`, che restituisce il prezzo minimo e il prezzo massimo.
+3. In un solo ciclo raggruppate i prezzi per titolo in un `defaultdict(list)` e sommate le quantità in un `Counter` chiamato `portafoglio`. Per ogni titolo, in ordine alfabetico, stampate il numero di ordini, il prezzo minimo e massimo con due decimali e le azioni in portafoglio.
+4. Stampate la posizione più grande con `most_common(1)`. Con una comprehension con filtro tenete le vendite e stampate quante sono e la loro percentuale sugli ordini.
+5. Costruite il set dei titoli comprati e quello dei titoli venduti e, con una differenza, stampate i titoli mai venduti.
 
-| Studente | Corsi a scelta |
+| Titolo | Ordini (quantità a prezzo) |
 |---|---|
-| Anna | Serie storiche, Demografia, Marketing, R |
-| Bruno | Marketing, Finanza, R, Python |
-| Chiara | Serie storiche, Demografia, R, Biostatistica |
-| Davide | Finanza, Python, Econometria |
-| Elisa | Biostatistica, Demografia, Python |
+| ENRG | 30 a 12.40, 20 a 12.10, -10 a 13.05 |
+| BANK | 20 a 8.15, -5 a 8.60, 10 a 8.30, -5 a 8.75 |
+| TECH | 10 a 45.20, 5 a 47.80, 5 a 44.90 |
 
 **Esempio di esecuzione**
 
 ```
-Coppia più simile: ('Anna', 'Chiara') con 0.60
-Studente: Elisa
-Più simile: Chiara (0.40)
-Corsi consigliati: ['R', 'Serie storiche']
+BANK: 4 ordini, prezzo da 8.15 a 8.75, in portafoglio 20
+ENRG: 3 ordini, prezzo da 12.10 a 13.05, in portafoglio 40
+TECH: 3 ordini, prezzo da 44.90 a 47.80, in portafoglio 20
+Posizione più grande: ENRG con 40 azioni
+Vendite: 3 su 10 (30.0%)
+Mai venduti: ['TECH']
 ```
 
 **Provate anche**
 
-- `Bruno` → `Davide (0.40)`, consigliato `['Econometria']`
-- `Davide` → `Bruno (0.40)`, consigliati `['Marketing', 'R']`
-- `Zeno` → `Studente non trovato`
+- aggiungete `("TECH", -20, 50.10)` → `TECH: 4 ordini, prezzo da 44.90 a 50.10, in portafoglio 0`, `Vendite: 4 su 11 (36.4%)` e `Mai venduti: []`
+- aggiungete `("BANK", 30, 8.40)` → `Posizione più grande: BANK con 50 azioni`
+
+---
+
+### Challenge · Sport — Il campionato (`ch_sport.py`)
+
+**Consegna**
+
+1. Il campionato ha quattro piloti: Ferri e Lanza corrono per la Scuderia Rossa, Moro e Neri per la Scuderia Blu. Scrivete l'ordine d'arrivo di ogni gara come tupla di quattro nomi, dal primo al quarto, e mettete le cinque tuple nella lista `gare` (tabella). Scrivete anche `rossa: set[str] = {"Ferri", "Lanza"}`.
+2. Scrivete `bilancio(posizioni: list[int]) -> tuple[int, int]`: riceve i piazzamenti di un pilota (da 1 a 4) e restituisce i punti totali, con `PUNTI = [25, 18, 15, 12]`, e il miglior piazzamento.
+3. In un ciclo raggruppate i piazzamenti per pilota in un `defaultdict(list)` e contate le vittorie con un `Counter`. Per ogni pilota, in ordine alfabetico, stampate punti e miglior piazzamento.
+4. Stampate il pilota con più vittorie (`most_common(1)`). Con una comprehension con filtro tenete i vincitori della Scuderia Rossa e stampate quante gare ha vinto la scuderia e in che percentuale.
+5. Con una differenza tra set (piloti e vincitori) stampate i piloti senza vittorie.
+
+| Gara | Ordine d'arrivo |
+|---|---|
+| 1 | Ferri, Moro, Lanza, Neri |
+| 2 | Moro, Ferri, Neri, Lanza |
+| 3 | Ferri, Lanza, Moro, Neri |
+| 4 | Moro, Lanza, Ferri, Neri |
+| 5 | Moro, Neri, Ferri, Lanza |
+
+**Esempio di esecuzione**
+
+```
+Ferri: 98 punti, miglior piazzamento 1
+Lanza: 75 punti, miglior piazzamento 2
+Moro: 108 punti, miglior piazzamento 1
+Neri: 69 punti, miglior piazzamento 2
+Più vittorie: Moro con 3
+Gare vinte dalla Scuderia Rossa: 2 su 5 (40.0%)
+Senza vittorie: ['Lanza', 'Neri']
+```
+
+**Provate anche**
+
+- aggiungete la gara `("Neri", "Lanza", "Moro", "Ferri")` → `Neri: 94 punti, miglior piazzamento 1`, `Gare vinte dalla Scuderia Rossa: 2 su 6 (33.3%)` e `Senza vittorie: ['Lanza']`
+- `PUNTI = [10, 6, 4, 3]` → `Ferri: 34 punti` e `Moro: 40 punti`; le altre righe non cambiano
+
+---
+
+### Challenge · Imprese e marketing — Il negozio online (`ch_negozio.py`)
+
+**Consegna**
+
+1. Un negozio online vende cinque prodotti per lo studio: scrivete i prezzi della tabella in `prezzi: dict[str, float]`. Gli ordini della settimana sono tuple (cliente, prodotto, quantità): `[("Irene", "zaino", 1), ("Tommaso", "quaderno", 5), ("Giada", "cuffie", 1), ("Pietro", "borraccia", 2), ("Irene", "quaderno", 3), ("Noemi", "zaino", 1), ("Tommaso", "borraccia", 1), ("Irene", "cuffie", 1), ("Giada", "quaderno", 4), ("Noemi", "borraccia", 2)]`.
+2. Scrivete `vendite(quantita: list[int]) -> tuple[int, int]`, che restituisce il numero di ordini e il numero di pezzi.
+3. In un ciclo raggruppate le quantità per prodotto in un `defaultdict(list)` e contate gli ordini di ogni cliente con un `Counter`. Per ogni prodotto venduto, in ordine alfabetico, stampate ordini, pezzi e incasso (pezzi × prezzo) con due decimali.
+4. Stampate il cliente con più ordini (`most_common(1)`). Con una comprehension con filtro tenete gli ordini con più di un pezzo e stampate quanti sono e la loro percentuale.
+5. Con una differenza tra set (i prodotti di `prezzi` e quelli venduti) stampate i prodotti mai venduti.
+
+| Prodotto | Prezzo (euro) |
+|---|---|
+| zaino | 39.90 |
+| borraccia | 12.50 |
+| quaderno | 3.20 |
+| cuffie | 24.90 |
+| lampada | 18.00 |
+
+**Esempio di esecuzione**
+
+```
+borraccia: 3 ordini, 5 pezzi, incasso 62.50 euro
+cuffie: 2 ordini, 2 pezzi, incasso 49.80 euro
+quaderno: 3 ordini, 12 pezzi, incasso 38.40 euro
+zaino: 2 ordini, 2 pezzi, incasso 79.80 euro
+Cliente più assiduo: Irene con 3 ordini
+Ordini con più di un pezzo: 5 su 10 (50.0%)
+Mai venduti: ['lampada']
+```
+
+**Provate anche**
+
+- aggiungete `("Pietro", "lampada", 2)` → `Ordini con più di un pezzo: 6 su 11 (54.5%)` e `Mai venduti: []`
+- aggiungete `("Pietro", "zaino", 2)` → `zaino: 3 ordini, 4 pezzi, incasso 159.60 euro`
+
+---
+
+### Challenge · Salute e scienza — Lo studio clinico (`ch_salute.py`)
+
+**Consegna**
+
+1. Uno studio prova un integratore per la pressione su 10 pazienti, metà nel gruppo `trattamento` e metà nel gruppo `controllo`. Scrivete i dati come lista di tuple (codice, gruppo, pressione sistolica prima, dopo), `pazienti: list[tuple[str, str, int, int]]` (tabella). P07 non è tornato alla seconda visita: la sua pressione dopo è registrata come 0.
+2. Con una comprehension con filtro tenete i pazienti con la misura dopo maggiore di 0 e stampate quanti sono e la loro percentuale. Con una differenza tra set di codici stampate chi non ha la seconda misura.
+3. Scrivete `variazione(differenze: list[int]) -> tuple[int, float]`, che restituisce il numero di pazienti e la variazione media (dopo − prima).
+4. Sui pazienti validi raggruppate le variazioni per gruppo in un `defaultdict(list)` e contate per gruppo i migliorati, cioè chi è sceso di almeno 10 mmHg, con un `Counter`. Per ogni gruppo, in ordine alfabetico, stampate pazienti, variazione media con un decimale e migliorati.
+5. Stampate il totale dei migliorati sui pazienti validi e il gruppo con più migliorati (`most_common(1)`).
+
+| Paziente | Gruppo, pressione prima → dopo (mmHg) |
+|---|---|
+| P01 | trattamento, 152 → 138 |
+| P02 | controllo, 148 → 145 |
+| P03 | trattamento, 160 → 147 |
+| P04 | controllo, 155 → 150 |
+| P05 | trattamento, 145 → 140 |
+| P06 | controllo, 150 → 152 |
+| P07 | trattamento, 158 → 0 |
+| P08 | controllo, 149 → 138 |
+| P09 | trattamento, 162 → 148 |
+| P10 | controllo, 157 → 155 |
+
+**Esempio di esecuzione**
+
+```
+Misure valide: 9 su 10 (90.0%)
+Senza seconda misura: ['P07']
+controllo: 5 pazienti, variazione media -3.8 mmHg, migliorati 1
+trattamento: 4 pazienti, variazione media -11.5 mmHg, migliorati 3
+Migliorati: 4 su 9
+Gruppo con più migliorati: trattamento (3)
+```
+
+**Provate anche**
+
+- P07 con la misura dopo `145` → `Misure valide: 10 su 10 (100.0%)`, `Senza seconda misura: []` e `trattamento: 5 pazienti, variazione media -11.8 mmHg, migliorati 4`
+- aggiungete `("P11", "controllo", 151, 0)` → `Misure valide: 9 su 11 (81.8%)` e `Senza seconda misura: ['P07', 'P11']`
+
+---
+
+### Challenge · Caso e probabilità — Il tavolo da gioco (`ch_probabilita.py`)
+
+**Consegna**
+
+1. Ada, Bea e Ciro giocano con due dadi e annotano ogni lancio come tupla (giocatore, primo dado, secondo dado). Scrivete la lista `lanci: list[tuple[str, int, int]]` con i 12 lanci della tabella.
+2. Scrivete `riassunto(somme: list[int]) -> tuple[float, int]`, che restituisce la somma media e la somma più alta.
+3. In un ciclo raggruppate le somme dei due dadi per giocatore in un `defaultdict(list)` e contate quante volte esce ogni somma con un `Counter`. Per ogni giocatore, in ordine alfabetico, stampate la somma media con due decimali e la somma più alta.
+4. Stampate la somma uscita più spesso (`most_common(1)`). Con una comprehension con filtro tenete i doppi (due dadi uguali) e stampate quanti sono e la loro percentuale.
+5. Con una set comprehension su due cicli costruite tutte le somme possibili con due dadi; con una differenza tra set stampate le somme mai uscite.
+
+| Giocatore | Lanci (primo e secondo dado) |
+|---|---|
+| Ada | 3 e 4, 1 e 3, 6 e 5, 2 e 2 |
+| Bea | 6 e 6, 5 e 2, 3 e 1, 4 e 3 |
+| Ciro | 2 e 5, 4 e 4, 6 e 2, 5 e 3 |
+
+**Esempio di esecuzione**
+
+```
+Ada: somma media 6.50, più alta 11
+Bea: somma media 7.50, più alta 12
+Ciro: somma media 7.75, più alta 8
+Somma più uscita: 7 (4 volte)
+Doppi: 3 su 12 (25.0%)
+Somme mai uscite: [2, 3, 5, 6, 9, 10]
+```
+
+**Provate anche**
+
+- aggiungete `("Ada", 5, 5)` → `Ada: somma media 7.20, più alta 11`, `Doppi: 4 su 13 (30.8%)` e `Somme mai uscite: [2, 3, 5, 6, 9]`
+- aggiungete `("Bea", 1, 1)` → `Somme mai uscite: [3, 5, 6, 9, 10]`
 
 ---
 

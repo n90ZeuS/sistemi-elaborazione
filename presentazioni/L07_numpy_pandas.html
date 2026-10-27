@@ -314,550 +314,1338 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: Titolo -->
             <section class="title-slide">
                 <h1>NumPy e Pandas</h1>
                 <div class="subtitle">Laboratorio 7</div>
                 <div class="course-info">
-                    Sistemi di Elaborazione &mdash; Corso di Laurea in Scienze Statistiche<br>
-                    Calcolo numerico vettorizzato e manipolazione di dati tabulari
+                    Sistemi di Elaborazione<br>
+                    Prerequisiti: T17 (NumPy, Pandas e visualizzazione)
                 </div>
             </section>
 
-            <!-- SLIDE 2: Agenda -->
+            <!-- SOLUZIONI LAB (generato) -->
             <section>
-                <h2>Agenda</h2>
+                <section class="section-slide">
+                    <h2>Soluzioni del laboratorio 6</h2>
+                    <p>Classi e oggetti</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L06»
+Da dire: prima di iniziare l'argomento nuovo vediamo le soluzioni degli esercizi del laboratorio. Il codice completo è nel file degli esercizi di L06.
+Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da quelli se manca tempo.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>esame.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>class Esame:
+    """Un esame superato: nome, crediti e voto."""
+
+    def __init__(self, nome: str, cfu: int, voto: int) -&gt; None:
+        self.nome: str = nome
+        self.cfu: int = cfu
+        self.voto: int = voto
+
+    def punti(self) -&gt; int:
+        """Voto moltiplicato per i crediti."""
+        return self.voto * self.cfu
+
+esami: list[Esame] = [Esame("Analisi 1", 12, 26),
+                      Esame("Statistica 1", 9, 29),
+                      Esame("Informatica", 6, 30)]
+cfu: int = 0
+punti: int = 0
+for e in esami:
+    print(f"{e.nome}: {e.voto} ({e.cfu} CFU)")
+    cfu += e.cfu
+    punti += e.punti()
+print(f"CFU: {cfu}, media ponderata: {punti / cfu:.2f}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>__init__</code> viene chiamato da <code>Esame(...)</code>: riceve i dati e li salva negli attributi con <code>self.</code>.</li><li><code>punti</code> è un metodo: usa gli attributi dell'oggetto su cui viene chiamato.</li><li>La media ponderata si calcola fuori dalla classe, con il pattern dell'accumulatore su crediti e punti.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L06»
+Da dire: tre oggetti della stessa classe, ognuno con i suoi attributi. e.punti() equivale a Esame.punti(e).
+Chiedere / fare: cosa stampa print(esami[0])? Un indirizzo di memoria: manca __str__.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>tessera_mensa.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Tessera:
+    """Tessera prepagata della mensa universitaria."""
+
+    def __init__(self, titolare: str, saldo: float) -&gt; None:
+        if saldo &lt; 0:
+            raise ValueError("Il saldo iniziale è negativo")
+        self.titolare: str = titolare
+        self.saldo: float = saldo
+
+    def ricarica(self, importo: float) -&gt; None:
+        if importo &lt;= 0:
+            raise ValueError("La ricarica deve essere positiva")
+        self.saldo += importo
+
+    def paga(self, prezzo: float) -&gt; None:
+        if prezzo &gt; self.saldo:
+            raise ValueError(f"Saldo insufficiente: {self.saldo:.2f}")
+        self.saldo -= prezzo</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def __str__(self) -&gt; str:
+        return f"Tessera di {self.titolare}: {self.saldo:.2f} EUR"
+
+tessera: Tessera = Tessera("Anna Rossi", 10.0)
+print(tessera)
+for prezzo in [4.50, 4.50, 4.50]:
+    try:
+        tessera.paga(prezzo)
+    except ValueError as e:
+        print(e)
+    else:
+        print(f"Pagato {prezzo:.2f} EUR, restano {tessera.saldo:.2f}")
+tessera.ricarica(20.0)
+print(tessera)</code></pre></div></div>
+                    <ul class="note-sol"><li>I controlli stanno dentro la classe: non si può creare una tessera con saldo negativo né pagare senza credito.</li><li><code>raise ValueError(...)</code> interrompe il metodo; chi lo chiama gestisce l'errore con <code>try/except</code>.</li><li>Il blocco <code>else</code> stampa il pagamento solo se <code>paga</code> non ha sollevato errori.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L06»
+Da dire: la validazione centralizzata è il primo vantaggio delle classi rispetto ai dizionari. Il terzo pasto non viene pagato e il saldo resta 1.00.
+Chiedere / fare: cosa succede senza try intorno a paga? Il programma si ferma al terzo pasto.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>segreteria.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Ticket:
+    """Biglietto numerato per la coda della segreteria."""
+    SERVIZI: tuple[str, ...] = ("iscrizioni", "tasse", "esami")
+    emessi: int = 0                       # attributo di classe
+
+    def __init__(self, servizio: str) -&gt; None:
+        if servizio not in Ticket.SERVIZI:
+            raise ValueError(f"Servizio sconosciuto: {servizio}")
+        Ticket.emessi += 1
+        self.numero: int = Ticket.emessi  # attributo di istanza
+        self.servizio: str = servizio
+
+    def __str__(self) -&gt; str:
+        return f"Numero {self.numero} ({self.servizio})"</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def __repr__(self) -&gt; str:
+        return f"Ticket({self.numero}, '{self.servizio}')"
+
+coda: list[Ticket] = []
+for s in ["esami", "tasse", "esami", "iscrizioni", "esami"]:
+    coda.append(Ticket(s))
+print(coda)
+print(f"Prossimo: {coda[0]}")
+print(f"Biglietti emessi: {Ticket.emessi}")
+for servizio in Ticket.SERVIZI:
+    n: int = len([t for t in coda if t.servizio == servizio])
+    print(f"{servizio}: {n}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>SERVIZI</code> ed <code>emessi</code> sono attributi di classe: c'è una sola copia, condivisa da tutti i biglietti.</li><li><code>numero</code> è un attributo di istanza: ogni biglietto ha il suo.</li><li><code>print</code> di una lista usa <code>__repr__</code> per ogni elemento; <code>print</code> di un oggetto usa <code>__str__</code>.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L06»
+Da dire: il controllo del servizio viene prima dell'incremento, così un biglietto sbagliato non consuma un numero.
+Chiedere / fare: con self.emessi += 1 ogni biglietto avrebbe numero 1: si crea un attributo di istanza che nasconde quello di classe.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>erasmus.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Candidato:
+    """Candidato a una borsa Erasmus."""
+
+    def __init__(self, nome: str, media: float, cfu: int) -&gt; None:
+        self.nome: str = nome
+        self.media: float = media
+        self.cfu: int = cfu
+
+    def __eq__(self, altro: object) -&gt; bool:
+        if not isinstance(altro, Candidato):
+            return NotImplemented
+        return self.media == altro.media and self.cfu == altro.cfu</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def __lt__(self, altro: "Candidato") -&gt; bool:
+        """Viene prima chi ha la media più alta, poi più CFU."""
+        if self.media != altro.media:
+            return self.media &gt; altro.media
+        return self.cfu &gt; altro.cfu
+
+    def __str__(self) -&gt; str:
+        return f"{self.nome} (media {self.media:.2f}, {self.cfu} CFU)"
+
+candidati: list[Candidato] = [
+    Candidato("Luca", 27.4, 90), Candidato("Sara", 28.1, 84),
+    Candidato("Paolo", 27.4, 102), Candidato("Elena", 26.9, 120),
+    Candidato("Davide", 28.1, 84)]
+classifica: list[Candidato] = sorted(candidati)
+for posto, c in enumerate(classifica, start=1):
+    print(f"{posto}. {c}")
+print(f"Pari merito tra 1 e 2: {classifica[0] == classifica[1]}")
+print(f"Pari merito tra 3 e 4: {classifica[2] == classifica[3]}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>sorted</code> confronta gli oggetti con <code>&lt;</code>, cioè con <code>__lt__</code>: definirlo basta per ordinare.</li><li>Il confronto è rovesciato (<code>&gt;</code>) perché in graduatoria viene prima la media più alta.</li><li><code>__eq__</code> restituisce <code>NotImplemented</code> se l'altro oggetto non è un <code>Candidato</code>: Python allora risponde <code>False</code>.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L06»
+Da dire: Sara e Davide sono uguali per __eq__ anche se sono due persone diverse: l'uguaglianza la decide chi scrive la classe. sorted è stabile, quindi Sara resta prima di Davide.
+Chiedere / fare: in alternativa sorted(candidati, key=lambda c: (-c.media, -c.cfu)).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>campione.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Campione:
+    """Campione di misure numeriche."""
+
+    def __init__(self, nome: str) -&gt; None:
+        self.nome: str = nome
+        self._valori: list[float] = []   # uso interno
+
+    def aggiungi(self, x: float) -&gt; None:
+        self._valori.append(x)
+
+    @property
+    def n(self) -&gt; int:
+        return len(self._valori)
+
+    @property
+    def media(self) -&gt; float:
+        return sum(self._valori) / self.n</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    @property
+    def varianza(self) -&gt; float:
+        """Varianza campionaria, con divisore n - 1."""
+        m: float = self.media
+        scarti: list[float] = [(x - m) ** 2 for x in self._valori]
+        return sum(scarti) / (self.n - 1)
+
+altezze: Campione = Campione("Altezze (cm)")
+for x in [172, 165, 180, 158, 175]:
+    altezze.aggiungi(x)
+print(f"{altezze.nome}: {altezze.n} valori")
+print(f"Media: {altezze.media:.2f}, varianza: {altezze.varianza:.2f}")
+print(f"Deviazione standard: {altezze.varianza ** 0.5:.2f}")
+try:
+    altezze.media = 175.0
+except AttributeError:
+    print("La media non si assegna: è calcolata dai valori")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>_valori</code> ha l'underscore: si modifica solo con <code>aggiungi</code>, non direttamente da fuori.</li><li><code>@property</code> fa sembrare un metodo un attributo: si scrive <code>altezze.media</code>, senza parentesi.</li><li>Una property senza setter è di sola lettura: l'assegnazione solleva <code>AttributeError</code>.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L06»
+Da dire: media e varianza vengono ricalcolate ogni volta, quindi sono sempre aggiornate dopo aggiungi.
+Chiedere / fare: confrontare con statistics.variance: 74.5.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>libretto.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Esame:
+    def __init__(self, nome: str, cfu: int, voto: int) -&gt; None:
+        self.nome: str = nome
+        self.cfu: int = cfu
+        self.voto: int = voto
+
+    def __str__(self) -&gt; str:
+        return f"{self.nome}: {self.voto} ({self.cfu} CFU)"
+
+
+class Libretto:
+    def __init__(self, studente: str) -&gt; None:
+        self.studente: str = studente
+        self.esami: list[Esame] = []
+
+    def cerca(self, nome: str) -&gt; Esame | None:
+        for e in self.esami:
+            if e.nome == nome:
+                return e
+        return None</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def aggiungi(self, esame: Esame) -&gt; None:
+        if self.cerca(esame.nome) is not None:
+            raise ValueError(f"{esame.nome} è già nel libretto")
+        self.esami.append(esame)
+
+    def media(self) -&gt; float:
+        cfu: int = sum([e.cfu for e in self.esami])
+        return sum([e.voto * e.cfu for e in self.esami]) / cfu
+
+lib: Libretto = Libretto("Giulia Verdi")
+lib.aggiungi(Esame("Analisi 1", 12, 26))
+lib.aggiungi(Esame("Statistica 1", 9, 29))
+lib.aggiungi(Esame("Informatica", 6, 30))
+try:
+    lib.aggiungi(Esame("Informatica", 6, 28))
+except ValueError as e:
+    print(e)
+
+print(lib.cerca("Statistica 1"))
+print(f"Esami: {len(lib.esami)}, media ponderata {lib.media():.2f}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>Libretto</code> ha un attributo <code>esami</code> che è una lista di oggetti <code>Esame</code>: è composizione.</li><li><code>cerca</code> restituisce l'oggetto oppure <code>None</code>; <code>aggiungi</code> la riusa per rifiutare i doppioni.</li><li><code>media</code> lavora sugli attributi degli esami contenuti, con due comprehension.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L06»
+Da dire: il libretto ha degli esami, non è un esame. La regola sui doppioni sta in un solo punto, aggiungi.
+Chiedere / fare: cosa succede con un libretto vuoto? ZeroDivisionError: come lo gestireste?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>abbonamenti.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Abbonamento:
+    """Abbonamento ai mezzi pubblici, pagato a mesi."""
+    PREZZO_MESE: float = 40.0
+
+    def __init__(self, titolare: str, mesi: int) -&gt; None:
+        if mesi &lt; 1 or mesi &gt; 12:
+            raise ValueError(f"Durata non valida: {mesi} mesi")
+        self.titolare: str = titolare
+        self.mesi: int = mesi
+
+    def prezzo(self) -&gt; float:
+        return self.PREZZO_MESE * self.mesi
+
+    def __str__(self) -&gt; str:
+        return (f"{self.titolare}, {self.mesi} mesi: "
+                f"{self.prezzo():.2f} EUR")
+
+
+class AbbonamentoStudente(Abbonamento):
+    """Abbonamento scontato per chi ha una matricola."""
+    SCONTO: float = 0.3</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def __init__(self, titolare: str, mesi: int,
+                 matricola: str) -&gt; None:
+        super().__init__(titolare, mesi)
+        self.matricola: str = matricola
+
+    def prezzo(self) -&gt; float:
+        return super().prezzo() * (1 - self.SCONTO)
+
+    def __str__(self) -&gt; str:
+        return f"{super().__str__()}, matricola {self.matricola}"
+
+abbonamenti: list[Abbonamento] = [
+    Abbonamento("Marco Bianchi", 12),
+    AbbonamentoStudente("Anna Rossi", 10, "2101234"),
+    AbbonamentoStudente("Luca Russo", 3, "2102345"),
+    Abbonamento("Elena Romano", 2)]
+
+for a in abbonamenti:
+    print(a)
+
+print(f"Incasso: {sum([a.prezzo() for a in abbonamenti]):.2f} EUR")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>AbbonamentoStudente</code> eredita <code>__init__</code>, <code>prezzo</code> e <code>__str__</code>, e ne ridefinisce alcuni.</li><li><code>super().__init__(...)</code> riusa i controlli della classe madre; <code>super().prezzo()</code> riusa il calcolo e applica lo sconto.</li><li>Nella lista ci sono oggetti delle due classi: <code>print(a)</code> e <code>a.prezzo()</code> chiamano il metodo giusto per ognuno.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L06»
+Da dire: un abbonamento studente è un abbonamento: ereditarietà. Il controllo sui mesi non va riscritto.
+Chiedere / fare: isinstance(a, Abbonamento) è True anche per gli abbonamenti studente.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6</div>
+                    <h2>biblioteca.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Pubblicazione:
+    """Un libro o una rivista della biblioteca."""
+    GIORNI: int = 30                      # durata del prestito
+
+    def __init__(self, titolo: str, anno: int) -&gt; None:
+        self.titolo: str = titolo
+        self.anno: int = anno
+
+    def __str__(self) -&gt; str:
+        return f"{self.anno} {self.titolo}: {self.GIORNI} giorni"
+
+    def __lt__(self, altro: "Pubblicazione") -&gt; bool:
+        return self.anno &lt; altro.anno
+
+
+class Rivista(Pubblicazione):
+    GIORNI: int = 7                       # le riviste durano meno
+
+
+class Biblioteca:
+    """Una biblioteca ha un catalogo di libri e riviste."""</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def __init__(self) -&gt; None:
+        self._catalogo: list[Pubblicazione] = []
+
+    def aggiungi(self, p: Pubblicazione) -&gt; None:
+        self._catalogo.append(p)
+
+    def cerca(self, parola: str) -&gt; list[Pubblicazione]:
+        return [p for p in self._catalogo
+                if parola.lower() in p.titolo.lower()]
+
+    def in_ordine(self) -&gt; list[Pubblicazione]:
+        return sorted(self._catalogo)
+
+bib: Biblioteca = Biblioteca()
+bib.aggiungi(Pubblicazione("Statistica di base", 2019))
+bib.aggiungi(Rivista("Rivista di statistica applicata", 2024))
+bib.aggiungi(Pubblicazione("Probabilità e inferenza", 2015))
+bib.aggiungi(Rivista("Bollettino di demografia", 2023))
+for p in bib.in_ordine():
+    print(p)
+
+print(f"Titoli con 'statistica': {len(bib.cerca('statistica'))}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>Rivista</code> cambia solo l'attributo di classe <code>GIORNI</code>: <code>__str__</code> usa <code>self.GIORNI</code>, quindi ogni oggetto prende il valore della propria classe.</li><li><code>Biblioteca</code> contiene pubblicazioni dei due tipi nella stessa lista: composizione ed ereditarietà insieme.</li><li><code>sorted(self._catalogo)</code> usa <code>__lt__</code>, ereditato anche da <code>Rivista</code>, e confronta libri e riviste per anno.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L06»
+Da dire: con Pubblicazione.GIORNI al posto di self.GIORNI anche le riviste avrebbero 30 giorni.
+Chiedere / fare: cerca usa lower() su entrambe le stringhe: "STATISTICA" dà gli stessi risultati.</aside>
+                </section>
+
+                <section class="section-slide">
+                    <h2>Challenge</h2>
+                    <p>Ne vediamo una; le altre hanno la stessa struttura e sono nel file degli esercizi</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L06 · challenge»
+Da dire: le cinque challenge usano gli stessi strumenti. Ne mostriamo una, scelta per alzata di mano; le altre restano come slide di riserva.
+Chiedere / fare: chiedere quale tema hanno scelto in più e mostrare quella.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Mercati e finanza</div>
+                    <h2>ch_mercati.py (1/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Titolo:
+    """Un titolo del portafoglio con i prezzi di chiusura."""
+
+    def __init__(self, sigla: str, azioni: int,
+                 prezzi: list[float]) -&gt; None:
+        if azioni &lt;= 0 or len(prezzi) &lt; 2 or min(prezzi) &lt;= 0:
+            raise ValueError(f"{sigla}: azioni o prezzi non validi")
+        self.sigla: str = sigla
+        self.azioni: int = azioni
+        self.prezzi: list[float] = prezzi</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def rendimento(self) -&gt; float:
+        return (self.prezzi[-1] - self.prezzi[0]) / self.prezzi[0]
+
+    def valore(self) -&gt; float:
+        return self.azioni * self.prezzi[-1]
+
+    def __str__(self) -&gt; str:
+        return (f"{self.sigla}: valore {self.valore():.2f}, "
+                f"rendimento {self.rendimento():.1%}")
+
+    def __lt__(self, altro: "Titolo") -&gt; bool:
+        return self.rendimento() &lt; altro.rendimento()</code></pre></div></div>
+                    <ul class="note-sol"></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: le cinque challenge hanno la stessa struttura: elemento con controlli, contenitore con aggiungi, cerca e una statistica. BANK ha il valore più alto ma il rendimento più basso.
+Chiedere / fare: aggiungere un metodo peso(titolo) al portafoglio: valore del titolo diviso valore totale.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Mercati e finanza</div>
+                    <h2>ch_mercati.py (2/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Portafoglio:
+    """Il portafoglio di un investitore: una lista di titoli."""
+
+    def __init__(self, titolare: str) -&gt; None:
+        self.titolare: str = titolare
+        self.titoli: list[Titolo] = []
+
+    def aggiungi(self, titolo: Titolo) -&gt; None:
+        self.titoli.append(titolo)
+
+    def cerca(self, sigla: str) -&gt; Titolo | None:
+        for t in self.titoli:
+            if t.sigla == sigla:
+                return t
+        return None
+
+    def valore_totale(self) -&gt; float:
+        return sum([t.valore() for t in self.titoli])</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>port: Portafoglio = Portafoglio("Giulia")
+for sigla, azioni, prezzi in [
+        ("ENRG", 20, [24.10, 24.60, 25.30, 25.10]),
+        ("BANK", 50, [12.40, 12.20, 12.70, 12.90]),
+        ("TECH", 10, [48.00, 49.20, 50.40, 51.20]),
+        ("MIB", 0, [33.50, 33.90, 34.20, 34.10])]:
+    try:
+        port.aggiungi(Titolo(sigla, azioni, prezzi))
+    except ValueError as e:
+        print(e)
+
+for t in sorted(port.titoli, reverse=True):
+    print(t)
+
+print(port.cerca("BANK"))
+print(port.cerca("MIB"))
+print(f"Valore totale: {port.valore_totale():.2f}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>Titolo</code> controlla i dati in <code>__init__</code>: un titolo con 0 azioni non entra nel portafoglio.</li><li><code>__lt__</code> confronta i rendimenti; con <code>sorted(..., reverse=True)</code> il migliore va in cima.</li><li><code>Portafoglio</code> ha una lista di titoli: <code>valore_totale</code> somma il valore di ognuno.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: le cinque challenge hanno la stessa struttura: elemento con controlli, contenitore con aggiungi, cerca e una statistica. BANK ha il valore più alto ma il rendimento più basso.
+Chiedere / fare: aggiungere un metodo peso(titolo) al portafoglio: valore del titolo diviso valore totale.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Sport</div>
+                    <h2>ch_sport.py (1/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Pilota:
+    """Un pilota con i suoi tempi sul giro, in secondi."""
+
+    def __init__(self, nome: str, scuderia: str,
+                 tempi: list[float]) -&gt; None:
+        if len(tempi) == 0 or min(tempi) &lt;= 0:
+            raise ValueError(f"{nome}: tempi non validi")
+        self.nome: str = nome
+        self.scuderia: str = scuderia
+        self.tempi: list[float] = tempi</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def media(self) -&gt; float:
+        return sum(self.tempi) / len(self.tempi)
+
+    def migliore(self) -&gt; float:
+        return min(self.tempi)
+
+    def __str__(self) -&gt; str:
+        return (f"{self.nome}: media {self.media():.2f}, "
+                f"migliore {self.migliore():.2f}")
+
+    def __lt__(self, altro: "Pilota") -&gt; bool:
+        return self.media() &lt; altro.media()</code></pre></div></div>
+                    <ul class="note-sol"></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: Moro ha un giro migliore di Lanza (92.30 contro 92.50) ma una media più alta: l'ordine dipende da cosa confronta __lt__.
+Chiedere / fare: aggiungere alla gara un metodo che restituisce la media di una scuderia.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Sport</div>
+                    <h2>ch_sport.py (2/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Gara:
+    """Una gara del campionato: una lista di piloti."""
+
+    def __init__(self, circuito: str) -&gt; None:
+        self.circuito: str = circuito
+        self.piloti: list[Pilota] = []
+
+    def aggiungi(self, pilota: Pilota) -&gt; None:
+        self.piloti.append(pilota)
+
+    def cerca(self, nome: str) -&gt; Pilota | None:
+        for p in self.piloti:
+            if p.nome == nome:
+                return p
+        return None
+
+    def giro_veloce(self) -&gt; float:
+        return min([p.migliore() for p in self.piloti])</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>gara: Gara = Gara("Monza")
+for nome, scuderia, tempi in [
+        ("Ferri", "Scuderia Rossa", [92.4, 92.1, 92.6]),
+        ("Lanza", "Scuderia Rossa", [92.9, 92.7, 92.5]),
+        ("Moro", "Scuderia Blu", [93.1, 92.8, 92.3]),
+        ("Neri", "Scuderia Blu", [93.6, 93.0, 0.0])]:
+    try:
+        gara.aggiungi(Pilota(nome, scuderia, tempi))
+    except ValueError as e:
+        print(e)
+
+for p in sorted(gara.piloti):
+    print(p)
+
+print(gara.cerca("Lanza"))
+print(gara.cerca("Neri"))
+print(f"Giro più veloce: {gara.giro_veloce():.2f}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>Pilota</code> rifiuta un tempo nullo: il cronometro di Neri ha registrato 0.0.</li><li><code>__lt__</code> confronta le medie: con <code>sorted</code> il pilota più veloce va in cima, senza <code>reverse</code>.</li><li><code>giro_veloce</code> usa il metodo <code>migliore</code> di ogni pilota contenuto nella gara.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: Moro ha un giro migliore di Lanza (92.30 contro 92.50) ma una media più alta: l'ordine dipende da cosa confronta __lt__.
+Chiedere / fare: aggiungere alla gara un metodo che restituisce la media di una scuderia.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Imprese e marketing</div>
+                    <h2>ch_negozio.py (1/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Prodotto:
+    """Un prodotto con il prezzo e i pezzi venduti ogni settimana."""
+
+    def __init__(self, nome: str, prezzo: float,
+                 vendite: list[int]) -&gt; None:
+        if prezzo &lt;= 0 or len(vendite) == 0 or min(vendite) &lt; 0:
+            raise ValueError(f"{nome}: prezzo o vendite non validi")
+        self.nome: str = nome
+        self.prezzo: float = prezzo
+        self.vendite: list[int] = vendite</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def pezzi(self) -&gt; int:
+        return sum(self.vendite)
+
+    def fatturato(self) -&gt; float:
+        return self.prezzo * self.pezzi()
+
+    def __str__(self) -&gt; str:
+        return (f"{self.nome}: {self.pezzi()} pezzi, "
+                f"fatturato {self.fatturato():.2f}")
+
+    def __lt__(self, altro: "Prodotto") -&gt; bool:
+        return self.fatturato() &lt; altro.fatturato()</code></pre></div></div>
+                    <ul class="note-sol"></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: il quaderno vende più pezzi di tutti ma incassa meno: dipende dal prezzo.
+Chiedere / fare: aggiungere il costo al prodotto e un metodo margine().</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Imprese e marketing</div>
+                    <h2>ch_negozio.py (2/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Negozio:
+    """Il negozio online: una lista di prodotti."""
+
+    def __init__(self, nome: str) -&gt; None:
+        self.nome: str = nome
+        self.prodotti: list[Prodotto] = []
+
+    def aggiungi(self, prodotto: Prodotto) -&gt; None:
+        self.prodotti.append(prodotto)
+
+    def cerca(self, nome: str) -&gt; Prodotto | None:
+        for p in self.prodotti:
+            if p.nome == nome:
+                return p
+        return None
+
+    def fatturato_totale(self) -&gt; float:
+        return sum([p.fatturato() for p in self.prodotti])</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>negozio: Negozio = Negozio("StudioShop")
+for nome, prezzo, vendite in [
+        ("zaino", 39.90, [3, 5, 4]),
+        ("borraccia", 14.50, [10, 8, 12]),
+        ("quaderno", 3.20, [30, 25, 30]),
+        ("cuffie", 59.00, [2, 4, 2]),
+        ("lampada", 24.90, [2, -1, 3])]:
+    try:
+        negozio.aggiungi(Prodotto(nome, prezzo, vendite))
+    except ValueError as e:
+        print(e)
+
+for p in sorted(negozio.prodotti, reverse=True):
+    print(p)
+
+print(negozio.cerca("cuffie"))
+print(negozio.cerca("lampada"))
+print(f"Fatturato totale: {negozio.fatturato_totale():.2f}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>Prodotto</code> rifiuta una vendita negativa: la lampada ha un errore di registrazione.</li><li><code>fatturato</code> usa <code>pezzi</code>: un metodo può chiamare un altro metodo dello stesso oggetto.</li><li><code>__lt__</code> confronta i fatturati; con <code>reverse=True</code> il prodotto che incassa di più va in cima.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: il quaderno vende più pezzi di tutti ma incassa meno: dipende dal prezzo.
+Chiedere / fare: aggiungere il costo al prodotto e un metodo margine().</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Salute e scienza</div>
+                    <h2>ch_salute.py (1/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Paziente:
+    """Un paziente con la pressione sistolica di ogni visita."""
+
+    def __init__(self, codice: str, gruppo: str,
+                 misure: list[float]) -&gt; None:
+        if len(misure) &lt; 2 or min(misure) &lt; 60 or max(misure) &gt; 250:
+            raise ValueError(f"{codice}: misure non valide")
+        self.codice: str = codice
+        self.gruppo: str = gruppo
+        self.misure: list[float] = misure</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    def variazione(self) -&gt; float:
+        return self.misure[-1] - self.misure[0]
+
+    def migliorato(self) -&gt; bool:
+        return self.variazione() &lt;= -10
+
+    def __str__(self) -&gt; str:
+        return (f"{self.codice} ({self.gruppo}): "
+                f"variazione {self.variazione():.1f} mmHg")
+
+    def __lt__(self, altro: "Paziente") -&gt; bool:
+        return self.variazione() &lt; altro.variazione()</code></pre></div></div>
+                    <ul class="note-sol"></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: la quota è calcolata su tutto lo studio; per confrontare i gruppi servirebbe la quota per gruppo.
+Chiedere / fare: modificare quota_migliorati perché accetti il gruppo come parametro.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Salute e scienza</div>
+                    <h2>ch_salute.py (2/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Studio:
+    """Lo studio clinico: una lista di pazienti."""
+
+    def __init__(self, nome: str) -&gt; None:
+        self.nome: str = nome
+        self.pazienti: list[Paziente] = []
+
+    def aggiungi(self, paziente: Paziente) -&gt; None:
+        self.pazienti.append(paziente)
+
+    def cerca(self, codice: str) -&gt; Paziente | None:
+        for p in self.pazienti:
+            if p.codice == codice:
+                return p
+        return None
+
+    def quota_migliorati(self) -&gt; float:
+        n: int = len([p for p in self.pazienti if p.migliorato()])
+        return n / len(self.pazienti)</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>studio: Studio = Studio("Integratore per la pressione")
+for codice, gruppo, misure in [
+        ("P01", "trattamento", [152, 146, 138]),
+        ("P02", "controllo", [148, 147, 145]),
+        ("P03", "trattamento", [160, 151, 149]),
+        ("P04", "controllo", [155, 150, 144]),
+        ("P05", "trattamento", [145, 0, 139])]:
+    try:
+        studio.aggiungi(Paziente(codice, gruppo, misure))
+    except ValueError as e:
+        print(e)
+
+for p in sorted(studio.pazienti):
+    print(p)
+
+print(studio.cerca("P02"))
+print(studio.cerca("P05"))
+print(f"Migliorati: {studio.quota_migliorati():.1%}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>Paziente</code> rifiuta una misura impossibile: 0 mmHg è un errore di trascrizione.</li><li><code>migliorato</code> usa <code>variazione</code>; <code>quota_migliorati</code> conta i pazienti con una comprehension con filtro.</li><li><code>__lt__</code> confronta le variazioni: la più negativa, cioè il calo maggiore, va in cima.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: la quota è calcolata su tutto lo studio; per confrontare i gruppi servirebbe la quota per gruppo.
+Chiedere / fare: modificare quota_migliorati perché accetti il gruppo come parametro.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Caso e probabilità</div>
+                    <h2>ch_probabilita.py (1/2)</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>class Dado:
+    """Un dado del tavolo con i risultati dei lanci registrati."""
+
+    def __init__(self, colore: str, lanci: list[int]) -&gt; None:
+        if len(lanci) == 0 or min(lanci) &lt; 1 or max(lanci) &gt; 6:
+            raise ValueError(f"{colore}: lanci non validi")
+        self.colore: str = colore
+        self.lanci: list[int] = lanci
+
+    def media(self) -&gt; float:
+        return sum(self.lanci) / len(self.lanci)
+
+    def quota(self, faccia: int) -&gt; float:
+        return self.lanci.count(faccia) / len(self.lanci)
+
+    def __str__(self) -&gt; str:
+        return (f"{self.colore}: media {self.media():.2f}, "
+                f"quota di 6: {self.quota(6):.1%}")
+
+    def __lt__(self, altro: "Dado") -&gt; bool:
+        return self.media() &lt; altro.media()</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: la media teorica è 3.5; con 18 lanci 3.72 è vicino. Il rosso ha tre 6 su sei lanci: con così pochi lanci non basta per dire che è truccato.
+Chiedere / fare: aggiungere un metodo che restituisce la faccia uscita più spesso (Counter).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 6 · challenge Caso e probabilità</div>
+                    <h2>ch_probabilita.py (2/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>class Tavolo:
+    """Il tavolo da gioco: una lista di dadi."""
+
+    def __init__(self, nome: str) -&gt; None:
+        self.nome: str = nome
+        self.dadi: list[Dado] = []
+
+    def aggiungi(self, dado: Dado) -&gt; None:
+        self.dadi.append(dado)
+
+    def cerca(self, colore: str) -&gt; Dado | None:
+        for d in self.dadi:
+            if d.colore == colore:
+                return d
+        return None
+
+    def media_generale(self) -&gt; float:
+        somma: int = sum([sum(d.lanci) for d in self.dadi])
+        return somma / sum([len(d.lanci) for d in self.dadi])</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>tavolo: Tavolo = Tavolo("Tavolo 1")
+for colore, lanci in [("rosso", [4, 6, 1, 6, 3, 6]),
+                      ("blu", [2, 5, 3, 1, 4, 6]),
+                      ("verde", [6, 2, 5, 3, 3, 1]),
+                      ("bianco", [1, 4, 7, 2, 5, 3])]:
+    try:
+        tavolo.aggiungi(Dado(colore, lanci))
+    except ValueError as e:
+        print(e)
+
+for d in sorted(tavolo.dadi, reverse=True):
+    print(d)
+
+print(tavolo.cerca("blu"))
+print(tavolo.cerca("bianco"))
+print(f"Media di tutti i lanci: {tavolo.media_generale():.2f}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>Dado</code> rifiuta un 7: un dado ha solo le facce da 1 a 6.</li><li><code>quota(faccia)</code> usa <code>count</code> sulla lista dei lanci: è la frequenza relativa di quella faccia.</li><li><code>media_generale</code> somma i lanci di tutti i dadi e li divide per il numero totale di lanci.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L06 · challenge»
+Da dire: la media teorica è 3.5; con 18 lanci 3.72 è vicino. Il rosso ha tre 6 su sei lanci: con così pochi lanci non basta per dire che è truccato.
+Chiedere / fare: aggiungere un metodo che restituisce la faccia uscita più spesso (Counter).</aside>
+                </section>
+            </section>
+            <!-- FINE SOLUZIONI LAB -->
+
+            <section>
+                <h2>Come funziona</h2>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà: i primi quattro con NumPy, gli altri con Pandas. Per ogni esercizio create un file <code>.py</code> con il nome indicato e importate <code>numpy as np</code> e <code>pandas as pd</code> all'inizio. I file CSV sono scritti nella slide dell'esercizio: create il file con l'editor nella stessa cartella e copiate il contenuto, compresa l'intestazione. Quando i dati sono casuali usate il seed indicato e fate le estrazioni nell'ordine della consegna: così i numeri coincidono con l'esempio. Alla fine c'è una challenge a scelta tra 5 temi.</p>
+                <table class="mini" style="font-size:0.7em">
+                    <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><code>voti_numpy.py</code></td><td>I voti in un array</td></tr>
+                        <tr><td>2</td><td><code>ore_studio.py</code></td><td>Le ore di studio</td></tr>
+                        <tr><td>3</td><td><code>altezze.py</code></td><td>Altezze simulate</td></tr>
+                        <tr><td>4</td><td><code>test_crocette.py</code></td><td>Rispondere a caso</td></tr>
+                        <tr><td>5</td><td><code>libretto.py</code></td><td>Il libretto in un DataFrame</td></tr>
+                        <tr><td>6</td><td><code>esami_csv.py</code></td><td>Esplorare un CSV</td></tr>
+                        <tr><td>7</td><td><code>pulizia_questionario.py</code></td><td>Pulire un questionario</td></tr>
+                        <tr><td>8</td><td><code>esami_primo_anno.py</code></td><td>Gli esami del primo anno</td></tr>
+                        <tr><td>Challenge</td><td>a scelta</td><td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td></tr>
+                    </tbody>
+                </table>
+                <div class="box box-blue" style="font-size:0.7em">
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio del laboratorio L08.
+                </div>
+            </section>
+
+            <section>
+                <h2>Promemoria</h2>
+                <p style="font-size:0.75em">Gli strumenti che servono oggi. Con NumPy le operazioni si fanno su tutto l'array, senza cicli: <code>voti + 1</code>, <code>voti &gt;= 18</code>, <code>np.mean(voti)</code>. Un array di booleani usato tra parentesi quadre filtra gli elementi; sommato conta i <code>True</code>. Con Pandas una colonna di un DataFrame è una Series: si calcola, si filtra e si raggruppa allo stesso modo. Niente <code>pivot_table</code> e niente grafici: arrivano in L08.</p>
+                <pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+import pandas as pd
+
+voti: np.ndarray = np.array([28, 17, 30, 24])
+print(voti + 1, np.mean(voti))         # [29 18 31 25] 24.75
+print(voti[voti &gt;= 18])                # filtro: [28 30 24]
+rng = np.random.default_rng(42)        # stesso seed, stessi numeri
+dadi: np.ndarray = rng.integers(1, 7, size=1000)
+print(np.mean(dadi == 6))              # stima di 1/6
+df: pd.DataFrame = pd.DataFrame({"corso": ["Stat", "Stat", "Info"],
+                                 "voto": [28, 24, 30]})
+df["promosso"] = df["voto"] &gt;= 18      # colonna calcolata
+print(df[df["voto"] &gt; 25])             # righe filtrate
+print(df.groupby("corso")["voto"].mean())  # media per gruppo</code></pre>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 1 · voti_numpy.py</div>
+                <h2>I voti in un array</h2>
                 <div class="columns">
                     <div class="col">
-                        <h3>Parte 1 &mdash; Guidata</h3>
-                        <ol>
-                            <li>NumPy: array e operazioni vettorizzate</li>
-                            <li>Statistiche e confronto prestazioni</li>
-                            <li>Numeri casuali e Monte Carlo</li>
-                            <li>Pandas: caricare e esplorare CSV</li>
-                            <li>Pulizia dei dati</li>
-                            <li><code>groupby</code> per statistiche per gruppo</li>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Create l'array <code>voti</code> con i voti di un appello: 28, 17, 30, 24, 15, 21, 27, 19, 30, 23. Stampate la forma (<code>.shape</code>) e il tipo degli elementi (<code>.dtype</code>).</li>
+                            <li>Calcolate media e mediana con un decimale e la deviazione standard campionaria (<code>np.std(voti, ddof=1)</code>) con due decimali.</li>
+                            <li>Con il filtro <code>voti[voti &gt;= 18]</code> ottenete i voti dei promossi. Contateli con <code>np.sum(voti &gt;= 18)</code>, perché ogni <code>True</code> vale 1, e stampate la percentuale, i voti e la loro media.</li>
+                            <li>Senza cicli calcolate gli scarti dalla media (<code>voti - media</code>), stampateli arrotondati con <code>np.round(scarti, 1)</code> e stampate la loro somma con un decimale.</li>
                         </ol>
                     </div>
                     <div class="col">
-                        <h3>Parte 2 &mdash; Autonoma</h3>
-                        <ul>
-                            <li>Esercizi base (1&ndash;3)</li>
-                            <li>Esercizi intermedi (4&ndash;6)</li>
-                            <li>Esercizio avanzato (7)</li>
-                        </ul>
-                        <div class="box box-blue" style="margin-top:1em;">
-                            <strong>Prerequisiti:</strong> Lezione T17 (NumPy, Pandas, analisi dati)
-                        </div>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Forma: (10,), tipo: int64
+Media: 23.4, mediana: 23.5
+Dev. std campionaria: 5.36
+Promossi: 8 su 10 (80.0%)
+Voti dei promossi: [28 30 24 21 27 19 30 23]
+Media dei promossi: 25.2
+Scarti dalla media: [ 4.6 -6.4  6.6  0.6 -8.4 -2.4  3.6 -4.4  6.6 -0.4]
+Somma degli scarti: 0.0</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete il voto 18 → <code>Promossi: 9 su 11 (81.8%)</code>, <code>Media dei promossi: 24.4</code>; la somma degli scarti esce <code>-0.0</code>, per l'arrotondamento dei float</li><li>togliete <code>ddof=1</code> → <code>5.08</code>: <code>np.std</code> divide per n invece che per n − 1</li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 3: Sezione NumPy -->
-            <section class="section-slide">
-                <h2>Parte 1 &mdash; NumPy</h2>
-                <p>Calcolo numerico vettorizzato</p>
-            </section>
-
-            <!-- SLIDE 4: Creare array NumPy -->
             <section>
-                <h2>Creare array NumPy</h2>
-                <p>L'<code>ndarray</code> e un contenitore di dati omogenei: operazioni su interi vettori senza cicli.</p>
-                <pre><code class="language-python">import numpy as np
-
-# Da lista Python
-voti: np.ndarray = np.array([28, 25, 30, 22, 27, 18, 30, 24])
-print(f"Dtype: {voti.dtype}")    # int64
-print(f"Shape: {voti.shape}")    # (8,)
-print(f"Size:  {voti.size}")     # 8
-
-# Funzioni di creazione
-zeri: np.ndarray = np.zeros(10)
-sequenza: np.ndarray = np.arange(0, 100, 5)      # da 0 a 95, passo 5
-lineare: np.ndarray = np.linspace(0, 1, 11)       # 11 punti tra 0 e 1</code></pre>
-                <div class="box box-green">
-                    <strong>Concetto chiave:</strong> un array NumPy ha un tipo unico (<code>dtype</code>) e dimensione fissa &mdash; questo lo rende molto piu efficiente di una lista Python.
-                </div>
-            </section>
-
-            <!-- SLIDE 5: Operazioni vettorizzate -->
-            <section>
-                <h2>Operazioni vettorizzate</h2>
-                <p>Le operazioni aritmetiche si applicano <strong>elemento per elemento</strong>:</p>
-                <pre><code class="language-python">voti: np.ndarray = np.array([28, 25, 30, 22, 27, 18, 30, 24])
-
-# Aritmetica elemento per elemento
-voti_normalizzati: np.ndarray = voti / 30.0
-voti_bonus: np.ndarray = voti + 2
-
-# Operazioni tra array
-pesi: np.ndarray = np.array([0.1, 0.1, 0.2, 0.1, 0.15, 0.1, 0.15, 0.1])
-media_pesata: float = float(np.sum(voti * pesi))
-print(f"Media pesata: {media_pesata:.2f}")</code></pre>
-                <div class="columns" style="margin-top:0.5em;">
-                    <div class="col">
-                        <h3>Confronti vettorizzati</h3>
-                        <pre><code class="language-python"># Restituiscono array di bool
-sufficienti = voti >= 18
-eccellenti = voti >= 28
-print(np.sum(eccellenti))  # 3</code></pre>
-                    </div>
-                    <div class="col">
-                        <h3>Indicizzazione booleana</h3>
-                        <pre><code class="language-python"># Filtro diretto
-voti_alti = voti[voti >= 27]
-# array([28, 30, 27, 30])</code></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SLIDE 6: Statistiche con NumPy -->
-            <section>
-                <h2>Statistiche con NumPy</h2>
-                <pre><code class="language-python">voti: np.ndarray = np.array([28, 25, 30, 22, 27, 18, 30, 24, 26, 29])
-
-print(f"Media:               {np.mean(voti):.2f}")
-print(f"Mediana:             {np.median(voti):.2f}")
-print(f"Deviazione standard: {np.std(voti):.2f}")
-print(f"Varianza:            {np.var(voti):.2f}")
-print(f"Minimo:              {np.min(voti)}")
-print(f"Massimo:             {np.max(voti)}")
-print(f"Percentile 25:       {np.percentile(voti, 25):.2f}")
-print(f"Percentile 75:       {np.percentile(voti, 75):.2f}")</code></pre>
-                <div class="box box-yellow">
-                    <strong>Nota:</strong> queste funzioni sono ottimizzate in C e operano su blocchi contigui di memoria, sfruttando le istruzioni SIMD del processore.
-                </div>
-            </section>
-
-            <!-- SLIDE 7: Confronto prestazioni -->
-            <section>
-                <h2>Confronto prestazioni: Python vs NumPy</h2>
-                <pre><code class="language-python">import numpy as np
-import time
-
-n: int = 1_000_000
-dati_np: np.ndarray = np.random.randn(n)
-dati_lista: list[float] = dati_np.tolist()
-
-# Calcolo media con ciclo Python
-inizio: float = time.time()
-somma: float = 0.0
-for valore in dati_lista:
-    somma += valore
-media_ciclo: float = somma / n
-tempo_ciclo: float = time.time() - inizio
-
-# Calcolo media con NumPy
-inizio = time.time()
-media_numpy: float = float(np.mean(dati_np))
-tempo_numpy: float = time.time() - inizio
-
-print(f"Ciclo Python: {tempo_ciclo:.4f} s")
-print(f"NumPy:        {tempo_numpy:.6f} s")
-print(f"NumPy e circa {tempo_ciclo / tempo_numpy:.0f}x piu veloce")</code></pre>
-                <div class="box box-red">
-                    <strong>Risultato tipico:</strong> NumPy e 50&ndash;100x piu veloce. Il vantaggio cresce con la dimensione dei dati.
-                </div>
-            </section>
-
-            <!-- SLIDE 8: Numeri casuali -->
-            <section>
-                <h2>NumPy random: generazione di numeri casuali</h2>
-                <pre><code class="language-python">import numpy as np
-
-# Generatore con seed per riproducibilita
-rng: np.random.Generator = np.random.default_rng(seed=42)
-
-# Distribuzione uniforme
-uniforme: np.ndarray = rng.uniform(low=0.0, high=1.0, size=10)
-
-# Distribuzione normale
-normale: np.ndarray = rng.normal(loc=25.0, scale=3.0, size=10)
-
-# Distribuzione di Poisson
-poisson: np.ndarray = rng.poisson(lam=5, size=10)
-
-# Campione grande: verificare i parametri
-campione: np.ndarray = rng.normal(loc=170, scale=10, size=10_000)
-print(f"Media campionaria:    {np.mean(campione):.2f}")   # ~170
-print(f"Dev. std campionaria: {np.std(campione):.2f}")    # ~10</code></pre>
-                <div class="box box-blue">
-                    <strong>Buona pratica:</strong> usate sempre <code>default_rng(seed=...)</code> per garantire la riproducibilita dei risultati.
-                </div>
-            </section>
-
-            <!-- SLIDE 9: Monte Carlo -->
-            <section>
-                <h2>Simulazione Monte Carlo: stimare pi greco</h2>
-                <p>Generiamo punti casuali nel quadrato [-1,1] x [-1,1] e contiamo quanti cadono nel cerchio unitario.</p>
+                <div class="tag tag-esercizio">Esercizio 2 · ore_studio.py</div>
+                <h2>Le ore di studio</h2>
                 <div class="columns">
-                    <div class="col-60">
-                        <pre><code class="language-python">def stima_pi_montecarlo(n_punti: int,
-                        seed: int = 42) -> float:
-    """Stima pi greco con il metodo Monte Carlo."""
-    rng = np.random.default_rng(seed=seed)
-    x = rng.uniform(-1, 1, size=n_punti)
-    y = rng.uniform(-1, 1, size=n_punti)
-    distanza_quadrata = x**2 + y**2
-    dentro = int(np.sum(distanza_quadrata <= 1.0))
-    return 4.0 * dentro / n_punti
-
-for n in [100, 1_000, 10_000, 1_000_000]:
-    stima = stima_pi_montecarlo(n)
-    errore = abs(stima - np.pi)
-    print(f"n={n:>10,}  pi~={stima:.5f}"
-          f"  err={errore:.5f}")</code></pre>
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Una matrice contiene le ore di studio di 4 settimane (righe) per 3 corsi (colonne: Statistica, Analisi, Informatica). Le righe sono <code>[6, 4, 3]</code>, <code>[8, 5, 2]</code>, <code>[5, 7, 4]</code> e <code>[10, 6, 5]</code>.</li>
+                            <li>Stampate forma e ore totali. Sommate per corso con <code>np.sum(ore, axis=0)</code> e per settimana con <code>axis=1</code>.</li>
+                            <li>Dividete le ore per corso per il totale (un array diviso uno scalare) e stampate la quota di ogni corso, scorrendo nomi e quote con <code>zip</code>.</li>
+                            <li>Create i numeri delle settimane con <code>np.arange(1, ore.shape[0] + 1)</code> e filtrate quelle con più di 15 ore.</li>
+                            <li>Calcolate la media per corso (<code>np.mean(ore, axis=0)</code>) e sottraetela a tutta la matrice: con il broadcasting la riga delle medie viene ripetuta su ogni settimana. Stampate le medie e la matrice degli scarti.</li>
+                        </ol>
                     </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>Forma: (4, 3), ore totali: 65
+Ore per corso: [29 22 14]
+Ore per settimana: [13 15 16 21]
+Statistica: 44.6%
+Analisi: 33.8%
+Informatica: 21.5%
+Settimane oltre 15 ore: [3 4]
+Medie per corso: [7.25 5.5  3.5 ]
+Scarti dalla media del corso:
+[[-1.25 -1.5  -0.5 ]
+ [ 0.75 -0.5  -1.5 ]
+ [-2.25  1.5   0.5 ]
+ [ 2.75  0.5   1.5 ]]</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete la settimana <code>[7, 3, 6]</code> → <code>Forma: (5, 3), ore totali: 81</code>, <code>Settimane oltre 15 ore: [3 4 5]</code></li><li>sommate la matrice degli scarti con <code>axis=0</code> → <code>[0. 0. 0.]</code>: in ogni colonna gli scarti dalla media si compensano</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 3 · altezze.py</div>
+                <h2>Altezze simulate</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Create il generatore <code>rng = np.random.default_rng(42)</code> e simulate 500 altezze in cm con <code>rng.normal(loc=170, scale=10, size=500)</code>. Stampate le prime 5 (<code>altezze[:5]</code>) arrotondate a un decimale.</li>
+                            <li>Stampate media, deviazione standard campionaria, minimo e massimo con un decimale.</li>
+                            <li>Standardizzate senza cicli: <code>z = (altezze - media) / dev</code>. Controllate che la deviazione standard degli z sia 1.</li>
+                            <li><code>np.abs(z) &lt;= 1</code> è un array di booleani e <code>np.mean</code> ne dà la quota di <code>True</code>. Stampate la quota entro 1 deviazione standard e quella oltre 2, accanto ai valori teorici della normale: 68.3% e 4.6%.</li>
+                            <li>Contate le altezze tra 185 cm (incluso) e 195 cm con un filtro combinato: <code>(altezze &gt;= 185) &amp; (altezze &lt; 195)</code>.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Prime 5 altezze: [173.  159.6 177.5 179.4 150.5]
+Media: 169.9 cm, dev. std: 9.6 cm
+Minimo: 144.3, massimo: 199.1
+Dev. std degli z: 1.00
+Entro 1 dev. std: 69.0% (teorica 68.3%)
+Oltre 2 dev. std: 5.2% (teorica 4.6%)
+Tra 185 e 195 cm: 27</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>rieseguite il programma: i numeri sono gli stessi. Con seed 1 → <code>Prime 5 altezze: [173.5 178.2 173.3 157.  179.1]</code>, <code>Entro 1 dev. std: 70.0%</code></li><li>500 → 100 000 altezze → <code>Entro 1 dev. std: 68.4%</code>, <code>Oltre 2 dev. std: 4.6%</code>: con più dati le quote si avvicinano a quelle teoriche</li><li>togliete le parentesi nel filtro combinato → <code>TypeError</code>: <code>&amp;</code> viene calcolato prima di <code>&gt;=</code> e <code>&lt;</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 4 · test_crocette.py</div>
+                <h2>Rispondere a caso</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Un test ha 10 domande con 4 risposte possibili, una sola giusta, e si supera con almeno 6 risposte giuste. Simulate 100 000 studenti che rispondono a caso, con <code>rng = np.random.default_rng(2027)</code>.</li>
+                            <li><code>rng.integers(0, 4, size=(N, 10))</code> è una matrice con una riga per studente e una colonna per domanda. La risposta giusta è sempre la 0: <code>np.sum(risposte == 0, axis=1)</code> conta le risposte giuste di ogni studente.</li>
+                            <li>Stampate le giuste dei primi 5 studenti, la media (teorica 10 · 0.25 = 2.5), la quota di studenti senza risposte giuste e la quota di chi supera il test.</li>
+                            <li>Stimate di nuovo la quota con <code>rng.binomial(n=10, p=0.25, size=N)</code> e calcolate la probabilità esatta con <code>math.comb</code>: la somma di C(10, k) · 0.25^k · 0.75^(10 − k) per k da 6 a 10.</li>
+                            <li>Con una penalità di 1/3 di punto per ogni risposta sbagliata il punteggio è <code>giuste - (10 - giuste) / 3</code>. Stampate il punteggio medio e la quota di punteggi negativi.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Giuste dei primi 5 studenti: [3 3 2 2 3]
+Media di risposte giuste: 2.50 (teorica 2.50)
+Nessuna risposta giusta: 5.6%
+Test superato (simulato): 1.97%
+Test superato (binomiale): 1.95%
+Test superato (esatta): 1.97%
+Punteggio medio con penalità: 0.00
+Punteggio negativo: 52.5%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>soglia 5 → simulato <code>7.78%</code>, binomiale <code>7.79%</code>, esatta <code>7.81%</code></li><li>100 000 → 1000 studenti → simulato <code>1.80%</code>, binomiale <code>2.50%</code>: con pochi studenti le stime si allontanano dal valore esatto</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 5 · libretto.py</div>
+                <h2>Il libretto in un DataFrame</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Create un DataFrame da un dizionario di liste con gli esami di una studentessa (tabella): colonne <code>esame</code>, <code>anno</code>, <code>crediti</code>, <code>voto</code>. Stampatelo con la sua forma.</li>
+                            <li>Aggiungete la colonna calcolata <code>pesato</code>, voto per crediti.</li>
+                            <li>Stampate i crediti totali, la media aritmetica e la media ponderata (somma di <code>pesato</code> diviso crediti totali) con due decimali, e la base di laurea: media ponderata / 30 · 110.</li>
+                            <li>Selezionate gli esami con voto almeno 26, ordinateli con <code>sort_values("voto", ascending=False)</code> e stampate solo le colonne <code>esame</code> e <code>voto</code>.</li>
+                            <li>Contate gli esami da 9 crediti del primo anno con un filtro combinato con <code>&amp;</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>esame</th><th>anno</th><th>crediti</th><th>voto</th></tr></thead><tbody><tr><td>Analisi I</td><td>1</td><td>9</td><td>24</td></tr><tr><td>Statistica I</td><td>1</td><td>9</td><td>28</td></tr><tr><td>Informatica</td><td>1</td><td>6</td><td>30</td></tr><tr><td>Economia</td><td>1</td><td>9</td><td>22</td></tr><tr><td>Probabilità</td><td>2</td><td>9</td><td>26</td></tr><tr><td>Demografia</td><td>2</td><td>6</td><td>27</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>          esame  anno  crediti  voto
+0     Analisi I     1        9    24
+1  Statistica I     1        9    28
+2   Informatica     1        6    30
+3      Economia     1        9    22
+4   Probabilità     2        9    26
+5    Demografia     2        6    27
+Righe e colonne: (6, 4)
+Crediti: 48
+Media aritmetica: 26.17, ponderata: 25.88
+Base di laurea: 94.9
+          esame  voto
+2   Informatica    30
+1  Statistica I    28
+5    Demografia    27
+4   Probabilità    26
+Esami da 9 crediti del primo anno: 3</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>Algebra</code>, anno 2, 6 crediti, voto 30 → <code>Crediti: 54</code>, <code>ponderata: 26.33</code>, <code>Base di laurea: 96.6</code></li><li>nel dizionario scrivete <code>"voti"</code> al posto di <code>"voto"</code> → <code>KeyError: 'voto'</code> alla prima riga che usa la colonna</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 6 · esami_csv.py</div>
+                <h2>Esplorare un CSV</h2>
+                <div class="columns" style="font-size:0.68em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Il file <code>esami.csv</code> contiene 10 esami di studenti di Scienze Statistiche. Leggetelo con <code>pd.read_csv("esami.csv", sep=";")</code>.</li>
+                            <li>Esplorate i dati: stampate le prime 3 righe (<code>head(3)</code>), la forma, i nomi delle colonne (<code>columns.tolist()</code>), le statistiche del voto con <code>describe().round(1)</code> e il numero di esami per corso con <code>value_counts()</code>.</li>
+                            <li>Contate i promossi (voto almeno 18) e stampate le matricole di Statistica del secondo anno, con un filtro combinato e <code>.tolist()</code>.</li>
+                            <li>Stampate il voto medio per corso con <code>groupby("corso")["voto"].mean().round(1)</code>.</li>
+                        </ol>
+                        <div class="etichetta">File esami.csv</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>matricola;corso;anno;voto
+2101234;Statistica;1;28
+2101567;Analisi;1;17
+2102001;Informatica;1;30
+2102345;Statistica;1;24
+2102890;Analisi;1;21
+2103112;Statistica;2;19
+2103456;Informatica;2;27
+2103789;Analisi;2;15
+2104012;Statistica;2;26
+2104333;Informatica;1;23</code></pre>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.42em"><code class="language-plaintext" data-trim data-noescape>   matricola        corso  anno  voto
+0    2101234   Statistica     1    28
+1    2101567      Analisi     1    17
+2    2102001  Informatica     1    30
+Righe e colonne: (10, 4)
+Colonne: ['matricola', 'corso', 'anno', 'voto']
+count    10.0
+mean     23.0
+std       4.9
+min      15.0
+25%      19.5
+50%      23.5
+75%      26.8
+max      30.0
+Name: voto, dtype: float64
+corso
+Statistica     4
+Analisi        3
+Informatica    3
+Name: count, dtype: int64
+Promossi: 8 su 10
+Statistica, secondo anno: [2103112, 2104012]
+corso
+Analisi        17.7
+Informatica    26.7
+Statistica     24.2
+Name: voto, dtype: float64</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete la riga <code>2104555;Analisi;2;29</code> → <code>Righe e colonne: (11, 4)</code>, <code>Promossi: 9 su 11</code>, Analisi <code>20.5</code></li><li>togliete <code>sep=";"</code> → c'è una sola colonna, <code>matricola;corso;anno;voto</code>, e poi <code>KeyError: 'voto'</code></li><li>aggiungete <code>esami.info()</code>: per ogni colonna mostra tipo e valori non nulli; <code>corso</code> è di tipo testo (<code>object</code>, o <code>str</code> con Pandas 3)</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 7 · pulizia_questionario.py</div>
+                <h2>Pulire un questionario</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Il file <code>questionario.csv</code> contiene le ore di studio settimanali e il voto di alcuni studenti. C'è una riga ripetuta e mancano alcuni valori, scritti in tre modi: campo vuoto, <code>NA</code> e <code>?</code>.</li>
+                            <li>Leggetelo con <code>na_values=["", "NA", "?"]</code> e stampate le righe lette e i valori mancanti per colonna (<code>isna().sum()</code>).</li>
+                            <li>Contate e togliete le righe duplicate (<code>duplicated().sum()</code>, <code>drop_duplicates()</code>), poi togliete le righe senza voto con <code>dropna(subset=["voto"])</code>.</li>
+                            <li>Sostituite le ore mancanti con la media delle ore arrotondata a un decimale (<code>fillna({"ore_studio": ...})</code>) e convertite il voto in intero con <code>astype(int)</code>.</li>
+                            <li>Stampate le righe rimaste, i mancanti rimasti (<code>isna().sum().sum()</code>), voto e ore medi con due decimali e le medie per corso di ore e voto con <code>groupby</code> e <code>round(1)</code>.</li>
+                        </ol>
+                        <div class="etichetta">File questionario.csv</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>matricola;corso;ore_studio;voto
+2101234;Statistica;12;28
+2101567;Analisi;;24
+2102001;Statistica;8;NA
+2102345;Informatica;15;30
+2102890;Analisi;6;18
+2102345;Informatica;15;30
+2103112;Statistica;?;22
+2103456;Informatica;10;
+2103789;Analisi;9;21
+2104012;Statistica;14;27
+2104333;Informatica;11;26</code></pre>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>Righe lette: 11
+Valori mancanti per colonna:
+matricola     0
+corso         0
+ore_studio    2
+voto          2
+dtype: int64
+Righe duplicate tolte: 1
+Righe senza voto tolte: 2
+Ore mancanti sostituite con la media: 11.2
+Righe pulite: 8, mancanti: 0
+Voto medio: 24.50
+Ore medie: 11.18
+             ore_studio  voto
+corso                        
+Analisi             8.7  21.0
+Informatica        13.0  28.0
+Statistica         12.4  25.7</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>togliete <code>na_values</code> → <code>?</code> resta come testo, la colonna <code>ore_studio</code> diventa di testo e <code>mean()</code> dà <code>TypeError</code></li><li>togliete <code>drop_duplicates()</code> → <code>Righe pulite: 9</code>, <code>Voto medio: 25.11</code>: la riga ripetuta pesa due volte</li><li>al posto di <code>fillna</code> scrivete <code>q = q.dropna()</code> → <code>Righe pulite: 6</code>, <code>Voto medio: 25.00</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 8 · esami_primo_anno.py</div>
+                <h2>Gli esami del primo anno</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Generate 150 esami con <code>rng = np.random.default_rng(2026)</code>: prima i voti con <code>np.round(rng.normal(23, 5, size=150))</code>, poi il corso con <code>rng.choice(CORSI, size=150)</code>, dove <code>CORSI</code> contiene Analisi, Statistica e Informatica. Cambiando l'ordine cambiano i numeri.</li>
+                            <li>Mettete tutto nel DataFrame <code>esami</code>: i voti oltre 30 diventano 30 con <code>np.minimum(voti, 30)</code>, poi <code>astype(int)</code>. Stampate il numero di esami e di 30.</li>
+                            <li>Aggiungete la colonna <code>promosso</code> (voto almeno 18) e stampate la quota di promossi per corso con <code>groupby("corso")["promosso"].mean()</code>: la media di booleani è una quota. Scorrete il risultato con <code>.items()</code>.</li>
+                            <li>Create la tabella <code>corsi</code> con i crediti: Analisi 9, Statistica 9, Informatica 6, Economia 9. Con una catena di metodi unite le tabelle (<code>merge(corsi, on="corso", how="left")</code>), tenete i promossi (<code>query("promosso")</code>) e stampate i crediti acquisiti in totale.</li>
+                            <li>Con un'altra catena calcolate per corso numero, media, minimo e massimo dei voti dei promossi (<code>agg(["count", "mean", "min", "max"])</code>, poi <code>round(1)</code>) e stampate la tabella.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Esami: 150, voti 30: 21
+Analisi: promossi 87.3%
+Informatica: promossi 88.4%
+Statistica: promossi 86.5%
+Crediti acquisiti: 1065
+             count  mean  min  max
+corso                             
+Analisi         48  24.2   18   30
+Informatica     38  24.4   18   30
+Statistica      45  24.2   18   30</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>how="inner"</code> → stesso risultato: tutti i corsi degli esami sono in <code>corsi</code>. Economia non compare perché non ha esami</li><li>seed 1 → <code>voti 30: 6</code>, <code>Crediti acquisiti: 1029</code></li><li><code>query("voto &gt;= 27")</code> → <code>Crediti acquisiti: 330</code> e tutti i minimi a 27</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge a scelta</div>
+                <h2>Scegliete un tema</h2>
+                <div class="columns">
                     <div class="col-40">
-                        <div class="box box-green">
-                            <strong>Logica:</strong><br>
-                            Area cerchio / Area quadrato = pi/4<br><br>
-                            Quindi: pi = 4 &times; (punti dentro / punti totali)<br><br>
-                            L'errore decresce come 1/&radic;n
-                        </div>
+                        <table class="mini" style="font-size:0.62em"><thead><tr><th>Tema</th><th>Challenge</th><th>File</th></tr></thead><tbody><tr><td>Mercati e finanza</td><td>Il portafoglio simulato</td><td><code>ch_mercati.py</code></td></tr><tr><td>Sport</td><td>La gara simulata</td><td><code>ch_sport.py</code></td></tr><tr><td>Imprese e marketing</td><td>Un mese di vendite</td><td><code>ch_negozio.py</code></td></tr><tr><td>Salute e scienza</td><td>Lo studio simulato</td><td><code>ch_salute.py</code></td></tr><tr><td>Caso e probabilità</td><td>Dadi e porte</td><td><code>ch_probabilita.py</code></td></tr></tbody></table>
+                        <p style="font-size:0.6em">Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.</p>
+                    </div>
+                    <div class="col-60">
+                        <div class="etichetta">Tutte le challenge chiedono</div>
+                        <ul class="consegna" style="font-size:0.56em"><li>Generate i dati del tema con <code>rng = np.random.default_rng(seed)</code>, con il seed indicato e le estrazioni nell'ordine della consegna, così l'output coincide con l'esempio.</li><li>Almeno un calcolo vettorizzato su un array o una matrice, senza cicli <code>for</code>.</li><li>Almeno un filtro booleano: <code>array[condizione]</code> oppure <code>np.sum(condizione)</code>.</li><li>Una simulazione Monte Carlo di 10 000 ripetizioni, anche questa senza cicli, che stima una probabilità.</li><li>Un DataFrame Pandas costruito da un dizionario o da un array, con una colonna calcolata.</li><li>Una statistica per gruppo con <code>groupby</code>.</li><li>Type hints sulle variabili principali; niente <code>pivot_table</code> e niente grafici.</li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 10: Sezione Pandas -->
-            <section class="section-slide">
-                <h2>Parte 1 &mdash; Pandas</h2>
-                <p>Manipolazione di dati tabulari</p>
+            <section>
+                <div class="tag tag-challenge">Challenge · Mercati e finanza · ch_mercati.py</div>
+                <h2>Il portafoglio simulato</h2>
+                <div class="columns" style="font-size:0.74em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Lo studente investitore ha diviso 10 000 EUR tra ENRG, BANK e TECH con i pesi della tabella. Simulate 20 giorni di rendimenti con <code>rng = np.random.default_rng(7)</code> e <code>rng.normal(MEDIE, VOL, size=(20, 3))</code>: una riga per giorno, una colonna per titolo. Gli array <code>MEDIE</code> e <code>VOL</code> valgono colonna per colonna (broadcasting).</li>
+                            <li>Stampate la volatilità di ogni titolo, cioè la deviazione standard campionaria per colonna (<code>axis=0</code>), in percentuale con due decimali.</li>
+                            <li>Il rendimento giornaliero del portafoglio è <code>np.sum(rend * PESI, axis=1)</code> e il valore finale è 10 000 · <code>np.prod(1 + port)</code>. Stampate il valore finale, i giorni in perdita (filtro) e il peggior giorno.</li>
+                            <li>Monte Carlo: simulate 10 000 mesi di 20 giorni di TECH (<code>size=(10_000, 20)</code>), sommate i rendimenti di ogni mese e stimate la probabilità che TECH perda più del 5%.</li>
+                            <li>Mettete i rendimenti in un DataFrame con <code>pd.DataFrame(rend, columns=TITOLI)</code>, aggiungete le colonne <code>settimana</code> (<code>np.arange(20) // 5 + 1</code>) e <code>portafoglio</code>, e stampate il rendimento medio del portafoglio per settimana con <code>groupby</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Titolo</th><th>Rendimento medio giornaliero</th><th>Volatilità giornaliera</th><th>Peso</th></tr></thead><tbody><tr><td>ENRG</td><td>0.10%</td><td>1.2%</td><td>30%</td></tr><tr><td>BANK</td><td>0.05%</td><td>0.9%</td><td>50%</td></tr><tr><td>TECH</td><td>0.20%</td><td>2.5%</td><td>20%</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Volatilità ENRG: 0.88%
+Volatilità BANK: 0.86%
+Volatilità TECH: 2.21%
+Valore finale di 10000 EUR: 9682.07 EUR
+Giorni in perdita: 11 su 20
+Peggior giorno: -2.09%
+P(TECH perde più del 5% in un mese): 21.1%
+Settimana 1: rendimento medio -0.08%
+Settimana 2: rendimento medio -0.85%
+Settimana 3: rendimento medio -0.12%
+Settimana 4: rendimento medio 0.41%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>tutto su TECH (<code>PESI = [0.0, 0.0, 1.0]</code>) → <code>Valore finale di 10000 EUR: 8892.68 EUR</code>, <code>Peggior giorno: -6.09%</code></li><li>mesi di 60 giorni nella simulazione → <code>18.6%</code>: su un periodo più lungo pesa di più il rendimento medio positivo</li><li>seed 8 → <code>Volatilità TECH: 2.65%</code>, <code>Valore finale di 10000 EUR: 9897.43 EUR</code></li></ul>
+                    </div>
+                </div>
             </section>
 
-            <!-- SLIDE 11: Creare e caricare un DataFrame -->
             <section>
-                <h2>Creare un DataFrame e salvarlo come CSV</h2>
-                <pre><code class="language-python">import pandas as pd
-import numpy as np
-
-rng: np.random.Generator = np.random.default_rng(seed=42)
-n: int = 200
-
-df: pd.DataFrame = pd.DataFrame({
-    "id_studente": range(1, n + 1),
-    "nome": [f"Studente_{i}" for i in range(1, n + 1)],
-    "corso": rng.choice(
-        ["Statistica", "Economia", "Sociologia", "Informatica"], size=n),
-    "anno": rng.choice([1, 2, 3], size=n),
-    "voto_medio": np.round(rng.normal(25, 3, size=n).clip(18, 30), 1),
-    "crediti": rng.choice([30, 60, 90, 120, 150, 180], size=n),
-    "regione": rng.choice(
-        ["Lombardia", "Lazio", "Campania", "Sicilia",
-         "Veneto", "Emilia-Romagna", "Toscana"], size=n),
-})
-
-df.to_csv("studenti.csv", index=False)
-print(f"Dimensioni: {df.shape[0]} righe x {df.shape[1]} colonne")</code></pre>
+                <div class="tag tag-challenge">Challenge · Sport · ch_sport.py</div>
+                <h2>La gara simulata</h2>
+                <div class="columns" style="font-size:0.74em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Simulate i tempi sul giro di una gara di 15 giri per Ferri, Lanza, Moro e Neri con <code>rng = np.random.default_rng(15)</code> e <code>rng.normal(BASE, 0.6, size=(15, 4))</code>: una riga per giro, una colonna per pilota. <code>BASE</code> contiene il passo di ogni pilota (tabella).</li>
+                            <li>Al giro 8 tutti fanno il pit stop: aggiungete 20 secondi alla riga <code>tempi[7]</code>. Contate i giri anomali (oltre 100 s) e, per ogni pilota, i giri sotto i 92 s con <code>np.sum(tempi &lt; 92, axis=0)</code>.</li>
+                            <li>Monte Carlo: simulate 10 000 gare di 15 giri per Ferri (passo 92.0 s) e poi per Moro (92.2 s), sempre con deviazione standard 0.6, sommate i tempi di ogni gara e stimate la probabilità che Moro arrivi davanti a Ferri.</li>
+                            <li>Create un DataFrame con pilota, scuderia, tempo totale e giro migliore (<code>np.min(tempi, axis=0)</code>), aggiungete la colonna <code>distacco</code> dal più veloce e stampatelo ordinato per tempo totale, con <code>round(1)</code>.</li>
+                            <li>Stampate il tempo totale medio di ogni scuderia con <code>groupby</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Pilota</th><th>Scuderia</th><th>Passo (s)</th></tr></thead><tbody><tr><td>Ferri</td><td>Scuderia Rossa</td><td>92.0</td></tr><tr><td>Lanza</td><td>Scuderia Rossa</td><td>92.4</td></tr><tr><td>Moro</td><td>Scuderia Blu</td><td>92.2</td></tr><tr><td>Neri</td><td>Scuderia Blu</td><td>92.6</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>Giri anomali (oltre 100 s): 4
+Ferri, giri sotto i 92 s: 7
+Lanza, giri sotto i 92 s: 5
+Moro, giri sotto i 92 s: 1
+Neri, giri sotto i 92 s: 1
+P(Moro batte Ferri): 18.5%
+  pilota        scuderia  totale  migliore  distacco
+0  Ferri  Scuderia Rossa  1399.1      91.0       0.0
+1  Lanza  Scuderia Rossa  1405.4      91.4       6.3
+2   Moro    Scuderia Blu  1405.6      91.3       6.5
+3   Neri    Scuderia Blu  1409.2      91.8      10.1
+scuderia
+Scuderia Blu      1407.4
+Scuderia Rossa    1402.3
+Name: totale, dtype: float64</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>safety car al giro 4 (<code>tempi[3]</code> più 15 s) → <code>Giri anomali (oltre 100 s): 8</code> e tutti i totali crescono di 15 s</li><li>Moro con passo 92.6 nella simulazione → <code>P(Moro batte Ferri): 0.2%</code></li><li>deviazione standard 0.3 sui giri della gara → Moro passa davanti a Lanza con distacco <code>4.8</code></li></ul>
+                    </div>
+                </div>
             </section>
 
-            <!-- SLIDE 12: Esplorare un DataFrame -->
             <section>
-                <h2>Esplorare un DataFrame</h2>
-                <pre><code class="language-python">df: pd.DataFrame = pd.read_csv("studenti.csv")
-
-df.head()           # Prime 5 righe
-df.info()           # Struttura: tipi, conteggio non-null
-df.describe()       # Statistiche (solo colonne numeriche)
-df["corso"].value_counts()    # Conteggio per categoria</code></pre>
-                <table>
-                    <thead>
-                        <tr><th>Metodo</th><th>Cosa restituisce</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><code>head(n)</code></td><td>Prime n righe (default 5)</td></tr>
-                        <tr><td><code>info()</code></td><td>Tipi, conteggio valori non-null, memoria</td></tr>
-                        <tr><td><code>describe()</code></td><td>count, mean, std, min, quartili, max</td></tr>
-                        <tr><td><code>shape</code></td><td>Tupla (righe, colonne)</td></tr>
-                        <tr><td><code>value_counts()</code></td><td>Frequenza di ogni valore in una colonna</td></tr>
-                    </tbody>
-                </table>
+                <div class="tag tag-challenge">Challenge · Imprese e marketing · ch_negozio.py</div>
+                <h2>Un mese di vendite</h2>
+                <div class="columns" style="font-size:0.74em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Simulate i pezzi venduti in 30 giorni per i 5 prodotti del negozio con <code>rng = np.random.default_rng(30)</code> e <code>rng.integers(0, 6, size=(30, 5))</code>: una riga per giorno, una colonna per prodotto, nell'ordine della tabella.</li>
+                            <li>L'incasso di ogni giorno è <code>np.sum(pezzi * PREZZI, axis=1)</code>. Stampate il fatturato del mese, l'incasso medio giornaliero e i giorni sopra 300 EUR.</li>
+                            <li>Monte Carlo per il test A/B: ogni versione della pagina ha 1000 visitatori; la A converte con probabilità 4%, la B con 5%. Simulate 10 000 volte gli acquisti con <code>rng.binomial</code>, prima per A e poi per B, e stimate la probabilità che B venda più di A.</li>
+                            <li>Create un DataFrame dei prodotti con categoria, pezzi venduti (<code>np.sum(pezzi, axis=0)</code>), prezzo e costo. Aggiungete la colonna <code>margine</code>, pezzi per (prezzo − costo), e stampate prodotto, pezzi e margine con <code>round(2)</code>.</li>
+                            <li>Stampate il margine totale per categoria con <code>groupby</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Prodotto</th><th>Categoria</th><th>Prezzo (EUR)</th><th>Costo (EUR)</th></tr></thead><tbody><tr><td>zaino</td><td>scuola</td><td>39.90</td><td>22.00</td></tr><tr><td>borraccia</td><td>casa</td><td>14.50</td><td>6.00</td></tr><tr><td>quaderno</td><td>scuola</td><td>3.20</td><td>1.10</td></tr><tr><td>cuffie</td><td>tech</td><td>59.00</td><td>38.00</td></tr><tr><td>lampada</td><td>casa</td><td>24.90</td><td>13.50</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>Fatturato del mese: 9588.20 EUR
+Incasso medio giornaliero: 319.61 EUR
+Giorni sopra 300 EUR: 18 su 30
+P(la pagina B vende più della A): 84.7%
+    prodotto  pezzi  margine
+0      zaino     71   1270.9
+1  borraccia     73    620.5
+2   quaderno     74    155.4
+3     cuffie     63   1323.0
+4    lampada     70    798.0
+categoria
+casa      1418.5
+scuola    1426.3
+tech      1323.0
+Name: margine, dtype: float64</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>5000 visitatori per versione → <code>99.2%</code>: con più visitatori il test distingue meglio le due pagine</li><li>zaino a 35.90 EUR → <code>Fatturato del mese: 9304.20 EUR</code>, margine di <code>scuola</code> <code>1142.3</code></li></ul>
+                    </div>
+                </div>
             </section>
 
-            <!-- SLIDE 13: Dati sporchi -->
             <section>
-                <h2>Dati sporchi: problemi tipici</h2>
-                <pre><code class="language-python">dati_sporchi: dict[str, list] = {
-    "nome": ["Anna", "Marco", "Anna", "Luca", None, "Sara", "Marco", "Elena"],
-    "eta":  ["22",   "25",    "22",   "abc",  "30", "28",   "25",    "24"],
-    "voto": [28,     25,      28,     30,     np.nan, 22,   25,      np.nan],
-    "corso":["Stat", "Econ",  "Stat", "Stat", "Econ", "stat","Econ", "STAT"],
-}
-df: pd.DataFrame = pd.DataFrame(dati_sporchi)</code></pre>
+                <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py</div>
+                <h2>Lo studio simulato</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Simulate 20 pazienti, da <code>P01</code> a <code>P20</code> (<code>"P" + str(i).zfill(2)</code>): i primi 10 nel gruppo <code>trattamento</code>, gli altri nel <code>controllo</code>. Con <code>rng = np.random.default_rng(11)</code> estraete in quest'ordine l'età (<code>rng.integers(35, 71, size=20)</code>), la pressione sistolica prima (<code>np.round(rng.normal(150, 12, size=20))</code>) e il calo (<code>rng.normal(2 + 6 * (gruppo == "trattamento"), 5)</code>): in media 8 mmHg nel trattamento e 2 nel controllo.</li>
+                            <li>Calcolate senza cicli la pressione dopo (<code>np.round(prima - calo)</code>) e la differenza prima − dopo. Un paziente è migliorato se la pressione scende di almeno 5 mmHg. Stampate il calo medio, i migliorati di ogni gruppo (filtro sul gruppo) e la quota complessiva di migliorati.</li>
+                            <li>Monte Carlo: se l'integratore non avesse effetto, ogni paziente migliorerebbe con la stessa probabilità, pari alla quota complessiva. Simulate 10 000 gruppi di 10 pazienti con <code>rng.binomial</code> e stimate la probabilità di avere almeno tanti migliorati quanti nel gruppo trattamento.</li>
+                            <li>Create un DataFrame con codice, età, gruppo, pressione prima e dopo, aggiungete la colonna <code>differenza</code> e stampate le prime 3 righe.</li>
+                            <li>Stampate età media e differenza media per gruppo con <code>groupby</code> e <code>round(1)</code>.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>Calo medio: 4.6 mmHg
+Migliorati trattamento: 8 su 10
+Migliorati controllo: 2 su 10
+Migliorati in tutto: 50%
+P(almeno 8 su 10 senza effetto): 5.3%
+  codice  eta       gruppo  prima   dopo  differenza
+0    P01   39  trattamento  169.0  157.0        12.0
+1    P02   39  trattamento  149.0  142.0         7.0
+2    P03   63  trattamento  158.0  154.0         4.0
+              eta  differenza
+gruppo                       
+controllo    55.9         0.6
+trattamento  49.3         8.6</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>soglia di 10 mmHg → <code>Migliorati trattamento: 5 su 10</code>, <code>Migliorati controllo: 0 su 10</code>, <code>P(almeno 5 su 10 senza effetto): 7.5%</code></li><li>integratore senza effetto (<code>2 + 0 * (gruppo == "trattamento")</code>) → <code>Migliorati trattamento: 4 su 10</code>, <code>34.8%</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Caso e probabilità · ch_probabilita.py</div>
+                <h2>Dadi e porte</h2>
                 <div class="columns">
                     <div class="col">
-                        <div class="box box-red">
-                            <strong>Problemi presenti:</strong>
-                            <ul>
-                                <li>Valori mancanti (<code>None</code>, <code>NaN</code>)</li>
-                                <li>Righe duplicate</li>
-                                <li>Tipi sbagliati (<code>"abc"</code> in eta)</li>
-                                <li>Stringhe inconsistenti (<code>"stat"</code>, <code>"STAT"</code>)</li>
-                            </ul>
-                        </div>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Simulate 1000 lanci di due dadi con <code>rng = np.random.default_rng(6)</code>: prima <code>dado1</code>, poi <code>dado2</code>, ciascuno con <code>rng.integers(1, 7, size=1000)</code>. Calcolate la somma senza cicli.</li>
+                            <li>Stampate la somma media e la frequenza della somma 7, delle somme almeno 10 (con un filtro) e dei doppi, accanto alle probabilità esatte 6/36, 6/36 e 1/6.</li>
+                            <li>Monte Carlo per Monty Hall: in 10 000 partite estraete la porta dell'auto e la prima scelta del giocatore, ciascuna con <code>rng.integers(0, 3, size=10_000)</code>. Chi resta vince quando le due porte coincidono, chi cambia vince negli altri casi: stimate le due probabilità.</li>
+                            <li>Mettete i lanci in un DataFrame con le colonne <code>dado1</code> e <code>dado2</code> e aggiungete la colonna <code>somma</code>.</li>
+                            <li>Stampate la somma media per ogni valore del primo dado con <code>groupby</code>, accanto al valore teorico (faccia + 3.5).</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <div class="box box-blue">
-                            <strong>Individuare i problemi:</strong>
-                            <ul>
-                                <li><code>df.isnull().sum()</code></li>
-                                <li><code>df.duplicated().sum()</code></li>
-                                <li><code>df.dtypes</code></li>
-                                <li><code>df["corso"].unique()</code></li>
-                            </ul>
-                        </div>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output" style="font-size:0.5em"><code class="language-plaintext" data-trim data-noescape>Somma media: 7.05 (teorica 7.00)
+Somma 7: 15.1% (esatta 16.7%)
+Somma almeno 10: 188 lanci (18.8%, esatta 16.7%)
+Doppi: 16.8% (esatta 16.7%)
+Monty Hall, vince chi resta: 33.8%
+Monty Hall, vince chi cambia: 66.2%
+Primo dado 1: somma media 4.30 (teorica 4.50)
+Primo dado 2: somma media 5.70 (teorica 5.50)
+Primo dado 3: somma media 6.26 (teorica 6.50)
+Primo dado 4: somma media 7.60 (teorica 7.50)
+Primo dado 5: somma media 8.54 (teorica 8.50)
+Primo dado 6: somma media 9.60 (teorica 9.50)</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>100 000 lanci → <code>Somma 7: 16.6%</code>, <code>Somma almeno 10: 16493 lanci (16.5%, esatta 16.7%)</code> e medie per gruppo vicine a quelle teoriche</li><li>raggruppate per il secondo dado → stessi valori teorici, medie diverse (<code>Secondo dado 3: somma media 6.37</code>)</li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 14: Pulizia dei dati -->
-            <section>
-                <h2>Pulizia dei dati</h2>
-                <pre><code class="language-python"># 1. Rimuovere duplicati
-df_pulito: pd.DataFrame = df.drop_duplicates()
-
-# 2. Correggere tipi sbagliati (errori -> NaN)
-df_pulito["eta"] = pd.to_numeric(df_pulito["eta"], errors="coerce")
-
-# 3. Normalizzare stringhe
-df_pulito["corso"] = df_pulito["corso"].str.strip().str.capitalize()
-
-# 4. Gestire i mancanti
-# Rimuovere righe senza nome
-df_pulito = df_pulito.dropna(subset=["nome"])
-# Riempire voti mancanti con la mediana
-mediana_voto: float = df_pulito["voto"].median()
-df_pulito["voto"] = df_pulito["voto"].fillna(mediana_voto)
-# Riempire eta mancante con la media
-media_eta: float = df_pulito["eta"].mean()
-df_pulito["eta"] = df_pulito["eta"].fillna(round(media_eta))</code></pre>
-                <div class="box box-yellow">
-                    <strong>Attenzione:</strong> le decisioni prese nella pulizia (es. mediana vs eliminazione) possono influenzare significativamente i risultati dell'analisi.
-                </div>
-            </section>
-
-            <!-- SLIDE 15: dropna vs fillna -->
-            <section>
-                <h2><code>dropna()</code> vs <code>fillna()</code></h2>
-                <div class="compare">
-                    <div class="good">
-                        <h3><code>dropna()</code></h3>
-                        <p>Rimuove le righe (o colonne) con valori mancanti.</p>
-                        <pre><code class="language-python"># Rimuovi righe con qualsiasi NaN
-df.dropna()
-
-# Solo dove manca il nome
-df.dropna(subset=["nome"])</code></pre>
-                        <p><strong>Quando:</strong> pochi mancanti, oppure il dato e essenziale (es. chiave primaria).</p>
-                    </div>
-                    <div class="bad">
-                        <h3><code>fillna()</code></h3>
-                        <p>Sostituisce i valori mancanti con un valore scelto.</p>
-                        <pre><code class="language-python"># Con la mediana
-df["voto"].fillna(df["voto"].median())
-
-# Con un valore fisso
-df["nome"].fillna("Sconosciuto")</code></pre>
-                        <p><strong>Quando:</strong> molti mancanti, non si vuole perdere dati.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SLIDE 16: Sezione groupby -->
-            <section class="section-slide">
-                <h2>groupby</h2>
-                <p>Il pattern split-apply-combine</p>
-            </section>
-
-            <!-- SLIDE 17: groupby base -->
-            <section>
-                <h2><code>groupby</code>: statistiche per categoria</h2>
-                <div class="diagram">
-                    DataFrame &rarr; <strong>split</strong> (dividi per gruppo) &rarr; <strong>apply</strong> (calcola funzione) &rarr; <strong>combine</strong> (ricombina risultati)
-                </div>
-                <pre><code class="language-python">df: pd.DataFrame = pd.read_csv("studenti.csv")
-
-# Media voto per corso
-media_per_corso: pd.DataFrame = (
-    df.groupby("corso")["voto_medio"]
-    .mean()
-    .round(2)
-    .sort_values(ascending=False)
-)
-print(media_per_corso)
-
-# Statistiche multiple per corso
-stats_corso: pd.DataFrame = (
-    df.groupby("corso")["voto_medio"]
-    .agg(["count", "mean", "std", "min", "max"])
-    .round(2)
-)</code></pre>
-            </section>
-
-            <!-- SLIDE 18: groupby avanzato -->
-            <section>
-                <h2><code>groupby</code> avanzato</h2>
-                <pre><code class="language-python"># Groupby con piu colonne + unstack per tabella pivot
-media_corso_anno: pd.DataFrame = (
-    df.groupby(["corso", "anno"])["voto_medio"]
-    .mean()
-    .round(2)
-    .unstack()       # anno diventa colonna
-)
-print(media_corso_anno)</code></pre>
-                <pre><code class="language-python"># Filtro + groupby combinati
-bravi: pd.DataFrame = df[df["voto_medio"] >= 27]
-
-crediti_regione: pd.Series = (
-    bravi.groupby("regione")["crediti"]
-    .mean()
-    .round(1)
-    .sort_values(ascending=False)
-)
-print(crediti_regione)</code></pre>
-                <div class="box box-green">
-                    <strong>Schema tipico:</strong> filtrare &rarr; raggruppare &rarr; aggregare &rarr; ordinare
-                </div>
-            </section>
-
-            <!-- SLIDE 19: Sezione esercizi autonomi -->
-            <section class="section-slide">
-                <h2>Parte 2 &mdash; Esercizi autonomi</h2>
-                <p>Risolvete senza guardare le soluzioni. Usate sempre type hints.</p>
-            </section>
-
-            <!-- SLIDE 20: Esercizio 1 -->
-            <section>
-                <h2>Esercizio 1 &mdash; Statistiche di un array <span class="badge badge-green">Base</span></h2>
-                <div class="box box-blue">
-                    <strong>Consegna:</strong> Create un array di 1000 valori da una distribuzione normale N(170, 8) &mdash; simulando altezze in cm.
-                </div>
-                <p>Calcolate e stampate:</p>
-                <ul>
-                    <li>Media, mediana, deviazione standard</li>
-                    <li>Minimo e massimo</li>
-                    <li>Percentile 5 e percentile 95</li>
-                    <li>Quanti valori cadono in [media &minus; 2*std, media + 2*std]</li>
-                    <li>Verificate che la percentuale sia vicina al 95%</li>
-                </ul>
-                <p><strong>Output atteso</strong> (valori approssimativi):</p>
-                <pre><code class="language-python">Media:         ~170.0
-Dev. std:      ~8.0
-Percentile 5:  ~156.8
-Percentile 95: ~183.2
-Valori in ±2 std: ~950/1000 (95.0%)</code></pre>
-            </section>
-
-            <!-- SLIDE 21: Esercizio 2 -->
-            <section>
-                <h2>Esercizio 2 &mdash; Selezione e filtro <span class="badge badge-green">Base</span></h2>
-                <div class="box box-blue">
-                    <strong>Consegna:</strong> Caricate <code>studenti.csv</code> e:
-                </div>
-                <ol>
-                    <li>Selezionate solo le colonne <code>nome</code>, <code>corso</code>, <code>voto_medio</code></li>
-                    <li>Filtrate gli studenti di "Statistica" con voto &gt; 26</li>
-                    <li>Ordinate per voto medio decrescente</li>
-                    <li>Stampate le prime 10 righe</li>
-                </ol>
-                <pre><code class="language-python"># Struttura della soluzione
-df: pd.DataFrame = pd.read_csv("studenti.csv")
-selezione = df[["nome", "corso", "voto_medio"]]
-filtro = selezione[
-    (selezione["corso"] == "Statistica") &
-    (selezione["voto_medio"] > 26)
-]
-risultato = filtro.sort_values("voto_medio", ascending=False)
-print(risultato.head(10))</code></pre>
-            </section>
-
-            <!-- SLIDE 22: Esercizio 3 -->
-            <section>
-                <h2>Esercizio 3 &mdash; Colonna calcolata <span class="badge badge-green">Base</span></h2>
-                <div class="box box-blue">
-                    <strong>Consegna:</strong> Aggiungete una colonna <code>fascia_voto</code> basata su queste regole:
-                </div>
-                <table>
-                    <thead>
-                        <tr><th>Voto medio</th><th>Fascia</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>&lt; 20</td><td><code>"insufficiente"</code></td></tr>
-                        <tr><td>20 &ndash; 24</td><td><code>"sufficiente"</code></td></tr>
-                        <tr><td>25 &ndash; 27</td><td><code>"buono"</code></td></tr>
-                        <tr><td>&ge; 28</td><td><code>"ottimo"</code></td></tr>
-                    </tbody>
-                </table>
-                <div class="box box-yellow">
-                    <strong>Suggerimento:</strong> usate <code>np.select()</code> con una lista di condizioni, oppure <code>pd.cut()</code>.
-                </div>
-                <pre><code class="language-python">condizioni = [df["voto_medio"] < 20,
-              df["voto_medio"] <= 24,
-              df["voto_medio"] <= 27]
-scelte = ["insufficiente", "sufficiente", "buono"]
-df["fascia_voto"] = np.select(condizioni, scelte, default="ottimo")</code></pre>
-            </section>
-
-            <!-- SLIDE 23: Esercizi 4-6 -->
-            <section>
-                <h2>Esercizi 4&ndash;6 <span class="badge badge-yellow">Intermedio</span></h2>
-                <div class="box box-blue">
-                    <strong>Esercizio 4 &mdash; Confronto tra gruppi:</strong> Usate <code>groupby</code> per rispondere: qual e il corso con media piu alta? La regione con piu crediti? Differenza tra anno 1 e anno 3?
-                </div>
-                <div class="box box-blue" style="margin-top:0.8em;">
-                    <strong>Esercizio 5 &mdash; Merge di DataFrame:</strong> Create due DataFrame (<code>esami</code> e <code>anagrafica</code>) e uniteli con un merge su <code>id_studente</code>. Calcolate la media voti per studente e per materia.
-                </div>
-                <div class="box box-blue" style="margin-top:0.8em;">
-                    <strong>Esercizio 6 &mdash; Pivot table:</strong> Dal DataFrame unito, create una pivot table con <code>pd.pivot_table()</code>:
-                </div>
-                <pre><code class="language-python">pivot: pd.DataFrame = pd.pivot_table(
-    df_unito,
-    values="voto",
-    index="corso",
-    columns="materia",
-    aggfunc="mean"
-).round(1).fillna("-")</code></pre>
-            </section>
-
-            <!-- SLIDE 24: Esercizio 7 -->
-            <section>
-                <h2>Esercizio 7 &mdash; Analisi completa <span class="badge badge-red">Avanzato</span></h2>
-                <div class="box box-red">
-                    <strong>Sfida:</strong> analisi end-to-end di un dataset simulato.
-                </div>
-                <ol>
-                    <li><strong>Generazione:</strong> 500+ righe &mdash; indagine sulla soddisfazione lavorativa con colonne: <code>id</code>, <code>settore</code>, <code>anni_esperienza</code>, <code>stipendio</code>, <code>soddisfazione</code>, <code>regione</code>, <code>titolo_studio</code></li>
-                    <li><strong>Esplorazione:</strong> dimensioni, tipi, head, describe, value_counts</li>
-                    <li><strong>Pulizia:</strong> inserite il 5% di NaN in stipendio e soddisfazione, poi gestite i mancanti</li>
-                    <li><strong>Analisi per gruppi:</strong> stipendio medio per settore, soddisfazione per titolo di studio, correlazione esperienza-stipendio</li>
-                    <li><strong>Export:</strong> salvate dataset pulito e riepilogo statistico come CSV</li>
-                </ol>
-            </section>
-
-            <!-- SLIDE 25: Domande di verifica -->
             <section>
                 <h2>Domande di verifica</h2>
-                <ol>
-                    <li>Differenza tra una lista Python e un array NumPy? Perche NumPy e piu veloce?</li>
-                    <li>Cosa fa <code>np.sum(array > 5)</code>? Perche funziona con booleani?</li>
-                    <li>Differenza tra <code>dropna()</code> e <code>fillna()</code>: quando preferire l'uno?</li>
-                    <li><code>df["col"]</code> vs <code>df[["col"]]</code> &mdash; che tipo restituisce ciascuna?</li>
-                    <li>Come funziona <code>groupby</code>? Descrivete split-apply-combine.</li>
-                    <li>Merge con <code>how="inner"</code> vs <code>how="left"</code>: cosa cambia?</li>
-                    <li>Perche l'errore Monte Carlo decresce con la radice di n?</li>
+                <ol style="font-size:0.85em">
+                    <li>In <code>voti_numpy.py</code>, cosa contiene <code>voti &gt;= 18</code>? Perché <code>voti[voti &gt;= 18]</code> non ha bisogno di un ciclo?</li>
+                    <li>In <code>ore_studio.py</code>, che differenza c'è tra <code>axis=0</code> e <code>axis=1</code>? Quale serve per la media di ogni corso?</li>
+                    <li>Perché <code>np.mean(np.abs(z) &gt; 2)</code> è una quota? Cosa diventano <code>True</code> e <code>False</code> nel calcolo?</li>
+                    <li>A cosa serve il seed in <code>np.random.default_rng(42)</code>? Perché conviene fissarlo quando si consegna un'analisi?</li>
+                    <li>In <code>test_crocette.py</code>, perché il punteggio medio con la penalità di 1/3 è circa 0?</li>
+                    <li>In <code>pulizia_questionario.py</code>, quando conviene togliere le righe con valori mancanti e quando sostituirli con la media?</li>
+                    <li>Che differenza c'è tra <code>how="left"</code> e <code>how="inner"</code> in <code>merge</code>? Quando danno lo stesso risultato?</li>
                 </ol>
-                <div class="box box-green">
-                    <strong>Prossimo laboratorio:</strong> Matplotlib, Seaborn e un mini-progetto riepilogativo che integra tutto il corso.
-                </div>
             </section>
-
-    
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">

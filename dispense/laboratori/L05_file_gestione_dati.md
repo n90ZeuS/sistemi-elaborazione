@@ -4,7 +4,7 @@
 
 Oggi si lavora con dati che stanno nei file: testo, CSV e JSON. Per ogni esercizio create un file `.py` con il nome indicato, nella stessa cartella dei file di dati. I file di dati sono scritti nella slide dell'esercizio: create il file con l'editor e copiate il contenuto, compresa la riga di intestazione, e lasciate un a capo dopo l'ultima riga. Le classi non servono.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T17.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T17.
 
 | # | File | Esercizio |
 |---|---|---|
@@ -16,7 +16,7 @@ Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare
 | 6 | `sondaggio.py` | Il sondaggio in JSON |
 | 7 | `appello_robusto.py` | Un appello con errori |
 | 8 | `config_soglia.py` | Configurazione in JSON |
-| Sfida | `pipeline_pm10.py` | PM10 a Padova |
+| Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
 
 ---
 
@@ -376,53 +376,242 @@ Romano, Rossi, Verdi
 
 ---
 
-## Sfida — PM10 a Padova (`pipeline_pm10.py`)
+## Challenge a scelta
+
+Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.
+
+| Tema | Challenge | File |
+|---|---|---|
+| Mercati e finanza | Il portafoglio: prezzi da file | `ch_mercati.py` |
+| Sport | Il campionato: tempi da file | `ch_sport.py` |
+| Imprese e marketing | Il negozio online: ordini da file | `ch_negozio.py` |
+| Salute e scienza | Lo studio clinico: misure da file | `ch_salute.py` |
+| Caso e probabilità | Il tavolo da gioco: lanci da file | `ch_probabilita.py` |
+
+**Tutte le challenge chiedono:**
+
+- Create il file CSV della consegna con l'editor, nella stessa cartella del programma: copiate anche l'intestazione e lasciate un a capo dopo l'ultima riga. Una o due righe contengono un valore sbagliato.
+- Scrivete una funzione `leggi(percorso: Path)` che legge il file con `csv.DictReader(f, delimiter=";")` e restituisce una tupla: un `defaultdict(list)` con i valori raggruppati e il numero di righe scartate.
+- Dentro la funzione convertite il valore di ogni riga in un `try`: se c'è `ValueError` contate la riga come scartata e passate alla successiva.
+- Nel blocco `if __name__ == "__main__":` chiamate la funzione dentro un `try`. Se il file non esiste (`FileNotFoundError`) stampate `File non trovato:` e il nome del file (`e.filename`).
+- Per ogni gruppo, in ordine alfabetico, stampate una riga con le statistiche richieste. Mettete le stesse statistiche in un dizionario di dizionari e salvatelo in JSON con `json.dump(..., indent=2, ensure_ascii=False)`.
+- Alla fine stampate il numero di righe scartate e il nome del file JSON salvato.
+
+---
+
+### Challenge · Mercati e finanza — Il portafoglio: prezzi da file (`ch_mercati.py`)
 
 **Consegna**
 
-1. Il file `rilevazioni.csv` contiene le misure giornaliere di PM10 (µg/m³) di tre stazioni di Padova, scritte a mano e con diversi problemi (vedi tabella).
-2. Scrivete una funzione `pulisci(percorso: Path)` che restituisce un dizionario stazione → lista di misure valide (`defaultdict(list)`) e il numero di righe scartate.
-3. Nel blocco `if __name__ == "__main__":` calcolate per ogni stazione, in ordine alfabetico, media (`round(..., 1)`), massimo e giorni oltre il limite di 50, e stampate il dizionario di ogni stazione.
-4. Salvate tutto in `pm10.json` (un dizionario di dizionari) e stampate il numero di righe scartate.
+1. Il file `chiusure.csv` contiene i prezzi di chiusura di `ENRG`, `BANK` e `TECH` dal 1° al 4 dicembre, copiati a mano. In due righe il prezzo manca o non è un numero.
+2. La funzione `leggi` raggruppa i prezzi per titolo, nell'ordine del file.
+3. Per ogni titolo stampate il numero di prezzi validi, la media con due decimali e il rendimento dal primo all'ultimo prezzo, `(ultimo - primo) / primo`, in percentuale con un decimale.
+4. Salvate il riepilogo in `titoli.json`: per ogni titolo `prezzi`, `media` (arrotondata a 2 decimali) e `rendimento` (arrotondato a 4).
 
-| Problema | Cosa fare |
-|---|---|
-| spazi e maiuscole nel nome | `strip()` e `title()` |
-| stazione vuota | scartare la riga |
-| virgola decimale | `replace(",", ".")` prima di `float()` |
-| `N/D` o campo vuoto | scartare la riga |
-| valore negativo | scartare la riga |
-
-**File `rilevazioni.csv`** (createlo nella cartella del programma)
+**File `chiusure.csv`** (createlo nella cartella del programma)
 
 ```
-stazione;data;pm10
-Mandria;01/12/2026;38,5
-Arcella;01/12/2026;52
- mandria ;02/12/2026;61,2
-Arcella;02/12/2026;N/D
-;02/12/2026;44
-Granze;01/12/2026;27,8
-Granze;02/12/2026;
-ARCELLA;03/12/2026;48,9
-Mandria;03/12/2026;55
-Granze;03/12/2026;-3
+giorno;titolo;prezzo
+01/12;ENRG;24.10
+01/12;BANK;12.40
+01/12;TECH;48.00
+02/12;ENRG;24.60
+02/12;BANK;12.20
+02/12;TECH;sospeso
+03/12;ENRG;25.30
+03/12;BANK;12.70
+03/12;TECH;50.40
+04/12;BANK;
+04/12;TECH;51.20
 ```
 
 **Esempio di esecuzione**
 
 ```
-Arcella: {'media': 50.5, 'massimo': 52.0, 'giorni_oltre': 1}
-Granze: {'media': 27.8, 'massimo': 27.8, 'giorni_oltre': 0}
-Mandria: {'media': 51.6, 'massimo': 61.2, 'giorni_oltre': 2}
-Righe scartate: 4. Salvato pm10.json
+BANK: 3 prezzi, media 12.43, rendimento 2.4%
+ENRG: 3 prezzi, media 24.67, rendimento 5.0%
+TECH: 3 prezzi, media 49.87, rendimento 6.7%
+Righe scartate: 2. Salvato titoli.json
 ```
 
 **Provate anche**
 
-- aggiungete `Granze;04/12/2026;71,0` → `Granze: {'media': 49.4, 'massimo': 71.0, 'giorni_oltre': 1}`
-- un file con la sola intestazione → `Righe scartate: 0` e `pm10.json` contiene `{}`
-- aggiungete al JSON il numero di misure valide di ogni stazione
+- aggiungete la riga `04/12;ENRG;25.10` → `ENRG: 4 prezzi, media 24.78, rendimento 4.1%`
+- aggiungete invece `04/12;ENRG;25,10`, con la virgola → `Righe scartate: 3` e la riga di ENRG non cambia
+- rinominate il file in `chiusure2.csv` → `File non trovato: chiusure.csv`
+
+---
+
+### Challenge · Sport — Il campionato: tempi da file (`ch_sport.py`)
+
+**Consegna**
+
+1. Il file `giri.csv` contiene i tempi sul giro, in secondi, dei primi tre giri di una gara, scritti dal cronometrista. In due righe al posto del tempo c'è una nota (`SC` per safety car, `box` per il pit stop).
+2. La funzione `leggi` raggruppa i tempi per pilota.
+3. Per ogni pilota stampate il numero di giri validi, il tempo medio e il giro migliore (`min`), con due decimali.
+4. Salvate il riepilogo in `piloti.json`: per ogni pilota `giri`, `media` (arrotondata a 2 decimali) e `migliore`.
+
+**File `giri.csv`** (createlo nella cartella del programma)
+
+```
+giro;pilota;tempo
+1;Ferri;92.4
+1;Lanza;92.9
+1;Moro;93.1
+1;Neri;93.6
+2;Ferri;92.1
+2;Lanza;SC
+2;Moro;92.8
+2;Neri;93.0
+3;Ferri;92.6
+3;Lanza;92.5
+3;Moro;box
+```
+
+**Esempio di esecuzione**
+
+```
+Ferri: 3 giri, media 92.37, migliore 92.10
+Lanza: 2 giri, media 92.70, migliore 92.50
+Moro: 2 giri, media 92.95, migliore 92.80
+Neri: 2 giri, media 93.30, migliore 93.00
+Righe scartate: 2. Salvato piloti.json
+```
+
+**Provate anche**
+
+- aggiungete la riga `3;Neri;93.4` → `Neri: 3 giri, media 93.33, migliore 93.00`
+- aggiungete invece `3;Neri;1:33.4` → `Righe scartate: 3` e la riga di Neri non cambia
+- rinominate il file in `giri2.csv` → `File non trovato: giri.csv`
+
+---
+
+### Challenge · Imprese e marketing — Il negozio online: ordini da file (`ch_negozio.py`)
+
+**Consegna**
+
+1. Il file `ordini.csv` contiene gli ordini di una settimana: cliente, città e importo in euro. In due righe l'importo manca o non è un numero.
+2. La funzione `leggi` raggruppa gli importi per città.
+3. Per ogni città stampate il numero di ordini validi, l'importo medio e il totale, con due decimali.
+4. Salvate il riepilogo in `citta.json`: per ogni città `ordini`, `media` e `totale`, arrotondati a 2 decimali.
+
+**File `ordini.csv`** (createlo nella cartella del programma)
+
+```
+cliente;citta;importo
+Giulia;Padova;45.90
+Marco;Venezia;18.50
+Sara;Padova;32.00
+Luca;Verona;64.80
+Elena;Vicenza;12.90
+Paolo;Venezia;omaggio
+Anna;Padova;27.40
+Davide;Verona;29.90
+Marta;Vicenza;38.00
+Giulia;Padova;
+Marco;Venezia;22.00
+```
+
+**Esempio di esecuzione**
+
+```
+Padova: 3 ordini, media 35.10, totale 105.30
+Venezia: 2 ordini, media 20.25, totale 40.50
+Verona: 2 ordini, media 47.35, totale 94.70
+Vicenza: 2 ordini, media 25.45, totale 50.90
+Righe scartate: 2. Salvato citta.json
+```
+
+**Provate anche**
+
+- completate la riga di Giulia con `Giulia;Padova;15.50` → `Padova: 4 ordini, media 30.20, totale 120.80`, `Righe scartate: 1`
+- aggiungete `Sara;Padova;20 EUR` → `Righe scartate: 3` e la riga di Padova non cambia
+- rinominate il file in `ordini2.csv` → `File non trovato: ordini.csv`
+
+---
+
+### Challenge · Salute e scienza — Lo studio clinico: misure da file (`ch_salute.py`)
+
+**Consegna**
+
+1. Il file `pressione.csv` contiene la pressione sistolica (mmHg) dei pazienti dello studio alla fine del trattamento. Per due pazienti la misura manca.
+2. La funzione `leggi` raggruppa le misure per gruppo (`trattamento` o `controllo`).
+3. Per ogni gruppo stampate il numero di pazienti con una misura valida, la media con un decimale e la quota di pazienti sotto 140 mmHg, in percentuale con un decimale.
+4. Salvate il riepilogo in `gruppi.json`: per ogni gruppo `pazienti`, `media` (arrotondata a 1 decimale) e `sotto_140` (arrotondata a 3).
+
+**File `pressione.csv`** (createlo nella cartella del programma)
+
+```
+paziente;gruppo;sistolica
+P01;trattamento;128
+P02;controllo;142
+P03;trattamento;135
+P04;controllo;138
+P05;trattamento;n.d.
+P06;controllo;151
+P07;trattamento;131
+P08;controllo;
+P09;trattamento;144
+P10;controllo;135
+P11;trattamento;126
+```
+
+**Esempio di esecuzione**
+
+```
+controllo: 4 pazienti, media 141.5 mmHg, sotto 140: 50.0%
+trattamento: 5 pazienti, media 132.8 mmHg, sotto 140: 80.0%
+Righe scartate: 2. Salvato gruppi.json
+```
+
+**Provate anche**
+
+- completate la riga di P08 con `P08;controllo;139` → `controllo: 5 pazienti, media 141.0 mmHg, sotto 140: 60.0%`, `Righe scartate: 1`
+- aggiungete `P12;trattamento;130 mmHg` → `Righe scartate: 3` e la riga del trattamento non cambia
+- rinominate il file in `pressione2.csv` → `File non trovato: pressione.csv`
+
+---
+
+### Challenge · Caso e probabilità — Il tavolo da gioco: lanci da file (`ch_probabilita.py`)
+
+**Consegna**
+
+1. Il file `lanci.csv` contiene i lanci di un dado fatti da tre giocatori e registrati a mano. In due righe il risultato manca o è scritto in lettere.
+2. La funzione `leggi` raggruppa i risultati per giocatore; convertiteli con `int()`.
+3. Per ogni giocatore stampate il numero di lanci validi, la media con due decimali e la quota di 6 (`count(6)`), in percentuale con un decimale.
+4. Salvate il riepilogo in `giocatori.json`: per ogni giocatore `lanci`, `media` (arrotondata a 2 decimali) e `quota_sei` (arrotondata a 3).
+
+**File `lanci.csv`** (createlo nella cartella del programma)
+
+```
+lancio;giocatore;dado
+1;Anna;4
+2;Marco;6
+3;Giulia;2
+4;Anna;6
+5;Marco;3
+6;Giulia;sei
+7;Anna;1
+8;Marco;6
+9;Giulia;5
+10;Anna;
+11;Giulia;6
+```
+
+**Esempio di esecuzione**
+
+```
+Anna: 3 lanci, media 3.67, quota di 6: 33.3%
+Giulia: 3 lanci, media 4.33, quota di 6: 33.3%
+Marco: 3 lanci, media 5.00, quota di 6: 66.7%
+Righe scartate: 2. Salvato giocatori.json
+```
+
+**Provate anche**
+
+- completate la riga 10 con `10;Anna;6` → `Anna: 4 lanci, media 4.25, quota di 6: 50.0%`, `Righe scartate: 1`
+- aggiungete `12;Marco;4.5` → `int("4.5")` dà `ValueError`: `Righe scartate: 3`
+- rinominate il file in `lanci2.csv` → `File non trovato: lanci.csv`
 
 ---
 

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L08_visualizzazione/genera_dati.py — Sistemi di Elaborazione</title>
+    <style>
+:root {
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1e40af;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+nav.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.top-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.top-nav a:hover { text-decoration: underline; }
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: 0.2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.3rem; }
+
+p { margin-bottom: 0.8rem; }
+
+ul, ol { margin-left: 1.5rem; margin-bottom: 0.8rem; }
+li { margin-bottom: 0.3rem; }
+
+code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    font-size: 0.88em;
+    background: var(--bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1rem 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting (monokai-inspired) */
+.kw { color: #f92672; }       /* keywords */
+.fn { color: #a6e22e; }       /* function names */
+.st { color: #e6db74; }       /* strings */
+.cm { color: #75715e; }       /* comments */
+.nb { color: #66d9ef; }       /* builtins */
+.mi { color: #ae81ff; }       /* numbers */
+.op { color: #f8f8f2; }       /* operators */
+.dc { color: #a6e22e; }       /* decorators */
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover { background: var(--bg-alt); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 2rem 0;
+}
+
+a { color: var(--accent); }
+
+.download-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.download-link:hover { background: var(--accent-dark); }
+
+nav.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.9rem;
+}
+
+nav.bottom-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav.bottom-nav a:hover { text-decoration: underline; }
+
+@media print {
+    nav.top-nav, nav.bottom-nav, .download-link { display: none; }
+    body { max-width: none; padding: 0; }
+    pre, table, blockquote { break-inside: avoid; }
+    h2, h3 { break-after: avoid; }
+}
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L08_visualizzazione_progetto.html">Dispensa</a> &bull; <a href="../../presentazioni/L08_visualizzazione_progetto.html">Presentazione</a> &bull; <a href="esercizi.html">Esercizi</a></nav>
+<h1>L08_visualizzazione/genera_dati.py</h1>
+<a class="download-link" href="genera_dati.py" download>Scarica file .py</a>
+<pre><code><span class="st">&quot;&quot;&quot;Genera i 5 CSV dei progetti finali di L08 (seed fisso).
+
+Ogni file usa il separatore &quot;;&quot; e contiene qualche riga da
+pulire: duplicati, valori mancanti, valori impossibili.
+&quot;&quot;&quot;</span>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">2027</span>)
+
+
+<span class="kw">def</span> <span class="fn">difetti</span>(<span class="fn">df</span>: pd.DataFrame, col: <span class="nb">str</span>, mancanti: <span class="nb">int</span>,
+            impossibili: <span class="nb">list</span>, duplicati: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Inserisce mancanti, valori impossibili e righe doppie.&quot;&quot;&quot;</span>
+    df <span class="op">=</span> df.copy()
+    righe <span class="op">=</span> rng.choice(<span class="nb">len</span>(df), mancanti <span class="op">+</span> <span class="nb">len</span>(impossibili),
+                       replace<span class="op">=</span><span class="kw">False</span>)
+    df[col] <span class="op">=</span> df[col].astype(<span class="nb">object</span>)
+    <span class="kw">for</span> i, r <span class="kw">in</span> <span class="nb">enumerate</span>(righe):
+        valore <span class="op">=</span> np.nan <span class="kw">if</span> i <span class="op">&lt;</span> mancanti <span class="kw">else</span> impossibili[i <span class="op">-</span> mancanti]
+        df.loc[r, col] <span class="op">=</span> valore
+    doppie <span class="op">=</span> np.sort(rng.choice(<span class="nb">len</span>(df), duplicati, replace<span class="op">=</span><span class="kw">False</span>))
+    pezzi <span class="op">=</span> []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(df)):
+        pezzi.append(df.iloc[[i]])
+        <span class="kw">if</span> i <span class="kw">in</span> doppie:
+            pezzi.append(df.iloc[[i]])
+    <span class="kw">return</span> pd.concat(pezzi, ignore_index<span class="op">=</span><span class="kw">True</span>)
+
+
+<span class="kw">def</span> <span class="fn">mercati</span>() <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Prezzi di chiusura di settembre e ottobre 2026.&quot;&quot;&quot;</span>
+    giorni <span class="op">=</span> pd.bdate_range(<span class="st">&quot;2026-09-01&quot;</span>, <span class="st">&quot;2026-10-30&quot;</span>)
+    n <span class="op">=</span> <span class="nb">len</span>(giorni)
+    mib <span class="op">=</span> rng.normal(<span class="mi">0.0004</span>, <span class="mi">0.008</span>, n)
+    titoli <span class="op">=</span> {<span class="st">&quot;ENRG&quot;</span>: (<span class="mi">18.40</span>, <span class="mi">0.7</span>, <span class="op">-</span><span class="mi">0.0003</span>, <span class="mi">0.009</span>),
+              <span class="st">&quot;BANK&quot;</span>: (<span class="mi">11.20</span>, <span class="mi">1.2</span>, <span class="mi">0.0002</span>, <span class="mi">0.010</span>),
+              <span class="st">&quot;TECH&quot;</span>: (<span class="mi">26.50</span>, <span class="mi">1.4</span>, <span class="mi">0.0020</span>, <span class="mi">0.016</span>)}
+    serie <span class="op">=</span> {<span class="st">&quot;MIB&quot;</span>: <span class="mi">100</span> <span class="op">*</span> np.cumprod(<span class="mi">1</span> <span class="op">+</span> mib)}
+    <span class="kw">for</span> t, (p0, beta, mu, sd) <span class="kw">in</span> titoli.items():
+        r <span class="op">=</span> mu <span class="op">+</span> beta <span class="op">*</span> mib <span class="op">+</span> rng.normal(<span class="mi">0</span>, sd, n)
+        serie[t] <span class="op">=</span> p0 <span class="op">*</span> np.cumprod(<span class="mi">1</span> <span class="op">+</span> r)
+    righe <span class="op">=</span> []
+    <span class="kw">for</span> i, g <span class="kw">in</span> <span class="nb">enumerate</span>(giorni):
+        <span class="kw">for</span> t <span class="kw">in</span> [<span class="st">&quot;ENRG&quot;</span>, <span class="st">&quot;BANK&quot;</span>, <span class="st">&quot;TECH&quot;</span>, <span class="st">&quot;MIB&quot;</span>]:
+            righe.append((g.strftime(<span class="st">&quot;%Y-%m-%d&quot;</span>), t,
+                          <span class="nb">round</span>(<span class="nb">float</span>(serie[t][i]), <span class="mi">2</span>)))
+    df <span class="op">=</span> pd.DataFrame(righe, columns<span class="op">=</span>[<span class="st">&quot;data&quot;</span>, <span class="st">&quot;titolo&quot;</span>, <span class="st">&quot;prezzo&quot;</span>])
+    <span class="kw">return</span> difetti(df, <span class="st">&quot;prezzo&quot;</span>, <span class="mi">2</span>, [<span class="mi">0.0</span>, <span class="op">-</span><span class="mi">11.35</span>], <span class="mi">3</span>)
+
+
+<span class="kw">def</span> <span class="fn">sport</span>() <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Tempi sul giro dei 4 piloti in 3 gare da 15 giri.&quot;&quot;&quot;</span>
+    base <span class="op">=</span> {<span class="mi">1</span>: <span class="mi">92.0</span>, <span class="mi">2</span>: <span class="mi">88.5</span>, <span class="mi">3</span>: <span class="mi">95.2</span>}
+    passo <span class="op">=</span> {<span class="st">&quot;Ferri&quot;</span>: <span class="op">-</span><span class="mi">0.35</span>, <span class="st">&quot;Lanza&quot;</span>: <span class="mi">0.15</span>,
+             <span class="st">&quot;Moro&quot;</span>: <span class="op">-</span><span class="mi">0.10</span>, <span class="st">&quot;Neri&quot;</span>: <span class="mi">0.45</span>}
+    righe <span class="op">=</span> []
+    <span class="kw">for</span> gara, t0 <span class="kw">in</span> base.items():
+        <span class="kw">for</span> pilota, delta <span class="kw">in</span> passo.items():
+            pit <span class="op">=</span> <span class="nb">int</span>(rng.integers(<span class="mi">7</span>, <span class="mi">11</span>))
+            <span class="kw">for</span> giro <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">16</span>):
+                usura <span class="op">=</span> <span class="mi">0.22</span> <span class="op">*</span> ((giro <span class="op">-</span> <span class="mi">1</span>) <span class="kw">if</span> giro <span class="op">&lt;</span> pit
+                                <span class="kw">else</span> (giro <span class="op">-</span> pit))
+                t <span class="op">=</span> t0 <span class="op">+</span> delta <span class="op">+</span> usura <span class="op">+</span> rng.normal(<span class="mi">0</span>, <span class="mi">0.3</span>)
+                <span class="kw">if</span> giro <span class="op">=</span><span class="op">=</span> pit:
+                    t <span class="op">+</span><span class="op">=</span> <span class="mi">21.0</span>
+                <span class="kw">if</span> gara <span class="op">=</span><span class="op">=</span> <span class="mi">2</span> <span class="kw">and</span> giro <span class="kw">in</span> (<span class="mi">5</span>, <span class="mi">6</span>):
+                    t <span class="op">+</span><span class="op">=</span> <span class="mi">14.0</span>
+                righe.append((gara, pilota, giro, <span class="nb">round</span>(t, <span class="mi">1</span>)))
+    df <span class="op">=</span> pd.DataFrame(righe,
+                      columns<span class="op">=</span>[<span class="st">&quot;gara&quot;</span>, <span class="st">&quot;pilota&quot;</span>, <span class="st">&quot;giro&quot;</span>, <span class="st">&quot;tempo&quot;</span>])
+    <span class="kw">return</span> difetti(df, <span class="st">&quot;tempo&quot;</span>, <span class="mi">2</span>, [<span class="mi">0.0</span>, <span class="mi">921.4</span>], <span class="mi">3</span>)
+
+
+<span class="kw">def</span> <span class="fn">negozio</span>() <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Ordini del negozio online da settembre a dicembre 2026.&quot;&quot;&quot;</span>
+    clienti <span class="op">=</span> {<span class="st">&quot;Bianchi Laura&quot;</span>: <span class="st">&quot;Padova&quot;</span>, <span class="st">&quot;Rossi Marco&quot;</span>: <span class="st">&quot;Padova&quot;</span>,
+               <span class="st">&quot;Conte Elisa&quot;</span>: <span class="st">&quot;Padova&quot;</span>, <span class="st">&quot;Ferro Luca&quot;</span>: <span class="st">&quot;Padova&quot;</span>,
+               <span class="st">&quot;Galli Sara&quot;</span>: <span class="st">&quot;Padova&quot;</span>, <span class="st">&quot;Marin Davide&quot;</span>: <span class="st">&quot;Venezia&quot;</span>,
+               <span class="st">&quot;Zanon Giulia&quot;</span>: <span class="st">&quot;Venezia&quot;</span>, <span class="st">&quot;Pavan Matteo&quot;</span>: <span class="st">&quot;Venezia&quot;</span>,
+               <span class="st">&quot;Basso Chiara&quot;</span>: <span class="st">&quot;Venezia&quot;</span>, <span class="st">&quot;Carraro Paolo&quot;</span>: <span class="st">&quot;Verona&quot;</span>,
+               <span class="st">&quot;Fabbri Anna&quot;</span>: <span class="st">&quot;Verona&quot;</span>, <span class="st">&quot;Riva Stefano&quot;</span>: <span class="st">&quot;Verona&quot;</span>,
+               <span class="st">&quot;Tosi Marta&quot;</span>: <span class="st">&quot;Verona&quot;</span>, <span class="st">&quot;Dal Bo Irene&quot;</span>: <span class="st">&quot;Vicenza&quot;</span>,
+               <span class="st">&quot;Sartori Luca&quot;</span>: <span class="st">&quot;Vicenza&quot;</span>, <span class="st">&quot;Zen Alice&quot;</span>: <span class="st">&quot;Vicenza&quot;</span>}
+    prezzi <span class="op">=</span> {<span class="st">&quot;zaino&quot;</span>: <span class="mi">39.90</span>, <span class="st">&quot;borraccia&quot;</span>: <span class="mi">14.50</span>, <span class="st">&quot;quaderno&quot;</span>: <span class="mi">4.90</span>,
+              <span class="st">&quot;cuffie&quot;</span>: <span class="mi">59.00</span>, <span class="st">&quot;lampada&quot;</span>: <span class="mi">24.90</span>}
+    pesi_prod <span class="op">=</span> [<span class="mi">0.20</span>, <span class="mi">0.25</span>, <span class="mi">0.30</span>, <span class="mi">0.10</span>, <span class="mi">0.15</span>]
+    mesi <span class="op">=</span> {<span class="mi">9</span>: <span class="mi">0.30</span>, <span class="mi">10</span>: <span class="mi">0.20</span>, <span class="mi">11</span>: <span class="mi">0.20</span>, <span class="mi">12</span>: <span class="mi">0.30</span>}
+    nomi <span class="op">=</span> <span class="nb">list</span>(clienti)
+    pesi_cli <span class="op">=</span> rng.dirichlet(np.ones(<span class="nb">len</span>(nomi)) <span class="op">*</span> <span class="mi">1.5</span>)
+    righe <span class="op">=</span> []
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">150</span>):
+        mese <span class="op">=</span> <span class="nb">int</span>(rng.choice(<span class="nb">list</span>(mesi), p<span class="op">=</span><span class="nb">list</span>(mesi.values())))
+        giorno <span class="op">=</span> <span class="nb">int</span>(rng.integers(<span class="mi">1</span>, <span class="mi">31</span> <span class="kw">if</span> mese <span class="op">!</span><span class="op">=</span> <span class="mi">10</span> <span class="kw">else</span> <span class="mi">32</span>))
+        cliente <span class="op">=</span> <span class="nb">str</span>(rng.choice(nomi, p<span class="op">=</span>pesi_cli))
+        prodotto <span class="op">=</span> <span class="nb">str</span>(rng.choice(<span class="nb">list</span>(prezzi), p<span class="op">=</span>pesi_prod))
+        alto <span class="op">=</span> <span class="mi">7</span> <span class="kw">if</span> prodotto <span class="op">=</span><span class="op">=</span> <span class="st">&quot;quaderno&quot;</span> <span class="kw">else</span> <span class="mi">3</span>
+        q <span class="op">=</span> <span class="nb">int</span>(rng.integers(<span class="mi">1</span>, alto))
+        righe.append((<span class="st">f&quot;2026-{mese:02d}-{giorno:02d}&quot;</span>, cliente,
+                      clienti[cliente], prodotto, q,
+                      prezzi[prodotto]))
+    df <span class="op">=</span> pd.DataFrame(righe, columns<span class="op">=</span>[<span class="st">&quot;data&quot;</span>, <span class="st">&quot;cliente&quot;</span>, <span class="st">&quot;citta&quot;</span>,
+                                      <span class="st">&quot;prodotto&quot;</span>, <span class="st">&quot;quantita&quot;</span>,
+                                      <span class="st">&quot;prezzo&quot;</span>])
+    df <span class="op">=</span> df.sort_values(<span class="st">&quot;data&quot;</span>, kind<span class="op">=</span><span class="st">&quot;stable&quot;</span>)
+    df <span class="op">=</span> df.reset_index(drop<span class="op">=</span><span class="kw">True</span>)
+    df.insert(<span class="mi">0</span>, <span class="st">&quot;ordine&quot;</span>, <span class="nb">range</span>(<span class="mi">1001</span>, <span class="mi">1001</span> <span class="op">+</span> <span class="nb">len</span>(df)))
+    <span class="kw">return</span> difetti(df, <span class="st">&quot;quantita&quot;</span>, <span class="mi">2</span>, [<span class="mi">0</span>, <span class="op">-</span><span class="mi">2</span>], <span class="mi">4</span>)
+
+
+<span class="kw">def</span> <span class="fn">salute</span>() <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Pazienti dello studio sull&#x27;integratore per la pressione.&quot;&quot;&quot;</span>
+    n <span class="op">=</span> <span class="mi">120</span>
+    gruppo <span class="op">=</span> np.array([<span class="st">&quot;trattamento&quot;</span>, <span class="st">&quot;controllo&quot;</span>] <span class="op">*</span> (n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>))
+    eta <span class="op">=</span> rng.integers(<span class="mi">40</span>, <span class="mi">76</span>, n)
+    sesso <span class="op">=</span> rng.choice([<span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>], n)
+    prima <span class="op">=</span> rng.normal(<span class="mi">152</span>, <span class="mi">11</span>, n) <span class="op">+</span> <span class="mi">0.2</span> <span class="op">*</span> (eta <span class="op">-</span> <span class="mi">57</span>)
+    effetto <span class="op">=</span> np.where(gruppo <span class="op">=</span><span class="op">=</span> <span class="st">&quot;trattamento&quot;</span>, <span class="op">-</span><span class="mi">11.0</span>, <span class="op">-</span><span class="mi">4.0</span>)
+    dopo <span class="op">=</span> prima <span class="op">+</span> effetto <span class="op">+</span> rng.normal(<span class="mi">0</span>, <span class="mi">7</span>, n)
+    df <span class="op">=</span> pd.DataFrame({
+        <span class="st">&quot;codice&quot;</span>: [<span class="st">f&quot;P{i:03d}&quot;</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>)],
+        <span class="st">&quot;sesso&quot;</span>: sesso, <span class="st">&quot;eta&quot;</span>: eta, <span class="st">&quot;gruppo&quot;</span>: gruppo,
+        <span class="st">&quot;pressione_prima&quot;</span>: prima.<span class="nb">round</span>().astype(<span class="nb">int</span>),
+        <span class="st">&quot;pressione_dopo&quot;</span>: dopo.<span class="nb">round</span>().astype(<span class="nb">int</span>)})
+    df <span class="op">=</span> difetti(df, <span class="st">&quot;pressione_dopo&quot;</span>, <span class="mi">3</span>, [<span class="mi">0</span>], <span class="mi">3</span>)
+    df[<span class="st">&quot;pressione_prima&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;pressione_prima&quot;</span>].astype(<span class="nb">object</span>)
+    df.loc[<span class="mi">17</span>, <span class="st">&quot;pressione_prima&quot;</span>] <span class="op">=</span> <span class="mi">1480</span>
+    <span class="kw">return</span> df
+
+
+<span class="kw">def</span> <span class="fn">probabilita</span>() <span class="op">-</span><span class="op">&gt;</span> pd.DataFrame:
+    <span class="st">&quot;&quot;&quot;Registro di 180 lanci di due dadi; il dado di Dario è
+    truccato e dà 6 più spesso.&quot;&quot;&quot;</span>
+    giocatori <span class="op">=</span> [<span class="st">&quot;Ada&quot;</span>, <span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Dario&quot;</span>]
+    giusto <span class="op">=</span> np.full(<span class="mi">6</span>, <span class="mi">1</span> <span class="op">/</span> <span class="mi">6</span>)
+    truccato <span class="op">=</span> np.array([<span class="mi">0.12</span>, <span class="mi">0.12</span>, <span class="mi">0.12</span>, <span class="mi">0.12</span>, <span class="mi">0.12</span>, <span class="mi">0.40</span>])
+    righe <span class="op">=</span> []
+    <span class="kw">for</span> lancio <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">181</span>):
+        g <span class="op">=</span> giocatori[(lancio <span class="op">-</span> <span class="mi">1</span>) <span class="op">%</span> <span class="mi">4</span>]
+        p <span class="op">=</span> truccato <span class="kw">if</span> g <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Dario&quot;</span> <span class="kw">else</span> giusto
+        d1 <span class="op">=</span> <span class="nb">int</span>(rng.integers(<span class="mi">1</span>, <span class="mi">7</span>))
+        d2 <span class="op">=</span> <span class="nb">int</span>(rng.choice(np.arange(<span class="mi">1</span>, <span class="mi">7</span>), p<span class="op">=</span>p))
+        righe.append((lancio, g, d1, d2))
+    df <span class="op">=</span> pd.DataFrame(righe, columns<span class="op">=</span>[<span class="st">&quot;lancio&quot;</span>, <span class="st">&quot;giocatore&quot;</span>,
+                                      <span class="st">&quot;dado1&quot;</span>, <span class="st">&quot;dado2&quot;</span>])
+    <span class="kw">return</span> difetti(df, <span class="st">&quot;dado2&quot;</span>, <span class="mi">2</span>, [<span class="mi">7</span>, <span class="mi">0</span>], <span class="mi">3</span>)
+
+
+<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
+    file: <span class="nb">dict</span> <span class="op">=</span> {<span class="st">&quot;prezzi.csv&quot;</span>: mercati(), <span class="st">&quot;tempi_giro.csv&quot;</span>: sport(),
+                  <span class="st">&quot;ordini.csv&quot;</span>: negozio(), <span class="st">&quot;pazienti.csv&quot;</span>: salute(),
+                  <span class="st">&quot;lanci.csv&quot;</span>: probabilita()}
+    <span class="kw">for</span> nome, df <span class="kw">in</span> file.items():
+        df.to_csv(nome, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>, index<span class="op">=</span><span class="kw">False</span>)
+        <span class="nb">print</span>(<span class="st">f&quot;{nome}: {len(df)} righe&quot;</span>)
+</code></pre>
+<nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
+</body>
+</html>

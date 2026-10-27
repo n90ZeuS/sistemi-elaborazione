@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L06 - Classi e Oggetti</title>
+    <title>L06 — Classi e oggetti</title>
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
@@ -314,513 +314,483 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: Titolo -->
             <section class="title-slide">
-                <h1>Classi e Oggetti</h1>
+                <h1>Classi e oggetti</h1>
                 <div class="subtitle">Laboratorio 6</div>
                 <div class="course-info">
                     Sistemi di Elaborazione<br>
-                    Corso di Laurea in Scienze Statistiche
+                    Prerequisiti: T16 (Programmazione a oggetti)
                 </div>
             </section>
 
-            <!-- SLIDE 2: Agenda -->
             <section>
-                <h2>Agenda</h2>
-                <ol>
-                    <li><strong>Esercizio guidato 1</strong> &mdash; <code>Punto2D</code>: attributi, metodi, <code>__str__</code></li>
-                    <li><strong>Esercizio guidato 2</strong> &mdash; <code>Studente</code>: validazione dei dati</li>
-                    <li><strong>Esercizio guidato 3</strong> &mdash; <code>__repr__</code>, <code>__eq__</code>, <code>__lt__</code></li>
-                    <li><strong>Esercizio guidato 4</strong> &mdash; <code>sorted()</code> su liste di oggetti</li>
-                    <li><strong>Esercizi autonomi</strong> &mdash; <code>Rettangolo</code>, <code>ContoCorrente</code>, <code>Corso</code>, <code>Temperatura</code></li>
-                    <li><strong>Sfida finale</strong> &mdash; <code>Dataset</code>: un mini-Pandas</li>
-                </ol>
-                <div class="box box-blue">
-                    <strong>Prerequisito</strong>: Frontale T16 (Classi e programmazione orientata agli oggetti)
-                </div>
-            </section>
-
-            <!-- SLIDE 3: Sezione - Esercizio Guidato 1 -->
-            <section class="section-slide">
-                <h2>Esercizio Guidato 1</h2>
-                <p><code>Punto2D</code>: coordinate, distanza, <code>__str__</code></p>
-            </section>
-
-            <!-- SLIDE 4: Punto2D - Classe base -->
-            <section>
-                <h2>Punto2D &mdash; Definizione della classe</h2>
-                <pre><code class="language-python">import math
-
-class Punto2D:
-    """Rappresenta un punto nel piano cartesiano."""
-
-    def __init__(self, x: float, y: float) -> None:
-        self.x: float = x
-        self.y: float = y
-
-    def distanza_da(self, altro: "Punto2D") -> float:
-        dx: float = self.x - altro.x
-        dy: float = self.y - altro.y
-        return math.sqrt(dx ** 2 + dy ** 2)
-
-    def distanza_da_origine(self) -> float:
-        return self.distanza_da(Punto2D(0.0, 0.0))
-
-    def __str__(self) -> str:
-        return f"({self.x}, {self.y})"</code></pre>
-                <div class="box box-green">
-                    <strong>Osservazione</strong>: <code>distanza_da_origine</code> riusa <code>distanza_da</code> &mdash; un metodo puo' chiamare altri metodi dello stesso oggetto tramite <code>self</code>.
-                </div>
-            </section>
-
-            <!-- SLIDE 5: Punto2D - Prova e output -->
-            <section>
-                <h2>Punto2D &mdash; Test e output</h2>
-                <pre><code class="language-python">p1: Punto2D = Punto2D(3.0, 4.0)
-p2: Punto2D = Punto2D(0.0, 0.0)
-
-print(f"Punto 1: {p1}")             # Usa __str__
-print(f"Punto 2: {p2}")
-print(f"Distanza p1-p2: {p1.distanza_da(p2):.2f}")
-print(f"Distanza p1 dall'origine: {p1.distanza_da_origine():.2f}")</code></pre>
-                <p><strong>Output atteso:</strong></p>
-                <pre><code class="language-python">Punto 1: (3.0, 4.0)
-Punto 2: (0.0, 0.0)
-Distanza p1-p2: 5.00
-Distanza p1 dall'origine: 5.00</code></pre>
-            </section>
-
-            <!-- SLIDE 6: Concetti chiave - __init__ e self -->
-            <section>
-                <h2>Concetti chiave</h2>
-                <table>
-                    <tr>
-                        <th>Concetto</th>
-                        <th>Spiegazione</th>
-                    </tr>
-                    <tr>
-                        <td><code>__init__</code></td>
-                        <td>Il <strong>costruttore</strong>: viene chiamato quando si scrive <code>Punto2D(3.0, 4.0)</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>self</code></td>
-                        <td>Riferimento all'<strong>oggetto corrente</strong>: ogni metodo lo riceve come primo parametro</td>
-                    </tr>
-                    <tr>
-                        <td><code>__str__</code></td>
-                        <td>Invocato da <code>print()</code> e dalle f-string per una rappresentazione <strong>leggibile</strong></td>
-                    </tr>
+                <h2>Come funziona</h2>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà, su classi e oggetti. Per ogni esercizio create un file <code>.py</code> con il nome indicato: dentro definite le classi richieste, con type hints su attributi e metodi, e poi usatele sui dati della consegna stampando i risultati. Non serve <code>input()</code>: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file. Alla fine c'è una challenge a scelta tra 5 temi: sceglietene uno.</p>
+                <table class="mini" style="font-size:0.7em">
+                    <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><code>esame.py</code></td><td>Un esame del libretto</td></tr>
+                        <tr><td>2</td><td><code>tessera_mensa.py</code></td><td>La tessera della mensa</td></tr>
+                        <tr><td>3</td><td><code>segreteria.py</code></td><td>La coda in segreteria</td></tr>
+                        <tr><td>4</td><td><code>erasmus.py</code></td><td>La graduatoria Erasmus</td></tr>
+                        <tr><td>5</td><td><code>campione.py</code></td><td>Un campione di misure</td></tr>
+                        <tr><td>6</td><td><code>libretto.py</code></td><td>Il libretto: un oggetto che contiene oggetti</td></tr>
+                        <tr><td>7</td><td><code>abbonamenti.py</code></td><td>Abbonamenti ai mezzi pubblici</td></tr>
+                        <tr><td>8</td><td><code>biblioteca.py</code></td><td>La biblioteca di dipartimento</td></tr>
+                        <tr><td>Challenge</td><td>a scelta</td><td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td></tr>
+                    </tbody>
                 </table>
+                <div class="box box-blue" style="font-size:0.7em">
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio del laboratorio L07.
+                </div>
             </section>
 
-            <!-- SLIDE 7: __repr__ -->
             <section>
-                <h2>Punto2D &mdash; Aggiungere <code>__repr__</code></h2>
-                <pre><code class="language-python">def __repr__(self) -> str:
-    """Rappresentazione tecnica: ricrea l'oggetto."""
-    return f"Punto2D({self.x}, {self.y})"</code></pre>
+                <h2>Promemoria</h2>
+                <p style="font-size:0.75em">Gli strumenti che servono oggi. <code>__init__</code> riceve i dati e li salva negli attributi con <code>self.</code>; ogni metodo ha <code>self</code> come primo parametro, ma quando lo chiamate non lo scrivete. <code>__str__</code> decide cosa stampa <code>print</code>, <code>__lt__</code> dice a <code>sorted</code> quale oggetto viene prima. Se i dati non sono validi, <code>__init__</code> solleva un errore con <code>raise ValueError(...)</code>.</p>
+                <pre class="small"><code class="language-python" data-trim data-noescape>class Studente:
+    def __init__(self, nome: str, voti: list[int]) -&gt; None:
+        self.nome: str = nome                       # attributi
+        self.voti: list[int] = voti
+    def media(self) -&gt; float:                       # metodo
+        return sum(self.voti) / len(self.voti)
+    def __str__(self) -&gt; str:                       # usato da print
+        return f"{self.nome}: {self.media():.1f}"
+    def __lt__(self, altro: "Studente") -&gt; bool:    # usato da sorted
+        return self.media() &lt; altro.media()
+
+gruppo: list[Studente] = [Studente("Anna", [28, 30]),
+                          Studente("Luca", [24, 26])]
+for s in sorted(gruppo):
+    print(s)                                        # Luca: 25.0 ...</code></pre>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 1 · esame.py</div>
+                <h2>Un esame del libretto</h2>
                 <div class="columns">
                     <div class="col">
-                        <h3><code>__str__</code> &mdash; per gli umani</h3>
-                        <pre><code class="language-python">print(p1)
-# (3.0, 4.0)</code></pre>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Definite una classe <code>Esame</code> con <code>__init__(self, nome: str, cfu: int, voto: int)</code> che salva i tre valori in tre attributi.</li>
+                            <li>Aggiungete un metodo <code>punti(self) -&gt; int</code> che restituisce il voto moltiplicato per i crediti.</li>
+                            <li>Create una lista con tre esami: Analisi 1 (12 CFU, 26), Statistica 1 (9 CFU, 29), Informatica (6 CFU, 30).</li>
+                            <li>Con un ciclo stampate ogni esame, usando gli attributi, e sommate crediti e punti. Alla fine stampate i CFU totali e la media ponderata con due decimali.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <h3><code>__repr__</code> &mdash; per i programmatori</h3>
-                        <pre><code class="language-python">print(repr(p1))
-# Punto2D(3.0, 4.0)</code></pre>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi 1: 26 (12 CFU)
+Statistica 1: 29 (9 CFU)
+Informatica: 30 (6 CFU)
+CFU: 27, media ponderata: 27.89</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>Esame("Algebra lineare", 9, 24)</code> → <code>CFU: 36, media ponderata: 26.92</code></li><li>prima del ciclo scrivete <code>esami[0].voto = 28</code> → <code>Analisi 1: 28 (12 CFU)</code>, <code>media ponderata: 28.78</code></li><li><code>print(esami[0])</code> → <code>&lt;__main__.Esame object at 0x...&gt;</code>: per una stampa leggibile serve <code>__str__</code> (esercizio 2)</li></ul>
                     </div>
                 </div>
-                <div class="box box-yellow">
-                    <strong>Attenzione</strong>: quando si stampa una <strong>lista</strong> di oggetti, Python usa <code>__repr__</code> per ogni elemento, non <code>__str__</code>.
-                </div>
             </section>
 
-            <!-- SLIDE 8: Sezione - Esercizio Guidato 2 -->
-            <section class="section-slide">
-                <h2>Esercizio Guidato 2</h2>
-                <p><code>Studente</code>: validazione dei dati</p>
-            </section>
-
-            <!-- SLIDE 9: Studente - Costruttore con validazione -->
             <section>
-                <h2>Studente &mdash; Costruttore e validazione</h2>
-                <pre><code class="language-python">class Studente:
-    """Rappresenta uno studente universitario con i suoi voti."""
-
-    def __init__(self, nome: str, cognome: str, matricola: str) -> None:
-        if not nome.strip():
-            raise ValueError("Il nome non puo' essere vuoto")
-        if not cognome.strip():
-            raise ValueError("Il cognome non puo' essere vuoto")
-        if not matricola.strip():
-            raise ValueError("La matricola non puo' essere vuota")
-
-        self.nome: str = nome.strip()
-        self.cognome: str = cognome.strip()
-        self.matricola: str = matricola.strip()
-        self.voti: list[int] = []</code></pre>
-                <div class="box box-blue">
-                    <strong>Incapsulamento</strong>: la validazione nel costruttore garantisce che un oggetto <code>Studente</code> sia sempre in uno stato coerente fin dalla creazione.
-                </div>
-            </section>
-
-            <!-- SLIDE 10: Studente - aggiungi_voto con validazione -->
-            <section>
-                <h2>Studente &mdash; <code>aggiungi_voto</code></h2>
-                <pre><code class="language-python">def aggiungi_voto(self, voto: int) -> None:
-    if not isinstance(voto, int):
-        raise TypeError(
-            f"Il voto deve essere un intero, ricevuto {type(voto).__name__}"
-        )
-    if voto < 18 or voto > 30:
-        raise ValueError(
-            f"Il voto deve essere tra 18 e 30, ricevuto {voto}"
-        )
-    self.voti.append(voto)
-
-def media(self) -> float:
-    if not self.voti:
-        raise ValueError(
-            f"Nessun voto registrato per {self.nome} {self.cognome}"
-        )
-    return sum(self.voti) / len(self.voti)
-
-def numero_esami(self) -> int:
-    return len(self.voti)</code></pre>
-            </section>
-
-            <!-- SLIDE 11: Studente - __str__ e test -->
-            <section>
-                <h2>Studente &mdash; <code>__str__</code> e test</h2>
-                <pre><code class="language-python">def __str__(self) -> str:
-    n_esami: int = self.numero_esami()
-    if n_esami > 0:
-        return (f"{self.nome} {self.cognome} ({self.matricola}) "
-                f"- {n_esami} esami, media: {self.media():.2f}")
-    return f"{self.nome} {self.cognome} ({self.matricola}) - nessun esame"</code></pre>
-                <pre><code class="language-python">s = Studente("Anna", "Rossi", "MAT001")
-print(s)                 # Anna Rossi (MAT001) - nessun esame
-s.aggiungi_voto(28)
-s.aggiungi_voto(25)
-s.aggiungi_voto(30)
-print(s)                 # Anna Rossi (MAT001) - 3 esami, media: 27.67</code></pre>
-            </section>
-
-            <!-- SLIDE 12: Studente - Test validazione -->
-            <section>
-                <h2>Studente &mdash; La validazione in azione</h2>
-                <pre><code class="language-python">try:
-    s.aggiungi_voto(15)        # Troppo basso
-except ValueError as e:
-    print(f"Errore catturato: {e}")
-
-try:
-    s.aggiungi_voto(25.5)      # Non intero
-except TypeError as e:
-    print(f"Errore catturato: {e}")</code></pre>
-                <p><strong>Output:</strong></p>
-                <pre><code class="language-python">Errore catturato: Il voto deve essere tra 18 e 30, ricevuto 15
-Errore catturato: Il voto deve essere un intero, ricevuto float</code></pre>
-                <div class="box box-green">
-                    <strong>Punto chiave</strong>: la classe <strong>protegge i propri dati</strong>. Non e' possibile inserire un voto invalido. Questa e' la potenza dell'incapsulamento.
-                </div>
-            </section>
-
-            <!-- SLIDE 13: Sezione - Esercizio Guidato 3 -->
-            <section class="section-slide">
-                <h2>Esercizio Guidato 3</h2>
-                <p><code>__repr__</code>, <code>__eq__</code>, <code>__lt__</code></p>
-            </section>
-
-            <!-- SLIDE 14: __repr__ e __eq__ -->
-            <section>
-                <h2>Studente &mdash; <code>__repr__</code> e <code>__eq__</code></h2>
-                <pre><code class="language-python">def __repr__(self) -> str:
-    return f"Studente('{self.nome}', '{self.cognome}', '{self.matricola}')"
-
-def __eq__(self, altro: object) -> bool:
-    """Due studenti sono uguali se hanno la stessa matricola."""
-    if not isinstance(altro, Studente):
-        return NotImplemented
-    return self.matricola == altro.matricola</code></pre>
-                <pre><code class="language-python">s1 = Studente("Anna", "Rossi", "MAT001")
-s3 = Studente("Anna", "Rossi", "MAT001")   # Stessa matricola
-s2 = Studente("Marco", "Bianchi", "MAT002")
-
-print(repr(s1))          # Studente('Anna', 'Rossi', 'MAT001')
-print(f"s1 == s3? {s1 == s3}")   # True  (stessa matricola)
-print(f"s1 == s2? {s1 == s2}")   # False</code></pre>
-                <div class="box box-yellow">
-                    <strong>Perche' <code>NotImplemented</code>?</strong> Restituire <code>NotImplemented</code> (e non <code>False</code>) permette a Python di provare il confronto nell'altro senso.
-                </div>
-            </section>
-
-            <!-- SLIDE 15: __lt__ e ordinamento -->
-            <section>
-                <h2>Studente &mdash; <code>__lt__</code> e ordinamento</h2>
-                <pre><code class="language-python">def __lt__(self, altro: "Studente") -> bool:
-    """Ordinamento per cognome, poi per nome."""
-    if not isinstance(altro, Studente):
-        return NotImplemented
-    if self.cognome == altro.cognome:
-        return self.nome < altro.nome
-    return self.cognome < altro.cognome</code></pre>
-                <pre><code class="language-python">studenti = [s1, s2, s4]   # Rossi, Bianchi, Bianchi
-ordinati = sorted(studenti)
-for s in ordinati:
-    print(f"  {s}")</code></pre>
-                <p><strong>Output:</strong></p>
-                <pre><code class="language-python">  Lucia Bianchi (MAT004) - nessun esame
-  Marco Bianchi (MAT002) - nessun esame
-  Anna Rossi (MAT001) - nessun esame</code></pre>
-                <div class="box box-blue">
-                    <code>__lt__</code> e' <strong>sufficiente</strong> per far funzionare <code>sorted()</code>: Python usa internamente solo <code>&lt;</code> per l'ordinamento.
-                </div>
-            </section>
-
-            <!-- SLIDE 16: Sezione - Esercizio Guidato 4 -->
-            <section class="section-slide">
-                <h2>Esercizio Guidato 4</h2>
-                <p><code>sorted()</code> con criteri diversi</p>
-            </section>
-
-            <!-- SLIDE 17: sorted() con key -->
-            <section>
-                <h2>Ordinamento con <code>key</code></h2>
-                <pre><code class="language-python">classe = crea_classe_esempio()
-
-# Ordinamento predefinito: usa __lt__ (cognome, nome)
-stampa_classifica(sorted(classe), "Ordine alfabetico")
-
-# Ordinamento per media (decrescente)
-per_media = sorted(classe, key=lambda s: s.media(), reverse=True)
-stampa_classifica(per_media, "Classifica per media")
-
-# Ordinamento per numero di esami
-per_esami = sorted(classe, key=lambda s: s.numero_esami())
-
-# Ordinamento per matricola
-per_matricola = sorted(classe, key=lambda s: s.matricola)</code></pre>
-                <div class="box box-green">
-                    <strong>Punto chiave</strong>: <code>sorted()</code> usa <code>__lt__</code> come criterio predefinito, ma il parametro <code>key</code> permette di ordinare per <strong>qualsiasi attributo o calcolo</strong>.
-                </div>
-            </section>
-
-            <!-- SLIDE 18: Schema riassuntivo metodi speciali -->
-            <section>
-                <h2>Riepilogo metodi speciali</h2>
-                <table>
-                    <tr>
-                        <th>Metodo</th>
-                        <th>Quando viene chiamato</th>
-                        <th>Esempio</th>
-                    </tr>
-                    <tr>
-                        <td><code>__init__</code></td>
-                        <td>Creazione dell'oggetto</td>
-                        <td><code>Studente("Anna", "Rossi", "MAT001")</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>__str__</code></td>
-                        <td><code>print()</code>, f-string</td>
-                        <td><code>print(s)</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>__repr__</code></td>
-                        <td>Debug, interprete, liste</td>
-                        <td><code>repr(s)</code>, <code>print([s1, s2])</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>__eq__</code></td>
-                        <td>Operatore <code>==</code></td>
-                        <td><code>s1 == s2</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>__lt__</code></td>
-                        <td>Operatore <code>&lt;</code>, <code>sorted()</code></td>
-                        <td><code>s1 &lt; s2</code>, <code>sorted(lista)</code></td>
-                    </tr>
-                </table>
-            </section>
-
-            <!-- SLIDE 19: Sezione - Esercizi autonomi -->
-            <section class="section-slide">
-                <h2>Esercizi Autonomi</h2>
-                <p>Da svolgere individualmente</p>
-            </section>
-
-            <!-- SLIDE 20: Esercizio 1 - Rettangolo -->
-            <section>
-                <h2>Esercizio 1 &mdash; Classe <code>Rettangolo</code> <span class="badge badge-green">Base</span></h2>
-                <p>Definite una classe <code>Rettangolo</code> con:</p>
-                <ul>
-                    <li><code>__init__(self, base, altezza)</code> &mdash; validare che siano positive</li>
-                    <li><code>area()</code> e <code>perimetro()</code></li>
-                    <li><code>e_quadrato()</code> &mdash; <code>True</code> se base == altezza</li>
-                    <li><code>__str__</code> &mdash; es. <code>"Rettangolo(base=5.0, altezza=3.0)"</code></li>
-                    <li><code>__repr__</code> &mdash; es. <code>"Rettangolo(5.0, 3.0)"</code></li>
-                    <li><code>__eq__</code> &mdash; uguali se stessa area</li>
-                    <li><code>__lt__</code> &mdash; confronto per area</li>
-                </ul>
-                <div class="box box-blue">
-                    <strong>Test</strong>: create una lista di rettangoli e ordinateli con <code>sorted()</code>.
-                </div>
-            </section>
-
-            <!-- SLIDE 21: Esercizio 2 - ContoCorrente -->
-            <section>
-                <h2>Esercizio 2 &mdash; Classe <code>ContoCorrente</code> <span class="badge badge-green">Base</span></h2>
-                <p>Definite una classe <code>ContoCorrente</code> con:</p>
-                <ul>
-                    <li><code>__init__(self, titolare, saldo_iniziale=0.0)</code> &mdash; saldo non negativo</li>
-                    <li><code>deposita(importo)</code> &mdash; importo positivo</li>
-                    <li><code>preleva(importo)</code> &mdash; importo positivo, non oltre il saldo</li>
-                    <li><code>saldo()</code> &mdash; restituisce il saldo corrente</li>
-                    <li><code>storico()</code> &mdash; lista di operazioni: <code>"DEPOSITO: +100.00"</code> / <code>"PRELIEVO: -50.00"</code></li>
-                    <li><code>__str__</code> &mdash; es. <code>"Conto di Mario Rossi: saldo 1250.00 EUR"</code></li>
-                </ul>
-                <div class="box box-blue">
-                    <strong>Test</strong>: simulate una sequenza di operazioni e stampate lo storico.
-                </div>
-            </section>
-
-            <!-- SLIDE 22: Esercizio 3 - Corso -->
-            <section>
-                <h2>Esercizio 3 &mdash; Classe <code>Corso</code> <span class="badge badge-yellow">Intermedio</span></h2>
-                <p>Una classe che gestisce una lista di <code>Studente</code>:</p>
-                <ul>
-                    <li><code>__init__(self, nome, codice)</code></li>
-                    <li><code>iscrivi(studente)</code> &mdash; no duplicati per matricola</li>
-                    <li><code>cerca_studente(matricola)</code> &mdash; restituisce <code>Studente | None</code></li>
-                    <li><code>media_corso()</code> &mdash; media delle medie</li>
-                    <li><code>migliore()</code> &mdash; studente con media piu' alta</li>
-                    <li><code>classifica()</code> &mdash; ordinati per media decrescente</li>
-                    <li><code>__len__</code> &mdash; permette <code>len(corso)</code></li>
-                </ul>
-                <div class="box box-green">
-                    <strong>Composizione</strong>: un <code>Corso</code> contiene oggetti <code>Studente</code>. Costruire sistemi complessi componendo oggetti semplici.
-                </div>
-            </section>
-
-            <!-- SLIDE 23: Esercizio 4 - Temperatura -->
-            <section>
-                <h2>Esercizio 4 &mdash; Classe <code>Temperatura</code> <span class="badge badge-yellow">Intermedio</span></h2>
-                <p>Una classe che rappresenta una temperatura con conversioni tra scale:</p>
-                <ul>
-                    <li><code>__init__(self, gradi, scala="C")</code> &mdash; scale: <code>"C"</code>, <code>"F"</code>, <code>"K"</code></li>
-                    <li>Validare la scala e verificare che non sia sotto lo zero assoluto</li>
-                    <li><code>in_celsius()</code>, <code>in_fahrenheit()</code>, <code>in_kelvin()</code></li>
-                    <li><code>__str__</code> &mdash; es. <code>"20.0 C"</code></li>
-                    <li><code>__eq__</code> &mdash; confronto in Kelvin (stesso valore fisico)</li>
-                    <li><code>__lt__</code> &mdash; confronto in Kelvin</li>
-                </ul>
-                <div class="box box-blue">
-                    <strong>Test</strong>: create temperature in scale diverse e verificate che <code>sorted()</code> le ordini correttamente.
-                </div>
-            </section>
-
-            <!-- SLIDE 24: Sfida finale -->
-            <section>
-                <h2>Sfida finale &mdash; Classe <code>Dataset</code> <span class="badge badge-red">Avanzato</span></h2>
-                <p>Un mini-Pandas: caricare dati da CSV, filtrarli, raggrupparli, calcolare statistiche.</p>
+                <div class="tag tag-esercizio">Esercizio 2 · tessera_mensa.py</div>
+                <h2>La tessera della mensa</h2>
                 <div class="columns">
                     <div class="col">
-                        <h3>Metodi richiesti</h3>
-                        <ul style="font-size: 0.8em;">
-                            <li><code>carica_da_csv()</code> &mdash; <code>@staticmethod</code></li>
-                            <li><code>n_righe()</code>, <code>n_colonne()</code></li>
-                            <li><code>colonna(nome)</code></li>
-                            <li><code>colonna_numerica(nome)</code></li>
-                            <li><code>filtra(colonna, valore)</code></li>
-                            <li><code>raggruppa(colonna)</code></li>
-                            <li><code>statistiche(colonna)</code></li>
-                            <li><code>salva_csv()</code></li>
-                        </ul>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Definite una classe <code>Tessera</code> con titolare e saldo. Se il saldo iniziale è negativo, <code>__init__</code> solleva <code>ValueError("Il saldo iniziale è negativo")</code>.</li>
+                            <li>Aggiungete <code>ricarica(self, importo: float)</code>, che solleva <code>ValueError</code> se l'importo non è positivo, e <code>paga(self, prezzo: float)</code>, che solleva <code>ValueError</code> se il saldo non basta. Nel messaggio scrivete il saldo con due decimali.</li>
+                            <li>Aggiungete <code>__str__</code> che restituisce titolare e saldo, come nell'esempio.</li>
+                            <li>Create la tessera di Anna Rossi con 10 EUR e provate a pagare tre pasti da 4.50 EUR, ognuno in un <code>try</code>. Poi ricaricate 20 EUR e stampate la tessera.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <h3>Suggerimenti</h3>
-                        <ul style="font-size: 0.8em;">
-                            <li>Dati interni: <code>list[dict[str, str]]</code></li>
-                            <li><code>filtra</code> e <code>raggruppa</code> restituiscono <strong>nuovi</strong> <code>Dataset</code></li>
-                            <li>Non modificare l'originale</li>
-                        </ul>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Tessera di Anna Rossi: 10.00 EUR
+Pagato 4.50 EUR, restano 5.50
+Pagato 4.50 EUR, restano 1.00
+Saldo insufficiente: 1.00
+Tessera di Anna Rossi: 21.00 EUR</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>saldo iniziale <code>15.0</code> → tre pagamenti riusciti e alla fine <code>Tessera di Anna Rossi: 21.50 EUR</code></li><li><code>Tessera("Marco Bianchi", -5.0)</code> → <code>ValueError: Il saldo iniziale è negativo</code></li><li><code>tessera.ricarica(0)</code> → <code>ValueError: La ricarica deve essere positiva</code></li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 25: Sfida finale - Esempio d'uso -->
             <section>
-                <h2>Dataset &mdash; Esempio d'uso atteso</h2>
-                <pre><code class="language-python">from pathlib import Path
-
-# Caricamento
-ds = Dataset.carica_da_csv(Path("vendite.csv"), delimiter=";")
-print(f"Dataset: {ds.n_righe()} righe, {ds.n_colonne()} colonne")
-
-# Filtraggio
-roma = ds.filtra("citta", "Roma")
-print(f"Vendite a Roma: {roma.n_righe()} righe")
-
-# Raggruppamento e statistiche
-per_citta = ds.raggruppa("citta")
-for citta, sottoinsieme in per_citta.items():
-    stats = sottoinsieme.statistiche("importo")
-    print(f"{citta}: media={stats['media']:.2f}, "
-          f"totale={stats['somma']:.2f}")
-
-# Salvataggio
-roma.salva_csv(Path("output") / "vendite_roma.csv", delimiter=";")</code></pre>
+                <div class="tag tag-esercizio">Esercizio 3 · segreteria.py</div>
+                <h2>La coda in segreteria</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Definite una classe <code>Ticket</code> con due attributi di classe: la tupla <code>SERVIZI = ("iscrizioni", "tasse", "esami")</code> e il contatore <code>emessi = 0</code>.</li>
+                            <li><code>__init__(self, servizio: str)</code> solleva <code>ValueError</code> se il servizio non è in <code>SERVIZI</code>; altrimenti aumenta <code>Ticket.emessi</code> di 1 e lo salva nell'attributo di istanza <code>numero</code>.</li>
+                            <li>Aggiungete <code>__str__</code> (<code>Numero 1 (esami)</code>) e <code>__repr__</code> (<code>Ticket(1, 'esami')</code>).</li>
+                            <li>Create i biglietti per esami, tasse, esami, iscrizioni, esami e metteteli in una lista. Stampate la lista, il primo biglietto, il numero di biglietti emessi e quanti ce ne sono per ogni servizio.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>[Ticket(1, 'esami'), Ticket(2, 'tasse'), Ticket(3, 'esami'), Ticket(4, 'iscrizioni'), Ticket(5, 'esami')]
+Prossimo: Numero 1 (esami)
+Biglietti emessi: 5
+iscrizioni: 1
+tasse: 1
+esami: 3</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>Ticket("mensa")</code> → <code>ValueError: Servizio sconosciuto: mensa</code>, e <code>Ticket.emessi</code> resta 5</li><li><code>print(coda[3].numero, coda[3].emessi)</code> → <code>4 5</code>: l'attributo di classe si legge anche dall'oggetto</li><li>togliete <code>__repr__</code>: la lista si stampa come <code>[&lt;__main__.Ticket object at 0x...&gt;, ...]</code></li></ul>
+                    </div>
+                </div>
             </section>
 
-            <!-- SLIDE 26: Domande di verifica -->
+            <section>
+                <div class="tag tag-esercizio">Esercizio 4 · erasmus.py</div>
+                <h2>La graduatoria Erasmus</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Definite una classe <code>Candidato</code> con nome, media e CFU sostenuti, e un <code>__str__</code> come nell'esempio.</li>
+                            <li>Aggiungete <code>__eq__</code>: due candidati sono a pari merito se hanno la stessa media e gli stessi CFU. Se l'altro oggetto non è un <code>Candidato</code> restituite <code>NotImplemented</code>.</li>
+                            <li>Aggiungete <code>__lt__</code>: viene prima chi ha la media più alta e, a parità di media, chi ha più CFU.</li>
+                            <li>Ordinate i candidati con <code>sorted</code>, stampate la graduatoria numerata con <code>enumerate</code> e controllate con <code>==</code> se il primo e il secondo, e il terzo e il quarto, sono a pari merito.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Candidato</th><th>Media, CFU</th></tr></thead><tbody><tr><td>Luca</td><td>27.4, 90</td></tr><tr><td>Sara</td><td>28.1, 84</td></tr><tr><td>Paolo</td><td>27.4, 102</td></tr><tr><td>Elena</td><td>26.9, 120</td></tr><tr><td>Davide</td><td>28.1, 84</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>1. Sara (media 28.10, 84 CFU)
+2. Davide (media 28.10, 84 CFU)
+3. Paolo (media 27.40, 102 CFU)
+4. Luca (media 27.40, 90 CFU)
+5. Elena (media 26.90, 120 CFU)
+Pari merito tra 1 e 2: True
+Pari merito tra 3 e 4: False</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>Candidato("Marta", 29.0, 60)</code> → <code>1. Marta (media 29.00, 60 CFU)</code></li><li><code>print(classifica[0] == "Sara")</code> → <code>False</code>: una stringa non è un <code>Candidato</code></li><li>togliete <code>__lt__</code> → <code>TypeError: '&lt;' not supported between instances of 'Candidato' and 'Candidato'</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 5 · campione.py</div>
+                <h2>Un campione di misure</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Definite una classe <code>Campione</code> con un nome e una lista <code>_valori</code>, vuota all'inizio. L'underscore indica che la lista si usa solo dentro la classe.</li>
+                            <li>Aggiungete il metodo <code>aggiungi(self, x: float)</code>.</li>
+                            <li>Con <code>@property</code> definite <code>n</code> (numero di valori), <code>media</code> e <code>varianza</code> (campionaria, con divisore n − 1).</li>
+                            <li>Create il campione <code>Altezze (cm)</code> con 172, 165, 180, 158, 175 e stampate n, media, varianza e deviazione standard (<code>** 0.5</code>) con due decimali. Poi provate ad assegnare <code>altezze.media = 175.0</code> in un <code>try</code> e catturate <code>AttributeError</code>.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Altezze (cm): 5 valori
+Media: 170.00, varianza: 74.50
+Deviazione standard: 8.63
+La media non si assegna: è calcolata dai valori</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete 190 → <code>6 valori</code>, <code>Media: 173.33, varianza: 126.27</code></li><li><code>statistics.variance([172, 165, 180, 158, 175])</code> → <code>74.5</code>, come la vostra</li><li><code>print(altezze._valori)</code> funziona lo stesso: l'underscore è una convenzione, non un divieto</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 6 · libretto.py</div>
+                <h2>Il libretto: un oggetto che contiene oggetti</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Riprendete la classe <code>Esame</code> dell'esercizio 1 e aggiungete <code>__str__</code> come nell'esempio.</li>
+                            <li>Definite una classe <code>Libretto</code> con il nome dello studente e una lista <code>esami</code>, vuota all'inizio: il libretto contiene degli esami (composizione).</li>
+                            <li>Aggiungete <code>cerca(self, nome: str) -&gt; Esame | None</code>, che restituisce l'esame con quel nome oppure <code>None</code>, e <code>aggiungi(self, esame: Esame)</code>, che usa <code>cerca</code> e solleva <code>ValueError</code> se l'esame è già presente.</li>
+                            <li>Aggiungete <code>media(self) -&gt; float</code> con la media ponderata. Inserite i tre esami dell'esercizio 1, provate a inserire di nuovo Informatica (con 28) in un <code>try</code>, cercate Statistica 1 e stampate numero di esami e media.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Informatica è già nel libretto
+Statistica 1: 29 (9 CFU)
+Esami: 3, media ponderata 27.89</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>print(lib.cerca("Algebra"))</code> → <code>None</code></li><li>aggiungete <code>Esame("Algebra lineare", 9, 24)</code> → <code>Esami: 4, media ponderata 26.92</code></li><li><code>Libretto("Marco").media()</code> → <code>ZeroDivisionError</code>: un libretto vuoto non ha media</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 7 · abbonamenti.py</div>
+                <h2>Abbonamenti ai mezzi pubblici</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Definite una classe <code>Abbonamento</code> con titolare e numero di mesi (da 1 a 12, altrimenti <code>ValueError</code>) e l'attributo di classe <code>PREZZO_MESE = 40.0</code>.</li>
+                            <li>Aggiungete <code>prezzo(self) -&gt; float</code> (prezzo al mese per mesi) e <code>__str__</code> come nell'esempio.</li>
+                            <li>Definite la sottoclasse <code>AbbonamentoStudente(Abbonamento)</code> con la matricola in più e l'attributo di classe <code>SCONTO = 0.3</code>. Il suo <code>__init__</code> chiama <code>super().__init__(...)</code>; <code>prezzo</code> e <code>__str__</code> riusano quelli della classe madre con <code>super()</code>.</li>
+                            <li>Mettete in una lista gli abbonamenti della tabella, stampateli e stampate l'incasso totale.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Titolare</th><th>Abbonamento</th></tr></thead><tbody><tr><td>Marco Bianchi</td><td>12 mesi</td></tr><tr><td>Anna Rossi</td><td>10 mesi, studente 2101234</td></tr><tr><td>Luca Russo</td><td>3 mesi, studente 2102345</td></tr><tr><td>Elena Romano</td><td>2 mesi</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Marco Bianchi, 12 mesi: 480.00 EUR
+Anna Rossi, 10 mesi: 280.00 EUR, matricola 2101234
+Luca Russo, 3 mesi: 84.00 EUR, matricola 2102345
+Elena Romano, 2 mesi: 80.00 EUR
+Incasso: 924.00 EUR</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>AbbonamentoStudente("Sara Ferrari", 13, "2102890")</code> → <code>ValueError: Durata non valida: 13 mesi</code>: il controllo è ereditato</li><li>prima della lista scrivete <code>AbbonamentoStudente.SCONTO = 0.5</code> → Anna <code>200.00 EUR</code>, Luca <code>60.00 EUR</code>, <code>Incasso: 820.00 EUR</code></li><li>contate gli abbonamenti studente con <code>isinstance(a, AbbonamentoStudente)</code> → <code>2</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 8 · biblioteca.py</div>
+                <h2>La biblioteca di dipartimento</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Definite una classe <code>Pubblicazione</code> con titolo e anno, l'attributo di classe <code>GIORNI = 30</code> (durata del prestito), un <code>__str__</code> come nell'esempio e un <code>__lt__</code> che ordina per anno.</li>
+                            <li>Definite la sottoclasse <code>Rivista(Pubblicazione)</code>, che cambia solo <code>GIORNI = 7</code>. Nel <code>__str__</code> usate <code>self.GIORNI</code>: così ogni oggetto prende il valore della sua classe.</li>
+                            <li>Definite una classe <code>Biblioteca</code> con una lista <code>_catalogo</code> e i metodi <code>aggiungi</code>, <code>cerca(self, parola: str)</code>, che restituisce le pubblicazioni con quella parola nel titolo (senza distinguere maiuscole e minuscole), e <code>in_ordine</code>, che restituisce il catalogo ordinato con <code>sorted</code>.</li>
+                            <li>Inserite le pubblicazioni della tabella, stampate il catalogo in ordine e il numero di titoli che contengono <code>statistica</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Titolo</th><th>Tipo, anno</th></tr></thead><tbody><tr><td>Statistica di base</td><td>libro, 2019</td></tr><tr><td>Rivista di statistica applicata</td><td>rivista, 2024</td></tr><tr><td>Probabilità e inferenza</td><td>libro, 2015</td></tr><tr><td>Bollettino di demografia</td><td>rivista, 2023</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>2015 Probabilità e inferenza: 30 giorni
+2019 Statistica di base: 30 giorni
+2023 Bollettino di demografia: 7 giorni
+2024 Rivista di statistica applicata: 7 giorni
+Titoli con 'statistica': 2</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>Rivista("Statistica in medicina", 2021)</code> → compare <code>2021 Statistica in medicina: 7 giorni</code> e <code>Titoli con 'statistica': 3</code></li><li><code>Rivista.GIORNI = 14</code> prima delle stampe → le riviste hanno 14 giorni, i libri restano a 30</li><li><code>bib.cerca("STATISTICA")</code> → gli stessi 2 risultati</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge a scelta</div>
+                <h2>Scegliete un tema</h2>
+                <div class="columns">
+                    <div class="col-40">
+                        <table class="mini" style="font-size:0.62em"><thead><tr><th>Tema</th><th>Challenge</th><th>File</th></tr></thead><tbody><tr><td>Mercati e finanza</td><td>Il portafoglio a oggetti</td><td><code>ch_mercati.py</code></td></tr><tr><td>Sport</td><td>Il campionato a oggetti</td><td><code>ch_sport.py</code></td></tr><tr><td>Imprese e marketing</td><td>Il negozio online a oggetti</td><td><code>ch_negozio.py</code></td></tr><tr><td>Salute e scienza</td><td>Lo studio clinico a oggetti</td><td><code>ch_salute.py</code></td></tr><tr><td>Caso e probabilità</td><td>Il tavolo da gioco a oggetti</td><td><code>ch_probabilita.py</code></td></tr></tbody></table>
+                        <p style="font-size:0.6em">Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.</p>
+                    </div>
+                    <div class="col-60">
+                        <div class="etichetta">Tutte le challenge chiedono</div>
+                        <ul class="consegna" style="font-size:0.56em"><li>Definite una classe per l'elemento del tema. <code>__init__</code> riceve i dati e li controlla: se non sono validi solleva <code>ValueError</code> con un messaggio che contiene il nome dell'elemento; altrimenti li salva in attributi con type hints.</li><li>La classe ha due metodi che calcolano qualcosa dai dati, un <code>__str__</code> per la stampa e un <code>__lt__</code> per ordinare gli oggetti con <code>sorted</code>.</li><li>Definite una classe contenitore che ha come attributo una lista di oggetti della prima classe (composizione), con i metodi <code>aggiungi</code>, <code>cerca</code> (restituisce l'oggetto oppure <code>None</code>) e un metodo che calcola una statistica su tutti gli oggetti.</li><li>Create gli oggetti con i dati della consegna in un ciclo e aggiungeteli al contenitore. Uno dei dati è sbagliato: catturate il <code>ValueError</code> con <code>try/except</code> e stampatene il messaggio.</li><li>Stampate gli oggetti in ordine con <code>sorted</code>, il risultato di due ricerche (una riuscita e una no) e la statistica.</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Mercati e finanza · ch_mercati.py</div>
+                <h2>Il portafoglio a oggetti</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Classe <code>Titolo</code> con sigla, numero di azioni e lista dei prezzi di chiusura. Se le azioni non sono positive o un prezzo non è positivo (o ci sono meno di due prezzi), <code>ValueError("MIB: azioni o prezzi non validi")</code>.</li>
+                            <li>Metodi <code>rendimento()</code>, dal primo all'ultimo prezzo, e <code>valore()</code>, azioni per ultimo prezzo. <code>__lt__</code> confronta i rendimenti.</li>
+                            <li>Classe <code>Portafoglio</code> con il titolare e una lista di titoli; metodi <code>aggiungi</code>, <code>cerca(sigla)</code> e <code>valore_totale()</code>.</li>
+                            <li>Create il portafoglio di Giulia con i titoli della tabella e stampate i titoli dal rendimento più alto (<code>reverse=True</code>), le ricerche di <code>BANK</code> e <code>MIB</code> e il valore totale.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Titolo, azioni</th><th>Prezzi 01/12 – 04/12</th></tr></thead><tbody><tr><td>ENRG, 20</td><td>24.10, 24.60, 25.30, 25.10</td></tr><tr><td>BANK, 50</td><td>12.40, 12.20, 12.70, 12.90</td></tr><tr><td>TECH, 10</td><td>48.00, 49.20, 50.40, 51.20</td></tr><tr><td>MIB, 0</td><td>33.50, 33.90, 34.20, 34.10</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>MIB: azioni o prezzi non validi
+TECH: valore 512.00, rendimento 6.7%
+ENRG: valore 502.00, rendimento 4.1%
+BANK: valore 645.00, rendimento 4.0%
+BANK: valore 645.00, rendimento 4.0%
+None
+Valore totale: 1659.00</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>MIB con 5 azioni → <code>MIB: valore 170.50, rendimento 1.8%</code> in fondo, <code>Valore totale: 1829.50</code></li><li>ENRG con 40 azioni → <code>ENRG: valore 1004.00, rendimento 4.1%</code>, <code>Valore totale: 2161.00</code></li><li><code>print(port.cerca("ENRG") &lt; port.cerca("TECH"))</code> → <code>True</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Sport · ch_sport.py</div>
+                <h2>Il campionato a oggetti</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Classe <code>Pilota</code> con nome, scuderia e lista dei tempi sul giro. Se la lista è vuota o un tempo non è positivo, <code>ValueError("Neri: tempi non validi")</code>.</li>
+                            <li>Metodi <code>media()</code> e <code>migliore()</code> (il tempo minimo). <code>__lt__</code> confronta le medie: viene prima il pilota più veloce.</li>
+                            <li>Classe <code>Gara</code> con il circuito e una lista di piloti; metodi <code>aggiungi</code>, <code>cerca(nome)</code> e <code>giro_veloce()</code>, il miglior tempo tra tutti i piloti.</li>
+                            <li>Create la gara di Monza con i piloti della tabella e stampate i piloti in ordine, le ricerche di <code>Lanza</code> e <code>Neri</code> e il giro più veloce.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Pilota, scuderia</th><th>Tempi dei giri 1-3</th></tr></thead><tbody><tr><td>Ferri, Scuderia Rossa</td><td>92.4, 92.1, 92.6</td></tr><tr><td>Lanza, Scuderia Rossa</td><td>92.9, 92.7, 92.5</td></tr><tr><td>Moro, Scuderia Blu</td><td>93.1, 92.8, 92.3</td></tr><tr><td>Neri, Scuderia Blu</td><td>93.6, 93.0, 0.0</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Neri: tempi non validi
+Ferri: media 92.37, migliore 92.10
+Lanza: media 92.70, migliore 92.50
+Moro: media 92.73, migliore 92.30
+Lanza: media 92.70, migliore 92.50
+None
+Giro più veloce: 92.10</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>terzo giro di Neri <code>93.4</code> → <code>Neri: media 93.33, migliore 93.00</code> in fondo</li><li>terzo giro di Moro <code>91.9</code> → <code>Giro più veloce: 91.90</code> e Moro passa davanti a Lanza</li><li><code>print(gara.cerca("Ferri") &lt; gara.cerca("Moro"))</code> → <code>True</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Imprese e marketing · ch_negozio.py</div>
+                <h2>Il negozio online a oggetti</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Classe <code>Prodotto</code> con nome, prezzo e lista dei pezzi venduti ogni settimana. Se il prezzo non è positivo o una vendita è negativa (o la lista è vuota), <code>ValueError("lampada: prezzo o vendite non validi")</code>.</li>
+                            <li>Metodi <code>pezzi()</code>, il totale venduto, e <code>fatturato()</code>, prezzo per pezzi. <code>__lt__</code> confronta i fatturati.</li>
+                            <li>Classe <code>Negozio</code> con il nome e una lista di prodotti; metodi <code>aggiungi</code>, <code>cerca(nome)</code> e <code>fatturato_totale()</code>.</li>
+                            <li>Create il negozio con i prodotti della tabella e stampate i prodotti dal fatturato più alto (<code>reverse=True</code>), le ricerche di <code>cuffie</code> e <code>lampada</code> e il fatturato totale.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Prodotto, prezzo</th><th>Vendite settimana 1-3</th></tr></thead><tbody><tr><td>zaino, 39.90</td><td>3, 5, 4</td></tr><tr><td>borraccia, 14.50</td><td>10, 8, 12</td></tr><tr><td>quaderno, 3.20</td><td>30, 25, 30</td></tr><tr><td>cuffie, 59.00</td><td>2, 4, 2</td></tr><tr><td>lampada, 24.90</td><td>2, −1, 3</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>lampada: prezzo o vendite non validi
+zaino: 12 pezzi, fatturato 478.80
+cuffie: 8 pezzi, fatturato 472.00
+borraccia: 30 pezzi, fatturato 435.00
+quaderno: 85 pezzi, fatturato 272.00
+cuffie: 8 pezzi, fatturato 472.00
+None
+Fatturato totale: 1657.80</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>vendite della lampada <code>[2, 1, 3]</code> → <code>lampada: 6 pezzi, fatturato 149.40</code> in fondo, <code>Fatturato totale: 1807.20</code></li><li>cuffie a <code>49.00</code> → <code>cuffie: 8 pezzi, fatturato 392.00</code>, dopo la borraccia</li><li><code>print(negozio.cerca("quaderno") &lt; negozio.cerca("zaino"))</code> → <code>True</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py</div>
+                <h2>Lo studio clinico a oggetti</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Classe <code>Paziente</code> con codice, gruppo e lista delle pressioni sistoliche misurate a ogni visita. Se ci sono meno di due misure o una misura è fuori da 60–250 mmHg, <code>ValueError("P05: misure non valide")</code>.</li>
+                            <li>Metodi <code>variazione()</code>, ultima misura meno prima, e <code>migliorato()</code>, vero se la pressione è scesa di almeno 10 mmHg. <code>__lt__</code> confronta le variazioni: viene prima chi è sceso di più.</li>
+                            <li>Classe <code>Studio</code> con il nome e una lista di pazienti; metodi <code>aggiungi</code>, <code>cerca(codice)</code> e <code>quota_migliorati()</code>.</li>
+                            <li>Create lo studio con i pazienti della tabella e stampate i pazienti in ordine, le ricerche di <code>P02</code> e <code>P05</code> e la quota di migliorati.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Paziente, gruppo</th><th>Misure (mmHg)</th></tr></thead><tbody><tr><td>P01, trattamento</td><td>152, 146, 138</td></tr><tr><td>P02, controllo</td><td>148, 147, 145</td></tr><tr><td>P03, trattamento</td><td>160, 151, 149</td></tr><tr><td>P04, controllo</td><td>155, 150, 144</td></tr><tr><td>P05, trattamento</td><td>145, 0, 139</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>P05: misure non valide
+P01 (trattamento): variazione -14.0 mmHg
+P03 (trattamento): variazione -11.0 mmHg
+P04 (controllo): variazione -11.0 mmHg
+P02 (controllo): variazione -3.0 mmHg
+P02 (controllo): variazione -3.0 mmHg
+None
+Migliorati: 75.0%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>seconda misura di P05 <code>141</code> → <code>P05 (trattamento): variazione -6.0 mmHg</code> prima di P02, <code>Migliorati: 60.0%</code></li><li><code>print(studio.cerca("P03").migliorato())</code> → <code>True</code></li><li><code>print(studio.cerca("P01") &lt; studio.cerca("P02"))</code> → <code>True</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Caso e probabilità · ch_probabilita.py</div>
+                <h2>Il tavolo da gioco a oggetti</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Classe <code>Dado</code> con il colore e la lista dei risultati dei lanci, registrati a mano. Se la lista è vuota o un risultato è fuori da 1–6, <code>ValueError("bianco: lanci non validi")</code>.</li>
+                            <li>Metodi <code>media()</code> e <code>quota(faccia)</code>, la frequenza relativa di una faccia. <code>__lt__</code> confronta le medie.</li>
+                            <li>Classe <code>Tavolo</code> con il nome e una lista di dadi; metodi <code>aggiungi</code>, <code>cerca(colore)</code> e <code>media_generale()</code>, la media di tutti i lanci di tutti i dadi.</li>
+                            <li>Create il tavolo con i dadi della tabella e stampate i dadi dalla media più alta (<code>reverse=True</code>), con la quota di 6, le ricerche di <code>blu</code> e <code>bianco</code> e la media generale.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Dado</th><th>Lanci</th></tr></thead><tbody><tr><td>rosso</td><td>4, 6, 1, 6, 3, 6</td></tr><tr><td>blu</td><td>2, 5, 3, 1, 4, 6</td></tr><tr><td>verde</td><td>6, 2, 5, 3, 3, 1</td></tr><tr><td>bianco</td><td>1, 4, 7, 2, 5, 3</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>bianco: lanci non validi
+rosso: media 4.33, quota di 6: 50.0%
+blu: media 3.50, quota di 6: 16.7%
+verde: media 3.33, quota di 6: 16.7%
+blu: media 3.50, quota di 6: 16.7%
+None
+Media di tutti i lanci: 3.72</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>terzo lancio del bianco <code>6</code> → <code>bianco: media 3.50, quota di 6: 16.7%</code> dopo il blu, <code>Media di tutti i lanci: 3.67</code></li><li><code>print(tavolo.cerca("verde").quota(3))</code> → <code>0.3333333333333333</code></li><li><code>print(tavolo.cerca("verde") &lt; tavolo.cerca("rosso"))</code> → <code>True</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
             <section>
                 <h2>Domande di verifica</h2>
-                <ol style="font-size: 0.85em;">
-                    <li>Qual e' la differenza tra <code>__str__</code> e <code>__repr__</code>? Se ne definite solo uno, quale?</li>
-                    <li>Perche' <code>__eq__</code> restituisce <code>NotImplemented</code> e non <code>False</code> per tipi sbagliati?</li>
-                    <li>Perche' basta <code>__lt__</code> per far funzionare <code>sorted()</code>?</li>
-                    <li>Perche' <code>isinstance(voto, int)</code> e non <code>type(voto) == int</code>?</li>
-                    <li>Cosa significa che <code>self</code> e' "implicito"? Equivalente esplicito di <code>s.aggiungi_voto(28)</code>?</li>
-                    <li>Perche' <code>filtra()</code> deve restituire un <strong>nuovo</strong> oggetto?</li>
-                    <li>Differenza tra metodo normale e <code>@staticmethod</code>?</li>
+                <ol style="font-size:0.85em">
+                    <li>Che differenza c'è tra la classe <code>Esame</code> e l'oggetto <code>Esame("Analisi 1", 12, 26)</code>? Quanti oggetti crea <code>esame.py</code>?</li>
+                    <li>Ogni metodo ha <code>self</code> come primo parametro, ma in <code>e.punti()</code> non lo scrivete. Chi lo passa?</li>
+                    <li>In <code>segreteria.py</code> il contatore si aggiorna con <code>Ticket.emessi += 1</code>. Cosa succederebbe scrivendo <code>self.emessi += 1</code>?</li>
+                    <li>Che differenza c'è tra <code>__str__</code> e <code>__repr__</code>? Quale usa <code>print(coda)</code> per gli elementi della lista?</li>
+                    <li>In <code>erasmus.py</code>, perché <code>__lt__</code> confronta con <code>&gt;</code> (<code>self.media &gt; altro.media</code>)?</li>
+                    <li>In <code>campione.py</code>, perché <code>media</code> è una <code>@property</code> e non un attributo calcolato una volta in <code>__init__</code>?</li>
+                    <li>Il libretto contiene esami (composizione); un abbonamento studente è un abbonamento (ereditarietà). Fate un altro esempio per ciascuna.</li>
                 </ol>
             </section>
-
-            <!-- SLIDE 27: Concetti da portare con se' -->
-            <section>
-                <h2>Concetti da portare con se'</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="box box-blue">
-                            <h3>Incapsulamento</h3>
-                            <p>Dati e operazioni vivono insieme. La validazione protegge l'integrita' dell'oggetto.</p>
-                        </div>
-                        <div class="box box-green">
-                            <h3>Metodi speciali</h3>
-                            <p><code>__str__</code>, <code>__repr__</code>, <code>__eq__</code>, <code>__lt__</code> integrano i vostri oggetti con il linguaggio.</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="box box-yellow">
-                            <h3>Composizione</h3>
-                            <p>Un <code>Corso</code> contiene <code>Studente</code>, un <code>Dataset</code> contiene righe. Sistemi complessi da oggetti semplici.</p>
-                        </div>
-                        <div class="box box-red">
-                            <h3>Immutabilita' dei risultati</h3>
-                            <p><code>filtra()</code> restituisce un nuovo oggetto: mai modificare l'originale.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-    
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">

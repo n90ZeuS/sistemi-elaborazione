@@ -295,7 +295,7 @@
 |----------|-------------|
 | Esercizi 1-4 | L'appello di Statistica; La coda in mensa; Come arrivate in aula; Chi segue cosa |
 | Esercizi 5-8 | Il libretto; La sessione invernale; Scuola di provenienza ed esito; Ore di studio |
-| Sfida | Compagni di corsi a scelta |
+| Challenge a scelta | Mercati e finanza: Il portafoglio; Sport: Il campionato; Imprese e marketing: Il negozio online; Salute e scienza: Lo studio clinico; Caso e probabilità: Il tavolo da gioco |
 | Soluzioni | All'inizio della lezione T14 |
 
 ---
@@ -349,7 +349,7 @@
 |----------|-------------|
 | Esercizi 1-4 | Esito dell'esame; Media ponderata; Media e varianza a mano; Tempi di viaggio |
 | Esercizi 5-8 | Quanto manca all'esame; Classifica del corso; Come arrivate in università; Frequentanti e non frequentanti |
-| Sfida | Compleanni in aula |
+| Challenge a scelta | Mercati e finanza: Rischio e rendimento; Sport: Il passo gara; Imprese e marketing: Margini e sconti; Salute e scienza: Le variazioni di pressione; Caso e probabilità: Tanti lanci |
 | Soluzioni | All'inizio della lezione T15 |
 
 ---
@@ -384,7 +384,7 @@
 |----------|-------------|
 | Esercizi 1-4 | Commenti al corso; Le parole più usate; Gli esiti dell'appello; Il verbale d'esame |
 | Esercizi 5-8 | Il registro delle spese; Il sondaggio in JSON; Un appello con errori; Configurazione in JSON |
-| Sfida | PM10 a Padova |
+| Challenge a scelta | Mercati e finanza: Il portafoglio: prezzi da file; Sport: Il campionato: tempi da file; Imprese e marketing: Il negozio online: ordini da file; Salute e scienza: Lo studio clinico: misure da file; Caso e probabilità: Il tavolo da gioco: lanci da file |
 | Soluzioni | All'inizio della lezione T17 |
 
 ---
@@ -417,11 +417,10 @@
 
 | Attività | Descrizione |
 |----------|-------------|
-| Prima classe | Implementare la classe `Punto2D` con coordinate, distanza dall'origine, distanza da un altro punto, `__str__` |
-| Classe Studente | Implementare `Studente` con libretto voti: aggiungere voti (con validazione), calcolare media, verificare se in corso |
-| Metodi speciali | Aggiungere `__repr__`, `__eq__`, `__lt__` (confronto per media) a Studente, usare `sorted()` su una lista di studenti |
-| Composizione | Creare `Corso` che contiene una lista di `Studente`: iscrizione, statistiche del corso, studente migliore |
-| Sfida | Implementare una classe `Dataset` che incapsula una lista di dizionari e offre metodi: `carica_da_csv()`, `filtra()`, `raggruppa()`, `statistiche()` — un mini-Pandas |
+| Esercizi 1-4 | Un esame del libretto; La tessera della mensa; La coda in segreteria; La graduatoria Erasmus |
+| Esercizi 5-8 | Un campione di misure; Il libretto: un oggetto che contiene oggetti; Abbonamenti ai mezzi pubblici; La biblioteca di dipartimento |
+| Challenge a scelta | Mercati e finanza: Il portafoglio a oggetti; Sport: Il campionato a oggetti; Imprese e marketing: Il negozio online a oggetti; Salute e scienza: Lo studio clinico a oggetti; Caso e probabilità: Il tavolo da gioco a oggetti |
+| Soluzioni | All'inizio del laboratorio L07 |
 
 ---
 
@@ -470,12 +469,10 @@
 
 | Attività | Descrizione |
 |----------|-------------|
-| NumPy base | Creare array, operazioni vettorizzate, calcolare statistiche. Confronto tempi: ciclo Python vs NumPy |
-| NumPy random | Generare campioni casuali da distribuzioni (uniforme, normale). Simulazione Monte Carlo semplice (es: stima di π) |
-| Pandas: esplorare | Caricare un dataset reale (CSV), esplorarlo con `head`, `info`, `describe`, `value_counts` |
-| Pandas: pulire | Gestire valori mancanti, duplicati, tipi sbagliati. Rinominare colonne, filtrare righe |
-| Pandas: analizzare | `groupby` per calcolare statistiche per categoria. Pivot table. Merge tra due DataFrame |
-| Sfida | Analisi completa di un dataset reale: caricamento → esplorazione → pulizia → analisi per gruppi → esportazione risultati |
+| Esercizi 1-4 | I voti in un array; Le ore di studio; Altezze simulate; Rispondere a caso |
+| Esercizi 5-8 | Il libretto in un DataFrame; Esplorare un CSV; Pulire un questionario; Gli esami del primo anno |
+| Challenge a scelta | Mercati e finanza: Il portafoglio simulato; Sport: La gara simulata; Imprese e marketing: Un mese di vendite; Salute e scienza: Lo studio simulato; Caso e probabilità: Dadi e porte |
+| Soluzioni | All'inizio del laboratorio L08 |
 
 ---
 
@@ -487,16 +484,10 @@
 
 | Attività | Descrizione |
 |----------|-------------|
-| Matplotlib | Creare istogrammi, scatter plot, grafici a barre da un dataset Pandas. Personalizzare: titoli, etichette, colori, legende |
-| Seaborn | Boxplot per confrontare distribuzioni tra gruppi. Heatmap di correlazione. Pair plot per esplorare relazioni |
-| Subplots | Comporre più grafici in una figura: dashboard di analisi esplorativa |
-| **Mini-progetto riepilogativo** | Analisi completa end-to-end di un dataset reale: |
-| | 1. Caricare i dati (CSV) con Pandas |
-| | 2. Esplorare e pulire (valori mancanti, tipi, outlier) |
-| | 3. Calcolare statistiche descrittive per gruppi |
-| | 4. Creare visualizzazioni informative |
-| | 5. Scrivere codice con funzioni, type hints, docstring |
-| | 6. Interpretare i risultati |
+| Esercizi 1-3 | Immatricolati e laureati; I voti dell'appello; Ore di studio e voto |
+| Esercizi 4-6 | L'attesa in mensa; Il tragitto per l'università; Gennaio in due grafici |
+| Challenge a scelta | Mercati e finanza: Due mesi di borsa; Sport: Il passo gara; Imprese e marketing: Quattro mesi di ordini; Salute e scienza: L'effetto dell'integratore; Caso e probabilità: Il dado sospetto |
+| Soluzioni | Pubblicate sul portale dopo il laboratorio |
 
 **Nota:** il mini-progetto è un esercizio di sintesi che tocca tutto il percorso: dal pensiero computazionale (scomporre il problema) alle best practice (codice pulito e documentato), dalle strutture dati alle librerie.
 

@@ -490,44 +490,247 @@ misure: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="n
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># SFIDA: compleanni in aula — compleanni.py</span>
+<span class="cm"># CHALLENGE MERCATI E FINANZA: rischio e rendimento — ch_mercati.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Sfida: Compleanni in aula ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Mercati e finanza: Rischio e rendimento ---&quot;</span>)
+<span class="kw">import</span> statistics
+
+
+<span class="kw">def</span> <span class="fn">rendimenti</span>(<span class="fn">prezzi</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Rendimenti giornalieri, saltando i prezzi non positivi.&quot;&quot;&quot;</span>
+    p: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [x <span class="kw">for</span> x <span class="kw">in</span> prezzi <span class="kw">if</span> x <span class="op">&gt;</span> <span class="mi">0</span>]
+    <span class="kw">return</span> [(p[i] <span class="op">-</span> p[i <span class="op">-</span> <span class="mi">1</span>]) <span class="op">/</span> p[i <span class="op">-</span> <span class="mi">1</span>] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="nb">len</span>(p))]
+
+
+<span class="kw">def</span> <span class="fn">rischio</span>(<span class="fn">rend</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media e deviazione standard dei rendimenti.&quot;&quot;&quot;</span>
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(rend) <span class="op">/</span> <span class="nb">len</span>(rend)
+    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(r <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> r <span class="kw">in</span> rend]
+    <span class="kw">return</span> media, (<span class="nb">sum</span>(scarti) <span class="op">/</span> (<span class="nb">len</span>(rend) <span class="op">-</span> <span class="mi">1</span>)) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+
+
+<span class="kw">def</span> <span class="fn">valore</span>(<span class="fn">azioni</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>], prezzi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]],
+           giorno: <span class="nb">int</span> <span class="op">=</span> <span class="op">-</span><span class="mi">1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Valore del portafoglio in un giorno (di default l&#x27;ultimo).&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sum</span>([azioni[t] <span class="op">*</span> prezzi[t][giorno] <span class="kw">for</span> t <span class="kw">in</span> azioni])
+
+
+portafoglio: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;ENRG&quot;</span>: <span class="mi">40</span>, <span class="st">&quot;BANK&quot;</span>: <span class="mi">20</span>, <span class="st">&quot;TECH&quot;</span>: <span class="mi">20</span>}
+prezzi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> {
+    <span class="st">&quot;ENRG&quot;</span>: [<span class="mi">12.40</span>, <span class="mi">12.10</span>, <span class="mi">12.55</span>, <span class="mi">12.80</span>, <span class="mi">0.0</span>, <span class="mi">13.05</span>, <span class="mi">12.90</span>, <span class="mi">13.20</span>],
+    <span class="st">&quot;BANK&quot;</span>: [<span class="mi">8.15</span>, <span class="mi">8.30</span>, <span class="mi">8.60</span>, <span class="mi">8.45</span>, <span class="mi">8.75</span>, <span class="mi">8.70</span>, <span class="mi">8.90</span>, <span class="mi">8.85</span>],
+    <span class="st">&quot;TECH&quot;</span>: [<span class="mi">45.20</span>, <span class="mi">47.80</span>, <span class="mi">44.90</span>, <span class="mi">46.30</span>, <span class="mi">48.10</span>, <span class="mi">45.60</span>, <span class="mi">49.20</span>, <span class="mi">50.10</span>],
+}
+<span class="kw">for</span> titolo, serie <span class="kw">in</span> prezzi.items():
+    rend: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> rendimenti(serie)
+    media, vol <span class="op">=</span> rischio(rend)
+    <span class="nb">print</span>(<span class="st">f&quot;{titolo}: media {media:.2%}, volatilità {vol:.2%} &quot;</span>
+          <span class="st">f&quot;(statistics: {statistics.stdev(rend):.2%})&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">&quot;Più volatile:&quot;</span>,
+      <span class="nb">max</span>(prezzi, key<span class="op">=</span><span class="kw">lambda</span> t: rischio(rendimenti(prezzi[t]))[<span class="mi">1</span>]))
+
+
+primo: <span class="nb">float</span> <span class="op">=</span> valore(portafoglio, prezzi, giorno<span class="op">=</span><span class="mi">0</span>)
+ultimo: <span class="nb">float</span> <span class="op">=</span> valore(portafoglio, prezzi)
+<span class="nb">print</span>(<span class="st">f&quot;Valore il primo giorno: {primo:.2f} euro&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Valore l&#x27;ultimo giorno: {ultimo:.2f} euro&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE SPORT: il passo gara — ch_sport.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Sport: Il passo gara ---&quot;</span>)
+<span class="kw">import</span> statistics
+
+
+<span class="kw">def</span> <span class="fn">validi</span>(<span class="fn">tempi</span>: <span class="nb">list</span>[<span class="nb">float</span>], limite: <span class="nb">float</span> <span class="op">=</span> <span class="mi">100.0</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Tempi positivi e sotto il limite: niente pit stop.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [t <span class="kw">for</span> t <span class="kw">in</span> tempi <span class="kw">if</span> <span class="mi">0</span> <span class="op">&lt;</span> t <span class="op">&lt;</span> limite]
+
+
+<span class="kw">def</span> <span class="fn">passo</span>(<span class="fn">tempi</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media e deviazione standard dei tempi.&quot;&quot;&quot;</span>
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(tempi) <span class="op">/</span> <span class="nb">len</span>(tempi)
+    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(t <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> t <span class="kw">in</span> tempi]
+    <span class="kw">return</span> media, (<span class="nb">sum</span>(scarti) <span class="op">/</span> (<span class="nb">len</span>(tempi) <span class="op">-</span> <span class="mi">1</span>)) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+
+
+<span class="kw">def</span> <span class="fn">piu_veloce</span>(<span class="fn">tempi</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Pilota con il passo medio più basso sui giri validi.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">min</span>(tempi, key<span class="op">=</span><span class="kw">lambda</span> p: passo(validi(tempi[p]))[<span class="mi">0</span>])
+
+
+tempi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Ferri&quot;</span>: [<span class="mi">92.8</span>, <span class="mi">92.4</span>, <span class="mi">92.1</span>, <span class="mi">113.6</span>, <span class="mi">92.6</span>, <span class="mi">92.3</span>, <span class="mi">92.9</span>, <span class="mi">93.1</span>],
+    <span class="st">&quot;Lanza&quot;</span>: [<span class="mi">93.2</span>, <span class="mi">92.9</span>, <span class="mi">93.4</span>, <span class="mi">93.0</span>, <span class="mi">114.8</span>, <span class="mi">93.3</span>, <span class="mi">93.6</span>, <span class="mi">93.8</span>],
+    <span class="st">&quot;Moro&quot;</span>: [<span class="mi">92.5</span>, <span class="mi">92.0</span>, <span class="mi">91.8</span>, <span class="mi">92.2</span>, <span class="mi">112.9</span>, <span class="mi">92.1</span>, <span class="mi">92.4</span>, <span class="mi">92.7</span>],
+    <span class="st">&quot;Neri&quot;</span>: [<span class="mi">93.5</span>, <span class="mi">93.9</span>, <span class="mi">115.2</span>, <span class="mi">93.4</span>, <span class="mi">93.7</span>, <span class="mi">94.1</span>, <span class="mi">0.0</span>, <span class="mi">94.3</span>],
+}
+<span class="kw">for</span> pilota, giri <span class="kw">in</span> tempi.items():
+    buoni: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> validi(giri)
+    media, dev <span class="op">=</span> passo(buoni)
+    <span class="nb">print</span>(<span class="st">f&quot;{pilota}: {len(buoni)} giri validi, &quot;</span>
+          <span class="st">f&quot;passo {media:.2f} s, dev. std {dev:.2f} &quot;</span>
+          <span class="st">f&quot;(statistics: {statistics.stdev(buoni):.2f})&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">f&quot;Passo migliore: {piu_veloce(tempi)}&quot;</span>)
+sotto: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {p: <span class="nb">len</span>(validi(g, limite<span class="op">=</span><span class="mi">93.0</span>))
+                         <span class="kw">for</span> p, g <span class="kw">in</span> tempi.items()}
+
+
+<span class="nb">print</span>(<span class="st">f&quot;Giri sotto 93 secondi: {sotto}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE IMPRESE E MARKETING: margini e sconti — ch_negozio.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Imprese e marketing: Margini e sconti ---&quot;</span>)
+<span class="kw">import</span> statistics
+
+CATALOGO: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]] <span class="op">=</span> {
+    <span class="st">&quot;zaino&quot;</span>: (<span class="mi">39.90</span>, <span class="mi">22.00</span>), <span class="st">&quot;borraccia&quot;</span>: (<span class="mi">12.50</span>, <span class="mi">5.20</span>),
+    <span class="st">&quot;quaderno&quot;</span>: (<span class="mi">3.20</span>, <span class="mi">1.10</span>), <span class="st">&quot;cuffie&quot;</span>: (<span class="mi">24.90</span>, <span class="mi">14.50</span>),
+    <span class="st">&quot;lampada&quot;</span>: (<span class="mi">18.00</span>, <span class="mi">9.80</span>)}
+
+
+<span class="kw">def</span> <span class="fn">valido</span>(<span class="fn">prodotto</span>: <span class="nb">str</span>, pezzi: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+    <span class="st">&quot;&quot;&quot;True se il prodotto è in catalogo e i pezzi sono positivi.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> prodotto <span class="kw">in</span> CATALOGO <span class="kw">and</span> pezzi <span class="op">&gt;</span> <span class="mi">0</span>
+
+
+<span class="kw">def</span> <span class="fn">bilancio</span>(<span class="fn">prodotto</span>: <span class="nb">str</span>, pezzi: <span class="nb">int</span>,
+             sconto: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Incasso e margine di un prodotto, con lo sconto sul prezzo.&quot;&quot;&quot;</span>
+    prezzo, costo <span class="op">=</span> CATALOGO[prodotto]
+    incasso: <span class="nb">float</span> <span class="op">=</span> prezzo <span class="op">*</span> (<span class="mi">1</span> <span class="op">-</span> sconto) <span class="op">*</span> pezzi
+    <span class="kw">return</span> incasso, incasso <span class="op">-</span> costo <span class="op">*</span> pezzi
+
+
+<span class="kw">def</span> <span class="fn">classifica</span>(<span class="fn">venduti</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Prodotti dal margine più alto al più basso.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sorted</span>(venduti, key<span class="op">=</span><span class="kw">lambda</span> p: <span class="op">-</span>bilancio(p, venduti[p])[<span class="mi">1</span>])
+
+
+venduti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;zaino&quot;</span>: <span class="mi">2</span>, <span class="st">&quot;borraccia&quot;</span>: <span class="mi">5</span>, <span class="st">&quot;quaderno&quot;</span>: <span class="mi">12</span>,
+                           <span class="st">&quot;cuffie&quot;</span>: <span class="mi">2</span>, <span class="st">&quot;lampada&quot;</span>: <span class="mi">3</span>, <span class="st">&quot;penna&quot;</span>: <span class="mi">4</span>}
+
+
+validi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {p: n <span class="kw">for</span> p, n <span class="kw">in</span> venduti.items()
+                          <span class="kw">if</span> valido(p, n)}
+
+
+<span class="kw">for</span> prodotto <span class="kw">in</span> classifica(validi):
+    incasso, margine <span class="op">=</span> bilancio(prodotto, validi[prodotto])
+    <span class="nb">print</span>(<span class="st">f&quot;{prodotto}: incasso {incasso:.2f}, margine {margine:.2f}&quot;</span>)
+
+
+incassi: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [bilancio(p, n)[<span class="mi">0</span>] <span class="kw">for</span> p, n <span class="kw">in</span> validi.items()]
+<span class="nb">print</span>(<span class="st">f&quot;Incasso medio: {sum(incassi) / len(incassi):.2f} &quot;</span>
+      <span class="st">f&quot;(statistics: {statistics.mean(incassi):.2f})&quot;</span>)
+
+
+incasso, margine <span class="op">=</span> bilancio(<span class="st">&quot;zaino&quot;</span>, validi[<span class="st">&quot;zaino&quot;</span>], sconto<span class="op">=</span><span class="mi">0.2</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Zaini con lo sconto del 20%: incasso {incasso:.2f}, &quot;</span>
+      <span class="st">f&quot;margine {margine:.2f}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE SALUTE E SCIENZA: le variazioni di pressione — ch_salute.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Salute e scienza: Le variazioni di pressione ---&quot;</span>)
+<span class="kw">import</span> statistics
+
+
+<span class="kw">def</span> <span class="fn">valido</span>(<span class="fn">riga</span>: <span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+    <span class="st">&quot;&quot;&quot;True se le due pressioni sono tra 60 e 250 mmHg.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="mi">60</span> <span class="op">&lt;</span><span class="op">=</span> riga[<span class="mi">1</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="mi">250</span> <span class="kw">and</span> <span class="mi">60</span> <span class="op">&lt;</span><span class="op">=</span> riga[<span class="mi">2</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="mi">250</span>
+
+
+<span class="kw">def</span> <span class="fn">descrivi</span>(<span class="fn">diff</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media e deviazione standard delle variazioni.&quot;&quot;&quot;</span>
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(diff) <span class="op">/</span> <span class="nb">len</span>(diff)
+    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(d <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> d <span class="kw">in</span> diff]
+    <span class="kw">return</span> media, (<span class="nb">sum</span>(scarti) <span class="op">/</span> (<span class="nb">len</span>(diff) <span class="op">-</span> <span class="mi">1</span>)) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+
+
+<span class="kw">def</span> <span class="fn">migliorati</span>(<span class="fn">diff</span>: <span class="nb">list</span>[<span class="nb">int</span>], soglia: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Quota di pazienti con un calo di almeno soglia mmHg.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">len</span>([d <span class="kw">for</span> d <span class="kw">in</span> diff <span class="kw">if</span> d <span class="op">&lt;</span><span class="op">=</span> <span class="op">-</span>soglia]) <span class="op">/</span> <span class="nb">len</span>(diff)
+
+
+studio: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>]]] <span class="op">=</span> {
+    <span class="st">&quot;trattamento&quot;</span>: [(<span class="st">&quot;P01&quot;</span>, <span class="mi">152</span>, <span class="mi">138</span>), (<span class="st">&quot;P03&quot;</span>, <span class="mi">160</span>, <span class="mi">147</span>),
+                    (<span class="st">&quot;P05&quot;</span>, <span class="mi">145</span>, <span class="mi">140</span>), (<span class="st">&quot;P07&quot;</span>, <span class="mi">158</span>, <span class="mi">0</span>),
+                    (<span class="st">&quot;P09&quot;</span>, <span class="mi">162</span>, <span class="mi">148</span>), (<span class="st">&quot;P11&quot;</span>, <span class="mi">154</span>, <span class="mi">139</span>)],
+    <span class="st">&quot;controllo&quot;</span>: [(<span class="st">&quot;P02&quot;</span>, <span class="mi">148</span>, <span class="mi">145</span>), (<span class="st">&quot;P04&quot;</span>, <span class="mi">155</span>, <span class="mi">150</span>),
+                  (<span class="st">&quot;P06&quot;</span>, <span class="mi">150</span>, <span class="mi">152</span>), (<span class="st">&quot;P08&quot;</span>, <span class="mi">149</span>, <span class="mi">138</span>),
+                  (<span class="st">&quot;P10&quot;</span>, <span class="mi">157</span>, <span class="mi">155</span>), (<span class="st">&quot;P12&quot;</span>, <span class="mi">15</span>, <span class="mi">146</span>)]}
+
+
+<span class="kw">for</span> gruppo, righe <span class="kw">in</span> studio.items():
+    ok: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> [r <span class="kw">for</span> r <span class="kw">in</span> righe <span class="kw">if</span> valido(r)]
+    diff: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [d <span class="op">-</span> p <span class="kw">for</span> c, p, d <span class="kw">in</span> ok]
+    media, dev <span class="op">=</span> descrivi(diff)
+    <span class="nb">print</span>(<span class="st">f&quot;{gruppo}: media {media:.1f} mmHg, dev. std {dev:.2f} &quot;</span>
+          <span class="st">f&quot;(statistics: {statistics.stdev(diff):.2f})&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;  {len(ok)} validi, migliorati {migliorati(diff):.1%}, &quot;</span>
+          <span class="st">f&quot;con soglia 5: {migliorati(diff, soglia=5):.1%}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;  calo maggiore:&quot;</span>, <span class="nb">min</span>(ok, key<span class="op">=</span><span class="kw">lambda</span> r: r[<span class="mi">2</span>] <span class="op">-</span> r[<span class="mi">1</span>])[<span class="mi">0</span>])
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE CASO E PROBABILITÀ: tanti lanci — ch_probabilita.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Caso e probabilità: Tanti lanci ---&quot;</span>)
 <span class="kw">import</span> random
+<span class="kw">import</span> statistics
 
 
-<span class="kw">def</span> <span class="fn">compleanno_comune</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
-    <span class="st">&quot;&quot;&quot;Estrae n compleanni a caso; True se almeno due coincidono.&quot;&quot;&quot;</span>
-    giorni: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [random.randint(<span class="mi">1</span>, <span class="mi">365</span>) <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(n)]
-    <span class="kw">return</span> <span class="nb">len</span>(<span class="nb">set</span>(giorni)) <span class="op">&lt;</span> n
+<span class="kw">def</span> <span class="fn">simula</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Somme di n lanci di due dadi.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [random.randint(<span class="mi">1</span>, <span class="mi">6</span>) <span class="op">+</span> random.randint(<span class="mi">1</span>, <span class="mi">6</span>)
+            <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(n)]
 
 
-<span class="kw">def</span> <span class="fn">stima</span>(<span class="fn">n_studenti</span>: <span class="nb">int</span>, prove: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10000</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-    <span class="st">&quot;&quot;&quot;Quota di aule simulate con almeno un compleanno comune.&quot;&quot;&quot;</span>
-    successi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(prove):
-        <span class="kw">if</span> compleanno_comune(n_studenti):
-            successi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-    <span class="kw">return</span> successi <span class="op">/</span> prove
+<span class="kw">def</span> <span class="fn">riassunto</span>(<span class="fn">somme</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media e deviazione standard delle somme.&quot;&quot;&quot;</span>
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(somme) <span class="op">/</span> <span class="nb">len</span>(somme)
+    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(s <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> s <span class="kw">in</span> somme]
+    <span class="kw">return</span> media, (<span class="nb">sum</span>(scarti) <span class="op">/</span> (<span class="nb">len</span>(somme) <span class="op">-</span> <span class="mi">1</span>)) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
 
 
-<span class="kw">def</span> <span class="fn">esatta</span>(<span class="fn">n_studenti</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-    <span class="st">&quot;&quot;&quot;Probabilità esatta di almeno un compleanno in comune.&quot;&quot;&quot;</span>
-    tutti_diversi: <span class="nb">float</span> <span class="op">=</span> <span class="mi">1.0</span>
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(n_studenti):
-        tutti_diversi <span class="op">*</span><span class="op">=</span> (<span class="mi">365</span> <span class="op">-</span> i) <span class="op">/</span> <span class="mi">365</span>
-    <span class="kw">return</span> <span class="mi">1</span> <span class="op">-</span> tutti_diversi
+<span class="kw">def</span> <span class="fn">esatta</span>(<span class="fn">somma</span>: <span class="nb">int</span>, facce: <span class="nb">int</span> <span class="op">=</span> <span class="mi">6</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Probabilità esatta di una somma; 0.0 se è impossibile.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> somma <span class="op">&lt;</span> <span class="mi">2</span> <span class="kw">or</span> somma <span class="op">&gt;</span> <span class="mi">2</span> <span class="op">*</span> facce:
+        <span class="kw">return</span> <span class="mi">0.0</span>
+    valori: <span class="nb">range</span> <span class="op">=</span> <span class="nb">range</span>(<span class="mi">1</span>, facce <span class="op">+</span> <span class="mi">1</span>)
+    casi: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> [(a, b) <span class="kw">for</span> a <span class="kw">in</span> valori
+                                   <span class="kw">for</span> b <span class="kw">in</span> valori <span class="kw">if</span> a <span class="op">+</span> b <span class="op">=</span><span class="op">=</span> somma]
+    <span class="kw">return</span> <span class="nb">len</span>(casi) <span class="op">/</span> facce <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
 
 
 random.seed(<span class="mi">2026</span>)
-<span class="kw">for</span> n <span class="kw">in</span> [<span class="mi">10</span>, <span class="mi">23</span>, <span class="mi">30</span>, <span class="mi">50</span>]:
-    <span class="nb">print</span>(<span class="st">f&quot;{n} studenti: simulata {stima(n):.1%}, &quot;</span>
-          <span class="st">f&quot;esatta {esatta(n):.1%}&quot;</span>)
+<span class="kw">for</span> n <span class="kw">in</span> [<span class="mi">10</span>, <span class="mi">100</span>, <span class="mi">1000</span>, <span class="mi">10000</span>]:
+    somme: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> simula(n)
+    media, dev <span class="op">=</span> riassunto(somme)
+    <span class="nb">print</span>(<span class="st">f&quot;{n} lanci: media {media:.2f}, dev. std {dev:.2f} &quot;</span>
+          <span class="st">f&quot;(statistics: {statistics.stdev(somme):.2f})&quot;</span>)
 
-n_minimo: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
-<span class="kw">while</span> esatta(n_minimo) <span class="op">&lt;</span> <span class="mi">0.5</span>:
-    n_minimo <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-<span class="nb">print</span>(<span class="st">f&quot;Si supera il 50% con {n_minimo} studenti&quot;</span>)
+
+piu: <span class="nb">int</span> <span class="op">=</span> <span class="nb">max</span>(<span class="nb">range</span>(<span class="mi">2</span>, <span class="mi">13</span>), key<span class="op">=</span><span class="kw">lambda</span> s: somme.count(s))
+<span class="nb">print</span>(<span class="st">f&quot;Somma più frequente: {piu}, &quot;</span>
+      <span class="st">f&quot;{somme.count(piu) / len(somme):.1%} dei lanci &quot;</span>
+      <span class="st">f&quot;(esatta {esatta(piu):.1%})&quot;</span>)
+
+
+<span class="nb">print</span>(<span class="st">f&quot;Somma 5 con due dadi da 4 facce: {esatta(5, facce=4):.1%}&quot;</span>)
 <span class="nb">print</span>()
 
 

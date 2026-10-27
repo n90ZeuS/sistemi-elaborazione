@@ -328,6 +328,7 @@
         .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
         .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
         .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
         .reveal .etichetta {
             font-size: 0.6em;
             font-weight: 700;
@@ -683,46 +684,266 @@ Da dire: statistics.mean è la funzione, statistics.mean(frequentanti) è il suo
 Chiedere / fare: aggiungere la quota di sufficienti con una lambda → 0.90 contro 0.75.</aside>
                 </section>
 
+                <section class="section-slide">
+                    <h2>Challenge</h2>
+                    <p>Ne vediamo una; le altre hanno la stessa struttura e sono nel file degli esercizi</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04 · challenge»
+Da dire: le cinque challenge usano gli stessi strumenti. Ne mostriamo una, scelta per alzata di mano; le altre restano come slide di riserva.
+Chiedere / fare: chiedere quale tema hanno scelto in più e mostrare quella.</aside>
+                </section>
+
                 <section>
-                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
-                    <h2>compleanni.py</h2>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4 · challenge Mercati e finanza</div>
+                    <h2>ch_mercati.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import statistics
+
+
+def rendimenti(prezzi: list[float]) -&gt; list[float]:
+    """Rendimenti giornalieri, saltando i prezzi non positivi."""
+    p: list[float] = [x for x in prezzi if x &gt; 0]
+    return [(p[i] - p[i - 1]) / p[i - 1] for i in range(1, len(p))]
+
+
+def rischio(rend: list[float]) -&gt; tuple[float, float]:
+    """Restituisce media e deviazione standard dei rendimenti."""
+    media: float = sum(rend) / len(rend)
+    scarti: list[float] = [(r - media) ** 2 for r in rend]
+    return media, (sum(scarti) / (len(rend) - 1)) ** 0.5
+
+
+def valore(azioni: dict[str, int], prezzi: dict[str, list[float]],
+           giorno: int = -1) -&gt; float:
+    """Valore del portafoglio in un giorno (di default l'ultimo)."""
+    return sum([azioni[t] * prezzi[t][giorno] for t in azioni])
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>portafoglio: dict[str, int] = {"ENRG": 40, "BANK": 20, "TECH": 20}
+prezzi: dict[str, list[float]] = {
+    "ENRG": [12.40, 12.10, 12.55, 12.80, 0.0, 13.05, 12.90, 13.20],
+    "BANK": [8.15, 8.30, 8.60, 8.45, 8.75, 8.70, 8.90, 8.85],
+    "TECH": [45.20, 47.80, 44.90, 46.30, 48.10, 45.60, 49.20, 50.10],
+}
+for titolo, serie in prezzi.items():
+    rend: list[float] = rendimenti(serie)
+    media, vol = rischio(rend)
+    print(f"{titolo}: media {media:.2%}, volatilità {vol:.2%} "
+          f"(statistics: {statistics.stdev(rend):.2%})")
+
+
+print("Più volatile:",
+      max(prezzi, key=lambda t: rischio(rendimenti(prezzi[t]))[1]))
+
+
+primo: float = valore(portafoglio, prezzi, giorno=0)
+ultimo: float = valore(portafoglio, prezzi)
+print(f"Valore il primo giorno: {primo:.2f} euro")
+print(f"Valore l'ultimo giorno: {ultimo:.2f} euro")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>rendimenti</code> scarta lo <code>0.0</code> prima di calcolare: senza il filtro ENRG avrebbe un rendimento del −100% e poi una divisione per zero.</li><li><code>rischio</code> restituisce una tupla, spacchettata in <code>media, vol</code>; <code>statistics.stdev</code> conferma il calcolo fatto a mano.</li><li><code>valore</code> ha <code>giorno=-1</code> come default: senza argomento usa l'ultimo prezzo, con <code>giorno=0</code> il primo.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L04 · challenge»
+Da dire: la volatilità è la deviazione standard dei rendimenti. TECH ha il rendimento medio più alto ma anche la volatilità più alta, più del doppio degli altri due. Il default -1 sfrutta l'indice negativo delle liste.
+Chiedere / fare: valore con giorno=4 → 1137.0. Perché così basso? (il prezzo mancante di ENRG vale 0).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4 · challenge Sport</div>
+                    <h2>ch_sport.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import statistics
+
+
+def validi(tempi: list[float], limite: float = 100.0) -&gt; list[float]:
+    """Tempi positivi e sotto il limite: niente pit stop."""
+    return [t for t in tempi if 0 &lt; t &lt; limite]
+
+
+def passo(tempi: list[float]) -&gt; tuple[float, float]:
+    """Restituisce media e deviazione standard dei tempi."""
+    media: float = sum(tempi) / len(tempi)
+    scarti: list[float] = [(t - media) ** 2 for t in tempi]
+    return media, (sum(scarti) / (len(tempi) - 1)) ** 0.5
+
+
+def piu_veloce(tempi: dict[str, list[float]]) -&gt; str:
+    """Pilota con il passo medio più basso sui giri validi."""
+    return min(tempi, key=lambda p: passo(validi(tempi[p]))[0])
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>tempi: dict[str, list[float]] = {
+    "Ferri": [92.8, 92.4, 92.1, 113.6, 92.6, 92.3, 92.9, 93.1],
+    "Lanza": [93.2, 92.9, 93.4, 93.0, 114.8, 93.3, 93.6, 93.8],
+    "Moro": [92.5, 92.0, 91.8, 92.2, 112.9, 92.1, 92.4, 92.7],
+    "Neri": [93.5, 93.9, 115.2, 93.4, 93.7, 94.1, 0.0, 94.3],
+}
+for pilota, giri in tempi.items():
+    buoni: list[float] = validi(giri)
+    media, dev = passo(buoni)
+    print(f"{pilota}: {len(buoni)} giri validi, "
+          f"passo {media:.2f} s, dev. std {dev:.2f} "
+          f"(statistics: {statistics.stdev(buoni):.2f})")
+
+
+print(f"Passo migliore: {piu_veloce(tempi)}")
+sotto: dict[str, int] = {p: len(validi(g, limite=93.0))
+                         for p, g in tempi.items()}
+
+
+print(f"Giri sotto 93 secondi: {sotto}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>validi</code> controlla i dati e ha il parametro di default: con <code>limite=100.0</code> toglie i pit stop, con <code>limite=93.0</code> tiene solo i giri veloci.</li><li><code>passo</code> restituisce media e deviazione standard in una tupla; <code>statistics.stdev</code> conferma il calcolo.</li><li><code>piu_veloce</code> usa <code>min</code> con una lambda che chiama le altre due funzioni.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L04 · challenge»
+Da dire: con i pit stop dentro, il passo medio di ogni pilota salirebbe di più di 2 secondi e la deviazione standard supererebbe i 7 secondi. Moro ha il passo migliore e anche i tempi più regolari.
+Chiedere / fare: se il giro di Lanza a 114.8 fosse 94.8 (safety car) → 8 giri validi e deviazione standard quasi doppia.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4 · challenge Imprese e marketing</div>
+                    <h2>ch_negozio.py (1/2)</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>import statistics
+
+CATALOGO: dict[str, tuple[float, float]] = {
+    "zaino": (39.90, 22.00), "borraccia": (12.50, 5.20),
+    "quaderno": (3.20, 1.10), "cuffie": (24.90, 14.50),
+    "lampada": (18.00, 9.80)}
+
+
+def valido(prodotto: str, pezzi: int) -&gt; bool:
+    """True se il prodotto è in catalogo e i pezzi sono positivi."""
+    return prodotto in CATALOGO and pezzi &gt; 0
+
+
+def bilancio(prodotto: str, pezzi: int,
+             sconto: float = 0.0) -&gt; tuple[float, float]:
+    """Incasso e margine di un prodotto, con lo sconto sul prezzo."""
+    prezzo, costo = CATALOGO[prodotto]
+    incasso: float = prezzo * (1 - sconto) * pezzi
+    return incasso, incasso - costo * pezzi</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L04 · challenge»
+Da dire: lo zaino ha l'incasso più alto ma la borraccia ha il margine più alto. Lo sconto si applica al prezzo, non al costo: con il 20% sugli zaini il margine passa da 35.80 a 19.84.
+Chiedere / fare: cuffie con sconto del 50% → margine negativo, si vende sotto costo.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4 · challenge Imprese e marketing</div>
+                    <h2>ch_negozio.py (2/2)</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def classifica(venduti: dict[str, int]) -&gt; list[str]:
+    """Prodotti dal margine più alto al più basso."""
+    return sorted(venduti, key=lambda p: -bilancio(p, venduti[p])[1])
+
+
+venduti: dict[str, int] = {"zaino": 2, "borraccia": 5, "quaderno": 12,
+                           "cuffie": 2, "lampada": 3, "penna": 4}
+
+
+validi: dict[str, int] = {p: n for p, n in venduti.items()
+                          if valido(p, n)}
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>for prodotto in classifica(validi):
+    incasso, margine = bilancio(prodotto, validi[prodotto])
+    print(f"{prodotto}: incasso {incasso:.2f}, margine {margine:.2f}")
+
+
+incassi: list[float] = [bilancio(p, n)[0] for p, n in validi.items()]
+print(f"Incasso medio: {sum(incassi) / len(incassi):.2f} "
+      f"(statistics: {statistics.mean(incassi):.2f})")
+
+
+incasso, margine = bilancio("zaino", validi["zaino"], sconto=0.2)
+print(f"Zaini con lo sconto del 20%: incasso {incasso:.2f}, "
+      f"margine {margine:.2f}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>valido</code> restituisce un booleano e serve come filtro nella dict comprehension: la penna resta fuori.</li><li><code>bilancio</code> restituisce incasso e margine in una tupla e ha <code>sconto=0.0</code> come default.</li><li><code>classifica</code> ordina con <code>key=lambda p: -bilancio(p, venduti[p])[1]</code>: il segno meno mette prima il margine più alto.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L04 · challenge»
+Da dire: lo zaino ha l'incasso più alto ma la borraccia ha il margine più alto. Lo sconto si applica al prezzo, non al costo: con il 20% sugli zaini il margine passa da 35.80 a 19.84.
+Chiedere / fare: cuffie con sconto del 50% → margine negativo, si vende sotto costo.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4 · challenge Salute e scienza</div>
+                    <h2>ch_salute.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import statistics
+
+
+def valido(riga: tuple[str, int, int]) -&gt; bool:
+    """True se le due pressioni sono tra 60 e 250 mmHg."""
+    return 60 &lt;= riga[1] &lt;= 250 and 60 &lt;= riga[2] &lt;= 250
+
+
+def descrivi(diff: list[int]) -&gt; tuple[float, float]:
+    """Restituisce media e deviazione standard delle variazioni."""
+    media: float = sum(diff) / len(diff)
+    scarti: list[float] = [(d - media) ** 2 for d in diff]
+    return media, (sum(scarti) / (len(diff) - 1)) ** 0.5
+
+
+def migliorati(diff: list[int], soglia: int = 10) -&gt; float:
+    """Quota di pazienti con un calo di almeno soglia mmHg."""
+    return len([d for d in diff if d &lt;= -soglia]) / len(diff)
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>studio: dict[str, list[tuple[str, int, int]]] = {
+    "trattamento": [("P01", 152, 138), ("P03", 160, 147),
+                    ("P05", 145, 140), ("P07", 158, 0),
+                    ("P09", 162, 148), ("P11", 154, 139)],
+    "controllo": [("P02", 148, 145), ("P04", 155, 150),
+                  ("P06", 150, 152), ("P08", 149, 138),
+                  ("P10", 157, 155), ("P12", 15, 146)]}
+
+
+for gruppo, righe in studio.items():
+    ok: list[tuple[str, int, int]] = [r for r in righe if valido(r)]
+    diff: list[int] = [d - p for c, p, d in ok]
+    media, dev = descrivi(diff)
+    print(f"{gruppo}: media {media:.1f} mmHg, dev. std {dev:.2f} "
+          f"(statistics: {statistics.stdev(diff):.2f})")
+    print(f"  {len(ok)} validi, migliorati {migliorati(diff):.1%}, "
+          f"con soglia 5: {migliorati(diff, soglia=5):.1%}")
+    print("  calo maggiore:", min(ok, key=lambda r: r[2] - r[1])[0])</code></pre></div></div>
+                    <ul class="note-sol"><li><code>valido</code> scarta la misura mancante di P07 e quella impossibile di P12: una pressione di 15 mmHg non esiste.</li><li><code>descrivi</code> restituisce media e deviazione standard; <code>migliorati</code> ha <code>soglia=10</code> come default e si chiama anche con <code>soglia=5</code>.</li><li><code>min</code> con <code>key=lambda r: r[2] - r[1]</code> trova il calo più grande, cioè la variazione più negativa.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L04 · challenge»
+Da dire: senza il controllo P12 avrebbe una variazione di +131 mmHg e la media del controllo cambierebbe segno. La quota di migliorati dipende dalla soglia scelta: va decisa prima di guardare i dati.
+Chiedere / fare: correggere P12 in 150 → 6 pazienti validi nel controllo.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4 · challenge Caso e probabilità</div>
+                    <h2>ch_probabilita.py</h2>
                     <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import random
+import statistics
 
 
-def compleanno_comune(n: int) -&gt; bool:
-    """Estrae n compleanni a caso; True se almeno due coincidono."""
-    giorni: list[int] = [random.randint(1, 365) for i in range(n)]
-    return len(set(giorni)) &lt; n
+def simula(n: int) -&gt; list[int]:
+    """Somme di n lanci di due dadi."""
+    return [random.randint(1, 6) + random.randint(1, 6)
+            for i in range(n)]
 
 
-def stima(n_studenti: int, prove: int = 10000) -&gt; float:
-    """Quota di aule simulate con almeno un compleanno comune."""
-    successi: int = 0
-    for i in range(prove):
-        if compleanno_comune(n_studenti):
-            successi += 1
-    return successi / prove
-</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def esatta(n_studenti: int) -&gt; float:
-    """Probabilità esatta di almeno un compleanno in comune."""
-    tutti_diversi: float = 1.0
-    for i in range(n_studenti):
-        tutti_diversi *= (365 - i) / 365
-    return 1 - tutti_diversi
+def riassunto(somme: list[int]) -&gt; tuple[float, float]:
+    """Restituisce media e deviazione standard delle somme."""
+    media: float = sum(somme) / len(somme)
+    scarti: list[float] = [(s - media) ** 2 for s in somme]
+    return media, (sum(scarti) / (len(somme) - 1)) ** 0.5
 
 
+def esatta(somma: int, facce: int = 6) -&gt; float:
+    """Probabilità esatta di una somma; 0.0 se è impossibile."""
+    if somma &lt; 2 or somma &gt; 2 * facce:
+        return 0.0
+    valori: range = range(1, facce + 1)
+    casi: list[tuple[int, int]] = [(a, b) for a in valori
+                                   for b in valori if a + b == somma]
+    return len(casi) / facce ** 2</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>
 random.seed(2026)
-for n in [10, 23, 30, 50]:
-    print(f"{n} studenti: simulata {stima(n):.1%}, "
-          f"esatta {esatta(n):.1%}")
+for n in [10, 100, 1000, 10000]:
+    somme: list[int] = simula(n)
+    media, dev = riassunto(somme)
+    print(f"{n} lanci: media {media:.2f}, dev. std {dev:.2f} "
+          f"(statistics: {statistics.stdev(somme):.2f})")
 
-n_minimo: int = 1
-while esatta(n_minimo) &lt; 0.5:
-    n_minimo += 1
-print(f"Si supera il 50% con {n_minimo} studenti")</code></pre></div></div>
-                    <ul class="note-sol"><li>Il <code>set</code> elimina i duplicati: se è più corto della lista, almeno due compleanni coincidono.</li><li><code>stima</code> chiama <code>compleanno_comune</code> molte volte; il default <code>prove=10000</code> si può cambiare con un argomento keyword.</li><li>Con il seed fissato la simulazione dà sempre gli stessi numeri; la stima si avvicina al valore esatto quando le prove aumentano.</li></ul>
-                    <aside class="notes">⏱ 4' · blocco «Soluzioni L04»
-Da dire: bastano 23 studenti per superare il 50%, perché le coppie possibili sono 23 × 22 / 2 = 253. La simulazione e il calcolo esatto danno valori vicini: è un modo per controllare una formula.
-Chiedere / fare: in un'aula da 50 studenti la probabilità è del 97.0%.</aside>
+
+piu: int = max(range(2, 13), key=lambda s: somme.count(s))
+print(f"Somma più frequente: {piu}, "
+      f"{somme.count(piu) / len(somme):.1%} dei lanci "
+      f"(esatta {esatta(piu):.1%})")
+
+
+print(f"Somma 5 con due dadi da 4 facce: {esatta(5, facce=4):.1%}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Con <code>random.seed(2026)</code> la simulazione dà sempre gli stessi numeri e l'output si può confrontare.</li><li><code>riassunto</code> restituisce media e deviazione standard; con più lanci la media si avvicina a 7.</li><li><code>esatta</code> controlla con un <code>if</code> le somme impossibili e conta le coppie con una comprehension su due cicli.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L04 · challenge»
+Da dire: è la legge dei grandi numeri: con 10 lanci la media è 7.90, con 10000 è 6.95. La deviazione standard teorica della somma di due dadi è circa 2.42. Il default facce=6 permette di provare dadi diversi senza cambiare la funzione.
+Chiedere / fare: cambiare il seed → numeri diversi, ma con 10000 lanci la media resta vicina a 7.</aside>
                 </section>
             </section>
             <!-- FINE SOLUZIONI LAB -->

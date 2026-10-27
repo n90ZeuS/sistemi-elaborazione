@@ -4,7 +4,7 @@
 
 Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file `.py` con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve `input()`: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T15.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T15.
 
 | # | File | Esercizio |
 |---|---|---|
@@ -16,7 +16,7 @@ Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare
 | 6 | `classifica.py` | Classifica del corso |
 | 7 | `questionario.py` | Come arrivate in università |
 | 8 | `confronto_gruppi.py` | Frequentanti e non frequentanti |
-| Sfida | `compleanni.py` | Compleanni in aula |
+| Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
 
 ---
 
@@ -279,31 +279,197 @@ Minimo: 16.00 contro 13.00 (differenza 3.00)
 
 ---
 
-## Sfida — Compleanni in aula (`compleanni.py`)
+## Challenge a scelta
+
+Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.
+
+| Tema | Challenge | File |
+|---|---|---|
+| Mercati e finanza | Rischio e rendimento | `ch_mercati.py` |
+| Sport | Il passo gara | `ch_sport.py` |
+| Imprese e marketing | Margini e sconti | `ch_negozio.py` |
+| Salute e scienza | Le variazioni di pressione | `ch_salute.py` |
+| Caso e probabilità | Tanti lanci | `ch_probabilita.py` |
+
+**Tutte le challenge chiedono:**
+
+- Ogni challenge usa: almeno tre funzioni, ciascuna con type hints e una docstring di una riga; le funzioni restituiscono i risultati e la stampa la fa chi le chiama.
+- Una funzione con un parametro di default, chiamata sia senza quell'argomento sia con l'argomento keyword (per esempio `soglia=5`).
+- Una funzione che restituisce una tupla, spacchettata da chi la chiama (`media, dev = ...`).
+- Un `sorted`, `max` o `min` con `key=lambda ...`.
+- Il modulo `statistics` per controllare un calcolo fatto a mano; nella challenge sul caso anche `random`, con `random.seed(2026)`.
+- Un controllo con `if` sui dati sbagliati o impossibili, che vanno scartati prima dei calcoli. Niente `try`, file e classi.
+
+---
+
+### Challenge · Mercati e finanza — Rischio e rendimento (`ch_mercati.py`)
 
 **Consegna**
 
-1. Con quanti studenti in aula diventa probabile che due compiano gli anni lo stesso giorno? Ignorate il 29 febbraio: i giorni sono 365.
-2. Scrivete `compleanno_comune(n: int) -> bool`: estrae `n` compleanni con `random.randint(1, 365)` e restituisce `True` se almeno due coincidono (confrontate la lunghezza della lista con quella del suo `set`).
-3. Scrivete `stima(n_studenti: int, prove: int = 10000) -> float`, che ripete la simulazione `prove` volte e restituisce la quota di volte con un compleanno in comune.
-4. Scrivete `esatta(n_studenti: int) -> float`: la probabilità che i compleanni siano tutti diversi è 365/365 × 364/365 × … × (365 − n + 1)/365; il risultato è 1 meno questo prodotto.
-5. Chiamate `random.seed(2026)` una volta, poi per 10, 23, 30 e 50 studenti, in quest'ordine, stampate stima e valore esatto in percentuale con un decimale. Infine trovate con un `while` il primo numero di studenti con probabilità esatta oltre il 50%.
+1. Il portafoglio costruito in L03 è `{"ENRG": 40, "BANK": 20, "TECH": 20}`. Scrivete i prezzi di chiusura di otto giorni in `prezzi: dict[str, list[float]]` (tabella). Il quinto prezzo di ENRG manca ed è registrato come `0.0`.
+2. Scrivete `rendimenti(prezzi: list[float]) -> list[float]`: scarta con una comprehension con `if` i prezzi non positivi, poi calcola i rendimenti giornalieri `(p_oggi - p_ieri) / p_ieri`.
+3. Scrivete `rischio(rend: list[float]) -> tuple[float, float]`, che restituisce il rendimento medio e la deviazione standard campionaria (la volatilità), calcolati a mano. Per ogni titolo spacchettate il risultato e stampatelo con `.2%`, accanto al valore di `statistics.stdev`.
+4. Con `max` e `key=lambda` trovate il titolo più volatile.
+5. Scrivete `valore(azioni: dict[str, int], prezzi: dict[str, list[float]], giorno: int = -1) -> float`, il valore del portafoglio in un giorno, di default l'ultimo. Stampate il valore del primo giorno (`giorno=0`) e dell'ultimo, con due decimali.
+
+| Titolo | Prezzi di chiusura (euro) |
+|---|---|
+| ENRG | 12.40, 12.10, 12.55, 12.80, 0.0, 13.05, 12.90, 13.20 |
+| BANK | 8.15, 8.30, 8.60, 8.45, 8.75, 8.70, 8.90, 8.85 |
+| TECH | 45.20, 47.80, 44.90, 46.30, 48.10, 45.60, 49.20, 50.10 |
 
 **Esempio di esecuzione**
 
 ```
-10 studenti: simulata 11.7%, esatta 11.7%
-23 studenti: simulata 50.9%, esatta 50.7%
-30 studenti: simulata 71.1%, esatta 70.6%
-50 studenti: simulata 97.3%, esatta 97.0%
-Si supera il 50% con 23 studenti
+ENRG: media 1.07%, volatilità 2.34% (statistics: 2.34%)
+BANK: media 1.20%, volatilità 2.16% (statistics: 2.16%)
+TECH: media 1.60%, volatilità 5.31% (statistics: 5.31%)
+Più volatile: TECH
+Valore il primo giorno: 1563.00 euro
+Valore l'ultimo giorno: 1707.00 euro
 ```
 
 **Provate anche**
 
-- `esatta(40)` → `89.1%`
-- il 90% si supera con `41` studenti
-- con `prove=1000` le stime cambiano ma restano vicine ai valori esatti
+- togliete lo `0.0` dalla serie di ENRG → l'output non cambia
+- `valore(portafoglio, prezzi, giorno=1)` → `1606.0`; con `giorno=4` → `1137.0`, perché il prezzo mancante di ENRG conta come 0
+- portafoglio con 40 azioni TECH → `Valore l'ultimo giorno: 2709.00 euro`
+
+---
+
+### Challenge · Sport — Il passo gara (`ch_sport.py`)
+
+**Consegna**
+
+1. Nell'ultima gara del campionato sono stati cronometrati otto giri per pilota, in secondi (tabella): `tempi: dict[str, list[float]]`. I giri sopra i 100 secondi sono pit stop; lo `0.0` di Neri è un giro non registrato.
+2. Scrivete `validi(tempi: list[float], limite: float = 100.0) -> list[float]`, che tiene con una comprehension con `if` i tempi maggiori di 0 e minori di `limite`.
+3. Scrivete `passo(tempi: list[float]) -> tuple[float, float]`, che restituisce media e deviazione standard campionaria calcolate a mano. Per ogni pilota spacchettate il risultato sui giri validi e stampate il numero di giri validi, il passo e la deviazione standard con due decimali, accanto al valore di `statistics.stdev`.
+4. Scrivete `piu_veloce(tempi: dict[str, list[float]]) -> str`, che con `min` e `key=lambda` restituisce il pilota con il passo medio più basso sui giri validi.
+5. Con una dict comprehension e `validi(giri, limite=93.0)` stampate quanti giri sotto i 93 secondi ha fatto ogni pilota.
+
+| Pilota | Tempi sul giro (secondi) |
+|---|---|
+| Ferri | 92.8, 92.4, 92.1, 113.6, 92.6, 92.3, 92.9, 93.1 |
+| Lanza | 93.2, 92.9, 93.4, 93.0, 114.8, 93.3, 93.6, 93.8 |
+| Moro | 92.5, 92.0, 91.8, 92.2, 112.9, 92.1, 92.4, 92.7 |
+| Neri | 93.5, 93.9, 115.2, 93.4, 93.7, 94.1, 0.0, 94.3 |
+
+**Esempio di esecuzione**
+
+```
+Ferri: 7 giri validi, passo 92.60 s, dev. std 0.36 (statistics: 0.36)
+Lanza: 7 giri validi, passo 93.31 s, dev. std 0.32 (statistics: 0.32)
+Moro: 7 giri validi, passo 92.24 s, dev. std 0.31 (statistics: 0.31)
+Neri: 6 giri validi, passo 93.82 s, dev. std 0.35 (statistics: 0.35)
+Passo migliore: Moro
+Giri sotto 93 secondi: {'Ferri': 6, 'Lanza': 1, 'Moro': 7, 'Neri': 0}
+```
+
+**Provate anche**
+
+- `validi(tempi["Neri"])` → `[93.5, 93.9, 93.4, 93.7, 94.1, 94.3]`
+- con `limite=92.5` → `{'Ferri': 3, 'Lanza': 0, 'Moro': 5, 'Neri': 0}`
+- il 114.8 di Lanza diventa 94.8 (un giro dietro la safety car) → `Lanza: 8 giri validi, passo 93.50 s, dev. std 0.60 (statistics: 0.60)`
+
+---
+
+### Challenge · Imprese e marketing — Margini e sconti (`ch_negozio.py`)
+
+**Consegna**
+
+1. Il catalogo del negozio ha ora anche il costo di ogni prodotto: `CATALOGO: dict[str, tuple[float, float]]`, prodotto → (prezzo, costo), con i dati della tabella. I pezzi venduti in settimana sono `{"zaino": 2, "borraccia": 5, "quaderno": 12, "cuffie": 2, "lampada": 3, "penna": 4}`; la penna non è in catalogo.
+2. Scrivete `valido(prodotto: str, pezzi: int) -> bool` (prodotto in catalogo e pezzi positivi) e usatela in una dict comprehension con `if` per tenere solo le vendite valide.
+3. Scrivete `bilancio(prodotto: str, pezzi: int, sconto: float = 0.0) -> tuple[float, float]`, che restituisce incasso e margine (incasso − costo × pezzi). Lo sconto riduce il prezzo: `sconto=0.2` vuol dire 20% in meno.
+4. Scrivete `classifica(venduti: dict[str, int]) -> list[str]`, che ordina i prodotti dal margine più alto al più basso con `sorted` e `key=lambda`. Scorrete la classifica, spacchettate il risultato di `bilancio` e stampate incasso e margine di ogni prodotto.
+5. Stampate l'incasso medio per prodotto, calcolato a mano e con `statistics.mean`. Infine stampate incasso e margine degli zaini con lo sconto del 20%.
+
+| Prodotto | Prezzo e costo (euro) |
+|---|---|
+| zaino | 39.90 e 22.00 |
+| borraccia | 12.50 e 5.20 |
+| quaderno | 3.20 e 1.10 |
+| cuffie | 24.90 e 14.50 |
+| lampada | 18.00 e 9.80 |
+
+**Esempio di esecuzione**
+
+```
+borraccia: incasso 62.50, margine 36.50
+zaino: incasso 79.80, margine 35.80
+quaderno: incasso 38.40, margine 25.20
+lampada: incasso 54.00, margine 24.60
+cuffie: incasso 49.80, margine 20.80
+Incasso medio: 56.90 (statistics: 56.90)
+Zaini con lo sconto del 20%: incasso 63.84, margine 19.84
+```
+
+**Provate anche**
+
+- `bilancio("cuffie", 2, sconto=0.5)` → incasso `24.9` e margine circa `-4.1`: con la metà del prezzo si vende sotto costo
+- aggiungete al catalogo `"penna": (1.50, 0.40)` → nuova riga `penna: incasso 6.00, margine 4.40` e `Incasso medio: 48.42 (statistics: 48.42)`
+- `valido("zaino", 0)` → `False`
+
+---
+
+### Challenge · Salute e scienza — Le variazioni di pressione (`ch_salute.py`)
+
+**Consegna**
+
+1. Lo studio di L03 è arrivato a 12 pazienti. I dati sono in un dizionario gruppo → lista di tuple (codice, prima, dopo): `studio: dict[str, list[tuple[str, int, int]]]` (tabella). Due misure sono sbagliate: P07 non ha la seconda misura (0) e per P12 è stato scritto 15 invece di 150.
+2. Scrivete `valido(riga: tuple[str, int, int]) -> bool`: le due pressioni devono stare tra 60 e 250 mmHg. Per ogni gruppo tenete le righe valide con una comprehension con `if` e calcolate le variazioni dopo − prima.
+3. Scrivete `descrivi(diff: list[int]) -> tuple[float, float]`, che restituisce media e deviazione standard campionaria calcolate a mano. Spacchettate il risultato e stampatelo accanto al valore di `statistics.stdev`.
+4. Scrivete `migliorati(diff: list[int], soglia: int = 10) -> float`, la quota di pazienti scesi di almeno `soglia` mmHg. Stampate il numero di pazienti validi e la quota con la soglia di default e con `soglia=5`.
+5. Con `min` e `key=lambda` trovate in ogni gruppo il paziente con il calo maggiore.
+
+| Gruppo | Pazienti: pressione prima → dopo (mmHg) |
+|---|---|
+| trattamento | P01 152 → 138, P03 160 → 147, P05 145 → 140, P07 158 → 0, P09 162 → 148, P11 154 → 139 |
+| controllo | P02 148 → 145, P04 155 → 150, P06 150 → 152, P08 149 → 138, P10 157 → 155, P12 15 → 146 |
+
+**Esempio di esecuzione**
+
+```
+trattamento: media -12.2 mmHg, dev. std 4.09 (statistics: 4.09)
+  5 validi, migliorati 80.0%, con soglia 5: 100.0%
+  calo maggiore: P11
+controllo: media -3.8 mmHg, dev. std 4.76 (statistics: 4.76)
+  5 validi, migliorati 20.0%, con soglia 5: 40.0%
+  calo maggiore: P08
+```
+
+**Provate anche**
+
+- `migliorati([-14, -13, -5, -14, -15], soglia=15)` → `0.2`
+- correggete P12 in `("P12", 150, 146)` → `controllo: media -3.8 mmHg, dev. std 4.26 (statistics: 4.26)` e `6 validi, migliorati 16.7%, con soglia 5: 33.3%`
+
+---
+
+### Challenge · Caso e probabilità — Tanti lanci (`ch_probabilita.py`)
+
+**Consegna**
+
+1. Nella serata di L03 Ada, Bea e Ciro hanno fatto solo 12 lanci. Ora i lanci di due dadi si simulano: chiamate `random.seed(2026)` una volta, prima di tutte le simulazioni.
+2. Scrivete `simula(n: int) -> list[int]`, che restituisce le somme di `n` lanci di due dadi (`random.randint(1, 6)`), e `riassunto(somme: list[int]) -> tuple[float, float]`, che restituisce media e deviazione standard campionaria calcolate a mano.
+3. Per 10, 100, 1000 e 10000 lanci, in quest'ordine, spacchettate il risultato di `riassunto` e stampate media e deviazione standard con due decimali, accanto al valore di `statistics.stdev`.
+4. Scrivete `esatta(somma: int, facce: int = 6) -> float`: se la somma è impossibile (minore di 2 o maggiore di `2 * facce`) restituisce `0.0`, altrimenti conta con una comprehension su due cicli le coppie con quella somma e divide per `facce ** 2`.
+5. Sui 10000 lanci trovate con `max` e `key=lambda` la somma uscita più spesso e confrontate la sua frequenza con la probabilità esatta. Stampate infine la probabilità di fare 5 con due dadi da 4 facce (`facce=4`).
+
+**Esempio di esecuzione**
+
+```
+10 lanci: media 7.90, dev. std 2.23 (statistics: 2.23)
+100 lanci: media 7.42, dev. std 2.43 (statistics: 2.43)
+1000 lanci: media 6.98, dev. std 2.47 (statistics: 2.47)
+10000 lanci: media 6.95, dev. std 2.43 (statistics: 2.43)
+Somma più frequente: 7, 16.4% dei lanci (esatta 16.7%)
+Somma 5 con due dadi da 4 facce: 25.0%
+```
+
+**Provate anche**
+
+- `random.seed(1)` → numeri diversi, ma con 10000 lanci la media resta vicina a 7 (`6.97`)
+- `esatta(12)` → `0.0277...` (1 caso su 36); `esatta(13)` → `0.0`
+- `esatta(3, facce=4)` → `0.125`
 
 ---
 

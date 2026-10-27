@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L08 — Visualizzazione e progetto riepilogativo</title>
+    <title>L08 — Visualizzazione e progetto</title>
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
@@ -314,664 +314,907 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: Titolo -->
             <section class="title-slide">
-                <h1>Visualizzazione e progetto riepilogativo</h1>
+                <h1>Visualizzazione e progetto</h1>
                 <div class="subtitle">Laboratorio 8</div>
                 <div class="course-info">
-                    Sistemi di Elaborazione &mdash; Corso di Laurea in Scienze Statistiche<br>
-                    Matplotlib, Seaborn e mini-progetto di analisi dati
+                    Sistemi di Elaborazione<br>
+                    Prerequisiti: T17 (NumPy, Pandas e visualizzazione) e laboratorio L07
                 </div>
             </section>
 
-            <!-- SLIDE 2: Agenda -->
+            <!-- SOLUZIONI LAB (generato) -->
             <section>
-                <h2>Agenda</h2>
-                <div class="columns">
-                    <div class="col">
-                        <h3>Parte 1 &mdash; Visualizzazione</h3>
-                        <ol>
-                            <li>Matplotlib: istogramma, scatter, barre</li>
-                            <li>Personalizzazione: titoli, legende, griglia</li>
-                            <li>Seaborn: boxplot e heatmap</li>
-                            <li>Subplots: dashboard 2&times;2</li>
-                        </ol>
-                    </div>
-                    <div class="col">
-                        <h3>Parte 2 &mdash; Mini-progetto</h3>
-                        <ol>
-                            <li>Generazione dataset</li>
-                            <li>Esplorazione</li>
-                            <li>Pulizia</li>
-                            <li>Analisi per gruppi</li>
-                            <li>Dashboard di visualizzazione</li>
-                        </ol>
-                        <div class="box box-blue" style="margin-top:0.5em;">
-                            <strong>Prerequisiti:</strong> L07 (NumPy, Pandas)
-                        </div>
-                    </div>
-                </div>
-            </section>
+                <section class="section-slide">
+                    <h2>Soluzioni del laboratorio 7</h2>
+                    <p>NumPy e Pandas</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L07»
+Da dire: prima di iniziare l'argomento nuovo vediamo le soluzioni degli esercizi del laboratorio. Il codice completo è nel file degli esercizi di L07.
+Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da quelli se manca tempo.</aside>
+                </section>
 
-            <!-- SLIDE 3: Sezione Matplotlib -->
-            <section class="section-slide">
-                <h2>Parte 1 &mdash; Matplotlib</h2>
-                <p>La libreria di visualizzazione di riferimento</p>
-            </section>
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>voti_numpy.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
 
-            <!-- SLIDE 4: Istogramma -->
-            <section>
-                <h2>Istogramma</h2>
-                <p>Visualizza la <strong>distribuzione</strong> di una variabile continua.</p>
-                <pre><code class="language-python">import matplotlib.pyplot as plt
+voti: np.ndarray = np.array([28, 17, 30, 24, 15, 21, 27, 19, 30, 23])
+
+print(f"Forma: {voti.shape}, tipo: {voti.dtype}")
+media: float = np.mean(voti)
+print(f"Media: {media:.1f}, mediana: {np.median(voti):.1f}")
+print(f"Dev. std campionaria: {np.std(voti, ddof=1):.2f}")
+
+promossi: np.ndarray = voti[voti &gt;= 18]       # filtro booleano
+quota: float = np.sum(voti &gt;= 18) / voti.size  # True conta 1
+print(f"Promossi: {promossi.size} su {voti.size} ({quota:.1%})")
+print(f"Voti dei promossi: {promossi}")
+print(f"Media dei promossi: {np.mean(promossi):.1f}")
+
+scarti: np.ndarray = voti - media              # senza cicli
+print(f"Scarti dalla media: {np.round(scarti, 1)}")
+print(f"Somma degli scarti: {np.sum(scarti):.1f}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>voti &gt;= 18</code> è un array di booleani della stessa lunghezza di <code>voti</code>; tra parentesi quadre tiene solo gli elementi con <code>True</code>.</li><li><code>np.sum</code> su un array di booleani conta i <code>True</code>: è il conteggio senza ciclo.</li><li><code>voti - media</code> sottrae lo stesso numero a ogni elemento; la somma degli scarti dalla media è sempre 0.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L07»
+Da dire: tre idee di NumPy in poche righe: operazioni su tutto l'array, filtro con un array di booleani, funzioni statistiche.
+Chiedere / fare: perché la deviazione standard cambia togliendo ddof=1? Si divide per 10 invece che per 9.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>ore_studio.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+
+corsi: list[str] = ["Statistica", "Analisi", "Informatica"]
+# righe = settimane, colonne = corsi
+ore: np.ndarray = np.array([[6, 4, 3],
+                            [8, 5, 2],
+                            [5, 7, 4],
+                            [10, 6, 5]])
+
+print(f"Forma: {ore.shape}, ore totali: {np.sum(ore)}")
+per_corso: np.ndarray = np.sum(ore, axis=0)
+per_settimana: np.ndarray = np.sum(ore, axis=1)
+print(f"Ore per corso: {per_corso}")
+print(f"Ore per settimana: {per_settimana}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>quote: np.ndarray = per_corso / np.sum(ore)    # array / scalare
+for corso, q in zip(corsi, quote):
+    print(f"{corso}: {q:.1%}")
+
+settimane: np.ndarray = np.arange(1, ore.shape[0] + 1)
+print(f"Settimane oltre 15 ore: {settimane[per_settimana &gt; 15]}")
+
+medie: np.ndarray = np.mean(ore, axis=0)
+print(f"Medie per corso: {medie}")
+print("Scarti dalla media del corso:")
+print(ore - medie)                             # broadcasting</code></pre></div></div>
+                    <ul class="note-sol"><li><code>axis=0</code> riduce le righe e dà un valore per colonna (per corso); <code>axis=1</code> riduce le colonne e dà un valore per riga (per settimana).</li><li><code>per_corso / np.sum(ore)</code> divide ogni elemento per lo stesso scalare.</li><li><code>ore - medie</code> sottrae un array di forma (3,) a una matrice (4, 3): il broadcasting ripete le medie su ogni riga.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L07»
+Da dire: in una matrice di dati le righe sono le osservazioni e le colonne le variabili, come in un DataFrame. axis dice lungo quale direzione si riduce.
+Chiedere / fare: far prevedere la forma di np.sum(ore, axis=1) prima di eseguire.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>altezze.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+
+SEED: int = 42
+N: int = 500
+
+rng = np.random.default_rng(SEED)
+altezze: np.ndarray = rng.normal(loc=170, scale=10, size=N)
+print(f"Prime 5 altezze: {np.round(altezze[:5], 1)}")
+
+media: float = np.mean(altezze)
+dev: float = np.std(altezze, ddof=1)
+print(f"Media: {media:.1f} cm, dev. std: {dev:.1f} cm")
+print(f"Minimo: {np.min(altezze):.1f}, "
+      f"massimo: {np.max(altezze):.1f}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>z: np.ndarray = (altezze - media) / dev        # z-score
+print(f"Dev. std degli z: {np.std(z, ddof=1):.2f}")
+
+entro_1: float = np.mean(np.abs(z) &lt;= 1)       # quota di True
+oltre_2: float = np.mean(np.abs(z) &gt; 2)
+print(f"Entro 1 dev. std: {entro_1:.1%} (teorica 68.3%)")
+print(f"Oltre 2 dev. std: {oltre_2:.1%} (teorica 4.6%)")
+
+alti: np.ndarray = altezze[(altezze &gt;= 185) &amp; (altezze &lt; 195)]
+print(f"Tra 185 e 195 cm: {alti.size}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>default_rng(42)</code> crea un generatore: con lo stesso seed le estrazioni sono sempre le stesse.</li><li>Gli z-score hanno media 0 e deviazione standard 1 per costruzione.</li><li><code>np.mean</code> su un array di booleani dà la quota di <code>True</code>; nel filtro combinato servono le parentesi intorno a ogni condizione.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L07»
+Da dire: è la regola 68-95 della normale verificata su un campione simulato. Con 500 valori la quota oltre 2 è 5.2%, con 100 000 è 4.6%.
+Chiedere / fare: provare con seed diversi e confrontare le quote.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>test_crocette.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import math
 import numpy as np
 
-rng: np.random.Generator = np.random.default_rng(seed=42)
-altezze: np.ndarray = rng.normal(loc=170, scale=10, size=500)
+DOMANDE: int = 10
+P: float = 0.25          # 4 opzioni, una giusta
+SOGLIA: int = 6          # risposte giuste per superare il test
+N: int = 100_000         # studenti simulati
 
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.hist(altezze, bins=25, color="steelblue",
-        edgecolor="white", alpha=0.8)
-ax.set_title("Distribuzione delle altezze")
-ax.set_xlabel("Altezza (cm)")
-ax.set_ylabel("Frequenza")
-plt.tight_layout()
-plt.savefig("istogramma_altezze.png", dpi=150)
-plt.show()</code></pre>
-                <div class="box box-green">
-                    <strong>Parametri chiave:</strong> <code>bins</code> controlla il numero di barre; <code>alpha</code> la trasparenza (0&ndash;1); <code>edgecolor</code> il bordo delle barre.
-                </div>
-            </section>
+rng = np.random.default_rng(2027)
+# l'opzione 0 è quella giusta: ogni riga è uno studente
+risposte: np.ndarray = rng.integers(0, 4, size=(N, DOMANDE))
+giuste: np.ndarray = np.sum(risposte == 0, axis=1)
+print(f"Giuste dei primi 5 studenti: {giuste[:5]}")
+print(f"Media di risposte giuste: {np.mean(giuste):.2f} "
+      f"(teorica {DOMANDE * P:.2f})")
+print(f"Nessuna risposta giusta: {np.mean(giuste == 0):.1%}")
+print(f"Test superato (simulato): {np.mean(giuste &gt;= SOGLIA):.2%}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>binom: np.ndarray = rng.binomial(n=DOMANDE, p=P, size=N)
+print(f"Test superato (binomiale): {np.mean(binom &gt;= SOGLIA):.2%}")
+esatta: float = sum([math.comb(DOMANDE, k) * P**k
+                     * (1 - P)**(DOMANDE - k)
+                     for k in range(SOGLIA, DOMANDE + 1)])
+print(f"Test superato (esatta): {esatta:.2%}")
 
-            <!-- SLIDE 5: Scatter plot -->
-            <section>
-                <h2>Scatter plot</h2>
-                <p>Mostra la <strong>relazione tra due variabili</strong> continue.</p>
-                <pre><code class="language-python">import matplotlib.pyplot as plt
-import numpy as np
+punteggio: np.ndarray = giuste - (DOMANDE - giuste) / 3
+print(f"Punteggio medio con penalità: {np.mean(punteggio):.2f}")
+print(f"Punteggio negativo: {np.mean(punteggio &lt; 0):.1%}")</code></pre></div></div>
+                    <ul class="note-sol"><li>La matrice <code>(N, 10)</code> contiene tutte le risposte; <code>== 0</code> e <code>np.sum(..., axis=1)</code> contano le giuste per riga senza cicli.</li><li><code>rng.binomial</code> estrae direttamente il numero di successi: è lo stesso modello, scritto in una riga.</li><li>La probabilità esatta è la coda della binomiale, calcolata con <code>math.comb</code> e una list comprehension.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L07»
+Da dire: tre modi per la stessa probabilità, due simulati e uno esatto; con 100 000 ripetizioni le stime differiscono di pochi centesimi di punto.
+Chiedere / fare: valore atteso del punteggio con penalità: 2.5 − 7.5/3 = 0.</aside>
+                </section>
 
-rng: np.random.Generator = np.random.default_rng(seed=42)
-ore_studio: np.ndarray = rng.uniform(2, 40, size=100)
-voti: np.ndarray = 18 + 0.3 * ore_studio + rng.normal(0, 2, size=100)
-voti = np.clip(voti, 18, 30)
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>libretto.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import pandas as pd
 
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.scatter(ore_studio, voti, alpha=0.6,
-           color="coral", edgecolors="darkred", s=40)
-ax.set_title("Ore di studio vs voto")
-ax.set_xlabel("Ore di studio settimanali")
-ax.set_ylabel("Voto medio")
-plt.tight_layout()
-plt.savefig("scatter_studio_voti.png", dpi=150)
-plt.show()</code></pre>
-                <div class="box box-yellow">
-                    <strong>Quando usarlo:</strong> per esplorare correlazioni e individuare pattern, outlier o cluster.
-                </div>
-            </section>
+libretto: pd.DataFrame = pd.DataFrame({
+    "esame": ["Analisi I", "Statistica I", "Informatica",
+              "Economia", "Probabilità", "Demografia"],
+    "anno": [1, 1, 1, 1, 2, 2],
+    "crediti": [9, 9, 6, 9, 9, 6],
+    "voto": [24, 28, 30, 22, 26, 27],
+})
+print(libretto)
+print(f"Righe e colonne: {libretto.shape}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>libretto["pesato"] = libretto["voto"] * libretto["crediti"]
+crediti: int = libretto["crediti"].sum()
+media: float = libretto["voto"].mean()
+ponderata: float = libretto["pesato"].sum() / crediti
+print(f"Crediti: {crediti}")
+print(f"Media aritmetica: {media:.2f}, ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {ponderata / 30 * 110:.1f}")
 
-            <!-- SLIDE 6: Grafico a barre -->
-            <section>
-                <h2>Grafico a barre</h2>
-                <p>Confronta <strong>valori tra categorie</strong> discrete.</p>
-                <pre><code class="language-python">import matplotlib.pyplot as plt
+migliori: pd.DataFrame = libretto[libretto["voto"] &gt;= 26]
+migliori = migliori.sort_values("voto", ascending=False)
+print(migliori[["esame", "voto"]])
+primo: pd.DataFrame = libretto[(libretto["anno"] == 1)
+                               &amp; (libretto["crediti"] == 9)]
+print(f"Esami da 9 crediti del primo anno: {len(primo)}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Un DataFrame nasce da un dizionario: le chiavi diventano colonne, le liste i valori.</li><li><code>libretto["voto"] * libretto["crediti"]</code> moltiplica le colonne riga per riga, come con gli array NumPy.</li><li>Il filtro sulle righe usa una Series di booleani; con <code>&amp;</code> servono le parentesi intorno a ogni condizione.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L07»
+Da dire: la media ponderata è quella che conta per la laurea. Gli esami da 6 crediti pesano meno: Informatica (30) alza poco la media.
+Chiedere / fare: perché la media ponderata è più bassa di quella aritmetica?</aside>
+                </section>
 
-corsi: list[str] = ["Statistica", "Economia", "Sociologia", "Informatica"]
-media_voti: list[float] = [26.3, 24.8, 25.1, 27.2]
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>esami_csv.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>import pandas as pd
 
-fig, ax = plt.subplots(figsize=(8, 5))
-colori = ["#4C72B0", "#55A868", "#C44E52", "#8172B2"]
-barre = ax.bar(corsi, media_voti, color=colori,
-               edgecolor="black", width=0.6)
+esami: pd.DataFrame = pd.read_csv("esami.csv", sep=";")
+print(esami.head(3))
+print(f"Righe e colonne: {esami.shape}")
+print(f"Colonne: {esami.columns.tolist()}")
+print(esami["voto"].describe().round(1))
+print(esami["corso"].value_counts())
 
-# Etichette sopra le barre
-for barra, valore in zip(barre, media_voti):
-    ax.text(barra.get_x() + barra.get_width() / 2,
-            barra.get_height() + 0.1,
-            f"{valore:.1f}", ha="center", va="bottom")
-
-ax.set_title("Voto medio per corso di laurea")
-ax.set_ylabel("Voto medio")
-ax.set_ylim(22, 29)
-plt.tight_layout()
-plt.savefig("barre_corsi.png", dpi=150)
-plt.show()</code></pre>
-            </section>
-
-            <!-- SLIDE 7: Istogramma vs Barre -->
-            <section>
-                <h2>Istogramma vs grafico a barre</h2>
-                <div class="compare">
-                    <div class="good">
-                        <h3>Istogramma</h3>
-                        <ul>
-                            <li>Variabile <strong>continua</strong></li>
-                            <li>Mostra la <strong>distribuzione</strong></li>
-                            <li>Le barre sono adiacenti</li>
-                            <li>L'asse x ha un ordine naturale</li>
-                            <li><em>Es: distribuzione delle altezze</em></li>
-                        </ul>
+promossi: pd.DataFrame = esami[esami["voto"] &gt;= 18]
+print(f"Promossi: {len(promossi)} su {len(esami)}")
+stat_2: pd.DataFrame = esami[(esami["corso"] == "Statistica")
+                             &amp; (esami["anno"] == 2)]
+print(f"Statistica, secondo anno: {stat_2['matricola'].tolist()}")
+print(esami.groupby("corso")["voto"].mean().round(1))</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>read_csv</code> con <code>sep=";"</code> legge il file e converte da solo i numeri: niente <code>int()</code> come in L05.</li><li><code>describe()</code> riassume una colonna numerica: conteggio, media, deviazione standard, minimo, quartili e massimo.</li><li><code>value_counts()</code> conta le frequenze, <code>groupby(...).mean()</code> calcola la media per gruppo.</li></ul></div>
                     </div>
-                    <div class="bad">
-                        <h3>Grafico a barre</h3>
-                        <ul>
-                            <li>Variabile <strong>categoriale</strong></li>
-                            <li>Confronta <strong>valori</strong> tra gruppi</li>
-                            <li>Le barre sono separate</li>
-                            <li>L'asse x sono etichette</li>
-                            <li><em>Es: voto medio per corso</em></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="box box-red" style="margin-top:0.8em;">
-                    <strong>Errore comune:</strong> usare un grafico a barre per mostrare una distribuzione, o un istogramma per confrontare categorie. La scelta del grafico sbagliato comunica informazioni sbagliate.
-                </div>
-            </section>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L07»
+Da dire: è il primo sguardo a un dataset nuovo: forma, colonne, tipi, statistiche, frequenze.
+Chiedere / fare: far eseguire esami.info() e leggere i tipi.</aside>
+                </section>
 
-            <!-- SLIDE 8: Personalizzazione -->
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>pulizia_questionario.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import pandas as pd
+
+q: pd.DataFrame = pd.read_csv("questionario.csv", sep=";",
+                              na_values=["", "NA", "?"])
+print(f"Righe lette: {len(q)}")
+print("Valori mancanti per colonna:")
+print(q.isna().sum())
+
+doppi: int = q.duplicated().sum()
+q = q.drop_duplicates()
+print(f"Righe duplicate tolte: {doppi}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>senza_voto: int = q["voto"].isna().sum()
+q = q.dropna(subset=["voto"])
+print(f"Righe senza voto tolte: {senza_voto}")
+
+media_ore: float = q["ore_studio"].mean()
+q = q.fillna({"ore_studio": round(media_ore, 1)})
+q["voto"] = q["voto"].astype(int)
+print(f"Ore mancanti sostituite con la media: {media_ore:.1f}")
+
+print(f"Righe pulite: {len(q)}, mancanti: {q.isna().sum().sum()}")
+print(f"Voto medio: {q['voto'].mean():.2f}")
+print(f"Ore medie: {q['ore_studio'].mean():.2f}")
+print(q.groupby("corso")[["ore_studio", "voto"]].mean().round(1))</code></pre></div></div>
+                    <ul class="note-sol"><li><code>na_values</code> dice a Pandas quali stringhe vanno lette come valori mancanti (<code>NaN</code>).</li><li>L'ordine conta: prima i duplicati, poi le righe senza voto, poi la sostituzione delle ore mancanti.</li><li>Dopo <code>dropna</code> la colonna <code>voto</code> è ancora float (per via dei <code>NaN</code> iniziali): <code>astype(int)</code> la converte.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L07»
+Da dire: il voto è la variabile che studiamo e non si inventa: le righe senza voto si tolgono. Le ore mancanti si possono sostituire, sapendo che la media abbassa la variabilità.
+Chiedere / fare: contare le righe a ogni passo: 11, 10, 8.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7</div>
+                    <h2>esami_primo_anno.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+import pandas as pd
+
+N: int = 150
+CORSI: list[str] = ["Analisi", "Statistica", "Informatica"]
+
+rng = np.random.default_rng(2026)
+voti: np.ndarray = np.round(rng.normal(23, 5, size=N))
+esami: pd.DataFrame = pd.DataFrame({
+    "corso": rng.choice(CORSI, size=N),
+    "voto": np.minimum(voti, 30).astype(int),
+})
+corsi: pd.DataFrame = pd.DataFrame({
+    "corso": ["Analisi", "Statistica", "Informatica", "Economia"],
+    "crediti": [9, 9, 6, 9],
+})
+print(f"Esami: {len(esami)}, voti 30: {np.sum(esami['voto'] == 30)}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>esami["promosso"] = esami["voto"] &gt;= 18
+for corso, quota in esami.groupby("corso")["promosso"].mean().items():
+    print(f"{corso}: promossi {quota:.1%}")
+
+promossi: pd.DataFrame = (
+    esami
+    .merge(corsi, on="corso", how="left")
+    .query("promosso")
+)
+print(f"Crediti acquisiti: {promossi['crediti'].sum()}")
+riepilogo: pd.DataFrame = (
+    promossi
+    .groupby("corso")["voto"]
+    .agg(["count", "mean", "min", "max"])
+    .round(1)
+)
+print(riepilogo)</code></pre></div></div>
+                    <ul class="note-sol"><li>I dati sono generati con NumPy e messi in un DataFrame; <code>np.minimum</code> taglia i voti oltre 30.</li><li>La media di una colonna di booleani dà la quota di promossi per gruppo.</li><li>Nella catena ogni metodo restituisce un nuovo DataFrame: <code>merge</code>, <code>query</code>, <code>groupby</code>, <code>agg</code> e <code>round</code> si leggono dall'alto in basso.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L07»
+Da dire: è lo schema di un'analisi: dati, colonna calcolata, unione con una tabella di riferimento, filtro, statistiche per gruppo.
+Chiedere / fare: con how="left" a partire da corsi (corsi.merge(esami, ...)) Economia compare con voto NaN.</aside>
+                </section>
+
+                <section class="section-slide">
+                    <h2>Challenge</h2>
+                    <p>Ne vediamo una; le altre hanno la stessa struttura e sono nel file degli esercizi</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L07 · challenge»
+Da dire: le cinque challenge usano gli stessi strumenti. Ne mostriamo una, scelta per alzata di mano; le altre restano come slide di riserva.
+Chiedere / fare: chiedere quale tema hanno scelto in più e mostrare quella.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7 · challenge Mercati e finanza</div>
+                    <h2>ch_mercati.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+import pandas as pd
+
+TITOLI: list[str] = ["ENRG", "BANK", "TECH"]
+MEDIE: np.ndarray = np.array([0.001, 0.0005, 0.002])
+VOL: np.ndarray = np.array([0.012, 0.009, 0.025])
+PESI: np.ndarray = np.array([0.3, 0.5, 0.2])
+GIORNI: int = 20
+N: int = 10_000
+
+rng = np.random.default_rng(7)
+# righe = giorni, colonne = titoli
+rend: np.ndarray = rng.normal(MEDIE, VOL, size=(GIORNI, 3))
+vol: np.ndarray = np.std(rend, axis=0, ddof=1)
+for titolo, v in zip(TITOLI, vol):
+    print(f"Volatilità {titolo}: {v:.2%}")
+port: np.ndarray = np.sum(rend * PESI, axis=1)   # broadcasting
+valore: float = 10_000 * np.prod(1 + port)
+print(f"Valore finale di 10000 EUR: {valore:.2f} EUR")
+print(f"Giorni in perdita: {np.sum(port &lt; 0)} su {GIORNI}")
+print(f"Peggior giorno: {np.min(port):.2%}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>sim: np.ndarray = rng.normal(MEDIE[2], VOL[2], size=(N, GIORNI))
+mese: np.ndarray = np.sum(sim, axis=1)
+perdita: float = np.mean(mese &lt; -0.05)
+print(f"P(TECH perde più del 5% in un mese): {perdita:.1%}")
+
+df: pd.DataFrame = pd.DataFrame(rend, columns=TITOLI)
+df["settimana"] = np.arange(GIORNI) // 5 + 1
+df["portafoglio"] = port
+medie_sett: pd.Series = df.groupby("settimana")["portafoglio"].mean()
+for sett, m in medie_sett.items():
+    print(f"Settimana {sett}: rendimento medio {m:.2%}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>rng.normal(MEDIE, VOL, size=(20, 3))</code> usa una media e una volatilità diverse per ogni colonna.</li><li><code>rend * PESI</code> moltiplica ogni riga per i pesi (broadcasting); <code>np.prod(1 + port)</code> compone i rendimenti giornalieri.</li><li>La colonna <code>settimana</code> nasce da una divisione intera vettorizzata e fa da chiave per il <code>groupby</code>.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L07 · challenge»
+Da dire: la volatilità stimata su 20 giorni si avvicina a quella usata nella simulazione, ma non coincide.
+Chiedere / fare: perché il valore finale non è 10 000 · (1 + somma dei rendimenti)?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7 · challenge Sport</div>
+                    <h2>ch_sport.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+import pandas as pd
+
+PILOTI: list[str] = ["Ferri", "Lanza", "Moro", "Neri"]
+SCUDERIE: list[str] = ["Scuderia Rossa"] * 2 + ["Scuderia Blu"] * 2
+BASE: np.ndarray = np.array([92.0, 92.4, 92.2, 92.6])
+GIRI: int = 15
+N: int = 10_000
+
+rng = np.random.default_rng(15)
+# righe = giri, colonne = piloti
+tempi: np.ndarray = rng.normal(BASE, 0.6, size=(GIRI, 4))
+tempi[7] = tempi[7] + 20               # pit stop al giro 8
+print(f"Giri anomali (oltre 100 s): {np.sum(tempi &gt; 100)}")
+sotto_92: np.ndarray = np.sum(tempi &lt; 92, axis=0)
+for pilota, n in zip(PILOTI, sotto_92):
+    print(f"{pilota}, giri sotto i 92 s: {n}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>ferri: np.ndarray = rng.normal(92.0, 0.6, size=(N, GIRI))
+moro: np.ndarray = rng.normal(92.2, 0.6, size=(N, GIRI))
+vince: np.ndarray = np.sum(moro, axis=1) &lt; np.sum(ferri, axis=1)
+print(f"P(Moro batte Ferri): {np.mean(vince):.1%}")
+
+gara: pd.DataFrame = pd.DataFrame({
+    "pilota": PILOTI, "scuderia": SCUDERIE,
+    "totale": np.sum(tempi, axis=0),
+    "migliore": np.min(tempi, axis=0),
+})
+gara["distacco"] = gara["totale"] - gara["totale"].min()
+print(gara.sort_values("totale").round(1))
+print(gara.groupby("scuderia")["totale"].mean().round(1))</code></pre></div></div>
+                    <ul class="note-sol"><li><code>tempi[7] = tempi[7] + 20</code> modifica un'intera riga: tutti i piloti al giro 8.</li><li><code>np.sum(tempi &lt; 92, axis=0)</code> conta per colonna: un conteggio per pilota.</li><li>Nel Monte Carlo ogni riga è una gara: si sommano i giri con <code>axis=1</code> e si confrontano i totali.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L07 · challenge»
+Da dire: 0.2 s al giro su 15 giri fanno 3 s, ma la variabilità dei giri lascia a Moro circa una gara su cinque.
+Chiedere / fare: cosa cambia nella classifica se il pit stop fosse solo per Ferri?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7 · challenge Imprese e marketing</div>
+                    <h2>ch_negozio.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+import pandas as pd
+
+PRODOTTI: list[str] = ["zaino", "borraccia", "quaderno",
+                       "cuffie", "lampada"]
+CATEGORIE: list[str] = ["scuola", "casa", "scuola", "tech", "casa"]
+PREZZI: np.ndarray = np.array([39.9, 14.5, 3.2, 59.0, 24.9])
+COSTI: np.ndarray = np.array([22.0, 6.0, 1.1, 38.0, 13.5])
+GIORNI: int = 30
+N: int = 10_000
+
+rng = np.random.default_rng(30)
+# righe = giorni, colonne = prodotti: pezzi venduti
+pezzi: np.ndarray = rng.integers(0, 6, size=(GIORNI, 5))
+incasso: np.ndarray = np.sum(pezzi * PREZZI, axis=1)  # broadcasting
+print(f"Fatturato del mese: {np.sum(incasso):.2f} EUR")
+print(f"Incasso medio giornaliero: {np.mean(incasso):.2f} EUR")
+print(f"Giorni sopra 300 EUR: {np.sum(incasso &gt; 300)} su {GIORNI}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>conv_a: np.ndarray = rng.binomial(n=1000, p=0.04, size=N)
+conv_b: np.ndarray = rng.binomial(n=1000, p=0.05, size=N)
+print(f"P(la pagina B vende più della A): "
+      f"{np.mean(conv_b &gt; conv_a):.1%}")
+
+negozio: pd.DataFrame = pd.DataFrame({
+    "prodotto": PRODOTTI, "categoria": CATEGORIE,
+    "pezzi": np.sum(pezzi, axis=0), "prezzo": PREZZI, "costo": COSTI,
+})
+negozio["margine"] = negozio["pezzi"] * (
+    negozio["prezzo"] - negozio["costo"])
+print(negozio[["prodotto", "pezzi", "margine"]].round(2))
+print(negozio.groupby("categoria")["margine"].sum().round(2))</code></pre></div></div>
+                    <ul class="note-sol"><li><code>pezzi * PREZZI</code> moltiplica ogni colonna per il prezzo del suo prodotto; <code>axis=1</code> somma per giorno, <code>axis=0</code> per prodotto.</li><li><code>rng.binomial(n=1000, p=0.04, size=N)</code> dà il numero di acquisti in 10 000 test ripetuti.</li><li>Il margine è una colonna calcolata da tre colonne; <code>groupby("categoria")</code> lo somma per categoria.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L07 · challenge»
+Da dire: anche se B converte meglio, con 1000 visitatori in circa un test su sei non risulta migliore.
+Chiedere / fare: quanti visitatori servono per superare il 95%?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7 · challenge Salute e scienza</div>
+                    <h2>ch_salute.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+import pandas as pd
+
+SOGLIA: int = 5          # calo minimo in mmHg per dire "migliorato"
+N: int = 10_000
+
+codici: list[str] = ["P" + str(i).zfill(2) for i in range(1, 21)]
+gruppo: np.ndarray = np.array(["trattamento"] * 10
+                              + ["controllo"] * 10)
+rng = np.random.default_rng(11)
+eta: np.ndarray = rng.integers(35, 71, size=20)
+prima: np.ndarray = np.round(rng.normal(150, 12, size=20))
+calo: np.ndarray = rng.normal(2 + 6 * (gruppo == "trattamento"), 5)
+dopo: np.ndarray = np.round(prima - calo)</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>diff: np.ndarray = prima - dopo                   # vettorizzato
+migliorato: np.ndarray = diff &gt;= SOGLIA
+tratt: np.ndarray = gruppo == "trattamento"
+k: int = np.sum(migliorato[tratt])
+p0: float = np.mean(migliorato)                  # quota complessiva
+print(f"Calo medio: {np.mean(diff):.1f} mmHg")
+print(f"Migliorati trattamento: {k} su 10")
+print(f"Migliorati controllo: {np.sum(migliorato[~tratt])} su 10")
+print(f"Migliorati in tutto: {p0:.0%}")
+
+sim: np.ndarray = rng.binomial(n=10, p=p0, size=N)
+print(f"P(almeno {k} su 10 senza effetto): {np.mean(sim &gt;= k):.1%}")
+
+studio: pd.DataFrame = pd.DataFrame({
+    "codice": codici, "eta": eta, "gruppo": gruppo,
+    "prima": prima, "dopo": dopo,
+})
+studio["differenza"] = studio["prima"] - studio["dopo"]
+print(studio.head(3))
+print(studio.groupby("gruppo")[["eta", "differenza"]].mean().round(1))</code></pre></div></div>
+                    <ul class="note-sol"><li><code>gruppo == "trattamento"</code> è un array di booleani: <code>6 * (...)</code> dà 6 o 0, così la media del calo cambia per gruppo.</li><li><code>migliorato[tratt]</code> e <code>migliorato[~tratt]</code> filtrano i due gruppi; <code>~</code> nega un array di booleani.</li><li>La simulazione binomiale stima quanto è raro il risultato del gruppo trattamento se l'integratore non avesse effetto.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L07 · challenge»
+Da dire: la probabilità stimata è un p-value: con 20 pazienti il risultato è al limite.
+Chiedere / fare: cosa succede con 40 pazienti per gruppo?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 7 · challenge Caso e probabilità</div>
+                    <h2>ch_probabilita.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import numpy as np
+import pandas as pd
+
+LANCI: int = 1000
+N: int = 10_000
+
+rng = np.random.default_rng(6)
+dado1: np.ndarray = rng.integers(1, 7, size=LANCI)
+dado2: np.ndarray = rng.integers(1, 7, size=LANCI)
+somma: np.ndarray = dado1 + dado2                 # vettorizzato
+print(f"Somma media: {np.mean(somma):.2f} (teorica 7.00)")
+print(f"Somma 7: {np.mean(somma == 7):.1%} (esatta {6 / 36:.1%})")
+alte: np.ndarray = somma[somma &gt;= 10]
+print(f"Somma almeno 10: {alte.size} lanci "
+      f"({alte.size / LANCI:.1%}, esatta {6 / 36:.1%})")
+print(f"Doppi: {np.mean(dado1 == dado2):.1%} (esatta {1 / 6:.1%})")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>auto: np.ndarray = rng.integers(0, 3, size=N)    # porta dell'auto
+scelta: np.ndarray = rng.integers(0, 3, size=N)  # prima scelta
+resta: float = np.mean(auto == scelta)
+print(f"Monty Hall, vince chi resta: {resta:.1%}")
+print(f"Monty Hall, vince chi cambia: {1 - resta:.1%}")
+
+tavolo: pd.DataFrame = pd.DataFrame({"dado1": dado1, "dado2": dado2})
+tavolo["somma"] = tavolo["dado1"] + tavolo["dado2"]
+medie: pd.Series = tavolo.groupby("dado1")["somma"].mean()
+for faccia, m in medie.items():
+    print(f"Primo dado {faccia}: somma media {m:.2f} "
+          f"(teorica {faccia + 3.5:.2f})")</code></pre></div></div>
+                    <ul class="note-sol"><li>La somma di due array di dadi dà 1000 somme in una sola operazione.</li><li><code>np.mean(auto == scelta)</code> è la quota di partite vinte restando; chi cambia vince in tutte le altre.</li><li>Il <code>groupby</code> sul primo dado verifica che la somma media sia faccia + 3.5.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L07 · challenge»
+Da dire: con 1000 lanci le frequenze si scostano dalle probabilità esatte anche di 2 punti; con 100 000 lo scarto è di pochi decimi di punto.
+Chiedere / fare: perché chi cambia porta vince 2 volte su 3?</aside>
+                </section>
+            </section>
+            <!-- FINE SOLUZIONI LAB -->
+
             <section>
-                <h2>Personalizzazione dei grafici</h2>
-                <pre><code class="language-python">fig, ax = plt.subplots(figsize=(10, 6))
-
-# Tre linee con stili diversi
-ax.plot(x, y1, color="#E74C3C", linewidth=2,
-        linestyle="-",  label="sin(x)")
-ax.plot(x, y2, color="#3498DB", linewidth=2,
-        linestyle="--", label="cos(x)")
-ax.plot(x, y3, color="#2ECC71", linewidth=2,
-        linestyle="-.", label="sin(x) * exp(-x/5)")
-
-# Titoli ed etichette
-ax.set_title("Funzioni trigonometriche",
-             fontsize=16, fontweight="bold")
-ax.set_xlabel("x", fontsize=13)
-ax.set_ylabel("f(x)", fontsize=13)
-ax.legend(fontsize=11, loc="upper right", framealpha=0.9)
-ax.grid(True, alpha=0.3, linestyle="--")
-ax.set_xlim(0, 10)
-ax.axhline(y=0, color="black", linewidth=0.5)</code></pre>
-                <div class="box box-red">
-                    <strong>Regola d'oro:</strong> un grafico senza etichette e un grafico inutile. Titolo, assi, legenda, unita di misura: ogni grafico deve essere comprensibile da solo.
+                <h2>Come funziona</h2>
+                <p style="font-size:0.8em">Ultimo laboratorio, in due parti. Nella prima ci sono sei esercizi brevi sui grafici con Matplotlib, dal più semplice al più articolato: ognuno salva un'immagine PNG e stampa poche righe di controllo. Nella seconda c'è il progetto finale: scegliete uno dei 5 temi e analizzate un file CSV dal caricamento alla conclusione. Per ogni esercizio create un file <code>.py</code> con il nome indicato. Le soluzioni iniziano con <code>matplotlib.use("Agg")</code>, che salva i grafici senza aprire finestre: a casa potete toglierlo e aggiungere <code>plt.show()</code> dopo <code>plt.savefig(...)</code> per vedere il grafico.</p>
+                <table class="mini" style="font-size:0.7em">
+                    <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><code>immatricolati.py</code></td><td>Immatricolati e laureati</td></tr>
+                        <tr><td>2</td><td><code>voti.py</code></td><td>I voti dell'appello</td></tr>
+                        <tr><td>3</td><td><code>studio.py</code></td><td>Ore di studio e voto</td></tr>
+                        <tr><td>4</td><td><code>mensa.py</code></td><td>L'attesa in mensa</td></tr>
+                        <tr><td>5</td><td><code>tragitto.py</code></td><td>Il tragitto per l'università</td></tr>
+                        <tr><td>6</td><td><code>meteo.py</code></td><td>Gennaio in due grafici</td></tr>
+                        <tr><td>Challenge</td><td>a scelta</td><td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td></tr>
+                    </tbody>
+                </table>
+                <div class="box box-blue" style="font-size:0.7em">
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni vengono pubblicate sul portale dopo il laboratorio.
                 </div>
             </section>
 
-            <!-- SLIDE 9: plt.plot vs ax.plot -->
             <section>
-                <h2><code>plt.plot()</code> vs <code>ax.plot()</code></h2>
-                <div class="compare">
-                    <div class="bad">
-                        <h3>Interfaccia implicita</h3>
-                        <pre><code class="language-python">plt.plot(x, y)
-plt.title("Titolo")
-plt.xlabel("X")
-plt.show()</code></pre>
-                        <p>Funziona su una figura "nascosta". Problematico con piu grafici.</p>
-                    </div>
-                    <div class="good">
-                        <h3>Interfaccia esplicita</h3>
-                        <pre><code class="language-python">fig, ax = plt.subplots()
-ax.plot(x, y)
-ax.set_title("Titolo")
-ax.set_xlabel("X")
-plt.show()</code></pre>
-                        <p>Controllo esplicito su figura e assi. Scalabile a piu pannelli.</p>
-                    </div>
-                </div>
-                <div class="box box-green" style="margin-top:0.5em;">
-                    <strong>Consiglio:</strong> usate sempre <code>fig, ax = plt.subplots()</code>. E piu esplicito, piu flessibile, e si estende naturalmente ai subplots.
-                </div>
-            </section>
-
-            <!-- SLIDE 10: Sezione Seaborn -->
-            <section class="section-slide">
-                <h2>Seaborn</h2>
-                <p>Grafici statistici con un'interfaccia semplificata</p>
-            </section>
-
-            <!-- SLIDE 11: Boxplot -->
-            <section>
-                <h2>Seaborn: boxplot per confronto gruppi</h2>
-                <p>Seaborn lavora direttamente con i DataFrame Pandas.</p>
-                <pre><code class="language-python">import seaborn as sns
+                <h2>Promemoria</h2>
+                <p style="font-size:0.75em">Ogni grafico segue gli stessi passi: nuova figura, disegno, titolo, etichette degli assi con l'unità di misura, <code>tight_layout()</code> e salvataggio. <code>plt.savefig</code> va chiamato prima di <code>plt.show()</code>, che alla chiusura della finestra svuota la figura. Per disegnare un risultato di <code>groupby</code> si passano <code>index</code> (le etichette) e <code>values</code> (i numeri).</p>
+                <pre class="small"><code class="language-python" data-trim data-noescape>import matplotlib
+matplotlib.use("Agg")                 # a casa si può togliere
 import matplotlib.pyplot as plt
 import pandas as pd
 
-fig, ax = plt.subplots(figsize=(9, 5))
-sns.boxplot(data=df, x="corso", y="voto",
-            palette="Set2", ax=ax)
-ax.set_title("Distribuzione dei voti per corso", fontsize=14)
-ax.set_xlabel("Corso di laurea")
-ax.set_ylabel("Voto medio")
-plt.tight_layout()
-plt.savefig("boxplot_voti_corso.png", dpi=150)
-plt.show()</code></pre>
-                <div class="box box-blue">
-                    <strong>Anatomia del boxplot:</strong>
-                    <ul>
-                        <li><strong>Linea centrale:</strong> mediana (Q2)</li>
-                        <li><strong>Bordi della scatola:</strong> Q1 (25%) e Q3 (75%)</li>
-                        <li><strong>Baffi:</strong> fino a 1.5 &times; IQR dai bordi</li>
-                        <li><strong>Punti isolati:</strong> outlier (oltre i baffi)</li>
-                    </ul>
-                </div>
+df = pd.read_csv("dati.csv", sep=";")  # carica
+df = df.drop_duplicates().dropna()     # pulisce
+medie = df.groupby("gruppo")["valore"].mean()
+plt.figure(figsize=(7, 4))             # nuova figura
+plt.bar(medie.index, medie.values)     # oppure plot, hist, scatter
+plt.title("Valore medio per gruppo")   # titolo ed etichette
+plt.xlabel("Gruppo")
+plt.ylabel("Valore medio")
+plt.tight_layout()                     # niente etichette tagliate
+plt.savefig("grafico.png")             # prima di plt.show()</code></pre>
             </section>
 
-            <!-- SLIDE 12: Heatmap -->
             <section>
-                <h2>Seaborn: heatmap della correlazione</h2>
-                <pre><code class="language-python">import seaborn as sns
-import matplotlib.pyplot as plt
-
-colonne_numeriche = ["voto", "ore_studio", "eta", "stipendio_atteso"]
-matrice_corr: pd.DataFrame = df[colonne_numeriche].corr()
-
-fig, ax = plt.subplots(figsize=(7, 6))
-sns.heatmap(
-    matrice_corr,
-    annot=True,          # mostra i valori nelle celle
-    fmt=".2f",           # due decimali
-    cmap="coolwarm",     # scala di colori
-    center=0,            # centro della scala
-    square=True,         # celle quadrate
-    linewidths=1,        # griglia tra le celle
-    ax=ax
-)
-ax.set_title("Matrice di correlazione", fontsize=14)
-plt.tight_layout()
-plt.savefig("heatmap_correlazione.png", dpi=150)
-plt.show()</code></pre>
-                <div class="box box-yellow">
-                    <strong>Nota:</strong> la diagonale e sempre 1.0 (correlazione di una variabile con se stessa). Un valore vicino a 0 indica assenza di relazione lineare.
-                </div>
-            </section>
-
-            <!-- SLIDE 13: Subplots / dashboard -->
-            <section>
-                <h2>Subplots: creare una dashboard</h2>
-                <p>Combinare piu grafici in una singola figura con <code>plt.subplots(righe, colonne)</code>.</p>
-                <pre><code class="language-python">fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-fig.suptitle("Dashboard: analisi studenti universitari",
-             fontsize=16, fontweight="bold", y=1.02)
-
-# Pannello 1: istogramma dei voti
-axes[0, 0].hist(df["voto"], bins=20, color="steelblue",
-                edgecolor="white", alpha=0.8)
-axes[0, 0].set_title("Distribuzione dei voti")
-
-# Pannello 2: boxplot per corso
-sns.boxplot(data=df, x="corso", y="voto",
-            palette="Set2", ax=axes[0, 1])
-
-# Pannello 3: scatter ore studio vs voto
-axes[1, 0].scatter(df["ore_studio"], df["voto"],
-                   alpha=0.4, color="coral", s=20)
-
-# Pannello 4: conteggio per corso (barre)
-conteggi = df["corso"].value_counts()
-axes[1, 1].bar(conteggi.index, conteggi.values,
-               color=["#4C72B0", "#55A868", "#C44E52", "#8172B2"])
-
-plt.tight_layout()
-plt.savefig("dashboard.png", dpi=150, bbox_inches="tight")</code></pre>
-            </section>
-
-            <!-- SLIDE 14: tight_layout e savefig -->
-            <section>
-                <h2>Dettagli importanti</h2>
+                <div class="tag tag-esercizio">Esercizio 1 · immatricolati.py</div>
+                <h2>Immatricolati e laureati</h2>
                 <div class="columns">
                     <div class="col">
-                        <h3><code>plt.tight_layout()</code></h3>
-                        <p>Regola automaticamente i margini per evitare sovrapposizioni tra titoli, etichette e pannelli.</p>
-                        <div class="box box-red">
-                            Senza <code>tight_layout()</code>, i subplots si sovrappongono facilmente.
-                        </div>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete i dati nel codice: <code>anni = list(range(2018, 2026))</code>, <code>immatricolati = [182, 195, 210, 204, 231, 248, 240, 262]</code>, <code>laureati = [118, 126, 131, 140, 137, 152, 160, 171]</code>.</li>
+                            <li>Create la figura con <code>plt.figure(figsize=(7, 4))</code> e disegnate le due serie con <code>plt.plot</code>: per ognuna un <code>marker</code> e una <code>label</code> diversi, i laureati con <code>linestyle="--"</code>.</li>
+                            <li>Aggiungete titolo, etichette degli assi, legenda e una griglia leggera (<code>plt.grid(True, alpha=0.3)</code>), poi salvate con <code>plt.savefig("immatricolati.png")</code>. A casa potete aggiungere <code>plt.show()</code> dopo il salvataggio.</li>
+                            <li>Stampate l'anno con più immatricolati (<code>immatricolati.index(max(immatricolati))</code>) e la variazione tra il primo e l'ultimo anno.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <h3><code>plt.savefig()</code></h3>
-                        <table>
-                            <thead><tr><th>Parametro</th><th>Uso</th></tr></thead>
-                            <tbody>
-                                <tr><td><code>dpi=150</code></td><td>Risoluzione (150 per schermo, 300 per stampa)</td></tr>
-                                <tr><td><code>bbox_inches="tight"</code></td><td>Taglia i margini vuoti</td></tr>
-                                <tr><td><code>transparent=True</code></td><td>Sfondo trasparente</td></tr>
-                            </tbody>
-                        </table>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Anno con più immatricolati: 2025 (262)
+Variazione 2018-2025: 44.0%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>ultimo valore <code>230</code> invece di <code>262</code> → <code>Anno con più immatricolati: 2023 (248)</code>, <code>Variazione 2018-2025: 26.4%</code></li><li>togliete <code>plt.legend()</code>: le linee restano, ma non si sa quale serie sia quale</li></ul>
                     </div>
-                </div>
-                <div class="box box-green" style="margin-top:0.5em;">
-                    <strong>Ordine corretto:</strong> <code>tight_layout()</code> &rarr; <code>savefig()</code> &rarr; <code>show()</code>. Se chiamate <code>show()</code> prima di <code>savefig()</code>, il file salvato potrebbe essere vuoto.
                 </div>
             </section>
 
-            <!-- SLIDE 15: Parametro alpha -->
             <section>
-                <h2>Il parametro <code>alpha</code></h2>
-                <p>Controlla la <strong>trasparenza</strong> degli elementi grafici (0 = invisibile, 1 = opaco).</p>
+                <div class="tag tag-esercizio">Esercizio 2 · voti.py</div>
+                <h2>I voti dell'appello</h2>
                 <div class="columns">
                     <div class="col">
-                        <pre><code class="language-python"># Senza trasparenza
-ax.scatter(x, y, alpha=1.0)
-# I punti sovrapposti si coprono</code></pre>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Generate i voti con <code>rng = np.random.default_rng(14)</code> e <code>tutti = rng.normal(23.5, 4, 250).round().clip(max=30)</code>: 250 voti interi, al massimo 30.</li>
+                            <li>Tenete i promossi con un filtro booleano: <code>voti = tutti[tutti &gt;= 18]</code>.</li>
+                            <li>Disegnate l'istogramma con una barra per ogni voto (<code>bins=np.arange(17.5, 31)</code>) e <code>edgecolor="white"</code>. Aggiungete una linea verticale tratteggiata sulla media con <code>plt.axvline</code> e la legenda.</li>
+                            <li>Salvate <code>voti.png</code> e stampate promossi, media dei promossi e quota di voti da 27 in su.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <pre><code class="language-python"># Con trasparenza
-ax.scatter(x, y, alpha=0.4)
-# Si vedono le zone dense</code></pre>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Promossi: 233 su 250
+Media dei promossi: 24.1
+Voti da 27 in su: 26.2%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>seed <code>15</code> → <code>Promossi: 232 su 250</code>, <code>Media dei promossi: 24.2</code>, <code>Voti da 27 in su: 28.4%</code></li><li>deviazione standard <code>6</code> → <code>Promossi: 211 su 250</code>: l'istogramma si allarga e la barra del 30 si alza</li><li><code>bins=5</code>: ogni barra raccoglie più voti e la forma cambia</li></ul>
                     </div>
                 </div>
-                <div class="box box-blue">
-                    <strong>Quando e utile:</strong>
-                    <ul>
-                        <li><strong>Scatter plot con molti punti:</strong> <code>alpha=0.3&ndash;0.5</code> per vedere la densita</li>
-                        <li><strong>Istogrammi sovrapposti:</strong> <code>alpha=0.5&ndash;0.7</code> per confrontare distribuzioni</li>
-                        <li><strong>Grafici a linee multiple:</strong> <code>alpha=0.8</code> per distinguere le linee</li>
-                    </ul>
-                </div>
             </section>
 
-            <!-- SLIDE 16: Sezione mini-progetto -->
-            <section class="section-slide">
-                <h2>Parte 2 &mdash; Mini-progetto</h2>
-                <p>Analisi end-to-end di un dataset</p>
-            </section>
-
-            <!-- SLIDE 17: Panoramica progetto -->
             <section>
-                <h2>Mini-progetto: panoramica</h2>
-                <p>Costruite un programma completo che esegue un'analisi end-to-end, integrando tutte le competenze del corso.</p>
-                <div class="diagram">
-                    <strong>1. Generazione</strong> &rarr; <strong>2. Esplorazione</strong> &rarr; <strong>3. Pulizia</strong> &rarr; <strong>4. Analisi</strong> &rarr; <strong>5. Visualizzazione</strong>
-                </div>
-                <div class="box box-yellow" style="margin-top:0.8em;">
-                    <strong>Requisiti trasversali:</strong>
-                    <ul>
-                        <li>Ogni passo in una o piu <strong>funzioni dedicate</strong></li>
-                        <li><strong>Type hints</strong> su tutti i parametri e valori di ritorno</li>
-                        <li><strong>Docstring</strong> per ogni funzione</li>
-                        <li>Nessuna variabile globale: tutto passa attraverso parametri e return</li>
-                        <li>Blocco <code>if __name__ == "__main__"</code> per il flusso principale</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- SLIDE 18: Passo 1 - Generazione -->
-            <section>
-                <h2>Passo 1 &mdash; Generazione del dataset</h2>
-                <p>Simulate un'indagine su 500 dipendenti con queste colonne:</p>
-                <table>
-                    <thead>
-                        <tr><th>Colonna</th><th>Tipo</th><th>Descrizione</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><code>id</code></td><td>int</td><td>Identificativo univoco</td></tr>
-                        <tr><td><code>settore</code></td><td>str</td><td>Tecnologia, Sanita, Istruzione, Finanza, Commercio</td></tr>
-                        <tr><td><code>ruolo</code></td><td>str</td><td>Junior, Mid, Senior, Manager</td></tr>
-                        <tr><td><code>anni_esperienza</code></td><td>int</td><td>Da 0 a 35</td></tr>
-                        <tr><td><code>stipendio</code></td><td>float</td><td>In euro, correlato a settore e esperienza</td></tr>
-                        <tr><td><code>soddisfazione</code></td><td>int</td><td>Scala 1&ndash;10</td></tr>
-                        <tr><td><code>ore_settimanali</code></td><td>float</td><td>Ore lavorate a settimana</td></tr>
-                        <tr><td><code>regione</code></td><td>str</td><td>Almeno 5 regioni italiane</td></tr>
-                    </tbody>
-                </table>
-                <pre><code class="language-python">def genera_dataset(n: int, percorso: str,
-                   seed: int = 42) -> pd.DataFrame:
-    """Genera un dataset simulato di dipendenti
-    e lo salva come CSV."""
-    ...</code></pre>
-            </section>
-
-            <!-- SLIDE 19: Passo 2 - Esplorazione -->
-            <section>
-                <h2>Passo 2 &mdash; Esplorazione</h2>
-                <pre><code class="language-python">def esplora_dataset(df: pd.DataFrame) -> None:
-    """Stampa un riepilogo esplorativo del dataset.
-
-    Mostra: dimensioni, tipi delle colonne, prime righe,
-    statistiche descrittive, conteggio valori per ogni
-    colonna categoriale, conteggio valori mancanti.
-    """
-    print(f"Dimensioni: {df.shape}")
-    print(f"\n=== TIPI ===\n{df.dtypes}")
-    print(f"\n=== HEAD ===\n{df.head()}")
-    print(f"\n=== DESCRIBE ===\n{df.describe()}")
-
-    for col in df.select_dtypes(include="object").columns:
-        print(f"\n=== {col.upper()} ===")
-        print(df[col].value_counts())
-
-    print(f"\n=== MANCANTI ===\n{df.isnull().sum()}")</code></pre>
-                <div class="box box-green">
-                    <strong>Regola:</strong> esplorate <em>sempre</em> i dati prima di analizzarli. Un <code>head()</code>, un <code>describe()</code>, un istogramma: bastano pochi secondi per evitare ore di lavoro su dati sbagliati.
-                </div>
-            </section>
-
-            <!-- SLIDE 20: Passo 3 - Pulizia -->
-            <section>
-                <h2>Passo 3 &mdash; Pulizia</h2>
-                <p>Inserite intenzionalmente dei difetti, poi correggeteli:</p>
-                <pre><code class="language-python">def pulisci_dataset(df: pd.DataFrame) -> pd.DataFrame:
-    """Pulisce il dataset: gestisce mancanti, anomali,
-    inconsistenze.
-
-    Strategia:
-    - Stipendio mancante: mediana del settore.
-    - Ore settimanali > 80 o < 5: sostituite con mediana.
-    - Stringhe: normalizzate con strip() e capitalize().
-    """
-    df_pulito: pd.DataFrame = df.copy()
-
-    # Normalizzare stringhe
-    for col in ["settore", "ruolo", "regione"]:
-        df_pulito[col] = (df_pulito[col]
-                          .str.strip()
-                          .str.capitalize())
-
-    # Stipendio mancante -> mediana per settore
-    df_pulito["stipendio"] = (
-        df_pulito.groupby("settore")["stipendio"]
-        .transform(lambda s: s.fillna(s.median()))
-    )
-
-    # Ore anomale -> mediana generale
-    mediana_ore = df_pulito["ore_settimanali"].median()
-    anomale = (df_pulito["ore_settimanali"] > 80) | \
-              (df_pulito["ore_settimanali"] < 5)
-    df_pulito.loc[anomale, "ore_settimanali"] = mediana_ore
-
-    return df_pulito</code></pre>
-            </section>
-
-            <!-- SLIDE 21: Passo 4 - Analisi -->
-            <section>
-                <h2>Passo 4 &mdash; Analisi per gruppi</h2>
-                <pre><code class="language-python">def analisi_per_gruppi(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
-    """Calcola statistiche aggregate per diversi raggruppamenti."""
-    risultati: dict[str, pd.DataFrame] = {}
-
-    # Stipendio medio e mediano per settore
-    risultati["stipendio_per_settore"] = (
-        df.groupby("settore")["stipendio"]
-        .agg(["mean", "median"]).round(0)
-    )
-
-    # Soddisfazione media per ruolo
-    risultati["soddisfazione_per_ruolo"] = (
-        df.groupby("ruolo")["soddisfazione"]
-        .mean().round(2)
-    )
-
-    # Pivot table: stipendio medio per settore e ruolo
-    risultati["pivot_stipendio"] = pd.pivot_table(
-        df, values="stipendio",
-        index="settore", columns="ruolo",
-        aggfunc="mean"
-    ).round(0)
-
-    # Correlazione
-    cols = ["anni_esperienza", "stipendio", "soddisfazione"]
-    risultati["correlazione"] = df[cols].corr().round(3)
-
-    return risultati</code></pre>
-            </section>
-
-            <!-- SLIDE 22: Passo 5 - Visualizzazione -->
-            <section>
-                <h2>Passo 5 &mdash; Dashboard di visualizzazione</h2>
-                <pre><code class="language-python">def crea_dashboard(df: pd.DataFrame,
-                   percorso_output: str) -> None:
-    """Crea una dashboard con 4 grafici e la salva."""
-    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-    fig.suptitle("Dashboard dipendenti", fontsize=16,
-                 fontweight="bold")
-
-    # 1. Istogramma stipendi
-    axes[0,0].hist(df["stipendio"], bins=30,
-                   color="steelblue", edgecolor="white")
-    axes[0,0].set_title("Distribuzione stipendi")
-
-    # 2. Boxplot stipendi per settore
-    sns.boxplot(data=df, x="settore", y="stipendio",
-                palette="Set2", ax=axes[0,1])
-    axes[0,1].tick_params(axis="x", rotation=30)
-
-    # 3. Scatter esperienza vs stipendio
-    for settore in df["settore"].unique():
-        mask = df["settore"] == settore
-        axes[1,0].scatter(df.loc[mask, "anni_esperienza"],
-                          df.loc[mask, "stipendio"],
-                          alpha=0.4, s=20, label=settore)
-    axes[1,0].legend(fontsize=8)
-
-    # 4. Heatmap correlazione
-    cols_num = df.select_dtypes(include="number").columns
-    sns.heatmap(df[cols_num].corr(), annot=True, fmt=".2f",
-                cmap="coolwarm", center=0, ax=axes[1,1])
-
-    plt.tight_layout()
-    plt.savefig(percorso_output, dpi=150, bbox_inches="tight")</code></pre>
-            </section>
-
-            <!-- SLIDE 23: Struttura principale -->
-            <section>
-                <h2>Struttura del programma principale</h2>
-                <pre><code class="language-python">import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# ... definizioni delle funzioni sopra ...
-
-def main() -> None:
-    """Funzione principale: esegue l'analisi completa."""
-    percorso_csv: str = "dipendenti.csv"
-
-    # 1. Generazione
-    df: pd.DataFrame = genera_dataset(500, percorso_csv)
-    # 2. Caricamento (dimostra il ciclo salva/carica)
-    df = carica_dataset(percorso_csv)
-    # 3. Esplorazione
-    esplora_dataset(df)
-    # 4. Pulizia
-    df_pulito: pd.DataFrame = pulisci_dataset(df)
-    # 5. Analisi
-    risultati = analisi_per_gruppi(df_pulito)
-    for nome, tabella in risultati.items():
-        print(f"\n{'=' * 50}")
-        print(f"  {nome}")
-        print(f"{'=' * 50}")
-        print(tabella)
-    # 6. Visualizzazione
-    crea_dashboard(df_pulito, "dashboard_dipendenti.png")
-    # 7. Export
-    df_pulito.to_csv("dipendenti_pulito.csv", index=False)
-
-if __name__ == "__main__":
-    main()</code></pre>
-            </section>
-
-            <!-- SLIDE 24: Criteri di qualita -->
-            <section>
-                <h2>Criteri di qualita del progetto</h2>
+                <div class="tag tag-esercizio">Esercizio 3 · studio.py</div>
+                <h2>Ore di studio e voto</h2>
                 <div class="columns">
                     <div class="col">
-                        <div class="box box-green">
-                            <strong>Codice</strong>
-                            <ul>
-                                <li>Type hints su tutti i parametri e valori di ritorno</li>
-                                <li>Docstring per ogni funzione</li>
-                                <li>Nessuna variabile globale</li>
-                                <li>Eseguibile da terminale senza errori</li>
-                            </ul>
-                        </div>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Generate i dati di 80 studenti: <code>rng = np.random.default_rng(7)</code>, <code>ore = rng.uniform(20, 120, 80).round()</code>, <code>voto = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round().clip(18, 30)</code>.</li>
+                            <li>Disegnate un grafico di dispersione con <code>plt.scatter(ore, voto, alpha=0.6)</code>: la trasparenza mostra i punti sovrapposti.</li>
+                            <li>Aggiungete titolo, etichette e griglia leggera e salvate <code>studio.png</code>.</li>
+                            <li>Stampate la correlazione (<code>np.corrcoef(ore, voto)[0, 1]</code>) e il voto medio di chi ha studiato più di 80 ore e di chi ne ha studiate 80 o meno.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <div class="box box-blue">
-                            <strong>Contenuto</strong>
-                            <ul>
-                                <li>Dataset realistico (correlazione stipendio-esperienza)</li>
-                                <li>Pulizia di almeno 3 tipi di problema</li>
-                                <li>Almeno 4 tabelle statistiche</li>
-                                <li>4 grafici con titolo, etichette e legenda</li>
-                            </ul>
-                        </div>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Studenti: 80, correlazione: 0.67
+Voto medio con più di 80 ore: 25.2
+Voto medio con 80 ore o meno: 21.6</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>rumore <code>rng.normal(0, 5, 80)</code> → <code>correlazione: 0.28</code>, medie <code>24.3</code> e <code>22.0</code>: i punti sono più sparsi</li><li>togliete <code>alpha=0.6</code>: dove i punti si sovrappongono non si vede quanti sono</li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 25: Interpretazione risultati -->
             <section>
-                <h2>Interpretazione dei risultati</h2>
-                <p>Dopo aver completato il progetto, rispondete per iscritto:</p>
-                <ol>
-                    <li>Quale settore ha lo stipendio medio piu alto? E anche quello con la soddisfazione piu alta?</li>
-                    <li>Dallo scatter plot, la relazione esperienza-stipendio e lineare? Ci sono pattern diversi per settore?</li>
-                    <li>Dalla heatmap, quali coppie di variabili sono piu correlate? Quali sono indipendenti?</li>
-                    <li>I boxplot mostrano outlier? In quale settore la variabilita e maggiore?</li>
-                    <li>Se doveste comunicare i risultati a un committente non tecnico, quali due grafici scegliereste e perche?</li>
-                </ol>
-                <div class="box box-yellow">
-                    <strong>Ricordate:</strong> i numeri e i grafici non parlano da soli. La vera competenza e saperli interpretare e comunicare in modo chiaro e onesto.
+                <div class="tag tag-esercizio">Esercizio 4 · mensa.py</div>
+                <h2>L'attesa in mensa</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Costruite un DataFrame con 20 settimane di rilevazioni dell'attesa in mensa (minuti): <code>rng = np.random.default_rng(3)</code>, <code>giorni = ["lun", "mar", "mer", "gio", "ven"]</code>, attese tipiche <code>[12, 15, 14, 16, 8]</code>.</li>
+                            <li>Colonne: <code>"giorno": giorni * 20</code> e <code>"attesa": np.tile(attesa_tipica, 20) + rng.normal(0, 3, 100)</code>.</li>
+                            <li>Calcolate l'attesa media per giorno con <code>df.groupby("giorno", sort=False)["attesa"].mean()</code>: <code>sort=False</code> mantiene i giorni nell'ordine della settimana.</li>
+                            <li>Disegnate le barre con <code>plt.bar(medie.index, medie.values)</code>, aggiungete titolo ed etichette, salvate <code>mensa.png</code> e stampate le rilevazioni, la media generale e i giorni con l'attesa più lunga e più corta (<code>idxmax</code>, <code>idxmin</code>).</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Rilevazioni: 100, media: 12.8 min
+Giorno peggiore: gio (15.8 min)
+Giorno migliore: ven (7.4 min)</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>senza <code>sort=False</code> le righe stampate non cambiano, ma le barre sono in ordine alfabetico: <code>gio</code>, <code>lun</code>, <code>mar</code>, <code>mer</code>, <code>ven</code></li><li>aggiungete <code>plt.axhline(df["attesa"].mean(), color="red", linestyle="--")</code>: si vedono i giorni sopra la media</li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 26: Domande di verifica -->
+            <section>
+                <div class="tag tag-esercizio">Esercizio 5 · tragitto.py</div>
+                <h2>Il tragitto per l'università</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Generate i tempi (minuti) di 40 tragitti per mezzo con <code>rng = np.random.default_rng(11)</code> e un dizionario: <code>"bici": rng.normal(22, 3, 40).round()</code>, <code>"autobus": rng.normal(28, 7, 40).round()</code>, <code>"treno": rng.normal(35, 4, 40).round()</code>.</li>
+                            <li>Disegnate un boxplot con <code>plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))</code>. Con Matplotlib precedente alla 3.9 il parametro si chiama <code>labels</code>.</li>
+                            <li>Aggiungete titolo ed etichette e salvate <code>tragitto.png</code>.</li>
+                            <li>Per ogni mezzo stampate la mediana (<code>np.median</code>) e la quota di tragitti oltre 30 minuti.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>bici: mediana 22 min, oltre 30 min 0.0%
+autobus: mediana 30 min, oltre 30 min 47.5%
+treno: mediana 35 min, oltre 30 min 82.5%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>autobus con <code>rng.normal(28, 2, 40)</code> → <code>autobus: mediana 29 min, oltre 30 min 7.5%</code>: la scatola si stringe</li><li>il treno ha la mediana più alta ma una scatola più stretta dell'autobus: è più lento ma più regolare</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 6 · meteo.py</div>
+                <h2>Gennaio in due grafici</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Generate le temperature di 31 giorni: <code>rng = np.random.default_rng(1)</code>, <code>minime = rng.normal(0, 2.5, 31).round(1)</code>, <code>massime = (minime + rng.normal(7, 1.8, 31)).round(1)</code>.</li>
+                            <li>Create due grafici affiancati con <code>fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))</code>. Sugli assi si usano <code>ax1.plot(...)</code>, <code>ax1.set_title(...)</code>, <code>ax1.set_xlabel(...)</code>.</li>
+                            <li>A sinistra le linee delle massime e delle minime giorno per giorno, con legenda; a destra l'istogramma dell'escursione termica (<code>massime - minime</code>, <code>bins=8</code>).</li>
+                            <li>Chiudete con <code>fig.tight_layout()</code> e <code>fig.savefig("meteo.png")</code>, poi stampate i giorni con la minima sotto zero e l'escursione media.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Giorni con la minima sotto zero: 13
+Escursione media: 6.8 °C</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>seed <code>2</code> → <code>Giorni con la minima sotto zero: 15</code>, <code>Escursione media: 7.4 °C</code></li><li><code>plt.subplots(2, 1, figsize=(7, 7))</code>: i due grafici uno sopra l'altro</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge a scelta</div>
+                <h2>Scegliete un tema</h2>
+                <div class="columns">
+                    <div class="col-40">
+                        <table class="mini" style="font-size:0.62em"><thead><tr><th>Tema</th><th>Challenge</th><th>File</th></tr></thead><tbody><tr><td>Mercati e finanza</td><td>Due mesi di borsa</td><td><code>ch_mercati.py</code></td></tr><tr><td>Sport</td><td>Il passo gara</td><td><code>ch_sport.py</code></td></tr><tr><td>Imprese e marketing</td><td>Quattro mesi di ordini</td><td><code>ch_negozio.py</code></td></tr><tr><td>Salute e scienza</td><td>L'effetto dell'integratore</td><td><code>ch_salute.py</code></td></tr><tr><td>Caso e probabilità</td><td>Il dado sospetto</td><td><code>ch_probabilita.py</code></td></tr></tbody></table>
+                        <p style="font-size:0.6em">Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.</p>
+                    </div>
+                    <div class="col-60">
+                        <div class="etichetta">Tutte le challenge chiedono</div>
+                        <ul class="consegna" style="font-size:0.56em"><li>Scaricate dal portale il file CSV del vostro tema e mettetelo nella cartella del programma. Il separatore è <code>;</code>.</li><li>Caricate: <code>grezzo = pd.read_csv(..., sep=";")</code>. Tenete il DataFrame originale per contare le righe lette.</li><li>Pulite: togliete le righe doppie (<code>drop_duplicates()</code>), quelle con valori mancanti (<code>dropna()</code>) e quelle con valori impossibili, con un filtro booleano. Aggiungete <code>.copy()</code> all'ultimo filtro, prima di creare nuove colonne. Stampate righe lette e righe rimaste.</li><li>Calcolate le colonne e le 3 statistiche indicate nel vostro tema: almeno una con <code>groupby</code>.</li><li>Disegnate 3 grafici con titolo ed etichette degli assi e salvateli in PNG: un istogramma o boxplot, un grafico a linee o di dispersione, un grafico a barre per gruppo. Conviene una funzione <code>salva(nome: str, titolo: str, x: str, y: str) -&gt; None</code> che mette titolo ed etichette, chiama <code>tight_layout()</code> e <code>savefig</code> e chiude la figura con <code>plt.close()</code>.</li><li>Concludete con 3 righe stampate che commentano i risultati. I numeri vengono dalle variabili calcolate, non scritti a mano: se cambiano i dati, la conclusione si aggiorna.</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Mercati e finanza · ch_mercati.py</div>
+                <h2>Due mesi di borsa</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li><code>prezzi.csv</code> contiene i prezzi di chiusura di ENRG, BANK, TECH e dell'indice MIB, giorno per giorno, a settembre e ottobre 2026. Colonne: <code>data</code>, <code>titolo</code>, <code>prezzo</code>. Ci sono giorni ripetuti, prezzi mancanti e prezzi non positivi da scartare.</li>
+                            <li>Dopo la pulizia aggiungete la colonna <code>rendimento</code> con <code>df.groupby("titolo")["prezzo"].pct_change()</code>: per ogni titolo calcola (p_oggi − p_ieri) / p_ieri. Il primo giorno di ogni titolo resta vuoto.</li>
+                            <li>Statistiche: per ogni titolo il rendimento nel periodo (con <code>g = df.groupby("titolo")["prezzo"]</code>, <code>g.last() / g.first() - 1</code>) e la volatilità (deviazione standard dei rendimenti); i giorni in cui il MIB perde più dell'1%.</li>
+                            <li>Grafici: <code>rendimenti.png</code>, istogramma dei rendimenti (con <code>dropna()</code>); <code>prezzi.png</code>, linee dei prezzi di ENRG, BANK e TECH con legenda (il MIB ha un'altra scala); <code>volatilita.png</code>, barre della volatilità per titolo.</li>
+                            <li>Conclusione: titolo migliore e peggiore escluso il MIB (<code>rend.drop("MIB")</code>, <code>idxmax</code>, <code>idxmin</code>); il più volatile a confronto con il MIB; quanti titoli hanno reso più dell'indice.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Righe lette: 179, dopo la pulizia: 172
+BANK: rendimento 14.6%, volatilità 1.6%
+ENRG: rendimento -10.6%, volatilità 1.2%
+MIB: rendimento 1.9%, volatilità 0.9%
+TECH: rendimento 21.6%, volatilità 2.2%
+Giorni con il MIB in calo oltre l'1%: 4
+Il migliore è TECH (21.6%), il peggiore ENRG (-10.6%).
+Il più volatile è TECH, con 2.2% al giorno; il MIB si ferma a 0.9%.
+Il MIB rende 1.9%: 2 titoli su 3 fanno meglio.</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>senza <code>drop_duplicates()</code> → <code>dopo la pulizia: 175</code>; un giorno ripetuto dà rendimento 0 e le statistiche cambiano di poco</li><li>senza il filtro sui prezzi → volatilità di ENRG <code>nan%</code> e di MIB <code>154.2%</code>, poi l'istogramma si ferma con <code>ValueError</code>: un prezzo 0 produce un rendimento infinito</li></ul>
+                        <div class="etichetta">File di dati</div>
+                        <p style="font-size:0.66em"><code>prezzi.csv</code>: scaricatelo dal portale, cartella del codice di L08.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Sport · ch_sport.py</div>
+                <h2>Il passo gara</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li><code>tempi_giro.csv</code> contiene i tempi sul giro (secondi) di Ferri, Lanza, Moro e Neri in 3 gare da 15 giri. Colonne: <code>gara</code>, <code>pilota</code>, <code>giro</code>, <code>tempo</code>. Ci sono righe doppie, tempi mancanti e tempi impossibili: tenete solo quelli tra 60 e 180 secondi.</li>
+                            <li>Aggiungete la colonna <code>lento</code> (<code>True</code> se il tempo supera 100 s: pit stop o safety car) e create <code>normali = df[~df["lento"]]</code>; <code>~</code> inverte i valori booleani.</li>
+                            <li>Statistiche: il giro più veloce con pilota, gara e giro (<code>df.loc[df["tempo"].idxmin()]</code>); la quota di giri lenti; la media sui giri normali per pilota.</li>
+                            <li>Grafici: <code>hist_tempi.png</code>, istogramma di tutti i tempi; <code>gara1.png</code>, linee dei giri normali della gara 1, una per pilota, con <code>marker="o"</code> e legenda; <code>distacchi.png</code>, barre del distacco di ogni pilota dal più veloce (media − media minima).</li>
+                            <li>Conclusione: il più veloce sul passo gara e quanto perde al giro il più lento; quanti secondi costa in media un giro lento rispetto ai giri normali; cosa mostra il grafico della gara 1.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Righe lette: 183, dopo la pulizia: 176
+Giro più veloce: Moro, gara 2, giro 12, 88.3 s
+Giri lenti (pit stop e safety car): 11.4%
+Ferri: media sui giri normali 92.46 s
+Lanza: media sui giri normali 93.01 s
+Moro: media sui giri normali 92.68 s
+Neri: media sui giri normali 93.22 s
+Sul passo gara il più veloce è Ferri; Neri perde 0.76 s al giro.
+Un giro lento costa 16.3 s in più e va escluso.
+Gara 1: i tempi crescono fino al pit stop (usura gomme).</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>senza il filtro sui tempi → <code>Giro più veloce: Lanza, gara 3, giro 13, 0.0 s</code> e Lanza risulta il più veloce sul passo gara</li><li>senza <code>drop_duplicates()</code> → <code>dopo la pulizia: 179</code>, <code>Giri lenti (pit stop e safety car): 11.7%</code></li></ul>
+                        <div class="etichetta">File di dati</div>
+                        <p style="font-size:0.66em"><code>tempi_giro.csv</code>: scaricatelo dal portale, cartella del codice di L08.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Imprese e marketing · ch_negozio.py</div>
+                <h2>Quattro mesi di ordini</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li><code>ordini.csv</code> contiene gli ordini del negozio online da settembre a dicembre 2026. Colonne: <code>ordine</code>, <code>data</code>, <code>cliente</code>, <code>citta</code>, <code>prodotto</code>, <code>quantita</code>, <code>prezzo</code>. Ci sono ordini registrati due volte, quantità mancanti e quantità non positive da scartare.</li>
+                            <li>Aggiungete le colonne <code>importo</code> (quantità × prezzo) e <code>mese</code>, i primi 7 caratteri della data (<code>df["data"].str[:7]</code>, per esempio <code>2026-09</code>).</li>
+                            <li>Statistiche: fatturato totale e importo medio per ordine; fatturato per città con la quota sul totale; prodotto più venduto per numero di pezzi.</li>
+                            <li>Grafici: <code>hist_importi.png</code>, istogramma degli importi; <code>mesi.png</code>, linea del fatturato per mese con <code>marker="o"</code>; <code>citta.png</code>, barre del fatturato per città.</li>
+                            <li>Conclusione: città con la quota più alta e più bassa; mese migliore e peggiore; per il prodotto più venduto, quota dei pezzi e quota del fatturato.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Righe lette: 154, dopo la pulizia: 146
+Fatturato: 5438.80 EUR, ordine medio: 37.25 EUR
+Padova: 1639.10 EUR (30.1%)
+Venezia: 1466.00 EUR (27.0%)
+Verona: 1934.00 EUR (35.6%)
+Vicenza: 399.70 EUR (7.3%)
+Prodotto più venduto: quaderno, 124 pezzi
+Verona vale 35.6% del fatturato, Vicenza solo 7.3%.
+Il mese migliore è 2026-09 (1871.90 EUR), il peggiore 2026-11 (806.70 EUR).
+Prodotto quaderno: 41.6% dei pezzi, ma 11.2% del fatturato.</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>senza il filtro sulle quantità → <code>dopo la pulizia: 148</code>, <code>Fatturato: 5389.00 EUR</code>: l'ordine con quantità -2 toglie fatturato</li><li>senza <code>drop_duplicates()</code> → <code>dopo la pulizia: 150</code>, <code>Fatturato: 5572.50 EUR</code></li></ul>
+                        <div class="etichetta">File di dati</div>
+                        <p style="font-size:0.66em"><code>ordini.csv</code>: scaricatelo dal portale, cartella del codice di L08.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py</div>
+                <h2>L'effetto dell'integratore</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li><code>pazienti.csv</code> contiene i dati dello studio sull'integratore: <code>codice</code>, <code>sesso</code>, <code>eta</code>, <code>gruppo</code> (<code>trattamento</code> o <code>controllo</code>), <code>pressione_prima</code> e <code>pressione_dopo</code> in mmHg. Ci sono pazienti registrati due volte, pressioni mancanti (pazienti usciti dallo studio) e pressioni impossibili: tenete solo i valori tra 80 e 250 (<code>between(80, 250)</code>), sia prima sia dopo.</li>
+                            <li>Aggiungete le colonne <code>differenza</code> (dopo − prima) e <code>migliorato</code> (<code>True</code> se la pressione è scesa di almeno 10 mmHg).</li>
+                            <li>Statistiche: per gruppo la variazione media e la quota di migliorati (media della colonna booleana); il rischio relativo, cioè la quota di migliorati con il trattamento divisa per quella del controllo.</li>
+                            <li>Grafici: <code>variazione.png</code>, boxplot della differenza per gruppo (<code>tick_labels=</code>); <code>prima_dopo.png</code>, dispersione della pressione prima e dopo, un colore per gruppo e legenda; <code>migliorati.png</code>, barre della quota di migliorati per gruppo.</li>
+                            <li>Conclusione: variazione media nei due gruppi; rischio relativo; perché serve il gruppo di controllo.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Righe lette: 123, dopo la pulizia: 115
+controllo: variazione media -5.4 mmHg, migliorati 27.3%
+trattamento: variazione media -10.2 mmHg, migliorati 51.7%
+Rischio relativo di miglioramento: 1.89
+La pressione cambia di -10.2 mmHg con l'integratore e di -5.4 senza.
+I migliorati sono 1.89 volte quelli del controllo.
+Anche il controllo migliora: per questo serve un confronto.</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>senza il filtro sulle pressioni → <code>controllo: variazione media -31.4 mmHg</code>: due valori sbagliati ribaltano il confronto</li><li>soglia di miglioramento a 5 mmHg → migliorati <code>50.9%</code> e <code>83.3%</code>, rischio relativo <code>1.64</code></li><li>solo pazienti da 60 anni in su (<code>df[df["eta"] &gt;= 60]</code>) → <code>dopo la pulizia: 46</code>, rischio relativo <code>2.18</code></li></ul>
+                        <div class="etichetta">File di dati</div>
+                        <p style="font-size:0.66em"><code>pazienti.csv</code>: scaricatelo dal portale, cartella del codice di L08.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Caso e probabilità · ch_probabilita.py</div>
+                <h2>Il dado sospetto</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li><code>lanci.csv</code> è il registro di 180 lanci di due dadi, fatti a turno da Ada, Bruno, Carla e Dario. Colonne: <code>lancio</code>, <code>giocatore</code>, <code>dado1</code>, <code>dado2</code>. Ci sono lanci copiati due volte, valori mancanti e valori impossibili del secondo dado: tenete solo quelli tra 1 e 6 (<code>between(1, 6)</code>).</li>
+                            <li>Aggiungete le colonne <code>somma</code> (dado1 + dado2) e <code>sei</code> (<code>True</code> se il secondo dado vale 6).</li>
+                            <li>Statistiche: media della somma (teorica 7); quota di lanci con somma 7 (teorica 6/36); per giocatore, media della somma e quota di 6 sul secondo dado.</li>
+                            <li>Grafici: <code>somme.png</code>, istogramma della somma con una barra per valore (<code>bins=np.arange(1.5, 13)</code>); <code>media_cumulata.png</code>, linea della media dopo ogni lancio (<code>df["somma"].cumsum()</code> diviso per <code>np.arange(1, len(df) + 1)</code>) con una linea orizzontale a 7 (<code>plt.axhline</code>); <code>sei.png</code>, barre della quota di 6 per giocatore con una linea a 1/6.</li>
+                            <li>Conclusione: media finale a confronto con 7; il giocatore con più 6 sul secondo dado e la sua somma media; il confronto con 1/6.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Righe lette: 183, dopo la pulizia: 176
+Media della somma: 7.20 (teorica 7.00)
+Somma 7: 18.2% dei lanci (teorica 16.7%)
+Ada: media 6.73, sei sul dado 2 6.7%
+Bruno: media 7.24, sei sul dado 2 15.6%
+Carla: media 6.95, sei sul dado 2 21.4%
+Dario: media 7.86, sei sul dado 2 43.2%
+Dopo 176 lanci la media cumulata è 7.20; il valore teorico è 7.
+Dario fa 6 sul dado 2 nel 43.2% dei lanci e la sua somma media è 7.86.
+Con un dado regolare sarebbe 16.7%: va controllato.</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>senza il filtro sul secondo dado → <code>dopo la pulizia: 178</code>, <code>Media della somma: 7.18 (teorica 7.00)</code></li><li>togliete i lanci di Dario prima dei calcoli → <code>Media della somma: 6.98</code>; ora la conclusione indica Carla, con 21.4% su 42 lanci: uno scarto così piccolo può dipendere dal caso</li></ul>
+                        <div class="etichetta">File di dati</div>
+                        <p style="font-size:0.66em"><code>lanci.csv</code>: scaricatelo dal portale, cartella del codice di L08.</p>
+                    </div>
+                </div>
+            </section>
+
             <section>
                 <h2>Domande di verifica</h2>
-                <ol>
-                    <li>Differenza tra <code>plt.plot()</code> e <code>ax.plot()</code>?</li>
-                    <li>Cosa fa il parametro <code>alpha</code> nei grafici?</li>
-                    <li>Differenza tra istogramma e grafico a barre?</li>
-                    <li>Perche la diagonale della heatmap e sempre 1.0?</li>
-                    <li>In un boxplot, cosa rappresentano linea centrale, bordi, baffi e punti isolati?</li>
-                    <li>Vantaggio di organizzare il codice in funzioni?</li>
-                    <li>Perche <code>tight_layout()</code> e importante?</li>
-                    <li>Cosa significa <code>dpi=150</code> in <code>savefig()</code>?</li>
+                <ol style="font-size:0.85em">
+                    <li>Perché <code>plt.savefig</code> va chiamato prima di <code>plt.show()</code>? Cosa contiene il PNG se si inverte l'ordine?</li>
+                    <li>Quando si usa un istogramma e quando un grafico a barre? Fate un esempio per ciascuno con i dati di oggi.</li>
+                    <li>In <code>mensa.py</code> le barre partono da 0. Come cambierebbe l'impressione se l'asse verticale partisse da 7 minuti?</li>
+                    <li>In <code>studio.py</code> la correlazione è 0.67. Basta per dire che studiare di più fa prendere voti più alti?</li>
+                    <li>Nel vostro progetto, quale statistica cambia di più se togliete il filtro sui valori impossibili? Perché?</li>
                 </ol>
             </section>
-
-            <!-- SLIDE 27: Chiusura del corso -->
-            <section>
-                <h2>Il percorso del corso</h2>
-                <div class="diagram">
-                    Variabili e tipi &rarr; Condizionali &rarr; Cicli &rarr; Funzioni &rarr; Strutture dati &rarr; File e CSV &rarr; Eccezioni &rarr; <strong>NumPy + Pandas + Matplotlib</strong>
-                </div>
-                <div class="box box-green" style="margin-top:1em;">
-                    <strong>Tre lezioni da portare con se:</strong>
-                    <ol>
-                        <li><strong>I dati vanno sempre esplorati prima di analizzarli.</strong> Un <code>head()</code>, un <code>describe()</code>, un istogramma: bastano pochi secondi per evitare ore di errori.</li>
-                        <li><strong>Il codice deve essere organizzato in funzioni con interfacce chiare.</strong> Type hints e docstring non sono un lusso: sono il modo in cui il codice comunica.</li>
-                        <li><strong>Un grafico senza etichette e un grafico inutile.</strong> Titolo, assi, legenda, unita di misura: ogni grafico deve essere comprensibile da solo.</li>
-                    </ol>
-                </div>
-                <p style="text-align:center; margin-top:1em; color:var(--text-muted);">Il linguaggio e le librerie sono strumenti. La vera competenza e saper formulare la domanda giusta, scegliere l'analisi appropriata e comunicare il risultato in modo onesto e chiaro. Buon lavoro.</p>
-            </section>
-
-    
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">

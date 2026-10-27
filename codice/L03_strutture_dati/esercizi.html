@@ -437,44 +437,208 @@ ore_studio: <span class="nb">dict</span>[<span class="nb">str</span>, <span clas
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># SFIDA: compagni di corsi a scelta — compagni.py</span>
+<span class="cm"># CHALLENGE MERCATI E FINANZA: il portafoglio — ch_mercati.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Sfida: Compagni di corsi a scelta ---&quot;</span>)
-<span class="kw">def</span> <span class="fn">jaccard</span>(<span class="fn">a</span>: <span class="nb">set</span>[<span class="nb">str</span>], b: <span class="nb">set</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-    <span class="st">&quot;&quot;&quot;Elementi in comune diviso elementi totali.&quot;&quot;&quot;</span>
-    <span class="kw">return</span> <span class="nb">len</span>(a <span class="op">&amp;</span> b) <span class="op">/</span> <span class="nb">len</span>(a <span class="op">|</span> b)
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Mercati e finanza: Il portafoglio ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
 
-scelte: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">set</span>[<span class="nb">str</span>]] <span class="op">=</span> {
-    <span class="st">&quot;Anna&quot;</span>: {<span class="st">&quot;Serie storiche&quot;</span>, <span class="st">&quot;Demografia&quot;</span>, <span class="st">&quot;Marketing&quot;</span>, <span class="st">&quot;R&quot;</span>},
-    <span class="st">&quot;Bruno&quot;</span>: {<span class="st">&quot;Marketing&quot;</span>, <span class="st">&quot;Finanza&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;Python&quot;</span>},
-    <span class="st">&quot;Chiara&quot;</span>: {<span class="st">&quot;Serie storiche&quot;</span>, <span class="st">&quot;Demografia&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;Biostatistica&quot;</span>},
-    <span class="st">&quot;Davide&quot;</span>: {<span class="st">&quot;Finanza&quot;</span>, <span class="st">&quot;Python&quot;</span>, <span class="st">&quot;Econometria&quot;</span>},
-    <span class="st">&quot;Elisa&quot;</span>: {<span class="st">&quot;Biostatistica&quot;</span>, <span class="st">&quot;Demografia&quot;</span>, <span class="st">&quot;Python&quot;</span>},
-}
 
-nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">sorted</span>(scelte)
-coppia: <span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> (<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>)
-massimo: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span><span class="mi">1.0</span>
-<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(nomi)):
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(i <span class="op">+</span> <span class="mi">1</span>, <span class="nb">len</span>(nomi)):
-        s: <span class="nb">float</span> <span class="op">=</span> jaccard(scelte[nomi[i]], scelte[nomi[j]])
-        <span class="kw">if</span> s <span class="op">&gt;</span> massimo:
-            massimo, coppia <span class="op">=</span> s, (nomi[i], nomi[j])
-<span class="nb">print</span>(<span class="st">f&quot;Coppia più simile: {coppia} con {massimo:.2f}&quot;</span>)
+<span class="kw">def</span> <span class="fn">escursione</span>(<span class="fn">prezzi</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce il prezzo minimo e il prezzo massimo.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">min</span>(prezzi), <span class="nb">max</span>(prezzi)
 
-nome: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Studente: &quot;</span>)
-<span class="kw">if</span> nome <span class="kw">not</span> <span class="kw">in</span> scelte:
-    <span class="nb">print</span>(<span class="st">&quot;Studente non trovato&quot;</span>)
-<span class="kw">else</span>:
-    simile: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
-    massimo <span class="op">=</span> <span class="op">-</span><span class="mi">1.0</span>
-    <span class="kw">for</span> altro <span class="kw">in</span> nomi:
-        s <span class="op">=</span> jaccard(scelte[nome], scelte[altro])
-        <span class="kw">if</span> altro <span class="op">!</span><span class="op">=</span> nome <span class="kw">and</span> s <span class="op">&gt;</span> massimo:
-            massimo, simile <span class="op">=</span> s, altro
-    consigli: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> scelte[simile] <span class="op">-</span> scelte[nome]
-    <span class="nb">print</span>(<span class="st">f&quot;Più simile: {simile} ({massimo:.2f})&quot;</span>)
-    <span class="nb">print</span>(<span class="st">f&quot;Corsi consigliati: {sorted(consigli)}&quot;</span>)
+
+ordini: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">float</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;ENRG&quot;</span>, <span class="mi">30</span>, <span class="mi">12.40</span>), (<span class="st">&quot;BANK&quot;</span>, <span class="mi">20</span>, <span class="mi">8.15</span>), (<span class="st">&quot;TECH&quot;</span>, <span class="mi">10</span>, <span class="mi">45.20</span>),
+    (<span class="st">&quot;ENRG&quot;</span>, <span class="mi">20</span>, <span class="mi">12.10</span>), (<span class="st">&quot;BANK&quot;</span>, <span class="op">-</span><span class="mi">5</span>, <span class="mi">8.60</span>), (<span class="st">&quot;TECH&quot;</span>, <span class="mi">5</span>, <span class="mi">47.80</span>),
+    (<span class="st">&quot;ENRG&quot;</span>, <span class="op">-</span><span class="mi">10</span>, <span class="mi">13.05</span>), (<span class="st">&quot;BANK&quot;</span>, <span class="mi">10</span>, <span class="mi">8.30</span>), (<span class="st">&quot;TECH&quot;</span>, <span class="mi">5</span>, <span class="mi">44.90</span>),
+    (<span class="st">&quot;BANK&quot;</span>, <span class="op">-</span><span class="mi">5</span>, <span class="mi">8.75</span>),
+]
+
+prezzi: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+portafoglio: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter()
+<span class="kw">for</span> titolo, quantita, prezzo <span class="kw">in</span> ordini:
+    prezzi[titolo].append(prezzo)
+    portafoglio[titolo] <span class="op">+</span><span class="op">=</span> quantita
+
+<span class="kw">for</span> titolo <span class="kw">in</span> <span class="nb">sorted</span>(prezzi):
+    basso, alto <span class="op">=</span> escursione(prezzi[titolo])
+    <span class="nb">print</span>(<span class="st">f&quot;{titolo}: {len(prezzi[titolo])} ordini, prezzo da &quot;</span>
+          <span class="st">f&quot;{basso:.2f} a {alto:.2f}, &quot;</span>
+          <span class="st">f&quot;in portafoglio {portafoglio[titolo]}&quot;</span>)
+primo, azioni <span class="op">=</span> portafoglio.most_common(<span class="mi">1</span>)[<span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Posizione più grande: {primo} con {azioni} azioni&quot;</span>)
+vendite: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">float</span>]] <span class="op">=</span> [
+    o <span class="kw">for</span> o <span class="kw">in</span> ordini <span class="kw">if</span> o[<span class="mi">1</span>] <span class="op">&lt;</span> <span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Vendite: {len(vendite)} su {len(ordini)} &quot;</span>
+      <span class="st">f&quot;({len(vendite) / len(ordini):.1%})&quot;</span>)
+comprati: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {o[<span class="mi">0</span>] <span class="kw">for</span> o <span class="kw">in</span> ordini <span class="kw">if</span> o[<span class="mi">1</span>] <span class="op">&gt;</span> <span class="mi">0</span>}
+venduti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {o[<span class="mi">0</span>] <span class="kw">for</span> o <span class="kw">in</span> vendite}
+<span class="nb">print</span>(<span class="st">f&quot;Mai venduti: {sorted(comprati - venduti)}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE SPORT: il campionato — ch_sport.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Sport: Il campionato ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+
+PUNTI: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">25</span>, <span class="mi">18</span>, <span class="mi">15</span>, <span class="mi">12</span>]
+
+
+<span class="kw">def</span> <span class="fn">bilancio</span>(<span class="fn">posizioni</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce i punti totali e il miglior piazzamento.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sum</span>([PUNTI[p <span class="op">-</span> <span class="mi">1</span>] <span class="kw">for</span> p <span class="kw">in</span> posizioni]), <span class="nb">min</span>(posizioni)
+
+
+rossa: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Ferri&quot;</span>, <span class="st">&quot;Lanza&quot;</span>}
+gare: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Ferri&quot;</span>, <span class="st">&quot;Moro&quot;</span>, <span class="st">&quot;Lanza&quot;</span>, <span class="st">&quot;Neri&quot;</span>),
+    (<span class="st">&quot;Moro&quot;</span>, <span class="st">&quot;Ferri&quot;</span>, <span class="st">&quot;Neri&quot;</span>, <span class="st">&quot;Lanza&quot;</span>),
+    (<span class="st">&quot;Ferri&quot;</span>, <span class="st">&quot;Lanza&quot;</span>, <span class="st">&quot;Moro&quot;</span>, <span class="st">&quot;Neri&quot;</span>),
+    (<span class="st">&quot;Moro&quot;</span>, <span class="st">&quot;Lanza&quot;</span>, <span class="st">&quot;Ferri&quot;</span>, <span class="st">&quot;Neri&quot;</span>),
+    (<span class="st">&quot;Moro&quot;</span>, <span class="st">&quot;Neri&quot;</span>, <span class="st">&quot;Ferri&quot;</span>, <span class="st">&quot;Lanza&quot;</span>),
+]
+
+posizioni: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+vittorie: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter()
+<span class="kw">for</span> arrivo <span class="kw">in</span> gare:
+    vittorie[arrivo[<span class="mi">0</span>]] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(arrivo)):
+        posizioni[arrivo[i]].append(i <span class="op">+</span> <span class="mi">1</span>)
+
+<span class="kw">for</span> pilota <span class="kw">in</span> <span class="nb">sorted</span>(posizioni):
+    punti, migliore <span class="op">=</span> bilancio(posizioni[pilota])
+    <span class="nb">print</span>(<span class="st">f&quot;{pilota}: {punti} punti, miglior piazzamento {migliore}&quot;</span>)
+primo, n <span class="op">=</span> vittorie.most_common(<span class="mi">1</span>)[<span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Più vittorie: {primo} con {n}&quot;</span>)
+vinte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [g[<span class="mi">0</span>] <span class="kw">for</span> g <span class="kw">in</span> gare <span class="kw">if</span> g[<span class="mi">0</span>] <span class="kw">in</span> rossa]
+<span class="nb">print</span>(<span class="st">f&quot;Gare vinte dalla Scuderia Rossa: {len(vinte)} su {len(gare)} &quot;</span>
+      <span class="st">f&quot;({len(vinte) / len(gare):.1%})&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Senza vittorie: {sorted(set(posizioni) - set(vittorie))}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE IMPRESE E MARKETING: il negozio online — ch_negozio.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Imprese e marketing: Il negozio online ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+
+
+<span class="kw">def</span> <span class="fn">vendite</span>(<span class="fn">quantita</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce il numero di ordini e i pezzi venduti.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">len</span>(quantita), <span class="nb">sum</span>(quantita)
+
+
+prezzi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> {<span class="st">&quot;zaino&quot;</span>: <span class="mi">39.90</span>, <span class="st">&quot;borraccia&quot;</span>: <span class="mi">12.50</span>,
+                            <span class="st">&quot;quaderno&quot;</span>: <span class="mi">3.20</span>, <span class="st">&quot;cuffie&quot;</span>: <span class="mi">24.90</span>,
+                            <span class="st">&quot;lampada&quot;</span>: <span class="mi">18.00</span>}
+ordini: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Irene&quot;</span>, <span class="st">&quot;zaino&quot;</span>, <span class="mi">1</span>), (<span class="st">&quot;Tommaso&quot;</span>, <span class="st">&quot;quaderno&quot;</span>, <span class="mi">5</span>),
+    (<span class="st">&quot;Giada&quot;</span>, <span class="st">&quot;cuffie&quot;</span>, <span class="mi">1</span>), (<span class="st">&quot;Pietro&quot;</span>, <span class="st">&quot;borraccia&quot;</span>, <span class="mi">2</span>),
+    (<span class="st">&quot;Irene&quot;</span>, <span class="st">&quot;quaderno&quot;</span>, <span class="mi">3</span>), (<span class="st">&quot;Noemi&quot;</span>, <span class="st">&quot;zaino&quot;</span>, <span class="mi">1</span>),
+    (<span class="st">&quot;Tommaso&quot;</span>, <span class="st">&quot;borraccia&quot;</span>, <span class="mi">1</span>), (<span class="st">&quot;Irene&quot;</span>, <span class="st">&quot;cuffie&quot;</span>, <span class="mi">1</span>),
+    (<span class="st">&quot;Giada&quot;</span>, <span class="st">&quot;quaderno&quot;</span>, <span class="mi">4</span>), (<span class="st">&quot;Noemi&quot;</span>, <span class="st">&quot;borraccia&quot;</span>, <span class="mi">2</span>),
+]
+
+pezzi: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+clienti: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter()
+<span class="kw">for</span> cliente, prodotto, quantita <span class="kw">in</span> ordini:
+    pezzi[prodotto].append(quantita)
+    clienti[cliente] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="kw">for</span> prodotto <span class="kw">in</span> <span class="nb">sorted</span>(pezzi):
+    n, tot <span class="op">=</span> vendite(pezzi[prodotto])
+    <span class="nb">print</span>(<span class="st">f&quot;{prodotto}: {n} ordini, {tot} pezzi, &quot;</span>
+          <span class="st">f&quot;incasso {tot * prezzi[prodotto]:.2f} euro&quot;</span>)
+primo, n <span class="op">=</span> clienti.most_common(<span class="mi">1</span>)[<span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Cliente più assiduo: {primo} con {n} ordini&quot;</span>)
+multipli: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> [o <span class="kw">for</span> o <span class="kw">in</span> ordini <span class="kw">if</span> o[<span class="mi">2</span>] <span class="op">&gt;</span> <span class="mi">1</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Ordini con più di un pezzo: {len(multipli)} su &quot;</span>
+      <span class="st">f&quot;{len(ordini)} ({len(multipli) / len(ordini):.1%})&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Mai venduti: {sorted(set(prezzi) - set(pezzi))}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE SALUTE E SCIENZA: lo studio clinico — ch_salute.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Salute e scienza: Lo studio clinico ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+
+
+<span class="kw">def</span> <span class="fn">variazione</span>(<span class="fn">differenze</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce il numero di pazienti e la variazione media.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">len</span>(differenze), <span class="nb">sum</span>(differenze) <span class="op">/</span> <span class="nb">len</span>(differenze)
+
+
+pazienti: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;P01&quot;</span>, <span class="st">&quot;trattamento&quot;</span>, <span class="mi">152</span>, <span class="mi">138</span>), (<span class="st">&quot;P02&quot;</span>, <span class="st">&quot;controllo&quot;</span>, <span class="mi">148</span>, <span class="mi">145</span>),
+    (<span class="st">&quot;P03&quot;</span>, <span class="st">&quot;trattamento&quot;</span>, <span class="mi">160</span>, <span class="mi">147</span>), (<span class="st">&quot;P04&quot;</span>, <span class="st">&quot;controllo&quot;</span>, <span class="mi">155</span>, <span class="mi">150</span>),
+    (<span class="st">&quot;P05&quot;</span>, <span class="st">&quot;trattamento&quot;</span>, <span class="mi">145</span>, <span class="mi">140</span>), (<span class="st">&quot;P06&quot;</span>, <span class="st">&quot;controllo&quot;</span>, <span class="mi">150</span>, <span class="mi">152</span>),
+    (<span class="st">&quot;P07&quot;</span>, <span class="st">&quot;trattamento&quot;</span>, <span class="mi">158</span>, <span class="mi">0</span>), (<span class="st">&quot;P08&quot;</span>, <span class="st">&quot;controllo&quot;</span>, <span class="mi">149</span>, <span class="mi">138</span>),
+    (<span class="st">&quot;P09&quot;</span>, <span class="st">&quot;trattamento&quot;</span>, <span class="mi">162</span>, <span class="mi">148</span>), (<span class="st">&quot;P10&quot;</span>, <span class="st">&quot;controllo&quot;</span>, <span class="mi">157</span>, <span class="mi">155</span>),
+]
+
+validi: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> [
+    p <span class="kw">for</span> p <span class="kw">in</span> pazienti <span class="kw">if</span> p[<span class="mi">3</span>] <span class="op">&gt;</span> <span class="mi">0</span>]
+differenze: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+<span class="kw">for</span> codice, gruppo, prima, dopo <span class="kw">in</span> validi:
+    differenze[gruppo].append(dopo <span class="op">-</span> prima)
+migliorati: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(
+    [p[<span class="mi">1</span>] <span class="kw">for</span> p <span class="kw">in</span> validi <span class="kw">if</span> p[<span class="mi">3</span>] <span class="op">-</span> p[<span class="mi">2</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="op">-</span><span class="mi">10</span>])
+
+<span class="nb">print</span>(<span class="st">f&quot;Misure valide: {len(validi)} su {len(pazienti)} &quot;</span>
+      <span class="st">f&quot;({len(validi) / len(pazienti):.1%})&quot;</span>)
+persi: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {p[<span class="mi">0</span>] <span class="kw">for</span> p <span class="kw">in</span> pazienti} <span class="op">-</span> {p[<span class="mi">0</span>] <span class="kw">for</span> p <span class="kw">in</span> validi}
+<span class="nb">print</span>(<span class="st">f&quot;Senza seconda misura: {sorted(persi)}&quot;</span>)
+<span class="kw">for</span> gruppo <span class="kw">in</span> <span class="nb">sorted</span>(differenze):
+    n, media <span class="op">=</span> variazione(differenze[gruppo])
+    <span class="nb">print</span>(<span class="st">f&quot;{gruppo}: {n} pazienti, variazione media {media:.1f} &quot;</span>
+          <span class="st">f&quot;mmHg, migliorati {migliorati[gruppo]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Migliorati: {sum(migliorati.values())} su {len(validi)}&quot;</span>)
+gruppo, n <span class="op">=</span> migliorati.most_common(<span class="mi">1</span>)[<span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Gruppo con più migliorati: {gruppo} ({n})&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># CHALLENGE CASO E PROBABILITÀ: il tavolo da gioco — ch_probabilita.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Challenge Caso e probabilità: Il tavolo da gioco ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+
+
+<span class="kw">def</span> <span class="fn">riassunto</span>(<span class="fn">somme</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">int</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce la somma media e la somma più alta.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">sum</span>(somme) <span class="op">/</span> <span class="nb">len</span>(somme), <span class="nb">max</span>(somme)
+
+
+lanci: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Ada&quot;</span>, <span class="mi">3</span>, <span class="mi">4</span>), (<span class="st">&quot;Bea&quot;</span>, <span class="mi">6</span>, <span class="mi">6</span>), (<span class="st">&quot;Ciro&quot;</span>, <span class="mi">2</span>, <span class="mi">5</span>), (<span class="st">&quot;Ada&quot;</span>, <span class="mi">1</span>, <span class="mi">3</span>),
+    (<span class="st">&quot;Bea&quot;</span>, <span class="mi">5</span>, <span class="mi">2</span>), (<span class="st">&quot;Ciro&quot;</span>, <span class="mi">4</span>, <span class="mi">4</span>), (<span class="st">&quot;Ada&quot;</span>, <span class="mi">6</span>, <span class="mi">5</span>), (<span class="st">&quot;Bea&quot;</span>, <span class="mi">3</span>, <span class="mi">1</span>),
+    (<span class="st">&quot;Ciro&quot;</span>, <span class="mi">6</span>, <span class="mi">2</span>), (<span class="st">&quot;Ada&quot;</span>, <span class="mi">2</span>, <span class="mi">2</span>), (<span class="st">&quot;Bea&quot;</span>, <span class="mi">4</span>, <span class="mi">3</span>), (<span class="st">&quot;Ciro&quot;</span>, <span class="mi">5</span>, <span class="mi">3</span>),
+]
+
+somme: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+uscite: Counter[<span class="nb">int</span>] <span class="op">=</span> Counter()
+<span class="kw">for</span> giocatore, d1, d2 <span class="kw">in</span> lanci:
+    somme[giocatore].append(d1 <span class="op">+</span> d2)
+    uscite[d1 <span class="op">+</span> d2] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="kw">for</span> giocatore <span class="kw">in</span> <span class="nb">sorted</span>(somme):
+    media, alta <span class="op">=</span> riassunto(somme[giocatore])
+    <span class="nb">print</span>(<span class="st">f&quot;{giocatore}: somma media {media:.2f}, più alta {alta}&quot;</span>)
+somma, volte <span class="op">=</span> uscite.most_common(<span class="mi">1</span>)[<span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Somma più uscita: {somma} ({volte} volte)&quot;</span>)
+doppi: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> [x <span class="kw">for</span> x <span class="kw">in</span> lanci <span class="kw">if</span> x[<span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> x[<span class="mi">2</span>]]
+<span class="nb">print</span>(<span class="st">f&quot;Doppi: {len(doppi)} su {len(lanci)} &quot;</span>
+      <span class="st">f&quot;({len(doppi) / len(lanci):.1%})&quot;</span>)
+possibili: <span class="nb">set</span>[<span class="nb">int</span>] <span class="op">=</span> {a <span class="op">+</span> b <span class="kw">for</span> a <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">7</span>)
+                       <span class="kw">for</span> b <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, <span class="mi">7</span>)}
+<span class="nb">print</span>(<span class="st">f&quot;Somme mai uscite: {sorted(possibili - set(uscite))}&quot;</span>)
 <span class="nb">print</span>()
 
 

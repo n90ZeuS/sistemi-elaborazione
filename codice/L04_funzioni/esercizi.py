@@ -285,44 +285,247 @@ print()
 
 
 # ============================================================================
-# SFIDA: compleanni in aula — compleanni.py
+# CHALLENGE MERCATI E FINANZA: rischio e rendimento — ch_mercati.py
 # ============================================================================
-print("--- Sfida: Compleanni in aula ---")
+print("--- Challenge Mercati e finanza: Rischio e rendimento ---")
+import statistics
+
+
+def rendimenti(prezzi: list[float]) -> list[float]:
+    """Rendimenti giornalieri, saltando i prezzi non positivi."""
+    p: list[float] = [x for x in prezzi if x > 0]
+    return [(p[i] - p[i - 1]) / p[i - 1] for i in range(1, len(p))]
+
+
+def rischio(rend: list[float]) -> tuple[float, float]:
+    """Restituisce media e deviazione standard dei rendimenti."""
+    media: float = sum(rend) / len(rend)
+    scarti: list[float] = [(r - media) ** 2 for r in rend]
+    return media, (sum(scarti) / (len(rend) - 1)) ** 0.5
+
+
+def valore(azioni: dict[str, int], prezzi: dict[str, list[float]],
+           giorno: int = -1) -> float:
+    """Valore del portafoglio in un giorno (di default l'ultimo)."""
+    return sum([azioni[t] * prezzi[t][giorno] for t in azioni])
+
+
+portafoglio: dict[str, int] = {"ENRG": 40, "BANK": 20, "TECH": 20}
+prezzi: dict[str, list[float]] = {
+    "ENRG": [12.40, 12.10, 12.55, 12.80, 0.0, 13.05, 12.90, 13.20],
+    "BANK": [8.15, 8.30, 8.60, 8.45, 8.75, 8.70, 8.90, 8.85],
+    "TECH": [45.20, 47.80, 44.90, 46.30, 48.10, 45.60, 49.20, 50.10],
+}
+for titolo, serie in prezzi.items():
+    rend: list[float] = rendimenti(serie)
+    media, vol = rischio(rend)
+    print(f"{titolo}: media {media:.2%}, volatilità {vol:.2%} "
+          f"(statistics: {statistics.stdev(rend):.2%})")
+
+
+print("Più volatile:",
+      max(prezzi, key=lambda t: rischio(rendimenti(prezzi[t]))[1]))
+
+
+primo: float = valore(portafoglio, prezzi, giorno=0)
+ultimo: float = valore(portafoglio, prezzi)
+print(f"Valore il primo giorno: {primo:.2f} euro")
+print(f"Valore l'ultimo giorno: {ultimo:.2f} euro")
+print()
+
+
+# ============================================================================
+# CHALLENGE SPORT: il passo gara — ch_sport.py
+# ============================================================================
+print("--- Challenge Sport: Il passo gara ---")
+import statistics
+
+
+def validi(tempi: list[float], limite: float = 100.0) -> list[float]:
+    """Tempi positivi e sotto il limite: niente pit stop."""
+    return [t for t in tempi if 0 < t < limite]
+
+
+def passo(tempi: list[float]) -> tuple[float, float]:
+    """Restituisce media e deviazione standard dei tempi."""
+    media: float = sum(tempi) / len(tempi)
+    scarti: list[float] = [(t - media) ** 2 for t in tempi]
+    return media, (sum(scarti) / (len(tempi) - 1)) ** 0.5
+
+
+def piu_veloce(tempi: dict[str, list[float]]) -> str:
+    """Pilota con il passo medio più basso sui giri validi."""
+    return min(tempi, key=lambda p: passo(validi(tempi[p]))[0])
+
+
+tempi: dict[str, list[float]] = {
+    "Ferri": [92.8, 92.4, 92.1, 113.6, 92.6, 92.3, 92.9, 93.1],
+    "Lanza": [93.2, 92.9, 93.4, 93.0, 114.8, 93.3, 93.6, 93.8],
+    "Moro": [92.5, 92.0, 91.8, 92.2, 112.9, 92.1, 92.4, 92.7],
+    "Neri": [93.5, 93.9, 115.2, 93.4, 93.7, 94.1, 0.0, 94.3],
+}
+for pilota, giri in tempi.items():
+    buoni: list[float] = validi(giri)
+    media, dev = passo(buoni)
+    print(f"{pilota}: {len(buoni)} giri validi, "
+          f"passo {media:.2f} s, dev. std {dev:.2f} "
+          f"(statistics: {statistics.stdev(buoni):.2f})")
+
+
+print(f"Passo migliore: {piu_veloce(tempi)}")
+sotto: dict[str, int] = {p: len(validi(g, limite=93.0))
+                         for p, g in tempi.items()}
+
+
+print(f"Giri sotto 93 secondi: {sotto}")
+print()
+
+
+# ============================================================================
+# CHALLENGE IMPRESE E MARKETING: margini e sconti — ch_negozio.py
+# ============================================================================
+print("--- Challenge Imprese e marketing: Margini e sconti ---")
+import statistics
+
+CATALOGO: dict[str, tuple[float, float]] = {
+    "zaino": (39.90, 22.00), "borraccia": (12.50, 5.20),
+    "quaderno": (3.20, 1.10), "cuffie": (24.90, 14.50),
+    "lampada": (18.00, 9.80)}
+
+
+def valido(prodotto: str, pezzi: int) -> bool:
+    """True se il prodotto è in catalogo e i pezzi sono positivi."""
+    return prodotto in CATALOGO and pezzi > 0
+
+
+def bilancio(prodotto: str, pezzi: int,
+             sconto: float = 0.0) -> tuple[float, float]:
+    """Incasso e margine di un prodotto, con lo sconto sul prezzo."""
+    prezzo, costo = CATALOGO[prodotto]
+    incasso: float = prezzo * (1 - sconto) * pezzi
+    return incasso, incasso - costo * pezzi
+
+
+def classifica(venduti: dict[str, int]) -> list[str]:
+    """Prodotti dal margine più alto al più basso."""
+    return sorted(venduti, key=lambda p: -bilancio(p, venduti[p])[1])
+
+
+venduti: dict[str, int] = {"zaino": 2, "borraccia": 5, "quaderno": 12,
+                           "cuffie": 2, "lampada": 3, "penna": 4}
+
+
+validi: dict[str, int] = {p: n for p, n in venduti.items()
+                          if valido(p, n)}
+
+
+for prodotto in classifica(validi):
+    incasso, margine = bilancio(prodotto, validi[prodotto])
+    print(f"{prodotto}: incasso {incasso:.2f}, margine {margine:.2f}")
+
+
+incassi: list[float] = [bilancio(p, n)[0] for p, n in validi.items()]
+print(f"Incasso medio: {sum(incassi) / len(incassi):.2f} "
+      f"(statistics: {statistics.mean(incassi):.2f})")
+
+
+incasso, margine = bilancio("zaino", validi["zaino"], sconto=0.2)
+print(f"Zaini con lo sconto del 20%: incasso {incasso:.2f}, "
+      f"margine {margine:.2f}")
+print()
+
+
+# ============================================================================
+# CHALLENGE SALUTE E SCIENZA: le variazioni di pressione — ch_salute.py
+# ============================================================================
+print("--- Challenge Salute e scienza: Le variazioni di pressione ---")
+import statistics
+
+
+def valido(riga: tuple[str, int, int]) -> bool:
+    """True se le due pressioni sono tra 60 e 250 mmHg."""
+    return 60 <= riga[1] <= 250 and 60 <= riga[2] <= 250
+
+
+def descrivi(diff: list[int]) -> tuple[float, float]:
+    """Restituisce media e deviazione standard delle variazioni."""
+    media: float = sum(diff) / len(diff)
+    scarti: list[float] = [(d - media) ** 2 for d in diff]
+    return media, (sum(scarti) / (len(diff) - 1)) ** 0.5
+
+
+def migliorati(diff: list[int], soglia: int = 10) -> float:
+    """Quota di pazienti con un calo di almeno soglia mmHg."""
+    return len([d for d in diff if d <= -soglia]) / len(diff)
+
+
+studio: dict[str, list[tuple[str, int, int]]] = {
+    "trattamento": [("P01", 152, 138), ("P03", 160, 147),
+                    ("P05", 145, 140), ("P07", 158, 0),
+                    ("P09", 162, 148), ("P11", 154, 139)],
+    "controllo": [("P02", 148, 145), ("P04", 155, 150),
+                  ("P06", 150, 152), ("P08", 149, 138),
+                  ("P10", 157, 155), ("P12", 15, 146)]}
+
+
+for gruppo, righe in studio.items():
+    ok: list[tuple[str, int, int]] = [r for r in righe if valido(r)]
+    diff: list[int] = [d - p for c, p, d in ok]
+    media, dev = descrivi(diff)
+    print(f"{gruppo}: media {media:.1f} mmHg, dev. std {dev:.2f} "
+          f"(statistics: {statistics.stdev(diff):.2f})")
+    print(f"  {len(ok)} validi, migliorati {migliorati(diff):.1%}, "
+          f"con soglia 5: {migliorati(diff, soglia=5):.1%}")
+    print("  calo maggiore:", min(ok, key=lambda r: r[2] - r[1])[0])
+print()
+
+
+# ============================================================================
+# CHALLENGE CASO E PROBABILITÀ: tanti lanci — ch_probabilita.py
+# ============================================================================
+print("--- Challenge Caso e probabilità: Tanti lanci ---")
 import random
+import statistics
 
 
-def compleanno_comune(n: int) -> bool:
-    """Estrae n compleanni a caso; True se almeno due coincidono."""
-    giorni: list[int] = [random.randint(1, 365) for i in range(n)]
-    return len(set(giorni)) < n
+def simula(n: int) -> list[int]:
+    """Somme di n lanci di due dadi."""
+    return [random.randint(1, 6) + random.randint(1, 6)
+            for i in range(n)]
 
 
-def stima(n_studenti: int, prove: int = 10000) -> float:
-    """Quota di aule simulate con almeno un compleanno comune."""
-    successi: int = 0
-    for i in range(prove):
-        if compleanno_comune(n_studenti):
-            successi += 1
-    return successi / prove
+def riassunto(somme: list[int]) -> tuple[float, float]:
+    """Restituisce media e deviazione standard delle somme."""
+    media: float = sum(somme) / len(somme)
+    scarti: list[float] = [(s - media) ** 2 for s in somme]
+    return media, (sum(scarti) / (len(somme) - 1)) ** 0.5
 
 
-def esatta(n_studenti: int) -> float:
-    """Probabilità esatta di almeno un compleanno in comune."""
-    tutti_diversi: float = 1.0
-    for i in range(n_studenti):
-        tutti_diversi *= (365 - i) / 365
-    return 1 - tutti_diversi
+def esatta(somma: int, facce: int = 6) -> float:
+    """Probabilità esatta di una somma; 0.0 se è impossibile."""
+    if somma < 2 or somma > 2 * facce:
+        return 0.0
+    valori: range = range(1, facce + 1)
+    casi: list[tuple[int, int]] = [(a, b) for a in valori
+                                   for b in valori if a + b == somma]
+    return len(casi) / facce ** 2
 
 
 random.seed(2026)
-for n in [10, 23, 30, 50]:
-    print(f"{n} studenti: simulata {stima(n):.1%}, "
-          f"esatta {esatta(n):.1%}")
+for n in [10, 100, 1000, 10000]:
+    somme: list[int] = simula(n)
+    media, dev = riassunto(somme)
+    print(f"{n} lanci: media {media:.2f}, dev. std {dev:.2f} "
+          f"(statistics: {statistics.stdev(somme):.2f})")
 
-n_minimo: int = 1
-while esatta(n_minimo) < 0.5:
-    n_minimo += 1
-print(f"Si supera il 50% con {n_minimo} studenti")
+
+piu: int = max(range(2, 13), key=lambda s: somme.count(s))
+print(f"Somma più frequente: {piu}, "
+      f"{somme.count(piu) / len(somme):.1%} dei lanci "
+      f"(esatta {esatta(piu):.1%})")
+
+
+print(f"Somma 5 con due dadi da 4 facce: {esatta(5, facce=4):.1%}")
 print()
 
 

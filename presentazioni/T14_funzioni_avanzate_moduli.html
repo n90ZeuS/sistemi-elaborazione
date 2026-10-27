@@ -328,6 +328,7 @@
         .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
         .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
         .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
         .reveal .etichetta {
             font-size: 0.6em;
             font-weight: 700;
@@ -639,46 +640,218 @@ Da dire: la funzione si scrive una volta e si usa per ogni anno. Il terzo anno h
 Chiedere / fare: descrittive([1, 2, 3, 4]) → 2.5, 2.5, 1.29.</aside>
                 </section>
 
+                <section class="section-slide">
+                    <h2>Challenge</h2>
+                    <p>Ne vediamo una; le altre hanno la stessa struttura e sono nel file degli esercizi</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L03 · challenge»
+Da dire: le cinque challenge usano gli stessi strumenti. Ne mostriamo una, scelta per alzata di mano; le altre restano come slide di riserva.
+Chiedere / fare: chiedere quale tema hanno scelto in più e mostrare quella.</aside>
+                </section>
+
                 <section>
-                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
-                    <h2>compagni.py</h2>
-                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def jaccard(a: set[str], b: set[str]) -&gt; float:
-    """Elementi in comune diviso elementi totali."""
-    return len(a &amp; b) / len(a | b)
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3 · challenge Mercati e finanza</div>
+                    <h2>ch_mercati.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
 
-scelte: dict[str, set[str]] = {
-    "Anna": {"Serie storiche", "Demografia", "Marketing", "R"},
-    "Bruno": {"Marketing", "Finanza", "R", "Python"},
-    "Chiara": {"Serie storiche", "Demografia", "R", "Biostatistica"},
-    "Davide": {"Finanza", "Python", "Econometria"},
-    "Elisa": {"Biostatistica", "Demografia", "Python"},
-}
 
-nomi: list[str] = sorted(scelte)
-coppia: tuple[str, str] = ("", "")
-massimo: float = -1.0
-for i in range(len(nomi)):
-    for j in range(i + 1, len(nomi)):
-        s: float = jaccard(scelte[nomi[i]], scelte[nomi[j]])
-        if s &gt; massimo:
-            massimo, coppia = s, (nomi[i], nomi[j])
-print(f"Coppia più simile: {coppia} con {massimo:.2f}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>nome: str = input("Studente: ")
-if nome not in scelte:
-    print("Studente non trovato")
-else:
-    simile: str = ""
-    massimo = -1.0
-    for altro in nomi:
-        s = jaccard(scelte[nome], scelte[altro])
-        if altro != nome and s &gt; massimo:
-            massimo, simile = s, altro
-    consigli: set[str] = scelte[simile] - scelte[nome]
-    print(f"Più simile: {simile} ({massimo:.2f})")
-    print(f"Corsi consigliati: {sorted(consigli)}")</code></pre></div></div>
-                    <ul class="note-sol"><li>La similarità di Jaccard vale 0 se i set non hanno elementi in comune e 1 se sono uguali.</li><li>Con <code>j</code> che parte da <code>i + 1</code> ogni coppia si confronta una volta sola: 10 coppie per 5 studenti.</li><li>I corsi consigliati sono una differenza tra set: quelli del compagno meno i propri.</li></ul>
-                    <aside class="notes">⏱ 4' · blocco «Soluzioni L03»
-Da dire: è l'idea alla base dei sistemi di raccomandazione: si cerca l'utente più simile e si propone quello che ha scelto lui. Nel secondo ciclo si salta lo studente stesso, che avrebbe similarità 1.
-Chiedere / fare: Elisa → Chiara, consigliati R e Serie storiche.</aside>
+def escursione(prezzi: list[float]) -&gt; tuple[float, float]:
+    """Restituisce il prezzo minimo e il prezzo massimo."""
+    return min(prezzi), max(prezzi)
+
+
+ordini: list[tuple[str, int, float]] = [
+    ("ENRG", 30, 12.40), ("BANK", 20, 8.15), ("TECH", 10, 45.20),
+    ("ENRG", 20, 12.10), ("BANK", -5, 8.60), ("TECH", 5, 47.80),
+    ("ENRG", -10, 13.05), ("BANK", 10, 8.30), ("TECH", 5, 44.90),
+    ("BANK", -5, 8.75),
+]</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>prezzi: defaultdict[str, list[float]] = defaultdict(list)
+portafoglio: Counter[str] = Counter()
+for titolo, quantita, prezzo in ordini:
+    prezzi[titolo].append(prezzo)
+    portafoglio[titolo] += quantita
+
+for titolo in sorted(prezzi):
+    basso, alto = escursione(prezzi[titolo])
+    print(f"{titolo}: {len(prezzi[titolo])} ordini, prezzo da "
+          f"{basso:.2f} a {alto:.2f}, "
+          f"in portafoglio {portafoglio[titolo]}")
+primo, azioni = portafoglio.most_common(1)[0]
+print(f"Posizione più grande: {primo} con {azioni} azioni")
+vendite: list[tuple[str, int, float]] = [
+    o for o in ordini if o[1] &lt; 0]
+print(f"Vendite: {len(vendite)} su {len(ordini)} "
+      f"({len(vendite) / len(ordini):.1%})")
+comprati: set[str] = {o[0] for o in ordini if o[1] &gt; 0}
+venduti: set[str] = {o[0] for o in vendite}
+print(f"Mai venduti: {sorted(comprati - venduti)}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Il <code>Counter</code> può sommare quantità e non solo contare: <code>portafoglio[titolo] += quantita</code> con le vendite negative dà le azioni rimaste.</li><li><code>escursione</code> restituisce due valori in una tupla, spacchettati in <code>basso, alto</code>.</li><li>I titoli mai venduti sono la differenza tra il set dei comprati e quello dei venduti.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L03 · challenge»
+Da dire: nello stesso ciclo si riempiono il defaultdict dei prezzi e il Counter del portafoglio. Le vendite hanno quantità negativa, quindi la somma dà direttamente le azioni in portafoglio.
+Chiedere / fare: aggiungere una vendita di 20 TECH → TECH a 0 azioni e nessun titolo mai venduto.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3 · challenge Sport</div>
+                    <h2>ch_sport.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+PUNTI: list[int] = [25, 18, 15, 12]
+
+
+def bilancio(posizioni: list[int]) -&gt; tuple[int, int]:
+    """Restituisce i punti totali e il miglior piazzamento."""
+    return sum([PUNTI[p - 1] for p in posizioni]), min(posizioni)
+
+
+rossa: set[str] = {"Ferri", "Lanza"}
+gare: list[tuple[str, str, str, str]] = [
+    ("Ferri", "Moro", "Lanza", "Neri"),
+    ("Moro", "Ferri", "Neri", "Lanza"),
+    ("Ferri", "Lanza", "Moro", "Neri"),
+    ("Moro", "Lanza", "Ferri", "Neri"),
+    ("Moro", "Neri", "Ferri", "Lanza"),
+]</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>posizioni: defaultdict[str, list[int]] = defaultdict(list)
+vittorie: Counter[str] = Counter()
+for arrivo in gare:
+    vittorie[arrivo[0]] += 1
+    for i in range(len(arrivo)):
+        posizioni[arrivo[i]].append(i + 1)
+
+for pilota in sorted(posizioni):
+    punti, migliore = bilancio(posizioni[pilota])
+    print(f"{pilota}: {punti} punti, miglior piazzamento {migliore}")
+primo, n = vittorie.most_common(1)[0]
+print(f"Più vittorie: {primo} con {n}")
+vinte: list[str] = [g[0] for g in gare if g[0] in rossa]
+print(f"Gare vinte dalla Scuderia Rossa: {len(vinte)} su {len(gare)} "
+      f"({len(vinte) / len(gare):.1%})")
+print(f"Senza vittorie: {sorted(set(posizioni) - set(vittorie))}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Il piazzamento è la posizione nella tupla più uno; <code>PUNTI[p - 1]</code> lo trasforma in punti.</li><li><code>vittorie[arrivo[0]] += 1</code> conta solo il primo di ogni gara.</li><li>I piloti senza vittorie sono <code>set(posizioni) - set(vittorie)</code>: le chiavi dei due dizionari.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L03 · challenge»
+Da dire: Ferri e Moro hanno lo stesso miglior piazzamento, ma Moro ha più punti perché vince tre gare. La funzione bilancio riceve solo i piazzamenti e non sa nulla del pilota.
+Chiedere / fare: con PUNTI = [10, 6, 4, 3] la classifica cambia? (no, Moro resta davanti).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3 · challenge Imprese e marketing</div>
+                    <h2>ch_negozio.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+
+def vendite(quantita: list[int]) -&gt; tuple[int, int]:
+    """Restituisce il numero di ordini e i pezzi venduti."""
+    return len(quantita), sum(quantita)
+
+
+prezzi: dict[str, float] = {"zaino": 39.90, "borraccia": 12.50,
+                            "quaderno": 3.20, "cuffie": 24.90,
+                            "lampada": 18.00}
+ordini: list[tuple[str, str, int]] = [
+    ("Irene", "zaino", 1), ("Tommaso", "quaderno", 5),
+    ("Giada", "cuffie", 1), ("Pietro", "borraccia", 2),
+    ("Irene", "quaderno", 3), ("Noemi", "zaino", 1),
+    ("Tommaso", "borraccia", 1), ("Irene", "cuffie", 1),
+    ("Giada", "quaderno", 4), ("Noemi", "borraccia", 2),
+]</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>pezzi: defaultdict[str, list[int]] = defaultdict(list)
+clienti: Counter[str] = Counter()
+for cliente, prodotto, quantita in ordini:
+    pezzi[prodotto].append(quantita)
+    clienti[cliente] += 1
+
+for prodotto in sorted(pezzi):
+    n, tot = vendite(pezzi[prodotto])
+    print(f"{prodotto}: {n} ordini, {tot} pezzi, "
+          f"incasso {tot * prezzi[prodotto]:.2f} euro")
+primo, n = clienti.most_common(1)[0]
+print(f"Cliente più assiduo: {primo} con {n} ordini")
+multipli: list[tuple[str, str, int]] = [o for o in ordini if o[2] &gt; 1]
+print(f"Ordini con più di un pezzo: {len(multipli)} su "
+      f"{len(ordini)} ({len(multipli) / len(ordini):.1%})")
+print(f"Mai venduti: {sorted(set(prezzi) - set(pezzi))}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Il raggruppamento per prodotto e il conteggio per cliente si fanno nello stesso ciclo.</li><li><code>vendite</code> restituisce ordini e pezzi; l'incasso si calcola fuori, con il prezzo del dizionario.</li><li>I prodotti mai venduti sono le chiavi di <code>prezzi</code> meno quelle del raggruppamento.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L03 · challenge»
+Da dire: il quaderno ha più pezzi di tutti ma l'incasso più basso, lo zaino il contrario. Il Counter dei clienti conta gli ordini, non i pezzi.
+Chiedere / fare: aggiungere un ordine di 2 lampade → nessun prodotto mai venduto.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3 · challenge Salute e scienza</div>
+                    <h2>ch_salute.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+
+def variazione(differenze: list[int]) -&gt; tuple[int, float]:
+    """Restituisce il numero di pazienti e la variazione media."""
+    return len(differenze), sum(differenze) / len(differenze)
+
+
+pazienti: list[tuple[str, str, int, int]] = [
+    ("P01", "trattamento", 152, 138), ("P02", "controllo", 148, 145),
+    ("P03", "trattamento", 160, 147), ("P04", "controllo", 155, 150),
+    ("P05", "trattamento", 145, 140), ("P06", "controllo", 150, 152),
+    ("P07", "trattamento", 158, 0), ("P08", "controllo", 149, 138),
+    ("P09", "trattamento", 162, 148), ("P10", "controllo", 157, 155),
+]</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>validi: list[tuple[str, str, int, int]] = [
+    p for p in pazienti if p[3] &gt; 0]
+differenze: defaultdict[str, list[int]] = defaultdict(list)
+for codice, gruppo, prima, dopo in validi:
+    differenze[gruppo].append(dopo - prima)
+migliorati: Counter[str] = Counter(
+    [p[1] for p in validi if p[3] - p[2] &lt;= -10])
+
+print(f"Misure valide: {len(validi)} su {len(pazienti)} "
+      f"({len(validi) / len(pazienti):.1%})")
+persi: set[str] = {p[0] for p in pazienti} - {p[0] for p in validi}
+print(f"Senza seconda misura: {sorted(persi)}")
+for gruppo in sorted(differenze):
+    n, media = variazione(differenze[gruppo])
+    print(f"{gruppo}: {n} pazienti, variazione media {media:.1f} "
+          f"mmHg, migliorati {migliorati[gruppo]}")
+print(f"Migliorati: {sum(migliorati.values())} su {len(validi)}")
+gruppo, n = migliorati.most_common(1)[0]
+print(f"Gruppo con più migliorati: {gruppo} ({n})")</code></pre></div></div>
+                    <ul class="note-sol"><li>Prima si scartano i dati mancanti con una comprehension con filtro, poi si fanno i calcoli solo sui pazienti validi.</li><li>Il <code>Counter</code> dei migliorati nasce da una comprehension che tiene il gruppo di chi è sceso di almeno 10 mmHg.</li><li>I codici senza seconda misura sono la differenza tra il set di tutti i codici e quello dei validi.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L03 · challenge»
+Da dire: se P07 restasse nei dati, la sua variazione sarebbe −158 mmHg e la media del trattamento sarebbe falsata. Nel trattamento la pressione scende in media di 11.5 mmHg, nel controllo di 3.8.
+Chiedere / fare: con 4 e 5 pazienti per gruppo si può già dire che l'integratore funziona? (no, i casi sono troppo pochi).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3 · challenge Caso e probabilità</div>
+                    <h2>ch_probabilita.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+
+def riassunto(somme: list[int]) -&gt; tuple[float, int]:
+    """Restituisce la somma media e la somma più alta."""
+    return sum(somme) / len(somme), max(somme)
+
+
+lanci: list[tuple[str, int, int]] = [
+    ("Ada", 3, 4), ("Bea", 6, 6), ("Ciro", 2, 5), ("Ada", 1, 3),
+    ("Bea", 5, 2), ("Ciro", 4, 4), ("Ada", 6, 5), ("Bea", 3, 1),
+    ("Ciro", 6, 2), ("Ada", 2, 2), ("Bea", 4, 3), ("Ciro", 5, 3),
+]</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>somme: defaultdict[str, list[int]] = defaultdict(list)
+uscite: Counter[int] = Counter()
+for giocatore, d1, d2 in lanci:
+    somme[giocatore].append(d1 + d2)
+    uscite[d1 + d2] += 1
+
+for giocatore in sorted(somme):
+    media, alta = riassunto(somme[giocatore])
+    print(f"{giocatore}: somma media {media:.2f}, più alta {alta}")
+somma, volte = uscite.most_common(1)[0]
+print(f"Somma più uscita: {somma} ({volte} volte)")
+doppi: list[tuple[str, int, int]] = [x for x in lanci if x[1] == x[2]]
+print(f"Doppi: {len(doppi)} su {len(lanci)} "
+      f"({len(doppi) / len(lanci):.1%})")
+possibili: set[int] = {a + b for a in range(1, 7)
+                       for b in range(1, 7)}
+print(f"Somme mai uscite: {sorted(possibili - set(uscite))}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Il <code>Counter</code> delle somme e il raggruppamento per giocatore si riempiono nello stesso ciclo.</li><li>La set comprehension su due cicli costruisce tutte le somme possibili, da 2 a 12, senza scriverle a mano.</li><li>Le somme mai uscite sono le possibili meno quelle uscite: le chiavi del <code>Counter</code>.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L03 · challenge»
+Da dire: il 7 è la somma più uscita, ed è anche la più probabile: 6 coppie su 36. Con 12 lanci i doppi sono il 25%, più dell'atteso 1 su 6: con pochi lanci le frequenze si allontanano dalle probabilità.
+Chiedere / fare: quante coppie danno 2? (una sola, 1 e 1). In L04 si simulano migliaia di lanci.</aside>
                 </section>
             </section>
             <!-- FINE SOLUZIONI LAB -->

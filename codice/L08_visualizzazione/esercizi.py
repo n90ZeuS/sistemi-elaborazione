@@ -1,544 +1,456 @@
 # L08 — Visualizzazione e progetto
-# Esercizi per il laboratorio 08
+# Soluzioni degli esercizi del laboratorio 08
 #
-# Esercizi pratici su creazione di grafici con matplotlib e un mini-progetto
-# di analisi dati. I grafici vengono salvati su file (plt.savefig).
-# Ogni esercizio include assert per verificare la correttezza.
-
-import os
-import tempfile
-import math
-from typing import Any
-
-# ============================================================================
-# Importazione sicura delle librerie
-# ============================================================================
-
-try:
-    import numpy as np
-    NUMPY_DISPONIBILE: bool = True
-except ImportError:
-    NUMPY_DISPONIBILE = False
-    print("ATTENZIONE: NumPy non e' installato. Installa con: pip install numpy")
-
-try:
-    import matplotlib
-    matplotlib.use("Agg")  # Backend non interattivo: salva su file senza aprire finestre
-    import matplotlib.pyplot as plt
-    MATPLOTLIB_DISPONIBILE: bool = True
-except ImportError:
-    MATPLOTLIB_DISPONIBILE = False
-    print("ATTENZIONE: Matplotlib non e' installato. Installa con: pip install matplotlib")
-
-try:
-    import pandas as pd
-    PANDAS_DISPONIBILE: bool = True
-except ImportError:
-    PANDAS_DISPONIBILE = False
-    print("ATTENZIONE: Pandas non e' installato. Installa con: pip install pandas")
+# Ogni esercizio corrisponde a un file della traccia (nome tra parentesi).
+# Per provarne uno solo, copiatelo in un file a parte.
+# I file di dati usati dagli esercizi sono in questa stessa cartella.
 
 
 # ============================================================================
-# ESERCIZIO 1: Creazione di diversi tipi di grafici
+# ESERCIZIO 1: immatricolati e laureati — immatricolati.py
 # ============================================================================
+print("--- Esercizio 1: Immatricolati e laureati ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
-if MATPLOTLIB_DISPONIBILE and NUMPY_DISPONIBILE:
+anni: list[int] = list(range(2018, 2026))
+immatricolati: list[int] = [182, 195, 210, 204, 231, 248, 240, 262]
+laureati: list[int] = [118, 126, 131, 140, 137, 152, 160, 171]
 
-    # Cartella temporanea per salvare i grafici
-    dir_grafici: str = tempfile.mkdtemp(prefix="grafici_lab08_")
+plt.figure(figsize=(7, 4))
+plt.plot(anni, immatricolati, marker="o", label="Immatricolati")
+plt.plot(anni, laureati, marker="s", linestyle="--", label="Laureati")
+plt.title("Corso di laurea in Statistica")
+plt.xlabel("Anno accademico (inizio)")
+plt.ylabel("Studenti")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig("immatricolati.png")
 
-    # --- 1a) Grafico a barre ---
-    def crea_grafico_barre(
-        categorie: list[str],
-        valori: list[float],
-        titolo: str,
-        etichetta_x: str,
-        etichetta_y: str,
-        percorso_file: str,
-    ) -> str:
-        """
-        Crea un grafico a barre e lo salva su file.
-        Restituisce il percorso del file creato.
-        """
-        fig, ax = plt.subplots(figsize=(10, 6))
-
-        # Colori diversi per ogni barra
-        colori: list[str] = ["#2196F3", "#4CAF50", "#FF9800", "#E91E63",
-                             "#9C27B0", "#00BCD4", "#FF5722", "#607D8B"]
-        colori_barre: list[str] = [colori[i % len(colori)] for i in range(len(categorie))]
-
-        barre = ax.bar(categorie, valori, color=colori_barre, edgecolor="black", linewidth=0.5)
-
-        # Aggiungi etichette sopra le barre
-        for barra, valore in zip(barre, valori):
-            ax.text(
-                barra.get_x() + barra.get_width() / 2.0,
-                barra.get_height() + max(valori) * 0.01,
-                f"{valore:.1f}",
-                ha="center", va="bottom", fontsize=9,
-            )
-
-        ax.set_title(titolo, fontsize=14, fontweight="bold")
-        ax.set_xlabel(etichetta_x, fontsize=12)
-        ax.set_ylabel(etichetta_y, fontsize=12)
-        ax.grid(axis="y", alpha=0.3)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi=150)
-        plt.close(fig)
-        return percorso_file
-
-    # --- 1b) Grafico a dispersione (scatter) ---
-    def crea_grafico_scatter(
-        x: np.ndarray,
-        y: np.ndarray,
-        titolo: str,
-        etichetta_x: str,
-        etichetta_y: str,
-        percorso_file: str,
-    ) -> str:
-        """Crea un grafico a dispersione e lo salva su file."""
-        fig, ax = plt.subplots(figsize=(10, 6))
-
-        ax.scatter(x, y, alpha=0.6, c=y, cmap="viridis", edgecolors="black", linewidth=0.3, s=40)
-
-        # Linea di tendenza (regressione lineare)
-        coefficienti: np.ndarray = np.polyfit(x, y, 1)
-        linea_tendenza: np.ndarray = np.polyval(coefficienti, x)
-        pendenza: float = float(coefficienti[0])
-        intercetta: float = float(coefficienti[1])
-        ax.plot(
-            np.sort(x), np.polyval(coefficienti, np.sort(x)),
-            color="red", linewidth=2, linestyle="--",
-            label=f"Tendenza: y = {pendenza:.2f}x + {intercetta:.2f}",
-        )
-
-        ax.set_title(titolo, fontsize=14, fontweight="bold")
-        ax.set_xlabel(etichetta_x, fontsize=12)
-        ax.set_ylabel(etichetta_y, fontsize=12)
-        ax.legend(fontsize=10)
-        ax.grid(alpha=0.3)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi=150)
-        plt.close(fig)
-        return percorso_file
-
-    # --- 1c) Istogramma ---
-    def crea_istogramma(
-        dati: np.ndarray,
-        n_bins: int,
-        titolo: str,
-        etichetta_x: str,
-        percorso_file: str,
-    ) -> str:
-        """Crea un istogramma con curva di densita' e lo salva su file."""
-        fig, ax = plt.subplots(figsize=(10, 6))
-
-        # Istogramma normalizzato
-        conteggi, bordi, patches = ax.hist(
-            dati, bins=n_bins, density=True, alpha=0.7,
-            color="#2196F3", edgecolor="black", linewidth=0.5,
-        )
-
-        # Curva di densita' gaussiana sovrapposta
-        media_dati: float = float(np.mean(dati))
-        std_dati: float = float(np.std(dati))
-        x_curva: np.ndarray = np.linspace(float(np.min(dati)), float(np.max(dati)), 200)
-        y_curva: np.ndarray = (
-            1 / (std_dati * np.sqrt(2 * np.pi))
-            * np.exp(-0.5 * ((x_curva - media_dati) / std_dati) ** 2)
-        )
-        ax.plot(x_curva, y_curva, color="red", linewidth=2,
-                label=f"Gaussiana (mu={media_dati:.1f}, sigma={std_dati:.1f})")
-
-        # Linea verticale per la media
-        ax.axvline(media_dati, color="green", linewidth=1.5, linestyle="--",
-                   label=f"Media = {media_dati:.1f}")
-
-        ax.set_title(titolo, fontsize=14, fontweight="bold")
-        ax.set_xlabel(etichetta_x, fontsize=12)
-        ax.set_ylabel("Densita'", fontsize=12)
-        ax.legend(fontsize=10)
-        ax.grid(alpha=0.3)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi=150)
-        plt.close(fig)
-        return percorso_file
-
-    # --- 1d) Boxplot ---
-    def crea_boxplot(
-        dati_gruppi: list[np.ndarray],
-        etichette_gruppi: list[str],
-        titolo: str,
-        percorso_file: str,
-    ) -> str:
-        """Crea un boxplot comparativo e lo salva su file."""
-        fig, ax = plt.subplots(figsize=(10, 6))
-
-        bp = ax.boxplot(
-            dati_gruppi, tick_labels=etichette_gruppi, patch_artist=True,
-            medianprops=dict(color="red", linewidth=2),
-        )
-
-        # Colori diversi per ogni box
-        colori: list[str] = ["#2196F3", "#4CAF50", "#FF9800", "#E91E63"]
-        for patch, colore in zip(bp["boxes"], colori):
-            patch.set_facecolor(colore)
-            patch.set_alpha(0.6)
-
-        ax.set_title(titolo, fontsize=14, fontweight="bold")
-        ax.set_ylabel("Valori", fontsize=12)
-        ax.grid(axis="y", alpha=0.3)
-
-        plt.tight_layout()
-        plt.savefig(percorso_file, dpi=150)
-        plt.close(fig)
-        return percorso_file
-
-    # --- Test grafici ---
-    # 1a) Grafico a barre: voti medi per materia
-    materie: list[str] = ["Analisi", "Algebra", "Fisica", "Informatica", "Chimica"]
-    voti_medi: list[float] = [25.3, 23.8, 26.1, 28.5, 24.0]
-    path_barre: str = crea_grafico_barre(
-        materie, voti_medi,
-        "Voto medio per materia", "Materia", "Voto medio",
-        os.path.join(dir_grafici, "barre.png"),
-    )
-    assert os.path.exists(path_barre), "Il file del grafico a barre non e' stato creato"
-    assert os.path.getsize(path_barre) > 0, "Il file del grafico a barre e' vuoto"
-
-    # 1b) Scatter: relazione ore studio / voto
-    rng: np.random.Generator = np.random.default_rng(42)
-    ore_studio: np.ndarray = rng.uniform(1, 10, 100)
-    voti_scatter: np.ndarray = 18 + ore_studio * 1.2 + rng.normal(0, 2, 100)
-    path_scatter: str = crea_grafico_scatter(
-        ore_studio, voti_scatter,
-        "Relazione ore di studio - Voto", "Ore di studio", "Voto",
-        os.path.join(dir_grafici, "scatter.png"),
-    )
-    assert os.path.exists(path_scatter)
-
-    # 1c) Istogramma: distribuzione altezze
-    altezze: np.ndarray = rng.normal(170, 10, 500)
-    path_isto: str = crea_istogramma(
-        altezze, 30,
-        "Distribuzione delle altezze", "Altezza (cm)",
-        os.path.join(dir_grafici, "istogramma.png"),
-    )
-    assert os.path.exists(path_isto)
-
-    # 1d) Boxplot: confronto voti tra corsi
-    voti_info: np.ndarray = rng.normal(27, 3, 50)
-    voti_mat: np.ndarray = rng.normal(24, 4, 50)
-    voti_fis: np.ndarray = rng.normal(25, 3.5, 50)
-    voti_chim: np.ndarray = rng.normal(23, 5, 50)
-    path_box: str = crea_boxplot(
-        [voti_info, voti_mat, voti_fis, voti_chim],
-        ["Informatica", "Matematica", "Fisica", "Chimica"],
-        "Distribuzione voti per corso di laurea",
-        os.path.join(dir_grafici, "boxplot.png"),
-    )
-    assert os.path.exists(path_box)
-
-    print(f"Esercizio 1 (Grafici): SUPERATO")
-    print(f"  Grafici salvati in: {dir_grafici}")
-
-    # Pulizia file temporanei dei grafici
-    for nome_file in os.listdir(dir_grafici):
-        os.unlink(os.path.join(dir_grafici, nome_file))
-    os.rmdir(dir_grafici)
-
-else:
-    print("Esercizio 1 (Grafici): SALTATO (Matplotlib/NumPy non disponibili)")
+i: int = immatricolati.index(max(immatricolati))
+print(f"Anno con più immatricolati: {anni[i]} ({immatricolati[i]})")
+crescita: float = immatricolati[-1] / immatricolati[0] - 1
+print(f"Variazione {anni[0]}-{anni[-1]}: {crescita:.1%}")
+print()
 
 
 # ============================================================================
-# ESERCIZIO 2: Mini-progetto di analisi dati
+# ESERCIZIO 2: i voti dell'appello — voti.py
 # ============================================================================
-# Un progetto completo che legge dati, calcola statistiche, e genera un report.
+print("--- Esercizio 2: I voti dell'appello ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
 
-if MATPLOTLIB_DISPONIBILE and NUMPY_DISPONIBILE and PANDAS_DISPONIBILE:
+rng = np.random.default_rng(14)
+tutti: np.ndarray = rng.normal(23.5, 4, 250).round().clip(max=30)
+voti: np.ndarray = tutti[tutti >= 18]
+media: float = voti.mean()
 
-    def genera_dati_vendite(n_righe: int = 200, seed: int = 42) -> pd.DataFrame:
-        """
-        Genera un dataset simulato di vendite per il mini-progetto.
-        Colonne: data, prodotto, categoria, quantita, prezzo_unitario, citta
-        """
-        rng_loc: np.random.Generator = np.random.default_rng(seed)
+plt.figure(figsize=(7, 4))
+plt.hist(voti, bins=np.arange(17.5, 31), color="steelblue",
+         edgecolor="white")
+plt.axvline(media, color="red", linestyle="--", label="Media")
+plt.title("Voti dei promossi all'appello di Statistica")
+plt.xlabel("Voto")
+plt.ylabel("Studenti")
+plt.legend()
+plt.tight_layout()
+plt.savefig("voti.png")
 
-        prodotti_per_cat: dict[str, list[str]] = {
-            "Elettronica": ["Laptop", "Smartphone", "Tablet", "Cuffie"],
-            "Abbigliamento": ["Maglietta", "Jeans", "Giacca", "Scarpe"],
-            "Alimentari": ["Pasta", "Olio", "Caffe", "Biscotti"],
-        }
-
-        citta_lista: list[str] = ["Milano", "Roma", "Napoli", "Torino", "Bologna"]
-
-        righe: list[dict[str, Any]] = []
-        for _ in range(n_righe):
-            categoria: str = rng_loc.choice(list(prodotti_per_cat.keys()))
-            prodotto: str = rng_loc.choice(prodotti_per_cat[categoria])
-            citta: str = rng_loc.choice(citta_lista)
-            quantita: int = int(rng_loc.integers(1, 20))
-
-            # Prezzi dipendono dalla categoria
-            prezzi_base: dict[str, tuple[float, float]] = {
-                "Elettronica": (100.0, 1500.0),
-                "Abbigliamento": (15.0, 200.0),
-                "Alimentari": (1.0, 15.0),
-            }
-            p_min, p_max = prezzi_base[categoria]
-            prezzo: float = round(float(rng_loc.uniform(p_min, p_max)), 2)
-
-            # Data casuale nel 2024
-            mese: int = int(rng_loc.integers(1, 13))
-            giorno: int = int(rng_loc.integers(1, 29))
-            data: str = f"2024-{mese:02d}-{giorno:02d}"
-
-            righe.append({
-                "data": data,
-                "prodotto": prodotto,
-                "categoria": categoria,
-                "quantita": quantita,
-                "prezzo_unitario": prezzo,
-                "citta": citta,
-            })
-
-        df: pd.DataFrame = pd.DataFrame(righe)
-        df["fatturato"] = df["quantita"] * df["prezzo_unitario"]
-        df["data"] = pd.to_datetime(df["data"])
-        return df
-
-    def analisi_vendite(df: pd.DataFrame) -> dict[str, Any]:
-        """
-        Esegue un'analisi completa delle vendite:
-        - fatturato totale e medio
-        - fatturato per categoria
-        - fatturato per citta'
-        - prodotto piu' venduto (per quantita')
-        - mese con piu' fatturato
-        """
-        fatturato_totale: float = round(float(df["fatturato"].sum()), 2)
-        fatturato_medio: float = round(float(df["fatturato"].mean()), 2)
-
-        # Per categoria
-        fatt_categoria: pd.Series = df.groupby("categoria")["fatturato"].sum().round(2)
-
-        # Per citta'
-        fatt_citta: pd.Series = df.groupby("citta")["fatturato"].sum().round(2)
-
-        # Prodotto piu' venduto per quantita'
-        vendite_prodotto: pd.Series = df.groupby("prodotto")["quantita"].sum()
-        prodotto_top: str = str(vendite_prodotto.idxmax())
-        quantita_top: int = int(vendite_prodotto.max())
-
-        # Mese con piu' fatturato
-        df_copia: pd.DataFrame = df.copy()
-        df_copia["mese"] = df_copia["data"].dt.month
-        fatt_mese: pd.Series = df_copia.groupby("mese")["fatturato"].sum()
-        mese_top: int = int(fatt_mese.idxmax())
-
-        return {
-            "fatturato_totale": fatturato_totale,
-            "fatturato_medio": fatturato_medio,
-            "fatturato_per_categoria": fatt_categoria.to_dict(),
-            "fatturato_per_citta": fatt_citta.to_dict(),
-            "prodotto_piu_venduto": prodotto_top,
-            "quantita_prodotto_top": quantita_top,
-            "mese_migliore": mese_top,
-            "num_transazioni": len(df),
-        }
-
-    def genera_report_grafici(df: pd.DataFrame, cartella: str) -> list[str]:
-        """
-        Genera una serie di grafici per il report e li salva nella cartella.
-        Restituisce la lista dei percorsi dei file creati.
-        """
-        percorsi: list[str] = []
-
-        # --- Grafico 1: Fatturato per categoria (barre) ---
-        fig, ax = plt.subplots(figsize=(10, 6))
-        fatt_cat: pd.Series = df.groupby("categoria")["fatturato"].sum().sort_values(ascending=False)
-        colori_cat: list[str] = ["#2196F3", "#4CAF50", "#FF9800"]
-        fatt_cat.plot(kind="bar", ax=ax, color=colori_cat[:len(fatt_cat)], edgecolor="black")
-        ax.set_title("Fatturato totale per categoria", fontsize=14, fontweight="bold")
-        ax.set_ylabel("Fatturato (EUR)", fontsize=12)
-        ax.set_xlabel("Categoria", fontsize=12)
-        plt.xticks(rotation=0)
-        ax.grid(axis="y", alpha=0.3)
-        plt.tight_layout()
-        path_1: str = os.path.join(cartella, "fatturato_categoria.png")
-        plt.savefig(path_1, dpi=150)
-        plt.close(fig)
-        percorsi.append(path_1)
-
-        # --- Grafico 2: Fatturato per citta' (barre orizzontali) ---
-        fig, ax = plt.subplots(figsize=(10, 6))
-        fatt_citta: pd.Series = df.groupby("citta")["fatturato"].sum().sort_values()
-        fatt_citta.plot(kind="barh", ax=ax, color="#E91E63", edgecolor="black")
-        ax.set_title("Fatturato totale per citta'", fontsize=14, fontweight="bold")
-        ax.set_xlabel("Fatturato (EUR)", fontsize=12)
-        ax.grid(axis="x", alpha=0.3)
-        plt.tight_layout()
-        path_2: str = os.path.join(cartella, "fatturato_citta.png")
-        plt.savefig(path_2, dpi=150)
-        plt.close(fig)
-        percorsi.append(path_2)
-
-        # --- Grafico 3: Distribuzione fatturato per transazione (istogramma) ---
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.hist(df["fatturato"], bins=30, color="#9C27B0", alpha=0.7, edgecolor="black")
-        media_fatt: float = float(df["fatturato"].mean())
-        ax.axvline(media_fatt, color="red", linestyle="--", linewidth=2,
-                   label=f"Media = {media_fatt:.0f} EUR")
-        ax.set_title("Distribuzione del fatturato per transazione", fontsize=14, fontweight="bold")
-        ax.set_xlabel("Fatturato (EUR)", fontsize=12)
-        ax.set_ylabel("Frequenza", fontsize=12)
-        ax.legend(fontsize=10)
-        ax.grid(alpha=0.3)
-        plt.tight_layout()
-        path_3: str = os.path.join(cartella, "distribuzione_fatturato.png")
-        plt.savefig(path_3, dpi=150)
-        plt.close(fig)
-        percorsi.append(path_3)
-
-        # --- Grafico 4: Boxplot fatturato per categoria ---
-        fig, ax = plt.subplots(figsize=(10, 6))
-        categorie_uniche: list[str] = sorted(df["categoria"].unique().tolist())
-        dati_box: list[np.ndarray] = [
-            df[df["categoria"] == cat]["fatturato"].values for cat in categorie_uniche
-        ]
-        bp = ax.boxplot(dati_box, tick_labels=categorie_uniche, patch_artist=True,
-                        medianprops=dict(color="red", linewidth=2))
-        colori_box: list[str] = ["#2196F3", "#4CAF50", "#FF9800"]
-        for patch, colore in zip(bp["boxes"], colori_box):
-            patch.set_facecolor(colore)
-            patch.set_alpha(0.6)
-        ax.set_title("Distribuzione fatturato per categoria", fontsize=14, fontweight="bold")
-        ax.set_ylabel("Fatturato (EUR)", fontsize=12)
-        ax.grid(axis="y", alpha=0.3)
-        plt.tight_layout()
-        path_4: str = os.path.join(cartella, "boxplot_categorie.png")
-        plt.savefig(path_4, dpi=150)
-        plt.close(fig)
-        percorsi.append(path_4)
-
-        # --- Grafico 5: Fatturato mensile (linea) ---
-        fig, ax = plt.subplots(figsize=(12, 6))
-        df_copia: pd.DataFrame = df.copy()
-        df_copia["mese"] = df_copia["data"].dt.month
-        fatt_mensile: pd.Series = df_copia.groupby("mese")["fatturato"].sum()
-        ax.plot(fatt_mensile.index, fatt_mensile.values, marker="o", linewidth=2,
-                color="#2196F3", markersize=8)
-        ax.fill_between(fatt_mensile.index, fatt_mensile.values, alpha=0.2, color="#2196F3")
-        ax.set_title("Andamento fatturato mensile", fontsize=14, fontweight="bold")
-        ax.set_xlabel("Mese", fontsize=12)
-        ax.set_ylabel("Fatturato (EUR)", fontsize=12)
-        ax.set_xticks(range(1, 13))
-        ax.set_xticklabels(["Gen", "Feb", "Mar", "Apr", "Mag", "Giu",
-                            "Lug", "Ago", "Set", "Ott", "Nov", "Dic"])
-        ax.grid(alpha=0.3)
-        plt.tight_layout()
-        path_5: str = os.path.join(cartella, "fatturato_mensile.png")
-        plt.savefig(path_5, dpi=150)
-        plt.close(fig)
-        percorsi.append(path_5)
-
-        return percorsi
-
-    def genera_report_testuale(analisi: dict[str, Any]) -> str:
-        """Genera un report testuale dell'analisi."""
-        linee: list[str] = [
-            "=" * 60,
-            "REPORT ANALISI VENDITE",
-            "=" * 60,
-            "",
-            f"Numero transazioni: {analisi['num_transazioni']}",
-            f"Fatturato totale: EUR {analisi['fatturato_totale']:,.2f}",
-            f"Fatturato medio per transazione: EUR {analisi['fatturato_medio']:,.2f}",
-            "",
-            "--- Fatturato per categoria ---",
-        ]
-
-        for cat, fatt in analisi["fatturato_per_categoria"].items():
-            linee.append(f"  {cat}: EUR {fatt:,.2f}")
-
-        linee.append("")
-        linee.append("--- Fatturato per citta' ---")
-        for citta, fatt in analisi["fatturato_per_citta"].items():
-            linee.append(f"  {citta}: EUR {fatt:,.2f}")
-
-        linee.extend([
-            "",
-            f"Prodotto piu' venduto: {analisi['prodotto_piu_venduto']} "
-            f"({analisi['quantita_prodotto_top']} unita')",
-            f"Mese migliore: {analisi['mese_migliore']}",
-            "",
-            "=" * 60,
-        ])
-
-        return "\n".join(linee)
-
-    # --- Test mini-progetto ---
-    # Genera dati
-    df_vendite: pd.DataFrame = genera_dati_vendite(200, seed=42)
-    assert len(df_vendite) == 200
-    assert "fatturato" in df_vendite.columns
-    assert df_vendite["fatturato"].sum() > 0
-
-    # Analisi
-    risultati: dict[str, Any] = analisi_vendite(df_vendite)
-    assert risultati["num_transazioni"] == 200
-    assert risultati["fatturato_totale"] > 0
-    assert risultati["fatturato_medio"] > 0
-    assert len(risultati["fatturato_per_categoria"]) == 3
-    assert len(risultati["fatturato_per_citta"]) == 5
-    assert risultati["prodotto_piu_venduto"] != ""
-    assert 1 <= risultati["mese_migliore"] <= 12
-
-    # Report testuale
-    report_testo: str = genera_report_testuale(risultati)
-    assert "REPORT ANALISI VENDITE" in report_testo
-    assert "EUR" in report_testo
-
-    # Genera grafici
-    dir_report: str = tempfile.mkdtemp(prefix="report_lab08_")
-    percorsi_grafici: list[str] = genera_report_grafici(df_vendite, dir_report)
-
-    assert len(percorsi_grafici) == 5
-    for percorso in percorsi_grafici:
-        assert os.path.exists(percorso), f"Grafico non trovato: {percorso}"
-        assert os.path.getsize(percorso) > 0, f"Grafico vuoto: {percorso}"
-
-    # Stampa il report
-    print(report_testo)
-    print(f"\nGrafici salvati in: {dir_report}")
-
-    # Pulizia file temporanei
-    for nome_file in os.listdir(dir_report):
-        os.unlink(os.path.join(dir_report, nome_file))
-    os.rmdir(dir_report)
-
-    print("\nEsercizio 2 (Mini-progetto analisi dati): SUPERATO")
-
-else:
-    print("Esercizio 2 (Mini-progetto): SALTATO (librerie non disponibili)")
+print(f"Promossi: {len(voti)} su {len(tutti)}")
+print(f"Media dei promossi: {media:.1f}")
+print(f"Voti da 27 in su: {(voti >= 27).mean():.1%}")
+print()
 
 
 # ============================================================================
-esercizi_superati: int = 0
-totale: int = 2
-if MATPLOTLIB_DISPONIBILE and NUMPY_DISPONIBILE:
-    esercizi_superati += 1
-if MATPLOTLIB_DISPONIBILE and NUMPY_DISPONIBILE and PANDAS_DISPONIBILE:
-    esercizi_superati += 1
+# ESERCIZIO 3: ore di studio e voto — studio.py
+# ============================================================================
+print("--- Esercizio 3: Ore di studio e voto ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
 
-print("\n" + "=" * 60)
-print(f"LABORATORIO 08: {esercizi_superati}/{totale} ESERCIZI SUPERATI")
-if esercizi_superati == totale:
-    print("TUTTI GLI ESERCIZI DEL LABORATORIO 08 SUPERATI!")
-else:
-    print("Installa le librerie mancanti per completare tutti gli esercizi.")
+rng = np.random.default_rng(7)
+ore: np.ndarray = rng.uniform(20, 120, 80).round()
+voto: np.ndarray = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round()
+voto = voto.clip(18, 30)
+
+plt.figure(figsize=(7, 4))
+plt.scatter(ore, voto, alpha=0.6, color="steelblue")
+plt.title("Ore di studio e voto all'esame")
+plt.xlabel("Ore di studio")
+plt.ylabel("Voto")
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig("studio.png")
+
+r: float = np.corrcoef(ore, voto)[0, 1]
+print(f"Studenti: {len(ore)}, correlazione: {r:.2f}")
+print(f"Voto medio con più di 80 ore: {voto[ore > 80].mean():.1f}")
+print(f"Voto medio con 80 ore o meno: {voto[ore <= 80].mean():.1f}")
+print()
+
+
+# ============================================================================
+# ESERCIZIO 4: l'attesa in mensa — mensa.py
+# ============================================================================
+print("--- Esercizio 4: L'attesa in mensa ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+rng = np.random.default_rng(3)
+giorni: list[str] = ["lun", "mar", "mer", "gio", "ven"]
+attesa_tipica: list[float] = [12, 15, 14, 16, 8]
+df: pd.DataFrame = pd.DataFrame({
+    "giorno": giorni * 20,
+    "attesa": np.tile(attesa_tipica, 20) + rng.normal(0, 3, 100)})
+
+medie: pd.Series = df.groupby("giorno", sort=False)["attesa"].mean()
+plt.figure(figsize=(7, 4))
+plt.bar(medie.index, medie.values, color="steelblue")
+plt.title("Attesa media alla mensa")
+plt.xlabel("Giorno")
+plt.ylabel("Minuti")
+plt.tight_layout()
+plt.savefig("mensa.png")
+
+print(f"Rilevazioni: {len(df)}, media: {df['attesa'].mean():.1f} min")
+print(f"Giorno peggiore: {medie.idxmax()} ({medie.max():.1f} min)")
+print(f"Giorno migliore: {medie.idxmin()} ({medie.min():.1f} min)")
+print()
+
+
+# ============================================================================
+# ESERCIZIO 5: il tragitto per l'università — tragitto.py
+# ============================================================================
+print("--- Esercizio 5: Il tragitto per l'università ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(11)
+tempi: dict[str, np.ndarray] = {
+    "bici": rng.normal(22, 3, 40).round(),
+    "autobus": rng.normal(28, 7, 40).round(),
+    "treno": rng.normal(35, 4, 40).round()}
+
+plt.figure(figsize=(7, 4))
+plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))
+plt.title("Tempo per arrivare in università")
+plt.xlabel("Mezzo")
+plt.ylabel("Minuti")
+plt.tight_layout()
+plt.savefig("tragitto.png")
+
+for mezzo, t in tempi.items():
+    print(f"{mezzo}: mediana {np.median(t):.0f} min, "
+          f"oltre 30 min {(t > 30).mean():.1%}")
+print()
+
+
+# ============================================================================
+# ESERCIZIO 6: gennaio in due grafici — meteo.py
+# ============================================================================
+print("--- Esercizio 6: Gennaio in due grafici ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(1)
+giorni: np.ndarray = np.arange(1, 32)
+minime: np.ndarray = rng.normal(0, 2.5, 31).round(1)
+massime: np.ndarray = (minime + rng.normal(7, 1.8, 31)).round(1)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+ax1.plot(giorni, massime, color="tomato", label="Massima")
+ax1.plot(giorni, minime, color="steelblue", label="Minima")
+ax1.set_title("Temperature di gennaio a Padova")
+ax1.set_xlabel("Giorno")
+ax1.set_ylabel("°C")
+ax1.legend()
+ax2.hist(massime - minime, bins=8, color="gray", edgecolor="white")
+ax2.set_title("Escursione termica")
+ax2.set_xlabel("Massima - minima (°C)")
+ax2.set_ylabel("Giorni")
+fig.tight_layout()
+fig.savefig("meteo.png")
+print(f"Giorni con la minima sotto zero: {(minime < 0).sum()}")
+print(f"Escursione media: {(massime - minime).mean():.1f} °C")
+print()
+
+
+# ============================================================================
+# CHALLENGE MERCATI E FINANZA: due mesi di borsa — ch_mercati.py
+# ============================================================================
+print("--- Challenge Mercati e finanza: Due mesi di borsa ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def salva(nome: str, titolo: str, x: str, y: str) -> None:
+    """Mette titolo ed etichette al grafico e lo salva in PNG."""
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame = pd.read_csv("prezzi.csv", sep=";")
+df: pd.DataFrame = grezzo.drop_duplicates().dropna()
+df = df[df["prezzo"] > 0].copy()
+print(f"Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}")
+df["rendimento"] = df.groupby("titolo")["prezzo"].pct_change()
+prezzi = df.groupby("titolo")["prezzo"]
+rend: pd.Series = prezzi.last() / prezzi.first() - 1
+vol: pd.Series = df.groupby("titolo")["rendimento"].std()
+mib: pd.DataFrame = df[df["titolo"] == "MIB"]
+for t in rend.index:
+    print(f"{t}: rendimento {rend[t]:.1%}, volatilità {vol[t]:.1%}")
+print("Giorni con il MIB in calo oltre l'1%:",
+      (mib["rendimento"] < -0.01).sum())
+plt.hist(df["rendimento"].dropna(), bins=20, edgecolor="white")
+salva("rendimenti.png", "Rendimenti giornalieri", "Rendimento",
+      "Giorni")
+for t in ["ENRG", "BANK", "TECH"]:
+    plt.plot(df[df["titolo"] == t]["prezzo"].values, label=t)
+plt.legend()
+salva("prezzi.png", "Prezzi di chiusura", "Giorno", "Prezzo (EUR)")
+plt.bar(vol.index, vol.values, color="steelblue")
+salva("volatilita.png", "Volatilità", "Titolo", "Deviazione std")
+titoli: pd.Series = rend.drop("MIB")
+print(f"Il migliore è {titoli.idxmax()} ({titoli.max():.1%}), "
+      f"il peggiore {titoli.idxmin()} ({titoli.min():.1%}).")
+print(f"Il più volatile è {vol.idxmax()}, con {vol.max():.1%} al "
+      f"giorno; il MIB si ferma a {vol['MIB']:.1%}.")
+print(f"Il MIB rende {rend['MIB']:.1%}: "
+      f"{(titoli > rend['MIB']).sum()} titoli su 3 fanno meglio.")
+print()
+
+
+# ============================================================================
+# CHALLENGE SPORT: il passo gara — ch_sport.py
+# ============================================================================
+print("--- Challenge Sport: Il passo gara ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def salva(nome: str, titolo: str, x: str, y: str) -> None:
+    """Mette titolo ed etichette al grafico e lo salva in PNG."""
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame = pd.read_csv("tempi_giro.csv", sep=";")
+df: pd.DataFrame = grezzo.drop_duplicates().dropna()
+df = df[(df["tempo"] > 60) & (df["tempo"] < 180)].copy()
+print(f"Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}")
+df["lento"] = df["tempo"] > 100
+normali: pd.DataFrame = df[~df["lento"]]
+media: pd.Series = normali.groupby("pilota")["tempo"].mean()
+distacco: pd.Series = media - media.min()
+top: pd.Series = df.loc[df["tempo"].idxmin()]
+print(f"Giro più veloce: {top['pilota']}, gara {top['gara']}, "
+      f"giro {top['giro']}, {top['tempo']:.1f} s")
+print(f"Giri lenti (pit stop e safety car): {df['lento'].mean():.1%}")
+for p in media.index:
+    print(f"{p}: media sui giri normali {media[p]:.2f} s")
+plt.hist(df["tempo"], bins=25, edgecolor="white")
+salva("hist_tempi.png", "Tempi sul giro", "Tempo (s)", "Giri")
+gara1: pd.DataFrame = normali[normali["gara"] == 1]
+for p in media.index:
+    s: pd.DataFrame = gara1[gara1["pilota"] == p]
+    plt.plot(s["giro"], s["tempo"], marker="o", label=p)
+plt.legend()
+salva("gara1.png", "Gara 1, giri normali", "Giro", "Tempo (s)")
+plt.bar(distacco.index, distacco.values, color="steelblue")
+salva("distacchi.png", "Distacco dal più veloce", "Pilota", "s")
+costo: float = df[df["lento"]]["tempo"].mean() - media.mean()
+print(f"Sul passo gara il più veloce è {media.idxmin()}; "
+      f"{media.idxmax()} perde {distacco.max():.2f} s al giro.")
+print(f"Un giro lento costa {costo:.1f} s in più e va escluso.")
+print("Gara 1: i tempi crescono fino al pit stop (usura gomme).")
+print()
+
+
+# ============================================================================
+# CHALLENGE IMPRESE E MARKETING: quattro mesi di ordini — ch_negozio.py
+# ============================================================================
+print("--- Challenge Imprese e marketing: Quattro mesi di ordini ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def salva(nome: str, titolo: str, x: str, y: str) -> None:
+    """Mette titolo ed etichette al grafico e lo salva in PNG."""
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame = pd.read_csv("ordini.csv", sep=";")
+df: pd.DataFrame = grezzo.drop_duplicates().dropna()
+df = df[df["quantita"] > 0].copy()
+print(f"Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}")
+df["importo"] = df["quantita"] * df["prezzo"]
+df["mese"] = df["data"].str[:7]
+citta: pd.Series = df.groupby("citta")["importo"].sum()
+mesi: pd.Series = df.groupby("mese")["importo"].sum()
+pezzi: pd.Series = df.groupby("prodotto")["quantita"].sum()
+ricavi: pd.Series = df.groupby("prodotto")["importo"].sum()
+top: str = pezzi.idxmax()
+print(f"Fatturato: {df['importo'].sum():.2f} EUR, "
+      f"ordine medio: {df['importo'].mean():.2f} EUR")
+for c in citta.index:
+    print(f"{c}: {citta[c]:.2f} EUR ({citta[c] / citta.sum():.1%})")
+print(f"Prodotto più venduto: {top}, {pezzi[top]:.0f} pezzi")
+plt.hist(df["importo"], bins=15, edgecolor="white")
+salva("hist_importi.png", "Importo degli ordini", "Euro", "Ordini")
+plt.plot(mesi.index, mesi.values, marker="o")
+salva("mesi.png", "Fatturato mensile", "Mese", "Euro")
+plt.bar(citta.index, citta.values, color="steelblue")
+salva("citta.png", "Fatturato per città", "Città", "Euro")
+tot: float = citta.sum()
+print(f"{citta.idxmax()} vale {citta.max() / tot:.1%} del fatturato, "
+      f"{citta.idxmin()} solo {citta.min() / tot:.1%}.")
+print(f"Il mese migliore è {mesi.idxmax()} ({mesi.max():.2f} EUR), "
+      f"il peggiore {mesi.idxmin()} ({mesi.min():.2f} EUR).")
+print(f"Prodotto {top}: {pezzi[top] / pezzi.sum():.1%} dei pezzi, "
+      f"ma {ricavi[top] / ricavi.sum():.1%} del fatturato.")
+print()
+
+
+# ============================================================================
+# CHALLENGE SALUTE E SCIENZA: l'effetto dell'integratore — ch_salute.py
+# ============================================================================
+print("--- Challenge Salute e scienza: L'effetto dell'integratore ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def salva(nome: str, titolo: str, x: str, y: str) -> None:
+    """Mette titolo ed etichette al grafico e lo salva in PNG."""
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame = pd.read_csv("pazienti.csv", sep=";")
+df: pd.DataFrame = grezzo.drop_duplicates().dropna()
+df = df[df["pressione_prima"].between(80, 250)
+        & df["pressione_dopo"].between(80, 250)].copy()
+print(f"Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}")
+df["differenza"] = df["pressione_dopo"] - df["pressione_prima"]
+df["migliorato"] = df["differenza"] <= -10
+calo: pd.Series = df.groupby("gruppo")["differenza"].mean()
+quota: pd.Series = df.groupby("gruppo")["migliorato"].mean()
+rr: float = quota["trattamento"] / quota["controllo"]
+for g in calo.index:
+    print(f"{g}: variazione media {calo[g]:.1f} mmHg, "
+          f"migliorati {quota[g]:.1%}")
+print(f"Rischio relativo di miglioramento: {rr:.2f}")
+plt.boxplot([df[df["gruppo"] == g]["differenza"] for g in calo.index],
+            tick_labels=calo.index)
+salva("variazione.png", "Dopo meno prima", "Gruppo", "mmHg")
+for g in calo.index:
+    s: pd.DataFrame = df[df["gruppo"] == g]
+    plt.scatter(s["pressione_prima"], s["pressione_dopo"], label=g)
+plt.legend()
+salva("prima_dopo.png", "Pressione sistolica", "Prima (mmHg)",
+      "Dopo (mmHg)")
+plt.bar(quota.index, quota.values, color="steelblue")
+salva("migliorati.png", "Quota di migliorati", "Gruppo", "Quota")
+print(f"La pressione cambia di {calo['trattamento']:.1f} mmHg con "
+      f"l'integratore e di {calo['controllo']:.1f} senza.")
+print(f"I migliorati sono {rr:.2f} volte quelli del controllo.")
+print("Anche il controllo migliora: per questo serve un confronto.")
+print()
+
+
+# ============================================================================
+# CHALLENGE CASO E PROBABILITÀ: il dado sospetto — ch_probabilita.py
+# ============================================================================
+print("--- Challenge Caso e probabilità: Il dado sospetto ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+
+def salva(nome: str, titolo: str, x: str, y: str) -> None:
+    """Mette titolo ed etichette al grafico e lo salva in PNG."""
+    plt.title(titolo)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.tight_layout()
+    plt.savefig(nome)
+    plt.close()
+
+
+grezzo: pd.DataFrame = pd.read_csv("lanci.csv", sep=";")
+df: pd.DataFrame = grezzo.drop_duplicates().dropna()
+df = df[df["dado2"].between(1, 6)].copy()
+print(f"Righe lette: {len(grezzo)}, dopo la pulizia: {len(df)}")
+df["somma"] = df["dado1"] + df["dado2"]
+df["sei"] = df["dado2"] == 6
+media: pd.Series = df.groupby("giocatore")["somma"].mean()
+sei: pd.Series = df.groupby("giocatore")["sei"].mean()
+print(f"Media della somma: {df['somma'].mean():.2f} (teorica 7.00)")
+print(f"Somma 7: {(df['somma'] == 7).mean():.1%} dei lanci "
+      f"(teorica {6 / 36:.1%})")
+for g in media.index:
+    print(f"{g}: media {media[g]:.2f}, sei sul dado 2 {sei[g]:.1%}")
+plt.hist(df["somma"], bins=np.arange(1.5, 13), edgecolor="white")
+salva("somme.png", "Somma dei due dadi", "Somma", "Lanci")
+lanci: np.ndarray = np.arange(1, len(df) + 1)
+plt.plot(lanci, df["somma"].cumsum() / lanci)
+plt.axhline(7, color="red", linestyle="--", label="valore teorico")
+plt.legend()
+salva("media_cumulata.png", "Media della somma", "Lanci", "Media")
+plt.bar(sei.index, sei.values, color="steelblue")
+plt.axhline(1 / 6, color="red", linestyle="--")
+salva("sei.png", "Quota di 6 sul dado 2", "Giocatore", "Quota")
+print(f"Dopo {len(df)} lanci la media cumulata è "
+      f"{df['somma'].mean():.2f}; il valore teorico è 7.")
+print(f"{sei.idxmax()} fa 6 sul dado 2 nel {sei.max():.1%} dei lanci "
+      f"e la sua somma media è {media[sei.idxmax()]:.2f}.")
+print(f"Con un dado regolare sarebbe {1 / 6:.1%}: va controllato.")
+print()
+
+
+# ============================================================================
+print("=" * 60)
+print("Fine degli esercizi del laboratorio 08")
 print("=" * 60)
