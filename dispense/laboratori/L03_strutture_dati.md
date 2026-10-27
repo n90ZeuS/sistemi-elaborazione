@@ -1,560 +1,333 @@
 # Laboratorio 3 — Strutture dati
 
-## Informazioni
+**Prerequisiti:** lezioni T11 (Liste e tuple), T12 (Dizionari e set) e T13 (Funzioni).
 
-- **Prerequisiti:** Lezioni frontali T11 (Liste e tuple) e T12 (Dizionari e insiemi)
-- **Durata stimata:** 2 ore
-- **Obiettivi:** Saper creare, modificare e interrogare liste, tuple, dizionari e set. Capire la differenza tra alias e copia. Usare `Counter` per analisi di frequenza.
+Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli. Le funzioni servono solo negli ultimi esercizi.
+
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T14.
+
+| # | File | Esercizio |
+|---|---|---|
+| 1 | `voti_appello.py` | L'appello di Statistica |
+| 2 | `coda_mensa.py` | La coda in mensa |
+| 3 | `sondaggio.py` | Come arrivate in aula |
+| 4 | `tre_corsi.py` | Chi segue cosa |
+| 5 | `libretto.py` | Il libretto |
+| 6 | `sessione.py` | La sessione invernale |
+| 7 | `contingenza.py` | Scuola di provenienza ed esito |
+| 8 | `descrittive.py` | Ore di studio |
+| Sfida | `compagni.py` | Compagni di corsi a scelta |
 
 ---
 
-## Esercizio guidato 1 — Liste: gestire misurazioni
+## Promemoria
 
-Immaginate di raccogliere le temperature giornaliere di una settimana. Le liste sono lo strumento naturale per questo tipo di dato: una sequenza ordinata e modificabile.
-
-### Passo 1: Creare e popolare una lista
+Gli strumenti che servono oggi. Da oggi si possono usare `sum()`, `min()`, `max()` e `sorted()`; l'unico import ammesso è `from collections import Counter, defaultdict`.
 
 ```python
-# Creiamo una lista vuota e aggiungiamo misurazioni una alla volta
-temperature: list[float] = []
+from collections import Counter, defaultdict
 
-temperature.append(18.5)
-temperature.append(21.0)
-temperature.append(19.3)
-temperature.append(22.1)
-temperature.append(20.7)
-
-print(f"Misurazioni raccolte: {temperature}")
-print(f"Numero di misurazioni: {len(temperature)}")
-```
-
-Possiamo anche creare la lista direttamente:
-
-```python
-temperature: list[float] = [18.5, 21.0, 19.3, 22.1, 20.7]
-```
-
-### Passo 2: Leggere (Read)
-
-```python
-# Accesso per indice
-prima: float = temperature[0]
-ultima: float = temperature[-1]
-print(f"Prima misurazione: {prima}")
-print(f"Ultima misurazione: {ultima}")
-
-# Slicing: sottoinsieme di misurazioni
-prime_tre: list[float] = temperature[:3]
-print(f"Prime tre: {prime_tre}")
-
-# Cercare un valore
-if 21.0 in temperature:
-    posizione: int = temperature.index(21.0)
-    print(f"21.0 trovato alla posizione {posizione}")
-```
-
-### Passo 3: Aggiornare (Update)
-
-```python
-# Correggere una misurazione errata
-print(f"Prima della correzione: {temperature}")
-temperature[2] = 19.8  # la terza misurazione era sbagliata
-print(f"Dopo la correzione:    {temperature}")
-
-# Inserire una misurazione dimenticata in posizione specifica
-temperature.insert(1, 20.0)  # inserisci 20.0 alla posizione 1
-print(f"Dopo l'inserimento:    {temperature}")
-```
-
-### Passo 4: Cancellare (Delete)
-
-```python
-# Rimuovere l'ultima misurazione
-rimossa: float = temperature.pop()
-print(f"Rimossa l'ultima: {rimossa}, lista: {temperature}")
-
-# Rimuovere per valore
-temperature.remove(20.0)
-print(f"Dopo remove(20.0): {temperature}")
-
-# Rimuovere per indice
-del temperature[0]
-print(f"Dopo del [0]: {temperature}")
-```
-
-### Passo 5: Operazioni statistiche di base
-
-```python
-temperature: list[float] = [18.5, 21.0, 19.3, 22.1, 20.7, 17.9, 23.4]
-
-media: float = sum(temperature) / len(temperature)
-minima: float = min(temperature)
-massima: float = max(temperature)
-
-print(f"Media:   {media:.2f}")
-print(f"Minima:  {minima}")
-print(f"Massima: {massima}")
-
-# Ordinamento (crea una nuova lista)
-ordinate: list[float] = sorted(temperature)
-print(f"Ordinate: {ordinate}")
-
-# Ordinamento in-place (modifica la lista originale)
-temperature.sort()
-print(f"Originale dopo sort(): {temperature}")
+voti: list[int] = [int(v) for v in "28 18 30".split()]
+print(sum(voti), min(voti), sorted(voti))   # 76 18 [18, 28, 30]
+voti.append(24)            # in fondo; voti.pop(0) toglie il primo
+cfu: dict[str, int] = {"Analisi": 9, "Informatica": 6}
+for esame, n in cfu.items():    # coppie (chiave, valore)
+    print(esame, n)             # Analisi 9, poi Informatica 6
+print(cfu.get("Inglese", 0))    # 0: la chiave non c'è
+a: set[str] = {"Anna", "Bruno"}
+b: set[str] = {"Bruno", "Carla"}
+print(sorted(a | b), a & b, a - b)  # ['Anna', ...] {'Bruno'} {'Anna'}
+print(Counter("abbccc").most_common(1))     # [('c', 3)]
+gruppi: defaultdict[str, list[int]] = defaultdict(list)
+gruppi["Analisi"].append(27)    # la lista vuota si crea da sola
 ```
 
 ---
 
-## Esercizio guidato 2 — Alias vs copia: un esperimento fondamentale
+## Esercizio 1 — L'appello di Statistica (`voti_appello.py`)
 
-Questo esperimento chiarisce una delle trappole più comuni per i principianti.
+**Consegna**
 
-### Passo 1: Alias (due nomi, stesso oggetto)
+1. Chiedete i voti dell'appello su una riga, separati da spazi, e trasformateli in una lista di interi con `split()` e una list comprehension.
+2. Stampate la lista ordinata (`sorted()`), il numero di presenti, la media con un decimale, il voto minimo e il massimo.
+3. Con una seconda comprehension tenete i voti da 18 in su: stampate quanti sono, la loro percentuale con un decimale e la loro media.
+4. Se nessuno è promosso, la media dei promossi non va stampata.
 
-```python
-originale: list[int] = [1, 2, 3, 4, 5]
-alias: list[int] = originale  # NON è una copia!
+**Esempio di esecuzione**
 
-# Modifichiamo tramite alias
-alias[0] = 999
-
-print(f"alias:     {alias}")
-print(f"originale: {originale}")  # Anche originale è cambiato!
-print(f"Stesso oggetto? {originale is alias}")  # True
+```
+Voti separati da spazi: 24 18 30 15 27 22 30 12 26 19
+Voti ordinati: [12, 15, 18, 19, 22, 24, 26, 27, 30, 30]
+Presenti: 10
+Media: 22.3
+Minimo: 12  Massimo: 30
+Promossi: 8 (80.0%)
+Media dei promossi: 24.5
 ```
 
-L'assegnamento `alias = originale` non crea una nuova lista: entrambi i nomi puntano allo stesso oggetto in memoria. Modificare l'uno significa modificare l'altro.
+**Provate anche**
 
-### Passo 2: Copia superficiale
-
-```python
-originale: list[int] = [1, 2, 3, 4, 5]
-copia: list[int] = originale.copy()  # oppure list(originale) oppure originale[:]
-
-copia[0] = 999
-
-print(f"copia:     {copia}")
-print(f"originale: {originale}")  # Originale NON è cambiato
-print(f"Stesso oggetto? {originale is copia}")  # False
-```
-
-### Passo 3: Attenzione alle liste di liste
-
-```python
-matrice: list[list[int]] = [[1, 2], [3, 4]]
-copia_superficiale: list[list[int]] = matrice.copy()
-
-copia_superficiale[0][0] = 999
-
-print(f"copia:    {copia_superficiale}")  # [[999, 2], [3, 4]]
-print(f"matrice:  {matrice}")              # [[999, 2], [3, 4]] — anche qui!
-```
-
-La copia superficiale copia la lista esterna, ma le liste interne restano condivise. Per una copia completa servono `import copy` e `copy.deepcopy()`, ma per ora è sufficiente essere consapevoli del problema.
+- `30 30 30` → `Promossi: 3 (100.0%)`
+- `12 15` → `Promossi: 0 (0.0%)` e nessuna media dei promossi
+- `18` → un voto solo: media, minimo e massimo valgono 18
 
 ---
 
-## Esercizio guidato 3 — Tuple: punti geografici e distanze
+## Esercizio 2 — La coda in mensa (`coda_mensa.py`)
 
-Le tuple sono come le liste, ma **immutabili**: una volta create, non si possono modificare. Sono perfette per dati che non devono cambiare, come coordinate geografiche.
+**Consegna**
 
-### Passo 1: Creare tuple e fare unpacking
+1. Partite da `coda: list[str] = ["Anna", "Bruno", "Carla"]` e dagli eventi `["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]`.
+2. Dividete ogni evento con `split()`. `arriva X` mette X in fondo (`append`); `servito` toglie il primo (`pop(0)`) e lo aggiunge alla lista `serviti`; `esce X` toglie X (`remove`); `davanti X Y` mette X subito prima di Y (`insert` e `index`).
+3. Se la persona non è in coda o il comando non esiste, stampate `Evento non valido: ...`; se arriva `servito` con la coda vuota, stampate `Nessuno da servire`.
+4. Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.
 
-```python
-import math
+**Esempio di esecuzione**
 
-# Una tupla di coordinate (latitudine, longitudine)
-roma: tuple[float, float] = (41.9028, 12.4964)
-milano: tuple[float, float] = (45.4642, 9.1900)
-napoli: tuple[float, float] = (40.8518, 14.2681)
-
-# Unpacking: estrarre i valori in variabili separate
-lat_roma, lon_roma = roma
-print(f"Roma: lat={lat_roma}, lon={lon_roma}")
-
-# Accesso per indice (come le liste)
-print(f"Latitudine di Milano: {milano[0]}")
+```
+arriva Davide -> ['Anna', 'Bruno', 'Carla', 'Davide']
+servito -> ['Bruno', 'Carla', 'Davide']
+arriva Elena -> ['Bruno', 'Carla', 'Davide', 'Elena']
+esce Bruno -> ['Carla', 'Davide', 'Elena']
+davanti Franco Elena -> ['Carla', 'Davide', 'Franco', 'Elena']
+servito -> ['Davide', 'Franco', 'Elena']
+Evento non valido: esce Zeno
+esce Zeno -> ['Davide', 'Franco', 'Elena']
+Serviti: ['Anna', 'Carla']
+Ancora in coda: 3
 ```
 
-### Passo 2: Calcolare la distanza tra due punti
+**Provate anche**
 
-Usiamo la formula di Haversine semplificata (distanza in linea d'aria approssimata):
-
-```python
-def distanza_gradi(p1: tuple[float, float], p2: tuple[float, float]) -> float:
-    """Calcola la distanza euclidea approssimata tra due punti in gradi."""
-    lat1, lon1 = p1
-    lat2, lon2 = p2
-    return math.sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
-
-
-citta: list[tuple[str, tuple[float, float]]] = [
-    ("Roma", roma),
-    ("Milano", milano),
-    ("Napoli", napoli),
-]
-
-# Calcolare le distanze tra tutte le coppie
-for i in range(len(citta)):
-    for j in range(i + 1, len(citta)):
-        nome_a, coord_a = citta[i]
-        nome_b, coord_b = citta[j]
-        d: float = distanza_gradi(coord_a, coord_b)
-        print(f"{nome_a} — {nome_b}: {d:.4f} gradi")
-```
-
-### Passo 3: Tuple come chiavi di dizionario
-
-Le tuple, essendo immutabili, possono essere usate come chiavi di dizionario (le liste no):
-
-```python
-# Distanze pre-calcolate tra coppie di città
-distanze: dict[tuple[str, str], float] = {}
-distanze[("Roma", "Milano")] = 4.77
-distanze[("Roma", "Napoli")] = 2.10
-distanze[("Milano", "Napoli")] = 6.52
-
-coppia: tuple[str, str] = ("Roma", "Milano")
-print(f"Distanza {coppia[0]}—{coppia[1]}: {distanze[coppia]:.2f} gradi")
-```
+- aggiungete quattro `servito` in fondo agli eventi → l'ultimo stampa `Nessuno da servire`, serviti in 5
+- `davanti Gino Zeno` al posto di `davanti Franco Elena` → evento non valido, alla fine `Ancora in coda: 2`
 
 ---
 
-## Esercizio guidato 4 — Dizionari: registro studenti
+## Esercizio 3 — Come arrivate in aula (`sondaggio.py`)
 
-I dizionari associano **chiavi** a **valori**. Sono la struttura dati più usata quando serve un accesso rapido per nome o identificativo.
+**Consegna**
 
-### Passo 1: Creare un registro
+1. Alle matricole è stato chiesto con quale mezzo arrivano in università. Chiedete le risposte su una riga, separate da virgole.
+2. Pulite ogni risposta con `strip()` e `lower()`, così `Bus` e ` bus` diventano uguali, e scartate le risposte vuote.
+3. Contate le risposte con un `Counter`. Stampate il numero di risposte e di mezzi diversi, poi ogni mezzo dal più frequente (`most_common()`) con il conteggio e la percentuale con un decimale.
+4. Stampate infine il mezzo più usato, cioè la moda.
 
-```python
-# Ogni studente è identificato dalla matricola
-registro: dict[str, dict[str, object]] = {
-    "MAT001": {
-        "nome": "Anna Rossi",
-        "anno": 1,
-        "voti": [28, 30, 25],
-    },
-    "MAT002": {
-        "nome": "Marco Bianchi",
-        "anno": 1,
-        "voti": [24, 27, 30],
-    },
-    "MAT003": {
-        "nome": "Luca Verdi",
-        "anno": 2,
-        "voti": [30, 30, 28],
-    },
-}
+**Esempio di esecuzione**
+
+```
+Risposte separate da virgole: bici, Bus, piedi, bici, treno, BICI, bus, piedi, bici, monopattino, bus, treno
+Risposte: 12, mezzi diversi: 5
+bici: 4 (33.3%)
+bus: 3 (25.0%)
+piedi: 2 (16.7%)
+treno: 2 (16.7%)
+monopattino: 1 (8.3%)
+Mezzo più usato: bici
 ```
 
-### Passo 2: Accesso e ricerca
+**Provate anche**
 
-```python
-# Accesso diretto per matricola
-studente: dict[str, object] = registro["MAT001"]
-print(f"Nome: {studente['nome']}")
-
-# Accesso sicuro con get (nessun errore se la chiave non esiste)
-risultato: dict[str, object] | None = registro.get("MAT999")
-print(f"MAT999 esiste? {risultato is not None}")
-
-# Iterare su tutti gli studenti
-for matricola, dati in registro.items():
-    voti: list[int] = dati["voti"]
-    media: float = sum(voti) / len(voti)
-    print(f"{matricola} — {dati['nome']}: media {media:.1f}")
-```
-
-### Passo 3: Inserimento e aggiornamento
-
-```python
-# Aggiungere un nuovo studente
-registro["MAT004"] = {
-    "nome": "Sara Neri",
-    "anno": 1,
-    "voti": [26, 29],
-}
-
-# Aggiungere un voto a uno studente esistente
-registro["MAT001"]["voti"].append(27)
-print(f"Voti aggiornati di MAT001: {registro['MAT001']['voti']}")
-
-# Aggiornare l'anno
-registro["MAT003"]["anno"] = 3
-```
-
-### Passo 4: Cancellazione
-
-```python
-# Rimuovere uno studente
-rimosso: dict[str, object] = registro.pop("MAT004")
-print(f"Rimosso: {rimosso['nome']}")
-
-# Verificare le chiavi rimaste
-print(f"Matricole nel registro: {list(registro.keys())}")
-```
-
-### Passo 5: Statistiche sul registro
-
-```python
-# Trovare lo studente con la media più alta
-migliore_matricola: str = ""
-migliore_media: float = 0.0
-
-for matricola, dati in registro.items():
-    voti: list[int] = dati["voti"]
-    media: float = sum(voti) / len(voti)
-    if media > migliore_media:
-        migliore_media = media
-        migliore_matricola = matricola
-
-print(f"Miglior studente: {registro[migliore_matricola]['nome']} "
-      f"(media: {migliore_media:.1f})")
-```
+- `auto` → `auto: 1 (100.0%)`
+- `bus,,Bus , treno` → 3 risposte, `bus: 2 (66.7%)`
 
 ---
 
-## Esercizio guidato 5 — Set: confronto iscritti tra anni accademici
+## Esercizio 4 — Chi segue cosa (`tre_corsi.py`)
 
-I set sono insiemi matematici: collezioni **non ordinate** di elementi **unici**. Sono perfetti per operazioni come unione, intersezione e differenza.
+**Consegna**
 
-### Passo 1: Creare set di iscritti
+1. Scrivete i set `statistica`, `analisi` e `informatica` con gli studenti che frequentano i tre corsi (tabella).
+2. Con `|`, `&` e `-` calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.
+3. Per trovare chi segue un corso soltanto, unite i tre set in una lista (`list(statistica) + list(analisi) + ...`) e contate i nomi con un `Counter`.
+4. Stampate i nomi con `sorted()`, così l'ordine è sempre lo stesso.
 
-```python
-iscritti_2024: set[str] = {"Anna", "Marco", "Luca", "Sara", "Elena"}
-iscritti_2025: set[str] = {"Marco", "Sara", "Elena", "Paolo", "Giulia"}
+| Corso | Studenti |
+|---|---|
+| Statistica | Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia |
+| Analisi | Anna, Chiara, Davide, Hana, Ivan, Giulia |
+| Informatica | Bruno, Chiara, Giulia, Ivan, Luca |
+
+**Esempio di esecuzione**
+
+```
+Studenti diversi: 10
+Tutti e tre i corsi: ['Chiara', 'Giulia']
+Solo Statistica: ['Elisa', 'Fabio']
+Statistica e Analisi, non Informatica: ['Anna', 'Davide']
+Un corso soltanto: ['Elisa', 'Fabio', 'Hana', 'Luca']
 ```
 
-### Passo 2: Operazioni insiemistiche
+**Provate anche**
 
-```python
-# Studenti confermati (presenti in entrambi gli anni)
-confermati: set[str] = iscritti_2024 & iscritti_2025  # intersezione
-print(f"Confermati:  {confermati}")
-
-# Nuovi iscritti (presenti nel 2025 ma non nel 2024)
-nuovi: set[str] = iscritti_2025 - iscritti_2024  # differenza
-print(f"Nuovi:       {nuovi}")
-
-# Abbandoni (presenti nel 2024 ma non nel 2025)
-abbandoni: set[str] = iscritti_2024 - iscritti_2025  # differenza
-print(f"Abbandoni:   {abbandoni}")
-
-# Tutti gli studenti che sono passati per il corso
-tutti: set[str] = iscritti_2024 | iscritti_2025  # unione
-print(f"Tutti:       {tutti}")
-
-# Studenti che hanno cambiato stato (presenti in uno solo dei due anni)
-cambiati: set[str] = iscritti_2024 ^ iscritti_2025  # differenza simmetrica
-print(f"Cambiati:    {cambiati}")
-```
-
-### Passo 3: Verifiche di appartenenza
-
-```python
-print(f"Marco è iscritto nel 2025? {'Marco' in iscritti_2025}")
-print(f"Anna è iscritto nel 2025?  {'Anna' in iscritti_2025}")
-
-# I confermati sono un sottoinsieme di tutti?
-print(f"Confermati ⊆ Tutti? {confermati <= tutti}")  # True, sempre
-```
-
-### Passo 4: Eliminare duplicati da una lista
-
-```python
-# Caso pratico: risposte a un sondaggio con duplicati
-risposte: list[str] = ["pizza", "pasta", "pizza", "sushi", "pasta", "pizza", "sushi"]
-piatti_unici: set[str] = set(risposte)
-print(f"Piatti unici: {piatti_unici}")
-print(f"Quanti piatti diversi: {len(piatti_unici)}")
-```
+- aggiungete Luca a Statistica → Luca non segue più un corso soltanto
+- aggiungete Marta a Informatica → `Studenti diversi: 11`
 
 ---
 
-## Esercizio guidato 6 — Counter: frequenza delle parole
+## Esercizio 5 — Il libretto (`libretto.py`)
 
-`Counter` del modulo `collections` è un dizionario specializzato per contare elementi.
+**Consegna**
 
-### Passo 1: Contare le parole in un testo
+1. Scrivete il libretto come dizionario esame → tupla (voto, CFU), `libretto: dict[str, tuple[int, int]]`, con i dati della tabella.
+2. Scorrete `libretto.items()` con `for esame, (voto, cfu) in ...`: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.
+3. Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.
+4. La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.
 
-```python
-from collections import Counter
+| Esame | Voto e CFU |
+|---|---|
+| Analisi 1 | 24, 9 CFU |
+| Statistica 1 | 28, 9 CFU |
+| Informatica | 30, 6 CFU |
+| Economia politica | 22, 9 CFU |
+| Algebra lineare | 27, 6 CFU |
 
-testo: str = """
-La statistica è la scienza che studia i fenomeni collettivi.
-La statistica descrittiva riassume i dati osservati.
-La statistica inferenziale generalizza i risultati al di là dei dati osservati.
-"""
+**Esempio di esecuzione**
 
-# Pulizia e tokenizzazione
-parole: list[str] = testo.lower().split()
-conteggio: Counter[str] = Counter(parole)
-
-print("Tutte le frequenze:")
-for parola, freq in conteggio.most_common():
-    print(f"  {parola:20s} → {freq}")
+```
+Analisi 1: 24 (9 CFU)
+Statistica 1: 28 (9 CFU)
+Informatica: 30 (6 CFU)
+Economia politica: 22 (9 CFU)
+Algebra lineare: 27 (6 CFU)
+CFU totali: 39
+Media aritmetica: 26.20
+Media ponderata: 25.85
+Base di laurea: 94.8
 ```
 
-### Passo 2: Le parole più frequenti
+**Provate anche**
 
-```python
-# Le 5 parole più comuni
-top_5: list[tuple[str, int]] = conteggio.most_common(5)
-print("\nTop 5:")
-for parola, freq in top_5:
-    print(f"  {parola}: {freq}")
-
-# Quante parole uniche?
-print(f"\nParole totali: {sum(conteggio.values())}")
-print(f"Parole uniche: {len(conteggio)}")
-```
-
-### Passo 3: Confronto tra due testi
-
-```python
-testo_a: str = "il gatto e il cane giocano nel giardino"
-testo_b: str = "il cane e il gatto dormono in giardino"
-
-freq_a: Counter[str] = Counter(testo_a.split())
-freq_b: Counter[str] = Counter(testo_b.split())
-
-# Parole in comune
-comuni: set[str] = set(freq_a.keys()) & set(freq_b.keys())
-print(f"Parole in comune: {comuni}")
-
-# Combinare i conteggi
-combinato: Counter[str] = freq_a + freq_b
-print(f"Frequenze combinate: {combinato.most_common()}")
-```
+- aggiungete `"Probabilità": (30, 9)` → 48 CFU, media ponderata `26.62`, base `97.6`
+- date 6 CFU a tutti gli esami → le due medie valgono entrambe `26.20`
 
 ---
 
-## Esercizi autonomi
+## Esercizio 6 — La sessione invernale (`sessione.py`)
 
-Per ciascun esercizio, scrivi il codice completo con type hints. Non vengono fornite le soluzioni: verifica il funzionamento eseguendo il codice e ragionando sull'output.
+**Consegna**
 
-### Esercizio A1 — Rubrica telefonica (base)
+1. Scrivete gli esiti come lista di tuple (studente, esame, voto), nell'ordine della tabella: `esiti: list[tuple[str, str, int]]`.
+2. In un solo ciclo riempite due `defaultdict(list)`: esame → voti, studente → esami superati (voto da 18 in su). Raccogliete anche tutti i nomi in un set.
+3. Per ogni esame stampate il numero di prove, la media con un decimale e i promossi.
+4. Per ogni studente, in ordine alfabetico, stampate gli esami superati; poi stampate chi non ne ha superato nessuno (differenza tra set).
 
-Crea una rubrica telefonica usando un dizionario che associa nomi (`str`) a numeri di telefono (`str`).
+| Studente | Esame e voto |
+|---|---|
+| Anna | Statistica 28, Analisi 30 |
+| Bruno | Statistica 16, Analisi 17, Informatica 23 |
+| Chiara | Analisi 25, Statistica 30 |
+| Davide | Statistica 21, Informatica 26 |
+| Elisa | Analisi 12 |
 
-1. Crea la rubrica con almeno 5 contatti.
-2. Implementa queste operazioni:
-   - Cerca un contatto per nome e stampa il numero.
-   - Aggiungi un nuovo contatto.
-   - Modifica il numero di un contatto esistente.
-   - Elimina un contatto.
-   - Stampa tutti i contatti in ordine alfabetico (usa `sorted()` sulle chiavi).
-3. Gestisci il caso in cui si cerca un contatto inesistente (usa `.get()`).
+**Esempio di esecuzione**
 
-### Esercizio A2 — Analisi dataset con lista di dizionari (intermedio)
-
-Hai un dataset di studenti rappresentato come lista di dizionari:
-
-```python
-studenti: list[dict[str, object]] = [
-    {"nome": "Anna", "corso": "Statistica I", "voto": 28},
-    {"nome": "Marco", "corso": "Statistica I", "voto": 24},
-    {"nome": "Anna", "corso": "Analisi", "voto": 30},
-    {"nome": "Luca", "corso": "Statistica I", "voto": 26},
-    {"nome": "Marco", "corso": "Analisi", "voto": 22},
-    {"nome": "Luca", "corso": "Analisi", "voto": 27},
-    {"nome": "Sara", "corso": "Statistica I", "voto": 30},
-    {"nome": "Sara", "corso": "Analisi", "voto": 25},
-]
+```
+Statistica: 4 prove, media 23.8, promossi 3
+Analisi: 4 prove, media 21.0, promossi 2
+Informatica: 2 prove, media 24.5, promossi 2
+Anna ha superato ['Statistica', 'Analisi']
+Bruno ha superato ['Informatica']
+Chiara ha superato ['Analisi', 'Statistica']
+Davide ha superato ['Statistica', 'Informatica']
+Nessun esame superato: ['Elisa']
 ```
 
-Scrivi codice che:
+**Provate anche**
 
-1. Calcola la media dei voti per ciascun corso.
-2. Trova lo studente con la media complessiva più alta.
-3. Per ogni studente, stampa tutti i voti sostenuti e la media.
-4. Conta quanti studenti hanno una media superiore a 26.
-
-**Suggerimento:** usa un dizionario per raggruppare i voti per corso, e un altro per raggruppare i voti per studente.
-
-### Esercizio A3 — Sistema di raccomandazione con set (avanzato)
-
-Hai un dizionario che associa ogni utente ai film che ha visto:
-
-```python
-catalogo: dict[str, set[str]] = {
-    "Alice": {"Matrix", "Inception", "Interstellar", "Dune"},
-    "Bob": {"Matrix", "Inception", "Avatar", "Titanic"},
-    "Carla": {"Interstellar", "Dune", "Avatar", "Arrival"},
-    "David": {"Matrix", "Dune", "Arrival", "Titanic"},
-}
-```
-
-Scrivi codice che:
-
-1. Dato un utente, trova l'utente con cui ha più film in comune (usa l'intersezione dei set).
-2. Raccomanda all'utente i film visti dal suo "utente più simile" ma non ancora visti da lui (usa la differenza).
-3. Trova i film visti da tutti gli utenti (intersezione di tutti i set).
-4. Trova i film visti da almeno un utente (unione di tutti i set).
-5. Trova i film "di nicchia" visti da un solo utente.
-
-**Suggerimento per il punto 5:** per ogni film nell'unione totale, conta in quanti set compare.
+- aggiungete `("Elisa", "Statistica", 18)` → `Statistica: 5 prove, media 22.6, promossi 4` e `Nessun esame superato: []`
 
 ---
 
-## Sfida finale — Analisi completa di un dataset studenti
+## Esercizio 7 — Scuola di provenienza ed esito (`contingenza.py`)
 
-Dato il seguente dataset:
+**Consegna**
 
-```python
-esami: list[dict[str, object]] = [
-    {"matricola": "M001", "nome": "Anna",  "corso": "Statistica", "voto": 28, "lode": False},
-    {"matricola": "M001", "nome": "Anna",  "corso": "Analisi",    "voto": 30, "lode": True},
-    {"matricola": "M001", "nome": "Anna",  "corso": "Informatica","voto": 25, "lode": False},
-    {"matricola": "M002", "nome": "Marco", "corso": "Statistica", "voto": 24, "lode": False},
-    {"matricola": "M002", "nome": "Marco", "corso": "Analisi",    "voto": 27, "lode": False},
-    {"matricola": "M003", "nome": "Luca",  "corso": "Statistica", "voto": 30, "lode": True},
-    {"matricola": "M003", "nome": "Luca",  "corso": "Analisi",    "voto": 30, "lode": False},
-    {"matricola": "M003", "nome": "Luca",  "corso": "Informatica","voto": 28, "lode": False},
-    {"matricola": "M004", "nome": "Sara",  "corso": "Statistica", "voto": 26, "lode": False},
-    {"matricola": "M004", "nome": "Sara",  "corso": "Informatica","voto": 30, "lode": True},
-    {"matricola": "M005", "nome": "Elena", "corso": "Statistica", "voto": 22, "lode": False},
-    {"matricola": "M005", "nome": "Elena", "corso": "Analisi",    "voto": 20, "lode": False},
-    {"matricola": "M005", "nome": "Elena", "corso": "Informatica","voto": 24, "lode": False},
-]
+1. Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: `scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]` e `superato = [True, False, True, False, True, True, False, False, True, False, True, True]`.
+2. Con `zip()` formate le coppie (scuola, esito) e contatele con un `Counter`: le chiavi sono tuple, per esempio `("liceo", True)`.
+3. Con un secondo `Counter` contate le matricole per scuola.
+4. Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.
+
+**Esempio di esecuzione**
+
+```
+altro: superato 1, non superato 1, percentuale 50.0%
+liceo: superato 4, non superato 1, percentuale 80.0%
+tecnico: superato 2, non superato 3, percentuale 40.0%
+Totale: 7 su 12 (58.3%)
 ```
 
-Scrivi un programma completo che:
+**Provate anche**
 
-1. **Media per corso:** calcola e stampa la media dei voti per ciascun corso.
-2. **Studente migliore per corso:** per ogni corso, identifica lo studente con il voto più alto.
-3. **Classifica generale:** ordina gli studenti per media complessiva decrescente e stampa la classifica.
-4. **Conteggio lodi:** conta quante lodi ha ottenuto ciascuno studente.
-5. **Corsi per studente:** usa un set per mostrare quali corsi ha sostenuto ogni studente e identifica chi non ha ancora sostenuto tutti e tre gli esami.
+- aggiungete una matricola del liceo che non ha superato l'esame → liceo `66.7%`, `Totale: 7 su 13 (53.8%)`
+- una coppia che non compare non dà errore: `tabella[("professionale", True)]` vale `0`
 
-Usa `Counter`, operazioni su dizionari e set, type hints per tutte le variabili. L'output deve essere chiaro e formattato.
+---
+
+## Esercizio 8 — Ore di studio (`descrittive.py`)
+
+**Consegna**
+
+1. Scrivete la funzione `descrittive(valori: list[float]) -> tuple[float, float, float]` che restituisce media, mediana e deviazione standard campionaria.
+2. Mediana: ordinate i valori con `sorted()`; se sono in numero dispari è il valore centrale, se sono pari è la media dei due centrali.
+3. Deviazione standard: somma dei quadrati degli scarti dalla media, divisa per n − 1, poi radice quadrata (`** 0.5`).
+4. Partite da `ore_studio = {"Primo anno": [12, 15, 8, 20, 10, 14, 9], "Secondo anno": [18, 22, 15, 25, 30, 16], "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25]}` (ore di studio settimanali). Per ogni anno chiamate la funzione e stampate media e mediana con un decimale, deviazione standard con due.
+
+**Esempio di esecuzione**
+
+```
+Primo anno: media 12.6, mediana 12.0, dev. std 4.16
+Secondo anno: media 21.0, mediana 20.0, dev. std 5.80
+Terzo anno: media 18.5, mediana 17.0, dev. std 10.25
+```
+
+**Provate anche**
+
+- `descrittive([1, 2, 3, 4])` → media `2.5`, mediana `2.5`, deviazione standard `1.29`
+- aggiungete `"Fuori corso": [5, 5, 5]` → `dev. std 0.00`
+
+---
+
+## Sfida — Compagni di corsi a scelta (`compagni.py`)
+
+**Consegna**
+
+1. Scrivete il dizionario `scelte: dict[str, set[str]]` con i corsi a scelta di ogni studente (tabella).
+2. Scrivete la funzione `jaccard(a, b)` che restituisce la similarità di Jaccard tra due set: elementi in comune diviso elementi totali.
+3. Con due cicli annidati sui nomi in ordine alfabetico, con `j` che parte da `i + 1`, confrontate ogni coppia una volta sola e stampate la coppia più simile con la similarità a due decimali.
+4. Chiedete il nome di uno studente, trovate il compagno più simile e stampate i corsi che il compagno segue e lui no. Se il nome non c'è, stampate `Studente non trovato`.
+
+| Studente | Corsi a scelta |
+|---|---|
+| Anna | Serie storiche, Demografia, Marketing, R |
+| Bruno | Marketing, Finanza, R, Python |
+| Chiara | Serie storiche, Demografia, R, Biostatistica |
+| Davide | Finanza, Python, Econometria |
+| Elisa | Biostatistica, Demografia, Python |
+
+**Esempio di esecuzione**
+
+```
+Coppia più simile: ('Anna', 'Chiara') con 0.60
+Studente: Elisa
+Più simile: Chiara (0.40)
+Corsi consigliati: ['R', 'Serie storiche']
+```
+
+**Provate anche**
+
+- `Bruno` → `Davide (0.40)`, consigliato `['Econometria']`
+- `Davide` → `Bruno (0.40)`, consigliati `['Marketing', 'R']`
+- `Zeno` → `Studente non trovato`
 
 ---
 
 ## Domande di verifica
 
-1. Qual è la differenza fondamentale tra una lista e una tupla? In quale situazione preferiresti una tupla?
-2. Se scrivi `b = a` dove `a` è una lista, e poi modifichi `b[0]`, cosa succede ad `a`? Perché?
-3. Cosa restituisce `{"a": 1, "b": 2}.get("c", 0)`? E `{"a": 1, "b": 2}["c"]`?
-4. Date due set `A` e `B`, quale operazione produce gli elementi presenti in `A` ma non in `B`? E quelli presenti in uno solo dei due?
-5. Qual è la differenza tra `sorted(lista)` e `lista.sort()`? Quale delle due modifica la lista originale?
-6. Perché una lista non puo essere usata come chiave di un dizionario, ma una tupla si?
-7. Cosa fa `Counter("abracadabra").most_common(3)`?
-
----
-
-## Osservazioni finali
-
-In questo laboratorio avete lavorato con le quattro strutture dati fondamentali di Python: liste, tuple, dizionari e set. La scelta della struttura giusta dipende dal problema:
-
-- **Lista** quando l'ordine conta e i dati possono cambiare.
-- **Tupla** quando i dati sono fissi (coordinate, record immutabili, chiavi composite).
-- **Dizionario** quando serve accesso rapido per chiave (registri, lookup, conteggi manuali).
-- **Set** quando servono operazioni insiemistiche o eliminare duplicati.
-
-L'esperimento su alias e copia e uno dei concetti piu importanti del laboratorio. In statistica, quando passate un dataset a una funzione e quella funzione lo modifica, volete essere certi di sapere se state lavorando sulla copia o sull'originale. Questo tema tornerà nei prossimi laboratori.
-
-`Counter` meriterà poca attenzione adesso, ma diventerà uno strumento prezioso quando lavorerete con dati testuali o categoriali.
-
-Nel prossimo laboratorio vedremo come organizzare queste operazioni in **funzioni** riutilizzabili e testabili.
+1. Che differenza c'è tra `sorted(voti)` e `voti.sort()`? Quale dei due modifica la lista?
+2. In `coda_mensa.py`, cosa succede con `coda.remove("Zeno")` se prima non si controlla con `in`?
+3. In `sondaggio.py`, perché le risposte vanno pulite prima di passarle a `Counter`?
+4. Perché, per stampare un set, conviene usare `sorted()`?
+5. In `libretto.py`, quando la media ponderata coincide con la media aritmetica?
+6. In `contingenza.py` le chiavi del `Counter` sono tuple. Si potrebbero usare liste? Perché?
+7. In `descrittive.py` la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?

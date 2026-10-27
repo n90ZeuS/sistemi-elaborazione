@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L01 — Ambiente Python, variabili, tipi e condizionali</title>
+    <title>L01 — Ambiente, variabili e condizionali</title>
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
@@ -314,504 +314,284 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: Titolo -->
             <section class="title-slide">
-                <h1>Ambiente Python, variabili, tipi e condizionali</h1>
+                <h1>Ambiente, variabili e condizionali</h1>
                 <div class="subtitle">Laboratorio 1</div>
                 <div class="course-info">
                     Sistemi di Elaborazione<br>
-                    Prerequisiti: F7 (Primi passi in Python) e F8 (Operatori, I/O e strutture condizionali)
+                    Prerequisiti: T07 (Primi passi in Python) e T08 (Operatori, I/O e condizionali)
                 </div>
             </section>
 
-            <!-- SLIDE 2: Agenda -->
             <section>
-                <h2>Agenda</h2>
-                <ol>
-                    <li><strong>Setup dell'ambiente</strong> &mdash; Terminale, Python, VS Code, REPL</li>
-                    <li><strong>Variabili tipizzate e operatori</strong> &mdash; Type hints, tipi fondamentali, aritmetica</li>
-                    <li><strong>Input/Output formattato</strong> &mdash; <code>input()</code>, f-string, formati numerici</li>
-                    <li><strong>Condizionali</strong> &mdash; <code>if</code>/<code>elif</code>/<code>else</code>, validazione</li>
-                    <li><strong>Esercizi autonomi</strong> &mdash; Temperatura, IMC, bancomat</li>
-                    <li><strong>Sfida</strong> &mdash; Convertitore e classificatore di temperatura</li>
-                </ol>
-                <div class="box box-blue">
-                    <strong>Obiettivo:</strong> configurare l'ambiente di lavoro, scrivere programmi con variabili tipizzate, I/O formattato e strutture condizionali.
+                <h2>Come funziona</h2>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli.</p>
+                <table class="mini" style="font-size:0.7em">
+                    <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td><code>saluto.py</code></td><td>Preparazione</td></tr>
+                        <tr><td>1</td><td><code>operatori.py</code></td><td>Operatori aritmetici</td></tr>
+                        <tr><td>2</td><td><code>temperatura.py</code></td><td>Conversione di temperatura</td></tr>
+                        <tr><td>3</td><td><code>iva.py</code></td><td>Prezzo con IVA</td></tr>
+                        <tr><td>4</td><td><code>imc.py</code></td><td>Indice di massa corporea</td></tr>
+                        <tr><td>5</td><td><code>bancomat.py</code></td><td>Bancomat</td></tr>
+                        <tr><td>Sfida</td><td><code>sfida_temperatura.py</code></td><td>Report di temperatura</td></tr>
+                    </tbody>
+                </table>
+                <div class="box box-blue" style="font-size:0.7em">
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T10.
                 </div>
             </section>
 
-            <!-- SLIDE 3: Sezione — Setup -->
-            <section class="section-slide">
-                <h2>Parte 1<br>Setup dell'ambiente</h2>
-            </section>
-
-            <!-- SLIDE 4: Verifica installazione -->
             <section>
-                <h2>Verifica dell'installazione</h2>
-                <p>Aprite un terminale e verificate che Python sia installato:</p>
-                <pre><code class="language-python">python3 --version
-# Output atteso: Python 3.12.x (o superiore)</code></pre>
-                <p>Verificate anche VS Code:</p>
-                <pre><code class="language-python">code --version</code></pre>
-                <div class="box box-yellow">
-                    <strong>VS Code non si apre da terminale?</strong> Aprite VS Code, premete <code>Cmd+Shift+P</code> (macOS) o <code>Ctrl+Shift+P</code> (Windows), cercate <em>"Shell Command: Install 'code' command in PATH"</em> e confermate.
-                </div>
-            </section>
-
-            <!-- SLIDE 5: Il REPL -->
-            <section>
-                <h2>Il REPL di Python</h2>
-                <p>Il <strong>REPL</strong> (Read-Eval-Print Loop) e l'interprete interattivo. Si avvia con:</p>
-                <pre><code class="language-python">python3</code></pre>
-                <p>Il prompt cambia in <code>&gt;&gt;&gt;</code>. Provate:</p>
-                <pre><code class="language-python">>>> 2 + 3
-5
->>> "ciao" * 3
-'ciaociaociao'
->>> type(42)
-&lt;class 'int'&gt;
->>> exit()</code></pre>
-                <div class="box box-green">
-                    Il REPL e utile per <strong>esperimenti rapidi</strong>. Per programmi veri, useremo file <code>.py</code>.
-                </div>
-            </section>
-
-            <!-- SLIDE 6: Il primo file Python -->
-            <section>
-                <h2>Il primo file Python</h2>
-                <p>Create una cartella per il laboratorio e apritela in VS Code:</p>
-                <pre><code class="language-python">mkdir -p ~/lab_python/lab01
-code ~/lab_python/lab01</code></pre>
-                <p>Create un file <code>saluto.py</code>:</p>
-                <pre><code class="language-python"># saluto.py — Il mio primo programma Python
-nome: str = "Mondo"
+                <div class="tag tag-esercizio">Esercizio 0 · saluto.py</div>
+                <h2>Preparazione</h2>
+                <div class="columns">
+                    <div class="col">
+                        <ol class="consegna">
+                            <li>Aprite il terminale e controllate la versione di Python: <code>python3 --version</code> (su Windows: <code>python --version</code>).</li>
+                            <li>Create una cartella <code>lab01</code> e apritela in VS Code (File → Apri cartella).</li>
+                            <li>Create il file <code>saluto.py</code> con il codice qui accanto.</li>
+                            <li>Eseguitelo dal terminale di VS Code: <code>python3 saluto.py</code>.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">saluto.py</div>
+                        <pre><code class="language-python" data-trim data-noescape>nome: str = "Mondo"
 print(f"Ciao, {nome}!")</code></pre>
-                <p>Eseguitelo dal terminale integrato di VS Code:</p>
-                <pre><code class="language-python">python3 saluto.py</code></pre>
-                <div class="box box-blue">
-                    <strong>Output atteso:</strong> <code>Ciao, Mondo!</code>
-                </div>
-            </section>
-
-            <!-- SLIDE 7: Sezione — Variabili e operatori -->
-            <section class="section-slide">
-                <h2>Parte 2<br>Variabili tipizzate e operatori</h2>
-            </section>
-
-            <!-- SLIDE 8: Type hints e type() -->
-            <section>
-                <h2>Variabili, type hints e <code>type()</code></h2>
-                <p>Create un file <code>variabili.py</code>:</p>
-                <pre><code class="language-python"># Dichiarazione con type hints
-nome: str = "Maria"
-eta: int = 21
-altezza: float = 1.68
-iscritta: bool = True
-
-# Verifica dei tipi
-print(f"nome     = {nome!r:>15}  tipo: {type(nome).__name__}")
-print(f"eta      = {eta!r:>15}  tipo: {type(eta).__name__}")
-print(f"altezza  = {altezza!r:>15}  tipo: {type(altezza).__name__}")
-print(f"iscritta = {iscritta!r:>15}  tipo: {type(iscritta).__name__}")</code></pre>
-            </section>
-
-            <!-- SLIDE 9: Output variabili e osservazioni -->
-            <section>
-                <h2>Output e osservazioni</h2>
-                <pre><code class="language-python">nome     =         'Maria'  tipo: str
-eta      =              21  tipo: int
-altezza  =            1.68  tipo: float
-iscritta =            True  tipo: bool</code></pre>
-                <div class="columns">
-                    <div class="col">
-                        <div class="box box-blue">
-                            <strong><code>!r</code></strong> nella f-string mostra la rappresentazione "grezza" del valore (le stringhe appaiono con le virgolette).
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="box box-green">
-                            <strong><code>:>15</code></strong> allinea il valore a destra in un campo di 15 caratteri.
-                        </div>
+                        <div class="etichetta">Output</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Ciao, Mondo!</code></pre>
                     </div>
                 </div>
-                <div class="box box-yellow">
-                    I <strong>type hints</strong> (<code>str</code>, <code>int</code>, ecc.) non cambiano il comportamento del programma, ma documentano le vostre intenzioni.
-                </div>
             </section>
 
-            <!-- SLIDE 10: Operatori aritmetici -->
             <section>
+                <h2>Promemoria</h2>
+                <p style="font-size:0.75em">Questo è tutto quello che serve per gli esercizi di oggi. Per la formattazione dei numeri bastano due formati: <code>.2f</code> (numero di decimali) e <code>.0%</code> (percentuale).</p>
+                <pre class="small"><code class="language-python" data-trim data-noescape>prezzo: float = float(input("Prezzo: "))   # input() restituisce una stringa
+
+print(f"{prezzo:.2f}")      # due decimali:    12.5  -&gt; 12.50
+print(f"{prezzo:.1f}")      # un decimale:     12.5  -&gt; 12.5
+print(f"{0.22:.0%}")        # percentuale:     0.22  -&gt; 22%
+print(f"{0.125:.1%}")       # con un decimale: 0.125 -&gt; 12.5%
+
+if prezzo &lt; 0:
+    print("Errore: prezzo negativo")
+elif prezzo &lt; 100:
+    print("Economico")
+else:
+    print("Caro")</code></pre>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 1 · operatori.py</div>
                 <h2>Operatori aritmetici</h2>
-                <p>Create un file <code>operatori.py</code>:</p>
-                <pre><code class="language-python">a: int = 17
-b: int = 5
-
-print(f"{a} + {b}  = {a + b}")     # 22
-print(f"{a} - {b}  = {a - b}")     # 12
-print(f"{a} * {b}  = {a * b}")     # 85
-print(f"{a} / {b}  = {a / b}")     # 3.4  (divisione vera -> float)
-print(f"{a} // {b} = {a // b}")    # 3    (divisione intera)
-print(f"{a} % {b}  = {a % b}")     # 2    (modulo / resto)
-print(f"{a} ** {b} = {a ** b}")    # 1419857 (potenza)</code></pre>
-                <div class="box box-red">
-                    Attenzione: <code>/</code> restituisce <strong>sempre</strong> un <code>float</code>, anche se il risultato e intero. Per la divisione intera usate <code>//</code>.
-                </div>
-            </section>
-
-            <!-- SLIDE 11: Conversioni di tipo -->
-            <section>
-                <h2>Conversioni di tipo</h2>
-                <pre><code class="language-python">prezzo_stringa: str = "49.99"
-prezzo: float = float(prezzo_stringa)
-iva: float = prezzo * 0.22
-totale: float = prezzo + iva
-
-print(f"Prezzo: {prezzo:.2f} EUR")
-print(f"IVA 22%: {iva:.2f} EUR")
-print(f"Totale: {totale:.2f} EUR")</code></pre>
-                <pre><code class="language-python">Prezzo: 49.99 EUR
-IVA 22%: 11.00 EUR
-Totale: 60.99 EUR</code></pre>
-                <div class="box box-blue">
-                    <strong><code>:.2f</code></strong> formatta il numero con esattamente 2 cifre decimali.
-                </div>
-            </section>
-
-            <!-- SLIDE 12: Sezione — I/O formattato -->
-            <section class="section-slide">
-                <h2>Parte 3<br>Input/Output formattato</h2>
-            </section>
-
-            <!-- SLIDE 13: Calcolo area cerchio -->
-            <section>
-                <h2>Calcolo interattivo: area del cerchio</h2>
-                <p>Create un file <code>area_cerchio.py</code>:</p>
-                <pre><code class="language-python">import math
-
-raggio_str: str = input("Inserisci il raggio del cerchio (in cm): ")
-raggio: float = float(raggio_str)
-
-area: float = math.pi * raggio ** 2
-circonferenza: float = 2 * math.pi * raggio
-
-print(f"\n--- Risultati ---")
-print(f"Raggio:        {raggio:>10.2f} cm")
-print(f"Area:          {area:>10.2f} cm²")
-print(f"Circonferenza: {circonferenza:>10.2f} cm")</code></pre>
-            </section>
-
-            <!-- SLIDE 14: Output area cerchio e formato -->
-            <section>
-                <h2>Output e formato <code>:>10.2f</code></h2>
-                <pre><code class="language-python">Inserisci il raggio del cerchio (in cm): 5
-
---- Risultati ---
-Raggio:              5.00 cm
-Area:             78.54 cm²
-Circonferenza:       31.42 cm</code></pre>
-                <div class="diagram">
-                    <code>{valore:>10.2f}</code><br>
-                    <code>></code> = allinea a destra &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <code>10</code> = larghezza campo &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <code>.2f</code> = 2 decimali, float
-                </div>
-                <div class="box box-green">
-                    Questo formato rende l'output <strong>ordinato e leggibile</strong>, con i numeri allineati verticalmente.
-                </div>
-            </section>
-
-            <!-- SLIDE 15: Sezione — Condizionali -->
-            <section class="section-slide">
-                <h2>Parte 4<br>Condizionali</h2>
-            </section>
-
-            <!-- SLIDE 16: Classificatore ISEE — Costanti -->
-            <section>
-                <h2>Classificatore fascia ISEE</h2>
-                <p>L'ISEE determina l'accesso ad agevolazioni. Scrivete un programma che classifica un reddito in fasce.</p>
-                <p>Create un file <code>classificatore_isee.py</code>:</p>
-                <pre><code class="language-python"># Costanti in UPPER_SNAKE_CASE (PEP 8)
-SOGLIA_1: float = 6_000.00
-SOGLIA_2: float = 15_000.00
-SOGLIA_3: float = 25_000.00
-SOGLIA_4: float = 40_000.00
-
-reddito_str: str = input("Inserisci il reddito ISEE (in euro): ")
-reddito: float = float(reddito_str)</code></pre>
-                <div class="box box-blue">
-                    L'underscore nelle costanti numeriche (<code>6_000.00</code>) migliora la leggibilita senza cambiare il valore.
-                </div>
-            </section>
-
-            <!-- SLIDE 17: Classificatore ISEE — Logica if/elif -->
-            <section>
-                <h2>Classificatore ISEE: catena <code>if</code>/<code>elif</code>/<code>else</code></h2>
-                <pre><code class="language-python">if reddito < 0:
-    print("Errore: il reddito non puo essere negativo.")
-elif reddito <= SOGLIA_1:
-    fascia: str = "Fascia 1 — Esenzione totale"
-    aliquota: float = 0.0
-elif reddito <= SOGLIA_2:
-    fascia = "Fascia 2 — Agevolazione alta"
-    aliquota = 0.05
-elif reddito <= SOGLIA_3:
-    fascia = "Fascia 3 — Agevolazione media"
-    aliquota = 0.10
-elif reddito <= SOGLIA_4:
-    fascia = "Fascia 4 — Agevolazione ridotta"
-    aliquota = 0.15
-else:
-    fascia = "Fascia 5 — Nessuna agevolazione"
-    aliquota = 0.22</code></pre>
-            </section>
-
-            <!-- SLIDE 18: Classificatore ISEE — Output -->
-            <section>
-                <h2>Classificatore ISEE: output formattato</h2>
-                <pre><code class="language-python">if reddito >= 0:
-    contributo: float = reddito * aliquota
-    print(f"\n--- Risultato ---")
-    print(f"Reddito ISEE:  {reddito:>12,.2f} EUR")
-    print(f"Classificazione: {fascia}")
-    print(f"Aliquota:      {aliquota:>12.0%}")
-    print(f"Contributo:    {contributo:>12,.2f} EUR")</code></pre>
-                <p>Esecuzione con reddito <code>18500</code>:</p>
-                <pre><code class="language-python">--- Risultato ---
-Reddito ISEE:    18,500.00 EUR
-Classificazione: Fascia 3 — Agevolazione media
-Aliquota:              10%
-Contributo:      1,850.00 EUR</code></pre>
                 <div class="columns">
                     <div class="col">
-                        <div class="box box-green">
-                            <strong><code>:,.2f</code></strong> &rarr; separatore migliaia + 2 decimali
-                        </div>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Assegnate <code>a = 17</code> e <code>b = 5</code> (due variabili <code>int</code>, senza <code>input()</code>).</li>
+                            <li>Stampate il risultato di <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code> e <code>**</code>, una riga per operazione.</li>
+                            <li>Cambiate i valori di <code>a</code> e <code>b</code> e controllate a mano i risultati.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <div class="box box-green">
-                            <strong><code>:.0%</code></strong> &rarr; valore come percentuale (0.10 &rarr; 10%)
-                        </div>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>17 + 5 = 22
+17 - 5 = 12
+17 * 5 = 85
+17 / 5 = 3.4
+17 // 5 = 3
+17 % 5 = 2
+17 ** 5 = 1419857</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>a = 20</code>, <code>b = 4</code>: <code>20 / 4 = 5.0</code> e <code>20 // 4 = 5</code></li><li><code>a = 7</code>, <code>b = 2</code>: <code>7 % 2 = 1</code> (7 è dispari)</li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 19: Calcolatrice — Input -->
             <section>
-                <h2>Calcolatrice interattiva</h2>
-                <p>Create un file <code>calcolatrice.py</code>:</p>
-                <pre><code class="language-python">print("=== CALCOLATRICE ===")
-print("Operazioni: +  -  *  /  //  %  **")
-print()
-
-primo_str: str = input("Primo numero: ")
-primo: float = float(primo_str)
-
-operazione: str = input("Operazione: ")
-
-secondo_str: str = input("Secondo numero: ")
-secondo: float = float(secondo_str)
-
-errore: bool = False
-risultato: float = 0.0</code></pre>
-            </section>
-
-            <!-- SLIDE 20: Calcolatrice — Logica -->
-            <section>
-                <h2>Calcolatrice: logica e validazione</h2>
-                <pre><code class="language-python">if operazione == "+":
-    risultato = primo + secondo
-elif operazione == "-":
-    risultato = primo - secondo
-elif operazione == "*":
-    risultato = primo * secondo
-elif operazione == "/":
-    if secondo == 0:
-        print("Errore: divisione per zero!")
-        errore = True
-    else:
-        risultato = primo / secondo
-elif operazione == "**":
-    risultato = primo ** secondo
-else:
-    print(f"Errore: operazione '{operazione}' non riconosciuta.")
-    errore = True
-
-if not errore:
-    print(f"\n{primo} {operazione} {secondo} = {risultato:.4f}")</code></pre>
-            </section>
-
-            <!-- SLIDE 21: Calcolatrice — Test -->
-            <section>
-                <h2>Calcolatrice: casi di test</h2>
-                <p>Provate questi casi e verificate i risultati:</p>
-                <table>
-                    <thead>
-                        <tr><th>Input</th><th>Risultato atteso</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><code>10 / 3</code></td><td><code>3.3333</code> (verifica decimali)</td></tr>
-                        <tr><td><code>10 / 0</code></td><td>Messaggio di errore: divisione per zero</td></tr>
-                        <tr><td><code>2 ** 10</code></td><td><code>1024.0000</code> (potenza)</td></tr>
-                        <tr><td><code>17 % 5</code></td><td><code>2.0000</code> (modulo)</td></tr>
-                        <tr><td><code>10 @ 3</code></td><td>Messaggio di errore: operazione non riconosciuta</td></tr>
-                    </tbody>
-                </table>
-                <div class="box box-yellow">
-                    <strong>Perche controlliamo <code>secondo == 0</code> solo per <code>/</code>, <code>//</code> e <code>%</code>?</strong> Perche la divisione per zero genera un errore a runtime, mentre addizione, sottrazione e moltiplicazione funzionano con qualsiasi valore.
-                </div>
-            </section>
-
-            <!-- SLIDE 22: Sezione — Esercizi autonomi -->
-            <section class="section-slide">
-                <h2>Parte 5<br>Esercizi autonomi</h2>
-            </section>
-
-            <!-- SLIDE 23: Esercizio — Temperatura -->
-            <section>
-                <h2>Esercizio base: conversione di temperatura</h2>
-                <p>Create un file <code>temperatura.py</code>.</p>
-                <div class="box box-blue">
-                    <strong>Traccia:</strong> scrivete un programma che chiede all'utente una temperatura in Celsius e la converte in Fahrenheit. La formula e: <code>F = C * 9/5 + 32</code>. Stampate il risultato con una cifra decimale.
-                </div>
-                <p>Output atteso:</p>
-                <pre><code class="language-python">Temperatura in Celsius: 25
+                <div class="tag tag-esercizio">Esercizio 2 · temperatura.py</div>
+                <h2>Conversione di temperatura</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Chiedete all'utente una temperatura in gradi Celsius.</li>
+                            <li>Convertitela in Fahrenheit: <code>F = C * 9 / 5 + 32</code>.</li>
+                            <li>Stampate le due temperature con un decimale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Temperatura in Celsius: 25
 25.0°C = 77.0°F</code></pre>
-                <div class="box box-yellow">
-                    <strong>Suggerimenti:</strong> usate <code>input()</code> per leggere, <code>float()</code> per convertire, e una f-string con formato <code>:.1f</code> per stampare.
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>0</code> → <code>32.0°F</code></li><li><code>100</code> → <code>212.0°F</code></li><li><code>37.5</code> → <code>99.5°F</code></li><li><code>-40</code> → <code>-40.0°F</code></li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 24: Esercizio — IMC -->
             <section>
-                <h2>Esercizio intermedio: calcolo IMC</h2>
-                <p>Create un file <code>imc.py</code>.</p>
-                <div class="box box-blue">
-                    <strong>Traccia:</strong> chiede peso (kg) e altezza (m), calcola l'IMC (<code>peso / altezza ** 2</code>) e classifica secondo le fasce OMS.
+                <div class="tag tag-esercizio">Esercizio 3 · iva.py</div>
+                <h2>Prezzo con IVA</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete l'aliquota in una costante: <code>ALIQUOTA_IVA: float = 0.22</code>.</li>
+                            <li>Chiedete il prezzo di un prodotto senza IVA.</li>
+                            <li>Calcolate l'IVA e il totale.</li>
+                            <li>Stampate prezzo, IVA e totale con due decimali e l'aliquota come percentuale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Prezzo senza IVA (euro): 49.99
+Prezzo: 49.99 EUR
+IVA: 11.00 EUR (22%)
+Totale: 60.99 EUR</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>100</code> → IVA <code>22.00</code>, totale <code>122.00</code></li><li><code>10</code> → IVA <code>2.20</code>, totale <code>12.20</code></li><li>con <code>ALIQUOTA_IVA = 0.10</code> e <code>49.99</code> → IVA <code>5.00 EUR (10%)</code></li></ul>
+                    </div>
                 </div>
-                <table>
-                    <thead>
-                        <tr><th>IMC</th><th>Classificazione</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>&lt; 18.5</td><td>Sottopeso</td></tr>
-                        <tr><td>18.5 &ndash; 24.9</td><td>Normopeso</td></tr>
-                        <tr><td>25.0 &ndash; 29.9</td><td>Sovrappeso</td></tr>
-                        <tr><td>&ge; 30.0</td><td>Obesita</td></tr>
-                    </tbody>
-                </table>
-                <div class="box box-yellow">
-                    <strong>Validazione richiesta:</strong> peso e altezza devono essere positivi; l'altezza non puo superare 2.50 m.
-                </div>
-                <pre><code class="language-python">Peso (kg): 72
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 4 · imc.py</div>
+                <h2>Indice di massa corporea</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Chiedete peso (kg) e altezza (m).</li>
+                            <li>Se peso o altezza non sono positivi, o l'altezza supera 2.50 m, stampate un errore.</li>
+                            <li>Altrimenti calcolate <code>imc = peso / altezza ** 2</code> e stampatelo con un decimale insieme alla classe.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>IMC</th><th>Classe</th></tr></thead><tbody><tr><td>minore di 18.5</td><td>Sottopeso</td></tr><tr><td>da 18.5 a meno di 25</td><td>Normopeso</td></tr><tr><td>da 25 a meno di 30</td><td>Sovrappeso</td></tr><tr><td>30 o più</td><td>Obesità</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Peso (kg): 72
 Altezza (m): 1.75
-
 IMC: 23.5 — Normopeso</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>50</code>, <code>1.80</code> → <code>15.4 — Sottopeso</code></li><li><code>95</code>, <code>1.75</code> → <code>31.0 — Obesità</code></li><li><code>70</code>, <code>0</code> → errore</li><li><code>70</code>, <code>2.60</code> → errore</li></ul>
+                    </div>
+                </div>
             </section>
 
-            <!-- SLIDE 25: Esercizio — Bancomat -->
             <section>
-                <h2>Esercizio avanzato: simulazione bancomat</h2>
-                <p>Create un file <code>bancomat.py</code>.</p>
-                <div class="box box-blue">
-                    <strong>Traccia:</strong> simulate un'operazione al bancomat con saldo iniziale di 1000.00 EUR.
-                </div>
-                <ul>
-                    <li>Menu: <code>D</code> = deposito, <code>P</code> = prelievo, <code>S</code> = saldo</li>
-                    <li>Accettate sia maiuscole che minuscole (usate <code>.upper()</code>)</li>
-                    <li>Gestite: operazione non riconosciuta, importo negativo/zero, prelievo &gt; saldo</li>
-                </ul>
-                <pre><code class="language-python">=== BANCOMAT ===
-Saldo attuale: 1,000.00 EUR
-
+                <div class="tag tag-esercizio">Esercizio 5 · bancomat.py</div>
+                <h2>Bancomat</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Il saldo iniziale è <code>1000.00</code> EUR, scritto nel codice. Stampatelo.</li>
+                            <li>Chiedete l'operazione: <code>D</code> deposito, <code>P</code> prelievo, <code>S</code> saldo. Accettate anche le minuscole con <code>.upper()</code>.</li>
+                            <li>Con <code>S</code> stampate il saldo. Con <code>D</code> e <code>P</code> chiedete l'importo, aggiornate il saldo e stampatelo.</li>
+                            <li>Gestite tre errori: operazione sconosciuta, importo minore o uguale a zero, prelievo maggiore del saldo.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>=== BANCOMAT ===
+Saldo attuale: 1000.00 EUR
 Operazione (D=Deposito, P=Prelievo, S=Saldo): P
 Importo: 250
-
 Prelievo di 250.00 EUR effettuato.
 Nuovo saldo: 750.00 EUR</code></pre>
-            </section>
-
-            <!-- SLIDE 26: Sezione — Sfida -->
-            <section class="section-slide">
-                <h2>Parte 6<br>Sfida</h2>
-            </section>
-
-            <!-- SLIDE 27: Sfida temperatura -->
-            <section>
-                <h2>Sfida: convertitore e classificatore</h2>
-                <p>Create un file <code>sfida_temperatura.py</code>.</p>
-                <div class="box box-blue">
-                    <strong>Traccia:</strong> convertite Celsius in Fahrenheit e classificate la percezione.
-                </div>
-                <table>
-                    <thead>
-                        <tr><th>Intervallo Celsius</th><th>Classificazione</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>C &le; -10</td><td>Gelido</td></tr>
-                        <tr><td>-10 &lt; C &le; 5</td><td>Freddo</td></tr>
-                        <tr><td>5 &lt; C &le; 18</td><td>Mite</td></tr>
-                        <tr><td>18 &lt; C &le; 30</td><td>Caldo</td></tr>
-                        <tr><td>C &gt; 30</td><td>Torrido</td></tr>
-                    </tbody>
-                </table>
-                <pre><code class="language-python">=== REPORT TEMPERATURA ===
-Celsius:       22.0°C
-Fahrenheit:    71.6°F
-Percezione:    Caldo</code></pre>
-                <div class="box box-red">
-                    <strong>Validazione:</strong> se la temperatura e inferiore a -273.15 (zero assoluto), stampate un messaggio di errore.
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>d</code>, <code>500</code> → nuovo saldo <code>1500.00</code></li><li><code>P</code>, <code>2000</code> → saldo insufficiente</li><li><code>P</code>, <code>-10</code> → importo non valido</li><li><code>X</code> → operazione non riconosciuta</li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 28: Domande di verifica -->
             <section>
-                <h2>Domande di verifica</h2>
-                <ol>
-                    <li class="fragment">Qual e la differenza tra eseguire codice nel <strong>REPL</strong> e da un file <code>.py</code>?</li>
-                    <li class="fragment">Cosa succede se scrivete <code>int(input("Eta: "))</code> e l'utente inserisce <code>"venti"</code>?</li>
-                    <li class="fragment">Perche controlliamo <code>secondo == 0</code> solo per <code>/</code>, <code>//</code> e <code>%</code>?</li>
-                    <li class="fragment">Perche usiamo <code>elif</code> invece di una sequenza di <code>if</code> nel classificatore ISEE?</li>
-                    <li class="fragment">Cosa fa il formato <code>{valore:>12,.2f}</code>?</li>
-                    <li class="fragment">Perche le soglie ISEE sono definite come <strong>costanti</strong> all'inizio del programma?</li>
-                </ol>
-            </section>
-
-            <!-- SLIDE 29: Riepilogo -->
-            <section>
-                <h2>Riepilogo</h2>
+                <div class="tag tag-sfida">Sfida · sfida_temperatura.py</div>
+                <h2>Report di temperatura</h2>
                 <div class="columns">
                     <div class="col">
-                        <h3>Cosa avete imparato</h3>
-                        <ul>
-                            <li><strong>Ambiente di lavoro:</strong> terminale, Python, VS Code, REPL</li>
-                            <li><strong>Variabili con type hints:</strong> <code>str</code>, <code>int</code>, <code>float</code>, <code>bool</code></li>
-                            <li><strong>Operatori aritmetici:</strong> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>, <code>**</code></li>
-                            <li><strong>F-string formattate:</strong> <code>:.2f</code>, <code>:>10</code>, <code>:,.2f</code>, <code>:.0%</code></li>
-                            <li><strong>Condizionali:</strong> <code>if</code>/<code>elif</code>/<code>else</code> con validazione</li>
-                        </ul>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Chiedete una temperatura in gradi Celsius.</li>
+                            <li>Se è sotto lo zero assoluto (−273.15 °C) stampate un errore e non fate altro.</li>
+                            <li>Altrimenti convertitela in Fahrenheit, classificatela con la tabella e stampate il report.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Celsius</th><th>Percezione</th></tr></thead><tbody><tr><td>fino a −10</td><td>Gelido</td></tr><tr><td>fino a 5</td><td>Freddo</td></tr><tr><td>fino a 18</td><td>Mite</td></tr><tr><td>fino a 30</td><td>Caldo</td></tr><tr><td>oltre 30</td><td>Torrido</td></tr></tbody></table>
                     </div>
                     <div class="col">
-                        <div class="box box-green">
-                            <strong>Consiglio:</strong> riscrivete da zero gli esercizi guidati <em>senza guardare il codice</em>. Se riuscite a ricostruirli dalla memoria e dalla comprensione, avete davvero imparato.
-                        </div>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Temperatura in Celsius: 22
+=== REPORT TEMPERATURA ===
+Celsius:    22.0°C
+Fahrenheit: 71.6°F
+Percezione: Caldo</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>-15</code> → Gelido</li><li><code>18</code> → Mite (18 è compreso)</li><li><code>35</code> → Torrido</li><li><code>-300</code> → errore</li></ul>
                     </div>
                 </div>
             </section>
 
-    
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol style="font-size:0.85em">
+                    <li>Cosa succede se il programma esegue <code>int(input("Età: "))</code> e l'utente scrive <code>venti</code>?</li>
+                    <li>Quanto valgono <code>10 / 2</code> e <code>10 // 2</code>? Perché i due risultati hanno tipo diverso?</li>
+                    <li>In <code>imc.py</code>, perché basta scrivere <code>elif imc &lt; 25</code> senza controllare anche <code>imc &gt;= 18.5</code>?</li>
+                    <li>Cosa stampano <code>f"{0.075:.1%}"</code> e <code>f"{2 / 3:.2f}"</code>?</li>
+                    <li>In <code>bancomat.py</code>, cosa succede con <code>P</code> e importo <code>-10</code> se manca il controllo sull'importo?</li>
+                </ol>
+            </section>
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">
                 <section>
                     <h2>Navigazione</h2>
                     <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
-                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L01_ambiente_variabili_condizionali.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="T09_cicli.html" style="color: var(--accent);">&larr; T09: Cicli</a></div><div><a href="T10_comprehension_stringhe.html" style="color: var(--accent);">T10: Comprehension e stringhe &rarr;</a></div><div><a href="../dispense/laboratori/L01_ambiente_variabili_condizionali.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L01_ambiente/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L01_ambiente_variabili_condizionali.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="T09_cicli.html" style="color: var(--accent);">&larr; T09: Cicli</a></div><div><a href="T10_comprehension_stringhe.html" style="color: var(--accent);">T10: Stringhe &rarr;</a></div><div><a href="../dispense/laboratori/L01_ambiente_variabili_condizionali.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L01_ambiente/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
                     </div>
                 </section>
             </section>

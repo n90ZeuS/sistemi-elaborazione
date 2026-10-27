@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strutture dati</title>
+    <title>L03 — Strutture dati</title>
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
@@ -314,667 +314,361 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: Titolo -->
             <section class="title-slide">
                 <h1>Strutture dati</h1>
                 <div class="subtitle">Laboratorio 3</div>
                 <div class="course-info">
                     Sistemi di Elaborazione<br>
-                    Corso di Laurea in Scienze Statistiche
+                    Prerequisiti: T11 (Liste e tuple), T12 (Dizionari e set) e T13 (Funzioni)
                 </div>
             </section>
 
-            <!-- SLIDE 2: Agenda -->
             <section>
-                <h2>Agenda</h2>
-                <ol>
-                    <li><strong>Liste</strong> &mdash; gestire misurazioni (CRUD)</li>
-                    <li><strong>Alias vs copia</strong> &mdash; un esperimento fondamentale</li>
-                    <li><strong>Tuple</strong> &mdash; punti geografici e distanze</li>
-                    <li><strong>Dizionari</strong> &mdash; registro studenti</li>
-                    <li><strong>Set</strong> &mdash; confronto iscritti tra anni</li>
-                    <li><strong>Counter</strong> &mdash; frequenza delle parole</li>
-                    <li><strong>Esercizi autonomi</strong></li>
-                </ol>
-                <div class="box box-blue">
-                    <strong>Prerequisiti:</strong> Lezioni T11 (Liste e tuple) e T12 (Dizionari e insiemi)
-                </div>
-            </section>
-
-            <!-- SLIDE 3: Panoramica strutture dati -->
-            <section>
-                <h2>Le quattro strutture dati fondamentali</h2>
-                <table>
-                    <tr>
-                        <th>Struttura</th>
-                        <th>Ordinata</th>
-                        <th>Mutabile</th>
-                        <th>Duplicati</th>
-                        <th>Caso d'uso</th>
-                    </tr>
-                    <tr>
-                        <td><code>list</code></td>
-                        <td>Si</td>
-                        <td>Si</td>
-                        <td>Si</td>
-                        <td>Sequenze modificabili</td>
-                    </tr>
-                    <tr>
-                        <td><code>tuple</code></td>
-                        <td>Si</td>
-                        <td>No</td>
-                        <td>Si</td>
-                        <td>Dati fissi, chiavi composite</td>
-                    </tr>
-                    <tr>
-                        <td><code>dict</code></td>
-                        <td>Inserimento</td>
-                        <td>Si</td>
-                        <td>No (chiavi)</td>
-                        <td>Accesso rapido per chiave</td>
-                    </tr>
-                    <tr>
-                        <td><code>set</code></td>
-                        <td>No</td>
-                        <td>Si</td>
-                        <td>No</td>
-                        <td>Operazioni insiemistiche</td>
-                    </tr>
+                <h2>Come funziona</h2>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo negli ultimi esercizi.</p>
+                <table class="mini" style="font-size:0.7em">
+                    <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><code>voti_appello.py</code></td><td>L'appello di Statistica</td></tr>
+                        <tr><td>2</td><td><code>coda_mensa.py</code></td><td>La coda in mensa</td></tr>
+                        <tr><td>3</td><td><code>sondaggio.py</code></td><td>Come arrivate in aula</td></tr>
+                        <tr><td>4</td><td><code>tre_corsi.py</code></td><td>Chi segue cosa</td></tr>
+                        <tr><td>5</td><td><code>libretto.py</code></td><td>Il libretto</td></tr>
+                        <tr><td>6</td><td><code>sessione.py</code></td><td>La sessione invernale</td></tr>
+                        <tr><td>7</td><td><code>contingenza.py</code></td><td>Scuola di provenienza ed esito</td></tr>
+                        <tr><td>8</td><td><code>descrittive.py</code></td><td>Ore di studio</td></tr>
+                        <tr><td>Sfida</td><td><code>compagni.py</code></td><td>Compagni di corsi a scelta</td></tr>
+                    </tbody>
                 </table>
+                <div class="box box-blue" style="font-size:0.7em">
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T14.
+                </div>
             </section>
 
-            <!-- SLIDE 4: Sezione Liste -->
-            <section class="section-slide">
-                <h2>Liste: gestire misurazioni</h2>
-                <p><em>Esercizio guidato 1</em></p>
-            </section>
-
-            <!-- SLIDE 5: Liste — Creare e popolare -->
             <section>
-                <h2>Liste &mdash; Creare e popolare</h2>
-                <p>Le liste sono lo strumento naturale per sequenze ordinate e modificabili.</p>
+                <h2>Promemoria</h2>
+                <p style="font-size:0.75em">Gli strumenti che servono oggi. Da oggi si possono usare <code>sum()</code>, <code>min()</code>, <code>max()</code> e <code>sorted()</code>; l'unico import ammesso è <code>from collections import Counter, defaultdict</code>.</p>
+                <pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+voti: list[int] = [int(v) for v in "28 18 30".split()]
+print(sum(voti), min(voti), sorted(voti))   # 76 18 [18, 28, 30]
+voti.append(24)            # in fondo; voti.pop(0) toglie il primo
+cfu: dict[str, int] = {"Analisi": 9, "Informatica": 6}
+for esame, n in cfu.items():    # coppie (chiave, valore)
+    print(esame, n)             # Analisi 9, poi Informatica 6
+print(cfu.get("Inglese", 0))    # 0: la chiave non c'è
+a: set[str] = {"Anna", "Bruno"}
+b: set[str] = {"Bruno", "Carla"}
+print(sorted(a | b), a &amp; b, a - b)  # ['Anna', ...] {'Bruno'} {'Anna'}
+print(Counter("abbccc").most_common(1))     # [('c', 3)]
+gruppi: defaultdict[str, list[int]] = defaultdict(list)
+gruppi["Analisi"].append(27)    # la lista vuota si crea da sola</code></pre>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 1 · voti_appello.py</div>
+                <h2>L'appello di Statistica</h2>
                 <div class="columns">
                     <div class="col">
-                        <h3>Con <code>append</code></h3>
-<pre><code class="language-python">temperature: list[float] = []
-
-temperature.append(18.5)
-temperature.append(21.0)
-temperature.append(19.3)
-temperature.append(22.1)
-temperature.append(20.7)
-
-print(f"Misurazioni: {temperature}")
-print(f"Numero: {len(temperature)}")
-</code></pre>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Chiedete i voti dell'appello su una riga, separati da spazi, e trasformateli in una lista di interi con <code>split()</code> e una list comprehension.</li>
+                            <li>Stampate la lista ordinata (<code>sorted()</code>), il numero di presenti, la media con un decimale, il voto minimo e il massimo.</li>
+                            <li>Con una seconda comprehension tenete i voti da 18 in su: stampate quanti sono, la loro percentuale con un decimale e la loro media.</li>
+                            <li>Se nessuno è promosso, la media dei promossi non va stampata.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <h3>Direttamente</h3>
-<pre><code class="language-python">temperature: list[float] = [
-    18.5, 21.0, 19.3, 22.1, 20.7
-]
-</code></pre>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Voti separati da spazi: 24 18 30 15 27 22 30 12 26 19
+Voti ordinati: [12, 15, 18, 19, 22, 24, 26, 27, 30, 30]
+Presenti: 10
+Media: 22.3
+Minimo: 12  Massimo: 30
+Promossi: 8 (80.0%)
+Media dei promossi: 24.5</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>30 30 30</code> → <code>Promossi: 3 (100.0%)</code></li><li><code>12 15</code> → <code>Promossi: 0 (0.0%)</code> e nessuna media dei promossi</li><li><code>18</code> → un voto solo: media, minimo e massimo valgono 18</li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 6: Liste — Read -->
             <section>
-                <h2>Liste &mdash; Leggere (Read)</h2>
-<pre><code class="language-python"># Accesso per indice
-prima: float = temperature[0]
-ultima: float = temperature[-1]
-print(f"Prima misurazione: {prima}")
-print(f"Ultima misurazione: {ultima}")
-
-# Slicing: sottoinsieme di misurazioni
-prime_tre: list[float] = temperature[:3]
-print(f"Prime tre: {prime_tre}")
-
-# Cercare un valore
-if 21.0 in temperature:
-    posizione: int = temperature.index(21.0)
-    print(f"21.0 trovato alla posizione {posizione}")
-</code></pre>
-            </section>
-
-            <!-- SLIDE 7: Liste — Update -->
-            <section>
-                <h2>Liste &mdash; Aggiornare (Update)</h2>
-<pre><code class="language-python"># Correggere una misurazione errata
-print(f"Prima della correzione: {temperature}")
-temperature[2] = 19.8  # la terza misurazione era sbagliata
-print(f"Dopo la correzione:    {temperature}")
-
-# Inserire una misurazione dimenticata in posizione specifica
-temperature.insert(1, 20.0)  # inserisci 20.0 alla posizione 1
-print(f"Dopo l'inserimento:    {temperature}")
-</code></pre>
-                <div class="box box-yellow">
-                    <strong>Nota:</strong> <code>insert(i, x)</code> sposta tutti gli elementi successivi. Per liste molto lunghe, valutare alternative.
-                </div>
-            </section>
-
-            <!-- SLIDE 8: Liste — Delete -->
-            <section>
-                <h2>Liste &mdash; Cancellare (Delete)</h2>
-<pre><code class="language-python"># Rimuovere l'ultima misurazione
-rimossa: float = temperature.pop()
-print(f"Rimossa l'ultima: {rimossa}, lista: {temperature}")
-
-# Rimuovere per valore
-temperature.remove(20.0)
-print(f"Dopo remove(20.0): {temperature}")
-
-# Rimuovere per indice
-del temperature[0]
-print(f"Dopo del [0]: {temperature}")
-</code></pre>
-                <div class="box box-blue">
-                    <strong>Riepilogo:</strong>
-                    <code>pop()</code> rimuove e restituisce |
-                    <code>remove(x)</code> cerca e rimuove |
-                    <code>del</code> rimuove per indice
-                </div>
-            </section>
-
-            <!-- SLIDE 9: Liste — Statistiche -->
-            <section>
-                <h2>Liste &mdash; Operazioni statistiche</h2>
-<pre><code class="language-python">temperature: list[float] = [18.5, 21.0, 19.3, 22.1, 20.7, 17.9, 23.4]
-
-media: float = sum(temperature) / len(temperature)
-minima: float = min(temperature)
-massima: float = max(temperature)
-
-print(f"Media:   {media:.2f}")
-print(f"Minima:  {minima}")
-print(f"Massima: {massima}")
-
-# Ordinamento (crea una nuova lista)
-ordinate: list[float] = sorted(temperature)
-print(f"Ordinate: {ordinate}")
-
-# Ordinamento in-place (modifica la lista originale)
-temperature.sort()
-print(f"Originale dopo sort(): {temperature}")
-</code></pre>
-            </section>
-
-            <!-- SLIDE 10: Sezione Alias vs Copia -->
-            <section class="section-slide">
-                <h2>Alias vs copia</h2>
-                <p><em>Esercizio guidato 2 &mdash; Un esperimento fondamentale</em></p>
-            </section>
-
-            <!-- SLIDE 11: Alias -->
-            <section>
-                <h2>Alias: due nomi, stesso oggetto</h2>
-<pre><code class="language-python">originale: list[int] = [1, 2, 3, 4, 5]
-alias: list[int] = originale  # NON è una copia!
-
-# Modifichiamo tramite alias
-alias[0] = 999
-
-print(f"alias:     {alias}")
-print(f"originale: {originale}")  # Anche originale è cambiato!
-print(f"Stesso oggetto? {originale is alias}")  # True
-</code></pre>
-                <div class="diagram">
-                    originale &rarr; [999, 2, 3, 4, 5] &larr; alias<br>
-                    (stesso oggetto in memoria)
-                </div>
-                <div class="box box-red">
-                    L'assegnamento <code>alias = originale</code> <strong>non crea una nuova lista</strong>: entrambi i nomi puntano allo stesso oggetto.
-                </div>
-            </section>
-
-            <!-- SLIDE 12: Copia -->
-            <section>
-                <h2>Copia superficiale</h2>
-<pre><code class="language-python">originale: list[int] = [1, 2, 3, 4, 5]
-copia: list[int] = originale.copy()  # oppure list(originale) oppure originale[:]
-
-copia[0] = 999
-
-print(f"copia:     {copia}")
-print(f"originale: {originale}")  # Originale NON è cambiato
-print(f"Stesso oggetto? {originale is copia}")  # False
-</code></pre>
-                <div class="box box-yellow">
-                    <strong>Attenzione con liste di liste:</strong> la copia superficiale copia la lista esterna, ma le liste interne restano condivise.
-                </div>
-<pre><code class="language-python">matrice: list[list[int]] = [[1, 2], [3, 4]]
-copia_superficiale: list[list[int]] = matrice.copy()
-
-copia_superficiale[0][0] = 999
-print(f"matrice: {matrice}")  # [[999, 2], [3, 4]] — anche qui!
-</code></pre>
-            </section>
-
-            <!-- SLIDE 13: Sezione Tuple -->
-            <section class="section-slide">
-                <h2>Tuple: dati immutabili</h2>
-                <p><em>Esercizio guidato 3 &mdash; Punti geografici e distanze</em></p>
-            </section>
-
-            <!-- SLIDE 14: Tuple — Creare e unpacking -->
-            <section>
-                <h2>Tuple &mdash; Creare e fare unpacking</h2>
-                <p>Le tuple sono come le liste, ma <strong>immutabili</strong>: perfette per dati che non devono cambiare.</p>
-<pre><code class="language-python">import math
-
-# Una tupla di coordinate (latitudine, longitudine)
-roma: tuple[float, float] = (41.9028, 12.4964)
-milano: tuple[float, float] = (45.4642, 9.1900)
-napoli: tuple[float, float] = (40.8518, 14.2681)
-
-# Unpacking: estrarre i valori in variabili separate
-lat_roma, lon_roma = roma
-print(f"Roma: lat={lat_roma}, lon={lon_roma}")
-
-# Accesso per indice (come le liste)
-print(f"Latitudine di Milano: {milano[0]}")
-</code></pre>
-            </section>
-
-            <!-- SLIDE 15: Tuple — Calcolo distanze -->
-            <section>
-                <h2>Tuple &mdash; Calcolo distanze</h2>
-<pre><code class="language-python">def distanza_gradi(p1: tuple[float, float], p2: tuple[float, float]) -> float:
-    """Calcola la distanza euclidea approssimata tra due punti in gradi."""
-    lat1, lon1 = p1
-    lat2, lon2 = p2
-    return math.sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
-
-citta: list[tuple[str, tuple[float, float]]] = [
-    ("Roma", roma), ("Milano", milano), ("Napoli", napoli),
-]
-
-# Calcolare le distanze tra tutte le coppie
-for i in range(len(citta)):
-    for j in range(i + 1, len(citta)):
-        nome_a, coord_a = citta[i]
-        nome_b, coord_b = citta[j]
-        d: float = distanza_gradi(coord_a, coord_b)
-        print(f"{nome_a} — {nome_b}: {d:.4f} gradi")
-</code></pre>
-            </section>
-
-            <!-- SLIDE 16: Tuple come chiavi -->
-            <section>
-                <h2>Tuple come chiavi di dizionario</h2>
-                <p>Le tuple, essendo immutabili, possono essere usate come <strong>chiavi di dizionario</strong> (le liste no).</p>
-<pre><code class="language-python"># Distanze pre-calcolate tra coppie di città
-distanze: dict[tuple[str, str], float] = {}
-distanze[("Roma", "Milano")] = 4.77
-distanze[("Roma", "Napoli")] = 2.10
-distanze[("Milano", "Napoli")] = 6.52
-
-coppia: tuple[str, str] = ("Roma", "Milano")
-print(f"Distanza {coppia[0]}—{coppia[1]}: {distanze[coppia]:.2f} gradi")
-</code></pre>
-                <div class="box box-green">
-                    <strong>Regola:</strong> solo i tipi <strong>immutabili</strong> (str, int, float, tuple) possono essere chiavi di dizionario o elementi di set.
-                </div>
-            </section>
-
-            <!-- SLIDE 17: Sezione Dizionari -->
-            <section class="section-slide">
-                <h2>Dizionari: accesso per chiave</h2>
-                <p><em>Esercizio guidato 4 &mdash; Registro studenti</em></p>
-            </section>
-
-            <!-- SLIDE 18: Dizionari — Creare -->
-            <section>
-                <h2>Dizionari &mdash; Creare un registro</h2>
-<pre><code class="language-python"># Ogni studente è identificato dalla matricola
-registro: dict[str, dict[str, object]] = {
-    "MAT001": {
-        "nome": "Anna Rossi",
-        "anno": 1,
-        "voti": [28, 30, 25],
-    },
-    "MAT002": {
-        "nome": "Marco Bianchi",
-        "anno": 1,
-        "voti": [24, 27, 30],
-    },
-    "MAT003": {
-        "nome": "Luca Verdi",
-        "anno": 2,
-        "voti": [30, 30, 28],
-    },
-}
-</code></pre>
-            </section>
-
-            <!-- SLIDE 19: Dizionari — Accesso e ricerca -->
-            <section>
-                <h2>Dizionari &mdash; Accesso e ricerca</h2>
-<pre><code class="language-python"># Accesso diretto per matricola
-studente: dict[str, object] = registro["MAT001"]
-print(f"Nome: {studente['nome']}")
-
-# Accesso sicuro con get (nessun errore se la chiave non esiste)
-risultato: dict[str, object] | None = registro.get("MAT999")
-print(f"MAT999 esiste? {risultato is not None}")
-
-# Iterare su tutti gli studenti
-for matricola, dati in registro.items():
-    voti: list[int] = dati["voti"]
-    media: float = sum(voti) / len(voti)
-    print(f"{matricola} — {dati['nome']}: media {media:.1f}")
-</code></pre>
-                <div class="compare">
-                    <div class="good">
-<pre><code class="language-python">registro.get("MAT999")
-# Restituisce None</code></pre>
+                <div class="tag tag-esercizio">Esercizio 2 · coda_mensa.py</div>
+                <h2>La coda in mensa</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Partite da <code>coda: list[str] = ["Anna", "Bruno", "Carla"]</code> e dagli eventi <code>["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]</code>.</li>
+                            <li>Dividete ogni evento con <code>split()</code>. <code>arriva X</code> mette X in fondo (<code>append</code>); <code>servito</code> toglie il primo (<code>pop(0)</code>) e lo aggiunge alla lista <code>serviti</code>; <code>esce X</code> toglie X (<code>remove</code>); <code>davanti X Y</code> mette X subito prima di Y (<code>insert</code> e <code>index</code>).</li>
+                            <li>Se la persona non è in coda o il comando non esiste, stampate <code>Evento non valido: ...</code>; se arriva <code>servito</code> con la coda vuota, stampate <code>Nessuno da servire</code>.</li>
+                            <li>Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.</li>
+                        </ol>
                     </div>
-                    <div class="bad">
-<pre><code class="language-python">registro["MAT999"]
-# KeyError!</code></pre>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>arriva Davide -&gt; ['Anna', 'Bruno', 'Carla', 'Davide']
+servito -&gt; ['Bruno', 'Carla', 'Davide']
+arriva Elena -&gt; ['Bruno', 'Carla', 'Davide', 'Elena']
+esce Bruno -&gt; ['Carla', 'Davide', 'Elena']
+davanti Franco Elena -&gt; ['Carla', 'Davide', 'Franco', 'Elena']
+servito -&gt; ['Davide', 'Franco', 'Elena']
+Evento non valido: esce Zeno
+esce Zeno -&gt; ['Davide', 'Franco', 'Elena']
+Serviti: ['Anna', 'Carla']
+Ancora in coda: 3</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete quattro <code>servito</code> in fondo agli eventi → l'ultimo stampa <code>Nessuno da servire</code>, serviti in 5</li><li><code>davanti Gino Zeno</code> al posto di <code>davanti Franco Elena</code> → evento non valido, alla fine <code>Ancora in coda: 2</code></li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 20: Dizionari — Inserimento e aggiornamento -->
             <section>
-                <h2>Dizionari &mdash; Inserimento e aggiornamento</h2>
-<pre><code class="language-python"># Aggiungere un nuovo studente
-registro["MAT004"] = {
-    "nome": "Sara Neri",
-    "anno": 1,
-    "voti": [26, 29],
-}
-
-# Aggiungere un voto a uno studente esistente
-registro["MAT001"]["voti"].append(27)
-print(f"Voti aggiornati di MAT001: {registro['MAT001']['voti']}")
-
-# Aggiornare l'anno
-registro["MAT003"]["anno"] = 3
-</code></pre>
-            </section>
-
-            <!-- SLIDE 21: Dizionari — Cancellazione e statistiche -->
-            <section>
-                <h2>Dizionari &mdash; Cancellazione e statistiche</h2>
+                <div class="tag tag-esercizio">Esercizio 3 · sondaggio.py</div>
+                <h2>Come arrivate in aula</h2>
                 <div class="columns">
                     <div class="col">
-                        <h3>Cancellazione</h3>
-<pre><code class="language-python"># Rimuovere uno studente
-rimosso = registro.pop("MAT004")
-print(f"Rimosso: {rimosso['nome']}")
-
-# Chiavi rimaste
-print(list(registro.keys()))
-</code></pre>
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Alle matricole è stato chiesto con quale mezzo arrivano in università. Chiedete le risposte su una riga, separate da virgole.</li>
+                            <li>Pulite ogni risposta con <code>strip()</code> e <code>lower()</code>, così <code>Bus</code> e <code> bus</code> diventano uguali, e scartate le risposte vuote.</li>
+                            <li>Contate le risposte con un <code>Counter</code>. Stampate il numero di risposte e di mezzi diversi, poi ogni mezzo dal più frequente (<code>most_common()</code>) con il conteggio e la percentuale con un decimale.</li>
+                            <li>Stampate infine il mezzo più usato, cioè la moda.</li>
+                        </ol>
                     </div>
                     <div class="col">
-                        <h3>Statistiche</h3>
-<pre><code class="language-python"># Studente con media più alta
-migliore_matricola: str = ""
-migliore_media: float = 0.0
-
-for matr, dati in registro.items():
-    voti = dati["voti"]
-    media = sum(voti) / len(voti)
-    if media > migliore_media:
-        migliore_media = media
-        migliore_matricola = matr
-
-print(f"Migliore: "
-      f"{registro[migliore_matricola]['nome']}"
-      f" (media: {migliore_media:.1f})")
-</code></pre>
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Risposte separate da virgole: bici, Bus, piedi, bici, treno, BICI, bus, piedi, bici, monopattino, bus, treno
+Risposte: 12, mezzi diversi: 5
+bici: 4 (33.3%)
+bus: 3 (25.0%)
+piedi: 2 (16.7%)
+treno: 2 (16.7%)
+monopattino: 1 (8.3%)
+Mezzo più usato: bici</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>auto</code> → <code>auto: 1 (100.0%)</code></li><li><code>bus,,Bus , treno</code> → 3 risposte, <code>bus: 2 (66.7%)</code></li></ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SLIDE 22: Sezione Set -->
-            <section class="section-slide">
-                <h2>Set: operazioni insiemistiche</h2>
-                <p><em>Esercizio guidato 5 &mdash; Confronto iscritti tra anni</em></p>
-            </section>
-
-            <!-- SLIDE 23: Set — Creare e operazioni -->
             <section>
-                <h2>Set &mdash; Operazioni insiemistiche</h2>
-<pre><code class="language-python">iscritti_2024: set[str] = {"Anna", "Marco", "Luca", "Sara", "Elena"}
-iscritti_2025: set[str] = {"Marco", "Sara", "Elena", "Paolo", "Giulia"}
-
-# Studenti confermati (presenti in entrambi gli anni)
-confermati: set[str] = iscritti_2024 & iscritti_2025  # intersezione
-print(f"Confermati:  {confermati}")
-
-# Nuovi iscritti (presenti nel 2025 ma non nel 2024)
-nuovi: set[str] = iscritti_2025 - iscritti_2024  # differenza
-print(f"Nuovi:       {nuovi}")
-
-# Abbandoni (presenti nel 2024 ma non nel 2025)
-abbandoni: set[str] = iscritti_2024 - iscritti_2025
-print(f"Abbandoni:   {abbandoni}")
-</code></pre>
-            </section>
-
-            <!-- SLIDE 24: Set — Altre operazioni -->
-            <section>
-                <h2>Set &mdash; Unione, differenza simmetrica, verifiche</h2>
-<pre><code class="language-python"># Tutti gli studenti che sono passati per il corso
-tutti: set[str] = iscritti_2024 | iscritti_2025  # unione
-print(f"Tutti:       {tutti}")
-
-# Studenti che hanno cambiato stato
-cambiati: set[str] = iscritti_2024 ^ iscritti_2025  # differenza simmetrica
-print(f"Cambiati:    {cambiati}")
-
-# Verifiche di appartenenza
-print(f"Marco iscritto nel 2025? {'Marco' in iscritti_2025}")
-print(f"Confermati sottoinsieme di Tutti? {confermati <= tutti}")
-</code></pre>
-                <div class="box box-green">
-                    <strong>Eliminare duplicati da una lista:</strong>
-<pre><code class="language-python">risposte: list[str] = ["pizza", "pasta", "pizza", "sushi", "pasta"]
-piatti_unici: set[str] = set(risposte)
-print(f"Piatti unici: {piatti_unici}")  # {'pizza', 'pasta', 'sushi'}
-</code></pre>
+                <div class="tag tag-esercizio">Esercizio 4 · tre_corsi.py</div>
+                <h2>Chi segue cosa</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete i set <code>statistica</code>, <code>analisi</code> e <code>informatica</code> con gli studenti che frequentano i tre corsi (tabella).</li>
+                            <li>Con <code>|</code>, <code>&amp;</code> e <code>-</code> calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.</li>
+                            <li>Per trovare chi segue un corso soltanto, unite i tre set in una lista (<code>list(statistica) + list(analisi) + ...</code>) e contate i nomi con un <code>Counter</code>.</li>
+                            <li>Stampate i nomi con <code>sorted()</code>, così l'ordine è sempre lo stesso.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Corso</th><th>Studenti</th></tr></thead><tbody><tr><td>Statistica</td><td>Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia</td></tr><tr><td>Analisi</td><td>Anna, Chiara, Davide, Hana, Ivan, Giulia</td></tr><tr><td>Informatica</td><td>Bruno, Chiara, Giulia, Ivan, Luca</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Studenti diversi: 10
+Tutti e tre i corsi: ['Chiara', 'Giulia']
+Solo Statistica: ['Elisa', 'Fabio']
+Statistica e Analisi, non Informatica: ['Anna', 'Davide']
+Un corso soltanto: ['Elisa', 'Fabio', 'Hana', 'Luca']</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete Luca a Statistica → Luca non segue più un corso soltanto</li><li>aggiungete Marta a Informatica → <code>Studenti diversi: 11</code></li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 25: Riepilogo operatori set -->
             <section>
-                <h2>Set &mdash; Riepilogo operatori</h2>
-                <table>
-                    <tr>
-                        <th>Operatore</th>
-                        <th>Metodo</th>
-                        <th>Significato</th>
-                    </tr>
-                    <tr>
-                        <td><code>A & B</code></td>
-                        <td><code>A.intersection(B)</code></td>
-                        <td>Elementi in comune</td>
-                    </tr>
-                    <tr>
-                        <td><code>A | B</code></td>
-                        <td><code>A.union(B)</code></td>
-                        <td>Tutti gli elementi</td>
-                    </tr>
-                    <tr>
-                        <td><code>A - B</code></td>
-                        <td><code>A.difference(B)</code></td>
-                        <td>In A ma non in B</td>
-                    </tr>
-                    <tr>
-                        <td><code>A ^ B</code></td>
-                        <td><code>A.symmetric_difference(B)</code></td>
-                        <td>In uno solo dei due</td>
-                    </tr>
-                    <tr>
-                        <td><code>A <= B</code></td>
-                        <td><code>A.issubset(B)</code></td>
-                        <td>A sottoinsieme di B</td>
-                    </tr>
-                    <tr>
-                        <td><code>x in A</code></td>
-                        <td>&mdash;</td>
-                        <td>Appartenenza</td>
-                    </tr>
-                </table>
-            </section>
-
-            <!-- SLIDE 26: Sezione Counter -->
-            <section class="section-slide">
-                <h2>Counter: analisi di frequenza</h2>
-                <p><em>Esercizio guidato 6 &mdash; Frequenza delle parole</em></p>
-            </section>
-
-            <!-- SLIDE 27: Counter — Contare parole -->
-            <section>
-                <h2>Counter &mdash; Contare le parole</h2>
-                <p><code>Counter</code> del modulo <code>collections</code> e un dizionario specializzato per contare elementi.</p>
-<pre><code class="language-python">from collections import Counter
-
-testo: str = """
-La statistica è la scienza che studia i fenomeni collettivi.
-La statistica descrittiva riassume i dati osservati.
-La statistica inferenziale generalizza i risultati al di là dei dati osservati.
-"""
-
-# Pulizia e tokenizzazione
-parole: list[str] = testo.lower().split()
-conteggio: Counter[str] = Counter(parole)
-
-# Le 5 parole più comuni
-top_5: list[tuple[str, int]] = conteggio.most_common(5)
-print("Top 5:")
-for parola, freq in top_5:
-    print(f"  {parola}: {freq}")
-
-print(f"\nParole totali: {sum(conteggio.values())}")
-print(f"Parole uniche: {len(conteggio)}")
-</code></pre>
-            </section>
-
-            <!-- SLIDE 28: Counter — Confronto testi -->
-            <section>
-                <h2>Counter &mdash; Confronto tra due testi</h2>
-<pre><code class="language-python">testo_a: str = "il gatto e il cane giocano nel giardino"
-testo_b: str = "il cane e il gatto dormono in giardino"
-
-freq_a: Counter[str] = Counter(testo_a.split())
-freq_b: Counter[str] = Counter(testo_b.split())
-
-# Parole in comune
-comuni: set[str] = set(freq_a.keys()) & set(freq_b.keys())
-print(f"Parole in comune: {comuni}")
-
-# Combinare i conteggi
-combinato: Counter[str] = freq_a + freq_b
-print(f"Frequenze combinate: {combinato.most_common()}")
-</code></pre>
-                <div class="box box-blue">
-                    <strong>Nota:</strong> i <code>Counter</code> supportano addizione (<code>+</code>) e sottrazione (<code>-</code>) tra di loro.
+                <div class="tag tag-esercizio">Esercizio 5 · libretto.py</div>
+                <h2>Il libretto</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete il libretto come dizionario esame → tupla (voto, CFU), <code>libretto: dict[str, tuple[int, int]]</code>, con i dati della tabella.</li>
+                            <li>Scorrete <code>libretto.items()</code> con <code>for esame, (voto, cfu) in ...</code>: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.</li>
+                            <li>Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.</li>
+                            <li>La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Esame</th><th>Voto e CFU</th></tr></thead><tbody><tr><td>Analisi 1</td><td>24, 9 CFU</td></tr><tr><td>Statistica 1</td><td>28, 9 CFU</td></tr><tr><td>Informatica</td><td>30, 6 CFU</td></tr><tr><td>Economia politica</td><td>22, 9 CFU</td></tr><tr><td>Algebra lineare</td><td>27, 6 CFU</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi 1: 24 (9 CFU)
+Statistica 1: 28 (9 CFU)
+Informatica: 30 (6 CFU)
+Economia politica: 22 (9 CFU)
+Algebra lineare: 27 (6 CFU)
+CFU totali: 39
+Media aritmetica: 26.20
+Media ponderata: 25.85
+Base di laurea: 94.8</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>"Probabilità": (30, 9)</code> → 48 CFU, media ponderata <code>26.62</code>, base <code>97.6</code></li><li>date 6 CFU a tutti gli esami → le due medie valgono entrambe <code>26.20</code></li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 29: Esercizi autonomi -->
             <section>
-                <h2>Esercizi autonomi</h2>
-                <h3>A1 &mdash; Rubrica telefonica <span class="badge badge-green">base</span></h3>
-                <p>Crea una rubrica con un dizionario <code>str &rarr; str</code> (nome &rarr; numero).</p>
-                <ol>
-                    <li>Crea la rubrica con almeno 5 contatti</li>
-                    <li>Implementa: cerca, aggiungi, modifica, elimina</li>
-                    <li>Stampa tutti i contatti in ordine alfabetico (<code>sorted()</code>)</li>
-                    <li>Gestisci il caso di contatto inesistente con <code>.get()</code></li>
-                </ol>
-                <h3>A2 &mdash; Analisi dataset <span class="badge badge-yellow">intermedio</span></h3>
-                <p>Data una lista di dizionari con dati studenti:</p>
-                <ol>
-                    <li>Media dei voti per ciascun corso</li>
-                    <li>Studente con la media complessiva piu alta</li>
-                    <li>Per ogni studente, stampa voti e media</li>
-                    <li>Conta studenti con media superiore a 26</li>
-                </ol>
-            </section>
-
-            <!-- SLIDE 30: Esercizio A3 -->
-            <section>
-                <h2>Esercizio A3 &mdash; Sistema di raccomandazione <span class="badge badge-red">avanzato</span></h2>
-                <p>Dato un catalogo di film visti per utente (<code>dict[str, set[str]]</code>):</p>
-<pre><code class="language-python">catalogo: dict[str, set[str]] = {
-    "Alice": {"Matrix", "Inception", "Interstellar", "Dune"},
-    "Bob":   {"Matrix", "Inception", "Avatar", "Titanic"},
-    "Carla": {"Interstellar", "Dune", "Avatar", "Arrival"},
-    "David": {"Matrix", "Dune", "Arrival", "Titanic"},
-}
-</code></pre>
-                <ol>
-                    <li>Trova l'utente piu simile (massima intersezione)</li>
-                    <li>Raccomanda film non ancora visti (differenza)</li>
-                    <li>Film visti da <strong>tutti</strong> (intersezione globale)</li>
-                    <li>Film visti da <strong>almeno uno</strong> (unione globale)</li>
-                    <li>Film "di nicchia" visti da un solo utente</li>
-                </ol>
-            </section>
-
-            <!-- SLIDE 31: Sfida finale -->
-            <section>
-                <h2>Sfida finale &mdash; Analisi dataset esami</h2>
-                <p>Dato un dataset di esami (lista di dizionari con matricola, nome, corso, voto, lode):</p>
-                <ol>
-                    <li><strong>Media per corso:</strong> calcola e stampa la media dei voti per ciascun corso</li>
-                    <li><strong>Studente migliore per corso:</strong> identifica lo studente con il voto piu alto</li>
-                    <li><strong>Classifica generale:</strong> ordina gli studenti per media decrescente</li>
-                    <li><strong>Conteggio lodi:</strong> conta quante lodi ha ottenuto ciascuno studente</li>
-                    <li><strong>Corsi per studente:</strong> usa un set per mostrare i corsi sostenuti e identifica chi non ha tutti e tre gli esami</li>
-                </ol>
-                <div class="box box-blue">
-                    Usa <code>Counter</code>, operazioni su dizionari e set, type hints per tutte le variabili.
+                <div class="tag tag-esercizio">Esercizio 6 · sessione.py</div>
+                <h2>La sessione invernale</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete gli esiti come lista di tuple (studente, esame, voto), nell'ordine della tabella: <code>esiti: list[tuple[str, str, int]]</code>.</li>
+                            <li>In un solo ciclo riempite due <code>defaultdict(list)</code>: esame → voti, studente → esami superati (voto da 18 in su). Raccogliete anche tutti i nomi in un set.</li>
+                            <li>Per ogni esame stampate il numero di prove, la media con un decimale e i promossi.</li>
+                            <li>Per ogni studente, in ordine alfabetico, stampate gli esami superati; poi stampate chi non ne ha superato nessuno (differenza tra set).</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Studente</th><th>Esame e voto</th></tr></thead><tbody><tr><td>Anna</td><td>Statistica 28, Analisi 30</td></tr><tr><td>Bruno</td><td>Statistica 16, Analisi 17, Informatica 23</td></tr><tr><td>Chiara</td><td>Analisi 25, Statistica 30</td></tr><tr><td>Davide</td><td>Statistica 21, Informatica 26</td></tr><tr><td>Elisa</td><td>Analisi 12</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Statistica: 4 prove, media 23.8, promossi 3
+Analisi: 4 prove, media 21.0, promossi 2
+Informatica: 2 prove, media 24.5, promossi 2
+Anna ha superato ['Statistica', 'Analisi']
+Bruno ha superato ['Informatica']
+Chiara ha superato ['Analisi', 'Statistica']
+Davide ha superato ['Statistica', 'Informatica']
+Nessun esame superato: ['Elisa']</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>("Elisa", "Statistica", 18)</code> → <code>Statistica: 5 prove, media 22.6, promossi 4</code> e <code>Nessun esame superato: []</code></li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 32: Domande di verifica -->
+            <section>
+                <div class="tag tag-esercizio">Esercizio 7 · contingenza.py</div>
+                <h2>Scuola di provenienza ed esito</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: <code>scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]</code> e <code>superato = [True, False, True, False, True, True, False, False, True, False, True, True]</code>.</li>
+                            <li>Con <code>zip()</code> formate le coppie (scuola, esito) e contatele con un <code>Counter</code>: le chiavi sono tuple, per esempio <code>("liceo", True)</code>.</li>
+                            <li>Con un secondo <code>Counter</code> contate le matricole per scuola.</li>
+                            <li>Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>altro: superato 1, non superato 1, percentuale 50.0%
+liceo: superato 4, non superato 1, percentuale 80.0%
+tecnico: superato 2, non superato 3, percentuale 40.0%
+Totale: 7 su 12 (58.3%)</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete una matricola del liceo che non ha superato l'esame → liceo <code>66.7%</code>, <code>Totale: 7 su 13 (53.8%)</code></li><li>una coppia che non compare non dà errore: <code>tabella[("professionale", True)]</code> vale <code>0</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 8 · descrittive.py</div>
+                <h2>Ore di studio</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete la funzione <code>descrittive(valori: list[float]) -&gt; tuple[float, float, float]</code> che restituisce media, mediana e deviazione standard campionaria.</li>
+                            <li>Mediana: ordinate i valori con <code>sorted()</code>; se sono in numero dispari è il valore centrale, se sono pari è la media dei due centrali.</li>
+                            <li>Deviazione standard: somma dei quadrati degli scarti dalla media, divisa per n − 1, poi radice quadrata (<code>** 0.5</code>).</li>
+                            <li>Partite da <code>ore_studio = {"Primo anno": [12, 15, 8, 20, 10, 14, 9], "Secondo anno": [18, 22, 15, 25, 30, 16], "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25]}</code> (ore di studio settimanali). Per ogni anno chiamate la funzione e stampate media e mediana con un decimale, deviazione standard con due.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Primo anno: media 12.6, mediana 12.0, dev. std 4.16
+Secondo anno: media 21.0, mediana 20.0, dev. std 5.80
+Terzo anno: media 18.5, mediana 17.0, dev. std 10.25</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>descrittive([1, 2, 3, 4])</code> → media <code>2.5</code>, mediana <code>2.5</code>, deviazione standard <code>1.29</code></li><li>aggiungete <code>"Fuori corso": [5, 5, 5]</code> → <code>dev. std 0.00</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-sfida">Sfida · compagni.py</div>
+                <h2>Compagni di corsi a scelta</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete il dizionario <code>scelte: dict[str, set[str]]</code> con i corsi a scelta di ogni studente (tabella).</li>
+                            <li>Scrivete la funzione <code>jaccard(a, b)</code> che restituisce la similarità di Jaccard tra due set: elementi in comune diviso elementi totali.</li>
+                            <li>Con due cicli annidati sui nomi in ordine alfabetico, con <code>j</code> che parte da <code>i + 1</code>, confrontate ogni coppia una volta sola e stampate la coppia più simile con la similarità a due decimali.</li>
+                            <li>Chiedete il nome di uno studente, trovate il compagno più simile e stampate i corsi che il compagno segue e lui no. Se il nome non c'è, stampate <code>Studente non trovato</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Studente</th><th>Corsi a scelta</th></tr></thead><tbody><tr><td>Anna</td><td>Serie storiche, Demografia, Marketing, R</td></tr><tr><td>Bruno</td><td>Marketing, Finanza, R, Python</td></tr><tr><td>Chiara</td><td>Serie storiche, Demografia, R, Biostatistica</td></tr><tr><td>Davide</td><td>Finanza, Python, Econometria</td></tr><tr><td>Elisa</td><td>Biostatistica, Demografia, Python</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Coppia più simile: ('Anna', 'Chiara') con 0.60
+Studente: Elisa
+Più simile: Chiara (0.40)
+Corsi consigliati: ['R', 'Serie storiche']</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>Bruno</code> → <code>Davide (0.40)</code>, consigliato <code>['Econometria']</code></li><li><code>Davide</code> → <code>Bruno (0.40)</code>, consigliati <code>['Marketing', 'R']</code></li><li><code>Zeno</code> → <code>Studente non trovato</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
             <section>
                 <h2>Domande di verifica</h2>
-                <ol>
-                    <li>Qual e la differenza fondamentale tra una lista e una tupla? Quando preferire una tupla?</li>
-                    <li class="fragment">Se <code>b = a</code> (con <code>a</code> lista) e modifichi <code>b[0]</code>, cosa succede ad <code>a</code>? Perche?</li>
-                    <li class="fragment">Cosa restituisce <code>{"a": 1, "b": 2}.get("c", 0)</code>? E <code>{"a": 1, "b": 2}["c"]</code>?</li>
-                    <li class="fragment">Date due set A e B, quale operazione produce gli elementi in A ma non in B?</li>
-                    <li class="fragment">Differenza tra <code>sorted(lista)</code> e <code>lista.sort()</code>?</li>
-                    <li class="fragment">Perche una lista non puo essere chiave di dizionario, ma una tupla si?</li>
-                    <li class="fragment">Cosa fa <code>Counter("abracadabra").most_common(3)</code>?</li>
+                <ol style="font-size:0.85em">
+                    <li>Che differenza c'è tra <code>sorted(voti)</code> e <code>voti.sort()</code>? Quale dei due modifica la lista?</li>
+                    <li>In <code>coda_mensa.py</code>, cosa succede con <code>coda.remove("Zeno")</code> se prima non si controlla con <code>in</code>?</li>
+                    <li>In <code>sondaggio.py</code>, perché le risposte vanno pulite prima di passarle a <code>Counter</code>?</li>
+                    <li>Perché, per stampare un set, conviene usare <code>sorted()</code>?</li>
+                    <li>In <code>libretto.py</code>, quando la media ponderata coincide con la media aritmetica?</li>
+                    <li>In <code>contingenza.py</code> le chiavi del <code>Counter</code> sono tuple. Si potrebbero usare liste? Perché?</li>
+                    <li>In <code>descrittive.py</code> la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?</li>
                 </ol>
             </section>
-
-            <!-- SLIDE 33: Riepilogo -->
-            <section>
-                <h2>Quale struttura scegliere?</h2>
-                <div class="box box-blue">
-                    <strong>Lista</strong> &mdash; quando l'ordine conta e i dati possono cambiare.
-                </div>
-                <div class="box box-green">
-                    <strong>Tupla</strong> &mdash; quando i dati sono fissi (coordinate, record immutabili, chiavi composite).
-                </div>
-                <div class="box box-yellow">
-                    <strong>Dizionario</strong> &mdash; quando serve accesso rapido per chiave (registri, lookup, conteggi).
-                </div>
-                <div class="box box-red">
-                    <strong>Set</strong> &mdash; quando servono operazioni insiemistiche o eliminare duplicati.
-                </div>
-                <p style="margin-top: 1em;">Nel prossimo laboratorio: organizzare queste operazioni in <strong>funzioni</strong> riutilizzabili e testabili.</p>
-            </section>
-
-    
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">

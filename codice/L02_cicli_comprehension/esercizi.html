@@ -203,378 +203,250 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/laboratori/L02_cicli_comprehension_stringhe.html">Dispensa</a> &bull; <a href="../../presentazioni/L02_cicli_comprehension_stringhe.html">Presentazione</a></nav>
 <h1>L02_cicli_comprehension/esercizi.py</h1>
 <a class="download-link" href="esercizi.py" download>Scarica file .py</a>
-<pre><code><span class="cm"># L02 — Cicli, comprehension, stringhe</span>
-<span class="cm"># Esercizi per il laboratorio 02</span>
+<pre><code><span class="cm"># L02 — Cicli e stringhe (esercizi di Halloween)</span>
+<span class="cm"># Soluzioni degli esercizi del laboratorio 02</span>
 <span class="cm">#</span>
-<span class="cm"># Esercizi pratici su cicli for/while, list comprehension e manipolazione stringhe.</span>
-<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 1: Contare le vocali in un testo</span>
-<span class="cm"># ============================================================================</span>
-
-<span class="kw">def</span> <span class="fn">conta_vocali</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;
-    Conta le occorrenze di ogni vocale (a, e, i, o, u) in un testo.
-    Le vocali accentate vengono contate insieme alla vocale base.
-    Il conteggio e&#x27; case-insensitive.
-
-    Ritorna un dizionario con le chiavi &#x27;a&#x27;, &#x27;e&#x27;, &#x27;i&#x27;, &#x27;o&#x27;, &#x27;u&#x27;.
-    &quot;&quot;&quot;</span>
-    <span class="cm"># Mappa vocali accentate -&gt; vocale base</span>
-    mappa_accenti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> {
-        <span class="st">&#x27;à&#x27;</span>: <span class="st">&#x27;a&#x27;</span>, <span class="st">&#x27;á&#x27;</span>: <span class="st">&#x27;a&#x27;</span>, <span class="st">&#x27;â&#x27;</span>: <span class="st">&#x27;a&#x27;</span>, <span class="st">&#x27;ä&#x27;</span>: <span class="st">&#x27;a&#x27;</span>,
-        <span class="st">&#x27;è&#x27;</span>: <span class="st">&#x27;e&#x27;</span>, <span class="st">&#x27;é&#x27;</span>: <span class="st">&#x27;e&#x27;</span>, <span class="st">&#x27;ê&#x27;</span>: <span class="st">&#x27;e&#x27;</span>, <span class="st">&#x27;ë&#x27;</span>: <span class="st">&#x27;e&#x27;</span>,
-        <span class="st">&#x27;ì&#x27;</span>: <span class="st">&#x27;i&#x27;</span>, <span class="st">&#x27;í&#x27;</span>: <span class="st">&#x27;i&#x27;</span>, <span class="st">&#x27;î&#x27;</span>: <span class="st">&#x27;i&#x27;</span>, <span class="st">&#x27;ï&#x27;</span>: <span class="st">&#x27;i&#x27;</span>,
-        <span class="st">&#x27;ò&#x27;</span>: <span class="st">&#x27;o&#x27;</span>, <span class="st">&#x27;ó&#x27;</span>: <span class="st">&#x27;o&#x27;</span>, <span class="st">&#x27;ô&#x27;</span>: <span class="st">&#x27;o&#x27;</span>, <span class="st">&#x27;ö&#x27;</span>: <span class="st">&#x27;o&#x27;</span>,
-        <span class="st">&#x27;ù&#x27;</span>: <span class="st">&#x27;u&#x27;</span>, <span class="st">&#x27;ú&#x27;</span>: <span class="st">&#x27;u&#x27;</span>, <span class="st">&#x27;û&#x27;</span>: <span class="st">&#x27;u&#x27;</span>, <span class="st">&#x27;ü&#x27;</span>: <span class="st">&#x27;u&#x27;</span>,
-    }
-
-    conteggio: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&#x27;a&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;e&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;i&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;o&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;u&#x27;</span>: <span class="mi">0</span>}
-
-    <span class="kw">for</span> carattere <span class="kw">in</span> testo.lower():
-        <span class="cm"># Controlla se e&#x27; una vocale base</span>
-        <span class="kw">if</span> carattere <span class="kw">in</span> conteggio:
-            conteggio[carattere] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-        <span class="cm"># Controlla se e&#x27; una vocale accentata</span>
-        <span class="kw">elif</span> carattere <span class="kw">in</span> mappa_accenti:
-            conteggio[mappa_accenti[carattere]] <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-
-    <span class="kw">return</span> conteggio
-
-
-<span class="cm"># --- Test conta vocali ---</span>
-risultato: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> conta_vocali(<span class="st">&quot;Ciao Mondo&quot;</span>)
-<span class="kw">assert</span> risultato[<span class="st">&#x27;a&#x27;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> risultato[<span class="st">&#x27;o&#x27;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-<span class="kw">assert</span> risultato[<span class="st">&#x27;i&#x27;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-
-<span class="cm"># Test con vocali accentate</span>
-risultato_acc: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> conta_vocali(<span class="st">&quot;perché città università&quot;</span>)
-<span class="kw">assert</span> risultato_acc[<span class="st">&#x27;e&#x27;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>  <span class="cm"># e + é (perché=e+é, università=e)</span>
-<span class="kw">assert</span> risultato_acc[<span class="st">&#x27;a&#x27;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>  <span class="cm"># a + à (città=à, università=a)</span>
-<span class="kw">assert</span> risultato_acc[<span class="st">&#x27;i&#x27;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>  <span class="cm"># i (città=i, università=i+i)</span>
-
-<span class="cm"># Test stringa vuota</span>
-<span class="kw">assert</span> conta_vocali(<span class="st">&quot;&quot;</span>) <span class="op">=</span><span class="op">=</span> {<span class="st">&#x27;a&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;e&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;i&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;o&#x27;</span>: <span class="mi">0</span>, <span class="st">&#x27;u&#x27;</span>: <span class="mi">0</span>}
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Conta vocali): SUPERATO&quot;</span>)
+<span class="cm"># Ogni esercizio corrisponde a un file della traccia (nome tra parentesi).</span>
+<span class="cm"># I programmi leggono i dati con input(): eseguendo questo file vengono</span>
+<span class="cm"># chiesti i dati di tutti gli esercizi, uno dopo l&#x27;altro. Per provarne</span>
+<span class="cm"># uno solo, copiatelo in un file a parte.</span>
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 2: Verificatore di palindromi</span>
+<span class="cm"># ESERCIZIO 1: epidemia zombie — epidemia.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Epidemia zombie ---&quot;</span>)
+giorni: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Giorni: &quot;</span>))
 
-<span class="kw">def</span> <span class="fn">pulisci_testo</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-    <span class="st">&quot;&quot;&quot;Rimuove spazi e punteggiatura, converte in minuscolo.&quot;&quot;&quot;</span>
-    risultato: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
-    <span class="kw">for</span> c <span class="kw">in</span> testo.lower():
-        <span class="kw">if</span> c.isalnum():
-            risultato <span class="op">+</span><span class="op">=</span> c
-    <span class="kw">return</span> risultato
-
-
-<span class="kw">def</span> <span class="fn">is_palindromo</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
-    <span class="st">&quot;&quot;&quot;
-    Verifica se un testo e&#x27; un palindromo.
-    Ignora spazi, punteggiatura e distinzione maiuscole/minuscole.
-    &quot;&quot;&quot;</span>
-    pulito: <span class="nb">str</span> <span class="op">=</span> pulisci_testo(testo)
-    <span class="cm"># Confronto con ciclo (senza usare slicing inverso per essere didattici)</span>
-    lunghezza: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(pulito)
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(lunghezza <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>):
-        <span class="kw">if</span> pulito[i] <span class="op">!</span><span class="op">=</span> pulito[lunghezza <span class="op">-</span> <span class="mi">1</span> <span class="op">-</span> i]:
-            <span class="kw">return</span> <span class="kw">False</span>
-    <span class="kw">return</span> <span class="kw">True</span>
-
-
-<span class="kw">def</span> <span class="fn">trova_palindromi</span>(<span class="fn">parole</span>: <span class="nb">list</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
-    <span class="st">&quot;&quot;&quot;Filtra una lista tenendo solo i palindromi, usando comprehension.&quot;&quot;&quot;</span>
-    palindromi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [p <span class="kw">for</span> p <span class="kw">in</span> parole <span class="kw">if</span> is_palindromo(p)]
-    <span class="kw">return</span> palindromi
-
-
-<span class="cm"># --- Test palindromi ---</span>
-<span class="kw">assert</span> is_palindromo(<span class="st">&quot;anna&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> is_palindromo(<span class="st">&quot;radar&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> is_palindromo(<span class="st">&quot;python&quot;</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> is_palindromo(<span class="st">&quot;I topi non avevano nipoti&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>  <span class="cm"># famoso palindromo italiano</span>
-<span class="kw">assert</span> is_palindromo(<span class="st">&quot;&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>  <span class="cm"># stringa vuota e&#x27; palindroma per convenzione</span>
-
-<span class="cm"># Test con lista</span>
-lista_parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;anna&quot;</span>, <span class="st">&quot;ciao&quot;</span>, <span class="st">&quot;otto&quot;</span>, <span class="st">&quot;radar&quot;</span>, <span class="st">&quot;python&quot;</span>, <span class="st">&quot;aba&quot;</span>]
-palindromi_trovati: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> trova_palindromi(lista_parole)
-<span class="kw">assert</span> palindromi_trovati <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;anna&quot;</span>, <span class="st">&quot;otto&quot;</span>, <span class="st">&quot;radar&quot;</span>, <span class="st">&quot;aba&quot;</span>]
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Palindromi): SUPERATO&quot;</span>)
+infetti: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+<span class="kw">for</span> giorno <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, giorni <span class="op">+</span> <span class="mi">1</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;Giorno {giorno}: {infetti} infetti&quot;</span>)
+    infetti <span class="op">=</span> infetti <span class="op">*</span> <span class="mi">2</span>
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 3: Generazione del triangolo di Pascal</span>
+<span class="cm"># ESERCIZIO 2: quando cade la città — apocalisse.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Quando cade la città ---&quot;</span>)
+abitanti: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Abitanti: &quot;</span>))
 
-<span class="kw">def</span> <span class="fn">triangolo_pascal</span>(<span class="fn">n_righe</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]]:
-    <span class="st">&quot;&quot;&quot;
-    Genera le prime n_righe del triangolo di Pascal.
+giorno: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+infetti: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>
+<span class="kw">while</span> infetti <span class="op">&lt;</span><span class="op">=</span> abitanti:
+    giorno <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    infetti <span class="op">=</span> infetti <span class="op">*</span> <span class="mi">2</span>
 
-    Ogni riga inizia e finisce con 1.
-    Ogni elemento interno e&#x27; la somma dei due elementi sopra di esso.
-
-    Esempio per n_righe=5:
-        [1]
-        [1, 1]
-        [1, 2, 1]
-        [1, 3, 3, 1]
-        [1, 4, 6, 4, 1]
-    &quot;&quot;&quot;</span>
-    <span class="kw">if</span> n_righe <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
-        <span class="kw">return</span> []
-
-    triangolo: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>]]
-
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n_righe):
-        riga_precedente: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> triangolo[i <span class="op">-</span> <span class="mi">1</span>]
-        <span class="cm"># Costruisci la nuova riga: primo elemento e&#x27; 1</span>
-        nuova_riga: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>]
-
-        <span class="cm"># Elementi intermedi: somma di coppie adiacenti dalla riga precedente</span>
-        <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, i):
-            nuova_riga.append(riga_precedente[j <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> riga_precedente[j])
-
-        <span class="cm"># Ultimo elemento e&#x27; 1</span>
-        nuova_riga.append(<span class="mi">1</span>)
-        triangolo.append(nuova_riga)
-
-    <span class="kw">return</span> triangolo
-
-
-<span class="kw">def</span> <span class="fn">coefficiente_binomiale</span>(<span class="fn">n</span>: <span class="nb">int</span>, k: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-    <span class="st">&quot;&quot;&quot;Calcola C(n, k) usando il triangolo di Pascal.&quot;&quot;&quot;</span>
-    <span class="kw">if</span> k <span class="op">&lt;</span> <span class="mi">0</span> <span class="kw">or</span> k <span class="op">&gt;</span> n:
-        <span class="kw">return</span> <span class="mi">0</span>
-    righe: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> triangolo_pascal(n <span class="op">+</span> <span class="mi">1</span>)
-    <span class="kw">return</span> righe[n][k]
-
-
-<span class="cm"># --- Test triangolo di Pascal ---</span>
-pascal_5: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> triangolo_pascal(<span class="mi">5</span>)
-<span class="kw">assert</span> pascal_5[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>]
-<span class="kw">assert</span> pascal_5[<span class="mi">1</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">1</span>]
-<span class="kw">assert</span> pascal_5[<span class="mi">2</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">1</span>]
-<span class="kw">assert</span> pascal_5[<span class="mi">3</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">1</span>]
-<span class="kw">assert</span> pascal_5[<span class="mi">4</span>] <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">4</span>, <span class="mi">1</span>]
-<span class="kw">assert</span> triangolo_pascal(<span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> []
-<span class="kw">assert</span> triangolo_pascal(<span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> [[<span class="mi">1</span>]]
-
-<span class="cm"># Verifica che la somma della riga n e&#x27; 2^n</span>
-<span class="kw">for</span> n <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">8</span>):
-    righe: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> triangolo_pascal(n <span class="op">+</span> <span class="mi">1</span>)
-    <span class="kw">assert</span> <span class="nb">sum</span>(righe[n]) <span class="op">=</span><span class="op">=</span> <span class="mi">2</span> <span class="op">*</span><span class="op">*</span> n, <span class="st">f&quot;La somma della riga {n} deve essere {2**n}&quot;</span>
-
-<span class="cm"># Test coefficiente binomiale</span>
-<span class="kw">assert</span> coefficiente_binomiale(<span class="mi">5</span>, <span class="mi">2</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">10</span>
-<span class="kw">assert</span> coefficiente_binomiale(<span class="mi">10</span>, <span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> coefficiente_binomiale(<span class="mi">10</span>, <span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (Triangolo di Pascal): SUPERATO&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;La città cade il giorno {giorno}: {infetti} infetti&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 4: Inversore di parole</span>
+<span class="cm"># ESERCIZIO 3: venerdì 17 — venerdi17.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Venerdì 17 ---&quot;</span>)
+n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Controlla i numeri fino a: &quot;</span>))
 
-<span class="kw">def</span> <span class="fn">inverti_parole</span>(<span class="fn">frase</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-    <span class="st">&quot;&quot;&quot;
-    Inverte l&#x27;ordine delle parole in una frase, mantenendo
-    le parole stesse invariate.
-    Esempio: &quot;Ciao mondo bello&quot; -&gt; &quot;bello mondo Ciao&quot;
-    &quot;&quot;&quot;</span>
-    parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> frase.split()
-    <span class="cm"># Inversione manuale con ciclo (didattica)</span>
-    invertite: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(parole) <span class="op">-</span> <span class="mi">1</span>, <span class="op">-</span><span class="mi">1</span>, <span class="op">-</span><span class="mi">1</span>):
-        invertite.append(parole[i])
-    <span class="kw">return</span> <span class="st">&quot; &quot;</span>.join(invertite)
+sfortunati: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, n <span class="op">+</span> <span class="mi">1</span>):
+    <span class="kw">if</span> i <span class="op">%</span> <span class="mi">17</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> <span class="st">&quot;17&quot;</span> <span class="kw">in</span> <span class="nb">str</span>(i):
+        sfortunati <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
 
-
-<span class="kw">def</span> <span class="fn">inverti_ogni_parola</span>(<span class="fn">frase</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-    <span class="st">&quot;&quot;&quot;
-    Inverte ogni singola parola nella frase, mantenendo l&#x27;ordine.
-    Esempio: &quot;Ciao mondo&quot; -&gt; &quot;oaiC odnom&quot;
-    &quot;&quot;&quot;</span>
-    <span class="cm"># Uso di comprehension per invertire ogni parola</span>
-    parole_invertite: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [parola[::<span class="op">-</span><span class="mi">1</span>] <span class="kw">for</span> parola <span class="kw">in</span> frase.split()]
-    <span class="kw">return</span> <span class="st">&quot; &quot;</span>.join(parole_invertite)
-
-
-<span class="cm"># --- Test inversore di parole ---</span>
-<span class="kw">assert</span> inverti_parole(<span class="st">&quot;Ciao mondo bello&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;bello mondo Ciao&quot;</span>
-<span class="kw">assert</span> inverti_parole(<span class="st">&quot;Python&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Python&quot;</span>
-<span class="kw">assert</span> inverti_parole(<span class="st">&quot;&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;&quot;</span>
-<span class="kw">assert</span> inverti_parole(<span class="st">&quot;uno due tre quattro&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;quattro tre due uno&quot;</span>
-
-<span class="kw">assert</span> inverti_ogni_parola(<span class="st">&quot;Ciao mondo&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;oaiC odnom&quot;</span>
-<span class="kw">assert</span> inverti_ogni_parola(<span class="st">&quot;abc def&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;cba fed&quot;</span>
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (Inversore parole): SUPERATO&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Numeri sfortunati: {sfortunati}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Percentuale: {sfortunati / n:.1%}&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 5: Numeri primi con il Crivello di Eratostene</span>
+<span class="cm"># ESERCIZIO 4: la cena di dracula — cena_dracula.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: La cena di Dracula ---&quot;</span>)
+sacche: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Sacche di sangue: &quot;</span>))
 
-<span class="kw">def</span> <span class="fn">crivello_eratostene</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;
-    Trova tutti i numeri primi fino a n usando il Crivello di Eratostene.
+<span class="kw">if</span> sacche <span class="op">&lt;</span><span class="op">=</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Errore: serve almeno una sacca&quot;</span>)
+<span class="kw">else</span>:
+    possibilita: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">for</span> commensali <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">1</span>, sacche <span class="op">+</span> <span class="mi">1</span>):
+        <span class="kw">if</span> sacche <span class="op">%</span> commensali <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            <span class="nb">print</span>(<span class="st">f&quot;Commensali {commensali}, sacche a testa {sacche // commensali}&quot;</span>)
+            possibilita <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Possibilità: {possibilita}&quot;</span>)
 
-    Algoritmo:
-    1. Crea una lista di booleani [True] * (n+1)
-    2. Parti da 2: per ogni numero primo trovato, segna tutti i suoi
-       multipli come non primi
-    3. I numeri che restano True sono primi
-    &quot;&quot;&quot;</span>
-    <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">2</span>:
-        <span class="kw">return</span> []
-
-    <span class="cm"># Inizializza: tutti potenzialmente primi</span>
-    is_primo: <span class="nb">list</span>[<span class="nb">bool</span>] <span class="op">=</span> [<span class="kw">True</span>] <span class="op">*</span> (n <span class="op">+</span> <span class="mi">1</span>)
-    is_primo[<span class="mi">0</span>] <span class="op">=</span> <span class="kw">False</span>
-    is_primo[<span class="mi">1</span>] <span class="op">=</span> <span class="kw">False</span>
-
-    <span class="cm"># Crivello: per ogni numero da 2 a sqrt(n)</span>
-    p: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
-    <span class="kw">while</span> p <span class="op">*</span> p <span class="op">&lt;</span><span class="op">=</span> n:
-        <span class="kw">if</span> is_primo[p]:
-            <span class="cm"># Segna tutti i multipli di p come non primi</span>
-            <span class="cm"># Partiamo da p*p perche&#x27; i multipli minori sono gia&#x27; stati segnati</span>
-            multiplo: <span class="nb">int</span> <span class="op">=</span> p <span class="op">*</span> p
-            <span class="kw">while</span> multiplo <span class="op">&lt;</span><span class="op">=</span> n:
-                is_primo[multiplo] <span class="op">=</span> <span class="kw">False</span>
-                multiplo <span class="op">+</span><span class="op">=</span> p
-        p <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-
-    <span class="cm"># Raccogli i primi con comprehension</span>
-    primi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [i <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">2</span>, n <span class="op">+</span> <span class="mi">1</span>) <span class="kw">if</span> is_primo[i]]
-    <span class="kw">return</span> primi
-
-
-<span class="kw">def</span> <span class="fn">conta_primi_fino_a</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-    <span class="st">&quot;&quot;&quot;Conta quanti numeri primi ci sono fino a n.&quot;&quot;&quot;</span>
-    <span class="kw">return</span> <span class="nb">len</span>(crivello_eratostene(n))
-
-
-<span class="cm"># --- Test crivello ---</span>
-<span class="kw">assert</span> crivello_eratostene(<span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> []
-<span class="kw">assert</span> crivello_eratostene(<span class="mi">2</span>) <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>]
-<span class="kw">assert</span> crivello_eratostene(<span class="mi">10</span>) <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>]
-<span class="kw">assert</span> crivello_eratostene(<span class="mi">30</span>) <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">11</span>, <span class="mi">13</span>, <span class="mi">17</span>, <span class="mi">19</span>, <span class="mi">23</span>, <span class="mi">29</span>]
-
-<span class="cm"># Verifica numeri noti: ci sono 25 primi fino a 100</span>
-<span class="kw">assert</span> conta_primi_fino_a(<span class="mi">100</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">25</span>
-<span class="cm"># Ci sono 168 primi fino a 1000</span>
-<span class="kw">assert</span> conta_primi_fino_a(<span class="mi">1000</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">168</span>
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 5 (Crivello di Eratostene): SUPERATO&quot;</span>)
+    <span class="kw">if</span> possibilita <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;{sacche} è primo: si divide solo tra 1 o {sacche} commensali&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 6: Statistiche di testo</span>
+<span class="cm"># ESERCIZIO 5: l&#x27;epitaffio — epitaffio.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: L&#x27;epitaffio ---&quot;</span>)
+PREZZO_LETTERA: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
+PREZZO_CIFRA: <span class="nb">int</span> <span class="op">=</span> <span class="mi">3</span>
+PREZZO_ALTRO: <span class="nb">int</span> <span class="op">=</span> <span class="mi">1</span>      <span class="cm"># gli spazi sono gratis</span>
 
-<span class="kw">def</span> <span class="fn">statistiche_testo</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]:
-    <span class="st">&quot;&quot;&quot;
-    Analizza un testo e restituisce statistiche:
-    - num_caratteri: numero totale di caratteri (spazi inclusi)
-    - num_parole: numero di parole
-    - num_frasi: numero di frasi (delimitati da . ! ?)
-    - lunghezza_media_parola: lunghezza media delle parole (arrotondata a 1 decimale)
-    - parola_piu_lunga: la parola piu&#x27; lunga nel testo
-    - parola_piu_frequente: la parola che appare piu&#x27; volte (minuscolo)
-    &quot;&quot;&quot;</span>
-    <span class="kw">if</span> <span class="kw">not</span> testo.strip():
-        <span class="kw">return</span> {
-            <span class="st">&quot;num_caratteri&quot;</span>: <span class="mi">0</span>,
-            <span class="st">&quot;num_parole&quot;</span>: <span class="mi">0</span>,
-            <span class="st">&quot;num_frasi&quot;</span>: <span class="mi">0</span>,
-            <span class="st">&quot;lunghezza_media_parola&quot;</span>: <span class="mi">0.0</span>,
-            <span class="st">&quot;parola_piu_lunga&quot;</span>: <span class="st">&quot;&quot;</span>,
-            <span class="st">&quot;parola_piu_frequente&quot;</span>: <span class="st">&quot;&quot;</span>,
-        }
+epitaffio: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Epitaffio: &quot;</span>)
 
-    num_caratteri: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(testo)
+lettere: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+cifre: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+spazi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+altri: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> carattere <span class="kw">in</span> epitaffio:
+    <span class="kw">if</span> carattere.isalpha():
+        lettere <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> carattere.isdigit():
+        cifre <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> carattere <span class="op">=</span><span class="op">=</span> <span class="st">&quot; &quot;</span>:
+        spazi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">else</span>:
+        altri <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
 
-    <span class="cm"># Conta frasi: ogni . ! ? termina una frase</span>
-    num_frasi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-    <span class="kw">for</span> c <span class="kw">in</span> testo:
-        <span class="kw">if</span> c <span class="kw">in</span> <span class="st">&#x27;.!?&#x27;</span>:
-            num_frasi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-    <span class="cm"># Se il testo non termina con punteggiatura, conta come una frase</span>
-    <span class="kw">if</span> num_frasi <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-        num_frasi <span class="op">=</span> <span class="mi">1</span>
+costo: <span class="nb">int</span> <span class="op">=</span> (lettere <span class="op">*</span> PREZZO_LETTERA
+              <span class="op">+</span> cifre <span class="op">*</span> PREZZO_CIFRA
+              <span class="op">+</span> altri <span class="op">*</span> PREZZO_ALTRO)
 
-    <span class="cm"># Estrai parole rimuovendo punteggiatura</span>
-    parole_raw: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> testo.split()
-    parole_pulite: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-    <span class="kw">for</span> parola <span class="kw">in</span> parole_raw:
-        <span class="cm"># Rimuovi punteggiatura dai bordi</span>
-        pulita: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
-        <span class="kw">for</span> c <span class="kw">in</span> parola:
-            <span class="kw">if</span> c.isalpha() <span class="kw">or</span> c <span class="op">=</span><span class="op">=</span> <span class="st">&quot;&#x27;&quot;</span>:
-                pulita <span class="op">+</span><span class="op">=</span> c
-        <span class="kw">if</span> pulita:
-            parole_pulite.append(pulita)
-
-    num_parole: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(parole_pulite)
-
-    <span class="cm"># Lunghezza media</span>
-    somma_lunghezze: <span class="nb">int</span> <span class="op">=</span> <span class="nb">sum</span>(<span class="nb">len</span>(p) <span class="kw">for</span> p <span class="kw">in</span> parole_pulite)
-    lunghezza_media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">round</span>(somma_lunghezze <span class="op">/</span> num_parole, <span class="mi">1</span>) <span class="kw">if</span> num_parole <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">else</span> <span class="mi">0.0</span>
-
-    <span class="cm"># Parola piu&#x27; lunga</span>
-    parola_piu_lunga: <span class="nb">str</span> <span class="op">=</span> <span class="nb">max</span>(parole_pulite, key<span class="op">=</span><span class="nb">len</span>) <span class="kw">if</span> parole_pulite <span class="kw">else</span> <span class="st">&quot;&quot;</span>
-
-    <span class="cm"># Parola piu&#x27; frequente (case-insensitive)</span>
-    frequenze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
-    <span class="kw">for</span> p <span class="kw">in</span> parole_pulite:
-        chiave: <span class="nb">str</span> <span class="op">=</span> p.lower()
-        frequenze[chiave] <span class="op">=</span> frequenze.get(chiave, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
-
-    parola_piu_frequente: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
-    max_freq: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-    <span class="kw">for</span> parola, freq <span class="kw">in</span> frequenze.items():
-        <span class="kw">if</span> freq <span class="op">&gt;</span> max_freq:
-            max_freq <span class="op">=</span> freq
-            parola_piu_frequente <span class="op">=</span> parola
-
-    <span class="kw">return</span> {
-        <span class="st">&quot;num_caratteri&quot;</span>: num_caratteri,
-        <span class="st">&quot;num_parole&quot;</span>: num_parole,
-        <span class="st">&quot;num_frasi&quot;</span>: num_frasi,
-        <span class="st">&quot;lunghezza_media_parola&quot;</span>: lunghezza_media,
-        <span class="st">&quot;parola_piu_lunga&quot;</span>: parola_piu_lunga,
-        <span class="st">&quot;parola_piu_frequente&quot;</span>: parola_piu_frequente,
-    }
-
-
-<span class="cm"># --- Test statistiche testo ---</span>
-testo_test: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Il gatto e il cane. Il gatto dorme. Il cane corre!&quot;</span>
-stats: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> statistiche_testo(testo_test)
-
-<span class="kw">assert</span> stats[<span class="st">&quot;num_parole&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">11</span>
-<span class="kw">assert</span> stats[<span class="st">&quot;num_frasi&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-<span class="kw">assert</span> stats[<span class="st">&quot;parola_piu_frequente&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;il&quot;</span>  <span class="cm"># appare 3 volte (case-insensitive)</span>
-
-<span class="cm"># Testo vuoto</span>
-stats_vuoto: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> statistiche_testo(<span class="st">&quot;&quot;</span>)
-<span class="kw">assert</span> stats_vuoto[<span class="st">&quot;num_parole&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
-<span class="kw">assert</span> stats_vuoto[<span class="st">&quot;num_frasi&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
-
-<span class="cm"># Testo senza punteggiatura</span>
-stats_no_punt: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> statistiche_testo(<span class="st">&quot;ciao mondo bello&quot;</span>)
-<span class="kw">assert</span> stats_no_punt[<span class="st">&quot;num_frasi&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-<span class="kw">assert</span> stats_no_punt[<span class="st">&quot;num_parole&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-<span class="kw">assert</span> stats_no_punt[<span class="st">&quot;parola_piu_lunga&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="st">&quot;mondo&quot;</span>
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 6 (Statistiche testo): SUPERATO&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Lettere: {lettere}  Cifre: {cifre}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Spazi: {spazi}  Altri: {altri}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Costo dell&#x27;incisione: {costo} EUR&quot;</span>)
+<span class="kw">if</span> <span class="nb">len</span>(epitaffio) <span class="op">&gt;</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Lettere sul totale: {lettere / len(epitaffio):.1%}&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
-<span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 02 SUPERATI!&quot;</span>)
+<span class="cm"># ESERCIZIO 6: anagrammi maledetti — anagrammi.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 6: Anagrammi maledetti ---&quot;</span>)
+ALFABETO: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>
+
+prima: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Prima parola: &quot;</span>).lower().replace(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>)
+seconda: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Seconda parola: &quot;</span>).lower().replace(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>)
+
+anagrammi: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">for</span> lettera <span class="kw">in</span> ALFABETO:
+    <span class="kw">if</span> anagrammi <span class="kw">and</span> prima.count(lettera) <span class="op">!</span><span class="op">=</span> seconda.count(lettera):
+        anagrammi <span class="op">=</span> <span class="kw">False</span>
+        <span class="nb">print</span>(<span class="st">f&quot;Lettera {lettera}: {prima.count(lettera)} nella prima, {seconda.count(lettera)} nella seconda&quot;</span>)
+
+<span class="kw">if</span> anagrammi:
+    <span class="nb">print</span>(<span class="st">&quot;Sono anagrammi&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Non sono anagrammi&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 7: il bottino della notte — bottino.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 7: Il bottino della notte ---&quot;</span>)
+case: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+totale: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+porte_chiuse: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+piu_caramelle: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+casa_generosa: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Casa 1, caramelle (fine per finire): &quot;</span>)
+<span class="kw">while</span> testo.strip().lower() <span class="op">!</span><span class="op">=</span> <span class="st">&quot;fine&quot;</span>:
+    caramelle: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(testo)
+    <span class="kw">if</span> caramelle <span class="op">&lt;</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">&quot;Valore non valido, ignorato&quot;</span>)
+    <span class="kw">else</span>:
+        case <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        totale <span class="op">+</span><span class="op">=</span> caramelle
+        <span class="kw">if</span> caramelle <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+            porte_chiuse <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        <span class="kw">if</span> caramelle <span class="op">&gt;</span> piu_caramelle:
+            piu_caramelle <span class="op">=</span> caramelle
+            casa_generosa <span class="op">=</span> case
+    testo <span class="op">=</span> <span class="nb">input</span>(<span class="st">f&quot;Casa {case + 1}, caramelle (fine per finire): &quot;</span>)
+
+<span class="kw">if</span> case <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Nessuna casa visitata&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Case visitate: {case}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Caramelle totali: {totale}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Media per casa: {totale / case:.1f}&quot;</span>)
+    <span class="kw">if</span> piu_caramelle <span class="op">&gt;</span> <span class="mi">0</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;Casa più generosa: la {casa_generosa}, con {piu_caramelle} caramelle&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Porte chiuse: {porte_chiuse / case:.1%}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 8: il login di dracula — login_dracula.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 8: Il login di Dracula ---&quot;</span>)
+valida: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+
+<span class="kw">while</span> <span class="kw">not</span> valida:
+    password: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Password: &quot;</span>)
+
+    maiuscola: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+    cifra: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+    spazio: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
+    <span class="kw">for</span> carattere <span class="kw">in</span> password:
+        <span class="kw">if</span> carattere.isupper():
+            maiuscola <span class="op">=</span> <span class="kw">True</span>
+        <span class="kw">elif</span> carattere.isdigit():
+            cifra <span class="op">=</span> <span class="kw">True</span>
+        <span class="kw">elif</span> carattere <span class="op">=</span><span class="op">=</span> <span class="st">&quot; &quot;</span>:
+            spazio <span class="op">=</span> <span class="kw">True</span>
+
+    lunga: <span class="nb">bool</span> <span class="op">=</span> <span class="nb">len</span>(password) <span class="op">&gt;</span><span class="op">=</span> <span class="mi">8</span>
+    minuscola: <span class="nb">str</span> <span class="op">=</span> password.lower()
+    proibita: <span class="nb">bool</span> <span class="op">=</span> <span class="st">&quot;aglio&quot;</span> <span class="kw">in</span> minuscola <span class="kw">or</span> <span class="st">&quot;croce&quot;</span> <span class="kw">in</span> minuscola
+    valida <span class="op">=</span> lunga <span class="kw">and</span> maiuscola <span class="kw">and</span> cifra <span class="kw">and</span> <span class="kw">not</span> spazio <span class="kw">and</span> <span class="kw">not</span> proibita
+
+    <span class="kw">if</span> <span class="kw">not</span> lunga:
+        <span class="nb">print</span>(<span class="st">&quot;- servono almeno 8 caratteri&quot;</span>)
+    <span class="kw">if</span> <span class="kw">not</span> maiuscola:
+        <span class="nb">print</span>(<span class="st">&quot;- manca una lettera maiuscola&quot;</span>)
+    <span class="kw">if</span> <span class="kw">not</span> cifra:
+        <span class="nb">print</span>(<span class="st">&quot;- manca una cifra&quot;</span>)
+    <span class="kw">if</span> spazio:
+        <span class="nb">print</span>(<span class="st">&quot;- niente spazi&quot;</span>)
+    <span class="kw">if</span> proibita:
+        <span class="nb">print</span>(<span class="st">&quot;- parola proibita: il conte non gradisce&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">&quot;Benvenuto nel castello&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># SFIDA: apocalisse con esercito — apocalisse_esercito.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Sfida: Apocalisse con esercito ---&quot;</span>)
+POPOLAZIONE: <span class="nb">int</span> <span class="op">=</span> <span class="mi">210_000</span>     <span class="cm"># abitanti di Padova, circa</span>
+MAX_GIORNI: <span class="nb">int</span> <span class="op">=</span> <span class="mi">365</span>
+
+zombie: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Zombie iniziali: &quot;</span>))
+crescita: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="nb">input</span>(<span class="st">&quot;Crescita giornaliera (0.5 = +50%): &quot;</span>))
+eliminati: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(<span class="nb">input</span>(<span class="st">&quot;Zombie eliminati ogni giorno: &quot;</span>))
+
+giorno: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+picco: <span class="nb">int</span> <span class="op">=</span> zombie
+<span class="kw">while</span> giorno <span class="op">&lt;</span> MAX_GIORNI <span class="kw">and</span> zombie <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">and</span> zombie <span class="op">&lt;</span><span class="op">=</span> POPOLAZIONE:
+    giorno <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    zombie <span class="op">=</span> <span class="nb">int</span>(zombie <span class="op">*</span> (<span class="mi">1</span> <span class="op">+</span> crescita)) <span class="op">-</span> eliminati
+    <span class="kw">if</span> zombie <span class="op">&lt;</span> <span class="mi">0</span>:
+        zombie <span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">if</span> zombie <span class="op">&gt;</span> picco:
+        picco <span class="op">=</span> zombie
+
+<span class="kw">if</span> zombie <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Vittoria il giorno {giorno}&quot;</span>)
+<span class="kw">elif</span> zombie <span class="op">&gt;</span> POPOLAZIONE:
+    <span class="nb">print</span>(<span class="st">f&quot;Apocalisse il giorno {giorno}: {zombie} zombie&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;Dopo {MAX_GIORNI} giorni la guerra continua: {zombie} zombie&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Picco: {picco} zombie&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi del laboratorio 02&quot;</span>)
 <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>

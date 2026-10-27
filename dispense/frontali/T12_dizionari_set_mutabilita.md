@@ -436,6 +436,79 @@ print(insiemi)
 
 ---
 
+## Dict e set comprehension
+
+Le comprehension viste con le liste esistono anche per dizionari e set, con la stessa sintassi tra parentesi graffe.
+
+### Dict comprehension
+
+`{chiave: valore for variabile in sequenza}`. Con `items()` si scorrono le coppie di un dizionario esistente.
+
+```python
+nomi: list[str] = ["Anna", "Marco", "Luca", "Francesca"]
+lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi}
+print(lunghezze)   # {'Anna': 4, 'Marco': 5, 'Luca': 4, 'Francesca': 9}
+
+registro: dict[str, int] = {"Anna": 28, "Marco": 15, "Luca": 30, "Sara": 12}
+promossi: dict[str, int] = {nome: voto for nome, voto in registro.items() if voto >= 18}
+print(promossi)    # {'Anna': 28, 'Luca': 30}
+```
+
+### Set comprehension
+
+`{espressione for variabile in sequenza}`: graffe senza i due punti. Il risultato è un set, quindi i duplicati spariscono. Attenzione: `{}` da solo è un dizionario vuoto, non un set.
+
+```python
+nomi: list[str] = ["Anna", "Andrea", "Marco", "Maria", "Luca"]
+iniziali: set[str] = {nome[0] for nome in nomi}
+print(iniziali)  # {'A', 'M', 'L'} (l'ordine può cambiare)
+```
+
+| Tipo | Sintassi | Risultato |
+|---|---|---|
+| List | `[espr for x in seq]` | `list` |
+| Dict | `{k: v for x in seq}` | `dict` |
+| Set | `{espr for x in seq}` | `set` |
+
+Tutte accettano il filtro `if condizione` in fondo.
+
+### Esempio: normalizzare categorie
+
+Le risposte a un questionario arrivano spesso scritte in modi diversi. Prima si puliscono con `strip()` e `lower()`, poi si contano.
+
+```python
+risposte: list[str] = ["si", "Si", "SI", " si ", "no", "No", "  NO", "forse"]
+
+normalizzate: list[str] = [r.strip().lower() for r in risposte]
+print(normalizzate)  # ['si', 'si', 'si', 'si', 'no', 'no', 'no', 'forse']
+
+frequenze: dict[str, int] = {v: normalizzate.count(v) for v in set(normalizzate)}
+print(frequenze)     # {'si': 4, 'no': 3, 'forse': 1} (l'ordine può cambiare)
+```
+
+Lo stesso conteggio si ottiene con `Counter(normalizzate)`.
+
+### Esempio: da CSV a dizionari
+
+La prima riga dà i nomi dei campi; per ogni riga successiva si costruisce un dizionario campo → valore.
+
+```python
+righe: list[str] = ["nome, eta, voto", "Anna, 22, 28", "Marco, 21, 25"]
+
+intestazione: list[str] = [c.strip() for c in righe[0].split(",")]
+
+dati: list[dict[str, str]] = []
+for riga in righe[1:]:
+    valori: list[str] = [c.strip() for c in riga.split(",")]
+    record: dict[str, str] = {intestazione[i]: valori[i] for i in range(len(intestazione))}
+    dati.append(record)
+
+print(dati)
+# [{'nome': 'Anna', 'eta': '22', 'voto': '28'}, {'nome': 'Marco', 'eta': '21', 'voto': '25'}]
+```
+
+---
+
 ## Mutabilità vs immutabilità
 
 ### Il concetto

@@ -204,422 +204,380 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <h1>L03 — Strutture dati</h1>
 <a class="download-link" href="L03_strutture_dati.pdf" download>Scarica PDF</a>
 <h1>Laboratorio 3 — Strutture dati</h1>
-<h2>Informazioni</h2>
+<p><strong>Prerequisiti:</strong> lezioni T11 (Liste e tuple), T12 (Dizionari e set) e T13 (Funzioni).</p>
+<p>Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo negli ultimi esercizi.</p>
+<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T14.</p>
+<table>
+<thead><tr>
+<th>#</th>
+<th>File</th>
+<th>Esercizio</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td><code>voti_appello.py</code></td>
+<td>L'appello di Statistica</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>coda_mensa.py</code></td>
+<td>La coda in mensa</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>sondaggio.py</code></td>
+<td>Come arrivate in aula</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>tre_corsi.py</code></td>
+<td>Chi segue cosa</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>libretto.py</code></td>
+<td>Il libretto</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>sessione.py</code></td>
+<td>La sessione invernale</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>contingenza.py</code></td>
+<td>Scuola di provenienza ed esito</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>descrittive.py</code></td>
+<td>Ore di studio</td>
+</tr>
+<tr>
+<td>Sfida</td>
+<td><code>compagni.py</code></td>
+<td>Compagni di corsi a scelta</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Promemoria</h2>
+<p>Gli strumenti che servono oggi. Da oggi si possono usare <code>sum()</code>, <code>min()</code>, <code>max()</code> e <code>sorted()</code>; l'unico import ammesso è <code>from collections import Counter, defaultdict</code>.</p>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+
+voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="nb">int</span>(v) <span class="kw">for</span> v <span class="kw">in</span> <span class="st">&quot;28 18 30&quot;</span>.split()]
+<span class="nb">print</span>(<span class="nb">sum</span>(voti), <span class="nb">min</span>(voti), <span class="nb">sorted</span>(voti))   <span class="cm"># 76 18 [18, 28, 30]</span>
+voti.append(<span class="mi">24</span>)            <span class="cm"># in fondo; voti.pop(0) toglie il primo</span>
+cfu: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;Analisi&quot;</span>: <span class="mi">9</span>, <span class="st">&quot;Informatica&quot;</span>: <span class="mi">6</span>}
+<span class="kw">for</span> esame, n <span class="kw">in</span> cfu.items():    <span class="cm"># coppie (chiave, valore)</span>
+    <span class="nb">print</span>(esame, n)             <span class="cm"># Analisi 9, poi Informatica 6</span>
+<span class="nb">print</span>(cfu.get(<span class="st">&quot;Inglese&quot;</span>, <span class="mi">0</span>))    <span class="cm"># 0: la chiave non c&#x27;è</span>
+a: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Bruno&quot;</span>}
+b: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Carla&quot;</span>}
+<span class="nb">print</span>(<span class="nb">sorted</span>(a <span class="op">|</span> b), a <span class="op">&amp;</span> b, a <span class="op">-</span> b)  <span class="cm"># [&#x27;Anna&#x27;, ...] {&#x27;Bruno&#x27;} {&#x27;Anna&#x27;}</span>
+<span class="nb">print</span>(Counter(<span class="st">&quot;abbccc&quot;</span>).most_common(<span class="mi">1</span>))     <span class="cm"># [(&#x27;c&#x27;, 3)]</span>
+gruppi: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+gruppi[<span class="st">&quot;Analisi&quot;</span>].append(<span class="mi">27</span>)    <span class="cm"># la lista vuota si crea da sola</span></code></pre>
+<hr>
+<h2>Esercizio 1 — L'appello di Statistica (<code>voti_appello.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Chiedete i voti dell'appello su una riga, separati da spazi, e trasformateli in una lista di interi con <code>split()</code> e una list comprehension.</li>
+<li>Stampate la lista ordinata (<code>sorted()</code>), il numero di presenti, la media con un decimale, il voto minimo e il massimo.</li>
+<li>Con una seconda comprehension tenete i voti da 18 in su: stampate quanti sono, la loro percentuale con un decimale e la loro media.</li>
+<li>Se nessuno è promosso, la media dei promossi non va stampata.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Voti separati da spazi: <span class="mi">24</span> <span class="mi">18</span> <span class="mi">30</span> <span class="mi">15</span> <span class="mi">27</span> <span class="mi">22</span> <span class="mi">30</span> <span class="mi">12</span> <span class="mi">26</span> <span class="mi">19</span>
+Voti ordinati: [<span class="mi">12</span>, <span class="mi">15</span>, <span class="mi">18</span>, <span class="mi">19</span>, <span class="mi">22</span>, <span class="mi">24</span>, <span class="mi">26</span>, <span class="mi">27</span>, <span class="mi">30</span>, <span class="mi">30</span>]
+Presenti: <span class="mi">10</span>
+Media: <span class="mi">22.3</span>
+Minimo: <span class="mi">12</span>  Massimo: <span class="mi">30</span>
+Promossi: <span class="mi">8</span> (<span class="mi">80.0</span><span class="op">%</span>)
+Media dei promossi: <span class="mi">24.5</span></code></pre>
+<p><strong>Provate anche</strong></p>
 <ul>
-<li><strong>Prerequisiti:</strong> Lezioni frontali T11 (Liste e tuple) e T12 (Dizionari e insiemi)</li>
-<li><strong>Durata stimata:</strong> 2 ore</li>
-<li><strong>Obiettivi:</strong> Saper creare, modificare e interrogare liste, tuple, dizionari e set. Capire la differenza tra alias e copia. Usare <code>Counter</code> per analisi di frequenza.</li>
+<li><code>30 30 30</code> → <code>Promossi: 3 (100.0%)</code></li>
+<li><code>12 15</code> → <code>Promossi: 0 (0.0%)</code> e nessuna media dei promossi</li>
+<li><code>18</code> → un voto solo: media, minimo e massimo valgono 18</li>
 </ul>
 <hr>
-<h2>Esercizio guidato 1 — Liste: gestire misurazioni</h2>
-<p>Immaginate di raccogliere le temperature giornaliere di una settimana. Le liste sono lo strumento naturale per questo tipo di dato: una sequenza ordinata e modificabile.</p>
-<h3>Passo 1: Creare e popolare una lista</h3>
-<pre><code><span class="cm"># Creiamo una lista vuota e aggiungiamo misurazioni una alla volta</span>
-temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
-
-temperature.append(<span class="mi">18.5</span>)
-temperature.append(<span class="mi">21.0</span>)
-temperature.append(<span class="mi">19.3</span>)
-temperature.append(<span class="mi">22.1</span>)
-temperature.append(<span class="mi">20.7</span>)
-
-<span class="nb">print</span>(<span class="st">f&quot;Misurazioni raccolte: {temperature}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Numero di misurazioni: {len(temperature)}&quot;</span>)</code></pre>
-<p>Possiamo anche creare la lista direttamente:</p>
-<pre><code>temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">21.0</span>, <span class="mi">19.3</span>, <span class="mi">22.1</span>, <span class="mi">20.7</span>]</code></pre>
-<h3>Passo 2: Leggere (Read)</h3>
-<pre><code><span class="cm"># Accesso per indice</span>
-prima: <span class="nb">float</span> <span class="op">=</span> temperature[<span class="mi">0</span>]
-ultima: <span class="nb">float</span> <span class="op">=</span> temperature[<span class="op">-</span><span class="mi">1</span>]
-<span class="nb">print</span>(<span class="st">f&quot;Prima misurazione: {prima}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Ultima misurazione: {ultima}&quot;</span>)
-
-<span class="cm"># Slicing: sottoinsieme di misurazioni</span>
-prime_tre: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> temperature[:<span class="mi">3</span>]
-<span class="nb">print</span>(<span class="st">f&quot;Prime tre: {prime_tre}&quot;</span>)
-
-<span class="cm"># Cercare un valore</span>
-<span class="kw">if</span> <span class="mi">21.0</span> <span class="kw">in</span> temperature:
-    posizione: <span class="nb">int</span> <span class="op">=</span> temperature.index(<span class="mi">21.0</span>)
-    <span class="nb">print</span>(<span class="st">f&quot;21.0 trovato alla posizione {posizione}&quot;</span>)</code></pre>
-<h3>Passo 3: Aggiornare (Update)</h3>
-<pre><code><span class="cm"># Correggere una misurazione errata</span>
-<span class="nb">print</span>(<span class="st">f&quot;Prima della correzione: {temperature}&quot;</span>)
-temperature[<span class="mi">2</span>] <span class="op">=</span> <span class="mi">19.8</span>  <span class="cm"># la terza misurazione era sbagliata</span>
-<span class="nb">print</span>(<span class="st">f&quot;Dopo la correzione:    {temperature}&quot;</span>)
-
-<span class="cm"># Inserire una misurazione dimenticata in posizione specifica</span>
-temperature.insert(<span class="mi">1</span>, <span class="mi">20.0</span>)  <span class="cm"># inserisci 20.0 alla posizione 1</span>
-<span class="nb">print</span>(<span class="st">f&quot;Dopo l&#x27;inserimento:    {temperature}&quot;</span>)</code></pre>
-<h3>Passo 4: Cancellare (Delete)</h3>
-<pre><code><span class="cm"># Rimuovere l&#x27;ultima misurazione</span>
-rimossa: <span class="nb">float</span> <span class="op">=</span> temperature.pop()
-<span class="nb">print</span>(<span class="st">f&quot;Rimossa l&#x27;ultima: {rimossa}, lista: {temperature}&quot;</span>)
-
-<span class="cm"># Rimuovere per valore</span>
-temperature.remove(<span class="mi">20.0</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Dopo remove(20.0): {temperature}&quot;</span>)
-
-<span class="cm"># Rimuovere per indice</span>
-<span class="kw">del</span> temperature[<span class="mi">0</span>]
-<span class="nb">print</span>(<span class="st">f&quot;Dopo del [0]: {temperature}&quot;</span>)</code></pre>
-<h3>Passo 5: Operazioni statistiche di base</h3>
-<pre><code>temperature: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">18.5</span>, <span class="mi">21.0</span>, <span class="mi">19.3</span>, <span class="mi">22.1</span>, <span class="mi">20.7</span>, <span class="mi">17.9</span>, <span class="mi">23.4</span>]
-
-media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(temperature) <span class="op">/</span> <span class="nb">len</span>(temperature)
-minima: <span class="nb">float</span> <span class="op">=</span> <span class="nb">min</span>(temperature)
-massima: <span class="nb">float</span> <span class="op">=</span> <span class="nb">max</span>(temperature)
-
-<span class="nb">print</span>(<span class="st">f&quot;Media:   {media:.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Minima:  {minima}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Massima: {massima}&quot;</span>)
-
-<span class="cm"># Ordinamento (crea una nuova lista)</span>
-ordinate: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(temperature)
-<span class="nb">print</span>(<span class="st">f&quot;Ordinate: {ordinate}&quot;</span>)
-
-<span class="cm"># Ordinamento in-place (modifica la lista originale)</span>
-temperature.sort()
-<span class="nb">print</span>(<span class="st">f&quot;Originale dopo sort(): {temperature}&quot;</span>)</code></pre>
-<hr>
-<h2>Esercizio guidato 2 — Alias vs copia: un esperimento fondamentale</h2>
-<p>Questo esperimento chiarisce una delle trappole più comuni per i principianti.</p>
-<h3>Passo 1: Alias (due nomi, stesso oggetto)</h3>
-<pre><code>originale: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
-alias: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> originale  <span class="cm"># NON è una copia!</span>
-
-<span class="cm"># Modifichiamo tramite alias</span>
-alias[<span class="mi">0</span>] <span class="op">=</span> <span class="mi">999</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;alias:     {alias}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;originale: {originale}&quot;</span>)  <span class="cm"># Anche originale è cambiato!</span>
-<span class="nb">print</span>(<span class="st">f&quot;Stesso oggetto? {originale is alias}&quot;</span>)  <span class="cm"># True</span></code></pre>
-<p>L'assegnamento <code>alias = originale</code> non crea una nuova lista: entrambi i nomi puntano allo stesso oggetto in memoria. Modificare l'uno significa modificare l'altro.</p>
-<h3>Passo 2: Copia superficiale</h3>
-<pre><code>originale: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
-copia: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> originale.copy()  <span class="cm"># oppure list(originale) oppure originale[:]</span>
-
-copia[<span class="mi">0</span>] <span class="op">=</span> <span class="mi">999</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;copia:     {copia}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;originale: {originale}&quot;</span>)  <span class="cm"># Originale NON è cambiato</span>
-<span class="nb">print</span>(<span class="st">f&quot;Stesso oggetto? {originale is copia}&quot;</span>)  <span class="cm"># False</span></code></pre>
-<h3>Passo 3: Attenzione alle liste di liste</h3>
-<pre><code>matrice: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>]]
-copia_superficiale: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> matrice.copy()
-
-copia_superficiale[<span class="mi">0</span>][<span class="mi">0</span>] <span class="op">=</span> <span class="mi">999</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;copia:    {copia_superficiale}&quot;</span>)  <span class="cm"># [[999, 2], [3, 4]]</span>
-<span class="nb">print</span>(<span class="st">f&quot;matrice:  {matrice}&quot;</span>)              <span class="cm"># [[999, 2], [3, 4]] — anche qui!</span></code></pre>
-<p>La copia superficiale copia la lista esterna, ma le liste interne restano condivise. Per una copia completa servono <code>import copy</code> e <code>copy.deepcopy()</code>, ma per ora è sufficiente essere consapevoli del problema.</p>
-<hr>
-<h2>Esercizio guidato 3 — Tuple: punti geografici e distanze</h2>
-<p>Le tuple sono come le liste, ma <strong>immutabili</strong>: una volta create, non si possono modificare. Sono perfette per dati che non devono cambiare, come coordinate geografiche.</p>
-<h3>Passo 1: Creare tuple e fare unpacking</h3>
-<pre><code><span class="kw">import</span> math
-
-<span class="cm"># Una tupla di coordinate (latitudine, longitudine)</span>
-roma: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">41.9028</span>, <span class="mi">12.4964</span>)
-milano: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">45.4642</span>, <span class="mi">9.1900</span>)
-napoli: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>] <span class="op">=</span> (<span class="mi">40.8518</span>, <span class="mi">14.2681</span>)
-
-<span class="cm"># Unpacking: estrarre i valori in variabili separate</span>
-lat_roma, lon_roma <span class="op">=</span> roma
-<span class="nb">print</span>(<span class="st">f&quot;Roma: lat={lat_roma}, lon={lon_roma}&quot;</span>)
-
-<span class="cm"># Accesso per indice (come le liste)</span>
-<span class="nb">print</span>(<span class="st">f&quot;Latitudine di Milano: {milano[0]}&quot;</span>)</code></pre>
-<h3>Passo 2: Calcolare la distanza tra due punti</h3>
-<p>Usiamo la formula di Haversine semplificata (distanza in linea d'aria approssimata):</p>
-<pre><code><span class="kw">def</span> <span class="fn">distanza_gradi</span>(<span class="fn">p1</span>: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>], p2: <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-    <span class="st">&quot;&quot;&quot;Calcola la distanza euclidea approssimata tra due punti in gradi.&quot;&quot;&quot;</span>
-    lat1, lon1 <span class="op">=</span> p1
-    lat2, lon2 <span class="op">=</span> p2
-    <span class="kw">return</span> math.sqrt((lat2 <span class="op">-</span> lat1) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="op">+</span> (lon2 <span class="op">-</span> lon1) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
-
-
-citta: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>]]] <span class="op">=</span> [
-    (<span class="st">&quot;Roma&quot;</span>, roma),
-    (<span class="st">&quot;Milano&quot;</span>, milano),
-    (<span class="st">&quot;Napoli&quot;</span>, napoli),
-]
-
-<span class="cm"># Calcolare le distanze tra tutte le coppie</span>
-<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(citta)):
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(i <span class="op">+</span> <span class="mi">1</span>, <span class="nb">len</span>(citta)):
-        nome_a, coord_a <span class="op">=</span> citta[i]
-        nome_b, coord_b <span class="op">=</span> citta[j]
-        d: <span class="nb">float</span> <span class="op">=</span> distanza_gradi(coord_a, coord_b)
-        <span class="nb">print</span>(<span class="st">f&quot;{nome_a} — {nome_b}: {d:.4f} gradi&quot;</span>)</code></pre>
-<h3>Passo 3: Tuple come chiavi di dizionario</h3>
-<p>Le tuple, essendo immutabili, possono essere usate come chiavi di dizionario (le liste no):</p>
-<pre><code><span class="cm"># Distanze pre-calcolate tra coppie di città</span>
-distanze: <span class="nb">dict</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>], <span class="nb">float</span>] <span class="op">=</span> {}
-distanze[(<span class="st">&quot;Roma&quot;</span>, <span class="st">&quot;Milano&quot;</span>)] <span class="op">=</span> <span class="mi">4.77</span>
-distanze[(<span class="st">&quot;Roma&quot;</span>, <span class="st">&quot;Napoli&quot;</span>)] <span class="op">=</span> <span class="mi">2.10</span>
-distanze[(<span class="st">&quot;Milano&quot;</span>, <span class="st">&quot;Napoli&quot;</span>)] <span class="op">=</span> <span class="mi">6.52</span>
-
-coppia: <span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> (<span class="st">&quot;Roma&quot;</span>, <span class="st">&quot;Milano&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Distanza {coppia[0]}—{coppia[1]}: {distanze[coppia]:.2f} gradi&quot;</span>)</code></pre>
-<hr>
-<h2>Esercizio guidato 4 — Dizionari: registro studenti</h2>
-<p>I dizionari associano <strong>chiavi</strong> a <strong>valori</strong>. Sono la struttura dati più usata quando serve un accesso rapido per nome o identificativo.</p>
-<h3>Passo 1: Creare un registro</h3>
-<pre><code><span class="cm"># Ogni studente è identificato dalla matricola</span>
-registro: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> {
-    <span class="st">&quot;MAT001&quot;</span>: {
-        <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna Rossi&quot;</span>,
-        <span class="st">&quot;anno&quot;</span>: <span class="mi">1</span>,
-        <span class="st">&quot;voti&quot;</span>: [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>],
-    },
-    <span class="st">&quot;MAT002&quot;</span>: {
-        <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco Bianchi&quot;</span>,
-        <span class="st">&quot;anno&quot;</span>: <span class="mi">1</span>,
-        <span class="st">&quot;voti&quot;</span>: [<span class="mi">24</span>, <span class="mi">27</span>, <span class="mi">30</span>],
-    },
-    <span class="st">&quot;MAT003&quot;</span>: {
-        <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca Verdi&quot;</span>,
-        <span class="st">&quot;anno&quot;</span>: <span class="mi">2</span>,
-        <span class="st">&quot;voti&quot;</span>: [<span class="mi">30</span>, <span class="mi">30</span>, <span class="mi">28</span>],
-    },
-}</code></pre>
-<h3>Passo 2: Accesso e ricerca</h3>
-<pre><code><span class="cm"># Accesso diretto per matricola</span>
-studente: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> registro[<span class="st">&quot;MAT001&quot;</span>]
-<span class="nb">print</span>(<span class="st">f&quot;Nome: {studente[&#x27;nome&#x27;]}&quot;</span>)
-
-<span class="cm"># Accesso sicuro con get (nessun errore se la chiave non esiste)</span>
-risultato: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> registro.get(<span class="st">&quot;MAT999&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;MAT999 esiste? {risultato is not None}&quot;</span>)
-
-<span class="cm"># Iterare su tutti gli studenti</span>
-<span class="kw">for</span> matricola, dati <span class="kw">in</span> registro.items():
-    voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> dati[<span class="st">&quot;voti&quot;</span>]
-    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
-    <span class="nb">print</span>(<span class="st">f&quot;{matricola} — {dati[&#x27;nome&#x27;]}: media {media:.1f}&quot;</span>)</code></pre>
-<h3>Passo 3: Inserimento e aggiornamento</h3>
-<pre><code><span class="cm"># Aggiungere un nuovo studente</span>
-registro[<span class="st">&quot;MAT004&quot;</span>] <span class="op">=</span> {
-    <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara Neri&quot;</span>,
-    <span class="st">&quot;anno&quot;</span>: <span class="mi">1</span>,
-    <span class="st">&quot;voti&quot;</span>: [<span class="mi">26</span>, <span class="mi">29</span>],
-}
-
-<span class="cm"># Aggiungere un voto a uno studente esistente</span>
-registro[<span class="st">&quot;MAT001&quot;</span>][<span class="st">&quot;voti&quot;</span>].append(<span class="mi">27</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Voti aggiornati di MAT001: {registro[&#x27;MAT001&#x27;][&#x27;voti&#x27;]}&quot;</span>)
-
-<span class="cm"># Aggiornare l&#x27;anno</span>
-registro[<span class="st">&quot;MAT003&quot;</span>][<span class="st">&quot;anno&quot;</span>] <span class="op">=</span> <span class="mi">3</span></code></pre>
-<h3>Passo 4: Cancellazione</h3>
-<pre><code><span class="cm"># Rimuovere uno studente</span>
-rimosso: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>] <span class="op">=</span> registro.pop(<span class="st">&quot;MAT004&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Rimosso: {rimosso[&#x27;nome&#x27;]}&quot;</span>)
-
-<span class="cm"># Verificare le chiavi rimaste</span>
-<span class="nb">print</span>(<span class="st">f&quot;Matricole nel registro: {list(registro.keys())}&quot;</span>)</code></pre>
-<h3>Passo 5: Statistiche sul registro</h3>
-<pre><code><span class="cm"># Trovare lo studente con la media più alta</span>
-migliore_matricola: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
-migliore_media: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
-
-<span class="kw">for</span> matricola, dati <span class="kw">in</span> registro.items():
-    voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> dati[<span class="st">&quot;voti&quot;</span>]
-    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
-    <span class="kw">if</span> media <span class="op">&gt;</span> migliore_media:
-        migliore_media <span class="op">=</span> media
-        migliore_matricola <span class="op">=</span> matricola
-
-<span class="nb">print</span>(<span class="st">f&quot;Miglior studente: {registro[migliore_matricola][&#x27;nome&#x27;]} &quot;</span>
-      <span class="st">f&quot;(media: {migliore_media:.1f})&quot;</span>)</code></pre>
-<hr>
-<h2>Esercizio guidato 5 — Set: confronto iscritti tra anni accademici</h2>
-<p>I set sono insiemi matematici: collezioni <strong>non ordinate</strong> di elementi <strong>unici</strong>. Sono perfetti per operazioni come unione, intersezione e differenza.</p>
-<h3>Passo 1: Creare set di iscritti</h3>
-<pre><code>iscritti_2024: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;Elena&quot;</span>}
-iscritti_2025: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;Paolo&quot;</span>, <span class="st">&quot;Giulia&quot;</span>}</code></pre>
-<h3>Passo 2: Operazioni insiemistiche</h3>
-<pre><code><span class="cm"># Studenti confermati (presenti in entrambi gli anni)</span>
-confermati: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">&amp;</span> iscritti_2025  <span class="cm"># intersezione</span>
-<span class="nb">print</span>(<span class="st">f&quot;Confermati:  {confermati}&quot;</span>)
-
-<span class="cm"># Nuovi iscritti (presenti nel 2025 ma non nel 2024)</span>
-nuovi: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2025 <span class="op">-</span> iscritti_2024  <span class="cm"># differenza</span>
-<span class="nb">print</span>(<span class="st">f&quot;Nuovi:       {nuovi}&quot;</span>)
-
-<span class="cm"># Abbandoni (presenti nel 2024 ma non nel 2025)</span>
-abbandoni: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">-</span> iscritti_2025  <span class="cm"># differenza</span>
-<span class="nb">print</span>(<span class="st">f&quot;Abbandoni:   {abbandoni}&quot;</span>)
-
-<span class="cm"># Tutti gli studenti che sono passati per il corso</span>
-tutti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">|</span> iscritti_2025  <span class="cm"># unione</span>
-<span class="nb">print</span>(<span class="st">f&quot;Tutti:       {tutti}&quot;</span>)
-
-<span class="cm"># Studenti che hanno cambiato stato (presenti in uno solo dei due anni)</span>
-cambiati: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> iscritti_2024 <span class="op">^</span> iscritti_2025  <span class="cm"># differenza simmetrica</span>
-<span class="nb">print</span>(<span class="st">f&quot;Cambiati:    {cambiati}&quot;</span>)</code></pre>
-<h3>Passo 3: Verifiche di appartenenza</h3>
-<pre><code><span class="nb">print</span>(<span class="st">f&quot;Marco è iscritto nel 2025? {&#x27;Marco&#x27; in iscritti_2025}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Anna è iscritto nel 2025?  {&#x27;Anna&#x27; in iscritti_2025}&quot;</span>)
-
-<span class="cm"># I confermati sono un sottoinsieme di tutti?</span>
-<span class="nb">print</span>(<span class="st">f&quot;Confermati ⊆ Tutti? {confermati &lt;= tutti}&quot;</span>)  <span class="cm"># True, sempre</span></code></pre>
-<h3>Passo 4: Eliminare duplicati da una lista</h3>
-<pre><code><span class="cm"># Caso pratico: risposte a un sondaggio con duplicati</span>
-risposte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;pizza&quot;</span>, <span class="st">&quot;pasta&quot;</span>, <span class="st">&quot;pizza&quot;</span>, <span class="st">&quot;sushi&quot;</span>, <span class="st">&quot;pasta&quot;</span>, <span class="st">&quot;pizza&quot;</span>, <span class="st">&quot;sushi&quot;</span>]
-piatti_unici: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>(risposte)
-<span class="nb">print</span>(<span class="st">f&quot;Piatti unici: {piatti_unici}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Quanti piatti diversi: {len(piatti_unici)}&quot;</span>)</code></pre>
-<hr>
-<h2>Esercizio guidato 6 — Counter: frequenza delle parole</h2>
-<p><code>Counter</code> del modulo <code>collections</code> è un dizionario specializzato per contare elementi.</p>
-<h3>Passo 1: Contare le parole in un testo</h3>
-<pre><code><span class="kw">from</span> collections <span class="kw">import</span> Counter
-
-testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;&quot;
-La statistica è la scienza che studia i fenomeni collettivi.
-La statistica descrittiva riassume i dati osservati.
-La statistica inferenziale generalizza i risultati al di là dei dati osservati.
-&quot;&quot;&quot;</span>
-
-<span class="cm"># Pulizia e tokenizzazione</span>
-parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> testo.lower().split()
-conteggio: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(parole)
-
-<span class="nb">print</span>(<span class="st">&quot;Tutte le frequenze:&quot;</span>)
-<span class="kw">for</span> parola, freq <span class="kw">in</span> conteggio.most_common():
-    <span class="nb">print</span>(<span class="st">f&quot;  {parola:20s} → {freq}&quot;</span>)</code></pre>
-<h3>Passo 2: Le parole più frequenti</h3>
-<pre><code><span class="cm"># Le 5 parole più comuni</span>
-top_5: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> conteggio.most_common(<span class="mi">5</span>)
-<span class="nb">print</span>(<span class="st">&quot;\nTop 5:&quot;</span>)
-<span class="kw">for</span> parola, freq <span class="kw">in</span> top_5:
-    <span class="nb">print</span>(<span class="st">f&quot;  {parola}: {freq}&quot;</span>)
-
-<span class="cm"># Quante parole uniche?</span>
-<span class="nb">print</span>(<span class="st">f&quot;\nParole totali: {sum(conteggio.values())}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Parole uniche: {len(conteggio)}&quot;</span>)</code></pre>
-<h3>Passo 3: Confronto tra due testi</h3>
-<pre><code>testo_a: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il gatto e il cane giocano nel giardino&quot;</span>
-testo_b: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il cane e il gatto dormono in giardino&quot;</span>
-
-freq_a: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(testo_a.split())
-freq_b: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(testo_b.split())
-
-<span class="cm"># Parole in comune</span>
-comuni: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>(freq_a.keys()) <span class="op">&amp;</span> <span class="nb">set</span>(freq_b.keys())
-<span class="nb">print</span>(<span class="st">f&quot;Parole in comune: {comuni}&quot;</span>)
-
-<span class="cm"># Combinare i conteggi</span>
-combinato: Counter[<span class="nb">str</span>] <span class="op">=</span> freq_a <span class="op">+</span> freq_b
-<span class="nb">print</span>(<span class="st">f&quot;Frequenze combinate: {combinato.most_common()}&quot;</span>)</code></pre>
-<hr>
-<h2>Esercizi autonomi</h2>
-<p>Per ciascun esercizio, scrivi il codice completo con type hints. Non vengono fornite le soluzioni: verifica il funzionamento eseguendo il codice e ragionando sull'output.</p>
-<h3>Esercizio A1 — Rubrica telefonica (base)</h3>
-<p>Crea una rubrica telefonica usando un dizionario che associa nomi (<code>str</code>) a numeri di telefono (<code>str</code>).</p>
+<h2>Esercizio 2 — La coda in mensa (<code>coda_mensa.py</code>)</h2>
+<p><strong>Consegna</strong></p>
 <ol>
-<li>Crea la rubrica con almeno 5 contatti.</li>
-<li>Implementa queste operazioni:</li>
+<li>Partite da <code>coda: list[str] = ["Anna", "Bruno", "Carla"]</code> e dagli eventi <code>["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]</code>.</li>
+<li>Dividete ogni evento con <code>split()</code>. <code>arriva X</code> mette X in fondo (<code>append</code>); <code>servito</code> toglie il primo (<code>pop(0)</code>) e lo aggiunge alla lista <code>serviti</code>; <code>esce X</code> toglie X (<code>remove</code>); <code>davanti X Y</code> mette X subito prima di Y (<code>insert</code> e <code>index</code>).</li>
+<li>Se la persona non è in coda o il comando non esiste, stampate <code>Evento non valido: ...</code>; se arriva <code>servito</code> con la coda vuota, stampate <code>Nessuno da servire</code>.</li>
+<li>Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.</li>
 </ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>arriva Davide <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
+servito <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
+arriva Elena <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+esce Bruno <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+davanti Franco Elena <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+servito <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+Evento non valido: esce Zeno
+esce Zeno <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+Serviti: [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>]
+Ancora <span class="kw">in</span> coda: <span class="mi">3</span></code></pre>
+<p><strong>Provate anche</strong></p>
 <ul>
-<li>Cerca un contatto per nome e stampa il numero.</li>
-<li>Aggiungi un nuovo contatto.</li>
-<li>Modifica il numero di un contatto esistente.</li>
-<li>Elimina un contatto.</li>
-<li>Stampa tutti i contatti in ordine alfabetico (usa <code>sorted()</code> sulle chiavi).</li>
+<li>aggiungete quattro <code>servito</code> in fondo agli eventi → l'ultimo stampa <code>Nessuno da servire</code>, serviti in 5</li>
+<li><code>davanti Gino Zeno</code> al posto di <code>davanti Franco Elena</code> → evento non valido, alla fine <code>Ancora in coda: 2</code></li>
 </ul>
-<ol>
-<li>Gestisci il caso in cui si cerca un contatto inesistente (usa <code>.get()</code>).</li>
-</ol>
-<h3>Esercizio A2 — Analisi dataset con lista di dizionari (intermedio)</h3>
-<p>Hai un dataset di studenti rappresentato come lista di dizionari:</p>
-<pre><code>studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> [
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>},
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">24</span>},
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>},
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">26</span>},
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">22</span>},
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">27</span>},
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica I&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>},
-    {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>},
-]</code></pre>
-<p>Scrivi codice che:</p>
-<ol>
-<li>Calcola la media dei voti per ciascun corso.</li>
-<li>Trova lo studente con la media complessiva più alta.</li>
-<li>Per ogni studente, stampa tutti i voti sostenuti e la media.</li>
-<li>Conta quanti studenti hanno una media superiore a 26.</li>
-</ol>
-<p><strong>Suggerimento:</strong> usa un dizionario per raggruppare i voti per corso, e un altro per raggruppare i voti per studente.</p>
-<h3>Esercizio A3 — Sistema di raccomandazione con set (avanzato)</h3>
-<p>Hai un dizionario che associa ogni utente ai film che ha visto:</p>
-<pre><code>catalogo: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">set</span>[<span class="nb">str</span>]] <span class="op">=</span> {
-    <span class="st">&quot;Alice&quot;</span>: {<span class="st">&quot;Matrix&quot;</span>, <span class="st">&quot;Inception&quot;</span>, <span class="st">&quot;Interstellar&quot;</span>, <span class="st">&quot;Dune&quot;</span>},
-    <span class="st">&quot;Bob&quot;</span>: {<span class="st">&quot;Matrix&quot;</span>, <span class="st">&quot;Inception&quot;</span>, <span class="st">&quot;Avatar&quot;</span>, <span class="st">&quot;Titanic&quot;</span>},
-    <span class="st">&quot;Carla&quot;</span>: {<span class="st">&quot;Interstellar&quot;</span>, <span class="st">&quot;Dune&quot;</span>, <span class="st">&quot;Avatar&quot;</span>, <span class="st">&quot;Arrival&quot;</span>},
-    <span class="st">&quot;David&quot;</span>: {<span class="st">&quot;Matrix&quot;</span>, <span class="st">&quot;Dune&quot;</span>, <span class="st">&quot;Arrival&quot;</span>, <span class="st">&quot;Titanic&quot;</span>},
-}</code></pre>
-<p>Scrivi codice che:</p>
-<ol>
-<li>Dato un utente, trova l'utente con cui ha più film in comune (usa l'intersezione dei set).</li>
-<li>Raccomanda all'utente i film visti dal suo "utente più simile" ma non ancora visti da lui (usa la differenza).</li>
-<li>Trova i film visti da tutti gli utenti (intersezione di tutti i set).</li>
-<li>Trova i film visti da almeno un utente (unione di tutti i set).</li>
-<li>Trova i film "di nicchia" visti da un solo utente.</li>
-</ol>
-<p><strong>Suggerimento per il punto 5:</strong> per ogni film nell'unione totale, conta in quanti set compare.</p>
 <hr>
-<h2>Sfida finale — Analisi completa di un dataset studenti</h2>
-<p>Dato il seguente dataset:</p>
-<pre><code>esami: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">object</span>]] <span class="op">=</span> [
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M001&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M001&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">True</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M001&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Anna&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">25</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M002&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">24</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M002&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">27</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M003&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">True</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M003&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M003&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M004&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">26</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M004&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Sara&quot;</span>,  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">True</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M005&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">22</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M005&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Analisi&quot;</span>,    <span class="st">&quot;voto&quot;</span>: <span class="mi">20</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;M005&quot;</span>, <span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Elena&quot;</span>, <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Informatica&quot;</span>,<span class="st">&quot;voto&quot;</span>: <span class="mi">24</span>, <span class="st">&quot;lode&quot;</span>: <span class="kw">False</span>},
-]</code></pre>
-<p>Scrivi un programma completo che:</p>
+<h2>Esercizio 3 — Come arrivate in aula (<code>sondaggio.py</code>)</h2>
+<p><strong>Consegna</strong></p>
 <ol>
-<li><strong>Media per corso:</strong> calcola e stampa la media dei voti per ciascun corso.</li>
-<li><strong>Studente migliore per corso:</strong> per ogni corso, identifica lo studente con il voto più alto.</li>
-<li><strong>Classifica generale:</strong> ordina gli studenti per media complessiva decrescente e stampa la classifica.</li>
-<li><strong>Conteggio lodi:</strong> conta quante lodi ha ottenuto ciascuno studente.</li>
-<li><strong>Corsi per studente:</strong> usa un set per mostrare quali corsi ha sostenuto ogni studente e identifica chi non ha ancora sostenuto tutti e tre gli esami.</li>
+<li>Alle matricole è stato chiesto con quale mezzo arrivano in università. Chiedete le risposte su una riga, separate da virgole.</li>
+<li>Pulite ogni risposta con <code>strip()</code> e <code>lower()</code>, così <code>Bus</code> e <code> bus</code> diventano uguali, e scartate le risposte vuote.</li>
+<li>Contate le risposte con un <code>Counter</code>. Stampate il numero di risposte e di mezzi diversi, poi ogni mezzo dal più frequente (<code>most_common()</code>) con il conteggio e la percentuale con un decimale.</li>
+<li>Stampate infine il mezzo più usato, cioè la moda.</li>
 </ol>
-<p>Usa <code>Counter</code>, operazioni su dizionari e set, type hints per tutte le variabili. L'output deve essere chiaro e formattato.</p>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Risposte separate da virgole: bici, Bus, piedi, bici, treno, BICI, bus, piedi, bici, monopattino, bus, treno
+Risposte: <span class="mi">12</span>, mezzi diversi: <span class="mi">5</span>
+bici: <span class="mi">4</span> (<span class="mi">33.3</span><span class="op">%</span>)
+bus: <span class="mi">3</span> (<span class="mi">25.0</span><span class="op">%</span>)
+piedi: <span class="mi">2</span> (<span class="mi">16.7</span><span class="op">%</span>)
+treno: <span class="mi">2</span> (<span class="mi">16.7</span><span class="op">%</span>)
+monopattino: <span class="mi">1</span> (<span class="mi">8.3</span><span class="op">%</span>)
+Mezzo più usato: bici</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>auto</code> → <code>auto: 1 (100.0%)</code></li>
+<li><code>bus,,Bus , treno</code> → 3 risposte, <code>bus: 2 (66.7%)</code></li>
+</ul>
+<hr>
+<h2>Esercizio 4 — Chi segue cosa (<code>tre_corsi.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Scrivete i set <code>statistica</code>, <code>analisi</code> e <code>informatica</code> con gli studenti che frequentano i tre corsi (tabella).</li>
+<li>Con <code>|</code>, <code>&</code> e <code>-</code> calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.</li>
+<li>Per trovare chi segue un corso soltanto, unite i tre set in una lista (<code>list(statistica) + list(analisi) + ...</code>) e contate i nomi con un <code>Counter</code>.</li>
+<li>Stampate i nomi con <code>sorted()</code>, così l'ordine è sempre lo stesso.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Corso</th>
+<th>Studenti</th>
+</tr></thead><tbody>
+<tr>
+<td>Statistica</td>
+<td>Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia</td>
+</tr>
+<tr>
+<td>Analisi</td>
+<td>Anna, Chiara, Davide, Hana, Ivan, Giulia</td>
+</tr>
+<tr>
+<td>Informatica</td>
+<td>Bruno, Chiara, Giulia, Ivan, Luca</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Studenti diversi: <span class="mi">10</span>
+Tutti e tre i corsi: [<span class="st">&#x27;Chiara&#x27;</span>, <span class="st">&#x27;Giulia&#x27;</span>]
+Solo Statistica: [<span class="st">&#x27;Elisa&#x27;</span>, <span class="st">&#x27;Fabio&#x27;</span>]
+Statistica e Analisi, non Informatica: [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
+Un corso soltanto: [<span class="st">&#x27;Elisa&#x27;</span>, <span class="st">&#x27;Fabio&#x27;</span>, <span class="st">&#x27;Hana&#x27;</span>, <span class="st">&#x27;Luca&#x27;</span>]</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete Luca a Statistica → Luca non segue più un corso soltanto</li>
+<li>aggiungete Marta a Informatica → <code>Studenti diversi: 11</code></li>
+</ul>
+<hr>
+<h2>Esercizio 5 — Il libretto (<code>libretto.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Scrivete il libretto come dizionario esame → tupla (voto, CFU), <code>libretto: dict[str, tuple[int, int]]</code>, con i dati della tabella.</li>
+<li>Scorrete <code>libretto.items()</code> con <code>for esame, (voto, cfu) in ...</code>: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.</li>
+<li>Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.</li>
+<li>La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Esame</th>
+<th>Voto e CFU</th>
+</tr></thead><tbody>
+<tr>
+<td>Analisi 1</td>
+<td>24, 9 CFU</td>
+</tr>
+<tr>
+<td>Statistica 1</td>
+<td>28, 9 CFU</td>
+</tr>
+<tr>
+<td>Informatica</td>
+<td>30, 6 CFU</td>
+</tr>
+<tr>
+<td>Economia politica</td>
+<td>22, 9 CFU</td>
+</tr>
+<tr>
+<td>Algebra lineare</td>
+<td>27, 6 CFU</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Analisi <span class="mi">1</span>: <span class="mi">24</span> (<span class="mi">9</span> CFU)
+Statistica <span class="mi">1</span>: <span class="mi">28</span> (<span class="mi">9</span> CFU)
+Informatica: <span class="mi">30</span> (<span class="mi">6</span> CFU)
+Economia politica: <span class="mi">22</span> (<span class="mi">9</span> CFU)
+Algebra lineare: <span class="mi">27</span> (<span class="mi">6</span> CFU)
+CFU totali: <span class="mi">39</span>
+Media aritmetica: <span class="mi">26.20</span>
+Media ponderata: <span class="mi">25.85</span>
+Base di laurea: <span class="mi">94.8</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete <code>"Probabilità": (30, 9)</code> → 48 CFU, media ponderata <code>26.62</code>, base <code>97.6</code></li>
+<li>date 6 CFU a tutti gli esami → le due medie valgono entrambe <code>26.20</code></li>
+</ul>
+<hr>
+<h2>Esercizio 6 — La sessione invernale (<code>sessione.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Scrivete gli esiti come lista di tuple (studente, esame, voto), nell'ordine della tabella: <code>esiti: list[tuple[str, str, int]]</code>.</li>
+<li>In un solo ciclo riempite due <code>defaultdict(list)</code>: esame → voti, studente → esami superati (voto da 18 in su). Raccogliete anche tutti i nomi in un set.</li>
+<li>Per ogni esame stampate il numero di prove, la media con un decimale e i promossi.</li>
+<li>Per ogni studente, in ordine alfabetico, stampate gli esami superati; poi stampate chi non ne ha superato nessuno (differenza tra set).</li>
+</ol>
+<table>
+<thead><tr>
+<th>Studente</th>
+<th>Esame e voto</th>
+</tr></thead><tbody>
+<tr>
+<td>Anna</td>
+<td>Statistica 28, Analisi 30</td>
+</tr>
+<tr>
+<td>Bruno</td>
+<td>Statistica 16, Analisi 17, Informatica 23</td>
+</tr>
+<tr>
+<td>Chiara</td>
+<td>Analisi 25, Statistica 30</td>
+</tr>
+<tr>
+<td>Davide</td>
+<td>Statistica 21, Informatica 26</td>
+</tr>
+<tr>
+<td>Elisa</td>
+<td>Analisi 12</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Statistica: <span class="mi">4</span> prove, media <span class="mi">23.8</span>, promossi <span class="mi">3</span>
+Analisi: <span class="mi">4</span> prove, media <span class="mi">21.0</span>, promossi <span class="mi">2</span>
+Informatica: <span class="mi">2</span> prove, media <span class="mi">24.5</span>, promossi <span class="mi">2</span>
+Anna ha superato [<span class="st">&#x27;Statistica&#x27;</span>, <span class="st">&#x27;Analisi&#x27;</span>]
+Bruno ha superato [<span class="st">&#x27;Informatica&#x27;</span>]
+Chiara ha superato [<span class="st">&#x27;Analisi&#x27;</span>, <span class="st">&#x27;Statistica&#x27;</span>]
+Davide ha superato [<span class="st">&#x27;Statistica&#x27;</span>, <span class="st">&#x27;Informatica&#x27;</span>]
+Nessun esame superato: [<span class="st">&#x27;Elisa&#x27;</span>]</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete <code>("Elisa", "Statistica", 18)</code> → <code>Statistica: 5 prove, media 22.6, promossi 4</code> e <code>Nessun esame superato: []</code></li>
+</ul>
+<hr>
+<h2>Esercizio 7 — Scuola di provenienza ed esito (<code>contingenza.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: <code>scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]</code> e <code>superato = [True, False, True, False, True, True, False, False, True, False, True, True]</code>.</li>
+<li>Con <code>zip()</code> formate le coppie (scuola, esito) e contatele con un <code>Counter</code>: le chiavi sono tuple, per esempio <code>("liceo", True)</code>.</li>
+<li>Con un secondo <code>Counter</code> contate le matricole per scuola.</li>
+<li>Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>altro: superato <span class="mi">1</span>, non superato <span class="mi">1</span>, percentuale <span class="mi">50.0</span><span class="op">%</span>
+liceo: superato <span class="mi">4</span>, non superato <span class="mi">1</span>, percentuale <span class="mi">80.0</span><span class="op">%</span>
+tecnico: superato <span class="mi">2</span>, non superato <span class="mi">3</span>, percentuale <span class="mi">40.0</span><span class="op">%</span>
+Totale: <span class="mi">7</span> su <span class="mi">12</span> (<span class="mi">58.3</span><span class="op">%</span>)</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete una matricola del liceo che non ha superato l'esame → liceo <code>66.7%</code>, <code>Totale: 7 su 13 (53.8%)</code></li>
+<li>una coppia che non compare non dà errore: <code>tabella[("professionale", True)]</code> vale <code>0</code></li>
+</ul>
+<hr>
+<h2>Esercizio 8 — Ore di studio (<code>descrittive.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Scrivete la funzione <code>descrittive(valori: list[float]) -> tuple[float, float, float]</code> che restituisce media, mediana e deviazione standard campionaria.</li>
+<li>Mediana: ordinate i valori con <code>sorted()</code>; se sono in numero dispari è il valore centrale, se sono pari è la media dei due centrali.</li>
+<li>Deviazione standard: somma dei quadrati degli scarti dalla media, divisa per n − 1, poi radice quadrata (<code>** 0.5</code>).</li>
+<li>Partite da <code>ore_studio = {"Primo anno": [12, 15, 8, 20, 10, 14, 9], "Secondo anno": [18, 22, 15, 25, 30, 16], "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25]}</code> (ore di studio settimanali). Per ogni anno chiamate la funzione e stampate media e mediana con un decimale, deviazione standard con due.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Primo anno: media <span class="mi">12.6</span>, mediana <span class="mi">12.0</span>, dev. std <span class="mi">4.16</span>
+Secondo anno: media <span class="mi">21.0</span>, mediana <span class="mi">20.0</span>, dev. std <span class="mi">5.80</span>
+Terzo anno: media <span class="mi">18.5</span>, mediana <span class="mi">17.0</span>, dev. std <span class="mi">10.25</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>descrittive([1, 2, 3, 4])</code> → media <code>2.5</code>, mediana <code>2.5</code>, deviazione standard <code>1.29</code></li>
+<li>aggiungete <code>"Fuori corso": [5, 5, 5]</code> → <code>dev. std 0.00</code></li>
+</ul>
+<hr>
+<h2>Sfida — Compagni di corsi a scelta (<code>compagni.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Scrivete il dizionario <code>scelte: dict[str, set[str]]</code> con i corsi a scelta di ogni studente (tabella).</li>
+<li>Scrivete la funzione <code>jaccard(a, b)</code> che restituisce la similarità di Jaccard tra due set: elementi in comune diviso elementi totali.</li>
+<li>Con due cicli annidati sui nomi in ordine alfabetico, con <code>j</code> che parte da <code>i + 1</code>, confrontate ogni coppia una volta sola e stampate la coppia più simile con la similarità a due decimali.</li>
+<li>Chiedete il nome di uno studente, trovate il compagno più simile e stampate i corsi che il compagno segue e lui no. Se il nome non c'è, stampate <code>Studente non trovato</code>.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Studente</th>
+<th>Corsi a scelta</th>
+</tr></thead><tbody>
+<tr>
+<td>Anna</td>
+<td>Serie storiche, Demografia, Marketing, R</td>
+</tr>
+<tr>
+<td>Bruno</td>
+<td>Marketing, Finanza, R, Python</td>
+</tr>
+<tr>
+<td>Chiara</td>
+<td>Serie storiche, Demografia, R, Biostatistica</td>
+</tr>
+<tr>
+<td>Davide</td>
+<td>Finanza, Python, Econometria</td>
+</tr>
+<tr>
+<td>Elisa</td>
+<td>Biostatistica, Demografia, Python</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Coppia più simile: (<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Chiara&#x27;</span>) con <span class="mi">0.60</span>
+Studente: Elisa
+Più simile: Chiara (<span class="mi">0.40</span>)
+Corsi consigliati: [<span class="st">&#x27;R&#x27;</span>, <span class="st">&#x27;Serie storiche&#x27;</span>]</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>Bruno</code> → <code>Davide (0.40)</code>, consigliato <code>['Econometria']</code></li>
+<li><code>Davide</code> → <code>Bruno (0.40)</code>, consigliati <code>['Marketing', 'R']</code></li>
+<li><code>Zeno</code> → <code>Studente non trovato</code></li>
+</ul>
 <hr>
 <h2>Domande di verifica</h2>
 <ol>
-<li>Qual è la differenza fondamentale tra una lista e una tupla? In quale situazione preferiresti una tupla?</li>
-<li>Se scrivi <code>b = a</code> dove <code>a</code> è una lista, e poi modifichi <code>b[0]</code>, cosa succede ad <code>a</code>? Perché?</li>
-<li>Cosa restituisce <code>{"a": 1, "b": 2}.get("c", 0)</code>? E <code>{"a": 1, "b": 2}["c"]</code>?</li>
-<li>Date due set <code>A</code> e <code>B</code>, quale operazione produce gli elementi presenti in <code>A</code> ma non in <code>B</code>? E quelli presenti in uno solo dei due?</li>
-<li>Qual è la differenza tra <code>sorted(lista)</code> e <code>lista.sort()</code>? Quale delle due modifica la lista originale?</li>
-<li>Perché una lista non puo essere usata come chiave di un dizionario, ma una tupla si?</li>
-<li>Cosa fa <code>Counter("abracadabra").most_common(3)</code>?</li>
+<li>Che differenza c'è tra <code>sorted(voti)</code> e <code>voti.sort()</code>? Quale dei due modifica la lista?</li>
+<li>In <code>coda_mensa.py</code>, cosa succede con <code>coda.remove("Zeno")</code> se prima non si controlla con <code>in</code>?</li>
+<li>In <code>sondaggio.py</code>, perché le risposte vanno pulite prima di passarle a <code>Counter</code>?</li>
+<li>Perché, per stampare un set, conviene usare <code>sorted()</code>?</li>
+<li>In <code>libretto.py</code>, quando la media ponderata coincide con la media aritmetica?</li>
+<li>In <code>contingenza.py</code> le chiavi del <code>Counter</code> sono tuple. Si potrebbero usare liste? Perché?</li>
+<li>In <code>descrittive.py</code> la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?</li>
 </ol>
-<hr>
-<h2>Osservazioni finali</h2>
-<p>In questo laboratorio avete lavorato con le quattro strutture dati fondamentali di Python: liste, tuple, dizionari e set. La scelta della struttura giusta dipende dal problema:</p>
-<ul>
-<li><strong>Lista</strong> quando l'ordine conta e i dati possono cambiare.</li>
-<li><strong>Tupla</strong> quando i dati sono fissi (coordinate, record immutabili, chiavi composite).</li>
-<li><strong>Dizionario</strong> quando serve accesso rapido per chiave (registri, lookup, conteggi manuali).</li>
-<li><strong>Set</strong> quando servono operazioni insiemistiche o eliminare duplicati.</li>
-</ul>
-<p>L'esperimento su alias e copia e uno dei concetti piu importanti del laboratorio. In statistica, quando passate un dataset a una funzione e quella funzione lo modifica, volete essere certi di sapere se state lavorando sulla copia o sull'originale. Questo tema tornerà nei prossimi laboratori.</p>
-<p><code>Counter</code> meriterà poca attenzione adesso, ma diventerà uno strumento prezioso quando lavorerete con dati testuali o categoriali.</p>
-<p>Nel prossimo laboratorio vedremo come organizzare queste operazioni in <strong>funzioni</strong> riutilizzabili e testabili.</p>
 <nav class="bottom-nav"><span><a href="../frontali/T13_funzioni_fondamenti.html">← T13</a></span><span><a href="../../index.html">Home</a></span><span><a href="../frontali/T14_funzioni_avanzate_moduli.html">T14 →</a></span></nav>
 </body>
 </html>

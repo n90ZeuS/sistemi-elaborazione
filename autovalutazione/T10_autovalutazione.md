@@ -1,4 +1,4 @@
-# Autovalutazione — T10: Comprehension, Stringhe e Metodi
+# Autovalutazione — T10: Stringhe
 
 Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere **prima** di guardare la soluzione.
 
@@ -9,11 +9,11 @@ Metti alla prova la tua comprensione! Per ogni esercizio, prova a rispondere **p
 ### Esercizio 1
 
 ```python
-numeri = [1, 2, 3, 4, 5, 6, 7, 8]
-pari = [n for n in numeri if n % 2 == 0]
-print(pari)
-doppi = [n * 2 for n in numeri if n < 5]
-print(doppi)
+s = "Statistica"
+print(s[0:4])
+print(s[-3:])
+print(s[::2])
+print(len(s))
 ```
 
 <details>
@@ -21,11 +21,13 @@ print(doppi)
 
 **Output:**
 ```
-[2, 4, 6, 8]
-[2, 4, 6, 8]
+Stat
+ica
+Saitc
+10
 ```
 
-**Spiegazione:** La prima list comprehension filtra solo gli elementi pari dalla lista: il risultato e `[2, 4, 6, 8]`. La seconda seleziona gli elementi minori di 5 (`1, 2, 3, 4`) e li moltiplica per 2 (`2, 4, 6, 8`). Notare che i risultati sono uguali per coincidenza, ma i meccanismi sono diversi: la prima filtra, la seconda trasforma e filtra.
+**Spiegazione:** `s[0:4]` prende i caratteri dalla posizione 0 alla 3: il 4 è escluso, come in `range()`. `s[-3:]` parte dal terzultimo carattere e arriva in fondo. `s[::2]` prende un carattere sì e uno no partendo dal primo: posizioni 0, 2, 4, 6, 8, cioè `S`, `a`, `i`, `t`, `c`. `len(s)` conta i caratteri: 10.
 </details>
 
 ---
@@ -51,7 +53,7 @@ Ciao Python
 Ciao Mondo
 ```
 
-**Spiegazione:** I metodi delle stringhe (`lower()`, `upper()`, `replace()`) restituiscono una **nuova stringa** e non modificano l'originale. Le stringhe in Python sono **immutabili**: non possono essere cambiate dopo la creazione. L'ultima riga lo dimostra: `frase` e ancora `"Ciao Mondo"` nonostante le operazioni precedenti.
+**Spiegazione:** I metodi delle stringhe (`lower()`, `upper()`, `replace()`) restituiscono una **nuova stringa** e non modificano l'originale. Le stringhe in Python sono **immutabili**: non possono essere cambiate dopo la creazione. L'ultima riga lo mostra: `frase` vale ancora `"Ciao Mondo"` dopo le operazioni precedenti.
 </details>
 
 ---
@@ -59,12 +61,13 @@ Ciao Mondo
 ### Esercizio 3
 
 ```python
-dati = "rosso,verde,blu,giallo"
-colori = dati.split(",")
-print(colori)
-print(len(colori))
-risultato = " - ".join(colori)
+parola = "statistica"
+risultato = ""
+for c in parola:
+    if c != "t":
+        risultato = risultato + c.upper()
 print(risultato)
+print(parola.count("t"), parola.find("i"))
 ```
 
 <details>
@@ -72,12 +75,11 @@ print(risultato)
 
 **Output:**
 ```
-['rosso', 'verde', 'blu', 'giallo']
-4
-rosso - verde - blu - giallo
+SAISICA
+3 4
 ```
 
-**Spiegazione:** `split(",")` divide la stringa in una lista usando la virgola come separatore. `len()` conta gli elementi della lista (4 colori). `" - ".join(colori)` fa l'operazione inversa: unisce gli elementi della lista in un'unica stringa, inserendo `" - "` tra un elemento e l'altro.
+**Spiegazione:** Il ciclo scorre i caratteri di `"statistica"` uno alla volta. Le `t` vengono saltate, gli altri caratteri (`s`, `a`, `i`, `s`, `i`, `c`, `a`) vengono aggiunti in maiuscolo a `risultato`, che parte dalla stringa vuota. `count("t")` conta le `t` (3); `find("i")` restituisce la posizione della prima `i`, cioè 4 (si conta da 0).
 </details>
 
 ---
@@ -85,9 +87,11 @@ rosso - verde - blu - giallo
 ### Esercizio 4
 
 ```python
-parole = ["ciao", "mondo", "python", "è", "bello"]
-lunghe = [p.upper() for p in parole if len(p) > 3]
-print(lunghe)
+quota = 0.1573
+media = 27.456
+print(f"{quota:.1%}")
+print(f"{media:.1f}")
+print("3.14".isdigit(), "314".isdigit())
 ```
 
 <details>
@@ -95,10 +99,12 @@ print(lunghe)
 
 **Output:**
 ```
-['CIAO', 'MONDO', 'PYTHON', 'BELLO']
+15.7%
+27.5
+False True
 ```
 
-**Spiegazione:** La comprehension ha tre parti: (1) trasformazione `p.upper()`, (2) iterazione `for p in parole`, (3) filtro `if len(p) > 3`. Prima si filtrano le parole con piu di 3 caratteri (si esclude `"è"` che ha 1 carattere), poi si trasformano in maiuscolo. L'ordine di lettura e: "per ogni `p` in `parole`, **se** la lunghezza e maggiore di 3, prendi `p.upper()`".
+**Spiegazione:** Il formato `.1%` moltiplica il valore per 100, aggiunge il simbolo `%` e tiene un decimale: `0.1573` diventa `15.7%`. Il formato `.1f` arrotonda a un decimale: `27.456` diventa `27.5`. `isdigit()` restituisce `True` solo se tutti i caratteri sono cifre: in `"3.14"` il punto non è una cifra.
 </details>
 
 ---
@@ -130,70 +136,79 @@ print(nome)                # stampa: Alice
 
 # Oppure, più semplice:
 nome = "alice"
-nome = nome.capitalize()   # metodo che capitalizza la prima lettera
+nome = nome.capitalize()   # metodo che mette in maiuscolo la prima lettera
 print(nome)                # stampa: Alice
 ```
 
-Con le stringhe, si crea sempre una **nuova** stringa invece di modificare quella esistente.
+Con le stringhe si crea sempre una **nuova** stringa invece di modificare quella esistente.
 </details>
 
 ---
 
 ### Esercizio 6
 
-Il codice dovrebbe separare nome e cognome, ma il risultato e sbagliato.
+Il codice dovrebbe stampare l'estensione di un nome di file, oppure un messaggio se l'estensione manca. Con `"relazione"` stampa un risultato sbagliato.
 
 ```python
-dati = "Rossi;Marco;25"
-parti = dati.split(",")
-print(f"Cognome: {parti[0]}, Nome: {parti[1]}")
+nome_file = "relazione"
+punto = nome_file.find(".")
+estensione = nome_file[punto + 1:]
+print("Estensione:", estensione)
 ```
 
 <details>
 <summary>Mostra la risposta</summary>
 
-**Errore:** `IndexError: list index out of range`
+**Output:** `Estensione: relazione`
 
-**Problema:** La stringa usa il punto e virgola `;` come separatore, ma `split(",")` cerca la virgola `,`. Siccome non ci sono virgole, `split` restituisce una lista con un solo elemento: `["Rossi;Marco;25"]`. Tentare di accedere a `parti[1]` causa un `IndexError`.
+**Problema:** Il nome non contiene il punto, quindi `find(".")` restituisce `-1`. Allora `punto + 1` vale `0` e `nome_file[0:]` è tutta la stringa. Python non segnala nessun errore: il valore `-1` va controllato prima di usarlo come indice.
 
 **Soluzione:**
 ```python
-dati = "Rossi;Marco;25"
-parti = dati.split(";")    # separatore corretto: punto e virgola
-print(f"Cognome: {parti[0]}, Nome: {parti[1]}")
-# stampa: Cognome: Rossi, Nome: Marco
+nome_file = "relazione"
+punto = nome_file.find(".")
+if punto == -1:
+    print("Il file non ha estensione")
+else:
+    print("Estensione:", nome_file[punto + 1:])
+# stampa: Il file non ha estensione
 ```
 
-Bisogna sempre verificare quale carattere viene usato come separatore nei dati.
+Con `nome_file = "dati.csv"` lo stesso codice stampa `Estensione: csv`.
 </details>
 
 ---
 
 ### Esercizio 7
 
-Il codice dovrebbe creare una lista di quadrati dei numeri pari, ma ha un errore di sintassi.
+Il codice dovrebbe stampare `Confermato` quando l'utente risponde «sì», scritto in qualunque modo. Con la risposta `"  Si "` stampa il messaggio sbagliato.
 
 ```python
-numeri = [1, 2, 3, 4, 5, 6]
-quadrati = [n ** 2 for n in numeri if n % 2 == 0 if n > 3]
-print(quadrati)
+risposta = "  Si "
+if risposta == "si":
+    print("Confermato")
+else:
+    print("Risposta non riconosciuta")
 ```
 
 <details>
 <summary>Mostra la risposta</summary>
 
-**Output:** `[16, 36]`
+**Output:** `Risposta non riconosciuta`
 
-**Nota:** In realta questo codice **funziona** in Python (piu `if` consecutivi sono equivalenti a `and`), ma e molto poco leggibile e fonte comune di confusione.
+**Problema:** Il confronto `==` tra stringhe tiene conto di ogni carattere: gli spazi ai bordi e la `S` maiuscola rendono `"  Si "` diversa da `"si"`.
 
-**Versione consigliata (piu chiara):**
+**Soluzione:**
 ```python
-numeri = [1, 2, 3, 4, 5, 6]
-quadrati = [n ** 2 for n in numeri if n % 2 == 0 and n > 3]
-print(quadrati)  # stampa: [16, 36]
+risposta = "  Si "
+if risposta.strip().lower() == "si":
+    print("Confermato")
+else:
+    print("Risposta non riconosciuta")
+# stampa: Confermato
 ```
 
-Usare `and` per combinare piu condizioni rende il codice piu leggibile. I numeri che soddisfano entrambe le condizioni (pari **e** maggiori di 3) sono `4` e `6`, i cui quadrati sono `16` e `36`.
+`strip()` toglie gli spazi ai bordi e `lower()` porta tutto in minuscolo. Prima di confrontare un testo scritto da un utente conviene sempre pulirlo così.
 </details>
 
 ---
@@ -202,96 +217,92 @@ Usare `and` per combinare piu condizioni rende il codice piu leggibile. I numeri
 
 ### Esercizio 8
 
-Completa la funzione che restituisce le parole piu lunghe di `n` caratteri da una frase.
+Completa il codice che conta le vocali (a, e, i, o, u) in una stringa, senza distinguere tra maiuscole e minuscole.
 
 ```python
-def parole_lunghe(frase, n):
-    """Restituisce la lista delle parole più lunghe di n caratteri.
-
-    Esempio: parole_lunghe("il gatto dorme sul divano", 3)
-    deve restituire ["gatto", "dorme", "divano"]
-    """
-    parole = frase.____________
-    return [_________ for p in _________ if ___________]
+testo = "Ciao Mondo"
+vocali = "aeiou"
+conta = 0
+for c in testo.__________:
+    if c ____ vocali:
+        conta ________
+print(conta)    # deve stampare 5
 ```
 
 <details>
 <summary>Mostra la risposta</summary>
 
 ```python
-def parole_lunghe(frase, n):
-    """Restituisce la lista delle parole più lunghe di n caratteri."""
-    parole = frase.split()
-    return [p for p in parole if len(p) > n]
+testo = "Ciao Mondo"
+vocali = "aeiou"
+conta = 0
+for c in testo.lower():
+    if c in vocali:
+        conta += 1
+print(conta)    # 5
 ```
 
-**Spiegazione:** `split()` senza argomenti divide la stringa per spazi bianchi (spazi, tab, a capo). La comprehension scorre ogni parola `p` e la include nel risultato solo se la sua lunghezza supera `n`. Nota: `split()` senza argomenti gestisce anche spazi multipli, a differenza di `split(" ")`.
+**Spiegazione:** Prima si porta il testo in minuscolo, così le vocali maiuscole vengono riconosciute. Il ciclo scorre ogni carattere e `c in vocali` controlla se il carattere compare nella stringa `"aeiou"`. È il pattern contatore: `conta` parte da 0 e cresce di 1 a ogni vocale. In `"ciao mondo"` le vocali sono `i`, `a`, `o`, `o`, `o`.
 </details>
 
 ---
 
 ### Esercizio 9
 
-Completa la funzione che pulisce e normalizza un testo.
+Completa il codice che riceve un nome scritto come «cognome nome», con spazi e maiuscole a caso, e stampa `Mario Rossi`.
 
 ```python
-def normalizza_testo(testo):
-    """Pulisce un testo: minuscolo, senza spazi extra, senza punteggiatura finale.
-
-    Esempio: normalizza_testo("  Ciao, MONDO!  ")
-    deve restituire "ciao, mondo!"
-
-    Esempio: normalizza_testo("  PYTHON   è   BELLO  ")
-    deve restituire "python è bello"
-    """
-    testo = testo.____________     # rimuove spazi iniziali e finali
-    testo = testo.____________     # converte in minuscolo
-    parole = testo.____________    # divide in parole
-    return _________________________  # riunisce con un singolo spazio
+dato = "  rossi MARIO  "
+pulito = dato.__________.__________     # "Rossi Mario"
+spazio = pulito.__________
+cognome = pulito[__________]
+nome = pulito[__________]
+print(nome + " " + cognome)            # deve stampare: Mario Rossi
 ```
 
 <details>
 <summary>Mostra la risposta</summary>
 
 ```python
-def normalizza_testo(testo):
-    """Pulisce un testo: minuscolo, senza spazi extra."""
-    testo = testo.strip()
-    testo = testo.lower()
-    parole = testo.split()
-    return " ".join(parole)
+dato = "  rossi MARIO  "
+pulito = dato.strip().title()     # "Rossi Mario"
+spazio = pulito.find(" ")         # 5
+cognome = pulito[:spazio]         # "Rossi"
+nome = pulito[spazio + 1:]        # "Mario"
+print(nome + " " + cognome)       # Mario Rossi
 ```
 
-**Spiegazione:** La pipeline di pulizia funziona cosi: (1) `strip()` rimuove gli spazi bianchi all'inizio e alla fine; (2) `lower()` converte tutto in minuscolo; (3) `split()` divide per spazi (gestendo anche spazi multipli); (4) `" ".join(parole)` ricompone il testo con un solo spazio tra le parole, eliminando cosi gli spazi extra interni.
+**Spiegazione:** `strip()` toglie gli spazi ai bordi e `title()` mette la maiuscola all'inizio di ogni parola e le altre lettere in minuscolo. `find(" ")` dà la posizione dello spazio che separa le due parole. Il cognome va dall'inizio fino allo spazio escluso; il nome parte dal carattere dopo lo spazio e arriva in fondo.
 </details>
 
 ---
 
 ### Esercizio 10
 
-Completa la funzione che conta le vocali in una stringa.
+Completa il codice che controlla se una frase è palindroma, cioè se si legge uguale nei due versi senza contare spazi e maiuscole.
 
 ```python
-def conta_vocali(testo):
-    """Conta il numero di vocali (a, e, i, o, u) nel testo.
-
-    Esempio: conta_vocali("Ciao Mondo") deve restituire 4
-    """
-    vocali = "aeiou"
-    testo_lower = testo.__________
-    return ____([_____________ for c in testo_lower if ______________])
+frase = "I topi non avevano nipoti"
+pulita = frase.__________.__________(" ", "")
+if pulita == pulita[__________]:
+    print("Palindroma")
+else:
+    print("Non palindroma")
+# deve stampare: Palindroma
 ```
 
 <details>
 <summary>Mostra la risposta</summary>
 
 ```python
-def conta_vocali(testo):
-    """Conta il numero di vocali (a, e, i, o, u) nel testo."""
-    vocali = "aeiou"
-    testo_lower = testo.lower()
-    return len([c for c in testo_lower if c in vocali])
+frase = "I topi non avevano nipoti"
+pulita = frase.lower().replace(" ", "")
+if pulita == pulita[::-1]:
+    print("Palindroma")
+else:
+    print("Non palindroma")
+# Palindroma
 ```
 
-**Spiegazione:** Prima convertiamo il testo in minuscolo per non doverci preoccupare delle maiuscole. La comprehension `[c for c in testo_lower if c in vocali]` costruisce una lista con solo i caratteri che sono vocali. Infine, `len()` conta quanti elementi ha questa lista. In `"ciao mondo"` le vocali sono `i, a, o, o` = 4.
+**Spiegazione:** `lower()` porta tutto in minuscolo e `replace(" ", "")` toglie gli spazi sostituendoli con la stringa vuota: si ottiene `"itopinonavevanonipoti"`. Lo slicing `[::-1]` legge la stringa dalla fine all'inizio. Se la stringa rovesciata è uguale all'originale, la frase è palindroma.
 </details>

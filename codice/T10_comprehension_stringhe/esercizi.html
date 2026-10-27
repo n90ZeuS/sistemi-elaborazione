@@ -203,306 +203,205 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../../dispense/frontali/T10_comprehension_stringhe.html">Dispensa</a> &bull; <a href="../../presentazioni/T10_comprehension_stringhe.html">Presentazione</a> &bull; <a href="esempi.html">Esempi</a></nav>
 <h1>T10_comprehension_stringhe/esercizi.py</h1>
 <a class="download-link" href="esercizi.py" download>Scarica file .py</a>
-<pre><code><span class="cm"># T10 — Comprehension e stringhe</span>
+<pre><code><span class="cm"># T10 — Stringhe</span>
 <span class="cm"># Esercizi per la lezione frontale 10</span>
-<span class="cm"># Frequenza parole, cifrario di Cesare, validazione email, trasposizione matrice</span>
+<span class="cm"># Vocali e consonanti, palindromi, cifrario di Cesare, controllo di un&#x27;email,</span>
+<span class="cm"># controllo di una password</span>
+<span class="cm">#</span>
+<span class="cm"># Ogni esercizio parte da dati scritti nel codice: cambiate i valori</span>
+<span class="cm"># e rilanciate il programma per provare casi diversi.</span>
+<span class="cm"># Accanto a ogni risultato trovate, in commento, il valore atteso.</span>
 
 <span class="cm"># =============================================================================</span>
-<span class="cm"># Esercizio 1: Contatore di frequenza delle parole</span>
-<span class="cm"># Dato un testo, contare quante volte appare ciascuna parola.</span>
+<span class="cm"># Esercizio 1: Vocali, consonanti e altri caratteri</span>
+<span class="cm"># Contare vocali, consonanti, cifre e spazi di una frase (pattern contatore).</span>
+<span class="cm"># Le maiuscole vanno contate come le minuscole.</span>
 <span class="cm"># =============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Frequenza parole ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Vocali e consonanti ---&quot;</span>)
 
+frase: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Nel 2026 la Statistica compie 3 secoli&quot;</span>
 
-<span class="kw">def</span> <span class="fn">conta_parole</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;
-    Conta la frequenza di ogni parola nel testo.
-    Le parole sono normalizzate in minuscolo, la punteggiatura viene rimossa.
-    &quot;&quot;&quot;</span>
-    <span class="cm"># Rimuoviamo la punteggiatura comune</span>
-    punteggiatura: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;.,;:!?\&quot;&#x27;()-&quot;</span>
-    testo_pulito: <span class="nb">str</span> <span class="op">=</span> testo.lower()
-    <span class="kw">for</span> char <span class="kw">in</span> punteggiatura:
-        testo_pulito <span class="op">=</span> testo_pulito.replace(char, <span class="st">&quot;&quot;</span>)
+vocali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+consonanti: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+cifre: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+spazi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
 
-    parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> testo_pulito.split()
-    frequenze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
-    <span class="kw">for</span> parola <span class="kw">in</span> parole:
-        frequenze[parola] <span class="op">=</span> frequenze.get(parola, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
-    <span class="kw">return</span> frequenze
+<span class="kw">for</span> carattere <span class="kw">in</span> frase.lower():
+    <span class="kw">if</span> carattere <span class="kw">in</span> <span class="st">&quot;aeiou&quot;</span>:
+        vocali <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> carattere.isalpha():
+        consonanti <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> carattere.isdigit():
+        cifre <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> carattere <span class="op">=</span><span class="op">=</span> <span class="st">&quot; &quot;</span>:
+        spazi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
 
-
-<span class="kw">def</span> <span class="fn">parole_piu_frequenti</span>(
-    frequenze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>], n: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>
-) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]]:
-    <span class="st">&quot;&quot;&quot;Restituisce le n parole piu&#x27; frequenti, ordinate per frequenza decrescente.&quot;&quot;&quot;</span>
-    ordinate: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
-        frequenze.items(), key<span class="op">=</span><span class="kw">lambda</span> coppia: coppia[<span class="mi">1</span>], reverse<span class="op">=</span><span class="kw">True</span>
-    )
-    <span class="kw">return</span> ordinate[:n]
-
-
-<span class="cm"># Testo di test</span>
-testo_test: <span class="nb">str</span> <span class="op">=</span> (
-    <span class="st">&quot;Python e&#x27; un linguaggio di programmazione. &quot;</span>
-    <span class="st">&quot;Python e&#x27; versatile e Python e&#x27; potente. &quot;</span>
-    <span class="st">&quot;La programmazione in Python e&#x27; divertente!&quot;</span>
-)
-
-freq: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> conta_parole(testo_test)
-
-<span class="kw">assert</span> freq[<span class="st">&quot;python&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
-<span class="kw">assert</span> freq[<span class="st">&quot;e&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">5</span>
-<span class="kw">assert</span> freq[<span class="st">&quot;programmazione&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
-<span class="kw">assert</span> freq.get(<span class="st">&quot;Java&quot;</span>, <span class="mi">0</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>  <span class="cm"># Parola assente</span>
-
-top_3: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> parole_piu_frequenti(freq, <span class="mi">3</span>)
-<span class="kw">assert</span> top_3[<span class="mi">0</span>][<span class="mi">1</span>] <span class="op">&gt;</span><span class="op">=</span> top_3[<span class="mi">1</span>][<span class="mi">1</span>] <span class="op">&gt;</span><span class="op">=</span> top_3[<span class="mi">2</span>][<span class="mi">1</span>]  <span class="cm"># Ordine decrescente</span>
-
-<span class="nb">print</span>(<span class="st">f&quot;  Testo: \&quot;{testo_test[:50]}...\&quot;&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Parole uniche: {len(freq)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Top 5 parole:&quot;</span>)
-<span class="kw">for</span> parola, conteggio <span class="kw">in</span> parole_piu_frequenti(freq, <span class="mi">5</span>):
-    barra: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;#&quot;</span> <span class="op">*</span> conteggio
-    <span class="nb">print</span>(<span class="st">f&quot;    {parola:&lt;20} {conteggio:&gt;3} {barra}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 1 superato!\n&quot;</span>)
-
-
-<span class="cm"># =============================================================================</span>
-<span class="cm"># Esercizio 2: Cifrario di Cesare</span>
-<span class="cm"># Cifrare e decifrare un messaggio spostando ogni lettera di N posizioni.</span>
-<span class="cm"># =============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Cifrario di Cesare ---&quot;</span>)
-
-
-<span class="kw">def</span> <span class="fn">cifra_cesare</span>(<span class="fn">testo</span>: <span class="nb">str</span>, chiave: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-    <span class="st">&quot;&quot;&quot;
-    Cifra un testo con il cifrario di Cesare.
-    Sposta ogni lettera di &#x27;chiave&#x27; posizioni nell&#x27;alfabeto.
-    I caratteri non alfabetici restano invariati.
-    &quot;&quot;&quot;</span>
-    risultato: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-    <span class="kw">for</span> char <span class="kw">in</span> testo:
-        <span class="kw">if</span> char.isalpha():
-            <span class="cm"># Determiniamo la base ASCII (maiuscola o minuscola)</span>
-            base: <span class="nb">int</span> <span class="op">=</span> <span class="nb">ord</span>(<span class="st">&quot;A&quot;</span>) <span class="kw">if</span> char.isupper() <span class="kw">else</span> <span class="nb">ord</span>(<span class="st">&quot;a&quot;</span>)
-            <span class="cm"># Spostamento con modulo 26 per restare nell&#x27;alfabeto</span>
-            nuovo_char: <span class="nb">str</span> <span class="op">=</span> <span class="nb">chr</span>((<span class="nb">ord</span>(char) <span class="op">-</span> base <span class="op">+</span> chiave) <span class="op">%</span> <span class="mi">26</span> <span class="op">+</span> base)
-            risultato.append(nuovo_char)
-        <span class="kw">else</span>:
-            risultato.append(char)
-    <span class="kw">return</span> <span class="st">&quot;&quot;</span>.join(risultato)
-
-
-<span class="kw">def</span> <span class="fn">decifra_cesare</span>(<span class="fn">testo_cifrato</span>: <span class="nb">str</span>, chiave: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-    <span class="st">&quot;&quot;&quot;Decifra un testo cifrato con Cesare (spostamento inverso).&quot;&quot;&quot;</span>
-    <span class="kw">return</span> cifra_cesare(testo_cifrato, <span class="op">-</span>chiave)
-
-
-<span class="cm"># Test cifratura</span>
-<span class="kw">assert</span> cifra_cesare(<span class="st">&quot;ABC&quot;</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;DEF&quot;</span>
-<span class="kw">assert</span> cifra_cesare(<span class="st">&quot;XYZ&quot;</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;ABC&quot;</span>  <span class="cm"># Wrap-around</span>
-<span class="kw">assert</span> cifra_cesare(<span class="st">&quot;abc&quot;</span>, <span class="mi">1</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;bcd&quot;</span>
-<span class="kw">assert</span> cifra_cesare(<span class="st">&quot;Ciao Mondo!&quot;</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Hnft Rtsit!&quot;</span>
-
-<span class="cm"># Test decifratura</span>
-<span class="kw">assert</span> decifra_cesare(<span class="st">&quot;DEF&quot;</span>, <span class="mi">3</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;ABC&quot;</span>
-<span class="kw">assert</span> decifra_cesare(<span class="st">&quot;Hnft Rtsit!&quot;</span>, <span class="mi">5</span>) <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Ciao Mondo!&quot;</span>
-
-<span class="cm"># Test andata e ritorno</span>
-messaggio_originale: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;La programmazione in Python e&#x27; fantastica!&quot;</span>
-<span class="kw">for</span> chiave_test <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">0</span>, <span class="mi">26</span>):
-    cifrato: <span class="nb">str</span> <span class="op">=</span> cifra_cesare(messaggio_originale, chiave_test)
-    decifrato: <span class="nb">str</span> <span class="op">=</span> decifra_cesare(cifrato, chiave_test)
-    <span class="kw">assert</span> decifrato <span class="op">=</span><span class="op">=</span> messaggio_originale
-
-<span class="cm"># Dimostrazione con chiave = 13 (ROT13)</span>
-originale: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Programmazione Python&quot;</span>
-cifrato_13: <span class="nb">str</span> <span class="op">=</span> cifra_cesare(originale, <span class="mi">13</span>)
-decifrato_13: <span class="nb">str</span> <span class="op">=</span> decifra_cesare(cifrato_13, <span class="mi">13</span>)
-<span class="cm"># ROT13 applicato due volte restituisce l&#x27;originale</span>
-<span class="kw">assert</span> cifra_cesare(cifrato_13, <span class="mi">13</span>) <span class="op">=</span><span class="op">=</span> originale
-
-<span class="nb">print</span>(<span class="st">f&quot;  Originale:    &#x27;{originale}&#x27;&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Cifrato (k=13): &#x27;{cifrato_13}&#x27;&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  Decifrato:    &#x27;{decifrato_13}&#x27;&quot;</span>)
-
-<span class="cm"># Mostriamo tutte le 26 chiavi per &quot;CIAO&quot;</span>
-<span class="nb">print</span>(<span class="st">f&quot;\n  Tutte le rotazioni di &#x27;CIAO&#x27;:&quot;</span>)
-<span class="kw">for</span> k <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">26</span>):
-    <span class="nb">print</span>(<span class="st">f&quot;    k={k:&gt;2}: {cifra_cesare(&#x27;CIAO&#x27;, k)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 2 superato!\n&quot;</span>)
-
-
-<span class="cm"># =============================================================================</span>
-<span class="cm"># Esercizio 3: Validatore semplice di email</span>
-<span class="cm"># Verifica che una stringa abbia il formato base di un&#x27;email.</span>
-<span class="cm"># =============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Validatore email (semplice) ---&quot;</span>)
-
-
-<span class="kw">def</span> <span class="fn">valida_email</span>(<span class="fn">email</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">bool</span>, <span class="nb">str</span>]:
-    <span class="st">&quot;&quot;&quot;
-    Valida un indirizzo email con regole base:
-    - Contiene esattamente un &#x27;@&#x27;
-    - La parte locale (prima di @) non e&#x27; vuota
-    - Il dominio contiene almeno un &#x27;.&#x27;
-    - Il dominio non inizia e non finisce con &#x27;.&#x27;
-    - Nessuno spazio presente
-    Restituisce (valida, messaggio).
-    &quot;&quot;&quot;</span>
-    <span class="cm"># Nessuno spazio</span>
-    <span class="kw">if</span> <span class="st">&quot; &quot;</span> <span class="kw">in</span> email:
-        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">&quot;Contiene spazi&quot;</span>
-
-    <span class="cm"># Esattamente un @</span>
-    <span class="kw">if</span> email.count(<span class="st">&quot;@&quot;</span>) <span class="op">!</span><span class="op">=</span> <span class="mi">1</span>:
-        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">f&quot;Deve contenere esattamente un &#x27;@&#x27; (trovati: {email.count(&#x27;@&#x27;)})&quot;</span>
-
-    locale: <span class="nb">str</span>
-    dominio: <span class="nb">str</span>
-    locale, dominio <span class="op">=</span> email.split(<span class="st">&quot;@&quot;</span>)
-
-    <span class="cm"># Parte locale non vuota</span>
-    <span class="kw">if</span> <span class="nb">len</span>(locale) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">&quot;Parte locale vuota&quot;</span>
-
-    <span class="cm"># Dominio non vuoto e contiene almeno un punto</span>
-    <span class="kw">if</span> <span class="nb">len</span>(dominio) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">&quot;Dominio vuoto&quot;</span>
-
-    <span class="kw">if</span> <span class="st">&quot;.&quot;</span> <span class="kw">not</span> <span class="kw">in</span> dominio:
-        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">&quot;Il dominio deve contenere almeno un &#x27;.&#x27;&quot;</span>
-
-    <span class="kw">if</span> dominio.startswith(<span class="st">&quot;.&quot;</span>) <span class="kw">or</span> dominio.endswith(<span class="st">&quot;.&quot;</span>):
-        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">&quot;Il dominio non puo&#x27; iniziare o finire con &#x27;.&#x27;&quot;</span>
-
-    <span class="cm"># Estensione (TLD) di almeno 2 caratteri</span>
-    tld: <span class="nb">str</span> <span class="op">=</span> dominio.split(<span class="st">&quot;.&quot;</span>)[<span class="op">-</span><span class="mi">1</span>]
-    <span class="kw">if</span> <span class="nb">len</span>(tld) <span class="op">&lt;</span> <span class="mi">2</span>:
-        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">f&quot;Estensione troppo corta: &#x27;{tld}&#x27;&quot;</span>
-
-    <span class="kw">return</span> <span class="kw">True</span>, <span class="st">&quot;Email valida&quot;</span>
-
-
-<span class="cm"># Test email valide</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;utente@example.com&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;nome.cognome@unibo.it&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;test123@mail.co.uk&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">True</span>
-
-<span class="cm"># Test email non valide</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;senza-chiocciola.com&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;@dominio.com&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;utente@&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;utente@dominio&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;utente@@dominio.com&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;utente@.dominio.com&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;utente@dominio.&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> valida_email(<span class="st">&quot;utente @dominio.com&quot;</span>)[<span class="mi">0</span>] <span class="kw">is</span> <span class="kw">False</span>
-
-<span class="cm"># Dimostrazione</span>
-email_test: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [
-    <span class="st">&quot;mario.rossi@unibo.it&quot;</span>,
-    <span class="st">&quot;studente@gmail.com&quot;</span>,
-    <span class="st">&quot;senza-at.com&quot;</span>,
-    <span class="st">&quot;@manca-locale.it&quot;</span>,
-    <span class="st">&quot;doppia@@chiocciola.it&quot;</span>,
-    <span class="st">&quot;utente@dominio&quot;</span>,
-    <span class="st">&quot;nome cognome@mail.com&quot;</span>,
-    <span class="st">&quot;test@.inizio-punto.com&quot;</span>,
-]
-
-<span class="nb">print</span>(<span class="st">f&quot;  {&#x27;Email&#x27;:&lt;35}{&#x27;Valida&#x27;:&lt;8}{&#x27;Messaggio&#x27;}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;  {&#x27;-&#x27; * 70}&quot;</span>)
-<span class="kw">for</span> email <span class="kw">in</span> email_test:
-    valida, msg <span class="op">=</span> valida_email(email)
-    simbolo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;SI&quot;</span> <span class="kw">if</span> valida <span class="kw">else</span> <span class="st">&quot;NO&quot;</span>
-    <span class="nb">print</span>(<span class="st">f&quot;  {email:&lt;35}{simbolo:&lt;8}{msg}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 3 superato!\n&quot;</span>)
-
-
-<span class="cm"># =============================================================================</span>
-<span class="cm"># Esercizio 4: Trasposizione di matrice con comprehension</span>
-<span class="cm"># Data una matrice MxN, restituire la trasposta NxM.</span>
-<span class="cm"># =============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Trasposizione matrice ---&quot;</span>)
-
-
-<span class="kw">def</span> <span class="fn">trasponi</span>(<span class="fn">matrice</span>: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]]:
-    <span class="st">&quot;&quot;&quot;Traspone una matrice usando una list comprehension annidata.&quot;&quot;&quot;</span>
-    <span class="kw">if</span> <span class="kw">not</span> matrice:
-        <span class="kw">return</span> []
-    n_colonne: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(matrice[<span class="mi">0</span>])
-    <span class="cm"># Per ogni colonna j, crea una riga con tutti gli elementi matrice[i][j]</span>
-    trasposta: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [
-        [matrice[i][j] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(matrice))]
-        <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(n_colonne)
-    ]
-    <span class="kw">return</span> trasposta
-
-
-<span class="kw">def</span> <span class="fn">trasponi_zip</span>(<span class="fn">matrice</span>: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]]:
-    <span class="st">&quot;&quot;&quot;Traspone usando zip (modo idiomatico Python).&quot;&quot;&quot;</span>
-    <span class="kw">return</span> [<span class="nb">list</span>(riga) <span class="kw">for</span> riga <span class="kw">in</span> <span class="nb">zip</span>(<span class="op">*</span>matrice)]
-
-
-<span class="kw">def</span> <span class="fn">stampa_matrice</span>(<span class="fn">matrice</span>: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]], nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;M&quot;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-    <span class="st">&quot;&quot;&quot;Stampa una matrice in formato leggibile.&quot;&quot;&quot;</span>
-    <span class="nb">print</span>(<span class="st">f&quot;  {nome}:&quot;</span>)
-    <span class="kw">for</span> riga <span class="kw">in</span> matrice:
-        <span class="nb">print</span>(<span class="st">f&quot;    {riga}&quot;</span>)
-
-
-<span class="cm"># Test matrice 2x3</span>
-m1: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [
-    [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>],
-    [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>],
-]
-t1: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> trasponi(m1)
-<span class="kw">assert</span> t1 <span class="op">=</span><span class="op">=</span> [
-    [<span class="mi">1</span>, <span class="mi">4</span>],
-    [<span class="mi">2</span>, <span class="mi">5</span>],
-    [<span class="mi">3</span>, <span class="mi">6</span>],
-]
-
-<span class="cm"># Test matrice 3x3</span>
-m2: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [
-    [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>],
-    [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>],
-    [<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>],
-]
-t2: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> trasponi(m2)
-<span class="kw">assert</span> t2 <span class="op">=</span><span class="op">=</span> [
-    [<span class="mi">1</span>, <span class="mi">4</span>, <span class="mi">7</span>],
-    [<span class="mi">2</span>, <span class="mi">5</span>, <span class="mi">8</span>],
-    [<span class="mi">3</span>, <span class="mi">6</span>, <span class="mi">9</span>],
-]
-
-<span class="cm"># La trasposta della trasposta e&#x27; la matrice originale</span>
-<span class="kw">assert</span> trasponi(trasponi(m1)) <span class="op">=</span><span class="op">=</span> m1
-<span class="kw">assert</span> trasponi(trasponi(m2)) <span class="op">=</span><span class="op">=</span> m2
-
-<span class="cm"># Verifica che le due implementazioni diano lo stesso risultato</span>
-<span class="kw">assert</span> trasponi(m1) <span class="op">=</span><span class="op">=</span> trasponi_zip(m1)
-<span class="kw">assert</span> trasponi(m2) <span class="op">=</span><span class="op">=</span> trasponi_zip(m2)
-
-<span class="cm"># Test matrice vuota</span>
-<span class="kw">assert</span> trasponi([]) <span class="op">=</span><span class="op">=</span> []
-
-<span class="cm"># Test matrice 1xN</span>
-m3: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]]
-t3: <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> trasponi(m3)
-<span class="kw">assert</span> t3 <span class="op">=</span><span class="op">=</span> [[<span class="mi">1</span>], [<span class="mi">2</span>], [<span class="mi">3</span>], [<span class="mi">4</span>], [<span class="mi">5</span>]]
-
-stampa_matrice(m1, <span class="st">&quot;M (2x3)&quot;</span>)
-stampa_matrice(t1, <span class="st">&quot;M^T (3x2)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Frase: &#x27;{frase}&#x27;&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;  Vocali: {vocali}&quot;</span>)          <span class="cm"># atteso: 12</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Consonanti: {consonanti}&quot;</span>)  <span class="cm"># atteso: 15</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Cifre: {cifre}&quot;</span>)            <span class="cm"># atteso: 5</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Spazi: {spazi}&quot;</span>)            <span class="cm"># atteso: 6</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Totale: {len(frase)}&quot;</span>)      <span class="cm"># atteso: 38 (12 + 15 + 5 + 6)</span>
 <span class="nb">print</span>()
-stampa_matrice(m2, <span class="st">&quot;M (3x3)&quot;</span>)
-stampa_matrice(t2, <span class="st">&quot;M^T (3x3)&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;  Esercizio 4 superato!\n&quot;</span>)
 
 
-<span class="nb">print</span>(<span class="st">&quot;Tutti gli esercizi T10 completati con successo!&quot;</span>)
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 2: Palindromi</span>
+<span class="cm"># Una frase è palindroma se si legge uguale nei due versi,</span>
+<span class="cm"># senza contare spazi e maiuscole.</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Palindromi ---&quot;</span>)
+
+candidata: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;I topi non avevano nipoti&quot;</span>
+
+<span class="cm"># Tolgo gli spazi e porto tutto in minuscolo</span>
+pulita: <span class="nb">str</span> <span class="op">=</span> candidata.replace(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>).lower()
+
+<span class="cm"># Versione 1: confronto con la stringa rovesciata</span>
+palindroma: <span class="nb">bool</span> <span class="op">=</span> pulita <span class="op">=</span><span class="op">=</span> pulita[::<span class="op">-</span><span class="mi">1</span>]
+
+<span class="cm"># Versione 2: confronto il primo carattere con l&#x27;ultimo, il secondo con</span>
+<span class="cm"># il penultimo e così via (pattern ricerca: mi fermo alla prima differenza)</span>
+palindroma_ciclo: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(pulita) <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>):
+    <span class="kw">if</span> pulita[i] <span class="op">!</span><span class="op">=</span> pulita[<span class="nb">len</span>(pulita) <span class="op">-</span> <span class="mi">1</span> <span class="op">-</span> i]:
+        palindroma_ciclo <span class="op">=</span> <span class="kw">False</span>
+        <span class="kw">break</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  &#x27;{candidata}&#x27; -&gt; &#x27;{pulita}&#x27;&quot;</span>)      <span class="cm"># atteso: &#x27;itopinonavevanonipoti&#x27;</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Palindroma (slicing): {palindroma}&quot;</span>)      <span class="cm"># atteso: True</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Palindroma (ciclo):   {palindroma_ciclo}&quot;</span>)  <span class="cm"># atteso: True</span>
+<span class="cm"># Altri casi da provare: &quot;anna&quot; -&gt; True, &quot;Python&quot; -&gt; False, &quot;Ai lati d&#x27;Italia&quot; -&gt; False</span>
+<span class="cm"># (l&#x27;apostrofo resta nella stringa: provate a toglierlo con un altro replace)</span>
+<span class="nb">print</span>()
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 3: Cifrario di Cesare</span>
+<span class="cm"># Ogni lettera viene sostituita da quella che si trova `chiave` posizioni</span>
+<span class="cm"># più avanti nell&#x27;alfabeto; dopo la z si riparte dalla a.</span>
+<span class="cm"># Gli altri caratteri (spazi, punteggiatura) restano uguali.</span>
+<span class="cm"># isupper() restituisce True se il carattere è una lettera maiuscola</span>
+<span class="cm"># (islower(), usato nell&#x27;esercizio 5, fa lo stesso per le minuscole).</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Cifrario di Cesare ---&quot;</span>)
+
+alfabeto: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>
+messaggio: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Ciao Mondo!&quot;</span>
+chiave: <span class="nb">int</span> <span class="op">=</span> <span class="mi">3</span>
+
+cifrato: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
+<span class="kw">for</span> carattere <span class="kw">in</span> messaggio:
+    posizione: <span class="nb">int</span> <span class="op">=</span> alfabeto.find(carattere.lower())
+    <span class="kw">if</span> posizione <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>:
+        cifrato <span class="op">+</span><span class="op">=</span> carattere              <span class="cm"># non è una lettera: resta uguale</span>
+    <span class="kw">else</span>:
+        nuova: <span class="nb">str</span> <span class="op">=</span> alfabeto[(posizione <span class="op">+</span> chiave) <span class="op">%</span> <span class="mi">26</span>]
+        <span class="kw">if</span> carattere.isupper():           <span class="cm"># conservo la maiuscola</span>
+            nuova <span class="op">=</span> nuova.upper()
+        cifrato <span class="op">+</span><span class="op">=</span> nuova
+
+<span class="cm"># Per decifrare si sposta all&#x27;indietro della stessa chiave</span>
+decifrato: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
+<span class="kw">for</span> carattere <span class="kw">in</span> cifrato:
+    posizione <span class="op">=</span> alfabeto.find(carattere.lower())
+    <span class="kw">if</span> posizione <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>:
+        decifrato <span class="op">+</span><span class="op">=</span> carattere
+    <span class="kw">else</span>:
+        nuova <span class="op">=</span> alfabeto[(posizione <span class="op">-</span> chiave) <span class="op">%</span> <span class="mi">26</span>]
+        <span class="kw">if</span> carattere.isupper():
+            nuova <span class="op">=</span> nuova.upper()
+        decifrato <span class="op">+</span><span class="op">=</span> nuova
+
+<span class="nb">print</span>(<span class="st">f&quot;  Messaggio: {messaggio}&quot;</span>)    <span class="cm"># atteso: Ciao Mondo!</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Cifrato:   {cifrato}&quot;</span>)      <span class="cm"># atteso: Fldr Prqgr!</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Decifrato: {decifrato}&quot;</span>)    <span class="cm"># atteso: Ciao Mondo!</span>
+<span class="cm"># Altri casi da provare: &quot;xyz&quot; con chiave 3 -&gt; &quot;abc&quot;</span>
+<span class="cm"># Con chiave 13 cifrare due volte restituisce il messaggio originale.</span>
+<span class="nb">print</span>()
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 4: Controllo di un indirizzo email</span>
+<span class="cm"># Regole semplici:</span>
+<span class="cm">#   - nessuno spazio</span>
+<span class="cm">#   - esattamente una @</span>
+<span class="cm">#   - almeno un carattere prima della @</span>
+<span class="cm">#   - dopo la @ un dominio con almeno un punto, che non inizia e non finisce con il punto</span>
+<span class="cm"># Si stampa il primo problema trovato, oppure &quot;Email valida&quot;.</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Controllo email ---&quot;</span>)
+
+email: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;mario.rossi@studenti.unipd.it&quot;</span>
+
+chiocciola: <span class="nb">int</span> <span class="op">=</span> email.find(<span class="st">&quot;@&quot;</span>)
+utente: <span class="nb">str</span> <span class="op">=</span> email[:chiocciola]
+dominio: <span class="nb">str</span> <span class="op">=</span> email[chiocciola <span class="op">+</span> <span class="mi">1</span>:]
+
+<span class="kw">if</span> <span class="st">&quot; &quot;</span> <span class="kw">in</span> email:
+    esito: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Contiene spazi&quot;</span>
+<span class="kw">elif</span> email.count(<span class="st">&quot;@&quot;</span>) <span class="op">!</span><span class="op">=</span> <span class="mi">1</span>:
+    esito <span class="op">=</span> <span class="st">f&quot;Deve contenere una sola @ (trovate: {email.count(&#x27;@&#x27;)})&quot;</span>
+<span class="kw">elif</span> <span class="nb">len</span>(utente) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+    esito <span class="op">=</span> <span class="st">&quot;Manca la parte prima della @&quot;</span>
+<span class="kw">elif</span> <span class="st">&quot;.&quot;</span> <span class="kw">not</span> <span class="kw">in</span> dominio:
+    esito <span class="op">=</span> <span class="st">&quot;Il dominio deve contenere un punto&quot;</span>
+<span class="kw">elif</span> dominio.startswith(<span class="st">&quot;.&quot;</span>) <span class="kw">or</span> dominio.endswith(<span class="st">&quot;.&quot;</span>):
+    esito <span class="op">=</span> <span class="st">&quot;Il dominio non può iniziare o finire con il punto&quot;</span>
+<span class="kw">else</span>:
+    esito <span class="op">=</span> <span class="st">&quot;Email valida&quot;</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  {email}: {esito}&quot;</span>)
+<span class="cm"># atteso: mario.rossi@studenti.unipd.it: Email valida</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Utente: {utente}&quot;</span>)     <span class="cm"># atteso: mario.rossi</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Dominio: {dominio}&quot;</span>)   <span class="cm"># atteso: studenti.unipd.it</span>
+<span class="cm"># Altri casi da provare:</span>
+<span class="cm">#   &quot;senza-chiocciola.it&quot;  -&gt; Deve contenere una sola @ (trovate: 0)</span>
+<span class="cm">#   &quot;@unipd.it&quot;            -&gt; Manca la parte prima della @</span>
+<span class="cm">#   &quot;mario@@unipd.it&quot;      -&gt; Deve contenere una sola @ (trovate: 2)</span>
+<span class="cm">#   &quot;mario@unipd&quot;          -&gt; Il dominio deve contenere un punto</span>
+<span class="cm">#   &quot;mario@.unipd.it&quot;      -&gt; Il dominio non può iniziare o finire con il punto</span>
+<span class="cm">#   &quot;mario rossi@unipd.it&quot; -&gt; Contiene spazi</span>
+<span class="nb">print</span>()
+
+
+<span class="cm"># =============================================================================</span>
+<span class="cm"># Esercizio 5: Controllo di una password</span>
+<span class="cm"># Una password è accettata se ha almeno 8 caratteri e contiene almeno</span>
+<span class="cm"># una maiuscola, una minuscola e una cifra. Stampare anche la quota di</span>
+<span class="cm"># cifre sul totale dei caratteri.</span>
+<span class="cm"># =============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: Controllo password ---&quot;</span>)
+
+password: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Statistica2026&quot;</span>
+
+n_maiuscole: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+n_minuscole: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+n_cifre: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> carattere <span class="kw">in</span> password:
+    <span class="kw">if</span> carattere.isupper():
+        n_maiuscole <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> carattere.islower():
+        n_minuscole <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">elif</span> carattere.isdigit():
+        n_cifre <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+
+<span class="nb">print</span>(<span class="st">f&quot;  Lunghezza: {len(password)}&quot;</span>)  <span class="cm"># atteso: 14</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Maiuscole: {n_maiuscole}, minuscole: {n_minuscole}, cifre: {n_cifre}&quot;</span>)
+<span class="cm"># atteso: Maiuscole: 1, minuscole: 9, cifre: 4</span>
+<span class="nb">print</span>(<span class="st">f&quot;  Quota di cifre: {n_cifre / len(password):.1%}&quot;</span>)  <span class="cm"># atteso: 28.6%</span>
+
+<span class="kw">if</span> <span class="nb">len</span>(password) <span class="op">&lt;</span> <span class="mi">8</span>:
+    <span class="nb">print</span>(<span class="st">&quot;  Password rifiutata: servono almeno 8 caratteri&quot;</span>)
+<span class="kw">elif</span> n_maiuscole <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> n_minuscole <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">or</span> n_cifre <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
+    <span class="nb">print</span>(<span class="st">&quot;  Password rifiutata: servono maiuscole, minuscole e cifre&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;  Password accettata&quot;</span>)           <span class="cm"># atteso: Password accettata</span>
+<span class="cm"># Altri casi da provare: &quot;corta1A&quot; -&gt; troppo corta, &quot;statistica2026&quot; -&gt; manca la maiuscola</span>
+<span class="nb">print</span>()
+
+
+<span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi T10&quot;</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
 </body>

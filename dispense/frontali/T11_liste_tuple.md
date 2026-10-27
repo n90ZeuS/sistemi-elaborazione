@@ -514,6 +514,104 @@ print(o.valore)  # 23.5
 
 ---
 
+## List comprehension
+
+Molti cicli costruiscono una lista nuova a partire da un'altra: si parte da una lista vuota e a ogni giro si aggiunge un elemento con `append()`. È il pattern trasformazione visto in T09. La **list comprehension** scrive la stessa cosa in una riga:
+
+```python
+numeri: list[int] = [1, 2, 3, 4, 5]
+
+# Con un ciclo
+quadrati: list[int] = []
+for n in numeri:
+    quadrati.append(n ** 2)
+
+# Con una comprehension
+quadrati = [n ** 2 for n in numeri]
+# in entrambi i casi: [1, 4, 9, 16, 25]
+```
+
+### Sintassi
+
+`[espressione for variabile in sequenza]`: la variabile prende a turno ogni elemento della sequenza e l'espressione dà il valore che finisce nella lista. La sequenza può essere una lista, un `range()` o una stringa; il risultato è sempre una lista.
+
+```python
+numeri: list[int] = [1, 2, 3, 4, 5]
+quadrati: list[int] = [n ** 2 for n in numeri]
+print(quadrati)                          # [1, 4, 9, 16, 25]
+
+doppi: list[int] = [i * 2 for i in range(5)]
+print(doppi)                             # [0, 2, 4, 6, 8]
+
+lettere: list[str] = [c.upper() for c in "ciao"]
+print(lettere)                           # ['C', 'I', 'A', 'O']
+```
+
+### Comprehension con filtro
+
+`[espressione for variabile in sequenza if condizione]`: entrano nella lista solo gli elementi per cui la condizione è vera (pattern filtro).
+
+```python
+voti: list[int] = [28, 15, 30, 22, 12, 27, 18]
+sufficienti: list[int] = [v for v in voti if v >= 18]
+print(sufficienti)  # [28, 30, 22, 27, 18]
+```
+
+Filtro e trasformazione si possono usare insieme:
+
+```python
+fahrenheit: list[float] = [32.0, 68.0, 95.0, 14.0, 77.0, 50.0]
+
+# In Celsius, solo le temperature sopra 50 °F
+celsius: list[float] = [round((f - 32) * 5 / 9, 1) for f in fahrenheit if f > 50]
+print(celsius)  # [20.0, 35.0, 25.0]
+```
+
+### Quando usare un ciclo
+
+La comprehension va bene quando il risultato è una lista e la regola sta in una riga. Serve un ciclo `for` quando il corpo ha più istruzioni o più condizioni, oppure quando non serve una lista ma solo stampare o accumulare un totale. Per esempio `[print(nome) for nome in nomi]` stampa i nomi, ma costruisce anche una lista di `None` che nessuno usa: qui va scritto un ciclo.
+
+---
+
+## Stringhe e liste: `split()` e `join()`
+
+`split()` divide una stringa in una lista di stringhe; `join()` fa il contrario e unisce gli elementi di una sequenza di stringhe usando la stringa su cui viene chiamato come separatore. Senza argomento, `split()` divide su uno o più spazi.
+
+```python
+riga: str = "Anna,28,Economia"
+campi: list[str] = riga.split(",")
+print(campi)          # ['Anna', '28', 'Economia']
+
+frase: str = "la  statistica   è   bella"
+print(frase.split())  # ['la', 'statistica', 'è', 'bella']
+
+parole: list[str] = ["media", "varianza", "moda"]
+print(", ".join(parole))   # media, varianza, moda
+print("-".join("abc"))     # a-b-c
+```
+
+### Pulire una riga di dati
+
+Per leggere a mano una riga di un file CSV si usano tre passi: `strip()` della riga, `split()` sul separatore, `strip()` di ogni campo con una comprehension.
+
+```python
+riga_grezza: str = "  Anna , 28 , Economia , 105  \n"
+
+riga: str = riga_grezza.strip()                     # 1. via spazi e a capo ai bordi
+campi_grezzi: list[str] = riga.split(",")           # 2. divido sul separatore
+print(campi_grezzi)   # ['Anna ', ' 28 ', ' Economia ', ' 105']
+
+campi: list[str] = [c.strip() for c in campi_grezzi]  # 3. strip di ogni campo
+print(campi)          # ['Anna', '28', 'Economia', '105']
+
+# Gli stessi tre passi in una riga
+campi = [c.strip() for c in riga_grezza.strip().split(",")]
+```
+
+I campi restano stringhe: per fare conti servono `int()` o `float()`, per esempio `int(campi[1])`.
+
+---
+
 ## Applicazioni statistiche
 
 ### Liste di osservazioni
@@ -648,6 +746,14 @@ for voto, freq in distribuzione_frequenze(voti_esame):
    tabella: dict[tuple[str, str], int] = tabella_contingenza(genere, sport)
    # Dovrebbe produrre: {("M", "calcio"): 2, ("F", "tennis"): 3, ...}
    ```
+
+### Comprehension e stringhe
+
+9. Data `numeri: list[int] = list(range(1, 11))`, scrivete una list comprehension che produca i numeri pari moltiplicati per 3. Risultato atteso: `[6, 12, 18, 24, 30]`.
+
+10. Data `riga: str = "  Mario Rossi , 25 , Roma  "`, estraete i tre campi puliti in una lista con `strip()`, `split(",")` e una comprehension. Risultato atteso: `['Mario Rossi', '25', 'Roma']`.
+
+11. Data `frase: str = "la  statistica   è una   scienza"`, stampate la frase con un solo spazio tra le parole usando `split()` e `join()`.
 
 ---
 

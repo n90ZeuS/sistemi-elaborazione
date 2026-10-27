@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehension e Stringhe</title>
+    <title>T10 — Stringhe</title>
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
@@ -314,6 +314,41 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -322,8 +357,8 @@
 
             <!-- ==================== SLIDE 1: TITOLO ==================== -->
             <section class="title-slide">
-                <h1>Comprehension e Stringhe</h1>
-                <div class="subtitle">Costruire collezioni in modo dichiarativo e manipolare dati testuali</div>
+                <h1>Stringhe</h1>
+                <div class="subtitle">Indici, slicing, metodi e formattazione dei numeri</div>
                 <div class="course-info">
                     Sistemi di Elaborazione &mdash; Lezione 10<br>
                     Corso di Laurea in Scienze Statistiche
@@ -334,325 +369,134 @@
             <section>
                 <h2>Agenda</h2>
                 <ol>
-                    <li class="fragment"><strong>List comprehension</strong> &mdash; sintassi, filtro, trasformazione</li>
-                    <li class="fragment"><strong>Dict e set comprehension</strong> &mdash; la stessa idea su altre strutture</li>
-                    <li class="fragment"><strong>Generator expression</strong> &mdash; lazy evaluation</li>
-                    <li class="fragment"><strong>Best practice</strong> &mdash; quando usarle, quando evitarle</li>
-                    <li class="fragment"><strong>Stringhe come struttura dati</strong> &mdash; indicizzazione, slicing, immutabilit&agrave;</li>
-                    <li class="fragment"><strong>Metodi fondamentali delle stringhe</strong></li>
-                    <li class="fragment"><strong>Pattern di pulizia dati</strong> &mdash; split + strip</li>
-                    <li class="fragment"><strong>f-string avanzate</strong> &mdash; formattazione e allineamento</li>
-                    <li class="fragment"><strong>Cenni su espressioni regolari</strong></li>
+                    <li class="fragment"><strong>Soluzioni del laboratorio 1</strong></li>
+                    <li class="fragment"><strong>Stringhe come sequenze</strong> &mdash; indici, slicing, cicli</li>
+                    <li class="fragment"><strong>Metodi delle stringhe</strong></li>
+                    <li class="fragment"><strong>Formattare i numeri</strong> &mdash; decimali e percentuali</li>
+                    <li class="fragment"><strong>Esercizi in aula</strong></li>
                 </ol>
             </section>
 
-            <!-- ==================== SEZIONE: LIST COMPREHENSION ==================== -->
+            <!-- SOLUZIONI LAB (generato) -->
             <section>
                 <section class="section-slide">
-                    <h2>List Comprehension</h2>
-                    <p>Da imperativo a dichiarativo</p>
+                    <h2>Soluzioni del laboratorio 1</h2>
+                    <p>Ambiente, variabili e condizionali</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L01»
+Da dire: prima di iniziare l'argomento nuovo vediamo le soluzioni degli esercizi del laboratorio. Il codice completo è nel file degli esercizi di L01.
+Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da quelli se manca tempo.</aside>
                 </section>
 
-                <!-- SLIDE: Dal ciclo alla comprehension -->
                 <section>
-                    <h2>Dal ciclo alla comprehension</h2>
-                    <p>Nella lezione precedente abbiamo visto pattern ricorrenti: <strong>accumulatore</strong>, <strong>filtro</strong>, <strong>trasformazione</strong>. Molti condividono la stessa struttura:</p>
-                    <div class="diagram">
-                        scorrere una sequenza &rarr; applicare trasformazione/filtro &rarr; raccogliere i risultati
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 1</div>
+                    <h2>temperatura.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>celsius: float = float(input("Temperatura in Celsius: "))
+
+fahrenheit: float = celsius * 9 / 5 + 32
+
+print(f"{celsius:.1f}°C = {fahrenheit:.1f}°F")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>input()</code> restituisce una stringa: serve <code>float()</code> prima di fare calcoli.</li><li><code>9 / 5</code> vale <code>1.8</code>: con <code>/</code> il risultato è sempre un <code>float</code>.</li><li><code>:.1f</code> arrotonda solo nella stampa; la variabile non cambia.</li></ul></div>
                     </div>
-                    <div class="box box-blue fragment">
-                        <strong>Comprehension:</strong> invece di dire <em>come</em> costruire la lista passo per passo (imperativo), descriviamo <em>cosa</em> deve contenere (dichiarativo).
-                    </div>
-                    <aside class="notes">Richiamare i pattern visti nella lezione T09 sui cicli. La comprehension nasce per rendere espliciti questi pattern.</aside>
+                    <aside class="notes">⏱ 2' · blocco «Soluzioni L01»
+Da dire: tre righe: lettura con conversione, calcolo, stampa. Il formato .1f agisce solo sulla stampa.
+Chiedere / fare: chi ha dimenticato float()? Che errore dava? (TypeError: can't multiply sequence by non-int of type 'float'). Provare 0, 100, -40.</aside>
                 </section>
 
-                <!-- SLIDE: Sintassi di base -->
                 <section>
-                    <h2>Sintassi di base</h2>
-                    <pre><code class="language-python">[espressione for variabile in iterabile]</code></pre>
-                    <p>Esempio: calcolare il quadrato di ogni numero.</p>
-                    <pre><code class="language-python">numeri: list[int] = [1, 2, 3, 4, 5]
-quadrati: list[int] = [n ** 2 for n in numeri]
-print(quadrati)  # [1, 4, 9, 16, 25]</code></pre>
-                    <div class="box box-green fragment">
-                        <code>espressione</code> = valore che finisce nella lista risultante<br>
-                        <code>variabile</code> = assume a turno ogni valore dell'iterabile
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 1</div>
+                    <h2>imc.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>peso: float = float(input("Peso (kg): "))
+altezza: float = float(input("Altezza (m): "))
+
+if peso &lt;= 0 or altezza &lt;= 0:
+    print("Errore: peso e altezza devono essere positivi")
+elif altezza &gt; 2.50:
+    print("Errore: l'altezza non può superare 2.50 m")
+else:
+    imc: float = peso / altezza ** 2
+
+    if imc &lt; 18.5:
+        classe: str = "Sottopeso"
+    elif imc &lt; 25:
+        classe = "Normopeso"
+    elif imc &lt; 30:
+        classe = "Sovrappeso"
+    else:
+        classe = "Obesità"
+
+    print(f"IMC: {imc:.1f} — {classe}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Prima si controllano i dati, poi si calcola: con altezza <code>0</code> la divisione darebbe <code>ZeroDivisionError</code>.</li><li>Nella catena <code>elif</code> basta il limite superiore: se si arriva a <code>imc &lt; 25</code>, <code>imc</code> è già almeno 18.5.</li><li><code>altezza ** 2</code> viene calcolato prima della divisione.</li></ul></div>
                     </div>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L01»
+Da dire: la validazione sta in testa; il calcolo è nell'else, quindi parte solo con dati corretti. Nella catena elif ogni ramo controlla solo il limite superiore.
+Chiedere / fare: con 72 e 1.75 l'IMC vale 23.5. Cosa cambia se scrivo quattro if separati invece degli elif? (con imc = 15 risultano vere tre condizioni: l'ultimo assegnamento vince).</aside>
                 </section>
 
-                <!-- SLIDE: Confronto con il ciclo for -->
                 <section>
-                    <h2>Confronto con il ciclo for</h2>
-                    <div class="compare">
-                        <div class="good">
-                            <h3>Comprehension</h3>
-<pre><code class="language-python">numeri = [1, 2, 3, 4, 5]
-quadrati = [n ** 2 for n in numeri]</code></pre>
-                            <p><em>1 riga, intenzione chiara</em></p>
-                        </div>
-                        <div class="bad">
-                            <h3>Ciclo for</h3>
-<pre><code class="language-python">numeri = [1, 2, 3, 4, 5]
-quadrati = []
-for n in numeri:
-    quadrati.append(n ** 2)</code></pre>
-                            <p><em>4 righe, serve leggere il corpo</em></p>
-                        </div>
-                    </div>
-                    <p class="fragment">Il risultato &egrave; <strong>identico</strong>. La comprehension rende visibile l'intenzione: "voglio una lista dei quadrati di <code>numeri</code>".</p>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 1</div>
+                    <h2>bancomat.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>saldo: float = 1000.00
+
+print("=== BANCOMAT ===")
+print(f"Saldo attuale: {saldo:.2f} EUR")
+operazione: str = input("Operazione (D=Deposito, P=Prelievo, S=Saldo): ").upper()</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>if operazione == "S":
+    print(f"Saldo disponibile: {saldo:.2f} EUR")
+elif operazione == "D" or operazione == "P":
+    importo: float = float(input("Importo: "))
+    if importo &lt;= 0:
+        print("Errore: l'importo deve essere positivo")
+    elif operazione == "D":
+        saldo = saldo + importo
+        print(f"Deposito di {importo:.2f} EUR effettuato.")
+        print(f"Nuovo saldo: {saldo:.2f} EUR")
+    elif importo &gt; saldo:
+        print(f"Errore: saldo insufficiente ({saldo:.2f} EUR)")
+    else:
+        saldo = saldo - importo
+        print(f"Prelievo di {importo:.2f} EUR effettuato.")
+        print(f"Nuovo saldo: {saldo:.2f} EUR")
+else:
+    print(f"Errore: operazione '{operazione}' non riconosciuta")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>.upper()</code> subito dopo <code>input()</code>: poi basta confrontare con le maiuscole.</li><li>L'importo si chiede solo per <code>D</code> e <code>P</code>, quindi dentro il loro ramo.</li><li>Il controllo <code>importo &lt;= 0</code> va prima degli altri: senza, un prelievo di −10 aumenterebbe il saldo.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L01»
+Da dire: due livelli di if: fuori si sceglie l'operazione, dentro si controlla l'importo. L'ordine dei controlli conta.
+Chiedere / fare: far provare P con -10 togliendo il controllo sull'importo: il saldo diventa 1010.00.</aside>
                 </section>
 
-                <!-- SLIDE: Comprehension con filtro -->
                 <section>
-                    <h2>Comprehension con filtro</h2>
-                    <pre><code class="language-python">[espressione for variabile in iterabile if condizione]</code></pre>
-                    <p>Esempio: estrarre solo i voti sufficienti.</p>
-                    <pre><code class="language-python">voti: list[int] = [28, 15, 30, 22, 12, 27, 18]
-sufficienti: list[int] = [v for v in voti if v >= 18]
-print(sufficienti)  # [28, 30, 22, 27, 18]</code></pre>
-                    <div class="fragment">
-                        <p>Equivalente con ciclo:</p>
-<pre><code class="language-python">sufficienti: list[int] = []
-for v in voti:
-    if v >= 18:
-        sufficienti.append(v)</code></pre>
-                    </div>
-                    <aside class="notes">La clausola if agisce come filtro: solo gli elementi che soddisfano la condizione entrano nella lista risultante.</aside>
-                </section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 1</div>
+                    <h2>sfida_temperatura.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>ZERO_ASSOLUTO: float = -273.15
 
-                <!-- SLIDE: Trasformazione + filtro -->
-                <section>
-                    <h2>Trasformazione e filtro insieme</h2>
-                    <pre><code class="language-python">temperature_fahrenheit: list[float] = [32.0, 68.0, 95.0, 14.0, 77.0, 50.0]
+celsius: float = float(input("Temperatura in Celsius: "))
 
-# Converti in Celsius solo le temperature sopra lo zero F,
-# arrotondando a una cifra decimale
-temperature_celsius: list[float] = [
-    round((f - 32) * 5 / 9, 1)
-    for f in temperature_fahrenheit
-    if f > 0
-]
-print(temperature_celsius)  # [0.0, 20.0, 35.0, -10.0, 25.0, 10.0]</code></pre>
-                    <div class="box box-blue fragment">
-                        Schema: <code>[f(x) for x in lista if p(x)]</code><br>
-                        "Applica <code>f</code> agli elementi di <code>lista</code> che soddisfano <code>p</code>"
-                    </div>
-                </section>
+if celsius &lt; ZERO_ASSOLUTO:
+    print("Errore: temperatura sotto lo zero assoluto (-273.15 °C)")
+else:
+    fahrenheit: float = celsius * 9 / 5 + 32</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>    if celsius &lt;= -10:
+        percezione: str = "Gelido"
+    elif celsius &lt;= 5:
+        percezione = "Freddo"
+    elif celsius &lt;= 18:
+        percezione = "Mite"
+    elif celsius &lt;= 30:
+        percezione = "Caldo"
+    else:
+        percezione = "Torrido"
 
-                <!-- SLIDE: Perche le comprehension esistono -->
-                <section>
-                    <h2>Perch&eacute; le comprehension esistono</h2>
-                    <ul>
-                        <li class="fragment"><strong>Leggibilit&agrave;:</strong> il pattern &egrave; immediatamente riconoscibile</li>
-                        <li class="fragment"><strong>Concisione:</strong> esprimono in una riga ci&ograve; che richiede 3-4 righe con un ciclo</li>
-                        <li class="fragment"><strong>Prestazioni:</strong> generalmente pi&ugrave; veloci del ciclo equivalente, perch&eacute; Python ottimizza internamente l'operazione di <code>append</code></li>
-                    </ul>
-                    <div class="box box-green fragment">
-                        Non sono solo "zucchero sintattico": rendono <strong>esplicito</strong> un pattern che altrimenti sarebbe nascosto nel corpo di un ciclo.
-                    </div>
+    print("=== REPORT TEMPERATURA ===")
+    print(f"Celsius:    {celsius:.1f}°C")
+    print(f"Fahrenheit: {fahrenheit:.1f}°F")
+    print(f"Percezione: {percezione}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Lo zero assoluto si controlla per primo; il resto del programma sta nell'<code>else</code>.</li><li>Ogni <code>elif</code> controlla solo il limite superiore: 18 cade in Mite perché il test è <code>&lt;= 18</code>.</li><li>La costante <code>ZERO_ASSOLUTO</code> evita di scrivere −273.15 in due punti.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L01»
+Da dire: è la temperatura di prima più una catena elif come nell'IMC. I confini della tabella sono inclusi (fino a 5, fino a 18...), quindi si usa <=.
+Chiedere / fare: casi limite: -10 → Gelido, 5 → Freddo, 30 → Caldo, -300 → errore.</aside>
                 </section>
             </section>
-
-            <!-- ==================== SEZIONE: DICT E SET COMPREHENSION ==================== -->
-            <section>
-                <section class="section-slide">
-                    <h2>Dict e Set Comprehension</h2>
-                    <p>La stessa idea, altre strutture dati</p>
-                </section>
-
-                <!-- SLIDE: Dict comprehension -->
-                <section>
-                    <h2>Dict comprehension</h2>
-                    <pre><code class="language-python">{chiave: valore for variabile in iterabile}</code></pre>
-                    <p>Esempio: associare ogni nome alla sua lunghezza.</p>
-                    <pre><code class="language-python">nomi: list[str] = ["Anna", "Marco", "Luca", "Francesca"]
-lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi}
-print(lunghezze)
-# {'Anna': 4, 'Marco': 5, 'Luca': 4, 'Francesca': 9}</code></pre>
-                </section>
-
-                <!-- SLIDE: Dict comprehension con filtro -->
-                <section>
-                    <h2>Dict comprehension con filtro</h2>
-                    <p>Filtrare un dizionario esistente:</p>
-                    <pre><code class="language-python">registro: dict[str, int] = {
-    "Anna": 28, "Marco": 15, "Luca": 30, "Sara": 12, "Paolo": 22
-}
-
-promossi: dict[str, int] = {
-    nome: voto for nome, voto in registro.items() if voto >= 18
-}
-print(promossi)  # {'Anna': 28, 'Luca': 30, 'Paolo': 22}</code></pre>
-                    <div class="fragment">
-                        <p>Invertire un dizionario (scambiare chiavi e valori):</p>
-<pre><code class="language-python">codici: dict[str, int] = {"Milano": 2, "Roma": 6, "Napoli": 81}
-inverso: dict[int, str] = {v: k for k, v in codici.items()}
-print(inverso)  # {2: 'Milano', 6: 'Roma', 81: 'Napoli'}</code></pre>
-                    </div>
-                </section>
-
-                <!-- SLIDE: Set comprehension -->
-                <section>
-                    <h2>Set comprehension</h2>
-                    <p>Parentesi graffe, senza struttura chiave-valore:</p>
-                    <pre><code class="language-python">{espressione for variabile in iterabile}</code></pre>
-                    <pre><code class="language-python">nomi: list[str] = ["Anna", "Andrea", "Marco", "Maria", "Luca"]
-iniziali: set[str] = {nome[0] for nome in nomi}
-print(iniziali)  # {'A', 'M', 'L'}</code></pre>
-                    <div class="box box-yellow fragment">
-                        Le set comprehension eliminano automaticamente i <strong>duplicati</strong> dal risultato.
-                    </div>
-                </section>
-
-                <!-- SLIDE: Riepilogo tipi di comprehension -->
-                <section>
-                    <h2>Riepilogo: tipi di comprehension</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Sintassi</th>
-                                <th>Risultato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>List</strong></td>
-                                <td><code>[expr for x in iter]</code></td>
-                                <td><code>list</code></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Dict</strong></td>
-                                <td><code>{k: v for x in iter}</code></td>
-                                <td><code>dict</code></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Set</strong></td>
-                                <td><code>{expr for x in iter}</code></td>
-                                <td><code>set</code></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Generator</strong></td>
-                                <td><code>(expr for x in iter)</code></td>
-                                <td><code>generator</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p class="fragment">Tutte supportano la clausola <code>if</code> per il filtro.</p>
-                </section>
-            </section>
-
-            <!-- ==================== SEZIONE: GENERATOR EXPRESSION ==================== -->
-            <section>
-                <section class="section-slide">
-                    <h2>Generator Expression</h2>
-                    <p>Lazy evaluation</p>
-                </section>
-
-                <!-- SLIDE: Generator expression -->
-                <section>
-                    <h2>Generator expression</h2>
-                    <p>Stessa sintassi della list comprehension, ma con <strong>parentesi tonde</strong>:</p>
-                    <pre><code class="language-python">numeri: list[int] = [1, 2, 3, 4, 5]
-
-# List comprehension: crea tutta la lista in memoria
-quadrati_lista: list[int] = [n ** 2 for n in numeri]
-
-# Generator expression: non crea nulla finche' non lo chiedi
-quadrati_gen = (n ** 2 for n in numeri)
-print(type(quadrati_gen))  # &lt;class 'generator'&gt;</code></pre>
-                    <div class="box box-blue fragment">
-                        <strong>Lazy evaluation</strong> (valutazione pigra): il generatore produce i valori <strong>uno alla volta</strong>, su richiesta. Non costruisce tutta la lista in memoria.
-                    </div>
-                </section>
-
-                <!-- SLIDE: Quando usare i generatori -->
-                <section>
-                    <h2>Quando usare i generatori</h2>
-                    <p>Brillano con <strong>grandi quantit&agrave; di dati</strong> quando non servono tutti i risultati insieme.</p>
-                    <div class="compare">
-                        <div class="bad">
-<pre><code class="language-python"># Crea una lista di 1 milione
-# di elementi solo per sommarla
-totale = sum(
-    [n ** 2 for n in range(1_000_000)]
-)</code></pre>
-                        </div>
-                        <div class="good">
-<pre><code class="language-python"># Il generatore produce i valori
-# uno alla volta, senza occupare memoria
-totale = sum(
-    n ** 2 for n in range(1_000_000)
-)</code></pre>
-                        </div>
-                    </div>
-                    <div class="box box-green fragment">
-                        Funzioni come <code>sum()</code>, <code>min()</code>, <code>max()</code>, <code>any()</code>, <code>all()</code> accettano tutte un iterabile: i generatori sono perfetti.
-                    </div>
-                    <aside class="notes">Quando il generatore e' l'unico argomento di una funzione, le parentesi esterne si possono omettere.</aside>
-                </section>
-            </section>
-
-            <!-- ==================== SEZIONE: BEST PRACTICE ==================== -->
-            <section>
-                <section class="section-slide">
-                    <h2>Best Practice</h2>
-                    <p>Quando usare (e quando evitare) le comprehension</p>
-                </section>
-
-                <!-- SLIDE: Quando usarle -->
-                <section>
-                    <h2>Quando usare le comprehension</h2>
-                    <ul>
-                        <li class="fragment"><strong>Trasformazioni semplici:</strong> <code>[f(x) for x in lista]</code></li>
-                        <li class="fragment"><strong>Filtri semplici:</strong> <code>[x for x in lista if condizione]</code></li>
-                        <li class="fragment"><strong>Combinazione trasformazione + filtro:</strong> <code>[f(x) for x in lista if cond]</code></li>
-                    </ul>
-                    <div class="box box-green fragment">
-                        Regola pratica: se la comprehension si legge come una frase in linguaggio naturale, usatela.
-                    </div>
-                </section>
-
-                <!-- SLIDE: Quando evitarle -->
-                <section>
-                    <h2>Quando evitarle</h2>
-                    <h3>Comprehension annidate complesse</h3>
-                    <pre><code class="language-python"># Difficile da leggere
-matrice: list[list[int]] = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-piatta: list[int] = [x for riga in matrice for x in riga]
-# Funziona, ma chi legge deve fermarsi a pensare</code></pre>
-                    <div class="fragment">
-                        <h3>Mai per side effect</h3>
-<pre><code class="language-python"># ANTI-PATTERN: comprehension per side effect
-nomi: list[str] = ["Anna", "Marco", "Luca"]
-[print(nome) for nome in nomi]  # crea una lista di None inutile!</code></pre>
-                    </div>
-                    <div class="box box-red fragment">
-                        <strong>Regola:</strong> se il risultato della comprehension non vi interessa, non usate una comprehension. Usate un ciclo <code>for</code>.
-                    </div>
-                </section>
-
-                <!-- SLIDE: Anti-pattern vs pattern corretto -->
-                <section>
-                    <h2>Side effect: il modo corretto</h2>
-                    <div class="compare">
-                        <div class="bad">
-<pre><code class="language-python"># Comprehension per side effect
-nomi = ["Anna", "Marco", "Luca"]
-[print(nome) for nome in nomi]
-# Costruisce [None, None, None]
-# solo per stampare!</code></pre>
-                        </div>
-                        <div class="good">
-<pre><code class="language-python"># Ciclo for per side effect
-nomi = ["Anna", "Marco", "Luca"]
-for nome in nomi:
-    print(nome)
-# Chiaro e diretto</code></pre>
-                        </div>
-                    </div>
-                </section>
-            </section>
+            <!-- FINE SOLUZIONI LAB -->
 
             <!-- ==================== SEZIONE: STRINGHE ==================== -->
             <section>
@@ -702,6 +546,42 @@ print(testo_minuscolo)  # "statistica"</code></pre>
                         Ogni metodo delle stringhe <strong>restituisce una nuova stringa</strong>, senza modificare l'originale.
                     </div>
                 </section>
+                            <!-- SLIDE: Slicing -->
+                <section>
+                    <h2>Slicing</h2>
+                    <p><code>testo[inizio:fine:passo]</code> prende i caratteri da <code>inizio</code> a <code>fine</code> escluso.</p>
+                    <pre><code class="language-python" data-trim data-noescape>testo: str = "Statistica"
+
+print(testo[0:4])    # Stat      (da 0 a 3: il 4 è escluso)
+print(testo[4:])     # istica    (da 4 alla fine)
+print(testo[:4])     # Stat      (dall'inizio a 3)
+print(testo[-3:])    # ica       (gli ultimi tre)
+print(testo[::2])    # Saitc     (un carattere sì e uno no)
+print(testo[::-1])   # acitsitatS</code></pre>
+                    <aside class="notes">⏱ 4' · blocco «Stringhe come sequenze»
+Da dire: l'indice di fine è escluso, come in range(). Se manca l'inizio si parte da 0, se manca la fine si arriva in fondo. Gli indici negativi contano dalla fine.
+Chiedere / fare: cosa dà testo[2:5]? (ati). E testo[-1]? (a).</aside>
+                </section>
+
+                <!-- SLIDE: Scorrere una stringa -->
+                <section>
+                    <h2>Scorrere una stringa</h2>
+                    <p>Una stringa si scorre con <code>for</code> come una sequenza: a ogni giro la variabile vale un carattere.</p>
+                    <pre><code class="language-python" data-trim data-noescape>parola: str = "zucca"
+
+for carattere in parola:
+    print(carattere, end=" ")    # z u c c a
+print()
+
+for i in range(len(parola)):
+    print(i, parola[i])          # 0 z, 1 u, 2 c, ...</code></pre>
+                    <div class="box box-blue fragment">
+                        Il secondo ciclo serve quando oltre al carattere vi serve la sua posizione.
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Stringhe come sequenze»
+Da dire: è lo stesso for di T09; al posto di range() c'è la stringa. Questi due cicli servono domani in laboratorio.
+Chiedere / fare: come contereste le «t» di «statistica»? (contatore nel ciclo: 3).</aside>
+                </section>
             </section>
 
             <!-- ==================== SEZIONE: METODI DELLE STRINGHE ==================== -->
@@ -725,40 +605,6 @@ print(repr(pulito))  # '42.5'
                     </div>
                 </section>
 
-                <!-- SLIDE: split e join -->
-                <section>
-                    <h2>split() e join()</h2>
-                    <div class="columns">
-                        <div class="col">
-                            <h3>split() &mdash; dividere</h3>
-<pre><code class="language-python">riga = "Anna,28,Economia"
-campi = riga.split(",")
-# ['Anna', '28', 'Economia']
-
-# Senza argomento: divide su
-# qualsiasi spazio bianco
-frase = "la  statistica   e   bella"
-parole = frase.split()
-# ['la', 'statistica', 'e', 'bella']</code></pre>
-                        </div>
-                        <div class="col">
-                            <h3>join() &mdash; ricomporre</h3>
-<pre><code class="language-python">parole = ["media", "varianza",
-           "deviazione"]
-risultato = ", ".join(parole)
-# 'media, varianza, deviazione'
-
-percorso = "/".join(
-    ["home", "utente", "dati"]
-)
-# 'home/utente/dati'</code></pre>
-                        </div>
-                    </div>
-                    <div class="box box-green fragment">
-                        <code>split()</code> e <code>join()</code> sono operazioni <strong>inverse</strong>.
-                    </div>
-                </section>
-
                 <!-- SLIDE: replace -->
                 <section>
                     <h2>replace()</h2>
@@ -770,6 +616,16 @@ print(pulito)  # 'valore: 0'
 dati: str = "1,2,,4,,6"
 dati_puliti: str = dati.replace(",,", ",0,")
 print(dati_puliti)  # '1,2,0,4,0,6'</code></pre>
+                </section>
+
+                <!-- SLIDE: count -->
+                <section>
+                    <h2>count()</h2>
+                    <p>Conta quante volte compare una sottostringa:</p>
+                    <pre><code class="language-python" data-trim data-noescape>testo: str = "statistica"
+print(testo.count("t"))     # 3
+print(testo.count("ti"))    # 2
+print(testo.count("x"))     # 0</code></pre>
                 </section>
 
                 <!-- SLIDE: find e index -->
@@ -859,240 +715,108 @@ if risposta.lower() == "si":
                 </section>
             </section>
 
-            <!-- ==================== SEZIONE: PATTERN PULIZIA DATI ==================== -->
+            <!-- ==================== SEZIONE: FORMATTARE I NUMERI ==================== -->
             <section>
-                <section class="section-slide">
-                    <h2>Pattern di Pulizia Dati</h2>
-                    <p>split + strip: il coltellino svizzero</p>
-                </section>
-
-                <!-- SLIDE: Pattern split + strip -->
                 <section>
-                    <h2>Il pattern split + strip</h2>
-                    <p>I dati arrivano spesso con spazi extra, newline, campi sporchi:</p>
-                    <pre><code class="language-python">riga_grezza: str = "  Anna , 28 , Economia , 105  \n"
+                    <h2>Formattare i numeri</h2>
+                    <pre><code class="language-python">media: float = 27.4567
+print(f"Media: {media:.2f}")     # Media: 27.46
+print(f"Media: {media:.1f}")     # Media: 27.5
 
-# Step 1: strip della riga intera
-riga: str = riga_grezza.strip()
-
-# Step 2: split sul separatore
-campi_grezzi: list[str] = riga.split(",")
-# ['  Anna ', ' 28 ', ' Economia ', ' 105  ']
-
-# Step 3: strip di ogni campo — ecco la comprehension!
-campi: list[str] = [campo.strip() for campo in campi_grezzi]
-# ['Anna', '28', 'Economia', '105']</code></pre>
-                </section>
-
-                <!-- SLIDE: Una riga sola -->
-                <section>
-                    <h2>Tutto in una riga</h2>
-                    <pre><code class="language-python">campi: list[str] = [c.strip() for c in riga_grezza.strip().split(",")]</code></pre>
-                    <div class="box box-green">
-                        Questo pattern combina <strong>metodi delle stringhe</strong> e <strong>list comprehension</strong>. Lo vedrete ogni volta che lavorerete con dati testuali.
-                    </div>
-                    <div class="diagram fragment">
-                        stringa grezza &rarr; strip() &rarr; split(",") &rarr; [c.strip() for c in ...] &rarr; lista pulita
-                    </div>
-                </section>
-
-                <!-- SLIDE: Esempio completo mini-CSV -->
-                <section>
-                    <h2>Esempio: parsing di un mini-CSV</h2>
-                    <pre><code class="language-python">righe: list[str] = [
-    "nome, eta, voto",
-    "Anna, 22, 28",
-    "Marco, 21, 25",
-    "Sara, 23, 30",
-]
-
-intestazione: list[str] = [c.strip() for c in righe[0].split(",")]
-dati: list[dict[str, str]] = []
-
-for riga in righe[1:]:
-    valori: list[str] = [c.strip() for c in riga.split(",")]
-    record: dict[str, str] = {
-        intestazione[i]: valori[i] for i in range(len(intestazione))
-    }
-    dati.append(record)
-
-# [{'nome': 'Anna', 'eta': '22', 'voto': '28'}, ...]</code></pre>
-                    <aside class="notes">Questo esempio combina list comprehension, dict comprehension, split e strip. E' un pattern fondamentale per il lavoro con dati reali.</aside>
-                </section>
-
-                <!-- SLIDE: Normalizzazione categorie -->
-                <section>
-                    <h2>Normalizzazione di categorie</h2>
-                    <pre><code class="language-python">risposte: list[str] = [
-    "si", "Si", "SI", " si ", "no", "No", "  NO", "forse"
-]
-
-# Normalizzare: strip + lower
-normalizzate: list[str] = [r.strip().lower() for r in risposte]
-# ['si', 'si', 'si', 'si', 'no', 'no', 'no', 'forse']
-
-# Contare le frequenze
-valori_unici: set[str] = set(normalizzate)
-frequenze: dict[str, int] = {
-    valore: normalizzate.count(valore) for valore in valori_unici
-}
-print(frequenze)  # {'si': 4, 'no': 3, 'forse': 1}</code></pre>
+quota: float = 0.0325
+print(f"Quota: {quota:.1%}")     # Quota: 3.2%
+print(f"Quota: {quota:.0%}")     # Quota: 3%</code></pre>
+                    <table>
+                        <thead><tr><th>Formato</th><th>Significato</th><th>Esempio</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>.2f</code></td><td>2 cifre decimali</td><td><code>f"{3.14159:.2f}"</code> &rarr; <code>3.14</code></td></tr>
+                            <tr><td><code>.1%</code></td><td>percentuale con 1 decimale (moltiplica per 100)</td><td><code>f"{0.0325:.1%}"</code> &rarr; <code>3.2%</code></td></tr>
+                        </tbody>
+                    </table>
                     <div class="box box-blue fragment">
-                        Senza normalizzazione, "Si", "SI" e " si " sarebbero tre categorie diverse.
+                        Il formato cambia solo la stampa: la variabile mantiene tutte le sue cifre.
                     </div>
-                </section>
-
-                <!-- SLIDE: Estrazione valori numerici -->
-                <section>
-                    <h2>Estrazione di valori numerici</h2>
-                    <pre><code class="language-python">celle: list[str] = ["42", "  38.5 ", "N/A", "27", "", "31.2", "-"]
-
-valori_validi: list[float] = []
-for cella in celle:
-    pulita: str = cella.strip()
-    try:
-        valori_validi.append(float(pulita))
-    except ValueError:
-        pass  # saltiamo i valori non numerici
-
-print(valori_validi)  # [42.0, 38.5, 27.0, 31.2]</code></pre>
-                    <div class="box box-yellow fragment">
-                        Il blocco <code>try/except</code> gestisce i valori non convertibili senza interrompere il programma.
-                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Formattare i numeri»
+Da dire: nel corso servono solo due formati: .Nf per il numero di decimali e .N% per le percentuali. Il formato % moltiplica per 100 e aggiunge il simbolo.
+Chiedere / fare: cosa stampa f"{2 / 3:.1%}"? (66.7%). E f"{0.5:.0%}"? (50%).</aside>
                 </section>
             </section>
 
-            <!-- ==================== SEZIONE: F-STRING AVANZATE ==================== -->
+            <!-- ==================== SEZIONE: ESERCIZI IN AULA ==================== -->
             <section>
                 <section class="section-slide">
-                    <h2>f-string Avanzate</h2>
-                    <p>Formattazione e allineamento</p>
+                    <h2>Esercizi in aula</h2>
+                    <p>Prima provate da soli, poi vediamo la soluzione</p>
                 </section>
 
-                <!-- SLIDE: Formattazione numeri -->
                 <section>
-                    <h2>Formattazione di numeri</h2>
-                    <pre><code class="language-python">pi: float = 3.141592653589793
+                    <h2>Esercizio 1 &mdash; Contare</h2>
+                    <div class="columns">
+                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Data <code>frase = "la statistica è una scienza"</code>, contate le lettere <code>a</code> con un ciclo <code>for</code>. Poi controllate il risultato con <code>count()</code>.</div></div>
+                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>frase: str = "la statistica è una scienza"
 
-# Cifre decimali
-print(f"Pi greco: {pi:.2f}")      # Pi greco: 3.14
-print(f"Pi greco: {pi:.4f}")      # Pi greco: 3.1416
+conta: int = 0
+for carattere in frase:
+    if carattere == "a":
+        conta += 1
 
-# Notazione scientifica
-grande: float = 6.022e23
-print(f"Avogadro: {grande:.2e}")  # Avogadro: 6.02e+23
-
-# Percentuale
-tasso: float = 0.0325
-print(f"Tasso: {tasso:.1%}")      # Tasso: 3.2%
-
-# Separatore delle migliaia
-popolazione: int = 59_641_488
-print(f"Pop.: {popolazione:,}")   # Pop.: 59,641,488</code></pre>
-                </section>
-
-                <!-- SLIDE: Tabella formati -->
-                <section>
-                    <h2>Mini-linguaggio di formattazione</h2>
-                    <table>
-                        <thead>
-                            <tr><th>Formato</th><th>Significato</th><th>Esempio</th><th>Output</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><code>.2f</code></td><td>2 decimali</td><td><code>f"{3.14159:.2f}"</code></td><td><code>3.14</code></td></tr>
-                            <tr><td><code>.2e</code></td><td>Notazione scientifica</td><td><code>f"{6022e20:.2e}"</code></td><td><code>6.02e+23</code></td></tr>
-                            <tr><td><code>.1%</code></td><td>Percentuale</td><td><code>f"{0.0325:.1%}"</code></td><td><code>3.2%</code></td></tr>
-                            <tr><td><code>,</code></td><td>Separatore migliaia</td><td><code>f"{59641488:,}"</code></td><td><code>59,641,488</code></td></tr>
-                            <tr><td><code>2d</code></td><td>Intero, largh. 2</td><td><code>f"{3:2d}"</code></td><td><code>&nbsp;3</code></td></tr>
-                        </tbody>
-                    </table>
-                </section>
-
-                <!-- SLIDE: Allineamento -->
-                <section>
-                    <h2>Allineamento e larghezza</h2>
-                    <pre><code class="language-python">nome: str = "Anna"
-print(f"|{nome:<15}|")  # |Anna           |  (sinistra)
-print(f"|{nome:>15}|")  # |           Anna|  (destra)
-print(f"|{nome:^15}|")  # |     Anna      |  (centro)</code></pre>
-                    <table class="fragment">
-                        <thead><tr><th>Simbolo</th><th>Allineamento</th></tr></thead>
-                        <tbody>
-                            <tr><td><code>&lt;</code></td><td>A sinistra (default per stringhe)</td></tr>
-                            <tr><td><code>&gt;</code></td><td>A destra (default per numeri)</td></tr>
-                            <tr><td><code>^</code></td><td>Centrato</td></tr>
-                        </tbody>
-                    </table>
-                </section>
-
-                <!-- SLIDE: Report formattato -->
-                <section>
-                    <h2>Esempio: report formattato</h2>
-                    <pre><code class="language-python">def report_statistiche(nome_var: str, valori: list[float]) -> str:
-    n = len(valori)
-    media = sum(valori) / n
-    righe = [
-        f"{'=' * 40}",
-        f"{'Statistiche descrittive':^40}",
-        f"{'=' * 40}",
-        f"{'Variabile:':<20} {nome_var}",
-        f"{'N. osservazioni:':<20} {n}",
-        f"{'Media:':<20} {media:>10.2f}",
-        f"{'Minimo:':<20} {min(valori):>10.2f}",
-        f"{'Massimo:':<20} {max(valori):>10.2f}",
-        f"{'=' * 40}",
-    ]
-    return "\n".join(righe)</code></pre>
-                    <div class="box box-green fragment">
-                        Combina <code>join()</code>, f-string con allineamento e una funzione che restituisce una stringa.
+print(conta)               # 5
+print(frase.count("a"))    # 5</code></pre></div>
                     </div>
-                </section>
-            </section>
-
-            <!-- ==================== SEZIONE: REGEX ==================== -->
-            <section>
-                <section class="section-slide">
-                    <h2>Cenni su Espressioni Regolari</h2>
-                    <p>Per quando i metodi stringa non bastano</p>
+                    <aside class="notes">⏱ 4' · blocco «Esercizi in aula»
+Da dire: dare 2 minuti, poi mostrare la soluzione. È il pattern contatore di T09 applicato a una stringa.
+Chiedere / fare: risultato atteso 5.</aside>
                 </section>
 
-                <!-- SLIDE: Intro regex -->
                 <section>
-                    <h2>Espressioni regolari (regex)</h2>
-                    <p>Un linguaggio per descrivere <strong>pattern</strong> nelle stringhe. Modulo <code>re</code>.</p>
-                    <pre><code class="language-python">import re
+                    <h2>Esercizio 2 &mdash; Estensione</h2>
+                    <div class="columns">
+                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Dato <code>nome_file = "vendite_2026.csv"</code>, stampate il nome senza estensione e l'estensione. Usate <code>find(".")</code> e lo slicing. Se il punto manca, stampate un messaggio.</div></div>
+                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>nome_file: str = "vendite_2026.csv"
 
-testo = "Il reddito medio e 32.500 euro, con dev. standard 8.200 euro."
-
-# Trovare tutti i numeri (anche con punto separatore)
-numeri: list[str] = re.findall(r"\d+\.?\d*", testo)
-print(numeri)  # ['32.500', '8.200']
-
-# Verificare un codice fiscale (pattern semplificato)
-cf: str = "RSSMRA85M01H501Z"
-if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
-    print("Formato codice fiscale valido")</code></pre>
-                </section>
-
-                <!-- SLIDE: Simboli principali -->
-                <section>
-                    <h2>Simboli principali</h2>
-                    <table>
-                        <thead><tr><th>Simbolo</th><th>Significato</th><th>Esempio</th></tr></thead>
-                        <tbody>
-                            <tr><td><code>\d</code></td><td>Una cifra</td><td><code>\d+</code> = una o pi&ugrave; cifre</td></tr>
-                            <tr><td><code>\w</code></td><td>Carattere alfanumerico</td><td><code>\w+</code> = una parola</td></tr>
-                            <tr><td><code>\s</code></td><td>Uno spazio</td><td><code>\s+</code> = spazi multipli</td></tr>
-                            <tr><td><code>+</code></td><td>Una o pi&ugrave; ripetizioni</td><td></td></tr>
-                            <tr><td><code>*</code></td><td>Zero o pi&ugrave; ripetizioni</td><td></td></tr>
-                            <tr><td><code>?</code></td><td>Zero o una ripetizione</td><td></td></tr>
-                            <tr><td><code>^</code> / <code>$</code></td><td>Inizio / fine stringa</td><td></td></tr>
-                            <tr><td><code>[A-Z]</code></td><td>Intervallo di caratteri</td><td><code>[a-z0-9]</code></td></tr>
-                        </tbody>
-                    </table>
-                    <div class="box box-yellow fragment">
-                        Le regex sono potenti ma complesse. Per la pulizia semplice, <code>split()</code>, <code>strip()</code> e <code>replace()</code> bastano.
+punto: int = nome_file.find(".")
+if punto == -1:
+    print("Il file non ha estensione")
+else:
+    print(nome_file[:punto])       # vendite_2026
+    print(nome_file[punto + 1:])   # csv</code></pre></div>
                     </div>
+                    <aside class="notes">⏱ 4' · blocco «Esercizi in aula»
+Da dire: find restituisce la posizione del punto; prima del punto c'è il nome, dopo l'estensione. Con -1 lo slicing darebbe un risultato sbagliato, per questo si controlla.
+Chiedere / fare: provare con «leggimi» (senza punto).</aside>
+                </section>
+
+                <section>
+                    <h2>Esercizio 3 &mdash; Nome e iniziali</h2>
+                    <div class="columns">
+                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Dato <code>dato = "  mARIO rossi  "</code>, stampate <code>Mario Rossi</code> e le iniziali <code>M.R.</code>.</div></div>
+                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>dato: str = "  mARIO rossi  "
+
+nome: str = dato.strip().title()
+spazio: int = nome.find(" ")
+
+print(nome)                                   # Mario Rossi
+print(f"{nome[0]}.{nome[spazio + 1]}.")      # M.R.</code></pre></div>
+                    </div>
+                    <aside class="notes">⏱ 4' · blocco «Esercizi in aula»
+Da dire: strip toglie gli spazi ai bordi, title sistema maiuscole e minuscole. La seconda iniziale è il carattere dopo lo spazio.
+Chiedere / fare: cosa succede con due spazi tra nome e cognome? (nome[spazio + 1] è uno spazio: lo sistemiamo con split, che vediamo con le liste).</aside>
+                </section>
+
+                <section>
+                    <h2>Esercizio 4 &mdash; CAP</h2>
+                    <div class="columns">
+                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Chiedete un CAP con <code>input()</code>. È valido se ha 5 caratteri, tutti cifre.</div></div>
+                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>cap: str = input("CAP: ")
+
+if len(cap) == 5 and cap.isdigit():
+    print("CAP valido")
+else:
+    print("CAP non valido")</code></pre></div>
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Esercizi in aula»
+Da dire: il CAP si tiene come stringa: 00184 come numero perderebbe gli zeri iniziali. len e isdigit bastano.
+Chiedere / fare: 35121 valido, 3512 non valido, 35l21 non valido.</aside>
                 </section>
             </section>
 
@@ -1100,25 +824,15 @@ if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
             <section>
                 <section class="section-slide">
                     <h2>Riepilogo</h2>
-                    <p>Tre punti da ricordare</p>
                 </section>
 
-                <!-- SLIDE: Tre punti chiave -->
+                <!-- SLIDE: Punti chiave -->
                 <section>
                     <h2>Punti chiave</h2>
                     <ol>
-                        <li class="fragment">
-                            <strong>Comprehension semplici, cicli per il resto.</strong><br>
-                            Se una comprehension diventa difficile da leggere, tornate al ciclo <code>for</code>. La leggibilit&agrave; &egrave; pi&ugrave; importante della concisione.
-                        </li>
-                        <li class="fragment">
-                            <strong>Le stringhe sono immutabili.</strong><br>
-                            Ogni metodo (<code>strip()</code>, <code>replace()</code>, <code>upper()</code>, ...) restituisce una <strong>nuova</strong> stringa. L'originale non viene mai modificata.
-                        </li>
-                        <li class="fragment">
-                            <strong>Il pattern split + strip &egrave; il vostro coltellino svizzero.</strong><br>
-                            La combinazione di <code>split()</code>, <code>strip()</code> e list comprehension risolve la maggior parte dei problemi di parsing di dati testuali.
-                        </li>
+                        <li class="fragment">Una stringa è una sequenza di caratteri: si usano indici, slicing, <code>len()</code>, <code>in</code> e il ciclo <code>for</code>.</li>
+                        <li class="fragment">Le stringhe sono immutabili: ogni metodo (<code>strip()</code>, <code>replace()</code>, <code>upper()</code>, ...) restituisce una stringa nuova.</li>
+                        <li class="fragment">Per stampare i numeri servono due formati: <code>.2f</code> per i decimali e <code>.1%</code> per le percentuali.</li>
                     </ol>
                 </section>
 
@@ -1126,12 +840,11 @@ if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
                 <section>
                     <h2>Domande di verifica</h2>
                     <ol>
-                        <li class="fragment">Qual &egrave; la differenza tra list comprehension e ciclo <code>for</code> con <code>append()</code>?</li>
-                        <li class="fragment">Qual &egrave; la differenza tra <code>[...]</code> e <code>(...)</code>?</li>
-                        <li class="fragment">Perch&eacute; <code>[print(x) for x in lista]</code> &egrave; un anti-pattern?</li>
-                        <li class="fragment">Cosa significa che le stringhe sono "immutabili"?</li>
-                        <li class="fragment">Differenza tra <code>find()</code> e <code>index()</code>?</li>
-                        <li class="fragment">Cosa fa <code>f"{valore:.2%}"</code> se <code>valore = 0.1573</code>?</li>
+                        <li class="fragment">Cosa stampa <code>"Statistica"[2:5]</code>? E <code>"Statistica"[-3:]</code>?</li>
+                        <li class="fragment">Cosa significa che le stringhe sono immutabili? Cosa succede con <code>testo.upper()</code> se non assegnate il risultato?</li>
+                        <li class="fragment">Che differenza c'è tra <code>find()</code> e <code>index()</code> quando la sottostringa non c'è?</li>
+                        <li class="fragment">Perché un CAP va tenuto come stringa e non come numero?</li>
+                        <li class="fragment">Cosa stampa <code>f"{0.1573:.1%}"</code>?</li>
                     </ol>
                 </section>
 
@@ -1139,7 +852,7 @@ if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
                 <section>
                     <h2>Prossima lezione</h2>
                     <div class="box box-blue">
-                        Introdurremo le <strong>funzioni</strong> in modo pi&ugrave; approfondito: come definirle, come organizzare il codice, e il concetto di <strong>scope</strong> delle variabili.
+                        Domani in laboratorio: esercizi su cicli e stringhe. Nella prossima lezione: <strong>liste e tuple</strong>, poi le list comprehension e i metodi <code>split()</code> e <code>join()</code>.
                     </div>
                 </section>
             </section>
@@ -1151,7 +864,7 @@ if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
                 <section>
                     <h2>Navigazione</h2>
                     <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
-                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T10_comprehension_stringhe.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="L01_ambiente_variabili_condizionali.html" style="color: var(--accent);">&larr; L01: Ambiente, variabili e condizionali</a></div><div><a href="L02_cicli_comprehension_stringhe.html" style="color: var(--accent);">L02: Cicli, comprehension e stringhe &rarr;</a></div><div><a href="../dispense/frontali/T10_comprehension_stringhe.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/T10_comprehension_stringhe/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="T10_comprehension_stringhe.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="L01_ambiente_variabili_condizionali.html" style="color: var(--accent);">&larr; L01: Ambiente, variabili e condizionali</a></div><div><a href="L02_cicli_comprehension_stringhe.html" style="color: var(--accent);">L02: Cicli e stringhe &rarr;</a></div><div><a href="../dispense/frontali/T10_comprehension_stringhe.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/T10_comprehension_stringhe/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
                     </div>
                 </section>
             </section>

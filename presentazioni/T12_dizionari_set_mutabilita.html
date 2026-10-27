@@ -339,6 +339,7 @@
                     <li class="fragment"><strong><code>defaultdict</code> e <code>Counter</code></strong> — strumenti specializzati da <code>collections</code></li>
                     <li class="fragment"><strong>Set</strong> — insiemi di elementi unici e operazioni insiemistiche</li>
                     <li class="fragment"><strong><code>frozenset</code></strong> — il set immutabile</li>
+                    <li class="fragment"><strong>Dict e set comprehension</strong></li>
                     <li class="fragment"><strong>Mutabilità vs immutabilità</strong> — alias, copie e side effect</li>
                     <li class="fragment"><strong>Scegliere la struttura dati giusta</strong></li>
                     <li class="fragment"><strong>Complessità: O(1) vs O(n)</strong></li>
@@ -818,6 +819,91 @@ print(fisso | {5})   # frozenset({1, 2, 3, 4, 5}) — nuovo frozenset
                 <pre class="fragment"><code class="language-python"># Un set di set NON è possibile (TypeError: unhashable)
 # Ma un set di frozenset sì
 insiemi: set[frozenset[int]] = {frozenset([1, 2]), frozenset([3, 4])}</code></pre>
+            </section>
+
+            <!-- ==================== SEZIONE: DICT E SET COMPREHENSION ==================== -->
+            <section>
+                <section class="section-slide">
+                    <h2>Dict e set comprehension</h2>
+                    <p>La stessa sintassi delle list comprehension</p>
+                </section>
+
+                <section>
+                    <h2>Dict comprehension</h2>
+                    <pre><code class="language-python" data-trim>{chiave: valore for variabile in sequenza}</code></pre><pre><code class="language-python" data-trim data-noescape>nomi: list[str] = ["Anna", "Marco", "Luca", "Francesca"]
+lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi}
+print(lunghezze)   # {'Anna': 4, 'Marco': 5, 'Luca': 4, 'Francesca': 9}
+
+registro: dict[str, int] = {"Anna": 28, "Marco": 15, "Luca": 30, "Sara": 12}
+promossi: dict[str, int] = {nome: voto for nome, voto in registro.items() if voto &gt;= 18}
+print(promossi)    # {'Anna': 28, 'Luca': 30}</code></pre>
+                    <aside class="notes">⏱ 3' · blocco «Dict e set comprehension»
+Da dire: come la list comprehension, ma tra graffe e con chiave: valore. Con items() si scorrono le coppie di un dizionario esistente.
+Chiedere / fare: dizionario parola → numero di caratteri per ["media", "moda"] ({'media': 5, 'moda': 4}).</aside>
+                </section>
+
+
+                <section>
+                    <h2>Set comprehension</h2>
+                    <pre><code class="language-python" data-trim>{espressione for variabile in sequenza}</code></pre><pre><code class="language-python" data-trim data-noescape>nomi: list[str] = ["Anna", "Andrea", "Marco", "Maria", "Luca"]
+iniziali: set[str] = {nome[0] for nome in nomi}
+print(iniziali)  # {'A', 'M', 'L'} (l'ordine può cambiare)</code></pre>
+                    <div class="box box-blue fragment">Il risultato è un set, quindi i duplicati spariscono: cinque nomi, tre iniziali.</div>
+                    <aside class="notes">⏱ 2' · blocco «Dict e set comprehension»
+Da dire: graffe senza i due punti: set. Attenzione: {} da solo è un dizionario vuoto, non un set.
+Chiedere / fare: nessuna.</aside>
+                </section>
+
+
+                <section>
+                    <h2>Riepilogo comprehension</h2>
+                    <table>
+                        <thead><tr><th>Tipo</th><th>Sintassi</th><th>Risultato</th></tr></thead>
+                        <tbody>
+                            <tr><td>List</td><td><code>[espr for x in seq]</code></td><td><code>list</code></td></tr>
+                            <tr><td>Dict</td><td><code>{k: v for x in seq}</code></td><td><code>dict</code></td></tr>
+                            <tr><td>Set</td><td><code>{espr for x in seq}</code></td><td><code>set</code></td></tr>
+                        </tbody>
+                    </table>
+                    <p>Tutte accettano il filtro <code>if condizione</code> in fondo.</p>
+                </section>
+
+
+                <section>
+                    <h2>Esempio: normalizzare categorie</h2>
+                    <pre><code class="language-python" data-trim data-noescape>risposte: list[str] = ["si", "Si", "SI", " si ", "no", "No", "  NO", "forse"]
+
+normalizzate: list[str] = [r.strip().lower() for r in risposte]
+print(normalizzate)  # ['si', 'si', 'si', 'si', 'no', 'no', 'no', 'forse']
+
+frequenze: dict[str, int] = {v: normalizzate.count(v) for v in set(normalizzate)}
+print(frequenze)     # {'si': 4, 'no': 3, 'forse': 1} (l'ordine può cambiare)</code></pre>
+                    <div class="box box-blue fragment">Senza <code>strip().lower()</code>, «si», «Si» e « si » sarebbero tre categorie diverse.</div>
+                    <aside class="notes">⏱ 3' · blocco «Dict e set comprehension»
+Da dire: prima si puliscono le risposte, poi si contano. set(normalizzate) dà le risposte distinte, count conta quante volte compare ognuna. Lo stesso conteggio si fa con Counter.
+Chiedere / fare: rifare il conteggio con Counter(normalizzate).</aside>
+                </section>
+
+
+                <section>
+                    <h2>Esempio: da CSV a dizionari</h2>
+                    <pre><code class="language-python" data-trim data-noescape>righe: list[str] = ["nome, eta, voto", "Anna, 22, 28", "Marco, 21, 25"]
+
+intestazione: list[str] = [c.strip() for c in righe[0].split(",")]
+
+dati: list[dict[str, str]] = []
+for riga in righe[1:]:
+    valori: list[str] = [c.strip() for c in riga.split(",")]
+    record: dict[str, str] = {intestazione[i]: valori[i] for i in range(len(intestazione))}
+    dati.append(record)
+
+print(dati)
+# [{'nome': 'Anna', 'eta': '22', 'voto': '28'}, {'nome': 'Marco', 'eta': '21', 'voto': '25'}]</code></pre>
+                    <aside class="notes">⏱ 4' · blocco «Dict e set comprehension»
+Da dire: la prima riga dà i nomi dei campi; per ogni riga successiva si costruisce un dizionario campo → valore. Mette insieme split, strip, list e dict comprehension.
+Chiedere / fare: come si stampa il voto di Marco? (dati[1]["voto"]).</aside>
+                </section>
+
             </section>
 
             <!-- ==================== SEZIONE: MUTABILITÀ ==================== -->

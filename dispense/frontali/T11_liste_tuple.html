@@ -526,6 +526,70 @@ s: Studente <span class="op">=</span> Studente(nome<span class="op">=</span><spa
 o: Osservazione <span class="op">=</span> Osservazione(valore<span class="op">=</span><span class="mi">23.5</span>, unita<span class="op">=</span><span class="st">&quot;°C&quot;</span>, timestamp<span class="op">=</span><span class="st">&quot;2025-01-15&quot;</span>)
 <span class="nb">print</span>(o.valore)  <span class="cm"># 23.5</span></code></pre>
 <hr>
+<h2>List comprehension</h2>
+<p>Molti cicli costruiscono una lista nuova a partire da un'altra: si parte da una lista vuota e a ogni giro si aggiunge un elemento con <code>append()</code>. È il pattern trasformazione visto in T09. La <strong>list comprehension</strong> scrive la stessa cosa in una riga:</p>
+<pre><code>numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+
+<span class="cm"># Con un ciclo</span>
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> []
+<span class="kw">for</span> n <span class="kw">in</span> numeri:
+    quadrati.append(n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>)
+
+<span class="cm"># Con una comprehension</span>
+quadrati <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri]
+<span class="cm"># in entrambi i casi: [1, 4, 9, 16, 25]</span></code></pre>
+<h3>Sintassi</h3>
+<p><code>[espressione for variabile in sequenza]</code>: la variabile prende a turno ogni elemento della sequenza e l'espressione dà il valore che finisce nella lista. La sequenza può essere una lista, un <code>range()</code> o una stringa; il risultato è sempre una lista.</p>
+<pre><code>numeri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
+quadrati: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri]
+<span class="nb">print</span>(quadrati)                          <span class="cm"># [1, 4, 9, 16, 25]</span>
+
+doppi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [i <span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="mi">5</span>)]
+<span class="nb">print</span>(doppi)                             <span class="cm"># [0, 2, 4, 6, 8]</span>
+
+lettere: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.upper() <span class="kw">for</span> c <span class="kw">in</span> <span class="st">&quot;ciao&quot;</span>]
+<span class="nb">print</span>(lettere)                           <span class="cm"># [&#x27;C&#x27;, &#x27;I&#x27;, &#x27;A&#x27;, &#x27;O&#x27;]</span></code></pre>
+<h3>Comprehension con filtro</h3>
+<p><code>[espressione for variabile in sequenza if condizione]</code>: entrano nella lista solo gli elementi per cui la condizione è vera (pattern filtro).</p>
+<pre><code>voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">15</span>, <span class="mi">30</span>, <span class="mi">22</span>, <span class="mi">12</span>, <span class="mi">27</span>, <span class="mi">18</span>]
+sufficienti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+<span class="nb">print</span>(sufficienti)  <span class="cm"># [28, 30, 22, 27, 18]</span></code></pre>
+<p>Filtro e trasformazione si possono usare insieme:</p>
+<pre><code>fahrenheit: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">32.0</span>, <span class="mi">68.0</span>, <span class="mi">95.0</span>, <span class="mi">14.0</span>, <span class="mi">77.0</span>, <span class="mi">50.0</span>]
+
+<span class="cm"># In Celsius, solo le temperature sopra 50 °F</span>
+celsius: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="nb">round</span>((f <span class="op">-</span> <span class="mi">32</span>) <span class="op">*</span> <span class="mi">5</span> <span class="op">/</span> <span class="mi">9</span>, <span class="mi">1</span>) <span class="kw">for</span> f <span class="kw">in</span> fahrenheit <span class="kw">if</span> f <span class="op">&gt;</span> <span class="mi">50</span>]
+<span class="nb">print</span>(celsius)  <span class="cm"># [20.0, 35.0, 25.0]</span></code></pre>
+<h3>Quando usare un ciclo</h3>
+<p>La comprehension va bene quando il risultato è una lista e la regola sta in una riga. Serve un ciclo <code>for</code> quando il corpo ha più istruzioni o più condizioni, oppure quando non serve una lista ma solo stampare o accumulare un totale. Per esempio <code>[print(nome) for nome in nomi]</code> stampa i nomi, ma costruisce anche una lista di <code>None</code> che nessuno usa: qui va scritto un ciclo.</p>
+<hr>
+<h2>Stringhe e liste: <code>split()</code> e <code>join()</code></h2>
+<p><code>split()</code> divide una stringa in una lista di stringhe; <code>join()</code> fa il contrario e unisce gli elementi di una sequenza di stringhe usando la stringa su cui viene chiamato come separatore. Senza argomento, <code>split()</code> divide su uno o più spazi.</p>
+<pre><code>riga: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Anna,28,Economia&quot;</span>
+campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.split(<span class="st">&quot;,&quot;</span>)
+<span class="nb">print</span>(campi)          <span class="cm"># [&#x27;Anna&#x27;, &#x27;28&#x27;, &#x27;Economia&#x27;]</span>
+
+frase: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;la  statistica   è   bella&quot;</span>
+<span class="nb">print</span>(frase.split())  <span class="cm"># [&#x27;la&#x27;, &#x27;statistica&#x27;, &#x27;è&#x27;, &#x27;bella&#x27;]</span>
+
+parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;media&quot;</span>, <span class="st">&quot;varianza&quot;</span>, <span class="st">&quot;moda&quot;</span>]
+<span class="nb">print</span>(<span class="st">&quot;, &quot;</span>.join(parole))   <span class="cm"># media, varianza, moda</span>
+<span class="nb">print</span>(<span class="st">&quot;-&quot;</span>.join(<span class="st">&quot;abc&quot;</span>))     <span class="cm"># a-b-c</span></code></pre>
+<h3>Pulire una riga di dati</h3>
+<p>Per leggere a mano una riga di un file CSV si usano tre passi: <code>strip()</code> della riga, <code>split()</code> sul separatore, <code>strip()</code> di ogni campo con una comprehension.</p>
+<pre><code>riga_grezza: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;  Anna , 28 , Economia , 105  \n&quot;</span>
+
+riga: <span class="nb">str</span> <span class="op">=</span> riga_grezza.strip()                     <span class="cm"># 1. via spazi e a capo ai bordi</span>
+campi_grezzi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> riga.split(<span class="st">&quot;,&quot;</span>)           <span class="cm"># 2. divido sul separatore</span>
+<span class="nb">print</span>(campi_grezzi)   <span class="cm"># [&#x27;Anna &#x27;, &#x27; 28 &#x27;, &#x27; Economia &#x27;, &#x27; 105&#x27;]</span>
+
+campi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> campi_grezzi]  <span class="cm"># 3. strip di ogni campo</span>
+<span class="nb">print</span>(campi)          <span class="cm"># [&#x27;Anna&#x27;, &#x27;28&#x27;, &#x27;Economia&#x27;, &#x27;105&#x27;]</span>
+
+<span class="cm"># Gli stessi tre passi in una riga</span>
+campi <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> riga_grezza.strip().split(<span class="st">&quot;,&quot;</span>)]</code></pre>
+<p>I campi restano stringhe: per fare conti servono <code>int()</code> o <code>float()</code>, per esempio <code>int(campi[1])</code>.</p>
+<hr>
 <h2>Applicazioni statistiche</h2>
 <h3>Liste di osservazioni</h3>
 <p>La struttura dati più naturale per un campione statistico è una lista di numeri:</p>
@@ -653,6 +717,16 @@ voti_esame: <span class="nb">list</span>[<span class="nb">int</span>] <span clas
 
    tabella: <span class="nb">dict</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>], <span class="nb">int</span>] <span class="op">=</span> tabella_contingenza(genere, sport)
    <span class="cm"># Dovrebbe produrre: {(&quot;M&quot;, &quot;calcio&quot;): 2, (&quot;F&quot;, &quot;tennis&quot;): 3, ...}</span></code></pre>
+<h3>Comprehension e stringhe</h3>
+<ol>
+<li>Data <code>numeri: list[int] = list(range(1, 11))</code>, scrivete una list comprehension che produca i numeri pari moltiplicati per 3. Risultato atteso: <code>[6, 12, 18, 24, 30]</code>.</li>
+</ol>
+<ol>
+<li>Data <code>riga: str = "  Mario Rossi , 25 , Roma  "</code>, estraete i tre campi puliti in una lista con <code>strip()</code>, <code>split(",")</code> e una comprehension. Risultato atteso: <code>['Mario Rossi', '25', 'Roma']</code>.</li>
+</ol>
+<ol>
+<li>Data <code>frase: str = "la  statistica   è una   scienza"</code>, stampate la frase con un solo spazio tra le parole usando <code>split()</code> e <code>join()</code>.</li>
+</ol>
 <hr>
 <h2>Osservazioni finali</h2>
 <p>Liste e tuple sono i mattoni fondamentali per gestire collezioni di dati in Python. La distinzione tra le due non e' un dettaglio sintattico: riflette una scelta progettuale precisa. Usate le liste quando i dati devono crescere, ridursi o cambiare; usate le tuple quando i dati rappresentano un record fisso (una coordinata, una data, un risultato di funzione).</p>

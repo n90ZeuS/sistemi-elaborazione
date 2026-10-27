@@ -14,7 +14,7 @@ Scheda di riferimento rapido con tutti i principali metodi stringa, raggruppati 
 | `rfind` | `s.rfind(sub)` | Come find, ma cerca da destra | `"abcabc".rfind("abc")` | `3` |
 | `index` | `s.index(sub)` | Come find, ma lancia ValueError se assente | `"ciao".index("ia")` | `1` |
 | `rindex` | `s.rindex(sub)` | Come index, ma cerca da destra | `"abcabc".rindex("a")` | `3` |
-| `count` | `s.count(sub)` | Conta le occorrenze non sovrapposte | `"banana".count("an")` | `2` |
+| `count` | `s.count(sub)` | Conta le occorrenze non sovrapposte | `"statistica".count("ti")` | `2` |
 | `startswith` | `s.startswith(prefix)` | Verifica se inizia con il prefisso | `"ciao".startswith("ci")` | `True` |
 | `endswith` | `s.endswith(suffix)` | Verifica se finisce con il suffisso | `"dati.csv".endswith(".csv")` | `True` |
 | `in` | `sub in s` | Verifica se la sottostringa e' presente | `"mondo" in "ciao mondo"` | `True` |

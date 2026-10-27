@@ -461,7 +461,6 @@
 - Perché esistono: esprimono un pattern molto comune (trasforma e/o filtra una sequenza) in modo dichiarativo — si dice cosa si vuole, non come ottenerlo
 - **Dict comprehension:** `{k: v for k, v in ...}`
 - **Set comprehension:** `{x for x in ...}`
-- **Generator expression:** `(x**2 for x in range(10))` — come una list comprehension ma lazy (calcola un elemento alla volta, risparmia memoria)
 - **Best practice:**
   - Le comprehension sono ottime per trasformazioni semplici
   - Se la logica diventa complessa (più di una condizione, comprehension annidate), meglio un ciclo esplicito: la leggibilità vince sulla concisione
@@ -546,7 +545,6 @@
   riga: str = "  Roma ; 2850000 ; Lazio  "
   campi: list[str] = [campo.strip() for campo in riga.split(";")]
   ```
-- Espressioni regolari (cenni): il modulo `re` per pattern matching avanzato — uno strumento potentissimo per la pulizia e l'estrazione di dati da testo
 
 ---
 

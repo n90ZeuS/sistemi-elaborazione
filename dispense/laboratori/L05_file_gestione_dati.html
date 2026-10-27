@@ -203,560 +203,401 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <nav class="top-nav"><a href="../../index.html">Home</a> &bull; <a href="../frontali/T16_programmazione_oggetti.html">← T16</a> &bull; <a href="../frontali/T17_numpy_pandas_visualizzazione.html">T17 →</a> &bull; <a href="../../presentazioni/L05_file_gestione_dati.html">Presentazione</a></nav>
 <h1>L05 — File e gestione dati</h1>
 <a class="download-link" href="L05_file_gestione_dati.pdf" download>Scarica PDF</a>
-<h1>Laboratorio 5 --- File e gestione dati</h1>
-<p><strong>Prerequisiti</strong>: Frontale T15 (File, dati e gestione degli errori)</p>
-<p><strong>Obiettivo</strong>: mettere in pratica la lettura e scrittura di file di testo, CSV e JSON, la costruzione di percorsi con <code>pathlib</code> e la gestione degli errori con <code>try</code>/<code>except</code>.</p>
+<h1>Laboratorio 5 — File e gestione dati</h1>
+<p><strong>Prerequisiti:</strong> lezioni T15 (File, dati ed errori).</p>
+<p>Oggi si lavora con dati che stanno nei file: testo, CSV e JSON. Per ogni esercizio create un file <code>.py</code> con il nome indicato, nella stessa cartella dei file di dati. I file di dati sono scritti nella slide dell'esercizio: create il file con l'editor e copiate il contenuto, compresa la riga di intestazione, e lasciate un a capo dopo l'ultima riga. Le classi non servono.</p>
+<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T17.</p>
+<table>
+<thead><tr>
+<th>#</th>
+<th>File</th>
+<th>Esercizio</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td><code>conta_righe.py</code></td>
+<td>Commenti al corso</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>parole_frequenti.py</code></td>
+<td>Le parole più usate</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>esiti_appello.py</code></td>
+<td>Gli esiti dell'appello</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>verbale.py</code></td>
+<td>Il verbale d'esame</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>spese.py</code></td>
+<td>Il registro delle spese</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>sondaggio.py</code></td>
+<td>Il sondaggio in JSON</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>appello_robusto.py</code></td>
+<td>Un appello con errori</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>config_soglia.py</code></td>
+<td>Configurazione in JSON</td>
+</tr>
+<tr>
+<td>Sfida</td>
+<td><code>pipeline_pm10.py</code></td>
+<td>PM10 a Padova</td>
+</tr>
+</tbody></table>
 <hr>
-<h2>Esercizio guidato 1 --- Leggere un file di testo e contare righe, parole, caratteri</h2>
-<p>Creiamo un file di testo di esempio e poi scriviamo una funzione che ne calcola le statistiche fondamentali.</p>
-<h3>Passo 1: creare il file di prova</h3>
-<p>Create nella cartella di lavoro un file chiamato <code>poesia.txt</code> con il seguente contenuto:</p>
-<pre><code>Nel mezzo <span class="kw">del</span> cammin di nostra vita
-mi ritrovai per una selva oscura
-che la diritta via era smarrita
-
-Ahi quanto a dir qual era è cosa dura
-esta selva selvaggia e aspra e forte
-che nel pensier rinova la paura</code></pre>
-<h3>Passo 2: scrivere la funzione di analisi</h3>
-<pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-
-<span class="kw">def</span> <span class="fn">analizza_file</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;Legge un file di testo e restituisce statistiche di base.
-
-    Args:
-        percorso: Path al file da analizzare.
-
-    Returns:
-        Dizionario con chiavi &#x27;righe&#x27;, &#x27;righe_non_vuote&#x27;, &#x27;parole&#x27;, &#x27;caratteri&#x27;.
-
-    Raises:
-        FileNotFoundError: Se il file non esiste.
-    &quot;&quot;&quot;</span>
-    num_righe: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-    num_righe_non_vuote: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-    num_parole: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-    num_caratteri: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-
-    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        <span class="kw">for</span> riga <span class="kw">in</span> f:
-            num_righe <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-            num_caratteri <span class="op">+</span><span class="op">=</span> <span class="nb">len</span>(riga)
-            <span class="kw">if</span> riga.strip():
-                num_righe_non_vuote <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-                num_parole <span class="op">+</span><span class="op">=</span> <span class="nb">len</span>(riga.split())
-
-    <span class="kw">return</span> {
-        <span class="st">&quot;righe&quot;</span>: num_righe,
-        <span class="st">&quot;righe_non_vuote&quot;</span>: num_righe_non_vuote,
-        <span class="st">&quot;parole&quot;</span>: num_parole,
-        <span class="st">&quot;caratteri&quot;</span>: num_caratteri,
-    }
-
-
-<span class="cm"># --- Prova ---</span>
-<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
-    percorso_poesia: Path <span class="op">=</span> Path(<span class="st">&quot;poesia.txt&quot;</span>)
-    statistiche: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> analizza_file(percorso_poesia)
-    <span class="kw">for</span> chiave, valore <span class="kw">in</span> statistiche.items():
-        <span class="nb">print</span>(<span class="st">f&quot;{chiave:&gt;20}: {valore}&quot;</span>)</code></pre>
-<p><strong>Output atteso</strong>:</p>
-<pre><code>               righe: <span class="mi">7</span>
-     righe_non_vuote: <span class="mi">6</span>
-              parole: <span class="mi">40</span>
-           caratteri: <span class="mi">235</span></code></pre>
-<p><strong>Osservazione</strong>: iteriamo riga per riga sull'oggetto file --- questo funziona anche su file enormi perche' legge una riga alla volta dalla memoria. Notiamo che <code>riga.split()</code> senza argomenti divide su qualsiasi sequenza di spazi bianchi.</p>
-<hr>
-<h2>Esercizio guidato 2 --- Scrivere risultati in file di output con <code>pathlib</code></h2>
-<p>Prendiamo le statistiche calcolate nell'esercizio precedente e salviamole in un file, creando la directory di output se non esiste.</p>
-<pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-
-<span class="kw">def</span> <span class="fn">salva_statistiche</span>(
-    percorso_output: Path,
-    nome_sorgente: <span class="nb">str</span>,
-    statistiche: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>],
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-    <span class="st">&quot;&quot;&quot;Salva le statistiche di un file in un report testuale.
-
-    Args:
-        percorso_output: Path del file di output da creare.
-        nome_sorgente: Nome del file sorgente analizzato.
-        statistiche: Dizionario con le statistiche calcolate.
-    &quot;&quot;&quot;</span>
-    <span class="cm"># Creiamo la directory genitore se non esiste</span>
-    percorso_output.parent.mkdir(parents<span class="op">=</span><span class="kw">True</span>, exist_ok<span class="op">=</span><span class="kw">True</span>)
-
-    <span class="kw">with</span> <span class="nb">open</span>(percorso_output, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        f.write(<span class="st">f&quot;=== Report per: {nome_sorgente} ===\n\n&quot;</span>)
-        <span class="kw">for</span> chiave, valore <span class="kw">in</span> statistiche.items():
-            f.write(<span class="st">f&quot;  {chiave:&gt;20}: {valore}\n&quot;</span>)
-        f.write(<span class="st">f&quot;\n{&#x27;=&#x27;*40}\n&quot;</span>)
-
-    <span class="nb">print</span>(<span class="st">f&quot;Report salvato in: {percorso_output}&quot;</span>)
-
-
-<span class="cm"># --- Prova ---</span>
-<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
-    statistiche: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {
-        <span class="st">&quot;righe&quot;</span>: <span class="mi">7</span>,
-        <span class="st">&quot;righe_non_vuote&quot;</span>: <span class="mi">6</span>,
-        <span class="st">&quot;parole&quot;</span>: <span class="mi">40</span>,
-        <span class="st">&quot;caratteri&quot;</span>: <span class="mi">235</span>,
-    }
-    output: Path <span class="op">=</span> Path(<span class="st">&quot;output&quot;</span>) <span class="op">/</span> <span class="st">&quot;report_poesia.txt&quot;</span>
-    salva_statistiche(output, <span class="st">&quot;poesia.txt&quot;</span>, statistiche)
-
-    <span class="cm"># Verifica: rileggiamo il file appena scritto</span>
-    contenuto: <span class="nb">str</span> <span class="op">=</span> output.read_text(encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>)
-    <span class="nb">print</span>(contenuto)</code></pre>
-<p><strong>Cosa notiamo</strong>:</p>
-<ul>
-<li><code>percorso<em>output.parent.mkdir(parents=True, exist</em>ok=True)</code> crea tutte le directory intermedie senza errore se gia' esistono.</li>
-<li><code>Path.read_text()</code> e' una scorciatoia comoda per leggere un intero file in una stringa.</li>
-<li>L'operatore <code>/</code> di <code>Path</code> costruisce percorsi in modo portabile tra sistemi operativi.</li>
-</ul>
-<hr>
-<h2>Esercizio guidato 3 --- CSV con <code>csv.DictReader</code> (encoding, separatore <code>;</code>)</h2>
-<p>Lavoriamo con un CSV "all'italiana": separatore <code>;</code> e caratteri accentati.</p>
-<h3>Passo 1: creare il file CSV di prova</h3>
-<p>Create un file <code>studenti.csv</code> con questo contenuto (separatore <code>;</code>):</p>
-<pre><code>nome;cognome;voto;citta
-Anna;Rossi;<span class="mi">28</span>;Milano
-Marco;Bianchi;<span class="mi">25</span>;Roma
-Lucia;Verdi;<span class="mi">30</span>;Napoli
-Giuseppe;Neri;<span class="mi">22</span>;Torino
-Francesca;Gialli;<span class="mi">27</span>;Bologna</code></pre>
-<h3>Passo 2: leggere e analizzare</h3>
+<h2>Promemoria</h2>
+<p>Gli strumenti che servono oggi. Aprite sempre i file con <code>with</code> e <code>encoding="utf-8"</code>. <code>csv.DictReader</code> restituisce i valori come stringhe: i numeri vanno convertiti con <code>int()</code> o <code>float()</code>. Nel <code>try</code> mettete solo le istruzioni che possono fallire e catturate eccezioni specifiche.</p>
 <pre><code><span class="kw">import</span> csv
+<span class="kw">import</span> json
 <span class="kw">from</span> pathlib <span class="kw">import</span> Path
 
-
-<span class="kw">def</span> <span class="fn">carica_studenti</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]:
-    <span class="st">&quot;&quot;&quot;Carica un CSV di studenti con separatore punto e virgola.
-
-    Args:
-        percorso: Path al file CSV.
-
-    Returns:
-        Lista di dizionari, uno per ogni studente.
-    &quot;&quot;&quot;</span>
-    studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
-
-    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        lettore <span class="op">=</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>)
-        <span class="kw">for</span> riga <span class="kw">in</span> lettore:
-            studenti.append(<span class="nb">dict</span>(riga))
-
-    <span class="kw">return</span> studenti
-
-
-<span class="kw">def</span> <span class="fn">stampa_tabella</span>(<span class="fn">studenti</span>: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-    <span class="st">&quot;&quot;&quot;Stampa una lista di studenti in formato tabellare.&quot;&quot;&quot;</span>
-    <span class="kw">if</span> <span class="kw">not</span> studenti:
-        <span class="nb">print</span>(<span class="st">&quot;Nessuno studente trovato.&quot;</span>)
-        <span class="kw">return</span>
-
-    intestazione: <span class="nb">str</span> <span class="op">=</span> <span class="st">f&quot;{&#x27;Nome&#x27;:&lt;15} {&#x27;Cognome&#x27;:&lt;15} {&#x27;Voto&#x27;:&gt;5} {&#x27;Citta&#x27;:&lt;15}&quot;</span>
-    <span class="nb">print</span>(intestazione)
-    <span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="nb">len</span>(intestazione))
-
-    <span class="kw">for</span> s <span class="kw">in</span> studenti:
-        <span class="nb">print</span>(<span class="st">f&quot;{s[&#x27;nome&#x27;]:&lt;15} {s[&#x27;cognome&#x27;]:&lt;15} {s[&#x27;voto&#x27;]:&gt;5} {s[&#x27;citta&#x27;]:&lt;15}&quot;</span>)
-
-
-<span class="kw">def</span> <span class="fn">calcola_media_voti</span>(<span class="fn">studenti</span>: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-    <span class="st">&quot;&quot;&quot;Calcola la media dei voti degli studenti.
-
-    Args:
-        studenti: Lista di dizionari con chiave &#x27;voto&#x27;.
-
-    Returns:
-        Media aritmetica dei voti.
-
-    Raises:
-        ValueError: Se la lista e&#x27; vuota.
-    &quot;&quot;&quot;</span>
-    <span class="kw">if</span> <span class="kw">not</span> studenti:
-        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Impossibile calcolare la media: lista vuota&quot;</span>)
-
-    voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="nb">int</span>(s[<span class="st">&quot;voto&quot;</span>]) <span class="kw">for</span> s <span class="kw">in</span> studenti]
-    <span class="kw">return</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
-
-
-<span class="cm"># --- Prova ---</span>
-<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
-    percorso: Path <span class="op">=</span> Path(<span class="st">&quot;studenti.csv&quot;</span>)
-    studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> carica_studenti(percorso)
-    stampa_tabella(studenti)
-    <span class="nb">print</span>(<span class="st">f&quot;\nMedia voti: {calcola_media_voti(studenti):.2f}&quot;</span>)</code></pre>
-<p><strong>Output atteso</strong>:</p>
-<pre><code>Nome            Cognome          Voto Citta
-<span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span><span class="op">-</span>
-Anna            Rossi              <span class="mi">28</span> Milano
-Marco           Bianchi            <span class="mi">25</span> Roma
-Lucia           Verdi              <span class="mi">30</span> Napoli
-Giuseppe        Neri               <span class="mi">22</span> Torino
-Francesca       Gialli             <span class="mi">27</span> Bologna
-
-Media voti: <span class="mi">26.40</span></code></pre>
-<p><strong>Attenzione all'encoding</strong>: se aprite un CSV esportato da Excel su Windows e vedete caratteri strani (es. <code>citt\xe0</code> invece di <code>citta'</code>), provate con <code>encoding="latin-1"</code> oppure <code>encoding="cp1252"</code>.</p>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;note.txt&quot;</span>, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:  <span class="cm"># &quot;a&quot; aggiunge</span>
+    f.write(<span class="st">&quot;prima riga\nseconda riga\n&quot;</span>)  <span class="cm"># l&#x27;a capo va scritto</span>
+<span class="kw">with</span> <span class="nb">open</span>(Path(<span class="st">&quot;note.txt&quot;</span>), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> riga <span class="kw">in</span> f:                         <span class="cm"># una riga alla volta</span>
+        <span class="nb">print</span>(riga.strip())                <span class="cm"># prima riga ...</span>
+<span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;appello.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> r <span class="kw">in</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>):  <span class="cm"># r è un dict</span>
+        <span class="nb">print</span>(r[<span class="st">&quot;cognome&quot;</span>], <span class="nb">int</span>(r[<span class="st">&quot;voto&quot;</span>]))     <span class="cm"># Rossi 28 ...</span>
+<span class="kw">try</span>:
+    <span class="kw">with</span> <span class="nb">open</span>(<span class="st">&quot;sondaggio.json&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        dati: <span class="nb">dict</span> <span class="op">=</span> json.load(f)          <span class="cm"># JSON → dict e list</span>
+    <span class="nb">print</span>(dati[<span class="st">&quot;lode&quot;</span>])
+<span class="kw">except</span> <span class="nb">KeyError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">&quot;Chiave mancante:&quot;</span>, e)           <span class="cm"># Chiave mancante: &#x27;lode&#x27;</span></code></pre>
 <hr>
-<h2>Esercizio guidato 4 --- JSON: leggere e navigare una struttura</h2>
-<p>I file JSON possono contenere strutture annidate (dizionari dentro dizionari, liste dentro dizionari). Impariamo a navigarle.</p>
-<h3>Passo 1: creare il file JSON di prova</h3>
-<p>Create un file <code>corso.json</code>:</p>
+<h2>Esercizio 1 — Commenti al corso (<code>conta_righe.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>commenti.txt</code> contiene i commenti liberi di un questionario sul corso, uno per riga. Una riga è vuota.</li>
+<li>Apritelo con <code>with open(..., encoding="utf-8")</code> e leggetelo riga per riga con un <code>for</code>.</li>
+<li>Contate le righe, le righe vuote e le parole (<code>len(riga.split())</code>).</li>
+<li>Stampate il nome del file (<code>Path(...).name</code>), i conteggi, le parole per commento (righe non vuote) con un decimale e il numero di riga del commento più lungo.</li>
+</ol>
+<p><strong>File <code>commenti.txt</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>Lezioni chiare, esempi utili.
+Molto lavoro a casa, poco tempo per gli esercizi.
+Le slide sono utili, il ritmo è veloce.
+
+Vorrei più esempi con dati reali.
+Laboratori utili, ma le aule sono troppo affollate.
+Esercizi utili per capire meglio.
+Più esercizi <span class="kw">in</span> aula e meno teoria.</code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>File: commenti.txt
+Righe: <span class="mi">8</span>, di cui vuote: <span class="mi">1</span>
+Parole: <span class="mi">47</span>
+Parole per commento: <span class="mi">6.7</span>
+Commento più lungo: riga <span class="mi">2</span>, <span class="mi">9</span> parole</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete in fondo la riga <code>Grazie.</code> → <code>Righe: 9</code>, <code>Parole: 48</code>, <code>Parole per commento: 6.0</code></li>
+<li>cambiate il nome in <code>commenti2.txt</code> → il programma si ferma con <code>FileNotFoundError</code> (lo gestirete nell'esercizio 7)</li>
+</ul>
+<hr>
+<h2>Esercizio 2 — Le parole più usate (<code>parole_frequenti.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Usate lo stesso <code>commenti.txt</code>. Scrivete una funzione <code>parole<em>del</em>file(percorso: Path) -> list[str]</code> che legge il file e restituisce tutte le parole in minuscolo.</li>
+<li>Togliete la punteggiatura attaccata alle parole con <code>parola.strip(".,;:!?")</code>.</li>
+<li>Stampate il numero di parole e di parole distinte (<code>set</code>).</li>
+<li>Tenete le parole di almeno 5 lettere, contatele con <code>Counter</code> e stampate le 3 più frequenti con <code>most_common(3)</code>.</li>
+</ol>
+<p><strong>File <code>commenti.txt</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>Lezioni chiare, esempi utili.
+Molto lavoro a casa, poco tempo per gli esercizi.
+Le slide sono utili, il ritmo è veloce.
+
+Vorrei più esempi con dati reali.
+Laboratori utili, ma le aule sono troppo affollate.
+Esercizi utili per capire meglio.
+Più esercizi <span class="kw">in</span> aula e meno teoria.</code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Parole: <span class="mi">47</span>, distinte: <span class="mi">37</span>
+Parole di almeno <span class="mi">5</span> lettere: <span class="mi">25</span>
+utili: <span class="mi">4</span>
+esercizi: <span class="mi">3</span>
+esempi: <span class="mi">2</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>Utili,</code> e <code>utili.</code> contano come la stessa parola</li>
+<li>con la riga <code>Grazie.</code> in più → <code>Parole: 48, distinte: 38</code></li>
+</ul>
+<hr>
+<h2>Esercizio 3 — Gli esiti dell'appello (<code>esiti_appello.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>appello.csv</code> contiene i voti di un appello, separati da <code>;</code>.</li>
+<li>Leggetelo con <code>csv.DictReader(f, delimiter=";")</code> dentro una funzione che restituisce la lista delle righe (<code>list(...)</code>).</li>
+<li>I valori sono stringhe: convertite i voti con <code>int()</code>.</li>
+<li>Stampate iscritti, promossi (voto da 18 in su) con la percentuale, la media di tutti e quella dei promossi con un decimale, il voto più alto con cognome e nome (<code>max</code> con <code>key=lambda ...</code>).</li>
+</ol>
+<p><strong>File <code>appello.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>matricola;cognome;nome;voto
+<span class="mi">2101234</span>;Rossi;Anna;<span class="mi">28</span>
+<span class="mi">2101567</span>;Bianchi;Marco;<span class="mi">17</span>
+<span class="mi">2102001</span>;Verdi;Giulia;<span class="mi">30</span>
+<span class="mi">2102345</span>;Russo;Luca;<span class="mi">24</span>
+<span class="mi">2102890</span>;Ferrari;Sara;<span class="mi">15</span>
+<span class="mi">2103112</span>;Esposito;Paolo;<span class="mi">21</span>
+<span class="mi">2103456</span>;Romano;Elena;<span class="mi">27</span>
+<span class="mi">2103789</span>;Gallo;Davide;<span class="mi">19</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Iscritti: <span class="mi">8</span>
+Promossi: <span class="mi">6</span> (<span class="mi">75.0</span><span class="op">%</span>)
+Media di tutti: <span class="mi">22.6</span>
+Media dei promossi: <span class="mi">24.8</span>
+Voto più alto: <span class="mi">30</span> (Verdi Giulia)</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete la riga <code>2104000;Conti;Marta;18</code> → <code>Iscritti: 9</code>, <code>Promossi: 7 (77.8%)</code>, medie <code>22.1</code> e <code>23.9</code></li>
+<li>togliete <code>delimiter=";"</code> e stampate una riga letta: c'è una sola chiave, <code>matricola;cognome;nome;voto</code></li>
+</ul>
+<hr>
+<h2>Esercizio 4 — Il verbale d'esame (<code>verbale.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Leggete di nuovo <code>appello.csv</code> e ordinate gli studenti per cognome con <code>sorted(..., key=lambda s: s["cognome"])</code>.</li>
+<li>Aprite <code>verbale.txt</code> in scrittura (<code>"w"</code>) e scrivete con <code>f.write()</code> un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate <code>\n</code> alla fine di ogni riga.</li>
+<li>Dopo aver chiuso il file, rileggetelo con <code>Path("verbale.txt").read_text(encoding="utf-8")</code> e stampatelo.</li>
+</ol>
+<p><strong>File <code>appello.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>matricola;cognome;nome;voto
+<span class="mi">2101234</span>;Rossi;Anna;<span class="mi">28</span>
+<span class="mi">2101567</span>;Bianchi;Marco;<span class="mi">17</span>
+<span class="mi">2102001</span>;Verdi;Giulia;<span class="mi">30</span>
+<span class="mi">2102345</span>;Russo;Luca;<span class="mi">24</span>
+<span class="mi">2102890</span>;Ferrari;Sara;<span class="mi">15</span>
+<span class="mi">2103112</span>;Esposito;Paolo;<span class="mi">21</span>
+<span class="mi">2103456</span>;Romano;Elena;<span class="mi">27</span>
+<span class="mi">2103789</span>;Gallo;Davide;<span class="mi">19</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Verbale dell<span class="st">&#x27;appello
+2101567 Bianchi Marco: 17, respinto
+2103112 Esposito Paolo: 21, promosso
+2102890 Ferrari Sara: 15, respinto
+2103789 Gallo Davide: 19, promosso
+2103456 Romano Elena: 27, promosso
+2101234 Rossi Anna: 28, promosso
+2102345 Russo Luca: 24, promosso
+2102001 Verdi Giulia: 30, promosso
+Promossi: 6 su 8</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>eseguite il programma due volte: <code>verbale.txt</code> viene riscritto da capo, le righe non si ripetono</li>
+<li>con la riga <code>2104000;Conti;Marta;18</code> → Conti è la seconda, <code>Promossi: 7 su 9</code></li>
+</ul>
+<hr>
+<h2>Esercizio 5 — Il registro delle spese (<code>spese.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>spese.csv</code> è un registro delle spese di uno studente fuori sede.</li>
+<li>Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (<code>ValueError</code>) stampate un messaggio e non scrivete niente.</li>
+<li>Altrimenti aggiungete la spesa in fondo al file: <code>open(..., "a", encoding="utf-8", newline="")</code> e <code>csv.writer(f, delimiter=";").writerow([...])</code>.</li>
+<li>Rileggete tutto il file e sommate gli importi per categoria con un <code>defaultdict(float)</code>. Stampate le categorie dalla più costosa e il totale, con due decimali.</li>
+</ol>
+<p><strong>File <code>spese.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>data;categoria;importo
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">01</span>;affitto;<span class="mi">350.00</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">02</span>;spesa;<span class="mi">42.50</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">03</span>;trasporti;<span class="mi">25.00</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">05</span>;spesa;<span class="mi">18.20</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">06</span>;libri;<span class="mi">39.90</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Data (aaaa<span class="op">-</span>mm<span class="op">-</span>gg): <span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">07</span>
+Categoria: Spesa
+Importo: <span class="mi">12.30</span>
+affitto: <span class="mi">350.00</span> EUR
+spesa: <span class="mi">73.00</span> EUR
+libri: <span class="mi">39.90</span> EUR
+trasporti: <span class="mi">25.00</span> EUR
+Totale: <span class="mi">487.90</span> EUR</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>sul file originale, <code>2026-12-07</code>, <code>cinema</code>, <code>8.50</code> → compare <code>cinema: 8.50 EUR</code>, totale <code>484.10 EUR</code></li>
+<li>importo <code>dieci</code> → <code>Importo non valido: spesa non registrata</code> e il file non cambia</li>
+<li>ogni esecuzione aggiunge una riga: aprite <code>spese.csv</code> e controllate</li>
+</ul>
+<hr>
+<h2>Esercizio 6 — Il sondaggio in JSON (<code>sondaggio.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>sondaggio.json</code> contiene le risposte a un questionario: per ogni studente il voto di soddisfazione (da 1 a 5) e se frequenta le lezioni.</li>
+<li>Caricatelo con <code>json.load(f)</code>: si ottiene un dizionario che contiene una lista di dizionari.</li>
+<li>Calcolate la media dei voti di tutti, dei frequentanti e dei non frequentanti (arrotondate con <code>round(..., 2)</code>) e la quota di frequentanti (<code>round(..., 3)</code>).</li>
+<li>Mettete i risultati in un dizionario <code>riepilogo</code>, salvatelo in <code>riepilogo.json</code> con <code>json.dump(..., indent=2, ensure_ascii=False)</code> e stampatelo con <code>json.dumps</code>.</li>
+</ol>
+<p><strong>File <code>sondaggio.json</code></strong> (createlo nella cartella del programma)</p>
 <pre><code>{
-  &quot;nome_corso&quot;: &quot;Sistemi di Elaborazione&quot;,
-  &quot;anno_accademico&quot;: &quot;2025-2026&quot;,
-  &quot;docente&quot;: {
-    &quot;nome&quot;: &quot;Mario&quot;,
-    &quot;cognome&quot;: &quot;Rossi&quot;,
-    &quot;email&quot;: &quot;mario.rossi@universita.it&quot;
-  },
-  &quot;studenti&quot;: [
-    {&quot;matricola&quot;: &quot;S001&quot;, &quot;nome&quot;: &quot;Anna&quot;,  &quot;voti&quot;: [28, 25, 30]},
-    {&quot;matricola&quot;: &quot;S002&quot;, &quot;nome&quot;: &quot;Marco&quot;, &quot;voti&quot;: [22, 24]},
-    {&quot;matricola&quot;: &quot;S003&quot;, &quot;nome&quot;: &quot;Lucia&quot;, &quot;voti&quot;: [30, 30, 28, 27]},
-    {&quot;matricola&quot;: &quot;S004&quot;, &quot;nome&quot;: &quot;Giuseppe&quot;, &quot;voti&quot;: []}
+  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Sistemi di Elaborazione&quot;</span>,
+  <span class="st">&quot;anno&quot;</span>: <span class="mi">2026</span>,
+  <span class="st">&quot;risposte&quot;</span>: [
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;2101234&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">4</span>, <span class="st">&quot;frequenta&quot;</span>: true},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;2101567&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">2</span>, <span class="st">&quot;frequenta&quot;</span>: false},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;2102001&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">5</span>, <span class="st">&quot;frequenta&quot;</span>: true},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;2102345&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">3</span>, <span class="st">&quot;frequenta&quot;</span>: true},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;2102890&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">4</span>, <span class="st">&quot;frequenta&quot;</span>: false},
+    {<span class="st">&quot;matricola&quot;</span>: <span class="st">&quot;2103112&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">5</span>, <span class="st">&quot;frequenta&quot;</span>: true}
   ]
 }</code></pre>
-<h3>Passo 2: leggere e navigare</h3>
-<pre><code><span class="kw">import</span> json
-<span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-
-<span class="kw">def</span> <span class="fn">carica_corso</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>:
-    <span class="st">&quot;&quot;&quot;Carica i dati di un corso da file JSON.
-
-    Args:
-        percorso: Path al file JSON.
-
-    Returns:
-        Dizionario con i dati del corso.
-    &quot;&quot;&quot;</span>
-    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        dati: <span class="nb">dict</span> <span class="op">=</span> json.load(f)
-    <span class="kw">return</span> dati
-
-
-<span class="kw">def</span> <span class="fn">riepilogo_corso</span>(<span class="fn">dati</span>: <span class="nb">dict</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-    <span class="st">&quot;&quot;&quot;Stampa un riepilogo del corso con le medie di ogni studente.&quot;&quot;&quot;</span>
-    <span class="nb">print</span>(<span class="st">f&quot;Corso: {dati[&#x27;nome_corso&#x27;]}&quot;</span>)
-    <span class="nb">print</span>(<span class="st">f&quot;Anno: {dati[&#x27;anno_accademico&#x27;]}&quot;</span>)
-    docente: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> dati[<span class="st">&quot;docente&quot;</span>]
-    <span class="nb">print</span>(<span class="st">f&quot;Docente: {docente[&#x27;nome&#x27;]} {docente[&#x27;cognome&#x27;]}&quot;</span>)
-    <span class="nb">print</span>(<span class="st">f&quot;Email: {docente[&#x27;email&#x27;]}&quot;</span>)
-    <span class="nb">print</span>()
-
-    studenti: <span class="nb">list</span>[<span class="nb">dict</span>] <span class="op">=</span> dati[<span class="st">&quot;studenti&quot;</span>]
-    <span class="nb">print</span>(<span class="st">f&quot;{&#x27;Matricola&#x27;:&lt;12} {&#x27;Nome&#x27;:&lt;12} {&#x27;N. voti&#x27;:&gt;8} {&#x27;Media&#x27;:&gt;8}&quot;</span>)
-    <span class="nb">print</span>(<span class="st">&quot;-&quot;</span> <span class="op">*</span> <span class="mi">44</span>)
-
-    <span class="kw">for</span> s <span class="kw">in</span> studenti:
-        matricola: <span class="nb">str</span> <span class="op">=</span> s[<span class="st">&quot;matricola&quot;</span>]
-        nome: <span class="nb">str</span> <span class="op">=</span> s[<span class="st">&quot;nome&quot;</span>]
-        voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> s[<span class="st">&quot;voti&quot;</span>]
-
-        <span class="kw">if</span> voti:
-            media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
-            <span class="nb">print</span>(<span class="st">f&quot;{matricola:&lt;12} {nome:&lt;12} {len(voti):&gt;8} {media:&gt;8.2f}&quot;</span>)
-        <span class="kw">else</span>:
-            <span class="nb">print</span>(<span class="st">f&quot;{matricola:&lt;12} {nome:&lt;12} {len(voti):&gt;8} {&#x27;N/D&#x27;:&gt;8}&quot;</span>)
-
-
-<span class="kw">def</span> <span class="fn">salva_medie_json</span>(<span class="fn">dati</span>: <span class="nb">dict</span>, percorso_output: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-    <span class="st">&quot;&quot;&quot;Calcola le medie e le salva in un nuovo file JSON.
-
-    Args:
-        dati: Dizionario con i dati del corso.
-        percorso_output: Path del file JSON di output.
-    &quot;&quot;&quot;</span>
-    risultati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">float</span> <span class="op">|</span> <span class="kw">None</span>]] <span class="op">=</span> []
-
-    <span class="kw">for</span> s <span class="kw">in</span> dati[<span class="st">&quot;studenti&quot;</span>]:
-        voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> s[<span class="st">&quot;voti&quot;</span>]
-        media: <span class="nb">float</span> <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti) <span class="kw">if</span> voti <span class="kw">else</span> <span class="kw">None</span>
-        risultati.append({
-            <span class="st">&quot;matricola&quot;</span>: s[<span class="st">&quot;matricola&quot;</span>],
-            <span class="st">&quot;nome&quot;</span>: s[<span class="st">&quot;nome&quot;</span>],
-            <span class="st">&quot;media&quot;</span>: <span class="nb">round</span>(media, <span class="mi">2</span>) <span class="kw">if</span> media <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span> <span class="kw">else</span> <span class="kw">None</span>,
-        })
-
-    output: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span> <span class="op">|</span> <span class="nb">list</span>] <span class="op">=</span> {
-        <span class="st">&quot;corso&quot;</span>: dati[<span class="st">&quot;nome_corso&quot;</span>],
-        <span class="st">&quot;medie&quot;</span>: risultati,
-    }
-
-    percorso_output.parent.mkdir(parents<span class="op">=</span><span class="kw">True</span>, exist_ok<span class="op">=</span><span class="kw">True</span>)
-    <span class="kw">with</span> <span class="nb">open</span>(percorso_output, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        json.dump(output, f, indent<span class="op">=</span><span class="mi">2</span>, ensure_ascii<span class="op">=</span><span class="kw">False</span>)
-
-    <span class="nb">print</span>(<span class="st">f&quot;Medie salvate in: {percorso_output}&quot;</span>)
-
-
-<span class="cm"># --- Prova ---</span>
-<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
-    dati: <span class="nb">dict</span> <span class="op">=</span> carica_corso(Path(<span class="st">&quot;corso.json&quot;</span>))
-    riepilogo_corso(dati)
-    salva_medie_json(dati, Path(<span class="st">&quot;output&quot;</span>) <span class="op">/</span> <span class="st">&quot;medie_corso.json&quot;</span>)</code></pre>
-<p><strong>Punti chiave</strong>:</p>
-<ul>
-<li><code>json.load()</code> legge da file, <code>json.loads()</code> da stringa (la <code>s</code> finale sta per <em>string</em>).</li>
-<li><code>indent=2</code> produce JSON leggibile; <code>ensure_ascii=False</code> preserva i caratteri accentati.</li>
-<li><code>round(media, 2)</code> evita output come <code>27.333333333333332</code>.</li>
-</ul>
-<hr>
-<h2>Esercizio guidato 5 --- <code>try</code>/<code>except</code> per file non trovato, formato sbagliato, valori mancanti</h2>
-<p>Scriviamo una funzione robusta che carica un CSV di misurazioni, gestendo tutti i problemi comuni.</p>
-<pre><code><span class="kw">import</span> csv
-<span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-
-<span class="kw">def</span> <span class="fn">carica_misurazioni</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="kw">None</span>]]:
-    <span class="st">&quot;&quot;&quot;Carica misurazioni da un CSV gestendo tutti gli errori comuni.
-
-    Il CSV atteso ha colonne: id, temperatura, umidita, pressione.
-    Valori mancanti o non numerici vengono sostituiti con None.
-
-    Args:
-        percorso: Path al file CSV.
-
-    Returns:
-        Lista di dizionari con le misurazioni pulite.
-    &quot;&quot;&quot;</span>
-    <span class="cm"># 1. Verificare che il file esista</span>
-    <span class="kw">if</span> <span class="kw">not</span> percorso.exists():
-        <span class="nb">print</span>(<span class="st">f&quot;ERRORE: il file &#x27;{percorso}&#x27; non esiste.&quot;</span>)
-        <span class="kw">return</span> []
-
-    misurazioni: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="kw">None</span>]] <span class="op">=</span> []
-    errori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-
-    <span class="kw">try</span>:
-        <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-            lettore <span class="op">=</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>)
-
-            <span class="cm"># 2. Verificare che le colonne attese siano presenti</span>
-            colonne_attese: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;id&quot;</span>, <span class="st">&quot;temperatura&quot;</span>, <span class="st">&quot;umidita&quot;</span>, <span class="st">&quot;pressione&quot;</span>}
-            <span class="kw">if</span> lettore.fieldnames <span class="kw">is</span> <span class="kw">None</span>:
-                <span class="nb">print</span>(<span class="st">&quot;ERRORE: il file sembra vuoto.&quot;</span>)
-                <span class="kw">return</span> []
-
-            colonne_presenti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>(lettore.fieldnames)
-            colonne_mancanti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> colonne_attese <span class="op">-</span> colonne_presenti
-            <span class="kw">if</span> colonne_mancanti:
-                <span class="nb">print</span>(<span class="st">f&quot;ATTENZIONE: colonne mancanti: {colonne_mancanti}&quot;</span>)
-
-            <span class="kw">for</span> num_riga, riga <span class="kw">in</span> <span class="nb">enumerate</span>(lettore, start<span class="op">=</span><span class="mi">2</span>):
-                misurazione: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="kw">None</span>] <span class="op">=</span> {}
-
-                <span class="cm"># 3. Gestire valori non numerici</span>
-                <span class="kw">for</span> campo <span class="kw">in</span> [<span class="st">&quot;temperatura&quot;</span>, <span class="st">&quot;umidita&quot;</span>, <span class="st">&quot;pressione&quot;</span>]:
-                    valore_raw: <span class="nb">str</span> <span class="op">|</span> <span class="kw">None</span> <span class="op">=</span> riga.get(campo)
-                    <span class="kw">if</span> valore_raw <span class="kw">is</span> <span class="kw">None</span> <span class="kw">or</span> valore_raw.strip() <span class="op">=</span><span class="op">=</span> <span class="st">&quot;&quot;</span>:
-                        misurazione[campo] <span class="op">=</span> <span class="kw">None</span>
-                        errori.append(
-                            <span class="st">f&quot;Riga {num_riga}: &#x27;{campo}&#x27; mancante&quot;</span>
-                        )
-                    <span class="kw">else</span>:
-                        <span class="kw">try</span>:
-                            misurazione[campo] <span class="op">=</span> <span class="nb">float</span>(
-                                valore_raw.strip().replace(<span class="st">&quot;,&quot;</span>, <span class="st">&quot;.&quot;</span>)
-                            )
-                        <span class="kw">except</span> <span class="nb">ValueError</span>:
-                            misurazione[campo] <span class="op">=</span> <span class="kw">None</span>
-                            errori.append(
-                                <span class="st">f&quot;Riga {num_riga}: &#x27;{campo}&#x27; non numerico &quot;</span>
-                                <span class="st">f&quot;(&#x27;{valore_raw}&#x27;)&quot;</span>
-                            )
-
-                misurazioni.append(misurazione)
-
-    <span class="kw">except</span> UnicodeDecodeError:
-        <span class="nb">print</span>(<span class="st">&quot;ERRORE: il file non e&#x27; codificato in UTF-8.&quot;</span>)
-        <span class="nb">print</span>(<span class="st">&quot;Provate con encoding=&#x27;latin-1&#x27; o &#x27;cp1252&#x27;.&quot;</span>)
-        <span class="kw">return</span> []
-
-    <span class="cm"># Stampa riepilogo errori</span>
-    <span class="kw">if</span> errori:
-        <span class="nb">print</span>(<span class="st">f&quot;\nTrovati {len(errori)} problemi:&quot;</span>)
-        <span class="kw">for</span> e <span class="kw">in</span> errori[:<span class="mi">10</span>]:  <span class="cm"># Mostra solo i primi 10</span>
-            <span class="nb">print</span>(<span class="st">f&quot;  - {e}&quot;</span>)
-        <span class="kw">if</span> <span class="nb">len</span>(errori) <span class="op">&gt;</span> <span class="mi">10</span>:
-            <span class="nb">print</span>(<span class="st">f&quot;  ... e altri {len(errori) - 10}&quot;</span>)
-
-    <span class="nb">print</span>(<span class="st">f&quot;\nCaricate {len(misurazioni)} misurazioni.&quot;</span>)
-    <span class="kw">return</span> misurazioni
-
-
-<span class="cm"># --- Prova con un file inesistente ---</span>
-<span class="kw">if</span> __name__ <span class="op">=</span><span class="op">=</span> <span class="st">&quot;__main__&quot;</span>:
-    <span class="cm"># Test 1: file inesistente</span>
-    risultato: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="kw">None</span>]] <span class="op">=</span> carica_misurazioni(
-        Path(<span class="st">&quot;non_esiste.csv&quot;</span>)
-    )
-    <span class="nb">print</span>(<span class="st">f&quot;Risultato: {risultato}&quot;</span>)
-    <span class="nb">print</span>()
-
-    <span class="cm"># Test 2: file reale (se disponibile)</span>
-    percorso_dati: Path <span class="op">=</span> Path(<span class="st">&quot;misurazioni.csv&quot;</span>)
-    <span class="kw">if</span> percorso_dati.exists():
-        dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span> <span class="op">|</span> <span class="kw">None</span>]] <span class="op">=</span> carica_misurazioni(percorso_dati)
-        <span class="kw">for</span> d <span class="kw">in</span> dati[:<span class="mi">3</span>]:
-            <span class="nb">print</span>(d)</code></pre>
-<p><strong>Pattern fondamentale</strong>: ogni operazione che puo' fallire (apertura file, conversione di tipo, accesso a chiave) va protetta con il <code>try</code>/<code>except</code> appropriato. Catturate sempre eccezioni <em>specifiche</em> --- mai un generico <code>except Exception</code>.</p>
-<hr>
-<h2>Esercizi autonomi</h2>
-<h3>Base</h3>
-<p><strong>Esercizio 1 --- Analisi di un file di log</strong></p>
-<p>Vi viene fornito un file <code>server.log</code> dove ogni riga ha il formato:</p>
-<pre><code><span class="mi">2025</span><span class="op">-</span><span class="mi">11</span><span class="op">-</span><span class="mi">20</span> <span class="mi">08</span>:<span class="mi">15</span>:<span class="mi">32</span> INFO Avvio <span class="kw">del</span> server
-<span class="mi">2025</span><span class="op">-</span><span class="mi">11</span><span class="op">-</span><span class="mi">20</span> <span class="mi">08</span>:<span class="mi">15</span>:<span class="mi">33</span> WARNING Memoria disponibile sotto il <span class="mi">20</span><span class="op">%</span>
-<span class="mi">2025</span><span class="op">-</span><span class="mi">11</span><span class="op">-</span><span class="mi">20</span> <span class="mi">08</span>:<span class="mi">15</span>:<span class="mi">35</span> ERROR Connessione al database fallita
-<span class="mi">2025</span><span class="op">-</span><span class="mi">11</span><span class="op">-</span><span class="mi">20</span> <span class="mi">08</span>:<span class="mi">16</span>:<span class="mi">01</span> INFO Riconnessione riuscita</code></pre>
-<p>Scrivete una funzione <code>analizza_log(percorso: Path) -> dict[str, int]</code> che:</p>
-<ol>
-<li>Legge il file riga per riga.</li>
-<li>Conta quante righe ci sono per ogni livello (<code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>).</li>
-<li>Gestisce eventuali righe vuote o malformate senza interrompersi.</li>
-<li>Restituisce un dizionario con i conteggi, ad esempio <code>{"INFO": 12, "WARNING": 3, "ERROR": 5}</code>.</li>
-</ol>
-<p>Scrivete poi una seconda funzione <code>salva<em>errori(percorso</em>log: Path, percorso_output: Path) -> int</code> che estrae solo le righe <code>ERROR</code> e le salva in un file separato, restituendo il numero di errori trovati.</p>
-<p>Usate <code>pathlib</code> per tutti i percorsi.</p>
-<hr>
-<h3>Base</h3>
-<p><strong>Esercizio 2 --- Pulizia di un CSV sporco</strong></p>
-<p>Avete un file <code>vendite_sporco.csv</code> (separatore <code>;</code>) con problemi tipici:</p>
-<pre><code>prodotto;quantita;prezzo_unitario;citta
-Mela;<span class="mi">10</span>;<span class="mi">1.50</span>;Roma
-Pera;;<span class="mi">2.30</span>;Milano
-Banana;cinque;<span class="mi">0.80</span>;
-;<span class="mi">8</span>;<span class="mi">1.20</span>;Napoli
-Arancia;<span class="mi">15</span>;N<span class="op">/</span>D;Torino
-Mela;<span class="mi">20</span>;<span class="mi">1.50</span>;Roma</code></pre>
-<p>Scrivete una funzione <code>pulisci<em>csv(percorso</em>input: Path, percorso_output: Path) -> dict[str, int]</code> che:</p>
-<ol>
-<li>Legge il file riga per riga con <code>csv.DictReader</code>.</li>
-<li>Scarta le righe senza <code>prodotto</code>.</li>
-<li>Converte <code>quantita</code> in <code>int</code> e <code>prezzo_unitario</code> in <code>float</code>, sostituendo con <code>None</code> i valori non validi.</li>
-<li>Scrive un CSV pulito nel file di output contenente solo le righe con tutti i campi numerici validi.</li>
-<li>Restituisce un dizionario con: <code>{"righe<em>lette": ..., "righe</em>valide": ..., "righe_scartate": ...}</code>.</li>
-</ol>
-<hr>
-<h3>Intermedio</h3>
-<p><strong>Esercizio 3 --- Conversione CSV verso JSON</strong></p>
-<p>Scrivete una funzione <code>csv<em>a</em>json(percorso<em>csv: Path, percorso</em>json: Path) -> int</code> che:</p>
-<ol>
-<li>Legge un CSV (rilevando automaticamente se il separatore e' <code>,</code> o <code>;</code>).</li>
-<li>Converte ogni riga in un dizionario.</li>
-<li>Tenta di convertire i valori numerici (interi e decimali) nei tipi Python corrispondenti.</li>
-<li>Salva il risultato come JSON con <code>indent=2</code> e <code>ensure_ascii=False</code>.</li>
-<li>Restituisce il numero di record convertiti.</li>
-</ol>
-<p>Scrivete anche la funzione inversa <code>json<em>a</em>csv(percorso<em>json: Path, percorso</em>csv: Path) -> int</code> che fa il percorso contrario.</p>
-<p>Gestite i casi di errore: file non trovato, JSON malformato, CSV vuoto.</p>
-<hr>
-<h3>Intermedio</h3>
-<p><strong>Esercizio 4 --- Unione e riepilogo di piu' CSV</strong></p>
-<p>In una cartella <code>dati_mensili/</code> ci sono piu' file CSV (uno per mese) con la stessa struttura:</p>
-<pre><code>data;prodotto;quantita;importo
-<span class="mi">2025</span><span class="op">-</span><span class="mi">01</span><span class="op">-</span><span class="mi">05</span>;Mela;<span class="mi">10</span>;<span class="mi">15.00</span>
-<span class="mi">2025</span><span class="op">-</span><span class="mi">01</span><span class="op">-</span><span class="mi">12</span>;Pera;<span class="mi">5</span>;<span class="mi">11.50</span></code></pre>
-<p>Scrivete una funzione <code>unisci<em>e</em>riepiloga(cartella: Path, output<em>unito: Path, output</em>riepilogo: Path) -> None</code> che:</p>
-<ol>
-<li>Trova tutti i file <code>.csv</code> nella cartella con <code>glob</code>.</li>
-<li>Li unisce in un unico CSV (<code>output_unito</code>), mantenendo una sola intestazione.</li>
-<li>Calcola il totale delle quantita' e degli importi per ogni prodotto.</li>
-<li>Salva il riepilogo per prodotto in <code>output<em>riepilogo</code> come CSV con colonne <code>prodotto;quantita</em>totale;importo_totale</code>.</li>
-</ol>
-<p>Gestite il caso in cui la cartella sia vuota o non esista.</p>
-<hr>
-<h3>Avanzato</h3>
-<p><strong>Esercizio 5 --- Analisi incrociata di dati eterogenei</strong></p>
-<p>Avete due file:</p>
-<ul>
-<li><code>dipendenti.json</code>: lista di dizionari con <code>id</code>, <code>nome</code>, <code>reparto</code>.</li>
-<li><code>presenze.csv</code>: con colonne <code>id<em>dipendente;data;ore</em>lavorate</code>.</li>
-</ul>
-<p>Scrivete una funzione <code>report<em>presenze(path</em>dipendenti: Path, path<em>presenze: Path, path</em>output: Path) -> None</code> che:</p>
-<ol>
-<li>Carica entrambi i file.</li>
-<li>Per ogni dipendente, calcola il totale delle ore lavorate e la media giornaliera.</li>
-<li>Raggruppa i risultati per reparto.</li>
-<li>Genera un report JSON con la struttura:</li>
-</ol>
-<pre><code>{
-  &quot;reparti&quot;: {
-    &quot;Vendite&quot;: {
-      &quot;dipendenti&quot;: [
-        {&quot;nome&quot;: &quot;Anna Rossi&quot;, &quot;ore_totali&quot;: 160, &quot;media_giornaliera&quot;: 8.0}
-      ],
-      &quot;ore_totali_reparto&quot;: 160
-    }
-  }
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Sistemi di Elaborazione (<span class="mi">2026</span>)
+Risposte: <span class="mi">6</span>
+Salvato riepilogo.json:
+{
+  <span class="st">&quot;corso&quot;</span>: <span class="st">&quot;Sistemi di Elaborazione&quot;</span>,
+  <span class="st">&quot;risposte&quot;</span>: <span class="mi">6</span>,
+  <span class="st">&quot;media&quot;</span>: <span class="mi">3.83</span>,
+  <span class="st">&quot;media_frequentanti&quot;</span>: <span class="mi">4.25</span>,
+  <span class="st">&quot;media_non_frequentanti&quot;</span>: <span class="mi">3.0</span>,
+  <span class="st">&quot;quota_frequentanti&quot;</span>: <span class="mi">0.667</span>
 }</code></pre>
-<p>Gestite: dipendenti senza presenze, presenze con <code>id_dipendente</code> inesistente, ore non numeriche.</p>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete la risposta <code>{"matricola": "2103456", "voto": 1, "frequenta": false}</code> → <code>media 3.43</code>, <code>media<em>non</em>frequentanti 2.33</code>, <code>quota_frequentanti 0.571</code></li>
+<li>togliete la virgola dopo <code>"anno": 2026</code> → <code>json.JSONDecodeError</code> (lo gestirete nell'esercizio 8)</li>
+</ul>
 <hr>
-<h2>Sfida finale --- Pipeline completa: CSV sporco, pulizia, statistiche, output</h2>
-<p>Vi viene fornito un file <code>rilevazioni_meteo.csv</code> (separatore <code>;</code>) con dati meteorologici grezzi, pieni di problemi:</p>
-<pre><code>stazione;data;temperatura;umidita;vento_kmh
-Roma;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">01</span>;<span class="mi">15.2</span>;<span class="mi">65</span>;<span class="mi">12</span>
-Roma;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">02</span>;N<span class="op">/</span>D;<span class="mi">70</span>;<span class="mi">8</span>
-Milano;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">01</span>;;<span class="mi">80</span>;
-Milano;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">02</span>;<span class="mi">5.1</span>;<span class="mi">75</span>;<span class="mi">22</span>
-Napoli;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">01</span>;<span class="mi">18.3</span>;errore;<span class="mi">15</span>
-Roma;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">03</span>;<span class="mi">16.0</span>;<span class="mi">62</span>;<span class="mi">10</span>
-;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">01</span>;<span class="mi">20.0</span>;<span class="mi">55</span>;<span class="mi">5</span>
-Milano;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">03</span>;<span class="mi">6.5</span>;<span class="mi">78</span>;<span class="mi">18</span>
-Napoli;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">02</span>;<span class="mi">17.8</span>;<span class="mi">60</span>;abc
-Napoli;<span class="mi">2025</span><span class="op">-</span><span class="mi">03</span><span class="op">-</span><span class="mi">03</span>;<span class="mi">19.1</span>;<span class="mi">58</span>;<span class="mi">12</span></code></pre>
-<p>Scrivete un programma completo (non una singola funzione, ma un modulo organizzato in piu' funzioni) che esegue questa pipeline:</p>
+<h2>Esercizio 7 — Un appello con errori (<code>appello_robusto.py</code>)</h2>
+<p><strong>Consegna</strong></p>
 <ol>
-<li><strong>Caricamento</strong>: leggere il CSV, gestendo encoding e separatore.</li>
-<li><strong>Pulizia</strong>: scartare righe senza stazione; convertire i campi numerici, sostituendo i valori non validi con <code>None</code>; contare i problemi trovati.</li>
-<li><strong>Statistiche per stazione</strong>: per ogni stazione, calcolare media, minimo e massimo di ogni campo numerico (ignorando i <code>None</code>).</li>
-<li><strong>Output CSV</strong>: salvare le statistiche in un file <code>output/statistiche_meteo.csv</code>.</li>
-<li><strong>Output JSON</strong>: salvare le statistiche in un file <code>output/statistiche_meteo.json</code> con struttura annidata per stazione.</li>
-<li><strong>Report testuale</strong>: stampare a video un riepilogo formattato.</li>
+<li>Chiedete il nome del file da leggere. Se non esiste (<code>FileNotFoundError</code>) stampate un messaggio; se non ha la colonna <code>voto</code> (<code>KeyError</code>) stampatene un altro.</li>
+<li>Leggete le righe con <code>DictReader</code> e numeratele con <code>enumerate(lettore, start=2)</code>: la riga 1 è l'intestazione.</li>
+<li>Per ogni riga convertite il voto con <code>int()</code> dentro un <code>try</code>: se c'è <code>ValueError</code> stampate il numero di riga e il testo letto, poi passate alla riga dopo. Scartate anche i voti fuori da 0–30.</li>
+<li>Alla fine stampate i voti validi, le righe scartate e la media con un decimale.</li>
 </ol>
-<p>Ogni funzione deve avere type hints completi e gestire gli errori in modo appropriato. Il programma deve funzionare anche se il file di input ha problemi (ma non deve crashare).</p>
+<p><strong>File <code>appello_sporco.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>matricola;cognome;voto
+<span class="mi">2101234</span>;Rossi;<span class="mi">28</span>
+<span class="mi">2101567</span>;Bianchi;assente
+<span class="mi">2102001</span>;Verdi;<span class="mi">30</span>
+<span class="mi">2102345</span>;Russo;
+<span class="mi">2102890</span>;Ferrari;<span class="mi">33</span>
+<span class="mi">2103112</span>;Esposito;<span class="mi">21</span>
+<span class="mi">2103456</span>;Romano;<span class="mi">27</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>File da leggere: appello_sporco.csv
+Riga <span class="mi">3</span>: voto non valido <span class="st">&#x27;assente&#x27;</span>
+Riga <span class="mi">5</span>: voto non valido <span class="st">&#x27;&#x27;</span>
+Riga <span class="mi">6</span>: voto fuori scala <span class="mi">33</span>
+Voti validi: <span class="mi">4</span>, righe scartate: <span class="mi">3</span>
+Media: <span class="mi">26.5</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>appello.csv</code> → <code>Voti validi: 8, righe scartate: 0</code>, <code>Media: 22.6</code></li>
+<li><code>voti.csv</code> → <code>Il file voti.csv non esiste</code></li>
+<li><code>commenti.txt</code> → <code>Il file commenti.txt non ha la colonna voto</code></li>
+</ul>
+<hr>
+<h2>Esercizio 8 — Configurazione in JSON (<code>config_soglia.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>config.json</code> dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è <code>appello.csv</code> dell'esercizio 3.</li>
+<li>Scrivete una funzione <code>sopra_soglia(file: str, colonna: str, soglia: int) -> list[str]</code> che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.</li>
+<li>In un solo <code>try</code> caricate la configurazione e chiamate la funzione. Gestite con <code>except</code> separati: <code>FileNotFoundError</code> (stampate <code>e.filename</code>), <code>json.JSONDecodeError</code> (stampate <code>e.lineno</code>), <code>KeyError</code> e <code>ValueError</code>.</li>
+<li>Nel blocco <code>else</code> stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (<code>", ".join(...)</code>).</li>
+</ol>
+<p><strong>File <code>config.json</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>{
+  <span class="st">&quot;file&quot;</span>: <span class="st">&quot;appello.csv&quot;</span>,
+  <span class="st">&quot;colonna&quot;</span>: <span class="st">&quot;voto&quot;</span>,
+  <span class="st">&quot;soglia&quot;</span>: <span class="mi">27</span>
+}</code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>File: appello.csv, soglia: <span class="mi">27</span>
+Sopra soglia: <span class="mi">3</span>
+Romano, Rossi, Verdi</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>"soglia": 18</code> → 6 studenti, da <code>Esposito</code> a <code>Verdi</code></li>
+<li>togliete la riga di <code>"soglia"</code> → <code>Chiave mancante: 'soglia'</code>; <code>"colonna": "punteggio"</code> → <code>Chiave mancante: 'punteggio'</code></li>
+<li><code>"file": "appello2.csv"</code> → <code>File non trovato: appello2.csv</code>; rinominate <code>config.json</code> → <code>File non trovato: config.json</code></li>
+<li>togliete la virgola dopo <code>"voto"</code> → <code>config.json non valido alla riga 4</code>; <code>"colonna": "cognome"</code> → la colonna non contiene numeri</li>
+</ul>
+<hr>
+<h2>Sfida — PM10 a Padova (<code>pipeline_pm10.py</code>)</h2>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>rilevazioni.csv</code> contiene le misure giornaliere di PM10 (µg/m³) di tre stazioni di Padova, scritte a mano e con diversi problemi (vedi tabella).</li>
+<li>Scrivete una funzione <code>pulisci(percorso: Path)</code> che restituisce un dizionario stazione → lista di misure valide (<code>defaultdict(list)</code>) e il numero di righe scartate.</li>
+<li>Nel blocco <code>if <em>_name</em><em> == "</em><em>main</em>_":</code> calcolate per ogni stazione, in ordine alfabetico, media (<code>round(..., 1)</code>), massimo e giorni oltre il limite di 50, e stampate il dizionario di ogni stazione.</li>
+<li>Salvate tutto in <code>pm10.json</code> (un dizionario di dizionari) e stampate il numero di righe scartate.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Problema</th>
+<th>Cosa fare</th>
+</tr></thead><tbody>
+<tr>
+<td>spazi e maiuscole nel nome</td>
+<td><code>strip()</code> e <code>title()</code></td>
+</tr>
+<tr>
+<td>stazione vuota</td>
+<td>scartare la riga</td>
+</tr>
+<tr>
+<td>virgola decimale</td>
+<td><code>replace(",", ".")</code> prima di <code>float()</code></td>
+</tr>
+<tr>
+<td><code>N/D</code> o campo vuoto</td>
+<td>scartare la riga</td>
+</tr>
+<tr>
+<td>valore negativo</td>
+<td>scartare la riga</td>
+</tr>
+</tbody></table>
+<p><strong>File <code>rilevazioni.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>stazione;data;pm10
+Mandria;<span class="mi">01</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">38</span>,<span class="mi">5</span>
+Arcella;<span class="mi">01</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">52</span>
+ mandria ;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">61</span>,<span class="mi">2</span>
+Arcella;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;N<span class="op">/</span>D
+;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">44</span>
+Granze;<span class="mi">01</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">27</span>,<span class="mi">8</span>
+Granze;<span class="mi">02</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;
+ARCELLA;<span class="mi">03</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">48</span>,<span class="mi">9</span>
+Mandria;<span class="mi">03</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="mi">55</span>
+Granze;<span class="mi">03</span><span class="op">/</span><span class="mi">12</span><span class="op">/</span><span class="mi">2026</span>;<span class="op">-</span><span class="mi">3</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Arcella: {<span class="st">&#x27;media&#x27;</span>: <span class="mi">50.5</span>, <span class="st">&#x27;massimo&#x27;</span>: <span class="mi">52.0</span>, <span class="st">&#x27;giorni_oltre&#x27;</span>: <span class="mi">1</span>}
+Granze: {<span class="st">&#x27;media&#x27;</span>: <span class="mi">27.8</span>, <span class="st">&#x27;massimo&#x27;</span>: <span class="mi">27.8</span>, <span class="st">&#x27;giorni_oltre&#x27;</span>: <span class="mi">0</span>}
+Mandria: {<span class="st">&#x27;media&#x27;</span>: <span class="mi">51.6</span>, <span class="st">&#x27;massimo&#x27;</span>: <span class="mi">61.2</span>, <span class="st">&#x27;giorni_oltre&#x27;</span>: <span class="mi">2</span>}
+Righe scartate: <span class="mi">4.</span> Salvato pm10.json</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete <code>Granze;04/12/2026;71,0</code> → <code>Granze: {'media': 49.4, 'massimo': 71.0, 'giorni_oltre': 1}</code></li>
+<li>un file con la sola intestazione → <code>Righe scartate: 0</code> e <code>pm10.json</code> contiene <code>{}</code></li>
+<li>aggiungete al JSON il numero di misure valide di ogni stazione</li>
+</ul>
 <hr>
 <h2>Domande di verifica</h2>
 <ol>
-<li>Qual e' la differenza tra leggere un file con <code>f.read()</code>, <code>f.readlines()</code> e iterare con <code>for riga in f</code>? Quando preferireste ciascun metodo?</li>
+<li>Che differenza c'è tra aprire un file con <code>"w"</code> e con <code>"a"</code>? Cosa succederebbe a <code>spese.csv</code> usando <code>"w"</code>?</li>
+<li>In <code>conta_righe.py</code>, perché una riga vuota dà 0 parole anche se contiene il carattere <code>\n</code>?</li>
+<li><code>csv.DictReader</code> restituisce <code>{'voto': '28', ...}</code>. Perché serve <code>int()</code> prima di fare la media?</li>
+<li>Che differenza c'è tra <code>json.load</code> e <code>json.loads</code>? E tra <code>json.dump</code> e <code>json.dumps</code>?</li>
+<li>In <code>appello_robusto.py</code> il <code>try</code> sul voto è dentro il <code>for</code>. Cosa cambierebbe mettendolo fuori dal ciclo?</li>
+<li>In <code>config_soglia.py</code>, cosa succede se nel JSON scrivete <code>"soglia": "27"</code>, tra virgolette? Quale eccezione si ottiene?</li>
+<li>Nella sfida, perché <code>float("38,5")</code> dà errore e come lo si evita?</li>
 </ol>
-<ol>
-<li>Perche' e' importante specificare <code>newline=""</code> quando si apre un file per la scrittura CSV su Windows?</li>
-</ol>
-<ol>
-<li>Un collega vi invia un CSV e quando lo leggete vedete <code>Ã©</code> al posto di <code>e'</code>. Cosa e' successo e come risolvete?</li>
-</ol>
-<ol>
-<li>Qual e' la differenza tra <code>json.load()</code> e <code>json.loads()</code>? Scrivete un esempio d'uso per ciascuna.</li>
-</ol>
-<ol>
-<li>Avete un file CSV con 10 milioni di righe. Perche' e' sbagliato usare <code>f.readlines()</code> e come lo leggereste invece?</li>
-</ol>
-<ol>
-<li>Scrivete un blocco <code>try</code>/<code>except</code> che gestisce separatamente: file non trovato, errore di encoding, e valore non convertibile a numero. Per ciascuno, spiegate quale eccezione catturate.</li>
-</ol>
-<ol>
-<li>Perche' <code>Path("dati") / "output" / "risultati.csv"</code> e' preferibile a <code>"dati/output/risultati.csv"</code>?</li>
-</ol>
-<hr>
-<h2>Osservazioni finali</h2>
-<p>In questo laboratorio avete messo le mani su un flusso di lavoro che incontrerete continuamente nella pratica statistica: dati che arrivano in formati diversi (testo, CSV, JSON), spesso sporchi o malformati, che devono essere caricati, puliti, analizzati e salvati in un formato utilizzabile.</p>
-<p>I punti chiave da portare con se':</p>
-<ul>
-<li><strong><code>with open(...)</code> sempre</strong>: non esiste un buon motivo per non usare il context manager.</li>
-<li><strong><code>pathlib</code> per i percorsi</strong>: rende il codice portabile e leggibile.</li>
-<li><strong><code>csv.DictReader</code> con <code>delimiter</code></strong>: leggete CSV europei senza problemi.</li>
-<li><strong><code>try</code>/<code>except</code> specifico</strong>: catturate solo le eccezioni che sapete gestire. Un <code>except Exception</code> generico nasconde i bug.</li>
-<li><strong>Separare caricamento, pulizia e analisi</strong>: ogni fase in una funzione dedicata rende il codice piu' facile da testare e da correggere.</li>
-</ul>
-<p>Quando in futuro userete Pandas, molte di queste operazioni diventeranno una sola riga di codice (<code>pd.read_csv(...)</code>). Ma capire cosa succede sotto il cofano vi permettera' di diagnosticare i problemi che Pandas non riesce a risolvere da solo.</p>
 <nav class="bottom-nav"><span><a href="../frontali/T16_programmazione_oggetti.html">← T16</a></span><span><a href="../../index.html">Home</a></span><span><a href="../frontali/T17_numpy_pandas_visualizzazione.html">T17 →</a></span></nav>
 </body>
 </html>

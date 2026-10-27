@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Errori comuni — T10: Comprehension e stringhe — Sistemi di Elaborazione</title>
+    <title>Errori comuni — T10: Stringhe — Sistemi di Elaborazione</title>
     <style>
 :root {
     --accent: #2563eb;
@@ -201,90 +201,20 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </head>
 <body>
 <nav class="top-nav"><a href="../index.html">Home</a> &bull; <a href="../dispense/frontali/T10_comprehension_stringhe.html">Dispensa</a> &bull; <a href="../autovalutazione/T10_autovalutazione.html">Autovalutazione</a></nav>
-<h1>Errori comuni — T10: Comprehension e stringhe</h1>
+<h1>Errori comuni — T10: Stringhe</h1>
 
-<h1>Errori comuni — T10: Comprehension e stringhe</h1>
+<h1>Errori comuni — T10: Stringhe</h1>
 <p>Gli errori più frequenti commessi dagli studenti sugli argomenti della lezione T10.</p>
 <p>Ogni errore include il codice sbagliato, la spiegazione e la correzione.</p>
 <hr>
-<h3>Errore 1: Comprehension troppo complesse — sacrificare la leggibilità</h3>
-<p><strong>Codice errato:</strong></p>
-<pre><code><span class="cm"># Trovare la somma dei quadrati dei numeri pari in una matrice</span>
-matrice <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>], [<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]]
-risultato <span class="op">=</span> <span class="nb">sum</span>([x<span class="op">*</span><span class="op">*</span><span class="mi">2</span> <span class="kw">for</span> riga <span class="kw">in</span> matrice <span class="kw">for</span> x <span class="kw">in</span> riga <span class="kw">if</span> x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>])
-<span class="nb">print</span>(risultato)</code></pre>
-<p><strong>Cosa succede:</strong></p>
-<pre><code><span class="mi">120</span></code></pre>
-<p>Il risultato è corretto, ma il codice è difficile da leggere e da correggere in caso di errore.</p>
-<p><strong>Perché è sbagliato:</strong> Anche se Python permette comprehension con più cicli e condizioni, una comprehension troppo complessa diventa illeggibile. Per studenti alle prime armi è facile confondere l'ordine dei <code>for</code> e delle condizioni <code>if</code>. Quando una comprehension richiede più di un <code>for</code> o diventa lunga, è meglio usare cicli espliciti che sono più chiari.</p>
-<p><strong>Codice corretto:</strong></p>
-<pre><code><span class="cm"># Versione chiara con cicli espliciti</span>
-matrice <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>], [<span class="mi">7</span>, <span class="mi">8</span>, <span class="mi">9</span>]]
-somma <span class="op">=</span> <span class="mi">0</span>
-<span class="kw">for</span> riga <span class="kw">in</span> matrice:
-    <span class="kw">for</span> x <span class="kw">in</span> riga:
-        <span class="kw">if</span> x <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            somma <span class="op">+</span><span class="op">=</span> x <span class="op">*</span><span class="op">*</span> <span class="mi">2</span>
-<span class="nb">print</span>(somma)  <span class="cm"># 120</span></code></pre>
-<p><strong>Regola da ricordare:</strong> Se una list comprehension richiede più di un <code>for</code> o non si capisce al primo sguardo, riscrivila con cicli espliciti.</p>
-<hr>
-<h3>Errore 2: Comportamento inatteso di <code>.split()</code> su stringa vuota</h3>
-<p><strong>Codice errato:</strong></p>
-<pre><code><span class="cm"># Lo studente si aspetta una lista con un elemento vuoto</span>
-testo <span class="op">=</span> <span class="st">&quot;&quot;</span>
-parole <span class="op">=</span> testo.split()
-<span class="nb">print</span>(parole)
-<span class="nb">print</span>(<span class="nb">len</span>(parole))  <span class="cm"># Lo studente si aspetta 1</span></code></pre>
-<p><strong>Cosa succede:</strong></p>
-<pre><code>[]
-<span class="mi">0</span></code></pre>
-<p>La lista è vuota, non contiene una stringa vuota.</p>
-<p><strong>Perché è sbagliato:</strong> Il metodo <code>.split()</code> senza argomenti divide per spazi bianchi e rimuove automaticamente le stringhe vuote dal risultato. Chiamato su una stringa vuota, restituisce una lista vuota <code>[]</code>, non <code>[""]</code>. Questo è diverso da <code>.split(",")</code> con un separatore esplicito, che su una stringa vuota restituisce <code>[""]</code>. La differenza è sottile ma importante quando si contano le parole di un testo.</p>
-<p><strong>Codice corretto:</strong></p>
-<pre><code><span class="cm"># Se vuoi gestire il caso di stringa vuota</span>
-testo <span class="op">=</span> <span class="st">&quot;&quot;</span>
-<span class="kw">if</span> testo:
-    parole <span class="op">=</span> testo.split()
-    <span class="nb">print</span>(<span class="st">f&quot;Ci sono {len(parole)} parole&quot;</span>)
-<span class="kw">else</span>:
-    <span class="nb">print</span>(<span class="st">&quot;Il testo è vuoto, 0 parole&quot;</span>)
-
-<span class="cm"># Nota la differenza con un separatore esplicito:</span>
-<span class="nb">print</span>(<span class="st">&quot;&quot;</span>.split())     <span class="cm"># []    — lista vuota</span>
-<span class="nb">print</span>(<span class="st">&quot;&quot;</span>.split(<span class="st">&quot;,&quot;</span>))  <span class="cm"># [&#x27;&#x27;]  — lista con una stringa vuota</span></code></pre>
-<p><strong>Regola da ricordare:</strong> <code>.split()</code> senza argomenti su stringa vuota restituisce <code>[]</code> (lista vuota), non <code>[""]</code> — controlla sempre se la stringa è vuota prima di contare le parole.</p>
-<hr>
-<h3>Errore 3: Confondere <code>in</code> su stringa e <code>in</code> su lista</h3>
-<p><strong>Codice errato:</strong></p>
-<pre><code><span class="cm"># Lo studente vuole cercare la parola &quot;anno&quot; nel testo</span>
-testo <span class="op">=</span> <span class="st">&quot;il mio compleanno è domani&quot;</span>
-<span class="kw">if</span> <span class="st">&quot;anno&quot;</span> <span class="kw">in</span> testo:
-    <span class="nb">print</span>(<span class="st">&quot;Trovata la parola &#x27;anno&#x27;!&quot;</span>)</code></pre>
-<p><strong>Cosa succede:</strong></p>
-<pre><code>Trovata la parola <span class="st">&#x27;anno&#x27;</span><span class="op">!</span></code></pre>
-<p>Il messaggio viene stampato, ma la parola "anno" come parola a sé non è nel testo: è contenuta dentro "compleanno".</p>
-<p><strong>Perché è sbagliato:</strong> L'operatore <code>in</code> su una stringa cerca una sottostringa, non una parola intera. <code>"anno" in "compleanno"</code> è <code>True</code> perché i caratteri "anno" appaiono dentro "compleanno". Se si vogliono cercare parole intere, bisogna prima dividere il testo in parole con <code>.split()</code> e cercare nella lista risultante.</p>
-<p><strong>Codice corretto:</strong></p>
-<pre><code><span class="cm"># Cercare una parola intera nel testo</span>
-testo <span class="op">=</span> <span class="st">&quot;il mio compleanno è domani&quot;</span>
-
-<span class="cm"># Metodo corretto: cercare nella lista di parole</span>
-parole <span class="op">=</span> testo.split()
-<span class="kw">if</span> <span class="st">&quot;anno&quot;</span> <span class="kw">in</span> parole:
-    <span class="nb">print</span>(<span class="st">&quot;Trovata la parola &#x27;anno&#x27;!&quot;</span>)
-<span class="kw">else</span>:
-    <span class="nb">print</span>(<span class="st">&quot;La parola &#x27;anno&#x27; non è presente&quot;</span>)
-<span class="cm"># Output: La parola &#x27;anno&#x27; non è presente</span></code></pre>
-<p><strong>Regola da ricordare:</strong> <code>in</code> su una stringa cerca sottostringhe, <code>in</code> su una lista cerca elementi esatti — per cercare parole intere, usa <code>.split()</code> e cerca nella lista.</p>
-<hr>
-<h3>Errore 4: Tentare di modificare una stringa tramite indice</h3>
+<h3>Errore 1: Tentare di modificare una stringa tramite indice</h3>
 <p><strong>Codice errato:</strong></p>
 <pre><code>nome <span class="op">=</span> <span class="st">&quot;Marko&quot;</span>
 nome[<span class="mi">3</span>] <span class="op">=</span> <span class="st">&quot;c&quot;</span>  <span class="cm"># Correggere il typo: Marko → Marco</span>
 <span class="nb">print</span>(nome)</code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code><span class="nb">TypeError</span>: <span class="st">&#x27;str&#x27;</span> <span class="nb">object</span> does <span class="kw">not</span> support item assignment</code></pre>
-<p><strong>Perché è sbagliato:</strong> In Python le stringhe sono immutabili: una volta create, non si possono modificare i singoli caratteri. Non è possibile assegnare un nuovo valore a una posizione specifica della stringa come si farebbe con una lista. Per "modificare" una stringa, bisogna crearne una nuova usando metodi come <code>.replace()</code> o lo slicing.</p>
+<p><strong>Perché è sbagliato:</strong> In Python le stringhe sono immutabili: una volta create, non si possono modificare i singoli caratteri. Con l'indice si può leggere un carattere, ma non assegnargli un valore nuovo. Per "modificare" una stringa bisogna crearne una nuova, con un metodo come <code>.replace()</code> o con lo slicing.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code>nome <span class="op">=</span> <span class="st">&quot;Marko&quot;</span>
 
@@ -298,29 +228,7 @@ nome <span class="op">=</span> nome[:<span class="mi">3</span>] <span class="op"
 <span class="nb">print</span>(nome)  <span class="cm"># Marco</span></code></pre>
 <p><strong>Regola da ricordare:</strong> Le stringhe in Python sono immutabili: per modificarle devi crearne una nuova, ad esempio con <code>.replace()</code> o con lo slicing.</p>
 <hr>
-<h3>Errore 5: Errori con le espressioni dentro le f-string</h3>
-<p><strong>Codice errato:</strong></p>
-<pre><code>voti <span class="op">=</span> [<span class="mi">28</span>, <span class="mi">30</span>, <span class="mi">25</span>]
-<span class="nb">print</span>(<span class="st">f&quot;La media è: {sum(voti) / len(voti):.2f}&quot;</span>)
-<span class="cm"># Fin qui tutto bene, ma poi:</span>
-
-studente <span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>}
-<span class="nb">print</span>(<span class="st">f&quot;Voto di {studente[&quot;</span>nome<span class="st">&quot;]}&quot;</span>)</code></pre>
-<p><strong>Cosa succede:</strong></p>
-<pre><code>SyntaxError: f<span class="op">-</span>string: unmatched <span class="st">&#x27;[&#x27;</span></code></pre>
-<p><strong>Perché è sbagliato:</strong> Dentro le parentesi graffe di una f-string delimitata da virgolette doppie <code>"</code>, non si possono usare altre virgolette doppie <code>"</code> per le chiavi del dizionario. Python si confonde perché la seconda <code>"</code> chiude la f-string. Bisogna usare virgolette di tipo diverso all'interno (singole) rispetto a quelle esterne (doppie), oppure viceversa.</p>
-<p><strong>Codice corretto:</strong></p>
-<pre><code>studente <span class="op">=</span> {<span class="st">&quot;nome&quot;</span>: <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;voto&quot;</span>: <span class="mi">28</span>}
-
-<span class="cm"># Soluzione 1: virgolette singole dentro la f-string</span>
-<span class="nb">print</span>(<span class="st">f&quot;Voto di {studente[&#x27;nome&#x27;]}&quot;</span>)
-
-<span class="cm"># Soluzione 2: variabile di appoggio</span>
-nome <span class="op">=</span> studente[<span class="st">&quot;nome&quot;</span>]
-<span class="nb">print</span>(<span class="st">f&quot;Voto di {nome}&quot;</span>)</code></pre>
-<p><strong>Regola da ricordare:</strong> Dentro una f-string, usa virgolette di tipo diverso da quelle che delimitano la stringa — se la stringa è tra <code>"..."</code>, usa <code>'...'</code> all'interno delle graffe.</p>
-<hr>
-<h3>Errore 6: Pensare che <code>.replace()</code> modifichi la stringa originale</h3>
+<h3>Errore 2: Pensare che <code>.replace()</code> modifichi la stringa originale</h3>
 <p><strong>Codice errato:</strong></p>
 <pre><code>frase <span class="op">=</span> <span class="st">&quot;Ciao Mondo Ciao&quot;</span>
 frase.replace(<span class="st">&quot;Ciao&quot;</span>, <span class="st">&quot;Salve&quot;</span>)
@@ -328,12 +236,106 @@ frase.replace(<span class="st">&quot;Ciao&quot;</span>, <span class="st">&quot;S
 <p><strong>Cosa succede:</strong></p>
 <pre><code>Ciao Mondo Ciao</code></pre>
 <p>La stringa non è cambiata.</p>
-<p><strong>Perché è sbagliato:</strong> Il metodo <code>.replace()</code> non modifica la stringa originale (le stringhe sono immutabili). Restituisce invece una nuova stringa con le sostituzioni applicate. Se non si assegna il risultato a una variabile, la nuova stringa viene creata e immediatamente persa. È un errore che non genera eccezioni, il che lo rende difficile da individuare.</p>
+<p><strong>Perché è sbagliato:</strong> Il metodo <code>.replace()</code> non modifica la stringa originale (le stringhe sono immutabili). Restituisce invece una nuova stringa con le sostituzioni applicate. Se non si assegna il risultato a una variabile, la nuova stringa viene creata e subito persa. Python non segnala nessun errore, quindi il problema è difficile da individuare.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code>frase <span class="op">=</span> <span class="st">&quot;Ciao Mondo Ciao&quot;</span>
 frase <span class="op">=</span> frase.replace(<span class="st">&quot;Ciao&quot;</span>, <span class="st">&quot;Salve&quot;</span>)  <span class="cm"># Riassegna il risultato</span>
 <span class="nb">print</span>(frase)  <span class="cm"># Salve Mondo Salve</span></code></pre>
-<p><strong>Regola da ricordare:</strong> I metodi delle stringhe (<code>.replace()</code>, <code>.upper()</code>, <code>.strip()</code>, ecc.) restituiscono una nuova stringa — assegna sempre il risultato a una variabile.</p>
+<p><strong>Regola da ricordare:</strong> I metodi delle stringhe (<code>.replace()</code>, <code>.upper()</code>, <code>.strip()</code>, ecc.) restituiscono una nuova stringa: assegna sempre il risultato a una variabile.</p>
+<hr>
+<h3>Errore 3: Usare <code>in</code> per cercare una parola intera</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Lo studente vuole sapere se nel testo compare la parola &quot;anno&quot;</span>
+testo <span class="op">=</span> <span class="st">&quot;il mio compleanno è domani&quot;</span>
+<span class="kw">if</span> <span class="st">&quot;anno&quot;</span> <span class="kw">in</span> testo:
+    <span class="nb">print</span>(<span class="st">&quot;Trovata la parola &#x27;anno&#x27;&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Trovata la parola <span class="st">&#x27;anno&#x27;</span></code></pre>
+<p>Il messaggio viene stampato, ma la parola "anno" non è nel testo: i caratteri "anno" stanno dentro "compleanno".</p>
+<p><strong>Perché è sbagliato:</strong> L'operatore <code>in</code> su una stringa cerca una sottostringa, cioè una sequenza di caratteri consecutivi in qualunque punto del testo, anche in mezzo a un'altra parola. Per cercare una parola intera bisogna controllare che sia preceduta e seguita da uno spazio. Aggiungendo uno spazio all'inizio e alla fine del testo, la regola vale anche per la prima e l'ultima parola.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>testo <span class="op">=</span> <span class="st">&quot;il mio compleanno è domani&quot;</span>
+
+<span class="cm"># Cerco &quot; anno &quot; in un testo con uno spazio in più ai due bordi</span>
+<span class="kw">if</span> <span class="st">&quot; anno &quot;</span> <span class="kw">in</span> <span class="st">&quot; &quot;</span> <span class="op">+</span> testo <span class="op">+</span> <span class="st">&quot; &quot;</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Trovata la parola &#x27;anno&#x27;&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;La parola &#x27;anno&#x27; non è presente&quot;</span>)
+<span class="cm"># Output: La parola &#x27;anno&#x27; non è presente</span></code></pre>
+<p>Questo controllo non funziona se la parola è seguita da un segno di punteggiatura (per esempio <code>"anno,"</code>): in quel caso la punteggiatura va tolta prima con <code>replace()</code>.</p>
+<p><strong>Regola da ricordare:</strong> <code>in</code> su una stringa cerca sottostringhe, non parole: <code>"anno" in "compleanno"</code> è <code>True</code>.</p>
+<hr>
+<h3>Errore 4: Usare il risultato di <code>.find()</code> senza controllare <code>-1</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Lo studente vuole il nome del file senza estensione</span>
+nome_file <span class="op">=</span> <span class="st">&quot;relazione&quot;</span>
+punto <span class="op">=</span> nome_file.find(<span class="st">&quot;.&quot;</span>)
+<span class="nb">print</span>(nome_file[:punto])</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>relazion</code></pre>
+<p>Manca l'ultima lettera e Python non segnala nessun errore.</p>
+<p><strong>Perché è sbagliato:</strong> Quando la sottostringa non c'è, <code>.find()</code> restituisce <code>-1</code>. Usato come indice, <code>-1</code> indica l'ultimo carattere: <code>nome_file[:-1]</code> prende tutto tranne l'ultimo carattere. Il programma prosegue con un dato sbagliato. <code>.index()</code> invece in questo caso dà <code>ValueError</code>, quindi l'errore almeno si vede.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>nome_file <span class="op">=</span> <span class="st">&quot;relazione&quot;</span>
+punto <span class="op">=</span> nome_file.find(<span class="st">&quot;.&quot;</span>)
+<span class="kw">if</span> punto <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="mi">1</span>:
+    <span class="nb">print</span>(nome_file)               <span class="cm"># nessuna estensione: il nome resta intero</span>
+<span class="kw">else</span>:
+    <span class="nb">print</span>(nome_file[:punto])
+<span class="cm"># Output: relazione</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Dopo <code>.find()</code> controlla sempre se il risultato è <code>-1</code> prima di usarlo in un indice o in uno slicing.</p>
+<hr>
+<h3>Errore 5: Dimenticare la <code>f</code> davanti alla f-string</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>media <span class="op">=</span> <span class="mi">27.4567</span>
+<span class="nb">print</span>(<span class="st">&quot;Media: {media:.2f}&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Media: {media:<span class="mi">.2f</span>}</code></pre>
+<p>Viene stampato il testo così com'è, con le graffe.</p>
+<p><strong>Perché è sbagliato:</strong> Senza la lettera <code>f</code> prima delle virgolette, la stringa è una stringa normale e le graffe sono caratteri come gli altri. Python non sostituisce il valore della variabile e non segnala nessun errore.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>media <span class="op">=</span> <span class="mi">27.4567</span>
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media:.2f}&quot;</span>)  <span class="cm"># Media: 27.46</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Se nell'output compaiono le parentesi graffe, controlla di aver scritto la <code>f</code> prima delle virgolette.</p>
+<hr>
+<h3>Errore 6: Moltiplicare per 100 prima di usare il formato <code>%</code></h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>promossi <span class="op">=</span> <span class="mi">13</span>
+iscritti <span class="op">=</span> <span class="mi">40</span>
+quota <span class="op">=</span> promossi <span class="op">/</span> iscritti        <span class="cm"># 0.325</span>
+<span class="nb">print</span>(<span class="st">f&quot;Promossi: {quota * 100:.1%}&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Promossi: <span class="mi">3250.0</span><span class="op">%</span></code></pre>
+<p><strong>Perché è sbagliato:</strong> Il formato <code>.1%</code> moltiplica già il valore per 100 e aggiunge il simbolo <code>%</code>. Se il valore è già stato moltiplicato per 100, la moltiplicazione avviene due volte. Lo stesso errore al contrario: con <code>.1f</code> il simbolo <code>%</code> va scritto a mano e il valore va moltiplicato per 100.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>promossi <span class="op">=</span> <span class="mi">13</span>
+iscritti <span class="op">=</span> <span class="mi">40</span>
+quota <span class="op">=</span> promossi <span class="op">/</span> iscritti
+
+<span class="nb">print</span>(<span class="st">f&quot;Promossi: {quota:.1%}&quot;</span>)         <span class="cm"># Promossi: 32.5%</span>
+<span class="nb">print</span>(<span class="st">f&quot;Promossi: {quota * 100:.1f}%&quot;</span>)  <span class="cm"># Promossi: 32.5% (stesso risultato con .1f)</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Con il formato <code>%</code> si passa la proporzione (tra 0 e 1), non la percentuale già calcolata.</p>
+<hr>
+<h3>Errore 7: Usare <code>.isdigit()</code> per controllare numeri decimali o negativi</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code>dato <span class="op">=</span> <span class="st">&quot;3.5&quot;</span>
+<span class="kw">if</span> dato.isdigit():
+    valore <span class="op">=</span> <span class="nb">float</span>(dato)
+    <span class="nb">print</span>(<span class="st">f&quot;Valore: {valore:.1f}&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Non è un numero&quot;</span>)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>Non è un numero</code></pre>
+<p><strong>Perché è sbagliato:</strong> <code>.isdigit()</code> restituisce <code>True</code> solo se <strong>tutti</strong> i caratteri sono cifre. Il punto decimale e il segno meno non sono cifre, quindi <code>"3.5".isdigit()</code> e <code>"-2".isdigit()</code> sono <code>False</code>, anche se <code>float()</code> li convertirebbe senza problemi.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>dato <span class="op">=</span> <span class="st">&quot;3.5&quot;</span>
+<span class="cm"># Tolgo un eventuale punto decimale e poi controllo che restino solo cifre</span>
+<span class="kw">if</span> dato.count(<span class="st">&quot;.&quot;</span>) <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span> <span class="kw">and</span> dato.replace(<span class="st">&quot;.&quot;</span>, <span class="st">&quot;&quot;</span>).isdigit():
+    valore <span class="op">=</span> <span class="nb">float</span>(dato)
+    <span class="nb">print</span>(<span class="st">f&quot;Valore: {valore:.1f}&quot;</span>)  <span class="cm"># Valore: 3.5</span>
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Non è un numero&quot;</span>)</code></pre>
+<p><strong>Regola da ricordare:</strong> <code>.isdigit()</code> va bene per interi senza segno (un CAP, un anno, una matricola); per i decimali bisogna prima togliere il punto.</p>
 <nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
 </body>
 </html>

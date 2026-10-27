@@ -314,6 +314,41 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -335,6 +370,7 @@
             <section>
                 <h2>Agenda</h2>
                 <ol>
+                    <li class="fragment"><strong>Soluzioni del laboratorio 4</strong></li>
                     <li class="fragment"><strong>Aprire e chiudere file</strong> &mdash; <code>open()</code> e il context manager <code>with</code></li>
                     <li class="fragment"><strong>Leggere file di testo</strong> &mdash; <code>read()</code>, <code>readline()</code>, iterazione</li>
                     <li class="fragment"><strong>Scrivere file di testo</strong> &mdash; <code>write()</code>, <code>writelines()</code>, append</li>
@@ -345,6 +381,351 @@
                     <li class="fragment"><strong>Esempio completo</strong> &mdash; CSV problematico con gestione errori</li>
                 </ol>
             </section>
+
+            <!-- SOLUZIONI LAB (generato) -->
+            <section>
+                <section class="section-slide">
+                    <h2>Soluzioni del laboratorio 4</h2>
+                    <p>Funzioni e modularità</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: prima di iniziare l'argomento nuovo vediamo le soluzioni degli esercizi del laboratorio. Il codice completo è nel file degli esercizi di L04.
+Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da quelli se manca tempo.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>esito.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def esito(voto: int, lode: bool = False) -&gt; str:
+    """Restituisce l'esito di un esame dato il voto in trentesimi."""
+    if voto &lt; 0 or voto &gt; 30:
+        return "voto non valido"
+    if voto &lt; 18:
+        return "respinto"
+    if voto == 30 and lode:
+        return "30 e lode"
+    return f"promosso con {voto}"
+
+
+print(esito(28))
+print(esito(30, lode=True))
+
+appello: list[tuple[str, int, bool]] = [
+    ("Anna", 27, False),
+    ("Marco", 15, False),
+    ("Giulia", 30, True),
+    ("Luca", 30, False),
+]
+for nome, voto, lode in appello:
+    print(f"{nome}: {esito(voto, lode)}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L04»
+Da dire: esito restituisce una stringa e non stampa nulla; la stampa la fa chi chiama. Nella media ponderata pesano di più gli esami da tanti crediti: il 25 da 12 CFU abbassa la media da 27.33 a 27.25.
+Chiedere / fare: esito(27, lode=True)? (promosso con 27). Con un 30 da 12 CFU in più → ponderata 27.80, base 101.9.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>media_ponderata.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def media_ponderata(voti: list[int], cfu: list[int]) -&gt; float:
+    """Media pesata con i crediti; 0.0 se i dati non vanno bene."""
+    if len(voti) == 0 or len(voti) != len(cfu):
+        return 0.0
+    somma: int = 0
+    for voto, crediti in zip(voti, cfu):
+        somma += voto * crediti
+    return somma / sum(cfu)
+
+
+def base_laurea(media: float) -&gt; float:
+    """Converte una media in trentesimi in centodecimi."""
+    return media * 110 / 30
+
+
+voti: list[int] = [28, 30, 25, 27, 30, 24]
+cfu: list[int] = [9, 6, 12, 6, 9, 6]
+
+ponderata: float = media_ponderata(voti, cfu)
+print(f"Media aritmetica: {sum(voti) / len(voti):.2f}")
+print(f"Media ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {base_laurea(ponderata):.1f}/110")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Una funzione può avere più <code>return</code>: il primo che viene eseguito chiude la funzione, quindi i controlli si scrivono dal caso più particolare al più generale.</li><li>Il parametro <code>lode</code> ha un default: chi lo omette ottiene <code>False</code>. Con <code>lode=True</code> la chiamata si legge meglio.</li><li>In <code>media_ponderata</code> il controllo iniziale restituisce <code>0.0</code> invece di far fallire la divisione o di dare un risultato sbagliato.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L04»
+Da dire: esito restituisce una stringa e non stampa nulla; la stampa la fa chi chiama. Nella media ponderata pesano di più gli esami da tanti crediti: il 25 da 12 CFU abbassa la media da 27.33 a 27.25.
+Chiedere / fare: esito(27, lode=True)? (promosso con 27). Con un 30 da 12 CFU in più → ponderata 27.80, base 101.9.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>descrittive.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import statistics
+
+
+def media(valori: list[float]) -&gt; float:
+    """Media aritmetica."""
+    return sum(valori) / len(valori)
+
+
+def varianza(valori: list[float], campionaria: bool = True) -&gt; float:
+    """Varianza: divide per n - 1 se campionaria, altrimenti per n."""
+    m: float = media(valori)
+    somma: float = 0.0
+    for x in valori:
+        somma += (x - m) ** 2
+    if campionaria:
+        return somma / (len(valori) - 1)
+    return somma / len(valori)</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>
+altezze: list[float] = [172.0, 165.5, 180.2, 158.0,
+                        175.3, 169.8, 183.1, 162.4]
+
+m: float = media(altezze)
+s2: float = varianza(altezze)
+p2: float = varianza(altezze, campionaria=False)
+print(f"Media: {m:.2f} (statistics: {statistics.mean(altezze):.2f})")
+print(f"Varianza campionaria: {s2:.2f} "
+      f"(statistics: {statistics.variance(altezze):.2f})")
+print(f"Varianza di popolazione: {p2:.2f} "
+      f"(statistics: {statistics.pvariance(altezze):.2f})")
+print(f"Deviazione standard: {s2 ** 0.5:.2f} "
+      f"(statistics: {statistics.stdev(altezze):.2f})")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>varianza</code> chiama <code>media</code>: una funzione può usarne un'altra già scritta.</li><li>Il default <code>campionaria=True</code> corrisponde a <code>statistics.variance</code>; con <code>False</code> si ottiene <code>statistics.pvariance</code>.</li><li>Confrontare i propri risultati con una libreria è un modo semplice per controllare il codice.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L04»
+Da dire: la differenza tra le due varianze è solo il denominatore, n − 1 oppure n. Con 8 valori la varianza campionaria è 8/7 di quella di popolazione: 65.60 contro 74.98.
+Chiedere / fare: [10, 20, 30] → 100.00 e 66.67.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riassunto.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def mediana(valori: list[float]) -&gt; float:
+    """Valore centrale dei dati ordinati."""
+    ordinati: list[float] = sorted(valori)
+    n: int = len(ordinati)
+    meta: int = n // 2
+    if n % 2 == 1:
+        return ordinati[meta]
+    return (ordinati[meta - 1] + ordinati[meta]) / 2
+
+
+def riassunto(valori: list[float]) -&gt; tuple[float, float, float]:
+    """Restituisce minimo, mediana e massimo."""
+    return min(valori), mediana(valori), max(valori)
+
+
+tempi: list[float] = [35, 12, 50, 20, 75, 18, 40, 25]
+
+minimo, centro, massimo = riassunto(tempi)
+print(f"Minimo: {minimo:.1f} minuti")
+print(f"Mediana: {centro:.1f} minuti")
+print(f"Massimo: {massimo:.1f} minuti")
+print(f"Campo di variazione: {massimo - minimo:.1f} minuti")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>riassunto</code> restituisce una tupla; con <code>minimo, centro, massimo = riassunto(tempi)</code> la si spacchetta in tre variabili.</li><li><code>sorted()</code> crea una nuova lista: la lista <code>tempi</code> resta com'era, quindi la funzione è pura.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L04»
+Da dire: con 8 valori i due centrali sono 25 e 35, la mediana è 30. Con valori.sort() la funzione modificherebbe la lista di chi la chiama.
+Chiedere / fare: aggiungendo 90 → mediana 35.0, campo 78.0.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>esami_date.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from datetime import date
+
+GIORNI: list[str] = ["lunedì", "martedì", "mercoledì", "giovedì",
+                     "venerdì", "sabato", "domenica"]
+
+
+def giorni_mancanti(esame: date, oggi: date) -&gt; int:
+    """Giorni tra oggi e la data dell'esame."""
+    return (esame - oggi).days
+
+
+def settimane_e_giorni(giorni: int) -&gt; tuple[int, int]:
+    """Divide un numero di giorni in settimane e giorni."""
+    return giorni // 7, giorni % 7
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def nome_giorno(giorno: date) -&gt; str:
+    """Nome italiano del giorno della settimana."""
+    return GIORNI[giorno.weekday()]
+
+
+oggi: date = date(2026, 11, 19)
+esami: dict[str, date] = {
+    "Analisi 1": date(2027, 1, 18),
+    "Statistica 1": date(2027, 1, 28),
+    "Sistemi di elaborazione": date(2027, 2, 10),
+}
+for corso, giorno in esami.items():
+    mancano: int = giorni_mancanti(giorno, oggi)
+    print(f"{corso}: {nome_giorno(giorno)} {giorno}")
+    if mancano &lt; 0:
+        print("  esame già passato")
+    else:
+        s, g = settimane_e_giorni(mancano)
+        print(f"  tra {mancano} giorni: {s} settimane e {g} giorni")</code></pre></div></div>
+                    <ul class="note-sol"><li>La sottrazione tra due <code>date</code> dà un intervallo; <code>.days</code> è il numero di giorni.</li><li><code>settimane_e_giorni</code> restituisce due valori in una tupla, spacchettati in <code>s, g</code>.</li><li>Il controllo sui giorni negativi è nel codice che chiama le funzioni: le funzioni calcolano, il programma decide cosa stampare.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L04»
+Da dire: weekday() dà un intero da 0 a 6, che diventa un indice nella lista dei nomi. Il modulo datetime tiene conto da solo della lunghezza dei mesi.
+Chiedere / fare: il 25 dicembre 2026 → venerdì. Con oggi = 25/1/2027, Analisi 1 è già passato.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>classifica.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def classifica(
+    studenti: list[tuple[str, float, int]],
+) -&gt; list[tuple[str, float, int]]:
+    """Ordina per media decrescente; a parità di media, per nome."""
+    return sorted(studenti, key=lambda s: (-s[1], s[0]))
+
+
+def in_regola(studenti: list[tuple[str, float, int]],
+              cfu_minimi: int = 60) -&gt; list[str]:
+    """Nomi di chi ha almeno cfu_minimi crediti."""
+    return [s[0] for s in studenti if s[2] &gt;= cfu_minimi]
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>studenti: list[tuple[str, float, int]] = [
+    ("Marco", 26.4, 66),
+    ("Anna", 28.1, 54),
+    ("Sara", 26.4, 72),
+    ("Luca", 24.9, 48),
+    ("Giulia", 29.3, 60),
+]
+
+for posto, (nome, media, cfu) in enumerate(classifica(studenti), 1):
+    print(f"{posto}. {nome}: {media:.1f} ({cfu} CFU)")
+
+piu_cfu: tuple[str, float, int] = max(studenti, key=lambda s: s[2])
+print(f"Più crediti: {piu_cfu[0]} con {piu_cfu[2]}")
+print(f"In regola con 60 CFU: {in_regola(studenti)}")
+print(f"In regola con 70 CFU: {in_regola(studenti, cfu_minimi=70)}")</code></pre></div></div>
+                    <ul class="note-sol"><li>La chiave <code>(-s[1], s[0])</code> ordina per media decrescente e, a parità, per nome crescente: le tuple si confrontano elemento per elemento.</li><li><code>reverse=True</code> invertirebbe anche l'ordine dei nomi; il segno meno inverte solo la media.</li><li><code>max(studenti, key=lambda s: s[2])</code> restituisce l'intera tupla dello studente, non solo i crediti.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L04»
+Da dire: Marco e Sara hanno 26.4; con la chiave a due elementi Marco viene prima. in_regola usa il default 60; con cfu_minimi=70 resta solo Sara.
+Chiedere / fare: aggiungere Elena, 28.1, 61 → terza dopo Anna.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>questionario.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter
+
+
+def pulisci(risposte: list[str]) -&gt; list[str]:
+    """Toglie spazi e maiuscole e scarta le risposte vuote."""
+    return [r.strip().lower() for r in risposte if r.strip() != ""]
+
+
+def frequenze_relative(risposte: list[str]) -&gt; dict[str, float]:
+    """Frequenza relativa di ogni risposta, dalla più comune."""
+    conteggi: Counter = Counter(risposte)
+    n: int = len(risposte)
+    return {r: c / n for r, c in conteggi.most_common()}
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def mode(risposte: list[str]) -&gt; list[str]:
+    """Risposte più frequenti in ordine alfabetico; [] se vuota."""
+    if len(risposte) == 0:
+        return []
+    conteggi: Counter = Counter(risposte)
+    massimo: int = max(conteggi.values())
+    return sorted([r for r in conteggi if conteggi[r] == massimo])
+
+
+grezze: list[str] = ["Bici", " autobus", "treno ", "BICI", "",
+                     "a piedi", "Treno", "bici", "Autobus ",
+                     "treno", "autobus", "  "]
+
+risposte: list[str] = pulisci(grezze)
+print(f"Risposte valide: {len(risposte)} su {len(grezze)}")
+for mezzo, quota in frequenze_relative(risposte).items():
+    print(f"{mezzo}: {quota:.1%}")
+print(f"Moda: {mode(risposte)}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Tre funzioni piccole, ognuna con un compito: pulire, contare, trovare le mode.</li><li><code>most_common()</code> restituisce le coppie dalla più frequente; a parità di frequenza resta l'ordine di prima comparsa.</li><li><code>mode</code> restituisce una lista perché le mode possono essere più di una, come in questi dati.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L04»
+Da dire: senza pulizia «Bici», «BICI» e «bici» sarebbero tre risposte diverse. Il controllo sulla lista vuota in mode serve perché max() di una sequenza vuota dà errore.
+Chiedere / fare: con un «Bici » in più → bici 36.4% e una sola moda.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>confronto_gruppi.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import statistics
+
+
+def confronta(a: list[float], b: list[float],
+              statistica: callable) -&gt; tuple[float, float, float]:
+    """Applica statistica ai gruppi; dà i valori e la differenza."""
+    valore_a: float = statistica(a)
+    valore_b: float = statistica(b)
+    return valore_a, valore_b, valore_a - valore_b
+
+
+def campo(valori: list[float]) -&gt; float:
+    """Campo di variazione: massimo meno minimo."""
+    return max(valori) - min(valori)</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>
+frequentanti: list[float] = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]
+non_frequentanti: list[float] = [21, 18, 30, 14, 23, 25, 13, 20]
+
+misure: dict[str, callable] = {
+    "Media": statistics.mean,
+    "Mediana": statistics.median,
+    "Deviazione standard": statistics.stdev,
+    "Campo di variazione": campo,
+    "Minimo": min,
+}
+for nome, funzione in misure.items():
+    f, nf, diff = confronta(frequentanti, non_frequentanti, funzione)
+    print(f"{nome}: {f:.2f} contro {nf:.2f} (differenza {diff:.2f})")</code></pre></div></div>
+                    <ul class="note-sol"><li>Nel dizionario ci sono le funzioni, senza parentesi: <code>confronta</code> le chiama al suo interno con <code>statistica(a)</code>.</li><li>Si possono passare funzioni di un modulo (<code>statistics.mean</code>), funzioni scritte da noi (<code>campo</code>), funzioni predefinite (<code>min</code>) e lambda.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L04»
+Da dire: statistics.mean è la funzione, statistics.mean(frequentanti) è il suo risultato, un numero. confronta non sa quale misura calcola: riceve la funzione come argomento. I frequentanti hanno media più alta e meno variabilità.
+Chiedere / fare: aggiungere la quota di sufficienti con una lambda → 0.90 contro 0.75.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>compleanni.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import random
+
+
+def compleanno_comune(n: int) -&gt; bool:
+    """Estrae n compleanni a caso; True se almeno due coincidono."""
+    giorni: list[int] = [random.randint(1, 365) for i in range(n)]
+    return len(set(giorni)) &lt; n
+
+
+def stima(n_studenti: int, prove: int = 10000) -&gt; float:
+    """Quota di aule simulate con almeno un compleanno comune."""
+    successi: int = 0
+    for i in range(prove):
+        if compleanno_comune(n_studenti):
+            successi += 1
+    return successi / prove
+</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def esatta(n_studenti: int) -&gt; float:
+    """Probabilità esatta di almeno un compleanno in comune."""
+    tutti_diversi: float = 1.0
+    for i in range(n_studenti):
+        tutti_diversi *= (365 - i) / 365
+    return 1 - tutti_diversi
+
+
+random.seed(2026)
+for n in [10, 23, 30, 50]:
+    print(f"{n} studenti: simulata {stima(n):.1%}, "
+          f"esatta {esatta(n):.1%}")
+
+n_minimo: int = 1
+while esatta(n_minimo) &lt; 0.5:
+    n_minimo += 1
+print(f"Si supera il 50% con {n_minimo} studenti")</code></pre></div></div>
+                    <ul class="note-sol"><li>Il <code>set</code> elimina i duplicati: se è più corto della lista, almeno due compleanni coincidono.</li><li><code>stima</code> chiama <code>compleanno_comune</code> molte volte; il default <code>prove=10000</code> si può cambiare con un argomento keyword.</li><li>Con il seed fissato la simulazione dà sempre gli stessi numeri; la stima si avvicina al valore esatto quando le prove aumentano.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L04»
+Da dire: bastano 23 studenti per superare il 50%, perché le coppie possibili sono 23 × 22 / 2 = 253. La simulazione e il calcolo esatto danno valori vicini: è un modo per controllare una formula.
+Chiedere / fare: in un'aula da 50 studenti la probabilità è del 97.0%.</aside>
+                </section>
+            </section>
+            <!-- FINE SOLUZIONI LAB -->
 
             <!-- ========== SEZIONE 1: APRIRE E CHIUDERE FILE ========== -->
             <section>

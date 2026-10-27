@@ -413,6 +413,119 @@ ultimo <span class="op">=</span> voti[<span class="op">-</span><span class="mi">
     <span class="kw">return</span> lista[<span class="mi">1</span>:<span class="op">-</span><span class="mi">1</span>]</code></pre>
 <p><strong>Spiegazione:</strong> Lo slicing <code>[1:-1]</code> prende gli elementi dall'indice <code>1</code> (secondo elemento) fino all'indice <code>-1</code> escluso (cioe esclude l'ultimo). Lo slicing crea sempre una <strong>nuova</strong> lista, quindi il risultato e gia una copia indipendente dall'originale. Modificare la lista restituita non influenzera la lista originale.</p>
 <p></details></p>
+<hr>
+<h2>Cosa stampa questo codice? (list comprehension, <code>split()</code> e <code>join()</code>)</h2>
+<h3>Esercizio 11</h3>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>, <span class="mi">7</span>, <span class="mi">8</span>]
+pari <span class="op">=</span> [n <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>]
+<span class="nb">print</span>(pari)
+doppi <span class="op">=</span> [n <span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">&lt;</span> <span class="mi">5</span>]
+<span class="nb">print</span>(doppi)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>]
+[<span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">6</span>, <span class="mi">8</span>]</code></pre>
+<p><strong>Spiegazione:</strong> La prima list comprehension tiene solo gli elementi pari della lista: <code>[2, 4, 6, 8]</code>. La seconda tiene gli elementi minori di 5 (<code>1, 2, 3, 4</code>) e li moltiplica per 2 (<code>2, 4, 6, 8</code>). I due risultati coincidono per caso, ma le operazioni sono diverse: la prima filtra soltanto, la seconda filtra e trasforma.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 12</h3>
+<pre><code>dati <span class="op">=</span> <span class="st">&quot;rosso,verde,blu,giallo&quot;</span>
+colori <span class="op">=</span> dati.split(<span class="st">&quot;,&quot;</span>)
+<span class="nb">print</span>(colori)
+<span class="nb">print</span>(<span class="nb">len</span>(colori))
+risultato <span class="op">=</span> <span class="st">&quot; - &quot;</span>.join(colori)
+<span class="nb">print</span>(risultato)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="st">&#x27;rosso&#x27;</span>, <span class="st">&#x27;verde&#x27;</span>, <span class="st">&#x27;blu&#x27;</span>, <span class="st">&#x27;giallo&#x27;</span>]
+<span class="mi">4</span>
+rosso <span class="op">-</span> verde <span class="op">-</span> blu <span class="op">-</span> giallo</code></pre>
+<p><strong>Spiegazione:</strong> <code>split(",")</code> divide la stringa in una lista usando la virgola come separatore. <code>len()</code> conta gli elementi della lista (4 colori). <code>" - ".join(colori)</code> fa l'operazione inversa: unisce gli elementi della lista in un'unica stringa, inserendo <code>" - "</code> tra un elemento e l'altro.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 13</h3>
+<pre><code>parole <span class="op">=</span> [<span class="st">&quot;ciao&quot;</span>, <span class="st">&quot;mondo&quot;</span>, <span class="st">&quot;python&quot;</span>, <span class="st">&quot;è&quot;</span>, <span class="st">&quot;bello&quot;</span>]
+lunghe <span class="op">=</span> [p.upper() <span class="kw">for</span> p <span class="kw">in</span> parole <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span> <span class="mi">3</span>]
+<span class="nb">print</span>(lunghe)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong></p>
+<pre><code>[<span class="st">&#x27;CIAO&#x27;</span>, <span class="st">&#x27;MONDO&#x27;</span>, <span class="st">&#x27;PYTHON&#x27;</span>, <span class="st">&#x27;BELLO&#x27;</span>]</code></pre>
+<p><strong>Spiegazione:</strong> La comprehension ha tre parti: la trasformazione <code>p.upper()</code>, il ciclo <code>for p in parole</code> e il filtro <code>if len(p) > 3</code>. Si tengono le parole con più di 3 caratteri (si esclude <code>"è"</code>, che ne ha 1) e si mettono in maiuscolo. Si legge così: "per ogni <code>p</code> in <code>parole</code>, <strong>se</strong> la lunghezza è maggiore di 3, prendi <code>p.upper()</code>".</p>
+<p></details></p>
+<hr>
+<h2>Trova l'errore (list comprehension, <code>split()</code> e <code>join()</code>)</h2>
+<h3>Esercizio 14</h3>
+<p>Il codice dovrebbe separare cognome e nome, ma genera un errore.</p>
+<pre><code>dati <span class="op">=</span> <span class="st">&quot;Rossi;Marco;25&quot;</span>
+parti <span class="op">=</span> dati.split(<span class="st">&quot;,&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Cognome: {parti[0]}, Nome: {parti[1]}&quot;</span>)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Errore:</strong> <code>IndexError: list index out of range</code></p>
+<p><strong>Problema:</strong> La stringa usa il punto e virgola <code>;</code> come separatore, ma <code>split(",")</code> cerca la virgola <code>,</code>. Siccome non ci sono virgole, <code>split</code> restituisce una lista con un solo elemento: <code>["Rossi;Marco;25"]</code>. L'accesso a <code>parti[1]</code> causa un <code>IndexError</code>.</p>
+<p><strong>Soluzione:</strong></p>
+<pre><code>dati <span class="op">=</span> <span class="st">&quot;Rossi;Marco;25&quot;</span>
+parti <span class="op">=</span> dati.split(<span class="st">&quot;;&quot;</span>)    <span class="cm"># separatore corretto: punto e virgola</span>
+<span class="nb">print</span>(<span class="st">f&quot;Cognome: {parti[0]}, Nome: {parti[1]}&quot;</span>)
+<span class="cm"># stampa: Cognome: Rossi, Nome: Marco</span></code></pre>
+<p>Prima di usare <code>split()</code> bisogna controllare quale carattere fa da separatore nei dati.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 15</h3>
+<p>Il codice dovrebbe creare la lista dei quadrati dei numeri pari maggiori di 3. Funziona, ma è scritto in modo poco leggibile: come lo riscriveresti?</p>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+quadrati <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">if</span> n <span class="op">&gt;</span> <span class="mi">3</span>]
+<span class="nb">print</span>(quadrati)</code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<p><strong>Output:</strong> <code>[16, 36]</code></p>
+<p><strong>Problema:</strong> Python accetta più <code>if</code> uno dopo l'altro in una comprehension e li tratta come se fossero uniti da <code>and</code>. Il codice quindi funziona, ma chi lo legge può non capire subito che le due condizioni devono valere insieme.</p>
+<p><strong>Versione consigliata:</strong></p>
+<pre><code>numeri <span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]
+quadrati <span class="op">=</span> [n <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> n <span class="kw">in</span> numeri <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">0</span> <span class="kw">and</span> n <span class="op">&gt;</span> <span class="mi">3</span>]
+<span class="nb">print</span>(quadrati)  <span class="cm"># stampa: [16, 36]</span></code></pre>
+<p>Con <code>and</code> le due condizioni si leggono come una sola. I numeri pari <strong>e</strong> maggiori di 3 sono <code>4</code> e <code>6</code>, i cui quadrati sono <code>16</code> e <code>36</code>.</p>
+<p></details></p>
+<hr>
+<h2>Completa il codice (list comprehension, <code>split()</code> e <code>join()</code>)</h2>
+<h3>Esercizio 16</h3>
+<p>Completa il codice che crea la lista delle parole di una frase più lunghe di <code>n</code> caratteri.</p>
+<pre><code>frase <span class="op">=</span> <span class="st">&quot;il gatto dorme sul divano&quot;</span>
+n <span class="op">=</span> <span class="mi">3</span>
+parole <span class="op">=</span> frase.____________
+lunghe <span class="op">=</span> [_________ <span class="kw">for</span> p <span class="kw">in</span> _________ <span class="kw">if</span> ___________]
+<span class="nb">print</span>(lunghe)    <span class="cm"># deve stampare [&#x27;gatto&#x27;, &#x27;dorme&#x27;, &#x27;divano&#x27;]</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code>frase <span class="op">=</span> <span class="st">&quot;il gatto dorme sul divano&quot;</span>
+n <span class="op">=</span> <span class="mi">3</span>
+parole <span class="op">=</span> frase.split()
+lunghe <span class="op">=</span> [p <span class="kw">for</span> p <span class="kw">in</span> parole <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span> n]
+<span class="nb">print</span>(lunghe)    <span class="cm"># [&#x27;gatto&#x27;, &#x27;dorme&#x27;, &#x27;divano&#x27;]</span></code></pre>
+<p><strong>Spiegazione:</strong> <code>split()</code> senza argomenti divide la stringa sugli spazi (anche se sono più di uno di fila). La comprehension scorre ogni parola <code>p</code> e la tiene solo se la sua lunghezza supera <code>n</code>: <code>"il"</code> e <code>"sul"</code> restano fuori.</p>
+<p></details></p>
+<hr>
+<h3>Esercizio 17</h3>
+<p>Completa il codice che pulisce un testo: minuscolo e un solo spazio tra una parola e l'altra.</p>
+<pre><code>testo <span class="op">=</span> <span class="st">&quot;  PYTHON   è   BELLO  &quot;</span>
+testo <span class="op">=</span> testo.____________     <span class="cm"># toglie gli spazi all&#x27;inizio e alla fine</span>
+testo <span class="op">=</span> testo.____________     <span class="cm"># porta in minuscolo</span>
+parole <span class="op">=</span> testo.____________    <span class="cm"># divide in parole</span>
+pulito <span class="op">=</span> _________________     <span class="cm"># riunisce le parole con un solo spazio</span>
+<span class="nb">print</span>(pulito)                  <span class="cm"># deve stampare: python è bello</span></code></pre>
+<p><details></p>
+<p><summary>Mostra la risposta</summary></p>
+<pre><code>testo <span class="op">=</span> <span class="st">&quot;  PYTHON   è   BELLO  &quot;</span>
+testo <span class="op">=</span> testo.strip()
+testo <span class="op">=</span> testo.lower()
+parole <span class="op">=</span> testo.split()
+pulito <span class="op">=</span> <span class="st">&quot; &quot;</span>.join(parole)
+<span class="nb">print</span>(pulito)                  <span class="cm"># python è bello</span></code></pre>
+<p><strong>Spiegazione:</strong> (1) <code>strip()</code> toglie gli spazi all'inizio e alla fine; (2) <code>lower()</code> porta tutto in minuscolo; (3) <code>split()</code> divide sugli spazi, anche quando sono più di uno di fila, quindi in <code>parole</code> non finiscono stringhe vuote; (4) <code>" ".join(parole)</code> ricompone il testo con un solo spazio tra le parole.</p>
+<p></details></p>
 <nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
 </body>
 </html>

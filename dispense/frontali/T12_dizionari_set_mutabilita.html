@@ -501,6 +501,70 @@ colori.remove(<span class="st">&quot;rosso&quot;</span>)     <span class="cm"># 
 insiemi: <span class="nb">set</span>[<span class="nb">frozenset</span>[<span class="nb">int</span>]] <span class="op">=</span> {<span class="nb">frozenset</span>([<span class="mi">1</span>, <span class="mi">2</span>]), <span class="nb">frozenset</span>([<span class="mi">3</span>, <span class="mi">4</span>])}
 <span class="nb">print</span>(insiemi)</code></pre>
 <hr>
+<h2>Dict e set comprehension</h2>
+<p>Le comprehension viste con le liste esistono anche per dizionari e set, con la stessa sintassi tra parentesi graffe.</p>
+<h3>Dict comprehension</h3>
+<p><code>{chiave: valore for variabile in sequenza}</code>. Con <code>items()</code> si scorrono le coppie di un dizionario esistente.</p>
+<pre><code>nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Luca&quot;</span>, <span class="st">&quot;Francesca&quot;</span>]
+lunghezze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {nome: <span class="nb">len</span>(nome) <span class="kw">for</span> nome <span class="kw">in</span> nomi}
+<span class="nb">print</span>(lunghezze)   <span class="cm"># {&#x27;Anna&#x27;: 4, &#x27;Marco&#x27;: 5, &#x27;Luca&#x27;: 4, &#x27;Francesca&#x27;: 9}</span>
+
+registro: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>: <span class="mi">28</span>, <span class="st">&quot;Marco&quot;</span>: <span class="mi">15</span>, <span class="st">&quot;Luca&quot;</span>: <span class="mi">30</span>, <span class="st">&quot;Sara&quot;</span>: <span class="mi">12</span>}
+promossi: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {nome: voto <span class="kw">for</span> nome, voto <span class="kw">in</span> registro.items() <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>}
+<span class="nb">print</span>(promossi)    <span class="cm"># {&#x27;Anna&#x27;: 28, &#x27;Luca&#x27;: 30}</span></code></pre>
+<h3>Set comprehension</h3>
+<p><code>{espressione for variabile in sequenza}</code>: graffe senza i due punti. Il risultato è un set, quindi i duplicati spariscono. Attenzione: <code>{}</code> da solo è un dizionario vuoto, non un set.</p>
+<pre><code>nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Andrea&quot;</span>, <span class="st">&quot;Marco&quot;</span>, <span class="st">&quot;Maria&quot;</span>, <span class="st">&quot;Luca&quot;</span>]
+iniziali: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {nome[<span class="mi">0</span>] <span class="kw">for</span> nome <span class="kw">in</span> nomi}
+<span class="nb">print</span>(iniziali)  <span class="cm"># {&#x27;A&#x27;, &#x27;M&#x27;, &#x27;L&#x27;} (l&#x27;ordine può cambiare)</span></code></pre>
+<table>
+<thead><tr>
+<th>Tipo</th>
+<th>Sintassi</th>
+<th>Risultato</th>
+</tr></thead><tbody>
+<tr>
+<td>List</td>
+<td><code>[espr for x in seq]</code></td>
+<td><code>list</code></td>
+</tr>
+<tr>
+<td>Dict</td>
+<td><code>{k: v for x in seq}</code></td>
+<td><code>dict</code></td>
+</tr>
+<tr>
+<td>Set</td>
+<td><code>{espr for x in seq}</code></td>
+<td><code>set</code></td>
+</tr>
+</tbody></table>
+<p>Tutte accettano il filtro <code>if condizione</code> in fondo.</p>
+<h3>Esempio: normalizzare categorie</h3>
+<p>Le risposte a un questionario arrivano spesso scritte in modi diversi. Prima si puliscono con <code>strip()</code> e <code>lower()</code>, poi si contano.</p>
+<pre><code>risposte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;si&quot;</span>, <span class="st">&quot;Si&quot;</span>, <span class="st">&quot;SI&quot;</span>, <span class="st">&quot; si &quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;No&quot;</span>, <span class="st">&quot;  NO&quot;</span>, <span class="st">&quot;forse&quot;</span>]
+
+normalizzate: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [r.strip().lower() <span class="kw">for</span> r <span class="kw">in</span> risposte]
+<span class="nb">print</span>(normalizzate)  <span class="cm"># [&#x27;si&#x27;, &#x27;si&#x27;, &#x27;si&#x27;, &#x27;si&#x27;, &#x27;no&#x27;, &#x27;no&#x27;, &#x27;no&#x27;, &#x27;forse&#x27;]</span>
+
+frequenze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {v: normalizzate.count(v) <span class="kw">for</span> v <span class="kw">in</span> <span class="nb">set</span>(normalizzate)}
+<span class="nb">print</span>(frequenze)     <span class="cm"># {&#x27;si&#x27;: 4, &#x27;no&#x27;: 3, &#x27;forse&#x27;: 1} (l&#x27;ordine può cambiare)</span></code></pre>
+<p>Lo stesso conteggio si ottiene con <code>Counter(normalizzate)</code>.</p>
+<h3>Esempio: da CSV a dizionari</h3>
+<p>La prima riga dà i nomi dei campi; per ogni riga successiva si costruisce un dizionario campo → valore.</p>
+<pre><code>righe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;nome, eta, voto&quot;</span>, <span class="st">&quot;Anna, 22, 28&quot;</span>, <span class="st">&quot;Marco, 21, 25&quot;</span>]
+
+intestazione: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> righe[<span class="mi">0</span>].split(<span class="st">&quot;,&quot;</span>)]
+
+dati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> []
+<span class="kw">for</span> riga <span class="kw">in</span> righe[<span class="mi">1</span>:]:
+    valori: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [c.strip() <span class="kw">for</span> c <span class="kw">in</span> riga.split(<span class="st">&quot;,&quot;</span>)]
+    record: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> {intestazione[i]: valori[i] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(intestazione))}
+    dati.append(record)
+
+<span class="nb">print</span>(dati)
+<span class="cm"># [{&#x27;nome&#x27;: &#x27;Anna&#x27;, &#x27;eta&#x27;: &#x27;22&#x27;, &#x27;voto&#x27;: &#x27;28&#x27;}, {&#x27;nome&#x27;: &#x27;Marco&#x27;, &#x27;eta&#x27;: &#x27;21&#x27;, &#x27;voto&#x27;: &#x27;25&#x27;}]</span></code></pre>
+<hr>
 <h2>Mutabilità vs immutabilità</h2>
 <h3>Il concetto</h3>
 <p>Alcuni oggetti in Python possono essere modificati dopo la creazione: sono <strong>mutabili</strong>. Altri, una volta creati, non possono cambiare: sono <strong>immutabili</strong>.</p>

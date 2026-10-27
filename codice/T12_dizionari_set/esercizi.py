@@ -281,4 +281,45 @@ assert tutti == {"Marco", "Laura", "Giulia", "Anna", "Paolo", "Luca", "Sara"}
 print(f"Tutti gli studenti: {sorted(tutti)}")
 
 print("Bonus superato!\n")
+# ============================================================
+# ESERCIZIO 5: Frequenza delle parole con le comprehension
+# Dato un testo: togliere la punteggiatura, portarlo in minuscolo,
+# dividerlo in parole e calcolare:
+#   a) l'insieme delle parole diverse (set comprehension);
+#   b) la frequenza di ogni parola (dict comprehension);
+#   c) le sole parole che compaiono almeno due volte (dict comprehension con filtro);
+#   d) la lunghezza di ogni parola diversa (dict comprehension).
+# ============================================================
+print("=== Esercizio 5: Frequenza delle parole ===")
+
+testo_es5: str = (
+    "Python è un linguaggio di programmazione. "
+    "Python è versatile e Python è potente. "
+    "La programmazione in Python è divertente!"
+)
+
+# Tolgo la punteggiatura un carattere alla volta
+testo_pulito: str = testo_es5.lower()
+for segno in ".,;:!?":
+    testo_pulito = testo_pulito.replace(segno, "")
+
+parole_es5: list[str] = testo_pulito.split()
+
+parole_diverse: set[str] = {p for p in parole_es5}
+frequenze_es5: dict[str, int] = {p: parole_es5.count(p) for p in parole_es5}
+ripetute: dict[str, int] = {p: f for p, f in frequenze_es5.items() if f >= 2}
+lunghezze_es5: dict[str, int] = {p: len(p) for p in parole_es5}
+
+print(f"Parole totali: {len(parole_es5)}")          # atteso: 19
+print(f"Parole diverse: {len(parole_diverse)}")     # atteso: 12
+print(f"Frequenze: {frequenze_es5}")
+# atteso: {'python': 4, 'è': 4, 'un': 1, 'linguaggio': 1, 'di': 1,
+#          'programmazione': 2, 'versatile': 1, 'e': 1, 'potente': 1,
+#          'la': 1, 'in': 1, 'divertente': 1}
+print(f"Ripetute: {ripetute}")
+# atteso: {'python': 4, 'è': 4, 'programmazione': 2}
+print(f"Più lunga: {max(lunghezze_es5.values())} caratteri")  # atteso: 14
+print("Esercizio 5 superato!\n")
+
+
 print("=== Tutti gli esercizi T12 completati! ===")

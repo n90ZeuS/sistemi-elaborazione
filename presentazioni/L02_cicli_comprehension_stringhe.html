@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L02 — Cicli, comprehension e stringhe</title>
+    <title>L02 — Cicli e stringhe</title>
     <link rel="stylesheet" href="vendor/reveal.css">
     <link rel="stylesheet" href="vendor/theme/white.css">
     <link rel="stylesheet" href="vendor/plugin/highlight/monokai.css">
@@ -314,587 +314,355 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: Titolo -->
             <section class="title-slide">
-                <h1>Cicli, comprehension e stringhe</h1>
-                <div class="subtitle">Laboratorio 2</div>
+                <h1>Cicli e stringhe</h1>
+                <div class="subtitle">Laboratorio 2 — Esercizi di Halloween</div>
                 <div class="course-info">
                     Sistemi di Elaborazione<br>
-                    Corso di Laurea in Scienze Statistiche
+                    Prerequisiti: T09 (Cicli) e T10 (Stringhe)
                 </div>
             </section>
 
-            <!-- SLIDE 2: Agenda -->
             <section>
-                <h2>Agenda</h2>
-                <ol>
-                    <li><strong>Parte 1</strong> — Cicli e statistiche base
-                        <ul>
-                            <li>Pattern accumulatore, contatore, min/max con <code>while</code></li>
-                            <li>Cicli annidati: tavola pitagorica</li>
-                            <li>Analisi sopra/sotto la media</li>
-                        </ul>
-                    </li>
-                    <li><strong>Parte 2</strong> — Comprehension
-                        <ul>
-                            <li>Da cicli a comprehension: filtro, trasformazione</li>
-                            <li>Comprehension su stringhe</li>
-                        </ul>
-                    </li>
-                    <li><strong>Parte 3</strong> — Stringhe come struttura dati
-                        <ul>
-                            <li>Pipeline di pulizia dati testuali</li>
-                        </ul>
-                    </li>
-                    <li><strong>Parte 4</strong> — Esercizi autonomi e sfida</li>
-                </ol>
-            </section>
-
-            <!-- SLIDE 3: Sezione 1 -->
-            <section class="section-slide">
-                <h2>Parte 1</h2>
-                <p>Cicli e statistiche base</p>
-            </section>
-
-            <!-- SLIDE 4: Esercizio 1.1 - Introduzione -->
-            <section>
-                <h2>Esercizio 1.1: media, min, max con <code>while</code></h2>
-                <p>Scenario: l'utente inserisce valori uno alla volta, non sappiamo quanti saranno.</p>
-                <div class="box box-blue">
-                    <strong>Quando usare <code>while</code>?</strong><br>
-                    Quando <strong>non sappiamo in anticipo</strong> quante iterazioni servono.
-                </div>
-                <h3>Pattern utilizzati</h3>
-                <ul>
-                    <li><strong>Accumulatore:</strong> <code>somma += valore</code></li>
-                    <li><strong>Contatore:</strong> <code>conteggio += 1</code></li>
-                    <li><strong>Min/Max:</strong> confronto ad ogni iterazione</li>
-                </ul>
-            </section>
-
-            <!-- SLIDE 5: Esercizio 1.1 - Inizializzazione -->
-            <section>
-                <h2>Esercizio 1.1: inizializzazione</h2>
-                <p>File: <code>statistiche_input.py</code></p>
-                <pre><code class="language-python">print("Inserisci valori numerici uno per riga.")
-print("Scrivi 'fine' per terminare.\n")
-
-conteggio: int = 0
-somma: float = 0.0
-minimo: float = float("inf")   # +infinito: qualsiasi valore sara minore
-massimo: float = float("-inf") # -infinito: qualsiasi valore sara maggiore</code></pre>
-                <div class="box box-yellow">
-                    <strong>Perche <code>float("inf")</code>?</strong><br>
-                    Inizializzando il minimo a +infinito, il primo valore inserito diventa automaticamente il nuovo minimo. Analogamente per il massimo con -infinito.
-                </div>
-            </section>
-
-            <!-- SLIDE 6: Esercizio 1.1 - Ciclo while -->
-            <section>
-                <h2>Esercizio 1.1: il ciclo</h2>
-                <pre><code class="language-python">while True:
-    testo: str = input(f"Valore {conteggio + 1}: ")
-
-    if testo.lower().strip() == "fine":
-        break
-
-    valore: float = float(testo)
-    conteggio += 1
-    somma += valore
-
-    if valore < minimo:
-        minimo = valore
-    if valore > massimo:
-        massimo = valore</code></pre>
-                <div class="box box-green">
-                    <strong><code>.lower().strip()</code></strong> rende robusto il confronto: l'utente puo scrivere "Fine", "FINE", " fine " e il programma funziona comunque.
-                </div>
-            </section>
-
-            <!-- SLIDE 7: Esercizio 1.1 - Output -->
-            <section>
-                <h2>Esercizio 1.1: risultati e output</h2>
-                <pre><code class="language-python">if conteggio == 0:
-    print("\nNessun valore inserito.")
-else:
-    media: float = somma / conteggio
-    print(f"\n--- Statistiche su {conteggio} valori ---")
-    print(f"Somma:   {somma:>10.2f}")
-    print(f"Media:   {media:>10.2f}")
-    print(f"Minimo:  {minimo:>10.2f}")
-    print(f"Massimo: {massimo:>10.2f}")</code></pre>
-                <h3>Esempio di esecuzione</h3>
-                <pre><code class="language-python">Valore 1: 23.5
-Valore 2: 19.8
-Valore 3: 31.2
-Valore 4: 25.0
-Valore 5: fine
-
---- Statistiche su 4 valori ---
-Somma:      99.50
-Media:      24.88
-Minimo:     19.80
-Massimo:    31.20</code></pre>
-            </section>
-
-            <!-- SLIDE 8: Esercizio 1.2 - Tavola pitagorica -->
-            <section>
-                <h2>Esercizio 1.2: tavola pitagorica</h2>
-                <p>Cicli annidati: il ciclo esterno scorre le <strong>righe</strong>, quello interno le <strong>colonne</strong>.</p>
-                <pre><code class="language-python">DIMENSIONE: int = 10
-
-# Intestazione
-print(f"{'':>4}", end="")
-for j in range(1, DIMENSIONE + 1):
-    print(f"{j:>4}", end="")
-print()
-
-# Linea separatrice
-print(f"{'':>4}" + "-" * (DIMENSIONE * 4))
-
-# Corpo della tavola
-for i in range(1, DIMENSIONE + 1):
-    print(f"{i:>3}|", end="")
-    for j in range(1, DIMENSIONE + 1):
-        prodotto: int = i * j
-        print(f"{prodotto:>4}", end="")
-    print()</code></pre>
-            </section>
-
-            <!-- SLIDE 9: Esercizio 1.2 - Output e note -->
-            <section>
-                <h2>Esercizio 1.2: output e osservazioni</h2>
-                <pre><code class="language-python">       1   2   3   4   5   6   7   8   9  10
-    ----------------------------------------
-  1|   1   2   3   4   5   6   7   8   9  10
-  2|   2   4   6   8  10  12  14  16  18  20
-  3|   3   6   9  12  15  18  21  24  27  30
-  ...</code></pre>
-                <div class="box box-blue">
-                    <strong>Concetti chiave:</strong>
-                    <ul>
-                        <li><code>{prodotto:>4}</code> — allinea a destra in 4 caratteri</li>
-                        <li><code>end=""</code> — impedisce l'a capo automatico di <code>print</code></li>
-                        <li><code>print()</code> senza argomenti — va a capo alla fine di ogni riga</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- SLIDE 10: Esercizio 1.3 - Sopra/sotto media -->
-            <section>
-                <h2>Esercizio 1.3: sopra e sotto la media</h2>
-                <p>File: <code>sopra_sotto_media.py</code> — Servono <strong>due passaggi</strong> sui dati.</p>
-                <div class="columns">
-                    <div class="col">
-                        <h3>Passo 1: calcolo media</h3>
-                        <pre><code class="language-python">temperature: list[float] = [
-    18.5, 22.3, 15.7, 28.1,
-    20.0, 31.4, 17.2, 24.8,
-    19.5, 26.3, 14.0, 23.7,
-    29.5, 16.8, 21.1,
-]
-
-n: int = len(temperature)
-somma: float = 0.0
-for temp in temperature:
-    somma += temp
-media: float = somma / n</code></pre>
-                    </div>
-                    <div class="col">
-                        <h3>Passo 2: classificazione</h3>
-                        <pre><code class="language-python">sopra: int = 0
-sotto: int = 0
-uguali: int = 0
-
-for temp in temperature:
-    if temp > media:
-        sopra += 1
-    elif temp < media:
-        sotto += 1
-    else:
-        uguali += 1</code></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SLIDE 11: Esercizio 1.3 - Report e dettaglio -->
-            <section>
-                <h2>Esercizio 1.3: report e dettaglio</h2>
-                <pre><code class="language-python"># Report
-print(f"--- Analisi di {n} temperature ---")
-print(f"Media: {media:.2f}°C\n")
-print(f"Sopra la media: {sopra:>3} ({sopra / n:.1%})")
-print(f"Sotto la media: {sotto:>3} ({sotto / n:.1%})")
-print(f"Uguali:         {uguali:>3} ({uguali / n:.1%})")
-
-# Dettaglio: quali sono sopra la media?
-print(f"\nValori sopra la media ({media:.2f}°C):")
-for i, temp in enumerate(temperature, start=1):
-    if temp > media:
-        print(f"  Osservazione {i:>2}: {temp:.1f}°C  (+{temp - media:.1f})")</code></pre>
-                <div class="box box-yellow">
-                    <strong>Perche due passaggi?</strong> La media dipende da <em>tutti</em> i valori. Non possiamo classificare un valore come "sopra la media" finche non abbiamo calcolato la media stessa. Questo pattern a due passaggi e molto comune nell'analisi dati.
-                </div>
-            </section>
-
-            <!-- SLIDE 12: Sezione 2 -->
-            <section class="section-slide">
-                <h2>Parte 2</h2>
-                <p>Dalle comprehension ai cicli e ritorno</p>
-            </section>
-
-            <!-- SLIDE 13: Pattern FILTRO -->
-            <section>
-                <h2>Comprehension: pattern filtro</h2>
-                <p>File: <code>comprehension.py</code></p>
-                <div class="compare">
-                    <div class="bad">
-                        <h3>Con ciclo</h3>
-                        <pre><code class="language-python">calde_ciclo: list[float] = []
-for temp in temperature:
-    if temp > 25.0:
-        calde_ciclo.append(temp)</code></pre>
-                    </div>
-                    <div class="good">
-                        <h3>Con comprehension</h3>
-                        <pre><code class="language-python">calde_comp: list[float] = [
-    temp
-    for temp in temperature
-    if temp > 25.0
-]</code></pre>
-                    </div>
-                </div>
-                <div class="diagram">
-                    [<strong>espressione</strong> &nbsp; for <strong>variabile</strong> in <strong>iterabile</strong> &nbsp; if <strong>condizione</strong>]
-                </div>
-            </section>
-
-            <!-- SLIDE 14: Pattern TRASFORMAZIONE -->
-            <section>
-                <h2>Comprehension: pattern trasformazione</h2>
-                <div class="compare">
-                    <div class="bad">
-                        <h3>Con ciclo</h3>
-                        <pre><code class="language-python">fahrenheit_ciclo: list[float] = []
-for temp in temperature:
-    fahrenheit_ciclo.append(
-        temp * 9 / 5 + 32
-    )</code></pre>
-                    </div>
-                    <div class="good">
-                        <h3>Con comprehension</h3>
-                        <pre><code class="language-python">fahrenheit_comp: list[float] = [
-    temp * 9 / 5 + 32
-    for temp in temperature
-]</code></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SLIDE 15: Filtro + Trasformazione -->
-            <section>
-                <h2>Comprehension: filtro + trasformazione</h2>
-                <p>Solo le temperature sopra 25 C, convertite in Fahrenheit:</p>
-                <div class="compare">
-                    <div class="bad">
-                        <h3>Con ciclo</h3>
-                        <pre><code class="language-python">calde_f_ciclo: list[float] = []
-for temp in temperature:
-    if temp > 25.0:
-        calde_f_ciclo.append(
-            temp * 9 / 5 + 32
-        )</code></pre>
-                    </div>
-                    <div class="good">
-                        <h3>Con comprehension</h3>
-                        <pre><code class="language-python">calde_f_comp: list[float] = [
-    temp * 9 / 5 + 32
-    for temp in temperature
-    if temp > 25.0
-]</code></pre>
-                    </div>
-                </div>
-                <div class="box box-yellow">
-                    <strong>Regola pratica:</strong> se la comprehension non sta su 1-2 righe leggibili, usate un ciclo.
-                </div>
-            </section>
-
-            <!-- SLIDE 16: Comprehension su stringhe -->
-            <section>
-                <h2>Comprehension applicate a stringhe</h2>
-                <p>File: <code>comprehension_stringhe.py</code></p>
-                <pre><code class="language-python">nomi: list[str] = ["anna rossi", "marco bianchi", "luca verdi", "sara neri"]
-
-# Capitalizzare ogni nome
-nomi_formattati: list[str] = [nome.title() for nome in nomi]
-# ['Anna Rossi', 'Marco Bianchi', 'Luca Verdi', 'Sara Neri']
-
-# Estrarre solo i cognomi
-cognomi: list[str] = [nome.split()[-1].title() for nome in nomi]
-# ['Rossi', 'Bianchi', 'Verdi', 'Neri']
-
-# Filtrare nomi che contengono la lettera 'a'
-con_a: list[str] = [nome.title() for nome in nomi if "a" in nome]
-
-# Lunghezza di ogni nome
-lunghezze: list[int] = [len(nome) for nome in nomi]</code></pre>
-            </section>
-
-            <!-- SLIDE 17: Sezione 3 -->
-            <section class="section-slide">
-                <h2>Parte 3</h2>
-                <p>Stringhe come struttura dati</p>
-            </section>
-
-            <!-- SLIDE 18: Pulizia dati - Problema -->
-            <section>
-                <h2>Esercizio 3.1: pulire dati testuali</h2>
-                <p>I dati reali sono quasi sempre "sporchi". File: <code>pulizia_dati.py</code></p>
-                <pre><code class="language-python"># Dati "sporchi" come arriverebbero da un file o un form
-dati_grezzi: list[str] = [
-    "  Mario ROSSI  ",
-    "anna   bianchi",
-    "LUCA  Verdi ",
-    " Sara   NERI",
-    "  marco   De Luca  ",
-]</code></pre>
-                <div class="box box-red">
-                    <strong>Problemi tipici:</strong> spazi iniziali/finali, spazi multipli interni, maiuscole/minuscole miste.
-                </div>
-            </section>
-
-            <!-- SLIDE 19: Pulizia dati - Pipeline -->
-            <section>
-                <h2>La pipeline di pulizia</h2>
-                <div class="diagram">
-                    <code>strip()</code> &rarr; <code>split()</code> + <code>join()</code> &rarr; <code>title()</code>
-                </div>
-                <pre><code class="language-python"># Passo 1: rimuovere spazi iniziali e finali
-puliti: list[str] = [dato.strip() for dato in dati_grezzi]
-
-# Passo 2: normalizzare gli spazi interni
-normalizzati: list[str] = []
-for nome in puliti:
-    parti: list[str] = nome.split()  # split() senza argomenti
-    normalizzati.append(" ".join(parti))
-
-# Passo 3: uniformare la capitalizzazione
-formattati: list[str] = [nome.title() for nome in normalizzati]</code></pre>
-                <div class="box box-green">
-                    <strong>Idioma fondamentale:</strong> <code>" ".join(nome.split())</code> normalizza qualsiasi sequenza di spazi bianchi in un singolo spazio.
-                </div>
-            </section>
-
-            <!-- SLIDE 20: Pulizia dati - Iniziali e output -->
-            <section>
-                <h2>Estrarre iniziali e risultati</h2>
-                <pre><code class="language-python"># Passo 4: estrarre iniziali
-for nome in formattati:
-    parti = nome.split()
-    iniziali: str = "".join(p[0] for p in parti)
-    print(f"  {nome:<25} -> {iniziali}")</code></pre>
-                <h3>Output</h3>
-                <pre><code class="language-python">--- Dati puliti ---
-  0: 'Mario Rossi'
-  1: 'Anna Bianchi'
-  2: 'Luca Verdi'
-  3: 'Sara Neri'
-  4: 'Marco De Luca'
-
---- Iniziali ---
-  Mario Rossi               -> MR
-  Anna Bianchi              -> AB
-  Luca Verdi                -> LV
-  Sara Neri                 -> SN
-  Marco De Luca             -> MDL</code></pre>
-            </section>
-
-            <!-- SLIDE 21: split() con e senza argomenti -->
-            <section>
-                <h2><code>split()</code> vs <code>split(" ")</code></h2>
-                <p>Una differenza cruciale:</p>
-                <pre><code class="language-python">testo: str = "  anna   rossi  "
-
-# split() senza argomenti: ignora spazi multipli e iniziali/finali
-print(testo.split())
-# ['anna', 'rossi']
-
-# split(" ") con argomento: divide su OGNI spazio singolo
-print(testo.split(" "))
-# ['', '', 'anna', '', '', 'rossi', '', '']</code></pre>
-                <div class="box box-blue">
-                    <strong>Regola:</strong> per la pulizia dati, usate quasi sempre <code>split()</code> senza argomenti. Usate <code>split(";")</code> o <code>split(",")</code> solo quando il separatore e un carattere specifico diverso dallo spazio.
-                </div>
-            </section>
-
-            <!-- SLIDE 22: Sezione 4 -->
-            <section class="section-slide">
-                <h2>Parte 4</h2>
-                <p>Esercizi autonomi</p>
-            </section>
-
-            <!-- SLIDE 23: Esercizio base -->
-            <section>
-                <h2>Esercizio base: temperature settimanali</h2>
-                <p>File: <code>temperature_settimana.py</code></p>
-                <pre><code class="language-python">temperature: list[float] = [18.5, 22.3, 15.7, 28.1, 20.0, 31.4, 17.2]
-giorni: list[str] = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"]</code></pre>
-                <p>Il programma deve:</p>
-                <ol>
-                    <li>Calcolare media, minimo e massimo <em>(senza <code>sum()</code>, <code>min()</code>, <code>max()</code>)</em></li>
-                    <li>Stampare una tabella con giorno, temperatura e scostamento dalla media</li>
-                    <li>Indicare il giorno piu caldo e il piu freddo</li>
-                    <li>Creare con una <strong>comprehension</strong> la lista dei giorni sopra la media</li>
-                </ol>
-                <h3>Output atteso (parziale)</h3>
-                <pre><code class="language-python">Giorno | Temp (°C) | Scostamento
--------|-----------|------------
-Lun    |     18.5  |      -3.4
-Mar    |     22.3  |      +0.4
-
-Giorno piu caldo: Sab (31.4°C)
-Giorni sopra la media: Mar, Gio, Sab</code></pre>
-            </section>
-
-            <!-- SLIDE 24: Esercizio intermedio -->
-            <section>
-                <h2>Esercizio intermedio: frequenza caratteri</h2>
-                <p>File: <code>frequenza_caratteri.py</code></p>
-                <p>Il programma deve:</p>
-                <ol>
-                    <li>Chiedere all'utente di inserire una frase</li>
-                    <li>Contare la frequenza di ogni carattere <em>(minuscolo, ignorando spazi)</em></li>
-                    <li>Stampare i risultati ordinati per frequenza decrescente</li>
-                    <li>Calcolare la percentuale di vocali e consonanti</li>
-                </ol>
-                <h3>Suggerimenti</h3>
-                <ul>
-                    <li>Usate un dizionario <code>dict[str, int]</code></li>
-                    <li>Per ordinare: <code>sorted(diz.items(), key=lambda c: c[1], reverse=True)</code></li>
-                    <li><code>char.isalpha()</code> per verificare se e una lettera</li>
-                    <li>Le vocali sono <code>"aeiou"</code></li>
-                </ul>
-            </section>
-
-            <!-- SLIDE 25: Esercizio avanzato -->
-            <section>
-                <h2>Esercizio avanzato: validatore codice fiscale</h2>
-                <p>File: <code>validatore_cf.py</code> — Verificare la <strong>struttura</strong> (non il calcolo) di un CF.</p>
-                <div class="diagram">
-                    L L L | L L L | N N | L | N N | L | N N N | L<br>
-                    <em>cogn.</em> &nbsp; <em>nome</em> &nbsp; <em>anno</em> &nbsp; <em>mese</em> &nbsp; <em>giorno</em> &nbsp; <em>cat.</em> &nbsp; <em>cat.num</em> &nbsp; <em>ctrl</em>
-                </div>
-                <p>Schema atteso: <code>"LLLLLLNNLNNLNNNL"</code> &nbsp; <span class="badge badge-blue">L = lettera</span> <span class="badge badge-yellow">N = numero</span></p>
-                <h3>Suggerimenti</h3>
-                <ul>
-                    <li>Convertire l'input in maiuscolo prima della validazione</li>
-                    <li>Usate <code>char.isalpha()</code> e <code>char.isdigit()</code></li>
-                    <li>Usate <code>zip()</code> o <code>enumerate()</code> per confrontare ogni carattere con lo schema</li>
-                </ul>
-            </section>
-
-            <!-- SLIDE 26: Sfida -->
-            <section>
-                <h2>Sfida: analisi e pulizia dati da stringa</h2>
-                <p>File: <code>sfida_analisi_dati.py</code> — Dati di vendite in formato testuale disordinato.</p>
-                <pre><code class="language-python">dati_grezzi: str = """
-  prodotto ; quantita ; prezzo_unitario
-  Mele     ; 50       ; 1.20
-  BANANE   ;  30      ; 0.85
-  mele     ; 15       ;  1.20
-  Pere     ;          ; 2.00
-  BANANE   ; 20       ; abc
-  kiwi     ; 40       ; 3.50
-"""</code></pre>
-                <p>Il programma deve: <strong>parsare</strong>, <strong>pulire</strong>, <strong>validare</strong> (scartare righe non valide), <strong>aggregare per prodotto</strong> e stampare un <strong>report formattato</strong> con quantita totale, ricavo e prezzo medio ponderato.</p>
-            </section>
-
-            <!-- SLIDE 27: Sfida - Output atteso -->
-            <section>
-                <h2>Sfida: output atteso</h2>
-                <pre><code class="language-python">=== REPORT VENDITE ===
-
-Righe elaborate: 6 su 8 (2 scartate)
-
-Prodotto     | Quantita | Ricavo (EUR) | Prezzo medio
--------------|----------|--------------|-------------
-Mele         |       65 |        78.00 |         1.20
-Banane       |       30 |        25.50 |         0.85
-Arance       |       35 |        52.50 |         1.50
-Kiwi         |       40 |       140.00 |         3.50
-
-TOTALE       |      170 |       296.00 |         1.74</code></pre>
-                <h3>Suggerimenti</h3>
-                <ul>
-                    <li><code>stringa.split("\n")</code> per le righe, <code>riga.split(";")</code> per i campi</li>
-                    <li>Per verificare se e un numero: <code>stringa.replace(".", "", 1).isdigit()</code></li>
-                    <li>Usate <code>dict[str, dict[str, float]]</code> per aggregare per prodotto</li>
-                </ul>
-            </section>
-
-            <!-- SLIDE 28: Domande di verifica -->
-            <section>
-                <h2>Domande di verifica</h2>
-                <ol>
-                    <li>Perche inizializziamo <code>minimo</code> con <code>float("inf")</code>? Cosa succederebbe con <code>0</code>?</li>
-                    <li class="fragment">Nel conteggio sopra/sotto media, perche servono <strong>due passaggi</strong> sui dati?</li>
-                    <li class="fragment">Qual e la differenza tra <code>nome.split()</code> e <code>nome.split(" ")</code>?</li>
-                    <li class="fragment">Riscrivete come ciclo <code>for</code>:
-                        <pre><code class="language-python">pari: list[int] = [n ** 2 for n in range(20) if n % 2 == 0]</code></pre>
-                    </li>
-                    <li class="fragment">Quando e preferibile un ciclo tradizionale rispetto a una comprehension?</li>
-                    <li class="fragment">Nel validatore CF, perche convertire in maiuscolo prima della validazione?</li>
-                </ol>
-            </section>
-
-            <!-- SLIDE 29: Riepilogo -->
-            <section>
-                <h2>Riepilogo</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Strumento</th>
-                            <th>Quando usarlo</th>
-                            <th>Pattern chiave</th>
-                        </tr>
-                    </thead>
+                <h2>Come funziona</h2>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà, a tema Halloween. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le liste non servono: bastano <code>for</code>, <code>while</code>, <code>range()</code> e le stringhe.</p>
+                <table class="mini" style="font-size:0.7em">
+                    <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Cicli <code>for</code>/<code>while</code></strong></td>
-                            <td>Elaborare collezioni di dimensione arbitraria</td>
-                            <td>Accumulatore, contatore, min/max</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Comprehension</strong></td>
-                            <td>Filtro e trasformazione concisi</td>
-                            <td><code>[expr for x in iter if cond]</code></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Metodi stringa</strong></td>
-                            <td>Pulizia e normalizzazione dati testuali</td>
-                            <td><code>strip &rarr; split &rarr; join &rarr; title</code></td>
-                        </tr>
+                        <tr><td>1</td><td><code>epidemia.py</code></td><td>Epidemia zombie</td></tr>
+                        <tr><td>2</td><td><code>apocalisse.py</code></td><td>Quando cade la città</td></tr>
+                        <tr><td>3</td><td><code>venerdi17.py</code></td><td>Venerdì 17</td></tr>
+                        <tr><td>4</td><td><code>cena_dracula.py</code></td><td>La cena di Dracula</td></tr>
+                        <tr><td>5</td><td><code>epitaffio.py</code></td><td>L'epitaffio</td></tr>
+                        <tr><td>6</td><td><code>anagrammi.py</code></td><td>Anagrammi maledetti</td></tr>
+                        <tr><td>7</td><td><code>bottino.py</code></td><td>Il bottino della notte</td></tr>
+                        <tr><td>8</td><td><code>login_dracula.py</code></td><td>Il login di Dracula</td></tr>
+                        <tr><td>Sfida</td><td><code>apocalisse_esercito.py</code></td><td>Apocalisse con esercito</td></tr>
                     </tbody>
                 </table>
-                <div class="box box-green">
-                    <strong>Queste tecniche sono le stesse che userete con pandas e NumPy</strong> — solo che li avrete funzioni di piu alto livello. Ma capire cosa succede sotto e la differenza tra usare uno strumento e padroneggiarlo.
+                <div class="box box-blue" style="font-size:0.7em">
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T11.
                 </div>
             </section>
 
-    
+            <section>
+                <h2>Promemoria</h2>
+                <p style="font-size:0.75em">Gli strumenti che servono oggi. Non usate <code>sum()</code>, <code>min()</code> e <code>max()</code>: i calcoli si fanno con i cicli. <code>str()</code> trasforma un numero in stringa.</p>
+                <pre class="small"><code class="language-python" data-trim data-noescape>for i in range(5, 0, -1):    # 5, 4, 3, 2, 1
+    print(i, end=" ")         # end=" ": resta sulla stessa riga
+print()
+
+conta: int = 0
+for carattere in "abracadabra":   # una stringa si scorre carattere per carattere
+    if carattere == "a":
+        conta += 1                  # alla fine conta vale 5
+
+parola: str = "Python"
+print(parola[0], parola[-1], len(parola))   # P n 6
+print(parola[::-1])                         # nohtyP
+print(parola.upper(), "y" in parola)        # PYTHON True
+print("17" in str(2017), "7".isdigit())     # True True
+print(12 // 5, 12 % 5)                      # 2 2  (quoziente e resto)</code></pre>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 1 · epidemia.py</div>
+                <h2>Epidemia zombie</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Il giorno 1 c'è un solo infetto e ogni giorno gli infetti raddoppiano.</li>
+                            <li>Chiedete il numero di giorni.</li>
+                            <li>Con un ciclo <code>for</code> stampate una riga per giorno con il numero di infetti.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Giorni: 10
+Giorno 1: 1 infetti
+Giorno 2: 2 infetti
+Giorno 3: 4 infetti
+...
+Giorno 10: 512 infetti</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>1</code> → solo <code>Giorno 1: 1 infetti</code></li><li><code>20</code> → giorno 20: <code>524288</code> infetti</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 2 · apocalisse.py</div>
+                <h2>Quando cade la città</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Stesso contagio: il giorno 1 c'è un infetto, poi gli infetti raddoppiano ogni giorno.</li>
+                            <li>Chiedete il numero di abitanti della città.</li>
+                            <li>Con un <code>while</code> trovate il primo giorno in cui gli infetti superano gli abitanti e stampatelo con il numero di infetti.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Abitanti: 210000
+La città cade il giorno 19: 262144 infetti</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>Italia, <code>59000000</code> → giorno <code>27</code></li><li><code>1</code> → giorno <code>2</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 3 · venerdi17.py</div>
+                <h2>Venerdì 17</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Chiedete un intero <code>n</code>.</li>
+                            <li>Tra 1 e <code>n</code>, un numero porta sfortuna se è divisibile per 17 oppure se contiene "17" (<code>"17" in str(i)</code>).</li>
+                            <li>Stampate quanti sono e la loro percentuale con un decimale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Controlla i numeri fino a: 1000
+Numeri sfortunati: 76
+Percentuale: 7.6%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>100</code> → <code>5</code>, <code>5.0%</code></li><li><code>2026</code> → <code>250</code>, <code>12.3%</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 4 · cena_dracula.py</div>
+                <h2>La cena di Dracula</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Il conte ha un certo numero di sacche di sangue e vuole dividerle tra i commensali: tutti devono averne lo stesso numero e non deve avanzare niente.</li>
+                            <li>Chiedete il numero di sacche; se non è positivo stampate un errore.</li>
+                            <li>Per ogni numero di commensali da 1 al numero di sacche, se la divisione è esatta (<code>%</code>) stampate quante sacche riceve ognuno (<code>//</code>). Contate le possibilità.</li>
+                            <li>Se le possibilità sono esattamente due, il numero di sacche è primo: stampatelo.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Sacche di sangue: 12
+Commensali 1, sacche a testa 12
+Commensali 2, sacche a testa 6
+Commensali 3, sacche a testa 4
+Commensali 4, sacche a testa 3
+Commensali 6, sacche a testa 2
+Commensali 12, sacche a testa 1
+Possibilità: 6</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>13</code> → solo 1 o 13 commensali: 13 è primo</li><li><code>1</code> → una sola possibilità (1 non è primo)</li><li><code>0</code> → errore</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 5 · epitaffio.py</div>
+                <h2>L'epitaffio</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>L'incisore del cimitero si fa pagare a carattere: lettere 2 EUR, cifre 3 EUR, punteggiatura e simboli 1 EUR, spazi gratis. Scrivete i prezzi in costanti.</li>
+                            <li>Chiedete il testo dell'epitaffio e scorretelo carattere per carattere, contando lettere, cifre, spazi e altri caratteri (<code>isalpha()</code>, <code>isdigit()</code>).</li>
+                            <li>Stampate i quattro conteggi, il costo totale e la percentuale di lettere sul totale dei caratteri, con un decimale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Epitaffio: Qui giace Dracula, morto il 31/10/1897. R.I.P.
+Lettere: 25  Cifre: 8
+Spazi: 6  Altri: 7
+Costo dell'incisione: 81 EUR
+Lettere sul totale: 54.3%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>R.I.P.</code> → 3 lettere e 3 simboli: <code>9 EUR</code>, <code>50.0%</code></li><li>testo vuoto → <code>0 EUR</code>, niente percentuale (si dividerebbe per zero)</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 6 · anagrammi.py</div>
+                <h2>Anagrammi maledetti</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Due parole sono anagrammi se contengono le stesse lettere, ognuna lo stesso numero di volte.</li>
+                            <li>Chiedete due parole, passatele in minuscolo e togliete gli spazi.</li>
+                            <li>Usate la costante <code>ALFABETO = "abcdefghijklmnopqrstuvwxyz"</code>: per ogni lettera confrontate <code>count()</code> nelle due parole.</li>
+                            <li>Alla prima lettera che non torna stampate i due conteggi; alla fine dite se sono anagrammi.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Prima parola: Satan
+Seconda parola: Santa
+Sono anagrammi</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>mostro</code> / <code>stormo</code> → anagrammi</li><li><code>lapide</code> / <code>pedali</code> → anagrammi</li><li><code>vampiro</code> / <code>zombie</code> → <code>Lettera a: 1 nella prima, 0 nella seconda</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 7 · bottino.py</div>
+                <h2>Il bottino della notte</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Leggete con un <code>while</code>, casa per casa, quante caramelle avete preso, finché l'utente scrive <code>fine</code> (anche in maiuscolo). I valori negativi vanno segnalati e ignorati.</li>
+                            <li>Una casa che dà 0 caramelle ha chiuso la porta.</li>
+                            <li>Alla fine stampate: case visitate, caramelle totali, media per casa con un decimale, casa più generosa (numero e caramelle), percentuale di porte chiuse.</li>
+                            <li>Se non avete visitato nessuna casa, stampate un messaggio. Il testo letto va convertito con <code>int()</code> solo dopo aver controllato che non sia <code>fine</code>.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Casa 1, caramelle (fine per finire): 5
+Casa 2, caramelle (fine per finire): 0
+Casa 3, caramelle (fine per finire): 12
+Casa 4, caramelle (fine per finire): -2
+Valore non valido, ignorato
+Casa 4, caramelle (fine per finire): 3
+Casa 5, caramelle (fine per finire): 0
+Casa 6, caramelle (fine per finire): fine
+Case visitate: 5
+Caramelle totali: 20
+Media per casa: 4.0
+Casa più generosa: la 3, con 12 caramelle
+Porte chiuse: 40.0%</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>subito <code>fine</code> → nessuna casa visitata</li><li><code>0</code>, <code>0</code>, <code>FINE</code> → porte chiuse <code>100.0%</code>, nessuna casa generosa</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 8 · login_dracula.py</div>
+                <h2>Il login di Dracula</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Chiedete una password e controllate i requisiti: almeno 8 caratteri, almeno una maiuscola e una cifra, nessuno spazio.</li>
+                            <li>Il conte non accetta password che contengono "aglio" o "croce", anche scritte in maiuscolo: usate <code>lower()</code> e <code>in</code>.</li>
+                            <li>Per ogni requisito mancante stampate un messaggio.</li>
+                            <li>Richiedete la password finché non è valida.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Password: ciao
+- servono almeno 8 caratteri
+- manca una lettera maiuscola
+- manca una cifra
+Password: Aglio2026x
+- parola proibita: il conte non gradisce
+Password: Nosferatu1922
+Benvenuto nel castello</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>Conte Dracula1</code> → niente spazi</li><li><code>SantaCROCE99</code> → parola proibita</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-sfida">Sfida · apocalisse_esercito.py</div>
+                <h2>Apocalisse con esercito</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>La città ha 210.000 abitanti. Chiedete gli zombie iniziali, la crescita giornaliera (<code>0.5</code> = +50%) e gli zombie eliminati ogni giorno dall'esercito.</li>
+                            <li>Ogni giorno: <code>zombie = int(zombie * (1 + crescita)) - eliminati</code>; se il risultato è negativo, gli zombie sono 0.</li>
+                            <li>Simulate giorno per giorno, al massimo per 365 giorni. Fermatevi se gli zombie arrivano a 0 (vittoria) o superano gli abitanti (apocalisse).</li>
+                            <li>Stampate l'esito con il giorno e il numero massimo di zombie raggiunto (picco).</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Zombie iniziali: 100
+Crescita giornaliera (0.5 = +50%): 0.5
+Zombie eliminati ogni giorno: 10
+Apocalisse il giorno 20: 265530 zombie
+Picco: 265530 zombie</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>100</code>, <code>0.5</code>, <code>51</code> → vittoria il giorno 10</li><li><code>100</code>, <code>0.5</code>, <code>50</code> → dopo 365 giorni la guerra continua (100 zombie)</li><li>Trovate il numero minimo di zombie da eliminare ogni giorno per vincere.</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Domande di verifica</h2>
+                <ol style="font-size:0.85em">
+                    <li>Quali numeri produce <code>range(1, 10)</code>? E <code>range(10, 0, -2)</code>?</li>
+                    <li>In <code>apocalisse.py</code> serve un <code>while</code> e non un <code>for</code>: perché?</li>
+                    <li>In <code>venerdi17.py</code>, perché il 17 viene contato una volta sola anche se soddisfa entrambe le condizioni?</li>
+                    <li>In <code>cena_dracula.py</code>, che differenza c'è tra <code>12 % 5</code> e <code>12 // 5</code>?</li>
+                    <li>In <code>anagrammi.py</code>, perché si scorre l'alfabeto e non le lettere della prima parola?</li>
+                    <li>In <code>bottino.py</code> il massimo può partire da 0, mentre il minimo non potrebbe. Perché?</li>
+                    <li>Nella sfida, perché con 50 zombie eliminati al giorno la situazione resta ferma a 100?</li>
+                </ol>
+            </section>
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">
                 <section>
                     <h2>Navigazione</h2>
                     <div style="display: flex; flex-direction: column; gap: 1.2rem; align-items: center; margin-top: 2rem; font-size: 0.95em;">
-                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L02_cicli_comprehension_stringhe.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="T10_comprehension_stringhe.html" style="color: var(--accent);">&larr; T10: Comprehension e stringhe</a></div><div><a href="T11_liste_tuple.html" style="color: var(--accent);">T11: Liste e tuple &rarr;</a></div><div><a href="../dispense/laboratori/L02_cicli_comprehension_stringhe.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L02_cicli_comprehension/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
+                        <div><a href="../index.html" style="color: var(--accent);">&#127968; Home del corso</a></div><div><a href="L02_cicli_comprehension_stringhe.pdf" style="color: #475569;">&#11015; Scarica PDF</a></div><div><a href="T10_comprehension_stringhe.html" style="color: var(--accent);">&larr; T10: Stringhe</a></div><div><a href="T11_liste_tuple.html" style="color: var(--accent);">T11: Liste e tuple &rarr;</a></div><div><a href="../dispense/laboratori/L02_cicli_comprehension_stringhe.html" style="color: #16a34a;">&#128214; Dispensa</a></div><div><a href="../codice/L02_cicli_comprehension/esercizi.html" style="color: #d97706;">&#128187; Codice</a></div>
                     </div>
                 </section>
             </section>

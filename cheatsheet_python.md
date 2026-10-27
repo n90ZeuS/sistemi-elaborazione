@@ -282,45 +282,7 @@ def statistiche(valori: list[float]) -> dict[str, float]:
 
 ---
 
-## 4. Comprehension, stringhe e formattazione (T10)
-
-### List comprehension
-
-```python
-# Sintassi base
-quadrati: list[int] = [n ** 2 for n in numeri]
-
-# Con filtro
-sufficienti: list[int] = [v for v in voti if v >= 18]
-
-# Trasformazione + filtro
-celsius: list[float] = [round((f - 32) * 5 / 9, 1)
-                        for f in fahrenheit if f > 0]
-```
-
-### Dict comprehension
-
-```python
-lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi}
-
-# Filtrare un dizionario
-promossi: dict[str, int] = {n: v for n, v in registro.items() if v >= 18}
-
-# Invertire un dizionario
-inverso: dict[int, str] = {v: k for k, v in codici.items()}
-```
-
-### Set comprehension
-
-```python
-iniziali: set[str] = {nome[0] for nome in nomi}
-```
-
-### Generator expression (memoria efficiente)
-
-```python
-totale: int = sum(n ** 2 for n in range(1_000_000))
-```
+## 4. Stringhe e formattazione (T10)
 
 ### Stringhe — indicizzazione e slicing
 
@@ -330,9 +292,19 @@ testo[0]       # 'S'
 testo[-1]      # 'a'
 testo[0:4]     # 'Stat'
 testo[4:]      # 'istica'
-testo[::-1]    # 'acitsitats' (invertita)
+testo[::-1]    # 'acitsitatS' (invertita)
 len(testo)     # 10
 "ist" in testo # True
+```
+
+### Scorrere una stringa
+
+```python
+for carattere in testo:
+    print(carattere)
+
+for i in range(len(testo)):
+    print(i, testo[i])
 ```
 
 ### Metodi stringa principali
@@ -341,12 +313,9 @@ len(testo)     # 10
 # Pulizia
 " 42.5 \n".strip()          # '42.5'
 
-# Divisione e unione
-"Anna,28,Eco".split(",")    # ['Anna', '28', 'Eco']
-", ".join(["a", "b", "c"])  # 'a, b, c'
-
-# Sostituzione
+# Sostituzione e conteggio
 "N/A".replace("N/A", "0")   # '0'
+"statistica".count("t")      # 3
 
 # Ricerca
 testo.find("media")          # posizione o -1
@@ -365,45 +334,13 @@ testo.capitalize()           # Solo prima maiuscola
 "abc123".isalnum()           # True
 ```
 
-### Pattern pulizia dati stringa
+### Formattare i numeri
 
 ```python
-campi: list[str] = [c.strip() for c in riga.strip().split(",")]
-```
-
-### f-string — formattazione avanzata
-
-```python
-# Decimali
-f"{pi:.2f}"                  # '3.14'
-f"{pi:.4f}"                  # '3.1416'
-
-# Notazione scientifica
-f"{6.022e23:.2e}"            # '6.02e+23'
-
-# Percentuale
-f"{0.0325:.1%}"              # '3.2%'
-
-# Separatore migliaia
-f"{59_641_488:,}"            # '59,641,488'
-
-# Allineamento
-f"|{'Anna':<15}|"            # '|Anna           |'  (sinistra)
-f"|{'Anna':>15}|"            # '|           Anna|'  (destra)
-f"|{'Anna':^15}|"            # '|     Anna      |'  (centro)
-
-# Numeri allineati
-f"{voto:>5d}"                # allinea a destra su 5 caratteri
-```
-
-### Espressioni regolari (cenni)
-
-```python
-import re
-
-numeri: list[str] = re.findall(r"\d+\.?\d*", testo)
-if re.match(r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$", cf):
-    print("Codice fiscale valido")
+f"{27.4567:.2f}"             # '27.46'   (2 decimali)
+f"{27.4567:.1f}"             # '27.5'    (1 decimale)
+f"{0.0325:.1%}"              # '3.2%'    (percentuale)
+f"{0.22:.0%}"                # '22%'
 ```
 
 ---
@@ -532,6 +469,30 @@ if n % 2 == 1:
     mediana: float = campione_ordinato[n // 2]
 else:
     mediana = (campione_ordinato[n // 2 - 1] + campione_ordinato[n // 2]) / 2
+```
+
+### List comprehension
+
+```python
+# Sintassi base
+quadrati: list[int] = [n ** 2 for n in numeri]
+
+# Con filtro
+sufficienti: list[int] = [v for v in voti if v >= 18]
+
+# Trasformazione + filtro
+celsius: list[float] = [round((f - 32) * 5 / 9, 1) for f in fahrenheit if f > 50]
+```
+
+### split() e join()
+
+```python
+"Anna,28,Eco".split(",")     # ['Anna', '28', 'Eco']
+"la  stat  è".split()        # ['la', 'stat', 'è']
+", ".join(["a", "b", "c"])   # 'a, b, c'
+
+# Pulire una riga di dati
+campi: list[str] = [c.strip() for c in riga.strip().split(",")]
 ```
 
 ---
@@ -674,6 +635,14 @@ lista_a.append(4)    # lista_b è cambiata!
 # Copia: indipendente
 lista_c: list[int] = lista_a.copy()
 lista_a.append(5)    # lista_c NON è cambiata
+```
+
+### Dict e set comprehension
+
+```python
+lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi}
+promossi: dict[str, int] = {n: v for n, v in registro.items() if v >= 18}
+iniziali: set[str] = {nome[0] for nome in nomi}
 ```
 
 ---

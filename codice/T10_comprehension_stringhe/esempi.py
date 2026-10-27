@@ -1,247 +1,227 @@
-# T10 — Comprehension e stringhe
+# T10 — Stringhe
 # Esempi per la lezione frontale 10
-# List/dict/set comprehension, metodi stringa, slicing, f-string avanzate
+# Indici, slicing, ciclo for su una stringa, metodi delle stringhe, formattazione dei numeri
+#
+# Accanto a ogni stampa trovate, in commento, il risultato atteso.
 
 # =============================================================================
-# 1. List comprehension — sintassi base
+# 1. Indici e immutabilità
 # =============================================================================
-print("--- 1. List comprehension base ---")
+print("--- 1. Indici e immutabilità ---")
 
-# Sintassi: [espressione for variabile in iterabile]
-quadrati: list[int] = [x ** 2 for x in range(1, 11)]
-assert quadrati == [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
-print(f"  Quadrati 1-10: {quadrati}")
+testo: str = "Statistica"
 
-# Equivalente con ciclo for
-quadrati_loop: list[int] = []
-for x in range(1, 11):
-    quadrati_loop.append(x ** 2)
-assert quadrati == quadrati_loop
+# Il primo carattere ha indice 0, l'ultimo ha indice len(testo) - 1
+print(testo[0])            # S
+print(testo[3])            # t
+print(testo[len(testo) - 1])  # a
+print(testo[-1])           # a   (gli indici negativi contano dalla fine)
+print(testo[-2])           # c
+print(len(testo))          # 10
 
-# Trasformazione di tipo
-temperature_str: list[str] = ["36.5", "37.2", "38.1", "36.8", "37.0"]
-temperature_float: list[float] = [float(t) for t in temperature_str]
-assert temperature_float == [36.5, 37.2, 38.1, 36.8, 37.0]
-print(f"  Temperature: {temperature_float}")
+# in controlla se una stringa è contenuta in un'altra
+print("ist" in testo)      # True
+print("IST" in testo)      # False (maiuscole e minuscole sono diverse)
 
+# Le stringhe sono immutabili: la riga seguente darebbe
+# TypeError: 'str' object does not support item assignment
+# testo[0] = "s"
 
-# =============================================================================
-# 2. List comprehension con filtro (clausola if)
-# =============================================================================
-print("\n--- 2. Comprehension con filtro ---")
-
-# Sintassi: [espressione for variabile in iterabile if condizione]
-numeri: list[int] = list(range(1, 21))
-
-pari: list[int] = [n for n in numeri if n % 2 == 0]
-assert pari == [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-print(f"  Pari 1-20: {pari}")
-
-# Filtrare e trasformare contemporaneamente
-# Quadrati dei numeri dispari
-quadrati_dispari: list[int] = [n ** 2 for n in numeri if n % 2 != 0]
-assert quadrati_dispari == [1, 9, 25, 49, 81, 121, 169, 225, 289, 361]
-print(f"  Quadrati dispari: {quadrati_dispari}")
-
-# Filtrare voti sufficienti
-voti: list[int] = [28, 15, 22, 30, 17, 25, 10, 19, 30, 24]
-sufficienti: list[int] = [v for v in voti if v >= 18]
-assert sufficienti == [28, 22, 30, 25, 19, 30, 24]
-print(f"  Voti sufficienti: {sufficienti}")
-
-# Espressione condizionale nella parte espressione (if-else)
-# Attenzione: il if-else va PRIMA del for, il filtro DOPO
-etichette: list[str] = ["OK" if v >= 18 else "KO" for v in voti]
-assert etichette == ["OK", "KO", "OK", "OK", "KO", "OK", "KO", "OK", "OK", "OK"]
-print(f"  Etichette: {etichette}")
+# Per avere una stringa diversa se ne crea una nuova
+testo_minuscolo: str = "s" + testo[1:]
+print(testo_minuscolo)     # statistica
+print(testo)               # Statistica (l'originale non cambia)
+print()
 
 
 # =============================================================================
-# 3. Dict e set comprehension
+# 2. Slicing
 # =============================================================================
-print("\n--- 3. Dict e set comprehension ---")
+print("--- 2. Slicing ---")
 
-# Dict comprehension: {chiave: valore for ...}
-nomi: list[str] = ["Alice", "Bob", "Carla", "Davide"]
-lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi}
-assert lunghezze == {"Alice": 5, "Bob": 3, "Carla": 5, "Davide": 6}
-print(f"  Lunghezze nomi: {lunghezze}")
-
-# Invertire un dizionario
-originale: dict[str, int] = {"a": 1, "b": 2, "c": 3}
-invertito: dict[int, str] = {v: k for k, v in originale.items()}
-assert invertito == {1: "a", 2: "b", 3: "c"}
-print(f"  Invertito: {invertito}")
-
-# Set comprehension: {espressione for ...}
-parole: list[str] = ["ciao", "hello", "CIAO", "Hello", "arrivederci"]
-parole_uniche_lower: set[str] = {p.lower() for p in parole}
-assert parole_uniche_lower == {"ciao", "hello", "arrivederci"}
-print(f"  Parole uniche (lower): {sorted(parole_uniche_lower)}")
-
-# Cifre presenti in un numero
-numero_grande: int = 112233445566
-cifre_presenti: set[str] = {c for c in str(numero_grande)}
-assert cifre_presenti == {"1", "2", "3", "4", "5", "6"}
-print(f"  Cifre in {numero_grande}: {sorted(cifre_presenti)}")
-
-
-# =============================================================================
-# 4. Comprehension annidate
-# =============================================================================
-print("\n--- 4. Comprehension annidate ---")
-
-# Matrice 3x4 con comprehension
-matrice: list[list[int]] = [[i * 4 + j + 1 for j in range(4)] for i in range(3)]
-assert matrice == [
-    [1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12],
-]
-print(f"  Matrice 3x4:")
-for riga in matrice:
-    print(f"    {riga}")
-
-# Appiattire una matrice (flatten)
-piatta: list[int] = [elem for riga in matrice for elem in riga]
-assert piatta == list(range(1, 13))
-print(f"  Appiattita: {piatta}")
-
-# Tutte le coppie (i, j) con i < j
-coppie: list[tuple[int, int]] = [(i, j) for i in range(4) for j in range(i + 1, 4)]
-assert len(coppie) == 6
-print(f"  Coppie (i,j) con i<j, range(4): {coppie}")
-
-
-# =============================================================================
-# 5. Metodi delle stringhe
-# =============================================================================
-print("\n--- 5. Metodi delle stringhe ---")
-
-testo: str = "  Python e' un linguaggio fantastico!  "
-
-# upper, lower, title, capitalize
-assert testo.strip().upper() == "PYTHON E' UN LINGUAGGIO FANTASTICO!"
-assert testo.strip().lower() == "python e' un linguaggio fantastico!"
-assert testo.strip().title() == "Python E' Un Linguaggio Fantastico!"
-print(f"  Originale: '{testo}'")
-print(f"  strip():   '{testo.strip()}'")
-print(f"  upper():   '{testo.strip().upper()}'")
-print(f"  lower():   '{testo.strip().lower()}'")
-
-# split e join
-frase: str = "uno due tre quattro cinque"
-parole_lista: list[str] = frase.split()
-assert parole_lista == ["uno", "due", "tre", "quattro", "cinque"]
-print(f"\n  split(): {parole_lista}")
-
-ricomposta: str = " - ".join(parole_lista)
-assert ricomposta == "uno - due - tre - quattro - cinque"
-print(f"  join(' - '): '{ricomposta}'")
-
-# split con separatore specifico
-csv_riga: str = "Alice,28,Informatica,Bologna"
-campi: list[str] = csv_riga.split(",")
-assert campi == ["Alice", "28", "Informatica", "Bologna"]
-print(f"\n  CSV: '{csv_riga}'")
-print(f"  split(','): {campi}")
-
-# replace
-frase_nuova: str = frase.replace("tre", "3")
-assert frase_nuova == "uno due 3 quattro cinque"
-print(f"\n  replace('tre', '3'): '{frase_nuova}'")
-
-# find e index
-pos: int = frase.find("tre")
-assert pos == 8
-pos_non_trovato: int = frase.find("sei")
-assert pos_non_trovato == -1  # find restituisce -1 se non trova
-print(f"\n  find('tre'): {pos}")
-print(f"  find('sei'): {pos_non_trovato}")
-
-# startswith e endswith
-nome_file: str = "relazione_finale.pdf"
-assert nome_file.startswith("relazione")
-assert nome_file.endswith(".pdf")
-assert not nome_file.endswith(".docx")
-print(f"\n  '{nome_file}'.endswith('.pdf'): {nome_file.endswith('.pdf')}")
-
-# Metodi di verifica
-assert "42".isdigit()
-assert "ciao".isalpha()
-assert "ciao42".isalnum()
-assert "   ".isspace()
-print(f"  '42'.isdigit() = {('42').isdigit()}")
-print(f"  'ciao'.isalpha() = {'ciao'.isalpha()}")
-
-
-# =============================================================================
-# 6. Slicing delle stringhe
-# =============================================================================
-print("\n--- 6. String slicing ---")
-
+# s[inizio:fine:passo]: da inizio a fine esclusa, come in range()
 s: str = "Programmazione"
 
-# s[start:stop:step] — stop escluso
-assert s[0:6] == "Progra"
-assert s[:6] == "Progra"        # start default = 0
-assert s[6:] == "mmazione"      # stop default = fine
-assert s[-6:] == "azione"       # Indici negativi
-assert s[::2] == "Pormain"      # Ogni 2 caratteri
-assert s[::-1] == "enoizammargorP"  # Stringa invertita
+print(s[0:6])     # Progra
+print(s[:6])      # Progra          (manca l'inizio: si parte da 0)
+print(s[6:])      # mmazione        (manca la fine: si arriva in fondo)
+print(s[-6:])     # azione          (gli ultimi sei caratteri)
+print(s[2:5])     # ogr
+print(s[::2])     # Pormain         (un carattere sì e uno no)
+print(s[::-1])    # enoizammargorP  (al contrario)
 
-print(f"  s = '{s}'")
-print(f"  s[0:6]   = '{s[0:6]}'")
-print(f"  s[6:]    = '{s[6:]}'")
-print(f"  s[-6:]   = '{s[-6:]}'")
-print(f"  s[::2]   = '{s[::2]}'")
-print(f"  s[::-1]  = '{s[::-1]}'")
+# Lo slicing non dà errore se gli indici escono dalla stringa
+print(s[10:100])  # ione
+print(s[20:])     # (stringa vuota: stampa una riga vuota)
 
-# Verificare se una stringa e' un palindromo
-def is_palindromo(testo: str) -> bool:
-    """Verifica se una stringa e' un palindromo (ignorando maiuscole e spazi)."""
-    pulita: str = testo.lower().replace(" ", "")
-    return pulita == pulita[::-1]
-
-assert is_palindromo("anna") is True
-assert is_palindromo("i topi non avevano nipoti") is True
-assert is_palindromo("python") is False
-print(f"\n  'anna' palindromo? {is_palindromo('anna')}")
-print(f"  'i topi non avevano nipoti' palindromo? {is_palindromo('i topi non avevano nipoti')}")
+# Esempio: separare anno, mese e giorno da una data scritta come aaaa-mm-gg
+data: str = "2026-10-27"
+anno: str = data[:4]
+mese: str = data[5:7]
+giorno: str = data[8:]
+print(f"Giorno {giorno}, mese {mese}, anno {anno}")  # Giorno 27, mese 10, anno 2026
+print()
 
 
 # =============================================================================
-# 7. f-string avanzate
+# 3. Scorrere una stringa con for
 # =============================================================================
-print("\n--- 7. f-string avanzate ---")
+print("--- 3. Scorrere una stringa ---")
 
-# Debug con = (Python 3.8+)
-x: int = 42
-y: float = 3.14
-print(f"  {x = }")      # Stampa 'x = 42'
-print(f"  {y = :.1f}")  # Stampa 'y = 3.1'
+parola: str = "zucca"
 
-# Formattazione di tabelle
-studenti: list[tuple[str, int, float]] = [
-    ("Alice", 28, 98.5),
-    ("Bob", 22, 75.3),
-    ("Carla", 30, 100.0),
-    ("Davide", 25, 88.7),
-]
+# A ogni giro la variabile vale un carattere
+for carattere in parola:
+    print(carattere, end=" ")
+print()                    # z u c c a
 
-print(f"\n  {'Nome':<12}{'Voto':>6}{'Percentile':>12}")
-print(f"  {'-' * 30}")
-for nome_s, voto_s, perc in studenti:
-    print(f"  {nome_s:<12}{voto_s:>6}{perc:>11.1f}%")
+# Se serve anche la posizione si scorrono gli indici
+for i in range(len(parola)):
+    print(f"{i}:{parola[i]}", end=" ")
+print()                    # 0:z 1:u 2:c 3:c 4:a
 
-# Numeri con formattazione speciale
-grande: int = 1_500_000
-piccolo: float = 0.00034567
-print(f"\n  Separatore migliaia: {grande:,}")
-print(f"  Notazione scientifica: {piccolo:.3e}")
-print(f"  Binario: {255:b}")
-print(f"  Esadecimale: {255:x}")
-print(f"  Ottale: {255:o}")
+# Pattern contatore: quante vocali ci sono?
+frase: str = "la statistica è una scienza"
+n_vocali: int = 0
+for carattere in frase:
+    if carattere in "aeiouàèéìòù":
+        n_vocali += 1
+print(f"Vocali in '{frase}': {n_vocali}")  # Vocali in 'la statistica è una scienza': 11
+
+# Pattern accumulatore: costruire una stringa nuova un carattere alla volta
+rovesciata: str = ""
+for carattere in parola:
+    rovesciata = carattere + rovesciata   # il nuovo carattere va davanti
+print(rovesciata)          # accuz
+print(parola[::-1])        # ananab (stesso risultato con lo slicing)
+
+# Pattern ricerca: posizione della prima cifra
+codice: str = "ABC7X9"
+posizione: int = -1
+for i in range(len(codice)):
+    if codice[i].isdigit():
+        posizione = i
+        break
+print(f"Prima cifra in posizione {posizione}")  # Prima cifra in posizione 3
+print()
 
 
-print("\nTutti gli assert passati — esempi T10 completati con successo!")
+# =============================================================================
+# 4. Metodi delle stringhe
+# Ogni metodo restituisce un valore nuovo e lascia invariata la stringa originale.
+# =============================================================================
+print("--- 4. Metodi delle stringhe ---")
+
+# strip, lstrip, rstrip: tolgono spazi, tabulazioni e a capo ai bordi
+dato: str = "  42.5  \n"
+print(repr(dato))            # '  42.5  \n'
+print(repr(dato.strip()))    # '42.5'
+print(repr(dato.lstrip()))   # '42.5  \n'
+print(repr(dato.rstrip()))   # '  42.5'
+
+# replace: sostituisce tutte le occorrenze
+valore: str = "valore: N/A"
+print(valore.replace("N/A", "0"))       # valore: 0
+numeri: str = "1,2,,4,,6"
+print(numeri.replace(",,", ",0,"))      # 1,2,0,4,0,6
+decimale: str = "3,14"
+print(decimale.replace(",", "."))       # 3.14  (virgola decimale all'italiana)
+print(valore)                           # valore: N/A (l'originale non cambia)
+
+# count: quante volte compare una sottostringa
+print("statistica".count("t"))    # 3
+print("statistica".count("ti"))   # 2
+print("statistica".count("x"))    # 0
+
+# find e index: posizione della prima occorrenza
+titolo: str = "La media campionaria"
+print(titolo.find("media"))     # 3
+print(titolo.find("varianza"))  # -1 (non trovata)
+print(titolo.index("media"))    # 3
+# titolo.index("varianza") darebbe ValueError: substring not found
+
+# startswith e endswith: prefisso e suffisso
+nome_file: str = "dati_2024.csv"
+print(nome_file.startswith("dati"))   # True
+print(nome_file.endswith(".csv"))     # True
+print(nome_file.endswith(".xlsx"))    # False
+
+# upper, lower, title, capitalize: maiuscole e minuscole
+corso: str = "statistica Descrittiva"
+print(corso.upper())        # STATISTICA DESCRITTIVA
+print(corso.lower())        # statistica descrittiva
+print(corso.title())        # Statistica Descrittiva
+print(corso.capitalize())   # Statistica descrittiva
+
+# Confronto senza badare alle maiuscole: si porta tutto in minuscolo
+risposta: str = "  Si "
+if risposta.strip().lower() == "si":
+    print("Confermato")     # Confermato
+
+# isdigit, isalpha, isalnum: controllano il contenuto
+print("42".isdigit())       # True
+print("3.14".isdigit())     # False (il punto non è una cifra)
+print("-5".isdigit())       # False (il segno meno non è una cifra)
+print("abc".isalpha())      # True
+print("abc123".isalnum())   # True
+print("abc 123".isalnum())  # False (lo spazio non è né lettera né cifra)
+print("".isdigit())         # False (stringa vuota)
+
+# I metodi si possono concatenare: si applicano da sinistra a destra
+grezzo: str = "   mARIO rossi   "
+print(grezzo.strip().title())   # Mario Rossi
+print()
+
+
+# =============================================================================
+# 5. Formattare i numeri nelle f-string
+# =============================================================================
+print("--- 5. Formattare i numeri ---")
+
+# .Nf: N cifre decimali
+media: float = 27.4567
+print(f"Media: {media:.2f}")    # Media: 27.46
+print(f"Media: {media:.1f}")    # Media: 27.5
+print(f"Media: {media:.0f}")    # Media: 27
+
+# .N%: percentuale con N decimali (il valore viene moltiplicato per 100)
+quota: float = 0.0325
+print(f"Quota: {quota:.1%}")    # Quota: 3.2%
+print(f"Quota: {quota:.0%}")    # Quota: 3%
+
+# Il formato cambia solo la stampa: la variabile mantiene tutte le cifre
+print(media)                    # 27.4567
+
+# Esempio: percentuale di cifre in un codice
+matricola: str = "AB123456"
+n_cifre: int = 0
+for carattere in matricola:
+    if carattere.isdigit():
+        n_cifre += 1
+print(f"Cifre: {n_cifre} su {len(matricola)} ({n_cifre / len(matricola):.1%})")
+# Cifre: 6 su 8 (75.0%)
+print()
+
+
+# =============================================================================
+# 6. Esempio completo: pulire e controllare un dato
+# =============================================================================
+print("--- 6. Pulire e controllare un dato ---")
+
+# Un valore letto da un file: spazi ai bordi e virgola decimale
+grezzo_peso: str = "  72,5 kg "
+
+pulito: str = grezzo_peso.strip()                   # '72,5 kg'
+if pulito.endswith("kg"):
+    pulito = pulito[:-2].strip()                    # '72,5'
+pulito = pulito.replace(",", ".")                   # '72.5'
+
+# Prima di convertire controlliamo che, tolto il punto, restino solo cifre
+if pulito.count(".") <= 1 and pulito.replace(".", "").isdigit():
+    peso: float = float(pulito)
+    print(f"Peso: {peso:.1f} kg")                   # Peso: 72.5 kg
+else:
+    print(f"Valore non valido: '{grezzo_peso}'")
+
+
+print("\nFine degli esempi T10")

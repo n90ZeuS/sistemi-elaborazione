@@ -486,6 +486,47 @@ tutti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op"
 <span class="nb">print</span>(<span class="st">f&quot;Tutti gli studenti: {sorted(tutti)}&quot;</span>)
 
 <span class="nb">print</span>(<span class="st">&quot;Bonus superato!\n&quot;</span>)
+<span class="cm"># ============================================================</span>
+<span class="cm"># ESERCIZIO 5: Frequenza delle parole con le comprehension</span>
+<span class="cm"># Dato un testo: togliere la punteggiatura, portarlo in minuscolo,</span>
+<span class="cm"># dividerlo in parole e calcolare:</span>
+<span class="cm">#   a) l&#x27;insieme delle parole diverse (set comprehension);</span>
+<span class="cm">#   b) la frequenza di ogni parola (dict comprehension);</span>
+<span class="cm">#   c) le sole parole che compaiono almeno due volte (dict comprehension con filtro);</span>
+<span class="cm">#   d) la lunghezza di ogni parola diversa (dict comprehension).</span>
+<span class="cm"># ============================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=== Esercizio 5: Frequenza delle parole ===&quot;</span>)
+
+testo_es5: <span class="nb">str</span> <span class="op">=</span> (
+    <span class="st">&quot;Python è un linguaggio di programmazione. &quot;</span>
+    <span class="st">&quot;Python è versatile e Python è potente. &quot;</span>
+    <span class="st">&quot;La programmazione in Python è divertente!&quot;</span>
+)
+
+<span class="cm"># Tolgo la punteggiatura un carattere alla volta</span>
+testo_pulito: <span class="nb">str</span> <span class="op">=</span> testo_es5.lower()
+<span class="kw">for</span> segno <span class="kw">in</span> <span class="st">&quot;.,;:!?&quot;</span>:
+    testo_pulito <span class="op">=</span> testo_pulito.replace(segno, <span class="st">&quot;&quot;</span>)
+
+parole_es5: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> testo_pulito.split()
+
+parole_diverse: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {p <span class="kw">for</span> p <span class="kw">in</span> parole_es5}
+frequenze_es5: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {p: parole_es5.count(p) <span class="kw">for</span> p <span class="kw">in</span> parole_es5}
+ripetute: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {p: f <span class="kw">for</span> p, f <span class="kw">in</span> frequenze_es5.items() <span class="kw">if</span> f <span class="op">&gt;</span><span class="op">=</span> <span class="mi">2</span>}
+lunghezze_es5: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {p: <span class="nb">len</span>(p) <span class="kw">for</span> p <span class="kw">in</span> parole_es5}
+
+<span class="nb">print</span>(<span class="st">f&quot;Parole totali: {len(parole_es5)}&quot;</span>)          <span class="cm"># atteso: 19</span>
+<span class="nb">print</span>(<span class="st">f&quot;Parole diverse: {len(parole_diverse)}&quot;</span>)     <span class="cm"># atteso: 12</span>
+<span class="nb">print</span>(<span class="st">f&quot;Frequenze: {frequenze_es5}&quot;</span>)
+<span class="cm"># atteso: {&#x27;python&#x27;: 4, &#x27;è&#x27;: 4, &#x27;un&#x27;: 1, &#x27;linguaggio&#x27;: 1, &#x27;di&#x27;: 1,</span>
+<span class="cm">#          &#x27;programmazione&#x27;: 2, &#x27;versatile&#x27;: 1, &#x27;e&#x27;: 1, &#x27;potente&#x27;: 1,</span>
+<span class="cm">#          &#x27;la&#x27;: 1, &#x27;in&#x27;: 1, &#x27;divertente&#x27;: 1}</span>
+<span class="nb">print</span>(<span class="st">f&quot;Ripetute: {ripetute}&quot;</span>)
+<span class="cm"># atteso: {&#x27;python&#x27;: 4, &#x27;è&#x27;: 4, &#x27;programmazione&#x27;: 2}</span>
+<span class="nb">print</span>(<span class="st">f&quot;Più lunga: {max(lunghezze_es5.values())} caratteri&quot;</span>)  <span class="cm"># atteso: 14</span>
+<span class="nb">print</span>(<span class="st">&quot;Esercizio 5 superato!\n&quot;</span>)
+
+
 <span class="nb">print</span>(<span class="st">&quot;=== Tutti gli esercizi T12 completati! ===&quot;</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>

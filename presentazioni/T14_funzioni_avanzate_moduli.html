@@ -314,6 +314,41 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -337,6 +372,7 @@
                     <div class="col">
                         <h3>Parte 1 — Funzioni avanzate</h3>
                         <ol>
+                    <li class="fragment"><strong>Soluzioni del laboratorio 3</strong></li>
                             <li class="fragment">Funzioni come oggetti di prima classe</li>
                             <li class="fragment">Funzioni lambda</li>
                             <li class="fragment"><code>sorted()</code> con <code>key=</code></li>
@@ -355,6 +391,297 @@
                     </div>
                 </div>
             </section>
+
+            <!-- SOLUZIONI LAB (generato) -->
+            <section>
+                <section class="section-slide">
+                    <h2>Soluzioni del laboratorio 3</h2>
+                    <p>Strutture dati</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L03»
+Da dire: prima di iniziare l'argomento nuovo vediamo le soluzioni degli esercizi del laboratorio. Il codice completo è nel file degli esercizi di L03.
+Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da quelli se manca tempo.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>voti_appello.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>SOGLIA: int = 18
+
+testo: str = input("Voti separati da spazi: ")
+voti: list[int] = [int(v) for v in testo.split()]
+promossi: list[int] = [v for v in voti if v &gt;= SOGLIA]
+
+print(f"Voti ordinati: {sorted(voti)}")
+print(f"Presenti: {len(voti)}")
+print(f"Media: {sum(voti) / len(voti):.1f}")
+print(f"Minimo: {min(voti)}  Massimo: {max(voti)}")
+print(f"Promossi: {len(promossi)} ({len(promossi) / len(voti):.1%})")
+if len(promossi) &gt; 0:
+    media_p: float = sum(promossi) / len(promossi)
+    print(f"Media dei promossi: {media_p:.1f}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>[int(v) for v in testo.split()]</code> trasforma una riga di testo in una lista di numeri: è il modo più comune per leggere dati su una riga.</li><li>Con le liste si possono usare <code>sum()</code>, <code>len()</code>, <code>min()</code> e <code>max()</code>; la seconda comprehension filtra i promossi.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 2' · blocco «Soluzioni L03»
+Da dire: in L02 media, minimo e massimo si calcolavano con un ciclo, ora bastano le funzioni sulle liste. Il controllo len(promossi) > 0 evita la divisione per zero.
+Chiedere / fare: «12 15» → nessun promosso, 0.0%.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>coda_mensa.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>coda: list[str] = ["Anna", "Bruno", "Carla"]
+eventi: list[str] = ["arriva Davide", "servito", "arriva Elena",
+                     "esce Bruno", "davanti Franco Elena",
+                     "servito", "esce Zeno"]
+serviti: list[str] = []
+
+for evento in eventi:
+    parti: list[str] = evento.split()
+    azione: str = parti[0]
+    if azione == "arriva":
+        coda.append(parti[1])
+    elif azione == "servito":
+        if len(coda) &gt; 0:</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>        else:
+            print("Nessuno da servire")
+    elif azione == "esce" and parti[1] in coda:
+        coda.remove(parti[1])
+    elif azione == "davanti" and parti[2] in coda:
+        coda.insert(coda.index(parti[2]), parti[1])
+    else:
+        print(f"Evento non valido: {evento}")
+    print(f"{evento} -&gt; {coda}")
+
+print(f"Serviti: {serviti}")
+print(f"Ancora in coda: {len(coda)}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>append</code> aggiunge in fondo, <code>pop(0)</code> toglie il primo: la lista funziona come una coda.</li><li><code>remove</code> e <code>index</code> danno errore se l'elemento non c'è, per questo prima si controlla con <code>in</code>.</li><li><code>insert(coda.index("Elena"), "Franco")</code> mette Franco nella posizione di Elena e sposta Elena di uno.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L03»
+Da dire: ogni evento si divide con split() e la prima parola decide cosa fare. Le condizioni con and controllano prima che la persona sia in coda.
+Chiedere / fare: cosa stampa «servito» con la coda vuota? (Nessuno da servire).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>sondaggio.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter
+
+testo: str = input("Risposte separate da virgole: ")
+risposte: list[str] = [r.strip().lower() for r in testo.split(",")]
+risposte = [r for r in risposte if r != ""]
+conteggio: Counter[str] = Counter(risposte)
+totale: int = len(risposte)
+
+print(f"Risposte: {totale}, mezzi diversi: {len(conteggio)}")
+for mezzo, n in conteggio.most_common():
+    print(f"{mezzo}: {n} ({n / totale:.1%})")
+moda: str = conteggio.most_common(1)[0][0]
+print(f"Mezzo più usato: {moda}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Senza pulizia <code>Bus</code>, <code> bus</code> e <code>BICI</code> sarebbero chiavi diverse del <code>Counter</code>.</li><li><code>most_common()</code> restituisce coppie (mezzo, conteggio) dal più frequente; <code>most_common(1)[0][0]</code> è la moda.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 2' · blocco «Soluzioni L03»
+Da dire: la comprehension con il filtro r != "" toglie le risposte vuote, che nascono da due virgole consecutive. A parità di conteggio Counter mantiene l'ordine di comparsa: piedi prima di treno.
+Chiedere / fare: «bus,,Bus , treno» → 3 risposte.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>tre_corsi.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter
+
+statistica: set[str] = {"Anna", "Bruno", "Chiara", "Davide",
+                        "Elisa", "Fabio", "Giulia"}
+analisi: set[str] = {"Anna", "Chiara", "Davide", "Hana",
+                     "Ivan", "Giulia"}
+informatica: set[str] = {"Bruno", "Chiara", "Giulia", "Ivan",
+                         "Luca"}
+
+almeno_uno: set[str] = statistica | analisi | informatica
+tutti_tre: set[str] = statistica &amp; analisi &amp; informatica
+solo_stat: set[str] = statistica - analisi - informatica
+stat_an: set[str] = (statistica &amp; analisi) - informatica</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>presenze: Counter[str] = Counter(
+    list(statistica) + list(analisi) + list(informatica))
+un_corso: list[str] = [n for n in presenze if presenze[n] == 1]
+
+print(f"Studenti diversi: {len(almeno_uno)}")
+print(f"Tutti e tre i corsi: {sorted(tutti_tre)}")
+print(f"Solo Statistica: {sorted(solo_stat)}")
+print(f"Statistica e Analisi, non Informatica: {sorted(stat_an)}")
+print(f"Un corso soltanto: {sorted(un_corso)}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>|</code> è l'unione, <code>&amp;</code> l'intersezione, <code>-</code> la differenza; con tre set si concatenano gli operatori.</li><li>Per contare in quanti corsi compare ogni nome si mettono i tre set in una lista e si usa <code>Counter</code>.</li><li>Un set non ha un ordine fisso: <code>sorted()</code> restituisce una lista ordinata.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L03»
+Da dire: le domande «tutti e tre», «solo Statistica», «Statistica e Analisi ma non Informatica» si traducono direttamente negli operatori. La differenza si legge da sinistra: (statistica & analisi) - informatica.
+Chiedere / fare: chi segue solo Analisi? (Hana).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>libretto.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>libretto: dict[str, tuple[int, int]] = {
+    "Analisi 1": (24, 9),
+    "Statistica 1": (28, 9),
+    "Informatica": (30, 6),
+    "Economia politica": (22, 9),
+    "Algebra lineare": (27, 6),
+}</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>somma_voti: int = 0
+somma_pesata: int = 0
+cfu_totali: int = 0
+for esame, (voto, cfu) in libretto.items():
+    print(f"{esame}: {voto} ({cfu} CFU)")
+    somma_voti += voto
+    somma_pesata += voto * cfu
+    cfu_totali += cfu
+
+media: float = somma_voti / len(libretto)
+ponderata: float = somma_pesata / cfu_totali
+print(f"CFU totali: {cfu_totali}")
+print(f"Media aritmetica: {media:.2f}")
+print(f"Media ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {ponderata * 110 / 30:.1f}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Ogni valore è una tupla, quindi in <code>for esame, (voto, cfu) in libretto.items()</code> si fa l'unpacking su due livelli.</li><li>La media ponderata pesa ogni voto con i suoi CFU: un 22 da 9 CFU conta più di un 30 da 6.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L03»
+Da dire: è il calcolo che fa la segreteria per la base di laurea. Qui la media ponderata è più bassa della aritmetica perché il voto più alto (30) è in un esame da 6 CFU.
+Chiedere / fare: con tutti gli esami da 6 CFU le due medie coincidono (26.20).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>sessione.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import defaultdict
+
+esiti: list[tuple[str, str, int]] = [
+    ("Anna", "Statistica", 28), ("Anna", "Analisi", 30),
+    ("Bruno", "Statistica", 16), ("Bruno", "Analisi", 17),
+    ("Bruno", "Informatica", 23), ("Chiara", "Analisi", 25),
+    ("Chiara", "Statistica", 30), ("Davide", "Statistica", 21),
+    ("Davide", "Informatica", 26), ("Elisa", "Analisi", 12),
+]</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>voti_esame: defaultdict[str, list[int]] = defaultdict(list)
+superati: defaultdict[str, list[str]] = defaultdict(list)
+studenti: set[str] = set()
+for nome, esame, voto in esiti:
+    voti_esame[esame].append(voto)
+    studenti.add(nome)
+    if voto &gt;= 18:
+        superati[nome].append(esame)
+
+for esame, voti in voti_esame.items():
+    promossi: int = len([v for v in voti if v &gt;= 18])
+    print(f"{esame}: {len(voti)} prove, media "
+          f"{sum(voti) / len(voti):.1f}, promossi {promossi}")
+for nome in sorted(superati):
+    print(f"{nome} ha superato {superati[nome]}")
+print(f"Nessun esame superato: {sorted(studenti - set(superati))}")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>defaultdict(list)</code> crea la lista vuota la prima volta che si usa una chiave: niente <code>if esame not in ...</code>.</li><li>Con un solo ciclo si riempiono due dizionari e un set; chi non ha superato esami è <code>studenti - set(superati)</code>.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L03»
+Da dire: raggruppare per chiave è l'operazione più comune sui dati (in pandas sarà groupby). set(superati) prende le chiavi del dizionario.
+Chiedere / fare: aggiungere ("Elisa", "Statistica", 18) → la lista dei senza esami diventa vuota.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>contingenza.py</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter
+
+scuola: list[str] = ["liceo", "tecnico", "liceo", "altro", "liceo",
+                     "tecnico", "tecnico", "liceo", "altro",
+                     "tecnico", "liceo", "tecnico"]
+superato: list[bool] = [True, False, True, False, True, True,
+                        False, False, True, False, True, True]
+
+tabella: Counter[tuple[str, bool]] = Counter(zip(scuola, superato))
+per_scuola: Counter[str] = Counter(scuola)
+
+for s in sorted(per_scuola):
+    si: int = tabella[(s, True)]
+    no: int = tabella[(s, False)]
+    print(f"{s}: superato {si}, non superato {no}, "
+          f"percentuale {si / per_scuola[s]:.1%}")
+
+totale_si: int = superato.count(True)
+print(f"Totale: {totale_si} su {len(superato)} "
+      f"({totale_si / len(superato):.1%})")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>zip(scuola, superato)</code> produce le coppie (scuola, esito); il <code>Counter</code> di queste tuple è una tabella a doppia entrata.</li><li>Le tuple possono essere chiavi perché sono immutabili; un <code>Counter</code> restituisce 0 per una chiave che non c'è.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L03»
+Da dire: è la tabella di contingenza di Statistica descrittiva, costruita con un Counter. Le percentuali sono di riga: superati diviso il totale della scuola.
+Chiedere / fare: con 5 liceali e 5 tecnici si può dire che il liceo prepara meglio? (no, i casi sono troppo pochi).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>descrittive.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def descrittive(valori: list[float]) -&gt; tuple[float, float, float]:
+    """Restituisce media, mediana e deviazione standard."""
+    n: int = len(valori)
+    media: float = sum(valori) / n
+    ordinati: list[float] = sorted(valori)
+    if n % 2 == 1:
+        mediana: float = ordinati[n // 2]
+    else:
+        mediana = (ordinati[n // 2 - 1] + ordinati[n // 2]) / 2
+    scarti: list[float] = [(x - media) ** 2 for x in valori]
+    dev_std: float = (sum(scarti) / (n - 1)) ** 0.5
+    return media, mediana, dev_std</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>
+ore_studio: dict[str, list[float]] = {
+    "Primo anno": [12, 15, 8, 20, 10, 14, 9],
+    "Secondo anno": [18, 22, 15, 25, 30, 16],
+    "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25],
+}
+
+for anno, ore in ore_studio.items():
+    media, mediana, dev_std = descrittive(ore)
+    print(f"{anno}: media {media:.1f}, mediana {mediana:.1f}, "
+          f"dev. std {dev_std:.2f}")</code></pre></div></div>
+                    <ul class="note-sol"><li>La funzione restituisce una tupla di tre valori; con <code>media, mediana, dev_std = descrittive(ore)</code> si separano.</li><li>La mediana dipende da n pari o dispari; la deviazione standard campionaria divide per n − 1.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L03»
+Da dire: la funzione si scrive una volta e si usa per ogni anno. Il terzo anno ha media simile al secondo ma deviazione quasi doppia: gli studenti sono molto diversi tra loro.
+Chiedere / fare: descrittive([1, 2, 3, 4]) → 2.5, 2.5, 1.29.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>compagni.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>def jaccard(a: set[str], b: set[str]) -&gt; float:
+    """Elementi in comune diviso elementi totali."""
+    return len(a &amp; b) / len(a | b)
+
+scelte: dict[str, set[str]] = {
+    "Anna": {"Serie storiche", "Demografia", "Marketing", "R"},
+    "Bruno": {"Marketing", "Finanza", "R", "Python"},
+    "Chiara": {"Serie storiche", "Demografia", "R", "Biostatistica"},
+    "Davide": {"Finanza", "Python", "Econometria"},
+    "Elisa": {"Biostatistica", "Demografia", "Python"},
+}
+
+nomi: list[str] = sorted(scelte)
+coppia: tuple[str, str] = ("", "")
+massimo: float = -1.0
+for i in range(len(nomi)):
+    for j in range(i + 1, len(nomi)):
+        s: float = jaccard(scelte[nomi[i]], scelte[nomi[j]])
+        if s &gt; massimo:
+            massimo, coppia = s, (nomi[i], nomi[j])
+print(f"Coppia più simile: {coppia} con {massimo:.2f}")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>nome: str = input("Studente: ")
+if nome not in scelte:
+    print("Studente non trovato")
+else:
+    simile: str = ""
+    massimo = -1.0
+    for altro in nomi:
+        s = jaccard(scelte[nome], scelte[altro])
+        if altro != nome and s &gt; massimo:
+            massimo, simile = s, altro
+    consigli: set[str] = scelte[simile] - scelte[nome]
+    print(f"Più simile: {simile} ({massimo:.2f})")
+    print(f"Corsi consigliati: {sorted(consigli)}")</code></pre></div></div>
+                    <ul class="note-sol"><li>La similarità di Jaccard vale 0 se i set non hanno elementi in comune e 1 se sono uguali.</li><li>Con <code>j</code> che parte da <code>i + 1</code> ogni coppia si confronta una volta sola: 10 coppie per 5 studenti.</li><li>I corsi consigliati sono una differenza tra set: quelli del compagno meno i propri.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L03»
+Da dire: è l'idea alla base dei sistemi di raccomandazione: si cerca l'utente più simile e si propone quello che ha scelto lui. Nel secondo ciclo si salta lo studente stesso, che avrebbe similarità 1.
+Chiedere / fare: Elisa → Chiara, consigliati R e Serie storiche.</aside>
+                </section>
+            </section>
+            <!-- FINE SOLUZIONI LAB -->
 
             <!-- ========== SEZIONE 1: FUNZIONI COME OGGETTI ========== -->
             <section>

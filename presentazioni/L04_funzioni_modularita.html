@@ -314,636 +314,350 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: Titolo -->
             <section class="title-slide">
-                <h1>Funzioni e modularit&agrave;</h1>
+                <h1>Funzioni e modularità</h1>
                 <div class="subtitle">Laboratorio 4</div>
                 <div class="course-info">
-                    Sistemi di Elaborazione &mdash; Corso di Laurea in Scienze Statistiche<br>
-                    Prerequisiti: T13 (Funzioni) e T14 (Modularit&agrave; e buone pratiche)
+                    Sistemi di Elaborazione<br>
+                    Prerequisiti: T13 (Funzioni) e T14 (Funzioni avanzate e moduli)
                 </div>
             </section>
 
-            <!-- SLIDE 2: Agenda -->
             <section>
-                <h2>Agenda</h2>
-                <ol>
-                    <li><strong>Funzioni statistiche</strong> &mdash; <code>media()</code>, <code>varianza()</code>, <code>mediana()</code></li>
-                    <li><strong>Assert come testing</strong> &mdash; verificare la correttezza del codice</li>
-                    <li><strong>Refactoring</strong> &mdash; da codice monolitico a modulare</li>
-                    <li><strong><code>sorted()</code> con <code>key</code></strong> &mdash; ordinamenti personalizzati</li>
-                    <li><strong>Moduli</strong> &mdash; creare e importare file <code>.py</code></li>
-                    <li><strong>Esercizi autonomi</strong> &mdash; moda, z-score, decoratori</li>
-                </ol>
-                <div class="box box-blue">
-                    <strong>Obiettivi:</strong> definire funzioni con type hints e docstring, usare <code>assert</code> per verificare la correttezza, fare refactoring di codice monolitico, usare <code>sorted()</code> con <code>key</code>, creare e importare moduli.
-                </div>
-            </section>
-
-            <!-- SLIDE 3: Sezione 1 -->
-            <section class="section-slide">
-                <h2>Parte 1<br>Funzioni statistiche</h2>
-                <p><em>Type hints, docstring e validazione dell'input</em></p>
-            </section>
-
-            <!-- SLIDE 4: Anatomia di una funzione -->
-            <section>
-                <h2>Anatomia di una funzione ben scritta</h2>
-                <p>Una funzione Python ben scritta ha quattro elementi fondamentali:</p>
-                <ul>
-                    <li class="fragment"><strong>Type hints</strong> &mdash; nei parametri e nel valore di ritorno</li>
-                    <li class="fragment"><strong>Docstring</strong> &mdash; spiega cosa fa, cosa accetta, cosa restituisce</li>
-                    <li class="fragment"><strong>Validazione</strong> &mdash; controlla l'input e solleva errori espliciti</li>
-                    <li class="fragment"><strong>Test con <code>assert</code></strong> &mdash; verifica il comportamento atteso</li>
-                </ul>
-            </section>
-
-            <!-- SLIDE 5: La funzione media() -->
-            <section>
-                <h2>La funzione <code>media()</code></h2>
-<pre><code class="language-python">def media(valori: list[float]) -> float:
-    """Calcola la media aritmetica di una lista di numeri.
-
-    Args:
-        valori: lista non vuota di numeri.
-
-    Returns:
-        La media aritmetica dei valori.
-
-    Raises:
-        ValueError: se la lista è vuota.
-    """
-    if len(valori) == 0:
-        raise ValueError("Impossibile calcolare la media di una lista vuota")
-    return sum(valori) / len(valori)
-
-
-# Test con assert
-assert media([10, 20, 30]) == 20.0
-assert media([5]) == 5.0
-assert media([1, 2, 3, 4, 5]) == 3.0
-print("media(): tutti i test superati")</code></pre>
-            </section>
-
-            <!-- SLIDE 6: Struttura della funzione media -->
-            <section>
-                <h2>Cosa osservare in <code>media()</code></h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Elemento</th>
-                            <th>Esempio</th>
-                        </tr>
-                    </thead>
+                <h2>Come funziona</h2>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file <code>.py</code> con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve <code>input()</code>: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file.</p>
+                <table class="mini" style="font-size:0.7em">
+                    <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td>Type hint parametro</td>
-                            <td><code>valori: list[float]</code></td>
-                        </tr>
-                        <tr>
-                            <td>Type hint ritorno</td>
-                            <td><code>-> float</code></td>
-                        </tr>
-                        <tr>
-                            <td>Docstring</td>
-                            <td>Descrive Args, Returns, Raises</td>
-                        </tr>
-                        <tr>
-                            <td>Validazione input</td>
-                            <td><code>if len(valori) == 0: raise ValueError(...)</code></td>
-                        </tr>
-                        <tr>
-                            <td>Test</td>
-                            <td><code>assert media([10, 20, 30]) == 20.0</code></td>
-                        </tr>
+                        <tr><td>1</td><td><code>esito.py</code></td><td>Esito dell'esame</td></tr>
+                        <tr><td>2</td><td><code>media_ponderata.py</code></td><td>Media ponderata</td></tr>
+                        <tr><td>3</td><td><code>descrittive.py</code></td><td>Media e varianza a mano</td></tr>
+                        <tr><td>4</td><td><code>riassunto.py</code></td><td>Tempi di viaggio</td></tr>
+                        <tr><td>5</td><td><code>esami_date.py</code></td><td>Quanto manca all'esame</td></tr>
+                        <tr><td>6</td><td><code>classifica.py</code></td><td>Classifica del corso</td></tr>
+                        <tr><td>7</td><td><code>questionario.py</code></td><td>Come arrivate in università</td></tr>
+                        <tr><td>8</td><td><code>confronto_gruppi.py</code></td><td>Frequentanti e non frequentanti</td></tr>
+                        <tr><td>Sfida</td><td><code>compleanni.py</code></td><td>Compleanni in aula</td></tr>
                     </tbody>
                 </table>
-            </section>
-
-            <!-- SLIDE 7: La funzione varianza() -->
-            <section>
-                <h2>La funzione <code>varianza()</code></h2>
-<pre><code class="language-python">def varianza(valori: list[float]) -> float:
-    """Calcola la varianza campionaria (denominatore n-1)."""
-    n: int = len(valori)
-    if n < 2:
-        raise ValueError("Servono almeno 2 valori per calcolare la varianza")
-    m: float = media(valori)  # riusiamo la funzione definita prima!
-    somma_scarti_quadrati: float = sum((x - m) ** 2 for x in valori)
-    return somma_scarti_quadrati / (n - 1)
-
-
-# Test
-assert abs(varianza([2, 4, 4, 4, 5, 5, 7, 9]) - 4.571428571428571) < 1e-10
-assert abs(varianza([10, 10, 10]) - 0.0) < 1e-10
-print("varianza(): tutti i test superati")</code></pre>
-                <div class="box box-green">
-                    <strong>Composizione:</strong> <code>varianza()</code> chiama <code>media()</code> &mdash; le funzioni si compongono, evitando di duplicare codice.
+                <div class="box box-blue" style="font-size:0.7em">
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T15.
                 </div>
             </section>
 
-            <!-- SLIDE 8: La funzione mediana() -->
             <section>
-                <h2>La funzione <code>mediana()</code></h2>
-<pre><code class="language-python">def mediana(valori: list[float]) -> float:
-    """Calcola la mediana di una lista di numeri."""
-    if len(valori) == 0:
-        raise ValueError("Impossibile calcolare la mediana di una lista vuota")
-    ordinati: list[float] = sorted(valori)
-    n: int = len(ordinati)
-    centro: int = n // 2
-    if n % 2 == 1:
-        # Numero dispari di elementi: il mediano è quello centrale
-        return ordinati[centro]
-    else:
-        # Numero pari: media dei due centrali
-        return (ordinati[centro - 1] + ordinati[centro]) / 2
+                <h2>Promemoria</h2>
+                <p style="font-size:0.75em">Gli strumenti che servono oggi. Le funzioni restituiscono il risultato con <code>return</code>; a stamparlo ci pensa chi le chiama. Si possono usare <code>sum()</code>, <code>min()</code>, <code>max()</code>, <code>sorted()</code> e i moduli della libreria standard.</p>
+                <pre class="small"><code class="language-python" data-trim data-noescape>import statistics
 
+def intervallo(centro: float,
+               errore: float = 1.0) -&gt; tuple[float, float]:
+    """Restituisce gli estremi centro - errore e centro + errore."""
+    return centro - errore, centro + errore
 
-# Test
-assert mediana([3, 1, 2]) == 2
-assert mediana([1, 2, 3, 4]) == 2.5
-assert mediana([5]) == 5
-assert mediana([7, 1]) == 4.0
-print("mediana(): tutti i test superati")</code></pre>
+basso, alto = intervallo(25.0)            # 24.0 26.0 (default)
+basso, alto = intervallo(25.0, errore=2.5)  # 22.5 27.5
+
+esami: list[tuple[str, int]] = [("Analisi", 24), ("Statistica", 30)]
+print(sorted(esami, key=lambda e: -e[1]))  # prima Statistica
+print(max(esami, key=lambda e: e[1])[0])   # Statistica
+print(statistics.median([24, 30, 27]))     # 27</code></pre>
             </section>
 
-            <!-- SLIDE 9: Sezione 2 -->
-            <section class="section-slide">
-                <h2>Parte 2<br>Assert come strumento di testing</h2>
-                <p><em>Documentare le aspettative sul codice</em></p>
-            </section>
-
-            <!-- SLIDE 10: Test di casi limite -->
             <section>
-                <h2>Testare i casi limite</h2>
-                <p>Non basta testare il caso felice: bisogna verificare che gli errori vengano gestiti correttamente.</p>
-<pre><code class="language-python"># Testare che le funzioni gestiscano correttamente gli errori
-errore_sollevato: bool = False
-try:
-    media([])
-except ValueError:
-    errore_sollevato = True
-assert errore_sollevato, "media([]) dovrebbe sollevare ValueError"
-
-errore_sollevato = False
-try:
-    varianza([5])
-except ValueError:
-    errore_sollevato = True
-assert errore_sollevato, "varianza([5]) dovrebbe sollevare ValueError"
-
-print("Test sui casi limite: tutti superati")</code></pre>
-            </section>
-
-            <!-- SLIDE 11: Confronti tra float -->
-            <section>
-                <h2>Attenzione ai confronti tra float</h2>
-                <p>L'aritmetica in virgola mobile pu&ograve; introdurre piccoli errori. Non scrivete <code>assert varianza(dati) == 4.5</code>. Usate una tolleranza:</p>
-<pre><code class="language-python">def quasi_uguale(a: float, b: float, tolleranza: float = 1e-9) -> bool:
-    """Verifica se due float sono approssimativamente uguali."""
-    return abs(a - b) < tolleranza
-
-
-# Test con dataset noto
-dati: list[float] = [2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0]
-assert quasi_uguale(media(dati), 5.0)
-assert quasi_uguale(varianza(dati), 4.571428571428571)
-assert quasi_uguale(mediana(dati), 4.5)
-print("Test con valori noti: tutti superati")</code></pre>
-                <div class="box box-yellow">
-                    <strong>Regola pratica:</strong> per i confronti tra float usate sempre <code>abs(a - b) &lt; tolleranza</code>.
+                <div class="tag tag-esercizio">Esercizio 1 · esito.py</div>
+                <h2>Esito dell'esame</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete <code>esito(voto: int, lode: bool = False) -&gt; str</code>, che restituisce l'esito come stringa secondo la tabella. I casi si controllano nell'ordine della tabella.</li>
+                            <li>La lode conta solo con 30: <code>esito(27, lode=True)</code> restituisce <code>promosso con 27</code>.</li>
+                            <li>Stampate <code>esito(28)</code> e <code>esito(30, lode=True)</code>.</li>
+                            <li>Scorrete la lista <code>appello: list[tuple[str, int, bool]] = [("Anna", 27, False), ("Marco", 15, False), ("Giulia", 30, True), ("Luca", 30, False)]</code> e stampate nome ed esito di ognuno.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Caso</th><th>Valore restituito</th></tr></thead><tbody><tr><td>voto minore di 0 o maggiore di 30</td><td><code>voto non valido</code></td></tr><tr><td>voto minore di 18</td><td><code>respinto</code></td></tr><tr><td>30 con <code>lode=True</code></td><td><code>30 e lode</code></td></tr><tr><td>tutti gli altri</td><td><code>promosso con 27</code> (con il voto)</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>promosso con 28
+30 e lode
+Anna: promosso con 27
+Marco: respinto
+Giulia: 30 e lode
+Luca: promosso con 30</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>esito(17)</code> → <code>respinto</code></li><li><code>esito(27, lode=True)</code> → <code>promosso con 27</code></li><li><code>esito(31)</code> → <code>voto non valido</code></li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 12: Sezione 3 -->
-            <section class="section-slide">
-                <h2>Parte 3<br>Refactoring</h2>
-                <p><em>Da codice monolitico a modulare</em></p>
-            </section>
-
-            <!-- SLIDE 13: Codice monolitico (PRIMA) -->
             <section>
-                <h2>Il codice monolitico <span class="badge badge-red">PRIMA</span></h2>
-<pre><code class="language-python"># Questo codice funziona, ma è un unico blocco non riutilizzabile
-voti_stat: list[int] = [28, 24, 30, 26, 22, 27, 30, 25]
-voti_anal: list[int] = [30, 22, 27, 25, 20, 28, 26, 24]
-
-# Media statistica
-somma_stat: int = 0
-for v in voti_stat:
-    somma_stat += v
-media_stat: float = somma_stat / len(voti_stat)
-
-# Media analisi
-somma_anal: int = 0
-for v in voti_anal:
-    somma_anal += v
-media_anal: float = somma_anal / len(voti_anal)
-
-# Trova il voto massimo in statistica
-max_stat: int = voti_stat[0]
-for v in voti_stat[1:]:
-    if v > max_stat:
-        max_stat = v
-
-# Trova il voto massimo in analisi
-max_anal: int = voti_anal[0]
-for v in voti_anal[1:]:
-    if v > max_anal:
-        max_anal = v
-
-print(f"Statistica: media={media_stat:.1f}, max={max_stat}")
-print(f"Analisi:    media={media_anal:.1f}, max={max_anal}")</code></pre>
-            </section>
-
-            <!-- SLIDE 14: Problema del codice monolitico -->
-            <section>
-                <h2>Cosa c'&egrave; che non va?</h2>
-                <ul>
-                    <li>Il codice per calcolare media e massimo &egrave; <strong>duplicato</strong></li>
-                    <li>Se avessimo 10 corsi, dovremmo copiare e incollare lo stesso blocco 10 volte</li>
-                    <li>Se trovassimo un bug, dovremmo correggerlo in ogni copia</li>
-                    <li>Il codice non &egrave; testabile in isolamento</li>
-                </ul>
-                <div class="diagram">
-                    Codice duplicato = Bug duplicati = Manutenzione impossibile
+                <div class="tag tag-esercizio">Esercizio 2 · media_ponderata.py</div>
+                <h2>Media ponderata</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete <code>media_ponderata(voti: list[int], cfu: list[int]) -&gt; float</code>: somma dei prodotti voto × crediti, divisa per il totale dei crediti. Scorrete le due liste insieme con <code>zip()</code>.</li>
+                            <li>Se la lista dei voti è vuota o le due liste hanno lunghezze diverse, la funzione restituisce <code>0.0</code>.</li>
+                            <li>Scrivete <code>base_laurea(media: float) -&gt; float</code>, che porta la media in centodecimi: <code>media * 110 / 30</code>.</li>
+                            <li>Con <code>voti = [28, 30, 25, 27, 30, 24]</code> e <code>cfu = [9, 6, 12, 6, 9, 6]</code> stampate la media aritmetica e la media ponderata con due decimali, e la base di laurea con un decimale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media aritmetica: 27.33
+Media ponderata: 27.25
+Base di laurea: 99.9/110</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete un 30 da 12 CFU → ponderata <code>27.80</code>, base <code>101.9/110</code></li><li><code>media_ponderata([], [])</code> → <code>0.0</code></li><li><code>media_ponderata([28, 30], [9])</code> → <code>0.0</code> (lunghezze diverse)</li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 15: Codice ristrutturato (DOPO) -->
             <section>
-                <h2>Il codice ristrutturato <span class="badge badge-green">DOPO</span></h2>
-<pre><code class="language-python">def calcola_media(voti: list[int]) -> float:
-    """Calcola la media di una lista di voti."""
-    if len(voti) == 0:
-        raise ValueError("Lista vuota")
-    return sum(voti) / len(voti)
-
-
-def trova_massimo(voti: list[int]) -> int:
-    """Trova il voto massimo in una lista."""
-    if len(voti) == 0:
-        raise ValueError("Lista vuota")
-    massimo: int = voti[0]
-    for v in voti[1:]:
-        if v > massimo:
-            massimo = v
-    return massimo
-
-
-def stampa_report(nome_corso: str, voti: list[int]) -> None:
-    """Stampa un report con media e massimo per un corso."""
-    m: float = calcola_media(voti)
-    mx: int = trova_massimo(voti)
-    print(f"{nome_corso}: media={m:.1f}, max={mx}")</code></pre>
-            </section>
-
-            <!-- SLIDE 16: Codice principale dopo refactoring -->
-            <section>
-                <h2>Il codice principale dopo il refactoring</h2>
-<pre><code class="language-python"># Il codice principale diventa chiarissimo
-corsi: dict[str, list[int]] = {
-    "Statistica": [28, 24, 30, 26, 22, 27, 30, 25],
-    "Analisi":    [30, 22, 27, 25, 20, 28, 26, 24],
-}
-
-for nome, voti in corsi.items():
-    stampa_report(nome, voti)</code></pre>
-                <h3>Vantaggi del refactoring</h3>
-                <ul>
-                    <li><strong>Nessuna duplicazione:</strong> ogni operazione &egrave; definita una volta sola</li>
-                    <li><strong>Riutilizzabilit&agrave;:</strong> possiamo aggiungere un corso con una sola riga</li>
-                    <li><strong>Testabilit&agrave;:</strong> possiamo testare ogni funzione separatamente</li>
-                    <li><strong>Leggibilit&agrave;:</strong> il codice principale &egrave; quasi pseudocodice</li>
-                </ul>
-            </section>
-
-            <!-- SLIDE 17: Sezione 4 -->
-            <section class="section-slide">
-                <h2>Parte 4<br><code>sorted()</code> con <code>key=lambda</code></h2>
-                <p><em>Ordinamenti personalizzati</em></p>
-            </section>
-
-            <!-- SLIDE 18: Ordinare stringhe per lunghezza -->
-            <section>
-                <h2>Ordinare stringhe per lunghezza</h2>
-                <p><code>sorted()</code> accetta un parametro <code>key</code> che specifica come confrontare gli elementi. <code>lambda</code> permette di definire piccole funzioni anonime al volo.</p>
-<pre><code class="language-python">parole: list[str] = ["statistica", "media", "varianza", "moda", "quartile"]
-
-# Ordine alfabetico (default)
-print(f"Alfabetico: {sorted(parole)}")
-# ['media', 'moda', 'quartile', 'statistica', 'varianza']
-
-# Per lunghezza
-print(f"Per lunghezza: {sorted(parole, key=lambda p: len(p))}")
-# ['moda', 'media', 'varianza', 'quartile', 'statistica']
-
-# Per lunghezza decrescente
-print(f"Per lunghezza (desc): {sorted(parole, key=lambda p: -len(p))}")
-# ['statistica', 'varianza', 'quartile', 'media', 'moda']</code></pre>
-            </section>
-
-            <!-- SLIDE 19: Ordinare dizionari per un campo -->
-            <section>
-                <h2>Ordinare dizionari per un campo</h2>
-<pre><code class="language-python">studenti: list[dict[str, object]] = [
-    {"nome": "Anna",  "media": 28.5},
-    {"nome": "Marco", "media": 24.0},
-    {"nome": "Luca",  "media": 29.3},
-    {"nome": "Sara",  "media": 27.1},
-]
-
-# Ordinare per media decrescente
-classifica: list[dict[str, object]] = sorted(
-    studenti, key=lambda s: s["media"], reverse=True
-)
-
-print("Classifica:")
-for i, s in enumerate(classifica, start=1):
-    print(f"  {i}. {s['nome']} — media: {s['media']}")</code></pre>
-                <div class="box box-blue">
-                    <strong>Output:</strong> 1. Luca &mdash; 29.3, 2. Anna &mdash; 28.5, 3. Sara &mdash; 27.1, 4. Marco &mdash; 24.0
+                <div class="tag tag-esercizio">Esercizio 3 · descrittive.py</div>
+                <h2>Media e varianza a mano</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete <code>media(valori: list[float]) -&gt; float</code>.</li>
+                            <li>Scrivete <code>varianza(valori: list[float], campionaria: bool = True) -&gt; float</code>: somma dei quadrati degli scarti dalla media, divisa per <code>n - 1</code> se <code>campionaria</code> è <code>True</code>, per <code>n</code> altrimenti. Dentro, chiamate <code>media()</code>.</li>
+                            <li>Con le altezze in cm <code>[172.0, 165.5, 180.2, 158.0, 175.3, 169.8, 183.1, 162.4]</code> calcolate media, varianza campionaria, varianza di popolazione (<code>campionaria=False</code>) e deviazione standard (radice della varianza campionaria, <code>** 0.5</code>).</li>
+                            <li>Importate <code>statistics</code> e accanto a ogni valore stampate quello di <code>mean</code>, <code>variance</code>, <code>pvariance</code> e <code>stdev</code>, per controllare i vostri calcoli. Due decimali.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media: 170.79 (statistics: 170.79)
+Varianza campionaria: 74.98 (statistics: 74.98)
+Varianza di popolazione: 65.60 (statistics: 65.60)
+Deviazione standard: 8.66 (statistics: 8.66)</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>[10.0, 20.0, 30.0]</code> → media <code>20.00</code>, varianze <code>100.00</code> e <code>66.67</code>, deviazione standard <code>10.00</code></li><li>chiamate <code>varianza(altezze, False)</code> e <code>varianza(altezze, campionaria=False)</code>: danno lo stesso risultato</li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 20: Ordinare tuple con chiave multipla -->
             <section>
-                <h2>Ordinamento con chiave multipla</h2>
-<pre><code class="language-python">risultati: list[tuple[str, int, float]] = [
-    ("Anna",  3, 28.5),
-    ("Marco", 2, 24.0),
-    ("Luca",  3, 29.3),
-    ("Sara",  2, 27.1),
-]
-
-# Ordinare per media (terzo elemento, indice 2)
-per_media = sorted(risultati, key=lambda r: r[2], reverse=True)
-
-# Ordinare per numero di esami (desc), poi per media (desc)
-per_esami_e_media = sorted(risultati, key=lambda r: (-r[1], -r[2]))</code></pre>
-                <div class="box box-yellow">
-                    <strong>Trucco:</strong> per ordinare in modo decrescente un campo numerico dentro una <code>lambda</code>, usate il segno meno: <code>-r[1]</code>.
+                <div class="tag tag-esercizio">Esercizio 4 · riassunto.py</div>
+                <h2>Tempi di viaggio</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>La lista <code>tempi: list[float] = [35, 12, 50, 20, 75, 18, 40, 25]</code> contiene i minuti che otto studenti impiegano per arrivare in università.</li>
+                            <li>Scrivete <code>mediana(valori: list[float]) -&gt; float</code>: ordinate con <code>sorted()</code>; con <code>n</code> dispari la mediana è l'elemento centrale, con <code>n</code> pari la media dei due centrali.</li>
+                            <li>Scrivete <code>riassunto(valori: list[float]) -&gt; tuple[float, float, float]</code>, che restituisce minimo, mediana e massimo (usate <code>min()</code> e <code>max()</code>).</li>
+                            <li>Spacchettate il risultato in tre variabili e stampate i tre valori e il campo di variazione (massimo − minimo), con un decimale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Minimo: 12.0 minuti
+Mediana: 30.0 minuti
+Massimo: 75.0 minuti
+Campo di variazione: 63.0 minuti</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>90</code> (nove studenti) → mediana <code>35.0</code>, campo <code>78.0</code></li><li>controllate la vostra mediana con <code>statistics.median(tempi)</code></li><li>dopo la chiamata, <code>tempi</code> deve essere ancora nell'ordine iniziale</li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 21: Sezione 5 -->
-            <section class="section-slide">
-                <h2>Parte 5<br>Creare e importare moduli</h2>
-                <p><em>Il primo passo verso il codice riutilizzabile</em></p>
-            </section>
-
-            <!-- SLIDE 22: Cos'è un modulo -->
             <section>
-                <h2>Cos'&egrave; un modulo?</h2>
-                <p>Un modulo &egrave; semplicemente un file <code>.py</code> che contiene definizioni di funzioni, variabili e classi.</p>
-                <div class="diagram">
-                    statistiche.py &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analisi.py<br>
-                    ┌──────────────┐ &nbsp;&nbsp;&nbsp;&nbsp; ┌───────────────────┐<br>
-                    │ def media()  │ &nbsp;&larr;&nbsp; │ import statistiche │<br>
-                    │ def varianza()│ &nbsp;&nbsp;&nbsp;&nbsp; │                   │<br>
-                    │ def mediana()│ &nbsp;&nbsp;&nbsp;&nbsp; │ statistiche.media()│<br>
-                    └──────────────┘ &nbsp;&nbsp;&nbsp;&nbsp; └───────────────────┘
+                <div class="tag tag-esercizio">Esercizio 5 · esami_date.py</div>
+                <h2>Quanto manca all'esame</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Importate <code>date</code> dal modulo <code>datetime</code>. La differenza tra due date è un intervallo: <code>(d2 - d1).days</code> sono i giorni.</li>
+                            <li>Scrivete <code>giorni_mancanti(esame: date, oggi: date) -&gt; int</code> e <code>settimane_e_giorni(giorni: int) -&gt; tuple[int, int]</code>, che usa <code>//</code> e <code>%</code>.</li>
+                            <li>Scrivete <code>nome_giorno(giorno: date) -&gt; str</code>: <code>giorno.weekday()</code> dà 0 per il lunedì e 6 per la domenica; usatelo come indice in una lista con i nomi dei giorni.</li>
+                            <li>Con <code>oggi = date(2026, 11, 19)</code> e il dizionario degli appelli in tabella, stampate per ogni esame il giorno della settimana, la data e quanto manca. Se la data è già passata stampate <code>esame già passato</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Esame</th><th>Data</th></tr></thead><tbody><tr><td>Analisi 1</td><td><code>date(2027, 1, 18)</code></td></tr><tr><td>Statistica 1</td><td><code>date(2027, 1, 28)</code></td></tr><tr><td>Sistemi di elaborazione</td><td><code>date(2027, 2, 10)</code></td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi 1: lunedì 2027-01-18
+  tra 60 giorni: 8 settimane e 4 giorni
+Statistica 1: giovedì 2027-01-28
+  tra 70 giorni: 10 settimane e 0 giorni
+Sistemi di elaborazione: mercoledì 2027-02-10
+  tra 83 giorni: 11 settimane e 6 giorni</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>oggi = date(2027, 1, 25)</code> → Analisi 1 già passato, Statistica 1 <code>tra 3 giorni</code>, Sistemi <code>tra 16 giorni: 2 settimane e 2 giorni</code></li><li><code>nome_giorno(date(2026, 12, 25))</code> → <code>venerdì</code></li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 23: Creare il modulo statistiche.py -->
             <section>
-                <h2>Creare <code>statistiche.py</code></h2>
-<pre><code class="language-python">"""Modulo con funzioni statistiche di base."""
-
-
-def media(valori: list[float]) -> float:
-    """Calcola la media aritmetica."""
-    if len(valori) == 0:
-        raise ValueError("Lista vuota")
-    return sum(valori) / len(valori)
-
-
-def varianza(valori: list[float]) -> float:
-    """Calcola la varianza campionaria (denominatore n-1)."""
-    n: int = len(valori)
-    if n < 2:
-        raise ValueError("Servono almeno 2 valori")
-    m: float = media(valori)
-    return sum((x - m) ** 2 for x in valori) / (n - 1)
-
-
-def deviazione_standard(valori: list[float]) -> float:
-    """Calcola la deviazione standard campionaria."""
-    return varianza(valori) ** 0.5
-
-
-def mediana(valori: list[float]) -> float:
-    """Calcola la mediana."""
-    if len(valori) == 0:
-        raise ValueError("Lista vuota")
-    ordinati: list[float] = sorted(valori)
-    n: int = len(ordinati)
-    centro: int = n // 2
-    if n % 2 == 1:
-        return ordinati[centro]
-    return (ordinati[centro - 1] + ordinati[centro]) / 2</code></pre>
-            </section>
-
-            <!-- SLIDE 24: Importare e usare il modulo -->
-            <section>
-                <h2>Importare e usare il modulo</h2>
-                <h3>Import completo</h3>
-<pre><code class="language-python">"""Script che usa il modulo statistiche per analizzare dati."""
-import statistiche
-
-dati_temperatura: list[float] = [18.5, 21.0, 19.3, 22.1, 20.7, 17.9, 23.4]
-
-m: float = statistiche.media(dati_temperatura)
-v: float = statistiche.varianza(dati_temperatura)
-ds: float = statistiche.deviazione_standard(dati_temperatura)
-med: float = statistiche.mediana(dati_temperatura)
-
-print(f"Media:     {m:.2f}")
-print(f"Varianza:  {v:.2f}")
-print(f"Dev. std.: {ds:.2f}")
-print(f"Mediana:   {med:.2f}")</code></pre>
-                <h3>Import selettivo</h3>
-<pre><code class="language-python">from statistiche import media, mediana
-
-dati: list[float] = [10, 20, 30, 40, 50]
-print(f"Media: {media(dati)}")      # senza prefisso!
-print(f"Mediana: {mediana(dati)}")</code></pre>
-            </section>
-
-            <!-- SLIDE 25: Il blocco if __name__ -->
-            <section>
-                <h2>Il blocco <code>if __name__ == "__main__"</code></h2>
-                <p>Questo blocco viene eseguito <strong>solo</strong> se si lancia direttamente il file, <strong>non</strong> quando viene importato come modulo.</p>
-<pre><code class="language-python"># Alla fine di statistiche.py
-if __name__ == "__main__":
-    print("=== Test del modulo statistiche ===")
-
-    dati_test: list[float] = [2, 4, 4, 4, 5, 5, 7, 9]
-    print(f"Dati: {dati_test}")
-    print(f"Media:    {media(dati_test):.2f}")
-    print(f"Varianza: {varianza(dati_test):.2f}")
-    print(f"Dev.std.: {deviazione_standard(dati_test):.2f}")
-    print(f"Mediana:  {mediana(dati_test):.2f}")
-    print("Test completati.")</code></pre>
-                <div class="box box-green">
-                    <code>python statistiche.py</code> &rarr; esegue i test<br>
-                    <code>import statistiche</code> &rarr; i test <strong>non</strong> vengono eseguiti
+                <div class="tag tag-esercizio">Esercizio 6 · classifica.py</div>
+                <h2>Classifica del corso</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Ogni studente è una tupla (nome, media, crediti): <code>studenti = [("Marco", 26.4, 66), ("Anna", 28.1, 54), ("Sara", 26.4, 72), ("Luca", 24.9, 48), ("Giulia", 29.3, 60)]</code>.</li>
+                            <li>Scrivete <code>classifica(studenti: list[tuple[str, float, int]]) -&gt; list[tuple[str, float, int]]</code>, che restituisce una nuova lista ordinata per media decrescente e, a parità di media, per nome: <code>sorted()</code> con <code>key=lambda s: (-s[1], s[0])</code>.</li>
+                            <li>Scrivete <code>in_regola(studenti: list[tuple[str, float, int]], cfu_minimi: int = 60) -&gt; list[str]</code>, che restituisce i nomi di chi ha almeno <code>cfu_minimi</code> crediti.</li>
+                            <li>Stampate la classifica numerata (con <code>enumerate</code>), lo studente con più crediti (<code>max()</code> con <code>key</code>) e i nomi in regola con 60 e con 70 crediti.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>1. Giulia: 29.3 (60 CFU)
+2. Anna: 28.1 (54 CFU)
+3. Marco: 26.4 (66 CFU)
+4. Sara: 26.4 (72 CFU)
+5. Luca: 24.9 (48 CFU)
+Più crediti: Sara con 72
+In regola con 60 CFU: ['Marco', 'Sara', 'Giulia']
+In regola con 70 CFU: ['Sara']</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>("Elena", 28.1, 61)</code> → Elena è terza, dopo Anna</li><li><code>in_regola(studenti, cfu_minimi=0)</code> → tutti i nomi</li><li>dopo <code>classifica(studenti)</code> la lista <code>studenti</code> non è cambiata</li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 26: Sezione esercizi -->
-            <section class="section-slide">
-                <h2>Esercizi autonomi</h2>
-                <p><em>Type hints, docstring e almeno 3 assert per ogni funzione</em></p>
-            </section>
-
-            <!-- SLIDE 27: Esercizio A1 -->
             <section>
-                <h2>Esercizio A1 &mdash; Funzione moda <span class="badge badge-blue">base</span></h2>
-                <p>Implementa una funzione che restituisce il valore pi&ugrave; frequente in una lista.</p>
-<pre><code class="language-python">def moda(valori: list[float]) -> float:
-    ...</code></pre>
-                <h3>Specifiche</h3>
-                <ol>
-                    <li>Se la lista &egrave; vuota, solleva <code>ValueError</code></li>
-                    <li>Se ci sono pi&ugrave; valori con la stessa frequenza massima, restituisci il primo incontrato</li>
-                    <li>Puoi usare <code>Counter</code> oppure un dizionario manuale</li>
-                </ol>
-                <h3>Test attesi</h3>
-<pre><code class="language-python">assert moda([1, 2, 2, 3]) == 2
-assert moda([5]) == 5</code></pre>
-            </section>
-
-            <!-- SLIDE 28: Esercizio A2 -->
-            <section>
-                <h2>Esercizio A2 &mdash; Normalizzazione z-score <span class="badge badge-yellow">intermedio</span></h2>
-                <p>Lo z-score trasforma ogni valore: <code>z = (x - media) / dev_std</code></p>
-<pre><code class="language-python">def z_score(valori: list[float]) -> list[float]:
-    ...</code></pre>
-                <h3>Specifiche</h3>
-                <ol>
-                    <li>Se la lista ha meno di 2 elementi, solleva <code>ValueError</code></li>
-                    <li>Se la deviazione standard &egrave; zero, solleva <code>ValueError</code></li>
-                    <li>Riusa <code>media()</code> e <code>deviazione_standard()</code></li>
-                </ol>
-                <h3>Verifica</h3>
-<pre><code class="language-python"># La media degli z-score deve essere circa 0
-# La deviazione standard degli z-score deve essere circa 1</code></pre>
-            </section>
-
-            <!-- SLIDE 29: Esercizio A3 -->
-            <section>
-                <h2>Esercizio A3 &mdash; Decoratore timer <span class="badge badge-red">avanzato</span></h2>
-<pre><code class="language-python">import time
-from typing import Callable, Any
-
-
-def timer(funzione: Callable) -> Callable:
-    def wrapper(*args: Any, **kwargs: Any) -> Any:
-        # Registra il tempo prima dell'esecuzione
-        # Chiama la funzione originale
-        # Registra il tempo dopo l'esecuzione
-        # Stampa il tempo impiegato
-        # Restituisci il risultato della funzione originale
-        ...
-    return wrapper</code></pre>
-                <h3>Specifiche</h3>
-                <ol>
-                    <li>Usa <code>time.perf_counter()</code> per misurare il tempo</li>
-                    <li>Applica il decoratore con la sintassi <code>@timer</code></li>
-                    <li>Testa con <code>list(range(1_000_000))</code></li>
-                </ol>
-                <div class="box box-blue">
-                    <strong>Nota:</strong> i decoratori non sono nel programma d'esame, ma aiutano a capire che le funzioni sono oggetti di prima classe in Python.
+                <div class="tag tag-esercizio">Esercizio 7 · questionario.py</div>
+                <h2>Come arrivate in università</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Le risposte a un questionario sono scritte in modo disordinato: <code>grezze = ["Bici", " autobus", "treno ", "BICI", "", "a piedi", "Treno", "bici", "Autobus ", "treno", "autobus", "  "]</code>.</li>
+                            <li>Scrivete <code>pulisci(risposte: list[str]) -&gt; list[str]</code>: toglie gli spazi ai lati, passa in minuscolo e scarta le risposte vuote (una comprehension con filtro).</li>
+                            <li>Scrivete <code>frequenze_relative(risposte: list[str]) -&gt; dict[str, float]</code>: con <code>Counter</code> e <code>most_common()</code>, dalla risposta più comune alla meno comune.</li>
+                            <li>Scrivete <code>mode(risposte: list[str]) -&gt; list[str]</code>: tutte le risposte con la frequenza massima, in ordine alfabetico; <code>[]</code> se la lista è vuota.</li>
+                            <li>Stampate le risposte valide sul totale, le frequenze in percentuale con un decimale e le mode.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Risposte valide: 10 su 12
+bici: 30.0%
+autobus: 30.0%
+treno: 30.0%
+a piedi: 10.0%
+Moda: ['autobus', 'bici', 'treno']</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>"Bici "</code> → <code>bici: 36.4%</code>, moda <code>['bici']</code></li><li><code>grezze = ["", " "]</code> → <code>Risposte valide: 0 su 2</code> e <code>Moda: []</code></li></ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- SLIDE 30: Sfida finale -->
             <section>
-                <h2>Sfida finale &mdash; Mini-toolkit statistico</h2>
-                <p>Crea un modulo <code>toolkit.py</code> con tutte queste funzioni:</p>
-<pre><code class="language-python">def media(valori: list[float]) -> float: ...
-def mediana(valori: list[float]) -> float: ...
-def moda(valori: list[float]) -> float: ...
-def varianza(valori: list[float]) -> float: ...
-def deviazione_standard(valori: list[float]) -> float: ...
-def z_score(valori: list[float]) -> list[float]: ...
-def riepilogo(valori: list[float]) -> dict[str, float]: ...</code></pre>
-                <h3>Requisiti</h3>
-                <ul>
-                    <li><strong>Validazione:</strong> ogni funzione controlla l'input e solleva <code>ValueError</code></li>
-                    <li><strong>Composizione:</strong> le funzioni si riutilizzano tra loro</li>
-                    <li><strong>Testing:</strong> blocco <code>if __name__ == "__main__"</code> con almeno 10 <code>assert</code></li>
-                </ul>
+                <div class="tag tag-esercizio">Esercizio 8 · confronto_gruppi.py</div>
+                <h2>Frequentanti e non frequentanti</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Punteggi di una prova intermedia: <code>frequentanti = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]</code> e <code>non_frequentanti = [21, 18, 30, 14, 23, 25, 13, 20]</code>.</li>
+                            <li>Scrivete <code>confronta(a: list[float], b: list[float], statistica: callable) -&gt; tuple[float, float, float]</code>: chiama la funzione <code>statistica</code> su ciascun gruppo e restituisce i due valori e la differenza a − b.</li>
+                            <li>Scrivete <code>campo(valori: list[float]) -&gt; float</code>, che restituisce massimo − minimo.</li>
+                            <li>Mettete in un dizionario nome → funzione le misure della tabella, senza parentesi dopo il nome della funzione. Scorrete il dizionario, chiamate <code>confronta</code> e stampate una riga per misura, con due decimali.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Nome</th><th>Funzione</th></tr></thead><tbody><tr><td>Media</td><td><code>statistics.mean</code></td></tr><tr><td>Mediana</td><td><code>statistics.median</code></td></tr><tr><td>Deviazione standard</td><td><code>statistics.stdev</code></td></tr><tr><td>Campo di variazione</td><td><code>campo</code></td></tr><tr><td>Minimo</td><td><code>min</code></td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media: 24.60 contro 20.50 (differenza 4.10)
+Mediana: 25.50 contro 20.50 (differenza 5.00)
+Deviazione standard: 4.48 contro 5.63 (differenza -1.15)
+Campo di variazione: 14.00 contro 17.00 (differenza -3.00)
+Minimo: 16.00 contro 13.00 (differenza 3.00)</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>confronta([18, 30], [24], statistics.mean)</code> → <code>(24, 24, 0)</code></li><li>aggiungete <code>"Quota di sufficienti"</code> con <code>lambda v: len([x for x in v if x &gt;= 18]) / len(v)</code> → <code>0.90 contro 0.75 (differenza 0.15)</code></li></ul>
+                    </div>
+                </div>
             </section>
 
-            <!-- SLIDE 31: riepilogo() e dataset -->
             <section>
-                <h2>Sfida finale &mdash; <code>riepilogo()</code></h2>
-                <p>La funzione <code>riepilogo()</code> deve restituire:</p>
-<pre><code class="language-python">{
-    "media": ...,
-    "mediana": ...,
-    "moda": ...,
-    "varianza": ...,
-    "dev_standard": ...,
-    "minimo": ...,
-    "massimo": ...,
-    "n": ...,
-}</code></pre>
-                <h3>Dataset di prova</h3>
-<pre><code class="language-python">voti: list[float] = [28, 24, 30, 26, 22, 27, 30, 25, 29, 23,
-                      30, 18, 26, 28, 24, 27, 30, 22, 25, 29]</code></pre>
+                <div class="tag tag-sfida">Sfida · compleanni.py</div>
+                <h2>Compleanni in aula</h2>
+                <div class="columns" style="font-size:0.86em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Con quanti studenti in aula diventa probabile che due compiano gli anni lo stesso giorno? Ignorate il 29 febbraio: i giorni sono 365.</li>
+                            <li>Scrivete <code>compleanno_comune(n: int) -&gt; bool</code>: estrae <code>n</code> compleanni con <code>random.randint(1, 365)</code> e restituisce <code>True</code> se almeno due coincidono (confrontate la lunghezza della lista con quella del suo <code>set</code>).</li>
+                            <li>Scrivete <code>stima(n_studenti: int, prove: int = 10000) -&gt; float</code>, che ripete la simulazione <code>prove</code> volte e restituisce la quota di volte con un compleanno in comune.</li>
+                            <li>Scrivete <code>esatta(n_studenti: int) -&gt; float</code>: la probabilità che i compleanni siano tutti diversi è 365/365 × 364/365 × … × (365 − n + 1)/365; il risultato è 1 meno questo prodotto.</li>
+                            <li>Chiamate <code>random.seed(2026)</code> una volta, poi per 10, 23, 30 e 50 studenti, in quest'ordine, stampate stima e valore esatto in percentuale con un decimale. Infine trovate con un <code>while</code> il primo numero di studenti con probabilità esatta oltre il 50%.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>10 studenti: simulata 11.7%, esatta 11.7%
+23 studenti: simulata 50.9%, esatta 50.7%
+30 studenti: simulata 71.1%, esatta 70.6%
+50 studenti: simulata 97.3%, esatta 97.0%
+Si supera il 50% con 23 studenti</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>esatta(40)</code> → <code>89.1%</code></li><li>il 90% si supera con <code>41</code> studenti</li><li>con <code>prove=1000</code> le stime cambiano ma restano vicine ai valori esatti</li></ul>
+                    </div>
+                </div>
             </section>
 
-            <!-- SLIDE 32: Domande di verifica -->
             <section>
                 <h2>Domande di verifica</h2>
-                <ol>
-                    <li>Qual &egrave; la differenza tra <strong>parametri</strong> e <strong>argomenti</strong> di una funzione?</li>
-                    <li>Cosa succede se una funzione non ha un'istruzione <code>return</code>?</li>
-                    <li>Perch&eacute; &egrave; importante validare l'input invece di lasciare che Python generi un errore generico?</li>
-                    <li>Che differenza c'&egrave; tra <code>import statistiche</code> e <code>from statistiche import media</code>?</li>
-                    <li>Cosa fa il blocco <code>if __name__ == "__main__"</code>?</li>
-                    <li>Nell'espressione <code>sorted(dati, key=lambda x: x["voto"])</code>, cosa rappresenta la lambda?</li>
-                    <li>Perch&eacute; <code>assert</code> non deve essere usato per la validazione dell'input in produzione?</li>
+                <ol style="font-size:0.85em">
+                    <li>In <code>esito.py</code>, cosa stampa <code>print(esito(28))</code> se nella funzione si scrive <code>print</code> al posto di <code>return</code>?</li>
+                    <li>In <code>media_ponderata.py</code>, cosa succederebbe senza il controllo sulle lunghezze se <code>cfu</code> avesse un elemento in meno di <code>voti</code>?</li>
+                    <li>In <code>descrittive.py</code>, perché la varianza campionaria è più grande di quella di popolazione? Di quanto, con 8 valori?</li>
+                    <li>In <code>riassunto.py</code>, cosa cambierebbe se <code>mediana</code> usasse <code>valori.sort()</code> invece di <code>sorted(valori)</code>?</li>
+                    <li>In <code>classifica.py</code>, perché nella chiave si scrive <code>-s[1]</code> invece di usare <code>reverse=True</code>?</li>
+                    <li>In <code>confronto_gruppi.py</code>, che differenza c'è tra scrivere <code>statistics.mean</code> e <code>statistics.mean(frequentanti)</code>?</li>
+                    <li>Nella sfida, a cosa serve <code>random.seed(2026)</code>? Cosa succede togliendolo?</li>
                 </ol>
             </section>
-
-            <!-- SLIDE 33: Tre principi chiave -->
-            <section>
-                <h2>Tre principi chiave</h2>
-                <div class="box box-blue">
-                    <h3>1. DRY &mdash; Don't Repeat Yourself</h3>
-                    <p>Se copiate e incollate codice, probabilmente vi serve una funzione.</p>
-                </div>
-                <div class="box box-green">
-                    <h3>2. Testabilit&agrave;</h3>
-                    <p>Una funzione ben scritta pu&ograve; essere testata in isolamento con <code>assert</code>. Se non riuscite a testarla, probabilmente fa troppe cose.</p>
-                </div>
-                <div class="box box-yellow">
-                    <h3>3. Modularit&agrave;</h3>
-                    <p>Separare il codice in moduli rende il progetto gestibile anche quando cresce.</p>
-                </div>
-            </section>
-
-            <!-- SLIDE 34: Prossimo laboratorio -->
-            <section class="section-slide">
-                <h2>Prossimo laboratorio</h2>
-                <p>Lettura e scrittura di file &mdash; lavorare con dati esterni</p>
-                <br>
-                <p><em>Type hints + docstring rendono il codice auto-documentante:<br>chi legge la firma capisce cosa entra e cosa esce.</em></p>
-            </section>
-
-    
 
             <!-- Slide di navigazione -->
             <section class="nav-slide">

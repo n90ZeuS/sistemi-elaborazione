@@ -215,3 +215,76 @@ print(tutti_i_voti)  # [28, 30, 25, 27, 30, 26]
 ```
 
 **Regola da ricordare:** `.append(x)` aggiunge `x` come singolo elemento; `.extend(lista)` aggiunge ogni elemento della lista uno per uno — per unire due liste usa `.extend()` o `+`.
+
+---
+
+### Errore 7: Comprehension troppo complesse — sacrificare la leggibilità
+
+**Codice errato:**
+```python
+# Nomi in maiuscolo degli studenti con voto almeno 18
+righe = ["Anna,28", "Marco,15", "Luca,30"]
+promossi = [r.split(",")[0].upper() for r in righe if int(r.split(",")[1]) >= 18]
+print(promossi)
+```
+
+**Cosa succede:**
+```
+['ANNA', 'LUCA']
+```
+
+Il risultato è corretto, ma il codice è difficile da leggere e da correggere in caso di errore.
+
+**Perché è sbagliato:** Nella stessa riga la stringa viene divisa due volte, un campo viene convertito in numero, un altro messo in maiuscolo e c'è un filtro. Chi legge deve ricostruire tutti questi passi a mente, ed è facile sbagliare un indice senza accorgersene. Quando la regola non sta comodamente in una riga, un ciclo `for` con variabili dai nomi chiari è più leggibile.
+
+**Codice corretto:**
+```python
+righe = ["Anna,28", "Marco,15", "Luca,30"]
+promossi = []
+for r in righe:
+    nome, voto = r.split(",")
+    if int(voto) >= 18:
+        promossi.append(nome.upper())
+print(promossi)  # ['ANNA', 'LUCA']
+```
+
+**Regola da ricordare:** Se una list comprehension non si capisce al primo sguardo, riscrivila con un ciclo `for`.
+
+---
+
+### Errore 8: Comportamento inatteso di `.split()` su stringa vuota
+
+**Codice errato:**
+```python
+# Lo studente si aspetta una lista con un elemento vuoto
+testo = ""
+parole = testo.split()
+print(parole)
+print(len(parole))  # Lo studente si aspetta 1
+```
+
+**Cosa succede:**
+```
+[]
+0
+```
+
+La lista è vuota, non contiene una stringa vuota.
+
+**Perché è sbagliato:** Il metodo `.split()` senza argomenti divide sugli spazi e non mette stringhe vuote nel risultato. Chiamato su una stringa vuota, restituisce una lista vuota `[]`, non `[""]`. Con un separatore esplicito il comportamento cambia: `"".split(",")` restituisce `[""]`, una lista con un elemento. La differenza conta quando si contano le parole di un testo o i campi di una riga.
+
+**Codice corretto:**
+```python
+testo = ""
+if testo:
+    parole = testo.split()
+    print(f"Ci sono {len(parole)} parole")
+else:
+    print("Il testo è vuoto, 0 parole")
+
+# Nota la differenza con un separatore esplicito:
+print("".split())     # []    — lista vuota
+print("".split(","))  # ['']  — lista con una stringa vuota
+```
+
+**Regola da ricordare:** `.split()` senza argomenti su una stringa vuota restituisce `[]`, mentre `.split(",")` restituisce `[""]`: controlla se la stringa è vuota prima di contare parole o campi.

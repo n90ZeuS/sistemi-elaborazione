@@ -338,6 +338,51 @@ voti_primo_semestre <span class="op">=</span> [<span class="mi">28</span>, <span
 tutti_i_voti <span class="op">=</span> voti_primo_semestre <span class="op">+</span> voti_secondo_semestre
 <span class="nb">print</span>(tutti_i_voti)  <span class="cm"># [28, 30, 25, 27, 30, 26]</span></code></pre>
 <p><strong>Regola da ricordare:</strong> <code>.append(x)</code> aggiunge <code>x</code> come singolo elemento; <code>.extend(lista)</code> aggiunge ogni elemento della lista uno per uno — per unire due liste usa <code>.extend()</code> o <code>+</code>.</p>
+<hr>
+<h3>Errore 7: Comprehension troppo complesse — sacrificare la leggibilità</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Nomi in maiuscolo degli studenti con voto almeno 18</span>
+righe <span class="op">=</span> [<span class="st">&quot;Anna,28&quot;</span>, <span class="st">&quot;Marco,15&quot;</span>, <span class="st">&quot;Luca,30&quot;</span>]
+promossi <span class="op">=</span> [r.split(<span class="st">&quot;,&quot;</span>)[<span class="mi">0</span>].upper() <span class="kw">for</span> r <span class="kw">in</span> righe <span class="kw">if</span> <span class="nb">int</span>(r.split(<span class="st">&quot;,&quot;</span>)[<span class="mi">1</span>]) <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>]
+<span class="nb">print</span>(promossi)</code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>[<span class="st">&#x27;ANNA&#x27;</span>, <span class="st">&#x27;LUCA&#x27;</span>]</code></pre>
+<p>Il risultato è corretto, ma il codice è difficile da leggere e da correggere in caso di errore.</p>
+<p><strong>Perché è sbagliato:</strong> Nella stessa riga la stringa viene divisa due volte, un campo viene convertito in numero, un altro messo in maiuscolo e c'è un filtro. Chi legge deve ricostruire tutti questi passi a mente, ed è facile sbagliare un indice senza accorgersene. Quando la regola non sta comodamente in una riga, un ciclo <code>for</code> con variabili dai nomi chiari è più leggibile.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>righe <span class="op">=</span> [<span class="st">&quot;Anna,28&quot;</span>, <span class="st">&quot;Marco,15&quot;</span>, <span class="st">&quot;Luca,30&quot;</span>]
+promossi <span class="op">=</span> []
+<span class="kw">for</span> r <span class="kw">in</span> righe:
+    nome, voto <span class="op">=</span> r.split(<span class="st">&quot;,&quot;</span>)
+    <span class="kw">if</span> <span class="nb">int</span>(voto) <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        promossi.append(nome.upper())
+<span class="nb">print</span>(promossi)  <span class="cm"># [&#x27;ANNA&#x27;, &#x27;LUCA&#x27;]</span></code></pre>
+<p><strong>Regola da ricordare:</strong> Se una list comprehension non si capisce al primo sguardo, riscrivila con un ciclo <code>for</code>.</p>
+<hr>
+<h3>Errore 8: Comportamento inatteso di <code>.split()</code> su stringa vuota</h3>
+<p><strong>Codice errato:</strong></p>
+<pre><code><span class="cm"># Lo studente si aspetta una lista con un elemento vuoto</span>
+testo <span class="op">=</span> <span class="st">&quot;&quot;</span>
+parole <span class="op">=</span> testo.split()
+<span class="nb">print</span>(parole)
+<span class="nb">print</span>(<span class="nb">len</span>(parole))  <span class="cm"># Lo studente si aspetta 1</span></code></pre>
+<p><strong>Cosa succede:</strong></p>
+<pre><code>[]
+<span class="mi">0</span></code></pre>
+<p>La lista è vuota, non contiene una stringa vuota.</p>
+<p><strong>Perché è sbagliato:</strong> Il metodo <code>.split()</code> senza argomenti divide sugli spazi e non mette stringhe vuote nel risultato. Chiamato su una stringa vuota, restituisce una lista vuota <code>[]</code>, non <code>[""]</code>. Con un separatore esplicito il comportamento cambia: <code>"".split(",")</code> restituisce <code>[""]</code>, una lista con un elemento. La differenza conta quando si contano le parole di un testo o i campi di una riga.</p>
+<p><strong>Codice corretto:</strong></p>
+<pre><code>testo <span class="op">=</span> <span class="st">&quot;&quot;</span>
+<span class="kw">if</span> testo:
+    parole <span class="op">=</span> testo.split()
+    <span class="nb">print</span>(<span class="st">f&quot;Ci sono {len(parole)} parole&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Il testo è vuoto, 0 parole&quot;</span>)
+
+<span class="cm"># Nota la differenza con un separatore esplicito:</span>
+<span class="nb">print</span>(<span class="st">&quot;&quot;</span>.split())     <span class="cm"># []    — lista vuota</span>
+<span class="nb">print</span>(<span class="st">&quot;&quot;</span>.split(<span class="st">&quot;,&quot;</span>))  <span class="cm"># [&#x27;&#x27;]  — lista con una stringa vuota</span></code></pre>
+<p><strong>Regola da ricordare:</strong> <code>.split()</code> senza argomenti su una stringa vuota restituisce <code>[]</code>, mentre <code>.split(",")</code> restituisce <code>[""]</code>: controlla se la stringa è vuota prima di contare parole o campi.</p>
 <nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
 </body>
 </html>

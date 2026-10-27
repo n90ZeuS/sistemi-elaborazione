@@ -326,3 +326,197 @@ def estrai_centrali(lista):
 
 **Spiegazione:** Lo slicing `[1:-1]` prende gli elementi dall'indice `1` (secondo elemento) fino all'indice `-1` escluso (cioe esclude l'ultimo). Lo slicing crea sempre una **nuova** lista, quindi il risultato e gia una copia indipendente dall'originale. Modificare la lista restituita non influenzera la lista originale.
 </details>
+
+---
+
+## Cosa stampa questo codice? (list comprehension, `split()` e `join()`)
+
+### Esercizio 11
+
+```python
+numeri = [1, 2, 3, 4, 5, 6, 7, 8]
+pari = [n for n in numeri if n % 2 == 0]
+print(pari)
+doppi = [n * 2 for n in numeri if n < 5]
+print(doppi)
+```
+
+<details>
+<summary>Mostra la risposta</summary>
+
+**Output:**
+```
+[2, 4, 6, 8]
+[2, 4, 6, 8]
+```
+
+**Spiegazione:** La prima list comprehension tiene solo gli elementi pari della lista: `[2, 4, 6, 8]`. La seconda tiene gli elementi minori di 5 (`1, 2, 3, 4`) e li moltiplica per 2 (`2, 4, 6, 8`). I due risultati coincidono per caso, ma le operazioni sono diverse: la prima filtra soltanto, la seconda filtra e trasforma.
+</details>
+
+---
+
+### Esercizio 12
+
+```python
+dati = "rosso,verde,blu,giallo"
+colori = dati.split(",")
+print(colori)
+print(len(colori))
+risultato = " - ".join(colori)
+print(risultato)
+```
+
+<details>
+<summary>Mostra la risposta</summary>
+
+**Output:**
+```
+['rosso', 'verde', 'blu', 'giallo']
+4
+rosso - verde - blu - giallo
+```
+
+**Spiegazione:** `split(",")` divide la stringa in una lista usando la virgola come separatore. `len()` conta gli elementi della lista (4 colori). `" - ".join(colori)` fa l'operazione inversa: unisce gli elementi della lista in un'unica stringa, inserendo `" - "` tra un elemento e l'altro.
+</details>
+
+---
+
+### Esercizio 13
+
+```python
+parole = ["ciao", "mondo", "python", "è", "bello"]
+lunghe = [p.upper() for p in parole if len(p) > 3]
+print(lunghe)
+```
+
+<details>
+<summary>Mostra la risposta</summary>
+
+**Output:**
+```
+['CIAO', 'MONDO', 'PYTHON', 'BELLO']
+```
+
+**Spiegazione:** La comprehension ha tre parti: la trasformazione `p.upper()`, il ciclo `for p in parole` e il filtro `if len(p) > 3`. Si tengono le parole con più di 3 caratteri (si esclude `"è"`, che ne ha 1) e si mettono in maiuscolo. Si legge così: "per ogni `p` in `parole`, **se** la lunghezza è maggiore di 3, prendi `p.upper()`".
+</details>
+
+---
+
+## Trova l'errore (list comprehension, `split()` e `join()`)
+
+### Esercizio 14
+
+Il codice dovrebbe separare cognome e nome, ma genera un errore.
+
+```python
+dati = "Rossi;Marco;25"
+parti = dati.split(",")
+print(f"Cognome: {parti[0]}, Nome: {parti[1]}")
+```
+
+<details>
+<summary>Mostra la risposta</summary>
+
+**Errore:** `IndexError: list index out of range`
+
+**Problema:** La stringa usa il punto e virgola `;` come separatore, ma `split(",")` cerca la virgola `,`. Siccome non ci sono virgole, `split` restituisce una lista con un solo elemento: `["Rossi;Marco;25"]`. L'accesso a `parti[1]` causa un `IndexError`.
+
+**Soluzione:**
+```python
+dati = "Rossi;Marco;25"
+parti = dati.split(";")    # separatore corretto: punto e virgola
+print(f"Cognome: {parti[0]}, Nome: {parti[1]}")
+# stampa: Cognome: Rossi, Nome: Marco
+```
+
+Prima di usare `split()` bisogna controllare quale carattere fa da separatore nei dati.
+</details>
+
+---
+
+### Esercizio 15
+
+Il codice dovrebbe creare la lista dei quadrati dei numeri pari maggiori di 3. Funziona, ma è scritto in modo poco leggibile: come lo riscriveresti?
+
+```python
+numeri = [1, 2, 3, 4, 5, 6]
+quadrati = [n ** 2 for n in numeri if n % 2 == 0 if n > 3]
+print(quadrati)
+```
+
+<details>
+<summary>Mostra la risposta</summary>
+
+**Output:** `[16, 36]`
+
+**Problema:** Python accetta più `if` uno dopo l'altro in una comprehension e li tratta come se fossero uniti da `and`. Il codice quindi funziona, ma chi lo legge può non capire subito che le due condizioni devono valere insieme.
+
+**Versione consigliata:**
+```python
+numeri = [1, 2, 3, 4, 5, 6]
+quadrati = [n ** 2 for n in numeri if n % 2 == 0 and n > 3]
+print(quadrati)  # stampa: [16, 36]
+```
+
+Con `and` le due condizioni si leggono come una sola. I numeri pari **e** maggiori di 3 sono `4` e `6`, i cui quadrati sono `16` e `36`.
+</details>
+
+---
+
+## Completa il codice (list comprehension, `split()` e `join()`)
+
+### Esercizio 16
+
+Completa il codice che crea la lista delle parole di una frase più lunghe di `n` caratteri.
+
+```python
+frase = "il gatto dorme sul divano"
+n = 3
+parole = frase.____________
+lunghe = [_________ for p in _________ if ___________]
+print(lunghe)    # deve stampare ['gatto', 'dorme', 'divano']
+```
+
+<details>
+<summary>Mostra la risposta</summary>
+
+```python
+frase = "il gatto dorme sul divano"
+n = 3
+parole = frase.split()
+lunghe = [p for p in parole if len(p) > n]
+print(lunghe)    # ['gatto', 'dorme', 'divano']
+```
+
+**Spiegazione:** `split()` senza argomenti divide la stringa sugli spazi (anche se sono più di uno di fila). La comprehension scorre ogni parola `p` e la tiene solo se la sua lunghezza supera `n`: `"il"` e `"sul"` restano fuori.
+</details>
+
+---
+
+### Esercizio 17
+
+Completa il codice che pulisce un testo: minuscolo e un solo spazio tra una parola e l'altra.
+
+```python
+testo = "  PYTHON   è   BELLO  "
+testo = testo.____________     # toglie gli spazi all'inizio e alla fine
+testo = testo.____________     # porta in minuscolo
+parole = testo.____________    # divide in parole
+pulito = _________________     # riunisce le parole con un solo spazio
+print(pulito)                  # deve stampare: python è bello
+```
+
+<details>
+<summary>Mostra la risposta</summary>
+
+```python
+testo = "  PYTHON   è   BELLO  "
+testo = testo.strip()
+testo = testo.lower()
+parole = testo.split()
+pulito = " ".join(parole)
+print(pulito)                  # python è bello
+```
+
+**Spiegazione:** (1) `strip()` toglie gli spazi all'inizio e alla fine; (2) `lower()` porta tutto in minuscolo; (3) `split()` divide sugli spazi, anche quando sono più di uno di fila, quindi in `parole` non finiscono stringhe vuote; (4) `" ".join(parole)` ricompone il testo con un solo spazio tra le parole.
+</details>

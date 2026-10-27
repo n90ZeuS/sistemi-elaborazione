@@ -298,4 +298,62 @@ print(f"  (la media mobile riduce la varianza, finestra piu' grande = piu' lisci
 print("  Esercizio 4 superato!\n")
 
 
+# =============================================================================
+# Esercizio 5: Righe di un file CSV (split, strip, list comprehension)
+# Ogni riga contiene nome, età e voto separati da virgole, con spazi in più.
+# Ricavare la lista dei nomi puliti, la lista dei voti come numeri,
+# la media dei voti e i nomi degli studenti con voto almeno 28.
+# =============================================================================
+print("--- Esercizio 5: Righe CSV ---")
+
+righe: list[str] = [
+    "  Anna , 22 , 28 \n",
+    "Marco,21, 25\n",
+    " Luca , 23 ,30",
+    "Sara,22,19  \n",
+    " Giulia , 24 , 29\n",
+]
+
+# Ogni riga diventa una lista di campi puliti: strip della riga, split, strip di ogni campo
+tabella: list[list[str]] = []
+for r in righe:
+    campi: list[str] = [c.strip() for c in r.strip().split(",")]
+    tabella.append(campi)
+
+nomi: list[str] = [campi[0] for campi in tabella]
+voti_csv: list[int] = [int(campi[2]) for campi in tabella]
+bravi: list[str] = [campi[0] for campi in tabella if int(campi[2]) >= 28]
+
+print(f"  Nomi: {nomi}")          # atteso: ['Anna', 'Marco', 'Luca', 'Sara', 'Giulia']
+print(f"  Voti: {voti_csv}")      # atteso: [28, 25, 30, 19, 29]
+print(f"  Media: {sum(voti_csv) / len(voti_csv):.2f}")  # atteso: 26.20
+print(f"  Voto >= 28: {', '.join(bravi)}")  # atteso: Anna, Luca, Giulia
+print()
+
+
+# =============================================================================
+# Esercizio 6: Analisi di una frase (split, join, list comprehension)
+# Data una frase con spazi irregolari:
+#   a) normalizzarla: minuscolo e un solo spazio tra le parole;
+#   b) trovare le parole con più di n caratteri;
+#   c) costruire la sigla con le iniziali maiuscole delle parole lunghe.
+# =============================================================================
+print("--- Esercizio 6: Analisi di una frase ---")
+
+frase_grezza: str = "  La STATISTICA   studia i   fenomeni collettivi  "
+n: int = 3
+
+parole_frase: list[str] = frase_grezza.lower().split()
+normalizzata: str = " ".join(parole_frase)
+lunghe: list[str] = [p for p in parole_frase if len(p) > n]
+sigla: str = "".join([p[0].upper() for p in lunghe])
+
+print(f"  Normalizzata: '{normalizzata}'")  # atteso: 'la statistica studia i fenomeni collettivi'
+print(f"  Parole: {len(parole_frase)}")     # atteso: 6
+print(f"  Più lunghe di {n}: {lunghe}")
+# atteso: ['statistica', 'studia', 'fenomeni', 'collettivi']
+print(f"  Sigla: {sigla}")                  # atteso: SSFC
+print()
+
+
 print("Tutti gli esercizi T11 completati con successo!")

@@ -1,8 +1,8 @@
-# L01 — Ambiente, variabili, condizionali
-# Esercizi per il laboratorio 01
+# L01 — Ambiente, variabili e condizionali
+# Soluzioni degli esercizi del laboratorio 01
 #
-# Esercizi 1-4: soluzioni della traccia (Parte 5 e Sfida di slide e dispensa).
-# Esercizi 5-7: esercizi aggiuntivi per chi ha finito.
+# Esercizi 1-5 e sfida: soluzioni della traccia (stessi nomi di file di
+# slide e dispensa). Esercizi 7-9: esercizi aggiuntivi per chi ha finito.
 #
 # Nella traccia ogni programma legge i dati con input(); qui i dati sono
 # scritti nel codice, cosi' il file si esegue tutto in una volta.
@@ -11,12 +11,31 @@
 # provare casi diversi. Accanto a ogni risultato c'e' il valore atteso.
 
 # ============================================================================
-# ESERCIZIO 1 (base): conversione di temperatura — temperatura.py
+# ESERCIZIO 1: operatori aritmetici — operatori.py
+# ============================================================================
+print("--- Esercizio 1: Operatori aritmetici ---")
+
+a: int = 17
+b: int = 5
+
+print(f"  {a} + {b} = {a + b}")     # 22
+print(f"  {a} - {b} = {a - b}")     # 12
+print(f"  {a} * {b} = {a * b}")     # 85
+print(f"  {a} / {b} = {a / b}")     # 3.4  divisione: sempre float
+print(f"  {a} // {b} = {a // b}")   # 3    divisione intera
+print(f"  {a} % {b} = {a % b}")     # 2    resto
+print(f"  {a} ** {b} = {a ** b}")   # 1419857  potenza
+# Altri casi da provare: a = 20, b = 4 -> 20 / 4 = 5.0 e 20 // 4 = 5
+print()
+
+
+# ============================================================================
+# ESERCIZIO 2: conversione di temperatura — temperatura.py
 # ============================================================================
 # Convertire una temperatura da Celsius a Fahrenheit: F = C * 9/5 + 32
 # Stampare il risultato con una cifra decimale.
 # In piu': conversione in Kelvin (K = C + 273.15) e ritorno a Celsius.
-print("--- Esercizio 1: Conversione di temperatura ---")
+print("--- Esercizio 2: Conversione di temperatura ---")
 
 # celsius: float = float(input("Temperatura in Celsius: "))
 celsius: float = 25.0
@@ -37,16 +56,36 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 2 (intermedio): calcolo IMC con classificazione — imc.py
+# ESERCIZIO 3: prezzo con IVA — iva.py
+# ============================================================================
+print("--- Esercizio 3: Prezzo con IVA ---")
+
+ALIQUOTA_IVA: float = 0.22
+
+# prezzo: float = float(input("Prezzo senza IVA (euro): "))
+prezzo: float = 49.99
+
+iva: float = prezzo * ALIQUOTA_IVA
+totale: float = prezzo + iva
+
+print(f"  Prezzo: {prezzo:.2f} EUR")                    # atteso: 49.99 EUR
+print(f"  IVA: {iva:.2f} EUR ({ALIQUOTA_IVA:.0%})")     # atteso: 11.00 EUR (22%)
+print(f"  Totale: {totale:.2f} EUR")                    # atteso: 60.99 EUR
+# Altri casi da provare: 100 -> IVA 22.00, totale 122.00; 10 -> 2.20, 12.20
+print()
+
+
+# ============================================================================
+# ESERCIZIO 4: calcolo IMC con classificazione — imc.py
 # ============================================================================
 # IMC = peso (kg) / altezza (m) ** 2
 # Fasce OMS:
 #   IMC < 18.5         -> "Sottopeso"
 #   18.5 <= IMC < 25   -> "Normopeso"
 #   25 <= IMC < 30     -> "Sovrappeso"
-#   IMC >= 30          -> "Obesita"
+#   IMC >= 30          -> "Obesità"
 # Validazione: peso e altezza positivi, altezza non oltre 2.50 m.
-print("--- Esercizio 2: Calcolo IMC ---")
+print("--- Esercizio 4: Calcolo IMC ---")
 
 # peso_kg: float = float(input("Peso (kg): "))
 # altezza_m: float = float(input("Altezza (m): "))
@@ -68,37 +107,37 @@ else:
     elif imc < 30.0:
         classificazione = "Sovrappeso"
     else:
-        classificazione = "Obesita"
+        classificazione = "Obesità"
 
     print(f"  IMC: {imc:.1f} — {classificazione}")  # atteso: IMC: 23.5 — Normopeso
 # Altri casi da provare:
 #   80 kg, 1.80 m -> 24.7 Normopeso
 #   50 kg, 1.80 m -> 15.4 Sottopeso
-#   95 kg, 1.75 m -> 31.0 Obesita
+#   95 kg, 1.75 m -> 31.0 Obesità
 #   70 kg, 0 m    -> errore valori non positivi
 #   70 kg, 2.60 m -> errore altezza
 print()
 
 
 # ============================================================================
-# ESERCIZIO 3 (avanzato): simulazione bancomat — bancomat.py
+# ESERCIZIO 5: simulazione bancomat — bancomat.py
 # ============================================================================
 # Saldo iniziale 1000.00 EUR, costante nel codice.
 # Menu: D = deposito, P = prelievo, S = saldo (maiuscole o minuscole).
 # Errori da gestire: operazione non riconosciuta, importo negativo o zero,
 # prelievo superiore al saldo.
-print("--- Esercizio 3: Simulazione bancomat ---")
+print("--- Esercizio 5: Simulazione bancomat ---")
 
 saldo: float = 1000.00
 
 print("  === BANCOMAT ===")
-print(f"  Saldo attuale: {saldo:,.2f} EUR")
+print(f"  Saldo attuale: {saldo:.2f} EUR")
 
 # operazione: str = input("Operazione (D=Deposito, P=Prelievo, S=Saldo): ").upper()
 operazione: str = "p".upper()
 
 if operazione == "S":
-    print(f"  Saldo disponibile: {saldo:,.2f} EUR")
+    print(f"  Saldo disponibile: {saldo:.2f} EUR")
 elif operazione == "D" or operazione == "P":
     # importo: float = float(input("Importo: "))
     importo: float = 250.0
@@ -107,19 +146,19 @@ elif operazione == "D" or operazione == "P":
         print("  Errore: l'importo deve essere positivo")
     elif operazione == "D":
         saldo = saldo + importo
-        print(f"  Deposito di {importo:,.2f} EUR effettuato.")
-        print(f"  Nuovo saldo: {saldo:,.2f} EUR")
+        print(f"  Deposito di {importo:.2f} EUR effettuato.")
+        print(f"  Nuovo saldo: {saldo:.2f} EUR")
     elif importo > saldo:
-        print(f"  Errore: saldo insufficiente ({saldo:,.2f} EUR disponibili)")
+        print(f"  Errore: saldo insufficiente ({saldo:.2f} EUR disponibili)")
     else:
         saldo = saldo - importo
-        print(f"  Prelievo di {importo:,.2f} EUR effettuato.")
-        print(f"  Nuovo saldo: {saldo:,.2f} EUR")
+        print(f"  Prelievo di {importo:.2f} EUR effettuato.")
+        print(f"  Nuovo saldo: {saldo:.2f} EUR")
 else:
     print(f"  Errore: operazione '{operazione}' non riconosciuta")
 # atteso: Prelievo di 250.00 EUR effettuato. Nuovo saldo: 750.00 EUR
 # Altri casi da provare:
-#   "d", 500   -> Nuovo saldo: 1,500.00 EUR
+#   "d", 500   -> Nuovo saldo: 1500.00 EUR
 #   "P", 2000  -> saldo insufficiente
 #   "P", -10   -> importo non positivo
 #   "X"        -> operazione non riconosciuta
@@ -127,7 +166,7 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 4 (sfida): convertitore e classificatore — sfida_temperatura.py
+# ESERCIZIO 6 (sfida): convertitore e classificatore — sfida_temperatura.py
 # ============================================================================
 # Convertire Celsius in Fahrenheit e classificare la percezione:
 #   C <= -10        -> Gelido
@@ -136,7 +175,7 @@ print()
 #   18 < C <= 30    -> Caldo
 #   C > 30          -> Torrido
 # Sotto lo zero assoluto (-273.15) stampare un errore e non proseguire.
-print("--- Esercizio 4: Sfida temperatura ---")
+print("--- Esercizio 6: Sfida temperatura ---")
 
 ZERO_ASSOLUTO: float = -273.15
 
@@ -175,11 +214,11 @@ print()
 # ============================================================================
 
 # ============================================================================
-# ESERCIZIO 5: calcolo dell'interesse composto
+# ESERCIZIO 7: calcolo dell'interesse composto
 # ============================================================================
 # Formula: A = P * (1 + r/n) ** (n*t)
 # P = capitale iniziale, r = tasso annuo, n = composizioni/anno, t = anni
-print("--- Esercizio 5: Interesse composto ---")
+print("--- Esercizio 7: Interesse composto ---")
 
 capitale: float = 1000.0
 tasso_annuo: float = 0.05        # 5% scritto come decimale
@@ -189,22 +228,22 @@ anni: int = 10
 montante: float = capitale * (1 + tasso_annuo / composizioni_anno) ** (composizioni_anno * anni)
 interesse: float = montante - capitale
 
-print(f"  Capitale iniziale: {capitale:,.2f} EUR")
-print(f"  Montante finale:   {montante:,.2f} EUR")   # atteso: 1,647.01 EUR
-print(f"  Interesse:         {interesse:,.2f} EUR")  # atteso: 647.01 EUR
-# Provate composizioni_anno = 1: il montante atteso diventa 1,628.89 EUR
+print(f"  Capitale iniziale: {capitale:.2f} EUR")
+print(f"  Montante finale:   {montante:.2f} EUR")   # atteso: 1647.01 EUR
+print(f"  Interesse:         {interesse:.2f} EUR")  # atteso: 647.01 EUR
+# Provate composizioni_anno = 1: il montante atteso diventa 1628.89 EUR
 print()
 
 
 # ============================================================================
-# ESERCIZIO 6: classificazione di un triangolo per lati
+# ESERCIZIO 8: classificazione di un triangolo per lati
 # ============================================================================
 # Dato un triangolo con lati a, b, c:
 # - Non valido: un lato non positivo, oppure un lato >= somma degli altri due
 # - Equilatero: tutti i lati uguali
 # - Isoscele: esattamente due lati uguali
 # - Scaleno: tutti i lati diversi
-print("--- Esercizio 6: Classificazione triangolo ---")
+print("--- Esercizio 8: Classificazione triangolo ---")
 
 a: float = 5.0
 b: float = 3.0
@@ -233,7 +272,7 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 7: calcolatore di tasse semplificato (a scaglioni)
+# ESERCIZIO 9: calcolatore di tasse semplificato (a scaglioni)
 # ============================================================================
 # Sistema a scaglioni IRPEF semplificato:
 #   Fino a 15.000      -> 23%
@@ -246,7 +285,7 @@ print()
 #   primo scaglione pieno:   15000 * 0.23 = 3450
 #   secondo scaglione pieno: 13000 * 0.25 = 3250
 #   terzo scaglione pieno:   22000 * 0.35 = 7700
-print("--- Esercizio 7: IRPEF a scaglioni ---")
+print("--- Esercizio 9: IRPEF a scaglioni ---")
 
 reddito: float = 60_000.0
 
@@ -262,15 +301,15 @@ elif reddito <= 50_000:
 else:
     tassa = 3450 + 3250 + 7700 + (reddito - 50_000) * 0.43
 
-print(f"  Reddito: {reddito:,.2f} EUR")
-print(f"  IRPEF:   {tassa:,.2f} EUR")  # atteso: 18,700.00 EUR
+print(f"  Reddito: {reddito:.2f} EUR")
+print(f"  IRPEF:   {tassa:.2f} EUR")  # atteso: 18700.00 EUR
 
 if reddito > 0:
-    aliquota_effettiva: float = tassa / reddito * 100
-    print(f"  Aliquota effettiva: {aliquota_effettiva:.2f}%")  # atteso: 31.17%
+    aliquota_effettiva: float = tassa / reddito
+    print(f"  Aliquota effettiva: {aliquota_effettiva:.2%}")  # atteso: 31.17%
 # Altri casi da provare:
-#   10000 -> 2,300.00   15000 -> 3,450.00 (23.00%)
-#   20000 -> 4,700.00   30000 -> 7,400.00
+#   10000 -> 2300.00   15000 -> 3450.00 (23.00%)
+#   20000 -> 4700.00   30000 -> 7400.00
 #   0     -> 0.00 (nessuna aliquota effettiva)
 print()
 

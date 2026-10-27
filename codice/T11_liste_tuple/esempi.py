@@ -335,4 +335,91 @@ for pos, stud in enumerate(per_media, start=1):
     print(f"    {pos}. {stud.nome} — media: {stud.media}")
 
 
+# =============================================================================
+# 8. List comprehension
+# =============================================================================
+print("\n--- 8. List comprehension ---")
+
+# Sintassi: [espressione for variabile in sequenza]
+# Con un ciclo: si parte da una lista vuota e si aggiunge con append()
+quadrati_ciclo: list[int] = []
+for n in range(1, 11):
+    quadrati_ciclo.append(n ** 2)
+
+# Con una comprehension: stesso risultato in una riga
+quadrati: list[int] = [n ** 2 for n in range(1, 11)]
+print(f"  Quadrati 1-10: {quadrati}")   # [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+print(f"  Uguali al ciclo? {quadrati == quadrati_ciclo}")  # True
+
+# La sequenza può essere anche una stringa: il risultato è sempre una lista
+lettere_maiuscole: list[str] = [c.upper() for c in "ciao"]
+print(f"  Lettere: {lettere_maiuscole}")  # ['C', 'I', 'A', 'O']
+
+# Conversione di tipo: da stringhe a numeri
+temperature_testo: list[str] = ["36.5", "37.2", "38.1", "36.8", "37.0"]
+temperature: list[float] = [float(t) for t in temperature_testo]
+print(f"  Temperature: {temperature}")   # [36.5, 37.2, 38.1, 36.8, 37.0]
+print(f"  Massima: {max(temperature)}")  # 38.1
+
+# Con filtro: [espressione for variabile in sequenza if condizione]
+voti_esame: list[int] = [28, 15, 22, 30, 17, 25, 10, 19, 30, 24]
+sufficienti: list[int] = [v for v in voti_esame if v >= 18]
+print(f"  Voti sufficienti: {sufficienti}")  # [28, 22, 30, 25, 19, 30, 24]
+print(f"  Promossi: {len(sufficienti)} su {len(voti_esame)}")  # Promossi: 7 su 10
+
+pari: list[int] = [n for n in range(1, 21) if n % 2 == 0]
+print(f"  Pari 1-20: {pari}")  # [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+# Filtro e trasformazione insieme: quadrati dei soli dispari
+quadrati_dispari: list[int] = [n ** 2 for n in range(1, 11) if n % 2 != 0]
+print(f"  Quadrati dei dispari: {quadrati_dispari}")  # [1, 9, 25, 49, 81]
+
+# Da Fahrenheit a Celsius, solo le temperature sopra 50 °F
+fahrenheit: list[float] = [32.0, 68.0, 95.0, 14.0, 77.0, 50.0]
+celsius: list[float] = [round((f - 32) * 5 / 9, 1) for f in fahrenheit if f > 50]
+print(f"  Celsius: {celsius}")  # [20.0, 35.0, 25.0]
+
+
+# =============================================================================
+# 9. Stringhe e liste: split() e join()
+# =============================================================================
+print("\n--- 9. split() e join() ---")
+
+# split() senza argomento divide su uno o più spazi
+frase: str = "uno  due tre   quattro cinque"
+parole_frase: list[str] = frase.split()
+print(f"  {parole_frase}")       # ['uno', 'due', 'tre', 'quattro', 'cinque']
+print(f"  Numero di parole: {len(parole_frase)}")  # 5
+
+# split(separatore) divide sul separatore indicato
+riga_csv: str = "Anna,28,Economia,Padova"
+campi: list[str] = riga_csv.split(",")
+print(f"  {campi}")              # ['Anna', '28', 'Economia', 'Padova']
+print(f"  Età: {int(campi[1])}")  # Età: 28 (i campi sono stringhe: serve int())
+
+# join() fa il contrario: unisce una lista di stringhe con un separatore
+print(f"  {' - '.join(parole_frase)}")  # uno - due - tre - quattro - cinque
+print(f"  {';'.join(campi)}")           # Anna;28;Economia;Padova
+print(f"  {'-'.join('abc')}")           # a-b-c (anche una stringa è una sequenza)
+
+# Pulire una riga di dati in tre passi: strip della riga, split, strip di ogni campo
+riga_grezza: str = "  Anna , 28 , Economia , 105  \n"
+riga_pulita: str = riga_grezza.strip()
+campi_grezzi: list[str] = riga_pulita.split(",")
+print(f"  {campi_grezzi}")       # ['Anna ', ' 28 ', ' Economia ', ' 105']
+campi_puliti: list[str] = [c.strip() for c in campi_grezzi]
+print(f"  {campi_puliti}")       # ['Anna', '28', 'Economia', '105']
+
+# Da una riga di numeri a una lista di numeri
+riga_voti: str = "28; 30; 25; 27"
+voti_letti: list[int] = [int(v) for v in riga_voti.split(";")]
+print(f"  Voti: {voti_letti}, media: {sum(voti_letti) / len(voti_letti):.2f}")
+# Voti: [28, 30, 25, 27], media: 27.50
+
+# Iniziali di un nome completo: split, comprehension, join
+nome_completo: str = "maria luisa bianchi"
+iniziali: list[str] = [p[0].upper() for p in nome_completo.split()]
+print(f"  Iniziali: {'.'.join(iniziali)}.")  # Iniziali: M.L.B.
+
+
 print("\nTutti gli assert passati — esempi T11 completati con successo!")

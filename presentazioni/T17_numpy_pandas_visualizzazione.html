@@ -314,6 +314,41 @@
                 border: 1px solid #ccc;
             }
         }
+        /* === ESERCIZI E SOLUZIONI === */
+        .reveal .tag {
+            display: inline-block;
+            font-size: 0.55em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2em 0.7em;
+            border-radius: 4px;
+            margin-bottom: 0.2em;
+        }
+        .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
+        .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
+        .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .etichetta {
+            font-size: 0.6em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0.5em 0 0.2em;
+        }
+        .reveal .consegna { font-size: 0.74em; margin-left: 1.1em; }
+        .reveal .consegna li { margin-bottom: 0.25em; line-height: 1.4; }
+        .reveal .prove { font-size: 0.66em; margin-left: 1em; }
+        .reveal .prove li { margin-bottom: 0.15em; }
+        .reveal pre.output { font-size: 0.6em; margin: 0.2em 0; }
+        .reveal pre.output code { white-space: pre-wrap; word-break: break-word; }
+        .reveal .columns > .col { min-width: 0; }
+        .reveal pre.small { font-size: 0.5em; margin: 0.2em 0; }
+        .reveal pre.small code { max-height: none; line-height: 1.35; }
+        .reveal table.mini { font-size: 0.62em; margin: 0.3em 0; }
+        .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
+        .reveal .note-sol { font-size: 0.7em; }
+        .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -336,6 +371,7 @@
                 <div class="columns">
                     <div class="col">
                         <ol>
+                    <li class="fragment"><strong>Soluzioni del laboratorio 5</strong></li>
                             <li class="fragment"><strong>NumPy</strong> — il motore del calcolo numerico
                                 <ul>
                                     <li>Array <code>ndarray</code> e creazione</li>
@@ -357,6 +393,335 @@
                     </div>
                 </div>
             </section>
+
+            <!-- SOLUZIONI LAB (generato) -->
+            <section>
+                <section class="section-slide">
+                    <h2>Soluzioni del laboratorio 5</h2>
+                    <p>File e gestione dati</p>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L05»
+Da dire: prima di iniziare l'argomento nuovo vediamo le soluzioni degli esercizi del laboratorio. Il codice completo è nel file degli esercizi di L05.
+Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da quelli se manca tempo.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>conta_righe.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from pathlib import Path
+
+percorso: Path = Path("commenti.txt")
+righe: int = 0
+vuote: int = 0
+parole: int = 0
+max_parole: int = 0
+riga_max: int = 0</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>with open(percorso, "r", encoding="utf-8") as f:
+    for riga in f:
+        righe += 1
+        n: int = len(riga.split())   # split() ignora anche "\n"
+        if n == 0:
+            vuote += 1
+        parole += n
+        if n &gt; max_parole:
+            max_parole = n
+            riga_max = righe
+
+commenti: int = righe - vuote
+print(f"File: {percorso.name}")
+print(f"Righe: {righe}, di cui vuote: {vuote}")
+print(f"Parole: {parole}")
+print(f"Parole per commento: {parole / commenti:.1f}")
+print(f"Commento più lungo: riga {riga_max}, {max_parole} parole")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>for riga in f</code> legge una riga alla volta; ogni riga finisce con <code>\n</code>, che <code>split()</code> ignora.</li><li>Il commento più lungo si trova con il pattern del massimo: si salva anche il numero di riga.</li><li>Il file viene chiuso dal <code>with</code> alla fine del blocco, anche in caso di errore.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L05»
+Da dire: è il ciclo sulle righe di un file, uguale a quello su una lista. La riga vuota contiene solo \n: split() restituisce una lista vuota.
+Chiedere / fare: 7 commenti e 47 parole → 6.7 parole per commento.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>parole_frequenti.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter
+from pathlib import Path
+
+PUNTEGGIATURA: str = ".,;:!?"
+LUNGHEZZA_MINIMA: int = 5
+
+def parole_del_file(percorso: Path) -&gt; list[str]:
+    """Parole del file in minuscolo, senza punteggiatura."""
+    parole: list[str] = []
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in f:
+            for parola in riga.lower().split():
+                parole.append(parola.strip(PUNTEGGIATURA))
+    return parole</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>tutte: list[str] = parole_del_file(Path("commenti.txt"))
+lunghe: list[str] = [p for p in tutte
+                     if len(p) &gt;= LUNGHEZZA_MINIMA]
+conteggi: Counter[str] = Counter(lunghe)
+
+print(f"Parole: {len(tutte)}, distinte: {len(set(tutte))}")
+print(f"Parole di almeno {LUNGHEZZA_MINIMA} lettere: {len(lunghe)}")
+for parola, volte in conteggi.most_common(3):
+    print(f"{parola}: {volte}")</code></pre></div></div>
+                    <ul class="note-sol"><li>La funzione separa la lettura del file dall'analisi: restituisce una lista di parole pulite.</li><li><code>strip(".,;:!?")</code> toglie i segni di punteggiatura solo all'inizio e alla fine della parola.</li><li><code>Counter.most_common(3)</code> restituisce coppie (parola, conteggio) dalla più frequente.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L05»
+Da dire: senza lower() «Esercizi» ed «esercizi» sarebbero due parole diverse. Il filtro sulla lunghezza toglie articoli e preposizioni.
+Chiedere / fare: quante parole distinte senza lower()? (Far provare.)</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>esiti_appello.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import csv
+from pathlib import Path
+
+VOTO_MINIMO: int = 18
+
+def leggi_appello(percorso: Path) -&gt; list[dict[str, str]]:
+    """Righe del CSV come dizionari (separatore ;)."""
+    with open(percorso, "r", encoding="utf-8") as f:
+        return list(csv.DictReader(f, delimiter=";"))</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>studenti: list[dict[str, str]] = leggi_appello(Path("appello.csv"))
+voti: list[int] = [int(s["voto"]) for s in studenti]
+promossi: list[int] = [v for v in voti if v &gt;= VOTO_MINIMO]
+migliore: dict[str, str] = max(studenti,
+                               key=lambda s: int(s["voto"]))
+
+print(f"Iscritti: {len(studenti)}")
+print(f"Promossi: {len(promossi)} "
+      f"({len(promossi) / len(studenti):.1%})")
+print(f"Media di tutti: {sum(voti) / len(voti):.1f}")
+print(f"Media dei promossi: {sum(promossi) / len(promossi):.1f}")
+print(f"Voto più alto: {migliore['voto']} "
+      f"({migliore['cognome']} {migliore['nome']})")</code></pre></div></div>
+                    <ul class="note-sol"></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L05»
+Da dire: stesso file letto due volte, prima per calcolare, poi per produrre un report. Senza delimiter=";" DictReader vede una sola colonna.
+Chiedere / fare: aprire verbale.txt nell'editor dopo l'esecuzione.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>verbale.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import csv
+from pathlib import Path
+
+VOTO_MINIMO: int = 18
+
+with open(Path("appello.csv"), "r", encoding="utf-8") as f:
+    studenti: list[dict[str, str]] = list(
+        csv.DictReader(f, delimiter=";"))
+
+ordinati: list[dict[str, str]] = sorted(
+    studenti, key=lambda s: s["cognome"])
+promossi: int = 0</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>verbale: Path = Path("verbale.txt")
+with open(verbale, "w", encoding="utf-8") as f:
+    f.write("Verbale dell'appello\n")
+    for s in ordinati:
+        voto: int = int(s["voto"])
+        esito: str = "respinto"
+        if voto &gt;= VOTO_MINIMO:
+            esito = "promosso"
+            promossi += 1
+        f.write(f"{s['matricola']} {s['cognome']} {s['nome']}: "
+                f"{voto}, {esito}\n")
+    f.write(f"Promossi: {promossi} su {len(studenti)}\n")
+
+print(verbale.read_text(encoding="utf-8"), end="")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>DictReader</code> usa l'intestazione come chiavi: si scrive <code>s["voto"]</code> invece di <code>s[3]</code>. I valori sono sempre stringhe.</li><li><code>max</code> e <code>sorted</code> con <code>key=lambda</code> scelgono il campo su cui confrontare le righe.</li><li>In <code>verbale.py</code> si scrive con <code>"w"</code>: il file viene ricreato a ogni esecuzione. <code>write</code> non aggiunge l'a capo.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L05»
+Da dire: stesso file letto due volte, prima per calcolare, poi per produrre un report. Senza delimiter=";" DictReader vede una sola colonna.
+Chiedere / fare: aprire verbale.txt nell'editor dopo l'esecuzione.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>spese.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import csv
+from collections import defaultdict
+from pathlib import Path
+
+SPESE: Path = Path("spese.csv")
+
+data: str = input("Data (aaaa-mm-gg): ")
+categoria: str = input("Categoria: ").strip().lower()
+try:
+    importo: float = float(input("Importo: "))
+except ValueError:
+    print("Importo non valido: spesa non registrata")
+else:
+    with open(SPESE, "a", encoding="utf-8", newline="") as f:
+        csv.writer(f, delimiter=";").writerow(
+            [data, categoria, f"{importo:.2f}"])</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>totali: defaultdict[str, float] = defaultdict(float)
+with open(SPESE, "r", encoding="utf-8") as f:
+    for riga in csv.DictReader(f, delimiter=";"):
+        totali[riga["categoria"]] += float(riga["importo"])
+
+for cat, totale in sorted(totali.items(),
+                          key=lambda c: c[1], reverse=True):
+    print(f"{cat}: {totale:.2f} EUR")
+print(f"Totale: {sum(totali.values()):.2f} EUR")</code></pre></div></div>
+                    <ul class="note-sol"><li>La modalità <code>"a"</code> scrive in fondo al file senza cancellare il contenuto; <code>newline=""</code> evita righe vuote in più su Windows.</li><li>Il <code>try/except/else</code> scrive la riga solo se <code>float()</code> è andato a buon fine.</li><li>Il <code>defaultdict(float)</code> parte da 0.0 per ogni nuova categoria.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L05»
+Da dire: il file è un registro che cresce a ogni esecuzione. Se il file non finisce con un a capo, la nuova riga si attacca all'ultima.
+Chiedere / fare: cosa succede con "w" al posto di "a"? Resta solo la nuova riga, senza intestazione.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>sondaggio.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import json
+from pathlib import Path
+
+def media(valori: list[int]) -&gt; float:
+    """Media aritmetica arrotondata a due decimali."""
+    return round(sum(valori) / len(valori), 2)
+
+with open(Path("sondaggio.json"), "r", encoding="utf-8") as f:
+    dati: dict = json.load(f)
+
+risposte: list[dict] = dati["risposte"]
+tutti: list[int] = [r["voto"] for r in risposte]
+freq: list[int] = [r["voto"] for r in risposte if r["frequenta"]]
+non_freq: list[int] = [r["voto"] for r in risposte
+                       if not r["frequenta"]]</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>riepilogo: dict[str, str | int | float] = {
+    "corso": dati["corso"],
+    "risposte": len(risposte),
+    "media": media(tutti),
+    "media_frequentanti": media(freq),
+    "media_non_frequentanti": media(non_freq),
+    "quota_frequentanti": round(len(freq) / len(risposte), 3),
+}
+with open(Path("riepilogo.json"), "w", encoding="utf-8") as f:
+    json.dump(riepilogo, f, indent=2, ensure_ascii=False)
+
+print(f"{dati['corso']} ({dati['anno']})")
+print(f"Risposte: {len(risposte)}")
+print("Salvato riepilogo.json:")
+print(json.dumps(riepilogo, indent=2, ensure_ascii=False))</code></pre></div></div>
+                    <ul class="note-sol"><li><code>json.load</code> trasforma il file in oggetti Python: <code>true</code> diventa <code>True</code>, gli oggetti diventano dizionari.</li><li>Le comprehension con filtro separano frequentanti e non frequentanti.</li><li><code>json.dump</code> scrive su file, <code>json.dumps</code> produce una stringa: con <code>indent=2</code> il risultato è leggibile.</li></ul>
+                    <aside class="notes">⏱ 3' · blocco «Soluzioni L05»
+Da dire: il JSON conserva i tipi (numeri, booleani, liste), il CSV no. Per questo r["voto"] è già un int.
+Chiedere / fare: frequentanti 4.25, non frequentanti 3.0.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>appello_robusto.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import csv
+from pathlib import Path
+
+nome: str = input("File da leggere: ")
+voti: list[int] = []
+scartate: int = 0
+
+try:
+    with open(Path(nome), "r", encoding="utf-8") as f:
+        lettore = csv.DictReader(f, delimiter=";")
+        for numero, riga in enumerate(lettore, start=2):
+            testo: str = riga["voto"]
+            try:
+                voto: int = int(testo)
+            except ValueError:</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>                scartate += 1
+                continue
+            if voto &lt; 0 or voto &gt; 30:
+                print(f"Riga {numero}: voto fuori scala {voto}")
+                scartate += 1
+            else:
+                voti.append(voto)
+except FileNotFoundError:
+    print(f"Il file {nome} non esiste")
+except KeyError:
+    print(f"Il file {nome} non ha la colonna voto")
+else:
+    print(f"Voti validi: {len(voti)}, righe scartate: {scartate}")
+    if len(voti) &gt; 0:
+        print(f"Media: {sum(voti) / len(voti):.1f}")</code></pre></div></div>
+                    <ul class="note-sol"><li>Il <code>try</code> esterno gestisce gli errori sul file intero; il <code>try</code> interno quelli di una singola riga, così una riga sbagliata non ferma il programma.</li><li><code>continue</code> passa alla riga successiva dopo aver contato lo scarto.</li><li>Il blocco <code>else</code> viene eseguito solo se il file è stato letto senza errori.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L05»
+Da dire: due livelli di errore. File mancante: non si può fare niente e si avvisa. Voto illeggibile: si scarta la riga e si continua.
+Chiedere / fare: int("") dà ValueError come int("assente"); 33 è un intero valido e va scartato con un if.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>config_soglia.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import csv
+import json
+from pathlib import Path
+
+def sopra_soglia(file: str, colonna: str,
+                 soglia: int) -&gt; list[str]:
+    """Cognomi degli studenti con valore &gt;= soglia."""
+    cognomi: list[str] = []
+    with open(Path(file), "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            if int(riga[colonna]) &gt;= soglia:
+                cognomi.append(riga["cognome"])
+    return cognomi</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>try:
+    with open(Path("config.json"), "r", encoding="utf-8") as f:
+        config: dict = json.load(f)
+    cognomi: list[str] = sopra_soglia(
+        config["file"], config["colonna"], config["soglia"])
+except FileNotFoundError as e:
+    print(f"File non trovato: {e.filename}")
+except json.JSONDecodeError as e:
+    print(f"config.json non valido alla riga {e.lineno}")
+except KeyError as e:
+    print(f"Chiave mancante: {e}")
+except ValueError:
+    print("La colonna scelta non contiene numeri interi")
+else:
+    print(f"File: {config['file']}, soglia: {config['soglia']}")
+    print(f"Sopra soglia: {len(cognomi)}")
+    print(", ".join(sorted(cognomi)))</code></pre></div></div>
+                    <ul class="note-sol"><li>Un solo <code>try</code> con più <code>except</code>: ogni eccezione ha il suo messaggio.</li><li><code>FileNotFoundError</code> scatta sia per <code>config.json</code> sia per il CSV indicato dentro: <code>e.filename</code> dice quale.</li><li><code>KeyError</code> copre sia una chiave mancante nella configurazione sia una colonna inesistente nel CSV.</li></ul>
+                    <aside class="notes">⏱ 4' · blocco «Soluzioni L05»
+Da dire: è EAFP: si prova a usare le chiavi e si gestisce l'errore, invece di controllare ogni chiave con in.
+Chiedere / fare: con "soglia": "27" si ottiene TypeError, che non è gestito: il programma si ferma.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 5</div>
+                    <h2>pipeline_pm10.py</h2>
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>import csv
+import json
+from collections import defaultdict
+from pathlib import Path
+
+LIMITE: float = 50.0     # limite giornaliero PM10 in µg/m³
+
+def pulisci(percorso: Path) -&gt; tuple[dict[str, list[float]], int]:
+    misure: defaultdict[str, list[float]] = defaultdict(list)
+    scartate: int = 0
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            stazione: str = riga["stazione"].strip().title()
+            try:
+                pm10: float = float(riga["pm10"].replace(",", "."))
+            except ValueError:
+                pm10 = -1.0      # illeggibile: verrà scartata
+            if stazione == "" or pm10 &lt; 0:
+                scartate += 1
+            else:
+                misure[stazione].append(pm10)
+    return misure, scartate</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>if __name__ == "__main__":
+    misure, scartate = pulisci(Path("rilevazioni.csv"))
+    report: dict[str, dict[str, float]] = {}
+    for stazione, valori in sorted(misure.items()):
+        report[stazione] = {
+            "media": round(sum(valori) / len(valori), 1),
+            "massimo": max(valori),
+            "giorni_oltre": len([v for v in valori if v &gt; LIMITE])}
+        print(f"{stazione}: {report[stazione]}")
+    with open(Path("pm10.json"), "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+    print(f"Righe scartate: {scartate}. Salvato pm10.json")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>pulisci</code> si occupa solo di leggere e scartare; il calcolo delle statistiche e il salvataggio stanno nel blocco <code>__main__</code>.</li><li>Un valore illeggibile diventa -1.0, così la stessa condizione scarta i valori non numerici e quelli negativi.</li><li><code>strip().title()</code> unisce <code>Mandria</code>, <code> mandria </code> e <code>MANDRIA</code> nella stessa stazione.</li></ul>
+                    <aside class="notes">⏱ 5' · blocco «Soluzioni L05»
+Da dire: sono i passi di ogni analisi: caricamento, pulizia, statistiche, salvataggio. Su 10 righe ne scartiamo 4: con dati reali conviene sempre contare gli scarti.
+Chiedere / fare: Mandria supera il limite 2 giorni su 3.</aside>
+                </section>
+            </section>
+            <!-- FINE SOLUZIONI LAB -->
 
             <!-- ========== SEZIONE 1: NUMPY ========== -->
             <section>

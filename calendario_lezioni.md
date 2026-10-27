@@ -179,15 +179,14 @@
 
 **Quando:** giovedì 22 ottobre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
-**Prerequisiti frontali:** F7, F8
+**Prerequisiti frontali:** T07, T08
 
 | Attività | Descrizione |
 |----------|-------------|
-| Setup ambiente | Installazione/verifica Python, VS Code, familiarizzazione con l'interfaccia, terminale, REPL |
-| Esercizi su variabili e tipi | Creare variabili tipizzate, conversioni, esplorare `type()`, operatori aritmetici e di confronto |
-| Esercizi su I/O | Programmi che leggono input, calcolano e stampano risultati formattati con f-string |
-| Esercizi su condizionali | Classificatore di dati (es: dato un reddito, determinare la fascia ISEE), calcolatrice con scelta dell'operazione |
-| Sfida | Data una temperatura in Celsius, convertirla in Fahrenheit e classificarla (gelido/freddo/mite/caldo/torrido) con type hints e output formattato |
+| Preparazione | Verifica di Python, cartella di lavoro in VS Code, primo file `saluto.py` eseguito da terminale |
+| Esercizi 1-3 | Operatori aritmetici; conversione Celsius-Fahrenheit con `input()`; prezzo con IVA (formati `.2f` e `.0%`) |
+| Esercizi 4-5 | Indice di massa corporea con validazione e classi; bancomat con condizioni annidate |
+| Sfida | Data una temperatura in Celsius, convertirla in Fahrenheit e classificarla (gelido/freddo/mite/caldo/torrido) |
 
 **Nota metodologica:** tutti gli esercizi usano type hints. Il linter viene introdotto come strumento di feedback immediato.
 
@@ -212,39 +211,35 @@
 
 ---
 
-### T10 — Comprehension e stringhe
+### T10 — Stringhe
 
 **Quando:** mercoledì 28 ottobre 2026, 10:30-12:30 — P1 - Ricci Curbastro
 
-**Argomenti dal programma:** §2.2.4, §2.3.6
+**Argomenti dal programma:** §2.3.6
 
 | Tema | Contenuto |
 |------|-----------|
-| List comprehension | Sintassi, filtri, quando usarle vs cicli espliciti |
-| Dict e set comprehension | `{k: v for ...}`, `{x for ...}` |
-| Generator expression | Lazy evaluation, risparmio di memoria — `(x for x in ...)` |
-| Best practice | Comprehension semplici sì, annidate o complesse no. Mai per side effect |
-| Stringhe come struttura dati | Sequenze immutabili, indicizzazione, slicing |
-| Metodi fondamentali | `strip()`, `split()`, `join()`, `replace()`, `find()`, `upper()`, `lower()`, `isdigit()` |
-| Pattern di pulizia dati | Split + strip per parsing CSV manuale. Cenni su regex (`re`) |
-
-**Live coding:** da una stringa grezza di dati (es: `"Roma;2850000;Lazio"`) estrarre, pulire e trasformare i campi. List comprehension per filtrare una lista di temperature.
+| Soluzioni del laboratorio 1 | Temperatura, IMC, bancomat, sfida temperatura |
+| Stringhe come sequenze | Sequenze immutabili, indici, slicing, ciclo `for` su una stringa |
+| Metodi fondamentali | `strip()`, `replace()`, `count()`, `find()`, `index()`, `startswith()`, `endswith()`, `upper()`, `lower()`, `title()`, `isdigit()`, `isalpha()` |
+| Formattare i numeri | Formati `.2f` e `.1%` nelle f-string |
+| Esercizi in aula | Contare un carattere, separare nome ed estensione di un file, nome e iniziali, controllo di un CAP |
 
 ---
 
-### 🖥️ L02 — Cicli, comprehension e stringhe
+### 🖥️ L02 — Cicli e stringhe
 
 **Quando:** giovedì 29 ottobre 2026, 12:30-14:30 e 14:30-16:30 — SC140 (due turni)
 
-**Prerequisiti frontali:** F9, T10
+**Prerequisiti frontali:** T09, T10
 
 | Attività | Descrizione |
 |----------|-------------|
-| Esercizi sui cicli | Calcolare media, minimo, massimo di una serie di numeri inseriti dall'utente (con `while` per input variabile). Tavola pitagorica con cicli annidati |
-| Pattern recognition | Dato un elenco di valori, contare quanti sono sopra/sotto la media (pattern accumulatore + contatore) |
-| Comprehension | Riscrivere i cicli precedenti come comprehension dove appropriato. Creare un dizionario frequenze da una lista |
-| Manipolazione stringhe | Pulire e normalizzare dati testuali (nomi con spazi, maiuscole/minuscole inconsistenti, separatori variabili) |
-| Sfida | Leggere una stringa multi-riga con dati separati da `;`, pulirla, calcolare statistiche descrittive e stampare un report formattato |
+| Tema | Esercizi a tema Halloween, in ordine di difficoltà |
+| Esercizi 1-4 | Epidemia zombie (`for`), giorno in cui cade la città (`while`), numeri del venerdì 17, divisori e numeri primi (la cena di Dracula) |
+| Esercizi 5-6 | L'epitaffio: costo dell'incisione contando lettere, cifre e simboli; anagrammi confrontando `count()` lettera per lettera |
+| Esercizi 7-8 | Bottino della notte: caramelle lette casa per casa finché l'utente scrive «fine» (totale, media, casa più generosa, percentuale di porte chiuse); login di Dracula con controllo dei requisiti |
+| Sfida | Simulazione di un'apocalisse zombie con esercito: vittoria, apocalisse o stallo |
 
 ---
 
@@ -262,6 +257,8 @@
 | Tuple | Sequenza ordinata e immutabile. Perché esistono: garanzia, hashabilità, efficienza |
 | Unpacking | `lat, lon = coordinate` — idiomatico con tuple, valori di ritorno multipli |
 | Named tuple | Cenni: tuple con campi nominati, un passo verso le classi |
+| List comprehension | Sintassi, filtro, quando usare invece un ciclo `for` |
+| Stringhe e liste | `split()` e `join()`; pulire una riga di dati con strip + split + comprehension |
 
 **Live coding:** gestione di un elenco di studenti con operazioni CRUD (create, read, update, delete) su lista. Mostrare visivamente il problema alias vs copia.
 
@@ -279,6 +276,7 @@
 | Metodi dei dizionari | `get()` con default, `keys()`, `values()`, `items()`, `update()`, `pop()` |
 | `defaultdict` e `Counter` | Dal modulo `collections`: strumenti potentissimi per conteggi e raggruppamenti |
 | Set | Insiemi matematici in Python. Operazioni: `\|`, `&`, `-`, `^`. Test di appartenenza O(1) |
+| Dict e set comprehension | `{k: v for ...}`, `{x for ...}`; normalizzare categorie, da CSV a dizionari |
 | Mutabilità vs immutabilità | Mutabili: list, dict, set. Immutabili: int, float, str, tuple, frozenset. Perché importa: side effect, chiavi dizionario, prevedibilità |
 | Scegliere la struttura giusta | Lista vs tupla vs dizionario vs set: regola del "meno potente che risolve il problema" |
 | Cenni sulla complessità | Perché `x in set` è O(1) e `x in list` è O(n) — introduzione informale alla notazione Big O. Perché conta quando i dati crescono |
@@ -295,12 +293,10 @@
 
 | Attività | Descrizione |
 |----------|-------------|
-| Liste | Gestire una lista di misurazioni: aggiungere, rimuovere, ordinare, cercare. Capire alias vs copia con esperimenti pratici |
-| Tuple | Rappresentare punti geografici, calcolare distanze. Unpacking in cicli for |
-| Dizionari | Costruire un registro studenti (matricola → dati). Cercare, aggiungere, modificare, eliminare |
-| Set | Date due liste di codici fiscali (iscritti anno corrente e anno precedente), trovare nuovi iscritti, abbandoni, confermati |
-| Conteggi | Dato un testo, produrre la distribuzione di frequenza delle parole usando `Counter` |
-| Sfida | Dato un dataset (lista di dizionari), calcolare statistiche per gruppo (es: media voti per corso di laurea) usando le strutture dati appropriate |
+| Esercizi 1-4 | L'appello di Statistica; La coda in mensa; Come arrivate in aula; Chi segue cosa |
+| Esercizi 5-8 | Il libretto; La sessione invernale; Scuola di provenienza ed esito; Ore di studio |
+| Sfida | Compagni di corsi a scelta |
+| Soluzioni | All'inizio della lezione T14 |
 
 ---
 
@@ -351,12 +347,10 @@
 
 | Attività | Descrizione |
 |----------|-------------|
-| Scrivere funzioni | Implementare funzioni statistiche di base (`media`, `varianza`, `mediana`, `moda`) con type hints e docstring |
-| Testing con assert | Scrivere `assert` per verificare ogni funzione su casi noti e casi limite (lista vuota, singolo elemento) |
-| Refactoring | Prendere un esercizio dei lab precedenti (monolitico) e scomporlo in funzioni ben definite |
-| Lambda e sorted | Ordinare una lista di dizionari per diversi criteri (nome, voto, data) |
-| Modularità | Creare un file `statistiche.py` con le funzioni implementate, importarlo in un altro file e usarlo |
-| Sfida | Creare un mini-toolkit statistico: un modulo con funzioni per media, mediana, moda, deviazione standard, intervallo, con validazione degli input e gestione degli errori |
+| Esercizi 1-4 | Esito dell'esame; Media ponderata; Media e varianza a mano; Tempi di viaggio |
+| Esercizi 5-8 | Quanto manca all'esame; Classifica del corso; Come arrivate in università; Frequentanti e non frequentanti |
+| Sfida | Compleanni in aula |
+| Soluzioni | All'inizio della lezione T15 |
 
 ---
 
@@ -388,11 +382,10 @@
 
 | Attività | Descrizione |
 |----------|-------------|
-| File di testo | Leggere un file di log, estrarre informazioni, scrivere un riepilogo |
-| CSV | Leggere un dataset CSV reale (es: dati ISTAT), gestire encoding e separatori, estrarre statistiche |
-| JSON | Leggere un file JSON strutturato (es: risposta API simulata), navigare la struttura, estrarre dati |
-| Gestione errori | Scrivere un programma robusto che gestisce: file non trovato, formato sbagliato, valori mancanti, tipi invalidi |
-| Sfida | Pipeline completa: leggere un CSV sporco → pulire (gestire errori, valori mancanti, conversioni) → calcolare statistiche → scrivere i risultati in un nuovo CSV e in un JSON |
+| Esercizi 1-4 | Commenti al corso; Le parole più usate; Gli esiti dell'appello; Il verbale d'esame |
+| Esercizi 5-8 | Il registro delle spese; Il sondaggio in JSON; Un appello con errori; Configurazione in JSON |
+| Sfida | PM10 a Padova |
+| Soluzioni | All'inizio della lezione T17 |
 
 ---
 
@@ -523,8 +516,8 @@
 | 6 | ven 16/10 | Frontale | **T08** Operatori, I/O e strutture condizionali | B - Complesso Piovego |
 | 7 | mer 21/10 | Frontale | **T09** Cicli | P1 - Ricci Curbastro |
 | 8 | gio 22/10 | **Lab** | **L01** Ambiente Python, variabili, tipi e condizionali | SC140 |
-| 9 | mer 28/10 | Frontale | **T10** Comprehension e stringhe | P1 - Ricci Curbastro |
-| 10 | gio 29/10 | **Lab** | **L02** Cicli, comprehension e stringhe | SC140 |
+| 9 | mer 28/10 | Frontale | **T10** Stringhe | P1 - Ricci Curbastro |
+| 10 | gio 29/10 | **Lab** | **L02** Cicli e stringhe | SC140 |
 | 11 | mer 04/11 | Frontale | **T11** Liste e tuple | P1 - Ricci Curbastro |
 | 12 | ven 06/11 | Frontale | **T12** Dizionari, set e mutabilità | B - Complesso Piovego |
 | 13 | mer 11/11 | Frontale | **T13** Funzioni: fondamenti | P1 - Ricci Curbastro |

@@ -204,444 +204,283 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <h1>L03_strutture_dati/esercizi.py</h1>
 <a class="download-link" href="esercizi.py" download>Scarica file .py</a>
 <pre><code><span class="cm"># L03 — Strutture dati</span>
-<span class="cm"># Esercizi per il laboratorio 03</span>
+<span class="cm"># Soluzioni degli esercizi del laboratorio 03</span>
 <span class="cm">#</span>
-<span class="cm"># Esercizi pratici su liste, tuple, dizionari e set.</span>
-<span class="cm"># Ogni esercizio include assert per verificare la correttezza.</span>
-
-<span class="kw">from</span> typing <span class="kw">import</span> Any
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 1: Stack implementato con una lista</span>
-<span class="cm"># ============================================================================</span>
-<span class="cm"># Uno stack (pila) e&#x27; una struttura dati LIFO (Last In, First Out).</span>
-<span class="cm"># Operazioni: push (inserisci in cima), pop (rimuovi dalla cima),</span>
-<span class="cm"># peek (guarda la cima senza rimuovere), is_empty, size.</span>
-
-<span class="kw">class</span> <span class="fn">Stack</span>:
-    <span class="st">&quot;&quot;&quot;
-    Implementazione di uno stack usando una lista Python.
-    Gli elementi vengono aggiunti e rimossi dalla fine della lista
-    (operazione O(1) in Python).
-    &quot;&quot;&quot;</span>
-
-    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-        <span class="st">&quot;&quot;&quot;Inizializza uno stack vuoto.&quot;&quot;&quot;</span>
-        self._dati: <span class="nb">list</span>[Any] <span class="op">=</span> []
-
-    <span class="kw">def</span> <span class="fn">push</span>(<span class="fn">self</span>, elemento: Any) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-        <span class="st">&quot;&quot;&quot;Inserisce un elemento in cima allo stack.&quot;&quot;&quot;</span>
-        self._dati.append(elemento)
-
-    <span class="kw">def</span> <span class="fn">pop</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> Any:
-        <span class="st">&quot;&quot;&quot;Rimuove e restituisce l&#x27;elemento in cima allo stack.&quot;&quot;&quot;</span>
-        <span class="kw">if</span> self.is_empty():
-            <span class="kw">raise</span> <span class="nb">IndexError</span>(<span class="st">&quot;Pop da uno stack vuoto&quot;</span>)
-        <span class="kw">return</span> self._dati.pop()
-
-    <span class="kw">def</span> <span class="fn">peek</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> Any:
-        <span class="st">&quot;&quot;&quot;Restituisce l&#x27;elemento in cima senza rimuoverlo.&quot;&quot;&quot;</span>
-        <span class="kw">if</span> self.is_empty():
-            <span class="kw">raise</span> <span class="nb">IndexError</span>(<span class="st">&quot;Peek su uno stack vuoto&quot;</span>)
-        <span class="kw">return</span> self._dati[<span class="op">-</span><span class="mi">1</span>]
-
-    <span class="kw">def</span> <span class="fn">is_empty</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
-        <span class="st">&quot;&quot;&quot;Verifica se lo stack e&#x27; vuoto.&quot;&quot;&quot;</span>
-        <span class="kw">return</span> <span class="nb">len</span>(self._dati) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
-
-    <span class="kw">def</span> <span class="fn">size</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-        <span class="st">&quot;&quot;&quot;Restituisce il numero di elementi nello stack.&quot;&quot;&quot;</span>
-        <span class="kw">return</span> <span class="nb">len</span>(self._dati)
-
-    <span class="kw">def</span> <span class="fn">to_list</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Any]:
-        <span class="st">&quot;&quot;&quot;Restituisce una copia della lista interna (dal fondo alla cima).&quot;&quot;&quot;</span>
-        <span class="kw">return</span> self._dati.copy()
-
-
-<span class="kw">def</span> <span class="fn">parentesi_bilanciate</span>(<span class="fn">espressione</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
-    <span class="st">&quot;&quot;&quot;
-    Usa uno stack per verificare che le parentesi siano bilanciate.
-    Supporta: (), [], {}
-    &quot;&quot;&quot;</span>
-    stack: Stack <span class="op">=</span> Stack()
-    aperte: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;([{&quot;</span>
-    chiuse: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;)]}&quot;</span>
-    coppie: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> {<span class="st">&#x27;)&#x27;</span>: <span class="st">&#x27;(&#x27;</span>, <span class="st">&#x27;]&#x27;</span>: <span class="st">&#x27;[&#x27;</span>, <span class="st">&#x27;}&#x27;</span>: <span class="st">&#x27;{&#x27;</span>}
-
-    <span class="kw">for</span> carattere <span class="kw">in</span> espressione:
-        <span class="kw">if</span> carattere <span class="kw">in</span> aperte:
-            stack.push(carattere)
-        <span class="kw">elif</span> carattere <span class="kw">in</span> chiuse:
-            <span class="kw">if</span> stack.is_empty():
-                <span class="kw">return</span> <span class="kw">False</span>
-            <span class="kw">if</span> stack.pop() <span class="op">!</span><span class="op">=</span> coppie[carattere]:
-                <span class="kw">return</span> <span class="kw">False</span>
-
-    <span class="kw">return</span> stack.is_empty()
-
-
-<span class="cm"># --- Test stack ---</span>
-s: Stack <span class="op">=</span> Stack()
-<span class="kw">assert</span> s.is_empty() <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> s.size() <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>
-
-s.push(<span class="mi">10</span>)
-s.push(<span class="mi">20</span>)
-s.push(<span class="mi">30</span>)
-<span class="kw">assert</span> s.size() <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-<span class="kw">assert</span> s.peek() <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>
-<span class="kw">assert</span> s.pop() <span class="op">=</span><span class="op">=</span> <span class="mi">30</span>
-<span class="kw">assert</span> s.pop() <span class="op">=</span><span class="op">=</span> <span class="mi">20</span>
-<span class="kw">assert</span> s.size() <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-
-<span class="cm"># Test errore su stack vuoto</span>
-errore_pop: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
-<span class="kw">try</span>:
-    vuoto: Stack <span class="op">=</span> Stack()
-    vuoto.pop()
-<span class="kw">except</span> <span class="nb">IndexError</span>:
-    errore_pop <span class="op">=</span> <span class="kw">True</span>
-<span class="kw">assert</span> errore_pop
-
-<span class="cm"># Test parentesi bilanciate</span>
-<span class="kw">assert</span> parentesi_bilanciate(<span class="st">&quot;()&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> parentesi_bilanciate(<span class="st">&quot;([{}])&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> parentesi_bilanciate(<span class="st">&quot;(]&quot;</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> parentesi_bilanciate(<span class="st">&quot;((())&quot;</span>) <span class="kw">is</span> <span class="kw">False</span>
-<span class="kw">assert</span> parentesi_bilanciate(<span class="st">&quot;{[a + b] * (c - d)}&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="kw">assert</span> parentesi_bilanciate(<span class="st">&quot;&quot;</span>) <span class="kw">is</span> <span class="kw">True</span>
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 1 (Stack): SUPERATO&quot;</span>)
+<span class="cm"># Ogni esercizio corrisponde a un file della traccia (nome tra parentesi).</span>
+<span class="cm"># Per provarne uno solo, copiatelo in un file a parte.</span>
+<span class="cm"># Alcuni programmi leggono i dati con input(): eseguendo il file vengono chiesti uno dopo l&#x27;altro.</span>
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 2: Contatore di frequenze per testo</span>
+<span class="cm"># ESERCIZIO 1: l&#x27;appello di statistica — voti_appello.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: L&#x27;appello di Statistica ---&quot;</span>)
+SOGLIA: <span class="nb">int</span> <span class="op">=</span> <span class="mi">18</span>
 
-<span class="kw">def</span> <span class="fn">conta_frequenze_parole</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;
-    Conta la frequenza di ogni parola in un testo.
-    Le parole sono convertite in minuscolo e la punteggiatura viene rimossa.
-    &quot;&quot;&quot;</span>
-    <span class="cm"># Rimuovi punteggiatura e converti in minuscolo</span>
-    testo_pulito: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
-    <span class="kw">for</span> c <span class="kw">in</span> testo.lower():
-        <span class="kw">if</span> c.isalnum() <span class="kw">or</span> c.isspace():
-            testo_pulito <span class="op">+</span><span class="op">=</span> c
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Voti separati da spazi: &quot;</span>)
+voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="nb">int</span>(v) <span class="kw">for</span> v <span class="kw">in</span> testo.split()]
+promossi: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> SOGLIA]
 
-    frequenze: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
-    <span class="kw">for</span> parola <span class="kw">in</span> testo_pulito.split():
-        frequenze[parola] <span class="op">=</span> frequenze.get(parola, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
-
-    <span class="kw">return</span> frequenze
-
-
-<span class="kw">def</span> <span class="fn">top_n_parole</span>(<span class="fn">frequenze</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>], n: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]]:
-    <span class="st">&quot;&quot;&quot;
-    Restituisce le n parole piu&#x27; frequenti come lista di tuple (parola, frequenza),
-    ordinate per frequenza decrescente.
-    &quot;&quot;&quot;</span>
-    <span class="cm"># Ordinamento per frequenza decrescente</span>
-    ordinato: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
-        frequenze.items(),
-        key<span class="op">=</span><span class="kw">lambda</span> coppia: coppia[<span class="mi">1</span>],
-        reverse<span class="op">=</span><span class="kw">True</span>
-    )
-    <span class="kw">return</span> ordinato[:n]
-
-
-<span class="kw">def</span> <span class="fn">conta_frequenze_caratteri</span>(<span class="fn">testo</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;Conta la frequenza di ogni carattere (esclusi gli spazi).&quot;&quot;&quot;</span>
-    freq: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {}
-    <span class="kw">for</span> c <span class="kw">in</span> testo.lower():
-        <span class="kw">if</span> c <span class="op">!</span><span class="op">=</span> <span class="st">&#x27; &#x27;</span>:
-            freq[c] <span class="op">=</span> freq.get(c, <span class="mi">0</span>) <span class="op">+</span> <span class="mi">1</span>
-    <span class="kw">return</span> freq
-
-
-<span class="cm"># --- Test frequenze ---</span>
-testo_freq: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il gatto e il cane, il gatto dorme e il cane corre&quot;</span>
-freq: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> conta_frequenze_parole(testo_freq)
-<span class="kw">assert</span> freq[<span class="st">&quot;il&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">4</span>
-<span class="kw">assert</span> freq[<span class="st">&quot;gatto&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
-<span class="kw">assert</span> freq[<span class="st">&quot;cane&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
-<span class="kw">assert</span> freq[<span class="st">&quot;e&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">2</span>
-<span class="kw">assert</span> freq[<span class="st">&quot;dorme&quot;</span>] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>
-
-top3: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> top_n_parole(freq, <span class="mi">3</span>)
-<span class="kw">assert</span> top3[<span class="mi">0</span>] <span class="op">=</span><span class="op">=</span> (<span class="st">&quot;il&quot;</span>, <span class="mi">4</span>)
-<span class="kw">assert</span> <span class="nb">len</span>(top3) <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-
-<span class="cm"># Test stringa vuota</span>
-<span class="kw">assert</span> conta_frequenze_parole(<span class="st">&quot;&quot;</span>) <span class="op">=</span><span class="op">=</span> {}
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 2 (Frequenze parole): SUPERATO&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Voti ordinati: {sorted(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Presenti: {len(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {sum(voti) / len(voti):.1f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Minimo: {min(voti)}  Massimo: {max(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Promossi: {len(promossi)} ({len(promossi) / len(voti):.1%})&quot;</span>)
+<span class="kw">if</span> <span class="nb">len</span>(promossi) <span class="op">&gt;</span> <span class="mi">0</span>:
+    media_p: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(promossi) <span class="op">/</span> <span class="nb">len</span>(promossi)
+    <span class="nb">print</span>(<span class="st">f&quot;Media dei promossi: {media_p:.1f}&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 3: Registro voti studenti (dizionario di liste)</span>
+<span class="cm"># ESERCIZIO 2: la coda in mensa — coda_mensa.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: La coda in mensa ---&quot;</span>)
+coda: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Carla&quot;</span>]
+eventi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;arriva Davide&quot;</span>, <span class="st">&quot;servito&quot;</span>, <span class="st">&quot;arriva Elena&quot;</span>,
+                     <span class="st">&quot;esce Bruno&quot;</span>, <span class="st">&quot;davanti Franco Elena&quot;</span>,
+                     <span class="st">&quot;servito&quot;</span>, <span class="st">&quot;esce Zeno&quot;</span>]
+serviti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
 
-<span class="kw">class</span> <span class="fn">RegistroVoti</span>:
-    <span class="st">&quot;&quot;&quot;
-    Gestisce un registro di voti per studenti.
-    Struttura interna: dict[str, list[float]] dove la chiave e&#x27; il nome
-    dello studente e il valore e&#x27; la lista dei suoi voti.
-    &quot;&quot;&quot;</span>
-
-    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-        self._registro: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> {}
-
-    <span class="kw">def</span> <span class="fn">aggiungi_studente</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-        <span class="st">&quot;&quot;&quot;Aggiunge uno studente al registro (senza voti).&quot;&quot;&quot;</span>
-        <span class="kw">if</span> nome <span class="kw">not</span> <span class="kw">in</span> self._registro:
-            self._registro[nome] <span class="op">=</span> []
-
-    <span class="kw">def</span> <span class="fn">aggiungi_voto</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, voto: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
-        <span class="st">&quot;&quot;&quot;Aggiunge un voto allo studente. Crea lo studente se non esiste.&quot;&quot;&quot;</span>
-        <span class="kw">if</span> voto <span class="op">&lt;</span> <span class="mi">0</span> <span class="kw">or</span> voto <span class="op">&gt;</span> <span class="mi">30</span>:
-            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Voto {voto} non valido (deve essere tra 0 e 30)&quot;</span>)
-        <span class="kw">if</span> nome <span class="kw">not</span> <span class="kw">in</span> self._registro:
-            self._registro[nome] <span class="op">=</span> []
-        self._registro[nome].append(voto)
-
-    <span class="kw">def</span> <span class="fn">media_studente</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-        <span class="st">&quot;&quot;&quot;Calcola la media dei voti di uno studente.&quot;&quot;&quot;</span>
-        <span class="kw">if</span> nome <span class="kw">not</span> <span class="kw">in</span> self._registro <span class="kw">or</span> <span class="nb">len</span>(self._registro[nome]) <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
-            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Nessun voto per lo studente &#x27;{nome}&#x27;&quot;</span>)
-        voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> self._registro[nome]
-        <span class="kw">return</span> <span class="nb">round</span>(<span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti), <span class="mi">2</span>)
-
-    <span class="kw">def</span> <span class="fn">media_classe</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
-        <span class="st">&quot;&quot;&quot;Calcola la media complessiva di tutti gli studenti.&quot;&quot;&quot;</span>
-        tutti_i_voti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []
-        <span class="kw">for</span> voti <span class="kw">in</span> self._registro.values():
-            tutti_i_voti.extend(voti)
-        <span class="kw">if</span> <span class="kw">not</span> tutti_i_voti:
-            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Nessun voto nel registro&quot;</span>)
-        <span class="kw">return</span> <span class="nb">round</span>(<span class="nb">sum</span>(tutti_i_voti) <span class="op">/</span> <span class="nb">len</span>(tutti_i_voti), <span class="mi">2</span>)
-
-    <span class="kw">def</span> <span class="fn">migliore_studente</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
-        <span class="st">&quot;&quot;&quot;Restituisce il nome dello studente con la media piu&#x27; alta.&quot;&quot;&quot;</span>
-        miglior_nome: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
-        miglior_media: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span><span class="mi">1.0</span>
-        <span class="kw">for</span> nome, voti <span class="kw">in</span> self._registro.items():
-            <span class="kw">if</span> voti:
-                media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)
-                <span class="kw">if</span> media <span class="op">&gt;</span> miglior_media:
-                    miglior_media <span class="op">=</span> media
-                    miglior_nome <span class="op">=</span> nome
-        <span class="kw">return</span> miglior_nome
-
-    <span class="kw">def</span> <span class="fn">studenti_sufficienti</span>(<span class="fn">self</span>, soglia: <span class="nb">float</span> <span class="op">=</span> <span class="mi">18.0</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
-        <span class="st">&quot;&quot;&quot;Restituisce la lista degli studenti con media &gt;= soglia.&quot;&quot;&quot;</span>
-        sufficienti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-        <span class="kw">for</span> nome, voti <span class="kw">in</span> self._registro.items():
-            <span class="kw">if</span> voti <span class="kw">and</span> (<span class="nb">sum</span>(voti) <span class="op">/</span> <span class="nb">len</span>(voti)) <span class="op">&gt;</span><span class="op">=</span> soglia:
-                sufficienti.append(nome)
-        <span class="kw">return</span> <span class="nb">sorted</span>(sufficienti)
-
-    <span class="kw">def</span> <span class="fn">num_studenti</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
-        <span class="kw">return</span> <span class="nb">len</span>(self._registro)
-
-
-<span class="cm"># --- Test registro voti ---</span>
-reg: RegistroVoti <span class="op">=</span> RegistroVoti()
-reg.aggiungi_voto(<span class="st">&quot;Alice&quot;</span>, <span class="mi">28</span>)
-reg.aggiungi_voto(<span class="st">&quot;Alice&quot;</span>, <span class="mi">30</span>)
-reg.aggiungi_voto(<span class="st">&quot;Alice&quot;</span>, <span class="mi">26</span>)
-reg.aggiungi_voto(<span class="st">&quot;Bob&quot;</span>, <span class="mi">22</span>)
-reg.aggiungi_voto(<span class="st">&quot;Bob&quot;</span>, <span class="mi">18</span>)
-reg.aggiungi_voto(<span class="st">&quot;Carla&quot;</span>, <span class="mi">15</span>)
-reg.aggiungi_voto(<span class="st">&quot;Carla&quot;</span>, <span class="mi">14</span>)
-
-<span class="kw">assert</span> reg.media_studente(<span class="st">&quot;Alice&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">28.0</span>
-<span class="kw">assert</span> reg.media_studente(<span class="st">&quot;Bob&quot;</span>) <span class="op">=</span><span class="op">=</span> <span class="mi">20.0</span>
-<span class="kw">assert</span> reg.migliore_studente() <span class="op">=</span><span class="op">=</span> <span class="st">&quot;Alice&quot;</span>
-<span class="kw">assert</span> reg.studenti_sufficienti() <span class="op">=</span><span class="op">=</span> [<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>]
-<span class="kw">assert</span> reg.num_studenti() <span class="op">=</span><span class="op">=</span> <span class="mi">3</span>
-
-<span class="cm"># Test voto non valido</span>
-errore_voto: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
-<span class="kw">try</span>:
-    reg.aggiungi_voto(<span class="st">&quot;Test&quot;</span>, <span class="mi">35</span>)
-<span class="kw">except</span> <span class="nb">ValueError</span>:
-    errore_voto <span class="op">=</span> <span class="kw">True</span>
-<span class="kw">assert</span> errore_voto
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 3 (Registro voti): SUPERATO&quot;</span>)
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 4: Trova duplicati con i set</span>
-<span class="cm"># ============================================================================</span>
-
-<span class="kw">def</span> <span class="fn">trova_duplicati</span>(<span class="fn">lista</span>: <span class="nb">list</span>[Any]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Any]:
-    <span class="st">&quot;&quot;&quot;
-    Trova tutti gli elementi duplicati in una lista usando i set.
-    Restituisce i duplicati nell&#x27;ordine in cui appaiono la prima volta come duplicato.
-    &quot;&quot;&quot;</span>
-    visti: <span class="nb">set</span>[Any] <span class="op">=</span> <span class="nb">set</span>()
-    duplicati_set: <span class="nb">set</span>[Any] <span class="op">=</span> <span class="nb">set</span>()
-    duplicati_ordinati: <span class="nb">list</span>[Any] <span class="op">=</span> []
-
-    <span class="kw">for</span> elemento <span class="kw">in</span> lista:
-        <span class="kw">if</span> elemento <span class="kw">in</span> visti:
-            <span class="kw">if</span> elemento <span class="kw">not</span> <span class="kw">in</span> duplicati_set:
-                duplicati_ordinati.append(elemento)
-                duplicati_set.add(elemento)
+<span class="kw">for</span> evento <span class="kw">in</span> eventi:
+    parti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> evento.split()
+    azione: <span class="nb">str</span> <span class="op">=</span> parti[<span class="mi">0</span>]
+    <span class="kw">if</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;arriva&quot;</span>:
+        coda.append(parti[<span class="mi">1</span>])
+    <span class="kw">elif</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;servito&quot;</span>:
+        <span class="kw">if</span> <span class="nb">len</span>(coda) <span class="op">&gt;</span> <span class="mi">0</span>:
+            serviti.append(coda.pop(<span class="mi">0</span>))
         <span class="kw">else</span>:
-            visti.add(elemento)
+            <span class="nb">print</span>(<span class="st">&quot;Nessuno da servire&quot;</span>)
+    <span class="kw">elif</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;esce&quot;</span> <span class="kw">and</span> parti[<span class="mi">1</span>] <span class="kw">in</span> coda:
+        coda.remove(parti[<span class="mi">1</span>])
+    <span class="kw">elif</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;davanti&quot;</span> <span class="kw">and</span> parti[<span class="mi">2</span>] <span class="kw">in</span> coda:
+        coda.insert(coda.index(parti[<span class="mi">2</span>]), parti[<span class="mi">1</span>])
+    <span class="kw">else</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;Evento non valido: {evento}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;{evento} -&gt; {coda}&quot;</span>)
 
-    <span class="kw">return</span> duplicati_ordinati
-
-
-<span class="kw">def</span> <span class="fn">elementi_comuni</span>(<span class="fn">lista_a</span>: <span class="nb">list</span>[Any], lista_b: <span class="nb">list</span>[Any]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Any]:
-    <span class="st">&quot;&quot;&quot;Trova gli elementi comuni a due liste usando i set.&quot;&quot;&quot;</span>
-    set_a: <span class="nb">set</span>[Any] <span class="op">=</span> <span class="nb">set</span>(lista_a)
-    set_b: <span class="nb">set</span>[Any] <span class="op">=</span> <span class="nb">set</span>(lista_b)
-    comuni: <span class="nb">set</span>[Any] <span class="op">=</span> set_a <span class="op">&amp;</span> set_b  <span class="cm"># intersezione</span>
-    <span class="kw">return</span> <span class="nb">sorted</span>(comuni)
-
-
-<span class="kw">def</span> <span class="fn">elementi_unici_combinati</span>(<span class="fn">lista_a</span>: <span class="nb">list</span>[Any], lista_b: <span class="nb">list</span>[Any]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Any]:
-    <span class="st">&quot;&quot;&quot;Trova tutti gli elementi unici presenti in almeno una delle due liste.&quot;&quot;&quot;</span>
-    <span class="kw">return</span> <span class="nb">sorted</span>(<span class="nb">set</span>(lista_a) <span class="op">|</span> <span class="nb">set</span>(lista_b))  <span class="cm"># unione</span>
-
-
-<span class="kw">def</span> <span class="fn">differenza_simmetrica</span>(<span class="fn">lista_a</span>: <span class="nb">list</span>[Any], lista_b: <span class="nb">list</span>[Any]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Any]:
-    <span class="st">&quot;&quot;&quot;Trova elementi presenti in una sola delle due liste (non in entrambe).&quot;&quot;&quot;</span>
-    <span class="kw">return</span> <span class="nb">sorted</span>(<span class="nb">set</span>(lista_a) <span class="op">^</span> <span class="nb">set</span>(lista_b))
-
-
-<span class="cm"># --- Test duplicati e operazioni su set ---</span>
-<span class="kw">assert</span> trova_duplicati([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">3</span>, <span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">2</span>, <span class="mi">3</span>]
-<span class="kw">assert</span> trova_duplicati([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]) <span class="op">=</span><span class="op">=</span> []
-<span class="kw">assert</span> trova_duplicati([]) <span class="op">=</span><span class="op">=</span> []
-<span class="kw">assert</span> trova_duplicati([<span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">1</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>]
-
-<span class="kw">assert</span> elementi_comuni([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>], [<span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">3</span>, <span class="mi">4</span>]
-<span class="kw">assert</span> elementi_comuni([<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>]) <span class="op">=</span><span class="op">=</span> []
-
-<span class="kw">assert</span> elementi_unici_combinati([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]
-<span class="kw">assert</span> differenza_simmetrica([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>]) <span class="op">=</span><span class="op">=</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">5</span>]
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 4 (Duplicati con set): SUPERATO&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Serviti: {serviti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ancora in coda: {len(coda)}&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 5: Operazioni su matrici (liste di liste)</span>
+<span class="cm"># ESERCIZIO 3: come arrivate in aula — sondaggio.py</span>
 <span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Come arrivate in aula ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter
 
-<span class="cm"># Tipo alias per leggibilita&#x27;</span>
-Matrice <span class="op">=</span> <span class="nb">list</span>[<span class="nb">list</span>[<span class="nb">float</span>]]
+testo: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Risposte separate da virgole: &quot;</span>)
+risposte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [r.strip().lower() <span class="kw">for</span> r <span class="kw">in</span> testo.split(<span class="st">&quot;,&quot;</span>)]
+risposte <span class="op">=</span> [r <span class="kw">for</span> r <span class="kw">in</span> risposte <span class="kw">if</span> r <span class="op">!</span><span class="op">=</span> <span class="st">&quot;&quot;</span>]
+conteggio: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(risposte)
+totale: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(risposte)
 
-
-<span class="kw">def</span> <span class="fn">crea_matrice_zero</span>(<span class="fn">righe</span>: <span class="nb">int</span>, colonne: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> Matrice:
-    <span class="st">&quot;&quot;&quot;Crea una matrice di zeri con le dimensioni specificate.&quot;&quot;&quot;</span>
-    <span class="kw">return</span> [[<span class="mi">0.0</span> <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(colonne)] <span class="kw">for</span> _ <span class="kw">in</span> <span class="nb">range</span>(righe)]
-
-
-<span class="kw">def</span> <span class="fn">dimensioni</span>(<span class="fn">matrice</span>: Matrice) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]:
-    <span class="st">&quot;&quot;&quot;Restituisce (numero_righe, numero_colonne) della matrice.&quot;&quot;&quot;</span>
-    <span class="kw">if</span> <span class="kw">not</span> matrice:
-        <span class="kw">return</span> (<span class="mi">0</span>, <span class="mi">0</span>)
-    <span class="kw">return</span> (<span class="nb">len</span>(matrice), <span class="nb">len</span>(matrice[<span class="mi">0</span>]))
-
-
-<span class="kw">def</span> <span class="fn">somma_matrici</span>(<span class="fn">a</span>: Matrice, b: Matrice) <span class="op">-</span><span class="op">&gt;</span> Matrice:
-    <span class="st">&quot;&quot;&quot;
-    Somma di due matrici: C[i][j] = A[i][j] + B[i][j].
-    Le matrici devono avere le stesse dimensioni.
-    &quot;&quot;&quot;</span>
-    dim_a: <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>] <span class="op">=</span> dimensioni(a)
-    dim_b: <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>] <span class="op">=</span> dimensioni(b)
-    <span class="kw">if</span> dim_a <span class="op">!</span><span class="op">=</span> dim_b:
-        <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Dimensioni incompatibili: {dim_a} vs {dim_b}&quot;</span>)
-
-    righe: <span class="nb">int</span> <span class="op">=</span> dim_a[<span class="mi">0</span>]
-    colonne: <span class="nb">int</span> <span class="op">=</span> dim_a[<span class="mi">1</span>]
-
-    risultato: Matrice <span class="op">=</span> [
-        [a[i][j] <span class="op">+</span> b[i][j] <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(colonne)]
-        <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(righe)
-    ]
-    <span class="kw">return</span> risultato
-
-
-<span class="kw">def</span> <span class="fn">moltiplica_matrici</span>(<span class="fn">a</span>: Matrice, b: Matrice) <span class="op">-</span><span class="op">&gt;</span> Matrice:
-    <span class="st">&quot;&quot;&quot;
-    Prodotto matriciale: C[i][j] = somma(A[i][k] * B[k][j]) per ogni k.
-    Richiede: colonne di A == righe di B.
-    &quot;&quot;&quot;</span>
-    righe_a, colonne_a <span class="op">=</span> dimensioni(a)
-    righe_b, colonne_b <span class="op">=</span> dimensioni(b)
-
-    <span class="kw">if</span> colonne_a <span class="op">!</span><span class="op">=</span> righe_b:
-        <span class="kw">raise</span> <span class="nb">ValueError</span>(
-            <span class="st">f&quot;Impossibile moltiplicare: A ha {colonne_a} colonne, B ha {righe_b} righe&quot;</span>
-        )
-
-    <span class="cm"># Inizializza matrice risultato</span>
-    risultato: Matrice <span class="op">=</span> crea_matrice_zero(righe_a, colonne_b)
-
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(righe_a):
-        <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(colonne_b):
-            somma: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.0</span>
-            <span class="kw">for</span> k <span class="kw">in</span> <span class="nb">range</span>(colonne_a):
-                somma <span class="op">+</span><span class="op">=</span> a[i][k] <span class="op">*</span> b[k][j]
-            risultato[i][j] <span class="op">=</span> somma
-
-    <span class="kw">return</span> risultato
-
-
-<span class="kw">def</span> <span class="fn">trasposta</span>(<span class="fn">matrice</span>: Matrice) <span class="op">-</span><span class="op">&gt;</span> Matrice:
-    <span class="st">&quot;&quot;&quot;Calcola la trasposta della matrice: T[j][i] = M[i][j].&quot;&quot;&quot;</span>
-    righe, colonne <span class="op">=</span> dimensioni(matrice)
-    <span class="cm"># Uso comprehension nidificata</span>
-    <span class="kw">return</span> [[matrice[i][j] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(righe)] <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(colonne)]
-
-
-<span class="kw">def</span> <span class="fn">matrice_identita</span>(<span class="fn">n</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> Matrice:
-    <span class="st">&quot;&quot;&quot;Crea una matrice identita&#x27; n x n.&quot;&quot;&quot;</span>
-    <span class="kw">return</span> [[<span class="mi">1.0</span> <span class="kw">if</span> i <span class="op">=</span><span class="op">=</span> j <span class="kw">else</span> <span class="mi">0.0</span> <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(n)] <span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(n)]
-
-
-<span class="cm"># --- Test operazioni matrici ---</span>
-m1: Matrice <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>]]
-m2: Matrice <span class="op">=</span> [[<span class="mi">5</span>, <span class="mi">6</span>], [<span class="mi">7</span>, <span class="mi">8</span>]]
-
-<span class="cm"># Somma</span>
-somma: Matrice <span class="op">=</span> somma_matrici(m1, m2)
-<span class="kw">assert</span> somma <span class="op">=</span><span class="op">=</span> [[<span class="mi">6</span>, <span class="mi">8</span>], [<span class="mi">10</span>, <span class="mi">12</span>]]
-
-<span class="cm"># Prodotto: [[1*5+2*7, 1*6+2*8], [3*5+4*7, 3*6+4*8]] = [[19, 22], [43, 50]]</span>
-prodotto: Matrice <span class="op">=</span> moltiplica_matrici(m1, m2)
-<span class="kw">assert</span> prodotto <span class="op">=</span><span class="op">=</span> [[<span class="mi">19</span>, <span class="mi">22</span>], [<span class="mi">43</span>, <span class="mi">50</span>]]
-
-<span class="cm"># Trasposta</span>
-t: Matrice <span class="op">=</span> trasposta(m1)
-<span class="kw">assert</span> t <span class="op">=</span><span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">3</span>], [<span class="mi">2</span>, <span class="mi">4</span>]]
-
-<span class="cm"># Moltiplicazione per identita&#x27; non cambia la matrice</span>
-identita: Matrice <span class="op">=</span> matrice_identita(<span class="mi">2</span>)
-<span class="kw">assert</span> moltiplica_matrici(m1, identita) <span class="op">=</span><span class="op">=</span> [[<span class="mi">1.0</span>, <span class="mi">2.0</span>], [<span class="mi">3.0</span>, <span class="mi">4.0</span>]]
-
-<span class="cm"># Test dimensioni incompatibili</span>
-errore_dim: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>
-<span class="kw">try</span>:
-    somma_matrici([[<span class="mi">1</span>, <span class="mi">2</span>]], [[<span class="mi">1</span>, <span class="mi">2</span>], [<span class="mi">3</span>, <span class="mi">4</span>]])
-<span class="kw">except</span> <span class="nb">ValueError</span>:
-    errore_dim <span class="op">=</span> <span class="kw">True</span>
-<span class="kw">assert</span> errore_dim
-
-<span class="cm"># Matrici non quadrate: (2x3) * (3x2) = (2x2)</span>
-a: Matrice <span class="op">=</span> [[<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>], [<span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">6</span>]]
-b: Matrice <span class="op">=</span> [[<span class="mi">7</span>, <span class="mi">8</span>], [<span class="mi">9</span>, <span class="mi">10</span>], [<span class="mi">11</span>, <span class="mi">12</span>]]
-ris: Matrice <span class="op">=</span> moltiplica_matrici(a, b)
-<span class="kw">assert</span> ris <span class="op">=</span><span class="op">=</span> [[<span class="mi">58</span>, <span class="mi">64</span>], [<span class="mi">139</span>, <span class="mi">154</span>]]
-<span class="nb">print</span>(<span class="st">&quot;Esercizio 5 (Operazioni matrici): SUPERATO&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Risposte: {totale}, mezzi diversi: {len(conteggio)}&quot;</span>)
+<span class="kw">for</span> mezzo, n <span class="kw">in</span> conteggio.most_common():
+    <span class="nb">print</span>(<span class="st">f&quot;{mezzo}: {n} ({n / totale:.1%})&quot;</span>)
+moda: <span class="nb">str</span> <span class="op">=</span> conteggio.most_common(<span class="mi">1</span>)[<span class="mi">0</span>][<span class="mi">0</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Mezzo più usato: {moda}&quot;</span>)
+<span class="nb">print</span>()
 
 
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;\n&quot;</span> <span class="op">+</span> <span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
-<span class="nb">print</span>(<span class="st">&quot;TUTTI GLI ESERCIZI DEL LABORATORIO 03 SUPERATI!&quot;</span>)
+<span class="cm"># ESERCIZIO 4: chi segue cosa — tre_corsi.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Chi segue cosa ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+statistica: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Davide&quot;</span>,
+                        <span class="st">&quot;Elisa&quot;</span>, <span class="st">&quot;Fabio&quot;</span>, <span class="st">&quot;Giulia&quot;</span>}
+analisi: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Davide&quot;</span>, <span class="st">&quot;Hana&quot;</span>,
+                     <span class="st">&quot;Ivan&quot;</span>, <span class="st">&quot;Giulia&quot;</span>}
+informatica: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;Ivan&quot;</span>,
+                         <span class="st">&quot;Luca&quot;</span>}
+
+almeno_uno: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> statistica <span class="op">|</span> analisi <span class="op">|</span> informatica
+tutti_tre: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> statistica <span class="op">&amp;</span> analisi <span class="op">&amp;</span> informatica
+solo_stat: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> statistica <span class="op">-</span> analisi <span class="op">-</span> informatica
+stat_an: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> (statistica <span class="op">&amp;</span> analisi) <span class="op">-</span> informatica
+
+presenze: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(
+    <span class="nb">list</span>(statistica) <span class="op">+</span> <span class="nb">list</span>(analisi) <span class="op">+</span> <span class="nb">list</span>(informatica))
+un_corso: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [n <span class="kw">for</span> n <span class="kw">in</span> presenze <span class="kw">if</span> presenze[n] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>]
+
+<span class="nb">print</span>(<span class="st">f&quot;Studenti diversi: {len(almeno_uno)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Tutti e tre i corsi: {sorted(tutti_tre)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Solo Statistica: {sorted(solo_stat)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Statistica e Analisi, non Informatica: {sorted(stat_an)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Un corso soltanto: {sorted(un_corso)}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 5: il libretto — libretto.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: Il libretto ---&quot;</span>)
+libretto: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Analisi 1&quot;</span>: (<span class="mi">24</span>, <span class="mi">9</span>),
+    <span class="st">&quot;Statistica 1&quot;</span>: (<span class="mi">28</span>, <span class="mi">9</span>),
+    <span class="st">&quot;Informatica&quot;</span>: (<span class="mi">30</span>, <span class="mi">6</span>),
+    <span class="st">&quot;Economia politica&quot;</span>: (<span class="mi">22</span>, <span class="mi">9</span>),
+    <span class="st">&quot;Algebra lineare&quot;</span>: (<span class="mi">27</span>, <span class="mi">6</span>),
+}
+
+somma_voti: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+somma_pesata: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+cfu_totali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> esame, (voto, cfu) <span class="kw">in</span> libretto.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{esame}: {voto} ({cfu} CFU)&quot;</span>)
+    somma_voti <span class="op">+</span><span class="op">=</span> voto
+    somma_pesata <span class="op">+</span><span class="op">=</span> voto <span class="op">*</span> cfu
+    cfu_totali <span class="op">+</span><span class="op">=</span> cfu
+
+media: <span class="nb">float</span> <span class="op">=</span> somma_voti <span class="op">/</span> <span class="nb">len</span>(libretto)
+ponderata: <span class="nb">float</span> <span class="op">=</span> somma_pesata <span class="op">/</span> cfu_totali
+<span class="nb">print</span>(<span class="st">f&quot;CFU totali: {cfu_totali}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media aritmetica: {media:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media ponderata: {ponderata:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Base di laurea: {ponderata * 110 / 30:.1f}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 6: la sessione invernale — sessione.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 6: La sessione invernale ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+
+esiti: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> [
+    (<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="mi">28</span>), (<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Analisi&quot;</span>, <span class="mi">30</span>),
+    (<span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="mi">16</span>), (<span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Analisi&quot;</span>, <span class="mi">17</span>),
+    (<span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="mi">23</span>), (<span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Analisi&quot;</span>, <span class="mi">25</span>),
+    (<span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="mi">30</span>), (<span class="st">&quot;Davide&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="mi">21</span>),
+    (<span class="st">&quot;Davide&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="mi">26</span>), (<span class="st">&quot;Elisa&quot;</span>, <span class="st">&quot;Analisi&quot;</span>, <span class="mi">12</span>),
+]
+
+voti_esame: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+superati: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">str</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+studenti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">set</span>()
+<span class="kw">for</span> nome, esame, voto <span class="kw">in</span> esiti:
+    voti_esame[esame].append(voto)
+    studenti.add(nome)
+    <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>:
+        superati[nome].append(esame)
+
+<span class="kw">for</span> esame, voti <span class="kw">in</span> voti_esame.items():
+    promossi: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>([v <span class="kw">for</span> v <span class="kw">in</span> voti <span class="kw">if</span> v <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>])
+    <span class="nb">print</span>(<span class="st">f&quot;{esame}: {len(voti)} prove, media &quot;</span>
+          <span class="st">f&quot;{sum(voti) / len(voti):.1f}, promossi {promossi}&quot;</span>)
+<span class="kw">for</span> nome <span class="kw">in</span> <span class="nb">sorted</span>(superati):
+    <span class="nb">print</span>(<span class="st">f&quot;{nome} ha superato {superati[nome]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Nessun esame superato: {sorted(studenti - set(superati))}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 7: scuola di provenienza ed esito — contingenza.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 7: Scuola di provenienza ed esito ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+scuola: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;altro&quot;</span>, <span class="st">&quot;liceo&quot;</span>,
+                     <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;altro&quot;</span>,
+                     <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;tecnico&quot;</span>]
+superato: <span class="nb">list</span>[<span class="nb">bool</span>] <span class="op">=</span> [<span class="kw">True</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">True</span>,
+                        <span class="kw">False</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">True</span>]
+
+tabella: Counter[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">bool</span>]] <span class="op">=</span> Counter(<span class="nb">zip</span>(scuola, superato))
+per_scuola: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(scuola)
+
+<span class="kw">for</span> s <span class="kw">in</span> <span class="nb">sorted</span>(per_scuola):
+    si: <span class="nb">int</span> <span class="op">=</span> tabella[(s, <span class="kw">True</span>)]
+    no: <span class="nb">int</span> <span class="op">=</span> tabella[(s, <span class="kw">False</span>)]
+    <span class="nb">print</span>(<span class="st">f&quot;{s}: superato {si}, non superato {no}, &quot;</span>
+          <span class="st">f&quot;percentuale {si / per_scuola[s]:.1%}&quot;</span>)
+
+totale_si: <span class="nb">int</span> <span class="op">=</span> superato.count(<span class="kw">True</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Totale: {totale_si} su {len(superato)} &quot;</span>
+      <span class="st">f&quot;({totale_si / len(superato):.1%})&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># ESERCIZIO 8: ore di studio — descrittive.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 8: Ore di studio ---&quot;</span>)
+<span class="kw">def</span> <span class="fn">descrittive</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media, mediana e deviazione standard.&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        mediana: <span class="nb">float</span> <span class="op">=</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]
+    <span class="kw">else</span>:
+        mediana <span class="op">=</span> (ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]) <span class="op">/</span> <span class="mi">2</span>
+    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori]
+    dev_std: <span class="nb">float</span> <span class="op">=</span> (<span class="nb">sum</span>(scarti) <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+    <span class="kw">return</span> media, mediana, dev_std
+
+
+ore_studio: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Primo anno&quot;</span>: [<span class="mi">12</span>, <span class="mi">15</span>, <span class="mi">8</span>, <span class="mi">20</span>, <span class="mi">10</span>, <span class="mi">14</span>, <span class="mi">9</span>],
+    <span class="st">&quot;Secondo anno&quot;</span>: [<span class="mi">18</span>, <span class="mi">22</span>, <span class="mi">15</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">16</span>],
+    <span class="st">&quot;Terzo anno&quot;</span>: [<span class="mi">20</span>, <span class="mi">8</span>, <span class="mi">35</span>, <span class="mi">12</span>, <span class="mi">28</span>, <span class="mi">6</span>, <span class="mi">14</span>, <span class="mi">25</span>],
+}
+
+<span class="kw">for</span> anno, ore <span class="kw">in</span> ore_studio.items():
+    media, mediana, dev_std <span class="op">=</span> descrittive(ore)
+    <span class="nb">print</span>(<span class="st">f&quot;{anno}: media {media:.1f}, mediana {mediana:.1f}, &quot;</span>
+          <span class="st">f&quot;dev. std {dev_std:.2f}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm"># SFIDA: compagni di corsi a scelta — compagni.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Sfida: Compagni di corsi a scelta ---&quot;</span>)
+<span class="kw">def</span> <span class="fn">jaccard</span>(<span class="fn">a</span>: <span class="nb">set</span>[<span class="nb">str</span>], b: <span class="nb">set</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Elementi in comune diviso elementi totali.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="nb">len</span>(a <span class="op">&amp;</span> b) <span class="op">/</span> <span class="nb">len</span>(a <span class="op">|</span> b)
+
+scelte: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">set</span>[<span class="nb">str</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Anna&quot;</span>: {<span class="st">&quot;Serie storiche&quot;</span>, <span class="st">&quot;Demografia&quot;</span>, <span class="st">&quot;Marketing&quot;</span>, <span class="st">&quot;R&quot;</span>},
+    <span class="st">&quot;Bruno&quot;</span>: {<span class="st">&quot;Marketing&quot;</span>, <span class="st">&quot;Finanza&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;Python&quot;</span>},
+    <span class="st">&quot;Chiara&quot;</span>: {<span class="st">&quot;Serie storiche&quot;</span>, <span class="st">&quot;Demografia&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;Biostatistica&quot;</span>},
+    <span class="st">&quot;Davide&quot;</span>: {<span class="st">&quot;Finanza&quot;</span>, <span class="st">&quot;Python&quot;</span>, <span class="st">&quot;Econometria&quot;</span>},
+    <span class="st">&quot;Elisa&quot;</span>: {<span class="st">&quot;Biostatistica&quot;</span>, <span class="st">&quot;Demografia&quot;</span>, <span class="st">&quot;Python&quot;</span>},
+}
+
+nomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> <span class="nb">sorted</span>(scelte)
+coppia: <span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>] <span class="op">=</span> (<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>)
+massimo: <span class="nb">float</span> <span class="op">=</span> <span class="op">-</span><span class="mi">1.0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="nb">range</span>(<span class="nb">len</span>(nomi)):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="nb">range</span>(i <span class="op">+</span> <span class="mi">1</span>, <span class="nb">len</span>(nomi)):
+        s: <span class="nb">float</span> <span class="op">=</span> jaccard(scelte[nomi[i]], scelte[nomi[j]])
+        <span class="kw">if</span> s <span class="op">&gt;</span> massimo:
+            massimo, coppia <span class="op">=</span> s, (nomi[i], nomi[j])
+<span class="nb">print</span>(<span class="st">f&quot;Coppia più simile: {coppia} con {massimo:.2f}&quot;</span>)
+
+nome: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Studente: &quot;</span>)
+<span class="kw">if</span> nome <span class="kw">not</span> <span class="kw">in</span> scelte:
+    <span class="nb">print</span>(<span class="st">&quot;Studente non trovato&quot;</span>)
+<span class="kw">else</span>:
+    simile: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;&quot;</span>
+    massimo <span class="op">=</span> <span class="op">-</span><span class="mi">1.0</span>
+    <span class="kw">for</span> altro <span class="kw">in</span> nomi:
+        s <span class="op">=</span> jaccard(scelte[nome], scelte[altro])
+        <span class="kw">if</span> altro <span class="op">!</span><span class="op">=</span> nome <span class="kw">and</span> s <span class="op">&gt;</span> massimo:
+            massimo, simile <span class="op">=</span> s, altro
+    consigli: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> scelte[simile] <span class="op">-</span> scelte[nome]
+    <span class="nb">print</span>(<span class="st">f&quot;Più simile: {simile} ({massimo:.2f})&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Corsi consigliati: {sorted(consigli)}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+<span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi del laboratorio 03&quot;</span>)
 <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>

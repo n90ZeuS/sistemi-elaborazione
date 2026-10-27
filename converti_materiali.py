@@ -27,7 +27,7 @@ LEZIONI_FRONTALI: list[tuple[str, str]] = [
     ("T07", "Primi passi in Python"),
     ("T08", "Operatori, I/O e condizionali"),
     ("T09", "Cicli"),
-    ("T10", "Comprehension e stringhe"),
+    ("T10", "Stringhe"),
     ("T11", "Liste e tuple"),
     ("T12", "Dizionari, set e mutabilità"),
     ("T13", "Funzioni: fondamenti"),
@@ -39,7 +39,7 @@ LEZIONI_FRONTALI: list[tuple[str, str]] = [
 
 LEZIONI_LAB: list[tuple[str, str]] = [
     ("L01", "Ambiente, variabili e condizionali"),
-    ("L02", "Cicli, comprehension e stringhe"),
+    ("L02", "Cicli e stringhe"),
     ("L03", "Strutture dati"),
     ("L04", "Funzioni e modularità"),
     ("L05", "File e gestione dati"),

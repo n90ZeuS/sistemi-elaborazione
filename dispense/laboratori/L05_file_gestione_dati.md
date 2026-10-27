@@ -1,658 +1,437 @@
-# Laboratorio 5 --- File e gestione dati
+# Laboratorio 5 — File e gestione dati
 
-**Prerequisiti**: Frontale T15 (File, dati e gestione degli errori)
+**Prerequisiti:** lezioni T15 (File, dati ed errori).
 
-**Obiettivo**: mettere in pratica la lettura e scrittura di file di testo, CSV e JSON, la costruzione di percorsi con `pathlib` e la gestione degli errori con `try`/`except`.
+Oggi si lavora con dati che stanno nei file: testo, CSV e JSON. Per ogni esercizio create un file `.py` con il nome indicato, nella stessa cartella dei file di dati. I file di dati sono scritti nella slide dell'esercizio: create il file con l'editor e copiate il contenuto, compresa la riga di intestazione, e lasciate un a capo dopo l'ultima riga. Le classi non servono.
 
----
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T17.
 
-## Esercizio guidato 1 --- Leggere un file di testo e contare righe, parole, caratteri
-
-Creiamo un file di testo di esempio e poi scriviamo una funzione che ne calcola le statistiche fondamentali.
-
-### Passo 1: creare il file di prova
-
-Create nella cartella di lavoro un file chiamato `poesia.txt` con il seguente contenuto:
-
-```
-Nel mezzo del cammin di nostra vita
-mi ritrovai per una selva oscura
-che la diritta via era smarrita
-
-Ahi quanto a dir qual era è cosa dura
-esta selva selvaggia e aspra e forte
-che nel pensier rinova la paura
-```
-
-### Passo 2: scrivere la funzione di analisi
-
-```python
-from pathlib import Path
-
-
-def analizza_file(percorso: Path) -> dict[str, int]:
-    """Legge un file di testo e restituisce statistiche di base.
-
-    Args:
-        percorso: Path al file da analizzare.
-
-    Returns:
-        Dizionario con chiavi 'righe', 'righe_non_vuote', 'parole', 'caratteri'.
-
-    Raises:
-        FileNotFoundError: Se il file non esiste.
-    """
-    num_righe: int = 0
-    num_righe_non_vuote: int = 0
-    num_parole: int = 0
-    num_caratteri: int = 0
-
-    with open(percorso, "r", encoding="utf-8") as f:
-        for riga in f:
-            num_righe += 1
-            num_caratteri += len(riga)
-            if riga.strip():
-                num_righe_non_vuote += 1
-                num_parole += len(riga.split())
-
-    return {
-        "righe": num_righe,
-        "righe_non_vuote": num_righe_non_vuote,
-        "parole": num_parole,
-        "caratteri": num_caratteri,
-    }
-
-
-# --- Prova ---
-if __name__ == "__main__":
-    percorso_poesia: Path = Path("poesia.txt")
-    statistiche: dict[str, int] = analizza_file(percorso_poesia)
-    for chiave, valore in statistiche.items():
-        print(f"{chiave:>20}: {valore}")
-```
-
-**Output atteso**:
-
-```
-               righe: 7
-     righe_non_vuote: 6
-              parole: 40
-           caratteri: 235
-```
-
-**Osservazione**: iteriamo riga per riga sull'oggetto file --- questo funziona anche su file enormi perche' legge una riga alla volta dalla memoria. Notiamo che `riga.split()` senza argomenti divide su qualsiasi sequenza di spazi bianchi.
+| # | File | Esercizio |
+|---|---|---|
+| 1 | `conta_righe.py` | Commenti al corso |
+| 2 | `parole_frequenti.py` | Le parole più usate |
+| 3 | `esiti_appello.py` | Gli esiti dell'appello |
+| 4 | `verbale.py` | Il verbale d'esame |
+| 5 | `spese.py` | Il registro delle spese |
+| 6 | `sondaggio.py` | Il sondaggio in JSON |
+| 7 | `appello_robusto.py` | Un appello con errori |
+| 8 | `config_soglia.py` | Configurazione in JSON |
+| Sfida | `pipeline_pm10.py` | PM10 a Padova |
 
 ---
 
-## Esercizio guidato 2 --- Scrivere risultati in file di output con `pathlib`
+## Promemoria
 
-Prendiamo le statistiche calcolate nell'esercizio precedente e salviamole in un file, creando la directory di output se non esiste.
-
-```python
-from pathlib import Path
-
-
-def salva_statistiche(
-    percorso_output: Path,
-    nome_sorgente: str,
-    statistiche: dict[str, int],
-) -> None:
-    """Salva le statistiche di un file in un report testuale.
-
-    Args:
-        percorso_output: Path del file di output da creare.
-        nome_sorgente: Nome del file sorgente analizzato.
-        statistiche: Dizionario con le statistiche calcolate.
-    """
-    # Creiamo la directory genitore se non esiste
-    percorso_output.parent.mkdir(parents=True, exist_ok=True)
-
-    with open(percorso_output, "w", encoding="utf-8") as f:
-        f.write(f"=== Report per: {nome_sorgente} ===\n\n")
-        for chiave, valore in statistiche.items():
-            f.write(f"  {chiave:>20}: {valore}\n")
-        f.write(f"\n{'='*40}\n")
-
-    print(f"Report salvato in: {percorso_output}")
-
-
-# --- Prova ---
-if __name__ == "__main__":
-    statistiche: dict[str, int] = {
-        "righe": 7,
-        "righe_non_vuote": 6,
-        "parole": 40,
-        "caratteri": 235,
-    }
-    output: Path = Path("output") / "report_poesia.txt"
-    salva_statistiche(output, "poesia.txt", statistiche)
-
-    # Verifica: rileggiamo il file appena scritto
-    contenuto: str = output.read_text(encoding="utf-8")
-    print(contenuto)
-```
-
-**Cosa notiamo**:
-
-- `percorso_output.parent.mkdir(parents=True, exist_ok=True)` crea tutte le directory intermedie senza errore se gia' esistono.
-- `Path.read_text()` e' una scorciatoia comoda per leggere un intero file in una stringa.
-- L'operatore `/` di `Path` costruisce percorsi in modo portabile tra sistemi operativi.
-
----
-
-## Esercizio guidato 3 --- CSV con `csv.DictReader` (encoding, separatore `;`)
-
-Lavoriamo con un CSV "all'italiana": separatore `;` e caratteri accentati.
-
-### Passo 1: creare il file CSV di prova
-
-Create un file `studenti.csv` con questo contenuto (separatore `;`):
-
-```
-nome;cognome;voto;citta
-Anna;Rossi;28;Milano
-Marco;Bianchi;25;Roma
-Lucia;Verdi;30;Napoli
-Giuseppe;Neri;22;Torino
-Francesca;Gialli;27;Bologna
-```
-
-### Passo 2: leggere e analizzare
+Gli strumenti che servono oggi. Aprite sempre i file con `with` e `encoding="utf-8"`. `csv.DictReader` restituisce i valori come stringhe: i numeri vanno convertiti con `int()` o `float()`. Nel `try` mettete solo le istruzioni che possono fallire e catturate eccezioni specifiche.
 
 ```python
 import csv
+import json
 from pathlib import Path
 
-
-def carica_studenti(percorso: Path) -> list[dict[str, str]]:
-    """Carica un CSV di studenti con separatore punto e virgola.
-
-    Args:
-        percorso: Path al file CSV.
-
-    Returns:
-        Lista di dizionari, uno per ogni studente.
-    """
-    studenti: list[dict[str, str]] = []
-
-    with open(percorso, "r", encoding="utf-8") as f:
-        lettore = csv.DictReader(f, delimiter=";")
-        for riga in lettore:
-            studenti.append(dict(riga))
-
-    return studenti
-
-
-def stampa_tabella(studenti: list[dict[str, str]]) -> None:
-    """Stampa una lista di studenti in formato tabellare."""
-    if not studenti:
-        print("Nessuno studente trovato.")
-        return
-
-    intestazione: str = f"{'Nome':<15} {'Cognome':<15} {'Voto':>5} {'Citta':<15}"
-    print(intestazione)
-    print("-" * len(intestazione))
-
-    for s in studenti:
-        print(f"{s['nome']:<15} {s['cognome']:<15} {s['voto']:>5} {s['citta']:<15}")
-
-
-def calcola_media_voti(studenti: list[dict[str, str]]) -> float:
-    """Calcola la media dei voti degli studenti.
-
-    Args:
-        studenti: Lista di dizionari con chiave 'voto'.
-
-    Returns:
-        Media aritmetica dei voti.
-
-    Raises:
-        ValueError: Se la lista e' vuota.
-    """
-    if not studenti:
-        raise ValueError("Impossibile calcolare la media: lista vuota")
-
-    voti: list[int] = [int(s["voto"]) for s in studenti]
-    return sum(voti) / len(voti)
-
-
-# --- Prova ---
-if __name__ == "__main__":
-    percorso: Path = Path("studenti.csv")
-    studenti: list[dict[str, str]] = carica_studenti(percorso)
-    stampa_tabella(studenti)
-    print(f"\nMedia voti: {calcola_media_voti(studenti):.2f}")
+with open("note.txt", "w", encoding="utf-8") as f:  # "a" aggiunge
+    f.write("prima riga\nseconda riga\n")  # l'a capo va scritto
+with open(Path("note.txt"), "r", encoding="utf-8") as f:
+    for riga in f:                         # una riga alla volta
+        print(riga.strip())                # prima riga ...
+with open("appello.csv", "r", encoding="utf-8") as f:
+    for r in csv.DictReader(f, delimiter=";"):  # r è un dict
+        print(r["cognome"], int(r["voto"]))     # Rossi 28 ...
+try:
+    with open("sondaggio.json", "r", encoding="utf-8") as f:
+        dati: dict = json.load(f)          # JSON → dict e list
+    print(dati["lode"])
+except KeyError as e:
+    print("Chiave mancante:", e)           # Chiave mancante: 'lode'
 ```
-
-**Output atteso**:
-
-```
-Nome            Cognome          Voto Citta
-----------------------------------------------------
-Anna            Rossi              28 Milano
-Marco           Bianchi            25 Roma
-Lucia           Verdi              30 Napoli
-Giuseppe        Neri               22 Torino
-Francesca       Gialli             27 Bologna
-
-Media voti: 26.40
-```
-
-**Attenzione all'encoding**: se aprite un CSV esportato da Excel su Windows e vedete caratteri strani (es. `citt\xe0` invece di `citta'`), provate con `encoding="latin-1"` oppure `encoding="cp1252"`.
 
 ---
 
-## Esercizio guidato 4 --- JSON: leggere e navigare una struttura
+## Esercizio 1 — Commenti al corso (`conta_righe.py`)
 
-I file JSON possono contenere strutture annidate (dizionari dentro dizionari, liste dentro dizionari). Impariamo a navigarle.
+**Consegna**
 
-### Passo 1: creare il file JSON di prova
+1. Il file `commenti.txt` contiene i commenti liberi di un questionario sul corso, uno per riga. Una riga è vuota.
+2. Apritelo con `with open(..., encoding="utf-8")` e leggetelo riga per riga con un `for`.
+3. Contate le righe, le righe vuote e le parole (`len(riga.split())`).
+4. Stampate il nome del file (`Path(...).name`), i conteggi, le parole per commento (righe non vuote) con un decimale e il numero di riga del commento più lungo.
 
-Create un file `corso.json`:
+**File `commenti.txt`** (createlo nella cartella del programma)
 
-```json
+```
+Lezioni chiare, esempi utili.
+Molto lavoro a casa, poco tempo per gli esercizi.
+Le slide sono utili, il ritmo è veloce.
+
+Vorrei più esempi con dati reali.
+Laboratori utili, ma le aule sono troppo affollate.
+Esercizi utili per capire meglio.
+Più esercizi in aula e meno teoria.
+```
+
+**Esempio di esecuzione**
+
+```
+File: commenti.txt
+Righe: 8, di cui vuote: 1
+Parole: 47
+Parole per commento: 6.7
+Commento più lungo: riga 2, 9 parole
+```
+
+**Provate anche**
+
+- aggiungete in fondo la riga `Grazie.` → `Righe: 9`, `Parole: 48`, `Parole per commento: 6.0`
+- cambiate il nome in `commenti2.txt` → il programma si ferma con `FileNotFoundError` (lo gestirete nell'esercizio 7)
+
+---
+
+## Esercizio 2 — Le parole più usate (`parole_frequenti.py`)
+
+**Consegna**
+
+1. Usate lo stesso `commenti.txt`. Scrivete una funzione `parole_del_file(percorso: Path) -> list[str]` che legge il file e restituisce tutte le parole in minuscolo.
+2. Togliete la punteggiatura attaccata alle parole con `parola.strip(".,;:!?")`.
+3. Stampate il numero di parole e di parole distinte (`set`).
+4. Tenete le parole di almeno 5 lettere, contatele con `Counter` e stampate le 3 più frequenti con `most_common(3)`.
+
+**File `commenti.txt`** (createlo nella cartella del programma)
+
+```
+Lezioni chiare, esempi utili.
+Molto lavoro a casa, poco tempo per gli esercizi.
+Le slide sono utili, il ritmo è veloce.
+
+Vorrei più esempi con dati reali.
+Laboratori utili, ma le aule sono troppo affollate.
+Esercizi utili per capire meglio.
+Più esercizi in aula e meno teoria.
+```
+
+**Esempio di esecuzione**
+
+```
+Parole: 47, distinte: 37
+Parole di almeno 5 lettere: 25
+utili: 4
+esercizi: 3
+esempi: 2
+```
+
+**Provate anche**
+
+- `Utili,` e `utili.` contano come la stessa parola
+- con la riga `Grazie.` in più → `Parole: 48, distinte: 38`
+
+---
+
+## Esercizio 3 — Gli esiti dell'appello (`esiti_appello.py`)
+
+**Consegna**
+
+1. Il file `appello.csv` contiene i voti di un appello, separati da `;`.
+2. Leggetelo con `csv.DictReader(f, delimiter=";")` dentro una funzione che restituisce la lista delle righe (`list(...)`).
+3. I valori sono stringhe: convertite i voti con `int()`.
+4. Stampate iscritti, promossi (voto da 18 in su) con la percentuale, la media di tutti e quella dei promossi con un decimale, il voto più alto con cognome e nome (`max` con `key=lambda ...`).
+
+**File `appello.csv`** (createlo nella cartella del programma)
+
+```
+matricola;cognome;nome;voto
+2101234;Rossi;Anna;28
+2101567;Bianchi;Marco;17
+2102001;Verdi;Giulia;30
+2102345;Russo;Luca;24
+2102890;Ferrari;Sara;15
+2103112;Esposito;Paolo;21
+2103456;Romano;Elena;27
+2103789;Gallo;Davide;19
+```
+
+**Esempio di esecuzione**
+
+```
+Iscritti: 8
+Promossi: 6 (75.0%)
+Media di tutti: 22.6
+Media dei promossi: 24.8
+Voto più alto: 30 (Verdi Giulia)
+```
+
+**Provate anche**
+
+- aggiungete la riga `2104000;Conti;Marta;18` → `Iscritti: 9`, `Promossi: 7 (77.8%)`, medie `22.1` e `23.9`
+- togliete `delimiter=";"` e stampate una riga letta: c'è una sola chiave, `matricola;cognome;nome;voto`
+
+---
+
+## Esercizio 4 — Il verbale d'esame (`verbale.py`)
+
+**Consegna**
+
+1. Leggete di nuovo `appello.csv` e ordinate gli studenti per cognome con `sorted(..., key=lambda s: s["cognome"])`.
+2. Aprite `verbale.txt` in scrittura (`"w"`) e scrivete con `f.write()` un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate `\n` alla fine di ogni riga.
+3. Dopo aver chiuso il file, rileggetelo con `Path("verbale.txt").read_text(encoding="utf-8")` e stampatelo.
+
+**File `appello.csv`** (createlo nella cartella del programma)
+
+```
+matricola;cognome;nome;voto
+2101234;Rossi;Anna;28
+2101567;Bianchi;Marco;17
+2102001;Verdi;Giulia;30
+2102345;Russo;Luca;24
+2102890;Ferrari;Sara;15
+2103112;Esposito;Paolo;21
+2103456;Romano;Elena;27
+2103789;Gallo;Davide;19
+```
+
+**Esempio di esecuzione**
+
+```
+Verbale dell'appello
+2101567 Bianchi Marco: 17, respinto
+2103112 Esposito Paolo: 21, promosso
+2102890 Ferrari Sara: 15, respinto
+2103789 Gallo Davide: 19, promosso
+2103456 Romano Elena: 27, promosso
+2101234 Rossi Anna: 28, promosso
+2102345 Russo Luca: 24, promosso
+2102001 Verdi Giulia: 30, promosso
+Promossi: 6 su 8
+```
+
+**Provate anche**
+
+- eseguite il programma due volte: `verbale.txt` viene riscritto da capo, le righe non si ripetono
+- con la riga `2104000;Conti;Marta;18` → Conti è la seconda, `Promossi: 7 su 9`
+
+---
+
+## Esercizio 5 — Il registro delle spese (`spese.py`)
+
+**Consegna**
+
+1. Il file `spese.csv` è un registro delle spese di uno studente fuori sede.
+2. Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (`ValueError`) stampate un messaggio e non scrivete niente.
+3. Altrimenti aggiungete la spesa in fondo al file: `open(..., "a", encoding="utf-8", newline="")` e `csv.writer(f, delimiter=";").writerow([...])`.
+4. Rileggete tutto il file e sommate gli importi per categoria con un `defaultdict(float)`. Stampate le categorie dalla più costosa e il totale, con due decimali.
+
+**File `spese.csv`** (createlo nella cartella del programma)
+
+```
+data;categoria;importo
+2026-12-01;affitto;350.00
+2026-12-02;spesa;42.50
+2026-12-03;trasporti;25.00
+2026-12-05;spesa;18.20
+2026-12-06;libri;39.90
+```
+
+**Esempio di esecuzione**
+
+```
+Data (aaaa-mm-gg): 2026-12-07
+Categoria: Spesa
+Importo: 12.30
+affitto: 350.00 EUR
+spesa: 73.00 EUR
+libri: 39.90 EUR
+trasporti: 25.00 EUR
+Totale: 487.90 EUR
+```
+
+**Provate anche**
+
+- sul file originale, `2026-12-07`, `cinema`, `8.50` → compare `cinema: 8.50 EUR`, totale `484.10 EUR`
+- importo `dieci` → `Importo non valido: spesa non registrata` e il file non cambia
+- ogni esecuzione aggiunge una riga: aprite `spese.csv` e controllate
+
+---
+
+## Esercizio 6 — Il sondaggio in JSON (`sondaggio.py`)
+
+**Consegna**
+
+1. Il file `sondaggio.json` contiene le risposte a un questionario: per ogni studente il voto di soddisfazione (da 1 a 5) e se frequenta le lezioni.
+2. Caricatelo con `json.load(f)`: si ottiene un dizionario che contiene una lista di dizionari.
+3. Calcolate la media dei voti di tutti, dei frequentanti e dei non frequentanti (arrotondate con `round(..., 2)`) e la quota di frequentanti (`round(..., 3)`).
+4. Mettete i risultati in un dizionario `riepilogo`, salvatelo in `riepilogo.json` con `json.dump(..., indent=2, ensure_ascii=False)` e stampatelo con `json.dumps`.
+
+**File `sondaggio.json`** (createlo nella cartella del programma)
+
+```
 {
-  "nome_corso": "Sistemi di Elaborazione",
-  "anno_accademico": "2025-2026",
-  "docente": {
-    "nome": "Mario",
-    "cognome": "Rossi",
-    "email": "mario.rossi@universita.it"
-  },
-  "studenti": [
-    {"matricola": "S001", "nome": "Anna",  "voti": [28, 25, 30]},
-    {"matricola": "S002", "nome": "Marco", "voti": [22, 24]},
-    {"matricola": "S003", "nome": "Lucia", "voti": [30, 30, 28, 27]},
-    {"matricola": "S004", "nome": "Giuseppe", "voti": []}
+  "corso": "Sistemi di Elaborazione",
+  "anno": 2026,
+  "risposte": [
+    {"matricola": "2101234", "voto": 4, "frequenta": true},
+    {"matricola": "2101567", "voto": 2, "frequenta": false},
+    {"matricola": "2102001", "voto": 5, "frequenta": true},
+    {"matricola": "2102345", "voto": 3, "frequenta": true},
+    {"matricola": "2102890", "voto": 4, "frequenta": false},
+    {"matricola": "2103112", "voto": 5, "frequenta": true}
   ]
 }
 ```
 
-### Passo 2: leggere e navigare
-
-```python
-import json
-from pathlib import Path
-
-
-def carica_corso(percorso: Path) -> dict:
-    """Carica i dati di un corso da file JSON.
-
-    Args:
-        percorso: Path al file JSON.
-
-    Returns:
-        Dizionario con i dati del corso.
-    """
-    with open(percorso, "r", encoding="utf-8") as f:
-        dati: dict = json.load(f)
-    return dati
-
-
-def riepilogo_corso(dati: dict) -> None:
-    """Stampa un riepilogo del corso con le medie di ogni studente."""
-    print(f"Corso: {dati['nome_corso']}")
-    print(f"Anno: {dati['anno_accademico']}")
-    docente: dict[str, str] = dati["docente"]
-    print(f"Docente: {docente['nome']} {docente['cognome']}")
-    print(f"Email: {docente['email']}")
-    print()
-
-    studenti: list[dict] = dati["studenti"]
-    print(f"{'Matricola':<12} {'Nome':<12} {'N. voti':>8} {'Media':>8}")
-    print("-" * 44)
-
-    for s in studenti:
-        matricola: str = s["matricola"]
-        nome: str = s["nome"]
-        voti: list[int] = s["voti"]
-
-        if voti:
-            media: float = sum(voti) / len(voti)
-            print(f"{matricola:<12} {nome:<12} {len(voti):>8} {media:>8.2f}")
-        else:
-            print(f"{matricola:<12} {nome:<12} {len(voti):>8} {'N/D':>8}")
-
-
-def salva_medie_json(dati: dict, percorso_output: Path) -> None:
-    """Calcola le medie e le salva in un nuovo file JSON.
-
-    Args:
-        dati: Dizionario con i dati del corso.
-        percorso_output: Path del file JSON di output.
-    """
-    risultati: list[dict[str, str | float | None]] = []
-
-    for s in dati["studenti"]:
-        voti: list[int] = s["voti"]
-        media: float | None = sum(voti) / len(voti) if voti else None
-        risultati.append({
-            "matricola": s["matricola"],
-            "nome": s["nome"],
-            "media": round(media, 2) if media is not None else None,
-        })
-
-    output: dict[str, str | list] = {
-        "corso": dati["nome_corso"],
-        "medie": risultati,
-    }
-
-    percorso_output.parent.mkdir(parents=True, exist_ok=True)
-    with open(percorso_output, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
-
-    print(f"Medie salvate in: {percorso_output}")
-
-
-# --- Prova ---
-if __name__ == "__main__":
-    dati: dict = carica_corso(Path("corso.json"))
-    riepilogo_corso(dati)
-    salva_medie_json(dati, Path("output") / "medie_corso.json")
-```
-
-**Punti chiave**:
-
-- `json.load()` legge da file, `json.loads()` da stringa (la `s` finale sta per *string*).
-- `indent=2` produce JSON leggibile; `ensure_ascii=False` preserva i caratteri accentati.
-- `round(media, 2)` evita output come `27.333333333333332`.
-
----
-
-## Esercizio guidato 5 --- `try`/`except` per file non trovato, formato sbagliato, valori mancanti
-
-Scriviamo una funzione robusta che carica un CSV di misurazioni, gestendo tutti i problemi comuni.
-
-```python
-import csv
-from pathlib import Path
-
-
-def carica_misurazioni(percorso: Path) -> list[dict[str, float | None]]:
-    """Carica misurazioni da un CSV gestendo tutti gli errori comuni.
-
-    Il CSV atteso ha colonne: id, temperatura, umidita, pressione.
-    Valori mancanti o non numerici vengono sostituiti con None.
-
-    Args:
-        percorso: Path al file CSV.
-
-    Returns:
-        Lista di dizionari con le misurazioni pulite.
-    """
-    # 1. Verificare che il file esista
-    if not percorso.exists():
-        print(f"ERRORE: il file '{percorso}' non esiste.")
-        return []
-
-    misurazioni: list[dict[str, float | None]] = []
-    errori: list[str] = []
-
-    try:
-        with open(percorso, "r", encoding="utf-8") as f:
-            lettore = csv.DictReader(f, delimiter=";")
-
-            # 2. Verificare che le colonne attese siano presenti
-            colonne_attese: set[str] = {"id", "temperatura", "umidita", "pressione"}
-            if lettore.fieldnames is None:
-                print("ERRORE: il file sembra vuoto.")
-                return []
-
-            colonne_presenti: set[str] = set(lettore.fieldnames)
-            colonne_mancanti: set[str] = colonne_attese - colonne_presenti
-            if colonne_mancanti:
-                print(f"ATTENZIONE: colonne mancanti: {colonne_mancanti}")
-
-            for num_riga, riga in enumerate(lettore, start=2):
-                misurazione: dict[str, float | None] = {}
-
-                # 3. Gestire valori non numerici
-                for campo in ["temperatura", "umidita", "pressione"]:
-                    valore_raw: str | None = riga.get(campo)
-                    if valore_raw is None or valore_raw.strip() == "":
-                        misurazione[campo] = None
-                        errori.append(
-                            f"Riga {num_riga}: '{campo}' mancante"
-                        )
-                    else:
-                        try:
-                            misurazione[campo] = float(
-                                valore_raw.strip().replace(",", ".")
-                            )
-                        except ValueError:
-                            misurazione[campo] = None
-                            errori.append(
-                                f"Riga {num_riga}: '{campo}' non numerico "
-                                f"('{valore_raw}')"
-                            )
-
-                misurazioni.append(misurazione)
-
-    except UnicodeDecodeError:
-        print("ERRORE: il file non e' codificato in UTF-8.")
-        print("Provate con encoding='latin-1' o 'cp1252'.")
-        return []
-
-    # Stampa riepilogo errori
-    if errori:
-        print(f"\nTrovati {len(errori)} problemi:")
-        for e in errori[:10]:  # Mostra solo i primi 10
-            print(f"  - {e}")
-        if len(errori) > 10:
-            print(f"  ... e altri {len(errori) - 10}")
-
-    print(f"\nCaricate {len(misurazioni)} misurazioni.")
-    return misurazioni
-
-
-# --- Prova con un file inesistente ---
-if __name__ == "__main__":
-    # Test 1: file inesistente
-    risultato: list[dict[str, float | None]] = carica_misurazioni(
-        Path("non_esiste.csv")
-    )
-    print(f"Risultato: {risultato}")
-    print()
-
-    # Test 2: file reale (se disponibile)
-    percorso_dati: Path = Path("misurazioni.csv")
-    if percorso_dati.exists():
-        dati: list[dict[str, float | None]] = carica_misurazioni(percorso_dati)
-        for d in dati[:3]:
-            print(d)
-```
-
-**Pattern fondamentale**: ogni operazione che puo' fallire (apertura file, conversione di tipo, accesso a chiave) va protetta con il `try`/`except` appropriato. Catturate sempre eccezioni *specifiche* --- mai un generico `except Exception`.
-
----
-
-## Esercizi autonomi
-
-### Base
-
-**Esercizio 1 --- Analisi di un file di log**
-
-Vi viene fornito un file `server.log` dove ogni riga ha il formato:
+**Esempio di esecuzione**
 
 ```
-2025-11-20 08:15:32 INFO Avvio del server
-2025-11-20 08:15:33 WARNING Memoria disponibile sotto il 20%
-2025-11-20 08:15:35 ERROR Connessione al database fallita
-2025-11-20 08:16:01 INFO Riconnessione riuscita
-```
-
-Scrivete una funzione `analizza_log(percorso: Path) -> dict[str, int]` che:
-
-1. Legge il file riga per riga.
-2. Conta quante righe ci sono per ogni livello (`INFO`, `WARNING`, `ERROR`).
-3. Gestisce eventuali righe vuote o malformate senza interrompersi.
-4. Restituisce un dizionario con i conteggi, ad esempio `{"INFO": 12, "WARNING": 3, "ERROR": 5}`.
-
-Scrivete poi una seconda funzione `salva_errori(percorso_log: Path, percorso_output: Path) -> int` che estrae solo le righe `ERROR` e le salva in un file separato, restituendo il numero di errori trovati.
-
-Usate `pathlib` per tutti i percorsi.
-
----
-
-### Base
-
-**Esercizio 2 --- Pulizia di un CSV sporco**
-
-Avete un file `vendite_sporco.csv` (separatore `;`) con problemi tipici:
-
-```
-prodotto;quantita;prezzo_unitario;citta
-Mela;10;1.50;Roma
-Pera;;2.30;Milano
-Banana;cinque;0.80;
-;8;1.20;Napoli
-Arancia;15;N/D;Torino
-Mela;20;1.50;Roma
-```
-
-Scrivete una funzione `pulisci_csv(percorso_input: Path, percorso_output: Path) -> dict[str, int]` che:
-
-1. Legge il file riga per riga con `csv.DictReader`.
-2. Scarta le righe senza `prodotto`.
-3. Converte `quantita` in `int` e `prezzo_unitario` in `float`, sostituendo con `None` i valori non validi.
-4. Scrive un CSV pulito nel file di output contenente solo le righe con tutti i campi numerici validi.
-5. Restituisce un dizionario con: `{"righe_lette": ..., "righe_valide": ..., "righe_scartate": ...}`.
-
----
-
-### Intermedio
-
-**Esercizio 3 --- Conversione CSV verso JSON**
-
-Scrivete una funzione `csv_a_json(percorso_csv: Path, percorso_json: Path) -> int` che:
-
-1. Legge un CSV (rilevando automaticamente se il separatore e' `,` o `;`).
-2. Converte ogni riga in un dizionario.
-3. Tenta di convertire i valori numerici (interi e decimali) nei tipi Python corrispondenti.
-4. Salva il risultato come JSON con `indent=2` e `ensure_ascii=False`.
-5. Restituisce il numero di record convertiti.
-
-Scrivete anche la funzione inversa `json_a_csv(percorso_json: Path, percorso_csv: Path) -> int` che fa il percorso contrario.
-
-Gestite i casi di errore: file non trovato, JSON malformato, CSV vuoto.
-
----
-
-### Intermedio
-
-**Esercizio 4 --- Unione e riepilogo di piu' CSV**
-
-In una cartella `dati_mensili/` ci sono piu' file CSV (uno per mese) con la stessa struttura:
-
-```
-data;prodotto;quantita;importo
-2025-01-05;Mela;10;15.00
-2025-01-12;Pera;5;11.50
-```
-
-Scrivete una funzione `unisci_e_riepiloga(cartella: Path, output_unito: Path, output_riepilogo: Path) -> None` che:
-
-1. Trova tutti i file `.csv` nella cartella con `glob`.
-2. Li unisce in un unico CSV (`output_unito`), mantenendo una sola intestazione.
-3. Calcola il totale delle quantita' e degli importi per ogni prodotto.
-4. Salva il riepilogo per prodotto in `output_riepilogo` come CSV con colonne `prodotto;quantita_totale;importo_totale`.
-
-Gestite il caso in cui la cartella sia vuota o non esista.
-
----
-
-### Avanzato
-
-**Esercizio 5 --- Analisi incrociata di dati eterogenei**
-
-Avete due file:
-
-- `dipendenti.json`: lista di dizionari con `id`, `nome`, `reparto`.
-- `presenze.csv`: con colonne `id_dipendente;data;ore_lavorate`.
-
-Scrivete una funzione `report_presenze(path_dipendenti: Path, path_presenze: Path, path_output: Path) -> None` che:
-
-1. Carica entrambi i file.
-2. Per ogni dipendente, calcola il totale delle ore lavorate e la media giornaliera.
-3. Raggruppa i risultati per reparto.
-4. Genera un report JSON con la struttura:
-
-```json
+Sistemi di Elaborazione (2026)
+Risposte: 6
+Salvato riepilogo.json:
 {
-  "reparti": {
-    "Vendite": {
-      "dipendenti": [
-        {"nome": "Anna Rossi", "ore_totali": 160, "media_giornaliera": 8.0}
-      ],
-      "ore_totali_reparto": 160
-    }
-  }
+  "corso": "Sistemi di Elaborazione",
+  "risposte": 6,
+  "media": 3.83,
+  "media_frequentanti": 4.25,
+  "media_non_frequentanti": 3.0,
+  "quota_frequentanti": 0.667
 }
 ```
 
-Gestite: dipendenti senza presenze, presenze con `id_dipendente` inesistente, ore non numeriche.
+**Provate anche**
+
+- aggiungete la risposta `{"matricola": "2103456", "voto": 1, "frequenta": false}` → `media 3.43`, `media_non_frequentanti 2.33`, `quota_frequentanti 0.571`
+- togliete la virgola dopo `"anno": 2026` → `json.JSONDecodeError` (lo gestirete nell'esercizio 8)
 
 ---
 
-## Sfida finale --- Pipeline completa: CSV sporco, pulizia, statistiche, output
+## Esercizio 7 — Un appello con errori (`appello_robusto.py`)
 
-Vi viene fornito un file `rilevazioni_meteo.csv` (separatore `;`) con dati meteorologici grezzi, pieni di problemi:
+**Consegna**
+
+1. Chiedete il nome del file da leggere. Se non esiste (`FileNotFoundError`) stampate un messaggio; se non ha la colonna `voto` (`KeyError`) stampatene un altro.
+2. Leggete le righe con `DictReader` e numeratele con `enumerate(lettore, start=2)`: la riga 1 è l'intestazione.
+3. Per ogni riga convertite il voto con `int()` dentro un `try`: se c'è `ValueError` stampate il numero di riga e il testo letto, poi passate alla riga dopo. Scartate anche i voti fuori da 0–30.
+4. Alla fine stampate i voti validi, le righe scartate e la media con un decimale.
+
+**File `appello_sporco.csv`** (createlo nella cartella del programma)
 
 ```
-stazione;data;temperatura;umidita;vento_kmh
-Roma;2025-03-01;15.2;65;12
-Roma;2025-03-02;N/D;70;8
-Milano;2025-03-01;;80;
-Milano;2025-03-02;5.1;75;22
-Napoli;2025-03-01;18.3;errore;15
-Roma;2025-03-03;16.0;62;10
-;2025-03-01;20.0;55;5
-Milano;2025-03-03;6.5;78;18
-Napoli;2025-03-02;17.8;60;abc
-Napoli;2025-03-03;19.1;58;12
+matricola;cognome;voto
+2101234;Rossi;28
+2101567;Bianchi;assente
+2102001;Verdi;30
+2102345;Russo;
+2102890;Ferrari;33
+2103112;Esposito;21
+2103456;Romano;27
 ```
 
-Scrivete un programma completo (non una singola funzione, ma un modulo organizzato in piu' funzioni) che esegue questa pipeline:
+**Esempio di esecuzione**
 
-1. **Caricamento**: leggere il CSV, gestendo encoding e separatore.
-2. **Pulizia**: scartare righe senza stazione; convertire i campi numerici, sostituendo i valori non validi con `None`; contare i problemi trovati.
-3. **Statistiche per stazione**: per ogni stazione, calcolare media, minimo e massimo di ogni campo numerico (ignorando i `None`).
-4. **Output CSV**: salvare le statistiche in un file `output/statistiche_meteo.csv`.
-5. **Output JSON**: salvare le statistiche in un file `output/statistiche_meteo.json` con struttura annidata per stazione.
-6. **Report testuale**: stampare a video un riepilogo formattato.
+```
+File da leggere: appello_sporco.csv
+Riga 3: voto non valido 'assente'
+Riga 5: voto non valido ''
+Riga 6: voto fuori scala 33
+Voti validi: 4, righe scartate: 3
+Media: 26.5
+```
 
-Ogni funzione deve avere type hints completi e gestire gli errori in modo appropriato. Il programma deve funzionare anche se il file di input ha problemi (ma non deve crashare).
+**Provate anche**
+
+- `appello.csv` → `Voti validi: 8, righe scartate: 0`, `Media: 22.6`
+- `voti.csv` → `Il file voti.csv non esiste`
+- `commenti.txt` → `Il file commenti.txt non ha la colonna voto`
+
+---
+
+## Esercizio 8 — Configurazione in JSON (`config_soglia.py`)
+
+**Consegna**
+
+1. Il file `config.json` dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è `appello.csv` dell'esercizio 3.
+2. Scrivete una funzione `sopra_soglia(file: str, colonna: str, soglia: int) -> list[str]` che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.
+3. In un solo `try` caricate la configurazione e chiamate la funzione. Gestite con `except` separati: `FileNotFoundError` (stampate `e.filename`), `json.JSONDecodeError` (stampate `e.lineno`), `KeyError` e `ValueError`.
+4. Nel blocco `else` stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (`", ".join(...)`).
+
+**File `config.json`** (createlo nella cartella del programma)
+
+```
+{
+  "file": "appello.csv",
+  "colonna": "voto",
+  "soglia": 27
+}
+```
+
+**Esempio di esecuzione**
+
+```
+File: appello.csv, soglia: 27
+Sopra soglia: 3
+Romano, Rossi, Verdi
+```
+
+**Provate anche**
+
+- `"soglia": 18` → 6 studenti, da `Esposito` a `Verdi`
+- togliete la riga di `"soglia"` → `Chiave mancante: 'soglia'`; `"colonna": "punteggio"` → `Chiave mancante: 'punteggio'`
+- `"file": "appello2.csv"` → `File non trovato: appello2.csv`; rinominate `config.json` → `File non trovato: config.json`
+- togliete la virgola dopo `"voto"` → `config.json non valido alla riga 4`; `"colonna": "cognome"` → la colonna non contiene numeri
+
+---
+
+## Sfida — PM10 a Padova (`pipeline_pm10.py`)
+
+**Consegna**
+
+1. Il file `rilevazioni.csv` contiene le misure giornaliere di PM10 (µg/m³) di tre stazioni di Padova, scritte a mano e con diversi problemi (vedi tabella).
+2. Scrivete una funzione `pulisci(percorso: Path)` che restituisce un dizionario stazione → lista di misure valide (`defaultdict(list)`) e il numero di righe scartate.
+3. Nel blocco `if __name__ == "__main__":` calcolate per ogni stazione, in ordine alfabetico, media (`round(..., 1)`), massimo e giorni oltre il limite di 50, e stampate il dizionario di ogni stazione.
+4. Salvate tutto in `pm10.json` (un dizionario di dizionari) e stampate il numero di righe scartate.
+
+| Problema | Cosa fare |
+|---|---|
+| spazi e maiuscole nel nome | `strip()` e `title()` |
+| stazione vuota | scartare la riga |
+| virgola decimale | `replace(",", ".")` prima di `float()` |
+| `N/D` o campo vuoto | scartare la riga |
+| valore negativo | scartare la riga |
+
+**File `rilevazioni.csv`** (createlo nella cartella del programma)
+
+```
+stazione;data;pm10
+Mandria;01/12/2026;38,5
+Arcella;01/12/2026;52
+ mandria ;02/12/2026;61,2
+Arcella;02/12/2026;N/D
+;02/12/2026;44
+Granze;01/12/2026;27,8
+Granze;02/12/2026;
+ARCELLA;03/12/2026;48,9
+Mandria;03/12/2026;55
+Granze;03/12/2026;-3
+```
+
+**Esempio di esecuzione**
+
+```
+Arcella: {'media': 50.5, 'massimo': 52.0, 'giorni_oltre': 1}
+Granze: {'media': 27.8, 'massimo': 27.8, 'giorni_oltre': 0}
+Mandria: {'media': 51.6, 'massimo': 61.2, 'giorni_oltre': 2}
+Righe scartate: 4. Salvato pm10.json
+```
+
+**Provate anche**
+
+- aggiungete `Granze;04/12/2026;71,0` → `Granze: {'media': 49.4, 'massimo': 71.0, 'giorni_oltre': 1}`
+- un file con la sola intestazione → `Righe scartate: 0` e `pm10.json` contiene `{}`
+- aggiungete al JSON il numero di misure valide di ogni stazione
 
 ---
 
 ## Domande di verifica
 
-1. Qual e' la differenza tra leggere un file con `f.read()`, `f.readlines()` e iterare con `for riga in f`? Quando preferireste ciascun metodo?
-
-2. Perche' e' importante specificare `newline=""` quando si apre un file per la scrittura CSV su Windows?
-
-3. Un collega vi invia un CSV e quando lo leggete vedete `Ã©` al posto di `e'`. Cosa e' successo e come risolvete?
-
-4. Qual e' la differenza tra `json.load()` e `json.loads()`? Scrivete un esempio d'uso per ciascuna.
-
-5. Avete un file CSV con 10 milioni di righe. Perche' e' sbagliato usare `f.readlines()` e come lo leggereste invece?
-
-6. Scrivete un blocco `try`/`except` che gestisce separatamente: file non trovato, errore di encoding, e valore non convertibile a numero. Per ciascuno, spiegate quale eccezione catturate.
-
-7. Perche' `Path("dati") / "output" / "risultati.csv"` e' preferibile a `"dati/output/risultati.csv"`?
-
----
-
-## Osservazioni finali
-
-In questo laboratorio avete messo le mani su un flusso di lavoro che incontrerete continuamente nella pratica statistica: dati che arrivano in formati diversi (testo, CSV, JSON), spesso sporchi o malformati, che devono essere caricati, puliti, analizzati e salvati in un formato utilizzabile.
-
-I punti chiave da portare con se':
-
-- **`with open(...)` sempre**: non esiste un buon motivo per non usare il context manager.
-- **`pathlib` per i percorsi**: rende il codice portabile e leggibile.
-- **`csv.DictReader` con `delimiter`**: leggete CSV europei senza problemi.
-- **`try`/`except` specifico**: catturate solo le eccezioni che sapete gestire. Un `except Exception` generico nasconde i bug.
-- **Separare caricamento, pulizia e analisi**: ogni fase in una funzione dedicata rende il codice piu' facile da testare e da correggere.
-
-Quando in futuro userete Pandas, molte di queste operazioni diventeranno una sola riga di codice (`pd.read_csv(...)`). Ma capire cosa succede sotto il cofano vi permettera' di diagnosticare i problemi che Pandas non riesce a risolvere da solo.
+1. Che differenza c'è tra aprire un file con `"w"` e con `"a"`? Cosa succederebbe a `spese.csv` usando `"w"`?
+2. In `conta_righe.py`, perché una riga vuota dà 0 parole anche se contiene il carattere `\n`?
+3. `csv.DictReader` restituisce `{'voto': '28', ...}`. Perché serve `int()` prima di fare la media?
+4. Che differenza c'è tra `json.load` e `json.loads`? E tra `json.dump` e `json.dumps`?
+5. In `appello_robusto.py` il `try` sul voto è dentro il `for`. Cosa cambierebbe mettendolo fuori dal ciclo?
+6. In `config_soglia.py`, cosa succede se nel JSON scrivete `"soglia": "27"`, tra virgolette? Quale eccezione si ottiene?
+7. Nella sfida, perché `float("38,5")` dà errore e come lo si evita?

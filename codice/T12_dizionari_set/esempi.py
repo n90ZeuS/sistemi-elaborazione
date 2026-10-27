@@ -305,4 +305,48 @@ assert deep[0] == [1, 2]              # deep copy è completamente indipendente
 print(f"Originale dopo modifica shallow: {lista_nested}")
 print(f"Deep copy (indipendente): {deep}")
 
+# ============================================================
+# 14. DICT E SET COMPREHENSION: ALTRI ESEMPI
+# ============================================================
+print("\n=== Dict e set comprehension ===")
+
+# Dict comprehension da una lista: {chiave: valore for variabile in sequenza}
+nomi_studenti: list[str] = ["Alice", "Bob", "Carla", "Davide"]
+lunghezze: dict[str, int] = {nome: len(nome) for nome in nomi_studenti}
+print(f"Lunghezze dei nomi: {lunghezze}")
+# Lunghezze dei nomi: {'Alice': 5, 'Bob': 3, 'Carla': 5, 'Davide': 6}
+
+# Dict comprehension con filtro, scorrendo le coppie con items()
+registro_voti: dict[str, int] = {"Anna": 28, "Marco": 15, "Luca": 30, "Sara": 12}
+promossi: dict[str, int] = {n: v for n, v in registro_voti.items() if v >= 18}
+print(f"Promossi: {promossi}")  # Promossi: {'Anna': 28, 'Luca': 30}
+
+# Set comprehension: {espressione for variabile in sequenza}, senza i due punti.
+# Il risultato è un set: i duplicati spariscono e l'ordine non è garantito,
+# quindi per stampare usiamo sorted().
+saluti: list[str] = ["ciao", "hello", "CIAO", "Hello", "arrivederci"]
+saluti_unici: set[str] = {s.lower() for s in saluti}
+print(f"Saluti diversi: {sorted(saluti_unici)}")  # ['arrivederci', 'ciao', 'hello']
+
+nomi_corso: list[str] = ["Anna", "Andrea", "Marco", "Maria", "Luca"]
+iniziali: set[str] = {nome[0] for nome in nomi_corso}
+print(f"Iniziali: {sorted(iniziali)}")  # Iniziali: ['A', 'L', 'M']
+
+# Cifre presenti in un numero: si scorre la sua versione stringa
+numero_grande: int = 112233445566
+cifre_presenti: set[str] = {c for c in str(numero_grande)}
+print(f"Cifre in {numero_grande}: {sorted(cifre_presenti)}")
+# Cifre in 112233445566: ['1', '2', '3', '4', '5', '6']
+
+# Normalizzare le risposte di un questionario e contarle
+risposte: list[str] = ["si", "Si", "SI", " si ", "no", "No", "  NO", "forse"]
+normalizzate: list[str] = [r.strip().lower() for r in risposte]
+categorie: set[str] = {r.strip().lower() for r in risposte}
+frequenze_risposte: dict[str, int] = {r: normalizzate.count(r) for r in normalizzate}
+print(f"Categorie: {sorted(categorie)}")      # Categorie: ['forse', 'no', 'si']
+print(f"Frequenze: {frequenze_risposte}")     # Frequenze: {'si': 4, 'no': 3, 'forse': 1}
+# Scorrendo normalizzate (e non il set) le chiavi seguono l'ordine di prima
+# comparsa; le risposte ripetute riscrivono la stessa chiave con lo stesso valore.
+
+
 print("\n=== Fine esempi T12 ===")

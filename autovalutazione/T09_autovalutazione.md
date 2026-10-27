@@ -275,7 +275,7 @@ Completa la funzione che conta quante volte un carattere appare in una stringa.
 def conta_carattere(testo, carattere):
     """Conta le occorrenze di un carattere nel testo.
 
-    Esempio: conta_carattere("banana", "a") deve restituire 3
+    Esempio: conta_carattere("statistica", "t") deve restituire 3
     """
     contatore = ___
     for c in ________:
