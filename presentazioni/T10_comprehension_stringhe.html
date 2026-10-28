@@ -350,6 +350,27 @@
         .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
         .reveal .note-sol { font-size: 0.7em; }
         .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
+        /* === ESERCIZI IN AULA: SCELTA DEGLI STRUMENTI === */
+        .reveal .consegna-aula { font-size: 0.72em; margin: 0.3em 0 0.4em; }
+        .reveal .strumenti { display: flex; flex-wrap: wrap; gap: 0.45em; margin: 0.2em 0 0.5em; }
+        .reveal .strumento {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.55em;
+            padding: 0.3em 0.9em;
+            border: 2px solid #cbd5e1;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+        }
+        .reveal .strumento:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+        .reveal .strumento.scelto { border-color: var(--accent); background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .scelta:has(.svela.visible) .strumento[data-serve] { border-color: var(--success); background: #dcfce7; color: #166534; font-weight: 700; }
+        .reveal .scelta:has(.svela.visible) .strumento:not([data-serve]) { opacity: 0.45; text-decoration: line-through; }
+        .reveal .svela { font-size: 0.62em; margin: 0.3em 0; padding: 0.5em 1em; }
+        .reveal .passi { font-size: 0.62em; margin-top: 0.3em; }
+        .reveal .passi li { margin-bottom: 0.15em; line-height: 1.35; }
     </style>
 </head>
 <body>
@@ -769,14 +790,40 @@ Chiedere / fare: cosa stampa f"{2 / 3:.1%}"? (66.7%). E f"{0.5:.0%}"? (50%).</as
             <section>
                 <section class="section-slide">
                     <h2>Esercizi in aula</h2>
-                    <p>Prima provate da soli, poi vediamo la soluzione</p>
+                    <p>Leggete la consegna e dite quali strumenti usereste. Poi vediamo i passi e la soluzione.</p>
+                    <aside class="notes">⏱ 1' · blocco «Esercizi in aula»
+Da dire: si lavora senza PC. Per ogni esercizio: un minuto per pensare a coppie, poi mi dite quali istruzioni o metodi usereste e in che ordine.
+Chiedere / fare: sulla slide dell'esercizio cliccare gli strumenti che vengono proposti (si colorano di blu). Al primo avanzamento compaiono in verde quelli che servono; al secondo, i passi.</aside>
+                </section>
+
+                <section class="scelta">
+                    <h2>Esercizio 1 &mdash; Contare</h2>
+                    <div class="box box-blue consegna-aula">Data <code>frase = "la statistica è una scienza"</code>, contate quante volte compare la lettera <code>a</code>. Fatelo in due modi: con un ciclo e con un metodo.</div>
+                    <div class="etichetta">Cosa usereste?</div>
+                    <div class="strumenti">
+                        <button type="button" class="strumento" data-serve aria-pressed="false">for</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">if</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">conta += 1</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">count()</button>
+                        <button type="button" class="strumento" aria-pressed="false">find()</button>
+                        <button type="button" class="strumento" aria-pressed="false">len()</button>
+                        <button type="button" class="strumento" aria-pressed="false">upper()</button>
+                    </div>
+                    <div class="box box-green svela fragment">Con il ciclo servono <code>for</code>, <code>if</code> e un contatore; con un metodo basta <code>count()</code>. <code>find()</code> dà solo la posizione della prima <code>a</code>, <code>len()</code> conta tutti i caratteri.</div>
+                    <ol class="passi fragment">
+                        <li>Partire da <code>conta = 0</code>.</li>
+                        <li>Scorrere la frase un carattere alla volta con <code>for</code>.</li>
+                        <li>Se il carattere è <code>"a"</code>, aumentare <code>conta</code> di 1.</li>
+                        <li>Controllo: <code>frase.count("a")</code> deve dare lo stesso numero, 5.</li>
+                    </ol>
+                    <aside class="notes">⏱ 3' · blocco «Esercizi in aula»
+Da dire: è il pattern contatore di T09 applicato a una stringa.
+Chiedere / fare: un minuto a coppie, poi raccogliere le proposte. Se propongono find(): frase.find("a") restituisce 1, la posizione della prima a. Chiedere cosa restituisce len(frase) (27) e perché non è la risposta.</aside>
                 </section>
 
                 <section>
-                    <h2>Esercizio 1 &mdash; Contare</h2>
-                    <div class="columns">
-                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Data <code>frase = "la statistica è una scienza"</code>, contate le lettere <code>a</code> con un ciclo <code>for</code>. Poi controllate il risultato con <code>count()</code>.</div></div>
-                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>frase: str = "la statistica è una scienza"
+                    <h2>Soluzione &mdash; Contare</h2>
+                    <pre><code class="language-python" data-trim data-noescape>frase: str = "la statistica è una scienza"
 
 conta: int = 0
 for carattere in frase:
@@ -784,62 +831,129 @@ for carattere in frase:
         conta += 1
 
 print(conta)               # 5
-print(frase.count("a"))    # 5</code></pre></div>
+print(frase.count("a"))    # 5</code></pre>
+                    <aside class="notes">⏱ 1' · blocco «Esercizi in aula»
+Da dire: le a sono in «la», due in «statistica», «una», «scienza»: 5.
+Chiedere / fare: cosa cambia con frase.count("A")? (0: il confronto distingue maiuscole e minuscole).</aside>
+                </section>
+
+                <section class="scelta">
+                    <h2>Esercizio 2 &mdash; Estensione</h2>
+                    <div class="box box-blue consegna-aula">Dato <code>nome_file = "vendite_2026.csv"</code>, stampate il nome senza estensione (<code>vendite_2026</code>) e l'estensione (<code>csv</code>). Se il nome non contiene il punto, stampate un messaggio.</div>
+                    <div class="etichetta">Cosa usereste?</div>
+                    <div class="strumenti">
+                        <button type="button" class="strumento" data-serve aria-pressed="false">find()</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">slicing [ : ]</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">if</button>
+                        <button type="button" class="strumento" aria-pressed="false">index()</button>
+                        <button type="button" class="strumento" aria-pressed="false">replace()</button>
+                        <button type="button" class="strumento" aria-pressed="false">count()</button>
+                        <button type="button" class="strumento" aria-pressed="false">len()</button>
                     </div>
-                    <aside class="notes">⏱ 4' · blocco «Esercizi in aula»
-Da dire: dare 2 minuti, poi mostrare la soluzione. È il pattern contatore di T09 applicato a una stringa.
-Chiedere / fare: risultato atteso 5.</aside>
+                    <div class="box box-green svela fragment"><code>find()</code> trova la posizione del punto, lo slicing prende le parti prima e dopo, <code>if</code> gestisce il caso senza punto. <code>index()</code> con un nome senza punto si ferma con <code>ValueError</code>.</div>
+                    <ol class="passi fragment">
+                        <li>Cercare la posizione del punto: <code>find(".")</code> dà 12.</li>
+                        <li>Se il risultato è <code>-1</code>, il punto non c'è: stampare il messaggio.</li>
+                        <li>Altrimenti il nome va dall'inizio al punto escluso: <code>[:punto]</code>.</li>
+                        <li>L'estensione parte dal carattere dopo il punto: <code>[punto + 1:]</code>.</li>
+                    </ol>
+                    <aside class="notes">⏱ 3' · blocco «Esercizi in aula»
+Da dire: find e index trovano la stessa posizione; cambia solo il comportamento quando il punto manca (-1 contro errore).
+Chiedere / fare: se propongono replace(".csv", ""): funziona solo se l'estensione è già nota, con "dati.xlsx" non toglie nulla. Chiedere cosa stamperebbe nome_file[:-1] se find desse -1 e non lo controllassimo ("vendite_2026.cs": risultato sbagliato senza errore).</aside>
                 </section>
 
                 <section>
-                    <h2>Esercizio 2 &mdash; Estensione</h2>
-                    <div class="columns">
-                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Dato <code>nome_file = "vendite_2026.csv"</code>, stampate il nome senza estensione e l'estensione. Usate <code>find(".")</code> e lo slicing. Se il punto manca, stampate un messaggio.</div></div>
-                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>nome_file: str = "vendite_2026.csv"
+                    <h2>Soluzione &mdash; Estensione</h2>
+                    <pre><code class="language-python" data-trim data-noescape>nome_file: str = "vendite_2026.csv"
 
 punto: int = nome_file.find(".")
 if punto == -1:
     print("Il file non ha estensione")
 else:
     print(nome_file[:punto])       # vendite_2026
-    print(nome_file[punto + 1:])   # csv</code></pre></div>
+    print(nome_file[punto + 1:])   # csv</code></pre>
+                    <aside class="notes">⏱ 1' · blocco «Esercizi in aula»
+Da dire: il punto è in posizione 12; [:12] prende i caratteri da 0 a 11.
+Chiedere / fare: provare a voce con nome_file = "leggimi" (stampa il messaggio).</aside>
+                </section>
+
+                <section class="scelta">
+                    <h2>Esercizio 3 &mdash; Nome e iniziali</h2>
+                    <div class="box box-blue consegna-aula">Dato <code>dato = "&nbsp;&nbsp;mARIO rossi&nbsp;&nbsp;"</code> (con due spazi all'inizio e alla fine), stampate <code>Mario Rossi</code> e le iniziali <code>M.R.</code>.</div>
+                    <div class="etichetta">Cosa usereste?</div>
+                    <div class="strumenti">
+                        <button type="button" class="strumento" data-serve aria-pressed="false">strip()</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">title()</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">find()</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">indice [i]</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">f-string</button>
+                        <button type="button" class="strumento" aria-pressed="false">capitalize()</button>
+                        <button type="button" class="strumento" aria-pressed="false">upper()</button>
+                        <button type="button" class="strumento" aria-pressed="false">len()</button>
                     </div>
-                    <aside class="notes">⏱ 4' · blocco «Esercizi in aula»
-Da dire: find restituisce la posizione del punto; prima del punto c'è il nome, dopo l'estensione. Con -1 lo slicing darebbe un risultato sbagliato, per questo si controlla.
-Chiedere / fare: provare con «leggimi» (senza punto).</aside>
+                    <div class="box box-green svela fragment"><code>strip()</code> toglie gli spazi ai bordi, <code>title()</code> sistema le maiuscole, <code>find(" ")</code> trova lo spazio, gli indici danno le iniziali, la f-string le compone. <code>capitalize()</code> darebbe <code>Mario rossi</code>.</div>
+                    <ol class="passi fragment">
+                        <li>Togliere gli spazi ai bordi: <code>"mARIO rossi"</code>.</li>
+                        <li>Prima lettera maiuscola in ogni parola: <code>"Mario Rossi"</code>.</li>
+                        <li>Prima iniziale: il carattere in posizione 0.</li>
+                        <li>Seconda iniziale: il carattere dopo lo spazio, cioè <code>spazio + 1</code>.</li>
+                        <li>Comporre <code>"M.R."</code> con una f-string.</li>
+                    </ol>
+                    <aside class="notes">⏱ 3' · blocco «Esercizi in aula»
+Da dire: i metodi si possono concatenare: dato.strip().title() applica prima strip, poi title al risultato.
+Chiedere / fare: chiedere la differenza tra title() e capitalize() su "mARIO rossi" (Mario Rossi contro Mario rossi). upper() darebbe MARIO ROSSI.</aside>
                 </section>
 
                 <section>
-                    <h2>Esercizio 3 &mdash; Nome e iniziali</h2>
-                    <div class="columns">
-                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Dato <code>dato = "  mARIO rossi  "</code>, stampate <code>Mario Rossi</code> e le iniziali <code>M.R.</code>.</div></div>
-                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>dato: str = "  mARIO rossi  "
+                    <h2>Soluzione &mdash; Nome e iniziali</h2>
+                    <pre><code class="language-python" data-trim data-noescape>dato: str = "  mARIO rossi  "
 
 nome: str = dato.strip().title()
 spazio: int = nome.find(" ")
 
 print(nome)                                   # Mario Rossi
-print(f"{nome[0]}.{nome[spazio + 1]}.")      # M.R.</code></pre></div>
-                    </div>
-                    <aside class="notes">⏱ 4' · blocco «Esercizi in aula»
-Da dire: strip toglie gli spazi ai bordi, title sistema maiuscole e minuscole. La seconda iniziale è il carattere dopo lo spazio.
+print(f"{nome[0]}.{nome[spazio + 1]}.")      # M.R.</code></pre>
+                    <aside class="notes">⏱ 1' · blocco «Esercizi in aula»
+Da dire: in "Mario Rossi" lo spazio è in posizione 5, quindi la R è in posizione 6.
 Chiedere / fare: cosa succede con due spazi tra nome e cognome? (nome[spazio + 1] è uno spazio: lo sistemiamo con split, che vediamo con le liste).</aside>
                 </section>
 
-                <section>
+                <section class="scelta">
                     <h2>Esercizio 4 &mdash; CAP</h2>
-                    <div class="columns">
-                        <div class="col-40"><div class="box box-blue" style="font-size:0.8em">Chiedete un CAP con <code>input()</code>. È valido se ha 5 caratteri, tutti cifre.</div></div>
-                        <div class="col-60 fragment"><pre><code class="language-python" data-trim data-noescape>cap: str = input("CAP: ")
+                    <div class="box box-blue consegna-aula">Chiedete un CAP con <code>input()</code> e stampate se è valido. Un CAP è valido se ha 5 caratteri, tutti cifre.</div>
+                    <div class="etichetta">Cosa usereste?</div>
+                    <div class="strumenti">
+                        <button type="button" class="strumento" data-serve aria-pressed="false">input()</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">len()</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">isdigit()</button>
+                        <button type="button" class="strumento" data-serve aria-pressed="false">and</button>
+                        <button type="button" class="strumento" aria-pressed="false">int()</button>
+                        <button type="button" class="strumento" aria-pressed="false">isalpha()</button>
+                        <button type="button" class="strumento" aria-pressed="false">count()</button>
+                    </div>
+                    <div class="box box-green svela fragment"><code>len()</code> controlla la lunghezza, <code>isdigit()</code> che siano tutte cifre, <code>and</code> unisce le due condizioni. Con <code>int()</code> <code>00184</code> diventa 184 e una lettera fa fermare il programma con un errore.</div>
+                    <ol class="passi fragment">
+                        <li>Leggere il CAP con <code>input()</code> e tenerlo come stringa.</li>
+                        <li>Controllare che la lunghezza sia 5.</li>
+                        <li>Controllare che tutti i caratteri siano cifre.</li>
+                        <li>Unire le due condizioni con <code>and</code> in un solo <code>if</code>.</li>
+                    </ol>
+                    <aside class="notes">⏱ 2' · blocco «Esercizi in aula»
+Da dire: il CAP si tiene come stringa: è un codice, non una quantità, e non ci si fanno calcoli.
+Chiedere / fare: se propongono int(): chiedere cosa diventa "00184" (184, 3 cifre) e cosa succede con "35l21" (ValueError).</aside>
+                </section>
+
+                <section>
+                    <h2>Soluzione &mdash; CAP</h2>
+                    <pre><code class="language-python" data-trim data-noescape>cap: str = input("CAP: ")
 
 if len(cap) == 5 and cap.isdigit():
     print("CAP valido")
 else:
-    print("CAP non valido")</code></pre></div>
-                    </div>
-                    <aside class="notes">⏱ 3' · blocco «Esercizi in aula»
-Da dire: il CAP si tiene come stringa: 00184 come numero perderebbe gli zeri iniziali. len e isdigit bastano.
-Chiedere / fare: 35121 valido, 3512 non valido, 35l21 non valido.</aside>
+    print("CAP non valido")</code></pre>
+                    <aside class="notes">⏱ 1' · blocco «Esercizi in aula»
+Da dire: len e isdigit bastano; l'ordine delle due condizioni non cambia il risultato.
+Chiedere / fare: 35121 valido, 3512 non valido, 35l21 non valido, 00184 valido.</aside>
                 </section>
             </section>
 
@@ -913,6 +1027,14 @@ Chiedere / fare: 35121 valido, 3512 non valido, 35l21 non valido.</aside>
             highlight: {
                 highlightOnLoad: true
             }
+        });
+
+        // Esercizi in aula: un clic segna uno strumento proposto dalla classe
+        document.querySelectorAll('.strumento').forEach(function (bottone) {
+            bottone.addEventListener('click', function () {
+                var scelto = bottone.classList.toggle('scelto');
+                bottone.setAttribute('aria-pressed', scelto ? 'true' : 'false');
+            });
         });
     </script>
 </body>
