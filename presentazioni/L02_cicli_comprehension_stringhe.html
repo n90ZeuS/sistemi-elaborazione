@@ -350,6 +350,24 @@
         .reveal table.mini th, .reveal table.mini td { padding: 0.25em 0.8em; }
         .reveal .note-sol { font-size: 0.7em; }
         .reveal .note-sol li { margin-bottom: 0.4em; line-height: 1.4; }
+
+        /* Slide animata della sfida apocalisse_esercito */
+        .reveal .sim-stato { display: flex; align-items: center; gap: 1.5rem; margin: 0.3rem 0 0.7rem; }
+        .reveal .sim-giorno { font-size: 0.8em; font-weight: 700; color: var(--accent-dark); min-width: 6em; }
+        .reveal .sim-barre { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
+        .reveal .sim-riga { display: flex; align-items: center; gap: 0.8rem; font-size: 0.55em; }
+        .reveal .sim-nome { width: 4.5em; font-weight: 600; color: var(--text-muted); }
+        .reveal .sim-pista { flex: 1; height: 22px; background: var(--bg-alt); border: 1px solid #e2e8f0; border-radius: 4px; overflow: hidden; }
+        .reveal .sim-barra { height: 100%; transition: width 0.6s ease; }
+        .reveal .sim-barra-z { background: var(--danger); }
+        .reveal .sim-barra-s { background: var(--accent); }
+        .reveal .sim-num { width: 2.5em; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .reveal table.sim-tabella { font-size: 0.58em; width: 100%; margin: 0; }
+        .reveal table.sim-tabella th, .reveal table.sim-tabella td { padding: 0.35em 0.5em; text-align: center; }
+        .reveal table.sim-tabella td.current-fragment, .reveal table.sim-tabella tr.current-fragment td { background: #fef3c7; }
+        .reveal table.sim-tabella td.sim-z b { color: var(--danger); }
+        .reveal table.sim-tabella td.sim-s b { color: var(--accent); }
+        .reveal .sim-esito { margin-top: 0.6rem; font-size: 0.6em; font-weight: 700; color: var(--success); text-align: center; }
     </style>
 </head>
 <body>
@@ -642,6 +660,32 @@ Vittoria il giorno 5, restano 9 soldati</code></pre>
                 <ul class="prove"><li><code>100</code>, <code>30</code> → <code>Sconfitta il giorno 5, restano 61 zombie</code></li><li><code>6</code>, <code>1</code> → 6 zombie ogni giorno, dopo 30 giorni la guerra continua</li><li>Con 200 zombie, trovate il numero minimo di soldati per vincere.</li></ul>
             </section>
 
+            <section class="sim-slide">
+                <div class="tag tag-sfida">Sfida · apocalisse_esercito.py</div>
+                <h2>La sfida passo per passo</h2>
+                <div class="sim-stato" data-z0="100" data-s0="31">
+                    <div class="sim-giorno">Giorno <span>0</span></div>
+                    <div class="sim-barre">
+                        <div class="sim-riga"><span class="sim-nome">Zombie</span><div class="sim-pista"><div class="sim-barra sim-barra-z" style="width:100%"></div></div><span class="sim-num sim-num-z">100</span></div>
+                        <div class="sim-riga"><span class="sim-nome">Soldati</span><div class="sim-pista"><div class="sim-barra sim-barra-s" style="width:31%"></div></div><span class="sim-num sim-num-s">31</span></div>
+                    </div>
+                </div>
+                <table class="sim-tabella">
+                    <thead><tr><th>Giorno</th><th>Soldati infettati</th><th>Eliminati</th><th>Sopravvissuti</th><th>Contagi</th><th>Zombie</th><th>Soldati</th></tr></thead>
+                    <tbody>
+            <tr class="sim-iniziale"><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="sim-z">100</td><td class="sim-s">31</td></tr>
+            <tr><td class="fragment" data-z="100" data-s="31" data-g="1">1</td><td class="fragment" data-z="100" data-s="21" data-g="1">100 // 10 = <b>10</b></td><td class="fragment" data-z="38" data-s="21" data-g="1">31 × 2 = <b>62</b></td><td class="fragment" data-z="38" data-s="21" data-g="1">100 − 62 = <b>38</b></td><td class="fragment" data-z="57" data-s="21" data-g="1">38 × 0.5 → <b>19</b></td><td class="fragment sim-z" data-z="67" data-s="21" data-g="1">38 + 19 + 10 = <b>67</b></td><td class="fragment sim-s" data-z="67" data-s="21" data-g="1">31 − 10 = <b>21</b></td></tr>
+            <tr><td class="fragment" data-z="67" data-s="21" data-g="2">2</td><td class="fragment" data-z="67" data-s="15" data-g="2">67 // 10 = <b>6</b></td><td class="fragment" data-z="25" data-s="15" data-g="2">21 × 2 = <b>42</b></td><td class="fragment" data-z="25" data-s="15" data-g="2">67 − 42 = <b>25</b></td><td class="fragment" data-z="37" data-s="15" data-g="2">25 × 0.5 → <b>12</b></td><td class="fragment sim-z" data-z="43" data-s="15" data-g="2">25 + 12 + 6 = <b>43</b></td><td class="fragment sim-s" data-z="43" data-s="15" data-g="2">21 − 6 = <b>15</b></td></tr>
+            <tr class="fragment" data-z="23" data-s="11" data-g="3"><td>3</td><td>4</td><td>30</td><td>13</td><td>6</td><td class="sim-z"><b>23</b></td><td class="sim-s"><b>11</b></td></tr>
+            <tr class="fragment" data-z="3" data-s="9" data-g="4"><td>4</td><td>2</td><td>22</td><td>1</td><td>0</td><td class="sim-z"><b>3</b></td><td class="sim-s"><b>9</b></td></tr>
+            <tr class="fragment" data-z="0" data-s="9" data-g="5"><td>5</td><td>0</td><td>3</td><td>0</td><td>0</td><td class="sim-z"><b>0</b></td><td class="sim-s"><b>9</b></td></tr>
+                    </tbody>
+                </table>
+                <div class="fragment sim-esito">Vittoria il giorno 5, restano 9 soldati</div>
+                <aside class="notes">Da dire: si parte da 100 zombie e 31 soldati. Ogni giorno: prima si contano infettati ed eliminati con i valori di inizio giornata, poi i sopravvissuti crescono del 50%, infine gli infettati diventano zombie.
+Chiedere / fare: prima di mostrare il giorno 2, far calcolare la riga agli studenti. Notare il giorno 4: 22 eliminati su 23, resta 1 zombie.</aside>
+            </section>
+
             <section>
                 <h2>Domande di verifica</h2>
                 <ol style="font-size:0.85em">
@@ -687,6 +731,24 @@ Vittoria il giorno 5, restano 9 soldati</code></pre>
                 highlightOnLoad: true
             }
         });
+
+        // Slide animata della sfida: barre e giorno seguono l'ultimo frammento mostrato
+        function aggiornaSimulazione() {
+            const slide = Reveal.getCurrentSlide();
+            if (!slide || !slide.classList.contains('sim-slide')) return;
+            const stato = slide.querySelector('.sim-stato');
+            const z0 = Number(stato.dataset.z0);
+            let z = z0, s = Number(stato.dataset.s0), g = 0;
+            slide.querySelectorAll('.fragment.visible[data-z]').forEach(f => {
+                z = Number(f.dataset.z); s = Number(f.dataset.s); g = Number(f.dataset.g);
+            });
+            stato.querySelector('.sim-giorno span').textContent = g;
+            stato.querySelector('.sim-barra-z').style.width = (100 * z / z0) + '%';
+            stato.querySelector('.sim-barra-s').style.width = (100 * s / z0) + '%';
+            stato.querySelector('.sim-num-z').textContent = z;
+            stato.querySelector('.sim-num-s').textContent = s;
+        }
+        ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, aggiornaSimulazione));
     </script>
 </body>
 </html>
