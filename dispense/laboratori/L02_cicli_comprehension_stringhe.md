@@ -265,9 +265,8 @@ Benvenuto nel castello
 **Consegna**
 
 1. Chiedete gli zombie e i soldati iniziali.
-2. Ogni giorno, partendo dai valori di inizio giornata: ogni 10 zombie infettano un soldato, che diventa zombie; ogni soldato elimina 2 zombie. Né gli infettati né gli eliminati possono superare quelli che ci sono.
-3. Gli zombie sopravvissuti contagiano i civili e crescono del 50% (parte intera).
-4. Stampate una riga per giorno, dal giorno 0. Fermatevi se gli zombie arrivano a 0 (vittoria), se i soldati arrivano a 0 (sconfitta) o dopo 30 giorni, poi stampate l'esito.
+2. Ogni giorno, con i valori di inizio giornata: ogni 10 zombie infettano un soldato, che diventa zombie; ogni soldato elimina 2 zombie (mai più di quelli che ci sono). I sopravvissuti contagiano i civili e crescono del 50% (parte intera).
+3. Stampate una riga per giorno come nell'esempio e fermatevi alla vittoria (zombie a 0), alla sconfitta (soldati a 0) o dopo 30 giorni.
 
 **Esempio di esecuzione**
 
@@ -275,11 +274,11 @@ Benvenuto nel castello
 Zombie iniziali: 100
 Soldati iniziali: 31
 Giorno 0: 100 zombie, 31 soldati
-Giorno 1: 67 zombie, 21 soldati
-Giorno 2: 43 zombie, 15 soldati
-Giorno 3: 23 zombie, 11 soldati
-Giorno 4: 3 zombie, 9 soldati
-Giorno 5: 0 zombie, 9 soldati
+Giorno 1: infettati 10, eliminati 62, sopravvissuti 38, contagi 19 -> 67 zombie, 21 soldati
+Giorno 2: infettati 6, eliminati 42, sopravvissuti 25, contagi 12 -> 43 zombie, 15 soldati
+Giorno 3: infettati 4, eliminati 30, sopravvissuti 13, contagi 6 -> 23 zombie, 11 soldati
+Giorno 4: infettati 2, eliminati 22, sopravvissuti 1, contagi 0 -> 3 zombie, 9 soldati
+Giorno 5: infettati 0, eliminati 3, sopravvissuti 0, contagi 0 -> 0 zombie, 9 soldati
 Vittoria il giorno 5, restano 9 soldati
 ```
 

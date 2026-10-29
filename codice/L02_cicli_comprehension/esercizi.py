@@ -213,7 +213,7 @@ print()
 # ============================================================================
 print("--- Sfida: Apocalisse con esercito ---")
 CRESCITA: float = 0.5               # gli zombie sopravvissuti crescono del 50%
-UCCISI_PER_SOLDATO: int = 2
+ELIMINATI_PER_SOLDATO: int = 2
 ZOMBIE_PER_SOLDATO_INFETTO: int = 10
 MAX_GIORNI: int = 30
 
@@ -224,17 +224,20 @@ giorno: int = 0
 print(f"Giorno {giorno}: {zombie} zombie, {soldati} soldati")
 while giorno < MAX_GIORNI and zombie > 0 and soldati > 0:
     giorno += 1
-    # infettati e uccisi si calcolano con i valori di inizio giornata
+    # infettati ed eliminati si calcolano con i valori di inizio giornata
     infettati: int = zombie // ZOMBIE_PER_SOLDATO_INFETTO
     if infettati > soldati:
         infettati = soldati
-    uccisi: int = soldati * UCCISI_PER_SOLDATO
-    if uccisi > zombie:
-        uccisi = zombie
-    sopravvissuti: int = zombie - uccisi
-    zombie = sopravvissuti + int(sopravvissuti * CRESCITA) + infettati
+    eliminati: int = soldati * ELIMINATI_PER_SOLDATO
+    if eliminati > zombie:
+        eliminati = zombie
+    sopravvissuti: int = zombie - eliminati
+    contagi: int = int(sopravvissuti * CRESCITA)
+    zombie = sopravvissuti + contagi + infettati
     soldati -= infettati
-    print(f"Giorno {giorno}: {zombie} zombie, {soldati} soldati")
+    print(f"Giorno {giorno}: infettati {infettati},",
+          f"eliminati {eliminati}, sopravvissuti {sopravvissuti},",
+          f"contagi {contagi} -> {zombie} zombie, {soldati} soldati")
 
 if zombie == 0:
     print(f"Vittoria il giorno {giorno}, restano {soldati} soldati")

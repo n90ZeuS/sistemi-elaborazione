@@ -418,7 +418,7 @@ valida: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Sfida: Apocalisse con esercito ---&quot;</span>)
 CRESCITA: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.5</span>               <span class="cm"># gli zombie sopravvissuti crescono del 50%</span>
-UCCISI_PER_SOLDATO: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
+ELIMINATI_PER_SOLDATO: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>
 ZOMBIE_PER_SOLDATO_INFETTO: <span class="nb">int</span> <span class="op">=</span> <span class="mi">10</span>
 MAX_GIORNI: <span class="nb">int</span> <span class="op">=</span> <span class="mi">30</span>
 
@@ -429,17 +429,20 @@ giorno: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0
 <span class="nb">print</span>(<span class="st">f&quot;Giorno {giorno}: {zombie} zombie, {soldati} soldati&quot;</span>)
 <span class="kw">while</span> giorno <span class="op">&lt;</span> MAX_GIORNI <span class="kw">and</span> zombie <span class="op">&gt;</span> <span class="mi">0</span> <span class="kw">and</span> soldati <span class="op">&gt;</span> <span class="mi">0</span>:
     giorno <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-    <span class="cm"># infettati e uccisi si calcolano con i valori di inizio giornata</span>
+    <span class="cm"># infettati ed eliminati si calcolano con i valori di inizio giornata</span>
     infettati: <span class="nb">int</span> <span class="op">=</span> zombie <span class="op">/</span><span class="op">/</span> ZOMBIE_PER_SOLDATO_INFETTO
     <span class="kw">if</span> infettati <span class="op">&gt;</span> soldati:
         infettati <span class="op">=</span> soldati
-    uccisi: <span class="nb">int</span> <span class="op">=</span> soldati <span class="op">*</span> UCCISI_PER_SOLDATO
-    <span class="kw">if</span> uccisi <span class="op">&gt;</span> zombie:
-        uccisi <span class="op">=</span> zombie
-    sopravvissuti: <span class="nb">int</span> <span class="op">=</span> zombie <span class="op">-</span> uccisi
-    zombie <span class="op">=</span> sopravvissuti <span class="op">+</span> <span class="nb">int</span>(sopravvissuti <span class="op">*</span> CRESCITA) <span class="op">+</span> infettati
+    eliminati: <span class="nb">int</span> <span class="op">=</span> soldati <span class="op">*</span> ELIMINATI_PER_SOLDATO
+    <span class="kw">if</span> eliminati <span class="op">&gt;</span> zombie:
+        eliminati <span class="op">=</span> zombie
+    sopravvissuti: <span class="nb">int</span> <span class="op">=</span> zombie <span class="op">-</span> eliminati
+    contagi: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(sopravvissuti <span class="op">*</span> CRESCITA)
+    zombie <span class="op">=</span> sopravvissuti <span class="op">+</span> contagi <span class="op">+</span> infettati
     soldati <span class="op">-</span><span class="op">=</span> infettati
-    <span class="nb">print</span>(<span class="st">f&quot;Giorno {giorno}: {zombie} zombie, {soldati} soldati&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Giorno {giorno}: infettati {infettati},&quot;</span>,
+          <span class="st">f&quot;eliminati {eliminati}, sopravvissuti {sopravvissuti},&quot;</span>,
+          <span class="st">f&quot;contagi {contagi} -&gt; {zombie} zombie, {soldati} soldati&quot;</span>)
 
 <span class="kw">if</span> zombie <span class="op">=</span><span class="op">=</span> <span class="mi">0</span>:
     <span class="nb">print</span>(<span class="st">f&quot;Vittoria il giorno {giorno}, restano {soldati} soldati&quot;</span>)
