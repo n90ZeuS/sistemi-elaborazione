@@ -212,30 +212,36 @@ print()
 # SFIDA: apocalisse con esercito — apocalisse_esercito.py
 # ============================================================================
 print("--- Sfida: Apocalisse con esercito ---")
-POPOLAZIONE: int = 210_000     # abitanti di Padova, circa
-MAX_GIORNI: int = 365
+CRESCITA: float = 0.5               # gli zombie sopravvissuti crescono del 50%
+UCCISI_PER_SOLDATO: int = 2
+ZOMBIE_PER_SOLDATO_INFETTO: int = 10
+MAX_GIORNI: int = 30
 
 zombie: int = int(input("Zombie iniziali: "))
-crescita: float = float(input("Crescita giornaliera (0.5 = +50%): "))
-eliminati: int = int(input("Zombie eliminati ogni giorno: "))
+soldati: int = int(input("Soldati iniziali: "))
 
 giorno: int = 0
-picco: int = zombie
-while giorno < MAX_GIORNI and zombie > 0 and zombie <= POPOLAZIONE:
+print(f"Giorno {giorno}: {zombie} zombie, {soldati} soldati")
+while giorno < MAX_GIORNI and zombie > 0 and soldati > 0:
     giorno += 1
-    zombie = int(zombie * (1 + crescita)) - eliminati
-    if zombie < 0:
-        zombie = 0
-    if zombie > picco:
-        picco = zombie
+    # infettati e uccisi si calcolano con i valori di inizio giornata
+    infettati: int = zombie // ZOMBIE_PER_SOLDATO_INFETTO
+    if infettati > soldati:
+        infettati = soldati
+    uccisi: int = soldati * UCCISI_PER_SOLDATO
+    if uccisi > zombie:
+        uccisi = zombie
+    sopravvissuti: int = zombie - uccisi
+    zombie = sopravvissuti + int(sopravvissuti * CRESCITA) + infettati
+    soldati -= infettati
+    print(f"Giorno {giorno}: {zombie} zombie, {soldati} soldati")
 
 if zombie == 0:
-    print(f"Vittoria il giorno {giorno}")
-elif zombie > POPOLAZIONE:
-    print(f"Apocalisse il giorno {giorno}: {zombie} zombie")
+    print(f"Vittoria il giorno {giorno}, restano {soldati} soldati")
+elif soldati == 0:
+    print(f"Sconfitta il giorno {giorno}, restano {zombie} zombie")
 else:
-    print(f"Dopo {MAX_GIORNI} giorni la guerra continua: {zombie} zombie")
-print(f"Picco: {picco} zombie")
+    print(f"Dopo {MAX_GIORNI} giorni la guerra continua")
 print()
 
 

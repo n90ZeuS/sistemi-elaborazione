@@ -604,32 +604,38 @@ Chiedere / fare: «SantaCROCE99» → parola proibita.</aside>
                 <section>
                     <div class="tag tag-soluzione">Soluzione · laboratorio 2</div>
                     <h2>apocalisse_esercito.py</h2>
-                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>POPOLAZIONE: int = 210_000     # abitanti di Padova, circa
-MAX_GIORNI: int = 365
+                    <div class="columns"><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>CRESCITA: float = 0.5
+UCCISI_PER_SOLDATO: int = 2
+ZOMBIE_PER_SOLDATO_INFETTO: int = 10
+MAX_GIORNI: int = 30
 
 zombie: int = int(input("Zombie iniziali: "))
-crescita: float = float(input("Crescita giornaliera (0.5 = +50%): "))
-eliminati: int = int(input("Zombie eliminati ogni giorno: "))
+soldati: int = int(input("Soldati iniziali: "))
 
 giorno: int = 0
-picco: int = zombie
-while giorno &lt; MAX_GIORNI and zombie &gt; 0 and zombie &lt;= POPOLAZIONE:
+print(f"Giorno {giorno}: {zombie} zombie, {soldati} soldati")</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>while giorno &lt; MAX_GIORNI and zombie &gt; 0 and soldati &gt; 0:
     giorno += 1
-    zombie = int(zombie * (1 + crescita)) - eliminati
-    if zombie &lt; 0:
-        zombie = 0
-    if zombie &gt; picco:
-        picco = zombie</code></pre></div><div class="col"><pre class="small"><code class="language-python" data-trim data-noescape>if zombie == 0:
-    print(f"Vittoria il giorno {giorno}")
-elif zombie &gt; POPOLAZIONE:
-    print(f"Apocalisse il giorno {giorno}: {zombie} zombie")
+    infettati: int = zombie // ZOMBIE_PER_SOLDATO_INFETTO
+    if infettati &gt; soldati:
+        infettati = soldati
+    uccisi: int = soldati * UCCISI_PER_SOLDATO
+    if uccisi &gt; zombie:
+        uccisi = zombie
+    sopravvissuti: int = zombie - uccisi
+    zombie = sopravvissuti + int(sopravvissuti * CRESCITA) + infettati
+    soldati -= infettati
+    print(f"Giorno {giorno}: {zombie} zombie, {soldati} soldati")
+
+if zombie == 0:
+    print(f"Vittoria il giorno {giorno}, restano {soldati} soldati")
+elif soldati == 0:
+    print(f"Sconfitta il giorno {giorno}, restano {zombie} zombie")
 else:
-    print(f"Dopo {MAX_GIORNI} giorni la guerra continua: {zombie} zombie")
-print(f"Picco: {picco} zombie")</code></pre></div></div>
-                    <ul class="note-sol"><li>Il <code>while</code> ha tre condizioni: giorni finiti, zombie a 0, zombie oltre gli abitanti. Dopo il ciclo si guarda quale si è verificata.</li><li>Con crescita +50% e 100 zombie, l'equilibrio è a 50 eliminati al giorno: 100 × 1.5 − 50 = 100.</li></ul>
+    print(f"Dopo {MAX_GIORNI} giorni la guerra continua")</code></pre></div></div>
+                    <ul class="note-sol"><li><code>infettati</code> e <code>uccisi</code> si calcolano prima di cambiare <code>zombie</code> e <code>soldati</code>: se si aggiornasse prima <code>soldati</code>, gli uccisi verrebbero calcolati con l'esercito già ridotto.</li><li>Il <code>while</code> ha tre condizioni: giorni finiti, zombie a 0, soldati a 0. Dopo il ciclo si guarda quale si è verificata.</li></ul>
                     <aside class="notes">⏱ 4' · blocco «Soluzioni L02»
-Da dire: è una simulazione: si ripete la stessa regola giorno per giorno. Con 49 eliminati si perde il giorno 30, con 51 si vince il giorno 10: una piccola differenza cambia l'esito.
-Chiedere / fare: far provare i valori 49, 50, 51.</aside>
+Da dire: è una simulazione con due quantità che dipendono una dall'altra. Con 100 zombie, 30 soldati perdono il giorno 5 e 31 vincono il giorno 5: un soldato in più cambia l'esito.
+Chiedere / fare: con 200 zombie il minimo per vincere è 62 soldati (con 61 si perde il giorno 8). Con 6 zombie e 1 soldato: 2 eliminati, 4 sopravvissuti, +2 contagi, di nuovo 6.</aside>
                 </section>
             </section>
             <!-- FINE SOLUZIONI LAB -->

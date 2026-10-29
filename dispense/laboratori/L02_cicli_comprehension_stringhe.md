@@ -264,26 +264,30 @@ Benvenuto nel castello
 
 **Consegna**
 
-1. La città ha 210.000 abitanti. Chiedete gli zombie iniziali, la crescita giornaliera (`0.5` = +50%) e gli zombie eliminati ogni giorno dall'esercito.
-2. Ogni giorno: `zombie = int(zombie * (1 + crescita)) - eliminati`; se il risultato è negativo, gli zombie sono 0.
-3. Simulate giorno per giorno, al massimo per 365 giorni. Fermatevi se gli zombie arrivano a 0 (vittoria) o superano gli abitanti (apocalisse).
-4. Stampate l'esito con il giorno e il numero massimo di zombie raggiunto (picco).
+1. Chiedete gli zombie e i soldati iniziali.
+2. Ogni giorno, partendo dai valori di inizio giornata: ogni 10 zombie infettano un soldato, che diventa zombie; ogni soldato elimina 2 zombie. Né gli infettati né gli eliminati possono superare quelli che ci sono.
+3. Gli zombie sopravvissuti contagiano i civili e crescono del 50% (parte intera).
+4. Stampate una riga per giorno, dal giorno 0. Fermatevi se gli zombie arrivano a 0 (vittoria), se i soldati arrivano a 0 (sconfitta) o dopo 30 giorni, poi stampate l'esito.
 
 **Esempio di esecuzione**
 
 ```
 Zombie iniziali: 100
-Crescita giornaliera (0.5 = +50%): 0.5
-Zombie eliminati ogni giorno: 10
-Apocalisse il giorno 20: 265530 zombie
-Picco: 265530 zombie
+Soldati iniziali: 31
+Giorno 0: 100 zombie, 31 soldati
+Giorno 1: 67 zombie, 21 soldati
+Giorno 2: 43 zombie, 15 soldati
+Giorno 3: 23 zombie, 11 soldati
+Giorno 4: 3 zombie, 9 soldati
+Giorno 5: 0 zombie, 9 soldati
+Vittoria il giorno 5, restano 9 soldati
 ```
 
 **Provate anche**
 
-- `100`, `0.5`, `51` → vittoria il giorno 10
-- `100`, `0.5`, `50` → dopo 365 giorni la guerra continua (100 zombie)
-- Trovate il numero minimo di zombie da eliminare ogni giorno per vincere.
+- `100`, `30` → `Sconfitta il giorno 5, restano 61 zombie`
+- `6`, `1` → 6 zombie ogni giorno, dopo 30 giorni la guerra continua
+- Con 200 zombie, trovate il numero minimo di soldati per vincere.
 
 ---
 
@@ -295,4 +299,4 @@ Picco: 265530 zombie
 4. In `cena_dracula.py`, che differenza c'è tra `12 % 5` e `12 // 5`?
 5. In `anagrammi.py`, perché si scorre l'alfabeto e non le lettere della prima parola?
 6. In `bottino.py` il massimo può partire da 0, mentre il minimo non potrebbe. Perché?
-7. Nella sfida, perché con 50 zombie eliminati al giorno la situazione resta ferma a 100?
+7. Nella sfida, perché infettati ed eliminati vanno calcolati prima di aggiornare zombie e soldati?
