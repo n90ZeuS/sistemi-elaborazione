@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -237,7 +241,7 @@ numeri: <span class="nb">list</span>[<span class="nb">float</span>] <span class=
 
 <span class="nb">print</span>(applica_a_lista(quadrato, numeri))        <span class="cm"># [16.0, 81.0, 256.0, 625.0]</span>
 <span class="nb">print</span>(applica_a_lista(radice_quadrata, numeri))  <span class="cm"># [2.0, 3.0, 4.0, 5.0]</span></code></pre>
-<p>Notate che <code>applica<em>a</em>lista</code> non sa <em>quale</em> funzione ricevera: sa solo che ricevera <em>una</em> funzione e la applichera a ogni elemento. Questo rende il codice <strong>generico</strong> e <strong>riusabile</strong>. Lo stesso pattern e alla base di strumenti come <code>map()</code>, <code>filter()</code> e <code>sorted()</code> con <code>key</code>, che vedremo tra poco.</p>
+<p>Notate che <code>applica_a_lista</code> non sa <em>quale</em> funzione ricevera: sa solo che ricevera <em>una</em> funzione e la applichera a ogni elemento. Questo rende il codice <strong>generico</strong> e <strong>riusabile</strong>. Lo stesso pattern e alla base di strumenti come <code>map()</code>, <code>filter()</code> e <code>sorted()</code> con <code>key</code>, che vedremo tra poco.</p>
 <h3>Restituire una funzione da un'altra funzione</h3>
 <p>Python permette anche di creare funzioni che <em>restituiscono</em> altre funzioni. Questo pattern, piu avanzato, e alla base dei decoratori (che vedremo in lezioni successive), ma vale la pena vederne un esempio semplice.</p>
 <pre><code><span class="kw">def</span> <span class="fn">crea_moltiplicatore</span>(<span class="fn">fattore</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">callable</span>:
@@ -251,7 +255,7 @@ triplo: <span class="nb">callable</span> <span class="op">=</span> crea_moltipli
 
 <span class="nb">print</span>(doppio(<span class="mi">10</span>))  <span class="cm"># 20</span>
 <span class="nb">print</span>(triplo(<span class="mi">10</span>))  <span class="cm"># 30</span></code></pre>
-<p>La funzione <code>crea<em>moltiplicatore</code> costruisce una nuova funzione ogni volta che viene invocata. La funzione interna "ricorda" il valore di <code>fattore</code> grazie a un meccanismo chiamato <em>closure</em>: la variabile <code>fattore</code> resta accessibile anche dopo che <code>crea</em>moltiplicatore</code> ha terminato la sua esecuzione.</p>
+<p>La funzione <code>crea_moltiplicatore</code> costruisce una nuova funzione ogni volta che viene invocata. La funzione interna "ricorda" il valore di <code>fattore</code> grazie a un meccanismo chiamato <em>closure</em>: la variabile <code>fattore</code> resta accessibile anche dopo che <code>crea_moltiplicatore</code> ha terminato la sua esecuzione.</p>
 <hr>
 <h2>2. Funzioni lambda</h2>
 <p>Quando serve una funzione breve, usa-e-getta, definirla con <code>def</code> puo sembrare eccessivo. Python offre una sintassi compatta per creare <strong>funzioni anonime</strong>: le espressioni <code>lambda</code>.</p>

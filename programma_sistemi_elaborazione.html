@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -546,7 +550,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </ul>
 <ol>
 <li><strong>Parsing:</strong> il codice sorgente <code>.py</code> viene analizzato sintatticamente (AST — Abstract Syntax Tree)</li>
-<li><strong>Compilazione in bytecode:</strong> l'AST viene tradotto in bytecode (file <code>.pyc</code> nella cartella <code><em>_pycache</em>_</code>) — un linguaggio intermedio per la Python Virtual Machine</li>
+<li><strong>Compilazione in bytecode:</strong> l'AST viene tradotto in bytecode (file <code>.pyc</code> nella cartella <code>__pycache__</code>) — un linguaggio intermedio per la Python Virtual Machine</li>
 <li><strong>Esecuzione sulla PVM (Python Virtual Machine):</strong> la PVM interpreta il bytecode istruzione per istruzione</li>
 </ol>
 <ul>
@@ -586,8 +590,8 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <li>Assegnamento: <code>=</code> non è l'uguaglianza matematica, è un'etichetta che si attacca a un oggetto</li>
 <li><strong>Regole di naming (PEP 8):</strong></li>
 <li><code>snake_case</code> per variabili e funzioni</li>
-<li><code>UPPER<em>SNAKE</em>CASE</code> per costanti</li>
-<li>Nomi significativi: <code>media<em>voti</code> è meglio di <code>x</code>; <code>reddito</em>annuale</code> è meglio di <code>ra</code></li>
+<li><code>UPPER_SNAKE_CASE</code> per costanti</li>
+<li>Nomi significativi: <code>media_voti</code> è meglio di <code>x</code>; <code>reddito_annuale</code> è meglio di <code>ra</code></li>
 <li>Evitare: <code>l</code>, <code>O</code>, <code>I</code> (confusione visiva con numeri)</li>
 <li>Assegnamento multiplo e unpacking: <code>a, b = 1, 2</code></li>
 <li><strong>Best practice:</strong> un nome di variabile è una forma di documentazione — se serve un commento per spiegare cosa contiene, probabilmente il nome è sbagliato</li>
@@ -614,7 +618,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </ul>
 <h4>2.1.4 Operatori e espressioni</h4>
 <ul>
-<li><strong>Operatori aritmetici:</strong> <code>+</code>, <code>-</code>, <code><em></code>, <code>/</code> (divisione vera), <code>//</code> (divisione intera), <code>%</code> (modulo), <code></em>*</code> (potenza)</li>
+<li><strong>Operatori aritmetici:</strong> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> (divisione vera), <code>//</code> (divisione intera), <code>%</code> (modulo), <code>**</code> (potenza)</li>
 <li>Perché Python ha sia <code>/</code> che <code>//</code>: in Python 2, <code>/</code> tra interi dava un intero — fonte di bug infiniti, corretto in Python 3</li>
 <li><strong>Operatori di confronto:</strong> <code>==</code>, <code>!=</code>, <code><</code>, <code>></code>, <code><=</code>, <code>>=</code></li>
 <li><code>==</code> confronta il valore, <code>is</code> confronta l'identità (stesso oggetto in memoria) — una distinzione sottile ma fondamentale</li>
@@ -815,7 +819,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <li><strong>Parametri posizionali:</strong> l'ordine conta</li>
 <li><strong>Parametri con valore di default:</strong> <code>def saluta(nome: str = "mondo") -> str:</code> — i parametri con default devono venire dopo quelli senza</li>
 <li><strong>Argomenti keyword:</strong> <code>calcola(base=10, altezza=5)</code> — l'ordine non conta, la leggibilità aumenta</li>
-<li><strong><code><em>args</code> e <code></strong>kwargs</code></em>* (cenni): parametri variabili — utili per funzioni flessibili, presenti in molte librerie</li>
+<li><strong><code>*args</code> e <code>**kwargs</code></strong> (cenni): parametri variabili — utili per funzioni flessibili, presenti in molte librerie</li>
 <li><strong>Il pericolo del default mutabile:</strong></li>
 </ul>
 <pre><code>  <span class="cm"># MAI FARE QUESTO:</span>
@@ -869,7 +873,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <li><strong>La libreria standard:</strong> "batteries included" — Python viene con centinaia di moduli pronti all'uso (<code>math</code>, <code>statistics</code>, <code>random</code>, <code>os</code>, <code>sys</code>, <code>csv</code>, <code>json</code>, <code>datetime</code>, <code>collections</code>, <code>itertools</code>, ...)</li>
 <li><strong>Pacchetti esterni e <code>pip</code>:</strong> il Python Package Index (PyPI) — oltre 500.000 pacchetti. <code>pip install nome_pacchetto</code></li>
 <li><strong>Virtual environment:</strong> perché sono necessari — ogni progetto può avere le proprie versioni delle librerie senza conflitti</li>
-<li><code>python -m venv nome<em>ambiente</code> → <code>source nome</em>ambiente/bin/activate</code></li>
+<li><code>python -m venv nome_ambiente</code> → <code>source nome_ambiente/bin/activate</code></li>
 <li><code>requirements.txt</code>: il file che elenca le dipendenze — fondamentale per la riproducibilità scientifica</li>
 <li><strong>Best practice:</strong> importare sempre all'inizio del file, raggruppare (libreria standard, pacchetti esterni, moduli propri)</li>
 </ul>
@@ -974,20 +978,20 @@ nav.bottom-nav a:hover { text-decoration: underline; }
               <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">&quot;Nessun voto registrato&quot;</span>)
           <span class="kw">return</span> <span class="nb">sum</span>(self.voti) <span class="op">/</span> <span class="nb">len</span>(self.voti)</code></pre>
 <ul>
-<li><strong><code><em>_init</em><em></code>:</strong> il metodo di inizializzazione (non è un costruttore in senso stretto — l'oggetto esiste già quando <code></em><em>init</em>_</code> viene chiamato)</li>
+<li><strong><code>__init__</code>:</strong> il metodo di inizializzazione (non è un costruttore in senso stretto — l'oggetto esiste già quando <code>__init__</code> viene chiamato)</li>
 <li><strong><code>self</code>:</strong> il riferimento all'istanza corrente — ogni metodo lo riceve come primo parametro. È esplicito in Python (a differenza di <code>this</code> implicito in Java/C++) — "explicit is better than implicit" (Zen of Python)</li>
 <li><strong>Attributi di istanza vs attributi di classe:</strong> i primi appartengono al singolo oggetto, i secondi sono condivisi da tutte le istanze</li>
 </ul>
 <h4>2.6.3 Metodi speciali (dunder methods)</h4>
 <ul>
-<li>I metodi con doppio underscore (<code><em>_nome</em>_</code>) permettono di personalizzare il comportamento degli operatori e delle funzioni built-in</li>
+<li>I metodi con doppio underscore (<code>__nome__</code>) permettono di personalizzare il comportamento degli operatori e delle funzioni built-in</li>
 <li>I più importanti:</li>
-<li><code><em>_str</em>_</code>: rappresentazione leggibile (<code>print()</code>, <code>str()</code>)</li>
-<li><code><em>_repr</em>_</code>: rappresentazione non ambigua (debugging, REPL)</li>
-<li><code><em>_len</em>_</code>: permette <code>len(oggetto)</code></li>
-<li><code><em>_eq</em>_</code>: permette <code>oggetto1 == oggetto2</code></li>
-<li><code><em>_lt</em><em></code>, <code></em><em>gt</em>_</code>, ecc.: permettono il confronto e l'ordinamento</li>
-<li><code><em>_getitem</em>_</code>: permette <code>oggetto[indice]</code></li>
+<li><code>__str__</code>: rappresentazione leggibile (<code>print()</code>, <code>str()</code>)</li>
+<li><code>__repr__</code>: rappresentazione non ambigua (debugging, REPL)</li>
+<li><code>__len__</code>: permette <code>len(oggetto)</code></li>
+<li><code>__eq__</code>: permette <code>oggetto1 == oggetto2</code></li>
+<li><code>__lt__</code>, <code>__gt__</code>, ecc.: permettono il confronto e l'ordinamento</li>
+<li><code>__getitem__</code>: permette <code>oggetto[indice]</code></li>
 <li><strong>Perché esistono:</strong> rendono le classi personalizzate naturali da usare — si comportano come i tipi built-in</li>
 </ul>
 <h4>2.6.4 Ereditarietà</h4>
@@ -1052,7 +1056,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 
   df: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;studenti.csv&quot;</span>)</code></pre>
 <ul>
-<li><strong>Caricare dati:</strong> <code>read<em>csv</code>, <code>read</em>excel</code>, <code>read<em>json</code>, <code>read</em>sql</code>, <code>read_parquet</code> — Pandas legge quasi tutto</li>
+<li><strong>Caricare dati:</strong> <code>read_csv</code>, <code>read_excel</code>, <code>read_json</code>, <code>read_sql</code>, <code>read_parquet</code> — Pandas legge quasi tutto</li>
 <li><strong>Esplorare i dati:</strong> <code>head()</code>, <code>tail()</code>, <code>info()</code>, <code>describe()</code>, <code>shape</code>, <code>dtypes</code>, <code>value_counts()</code></li>
 <li><strong>Selezionare e filtrare:</strong></li>
 </ul>
@@ -1069,7 +1073,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <li><strong>Pulizia dei dati:</strong> gestione valori mancanti (<code>isna()</code>, <code>dropna()</code>, <code>fillna()</code>), duplicati (<code>drop_duplicates()</code>), conversioni di tipo (<code>astype()</code>), rinominare colonne</li>
 <li><strong>Trasformazioni:</strong> <code>apply()</code>, <code>map()</code>, <code>groupby()</code> + aggregazioni (<code>sum</code>, <code>mean</code>, <code>count</code>, <code>agg</code>), <code>merge()</code> (join tra tabelle), <code>pivot_table()</code></li>
 <li><strong>Operazioni con le date:</strong> il tipo <code>datetime</code>, parsing di date, raggruppamento per periodo</li>
-<li><strong>Esportare:</strong> <code>to<em>csv</code>, <code>to</em>excel</code>, <code>to<em>json</code>, <code>to</em>parquet</code></li>
+<li><strong>Esportare:</strong> <code>to_csv</code>, <code>to_excel</code>, <code>to_json</code>, <code>to_parquet</code></li>
 <li><strong>Best practice:</strong> metodo chaining per pipeline leggibili</li>
 </ul>
 <pre><code>  risultato: pd.DataFrame <span class="op">=</span> (
@@ -1195,7 +1199,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <li>Lunghezza massima delle righe (79-120 caratteri)</li>
 <li>Spazi intorno agli operatori</li>
 <li>Righe vuote per separare blocchi logici</li>
-<li>Naming conventions: <code>snake<em>case</code> per funzioni/variabili, <code>PascalCase</code> per classi, <code>UPPER</em>CASE</code> per costanti</li>
+<li>Naming conventions: <code>snake_case</code> per funzioni/variabili, <code>PascalCase</code> per classi, <code>UPPER_CASE</code> per costanti</li>
 <li><strong>Strumenti automatici:</strong></li>
 <li><strong>Linter (<code>ruff</code>, <code>flake8</code>):</strong> analizza il codice e segnala violazioni di stile e potenziali errori</li>
 <li><strong>Formatter (<code>black</code>, <code>ruff format</code>):</strong> formatta automaticamente il codice secondo le convenzioni — elimina le discussioni sullo stile</li>

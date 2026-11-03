@@ -41,40 +41,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 2: le parole più usate — parole_frequenti.py
+# ESERCIZIO 2: gli esiti dell'appello — esiti_appello.py
 # ============================================================================
-print("--- Esercizio 2: Le parole più usate ---")
-from collections import Counter
-from pathlib import Path
-
-PUNTEGGIATURA: str = ".,;:!?"
-LUNGHEZZA_MINIMA: int = 5
-
-def parole_del_file(percorso: Path) -> list[str]:
-    """Parole del file in minuscolo, senza punteggiatura."""
-    parole: list[str] = []
-    with open(percorso, "r", encoding="utf-8") as f:
-        for riga in f:
-            for parola in riga.lower().split():
-                parole.append(parola.strip(PUNTEGGIATURA))
-    return parole
-
-tutte: list[str] = parole_del_file(Path("commenti.txt"))
-lunghe: list[str] = [p for p in tutte
-                     if len(p) >= LUNGHEZZA_MINIMA]
-conteggi: Counter[str] = Counter(lunghe)
-
-print(f"Parole: {len(tutte)}, distinte: {len(set(tutte))}")
-print(f"Parole di almeno {LUNGHEZZA_MINIMA} lettere: {len(lunghe)}")
-for parola, volte in conteggi.most_common(3):
-    print(f"{parola}: {volte}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 3: gli esiti dell'appello — esiti_appello.py
-# ============================================================================
-print("--- Esercizio 3: Gli esiti dell'appello ---")
+print("--- Esercizio 2: Gli esiti dell'appello ---")
 import csv
 from pathlib import Path
 
@@ -102,76 +71,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 4: il verbale d'esame — verbale.py
+# ESERCIZIO 3: il sondaggio in json — sondaggio.py
 # ============================================================================
-print("--- Esercizio 4: Il verbale d'esame ---")
-import csv
-from pathlib import Path
-
-VOTO_MINIMO: int = 18
-
-with open(Path("appello.csv"), "r", encoding="utf-8") as f:
-    studenti: list[dict[str, str]] = list(
-        csv.DictReader(f, delimiter=";"))
-
-ordinati: list[dict[str, str]] = sorted(
-    studenti, key=lambda s: s["cognome"])
-promossi: int = 0
-
-verbale: Path = Path("verbale.txt")
-with open(verbale, "w", encoding="utf-8") as f:
-    f.write("Verbale dell'appello\n")
-    for s in ordinati:
-        voto: int = int(s["voto"])
-        esito: str = "respinto"
-        if voto >= VOTO_MINIMO:
-            esito = "promosso"
-            promossi += 1
-        f.write(f"{s['matricola']} {s['cognome']} {s['nome']}: "
-                f"{voto}, {esito}\n")
-    f.write(f"Promossi: {promossi} su {len(studenti)}\n")
-
-print(verbale.read_text(encoding="utf-8"), end="")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 5: il registro delle spese — spese.py
-# ============================================================================
-print("--- Esercizio 5: Il registro delle spese ---")
-import csv
-from collections import defaultdict
-from pathlib import Path
-
-SPESE: Path = Path("spese.csv")
-
-data: str = input("Data (aaaa-mm-gg): ")
-categoria: str = input("Categoria: ").strip().lower()
-try:
-    importo: float = float(input("Importo: "))
-except ValueError:
-    print("Importo non valido: spesa non registrata")
-else:
-    with open(SPESE, "a", encoding="utf-8", newline="") as f:
-        csv.writer(f, delimiter=";").writerow(
-            [data, categoria, f"{importo:.2f}"])
-
-totali: defaultdict[str, float] = defaultdict(float)
-with open(SPESE, "r", encoding="utf-8") as f:
-    for riga in csv.DictReader(f, delimiter=";"):
-        totali[riga["categoria"]] += float(riga["importo"])
-
-for cat, totale in sorted(totali.items(),
-                          key=lambda c: c[1], reverse=True):
-    print(f"{cat}: {totale:.2f} EUR")
-print(f"Totale: {sum(totali.values()):.2f} EUR")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 6: il sondaggio in json — sondaggio.py
-# ============================================================================
-print("--- Esercizio 6: Il sondaggio in JSON ---")
+print("--- Esercizio 3: Il sondaggio in JSON ---")
 import json
 from pathlib import Path
 
@@ -207,9 +109,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 7: un appello con errori — appello_robusto.py
+# ESERCIZIO 4: un appello con errori — appello_robusto.py
 # ============================================================================
-print("--- Esercizio 7: Un appello con errori ---")
+print("--- Esercizio 4: Un appello con errori ---")
 import csv
 from pathlib import Path
 
@@ -241,44 +143,6 @@ else:
     print(f"Voti validi: {len(voti)}, righe scartate: {scartate}")
     if len(voti) > 0:
         print(f"Media: {sum(voti) / len(voti):.1f}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 8: configurazione in json — config_soglia.py
-# ============================================================================
-print("--- Esercizio 8: Configurazione in JSON ---")
-import csv
-import json
-from pathlib import Path
-
-def sopra_soglia(file: str, colonna: str,
-                 soglia: int) -> list[str]:
-    """Cognomi degli studenti con valore >= soglia."""
-    cognomi: list[str] = []
-    with open(Path(file), "r", encoding="utf-8") as f:
-        for riga in csv.DictReader(f, delimiter=";"):
-            if int(riga[colonna]) >= soglia:
-                cognomi.append(riga["cognome"])
-    return cognomi
-
-try:
-    with open(Path("config.json"), "r", encoding="utf-8") as f:
-        config: dict = json.load(f)
-    cognomi: list[str] = sopra_soglia(
-        config["file"], config["colonna"], config["soglia"])
-except FileNotFoundError as e:
-    print(f"File non trovato: {e.filename}")
-except json.JSONDecodeError as e:
-    print(f"config.json non valido alla riga {e.lineno}")
-except KeyError as e:
-    print(f"Chiave mancante: {e}")
-except ValueError:
-    print("La colonna scelta non contiene numeri interi")
-else:
-    print(f"File: {config['file']}, soglia: {config['soglia']}")
-    print(f"Sopra soglia: {len(cognomi)}")
-    print(", ".join(sorted(cognomi)))
 print()
 
 
@@ -496,3 +360,139 @@ print()
 print("=" * 60)
 print("Fine degli esercizi del laboratorio 05")
 print("=" * 60)
+
+# ============================================================================
+# EXTRA 1: le parole più usate — parole_frequenti.py
+# ============================================================================
+print("--- Extra 1: Le parole più usate ---")
+from collections import Counter
+from pathlib import Path
+
+PUNTEGGIATURA: str = ".,;:!?"
+LUNGHEZZA_MINIMA: int = 5
+
+def parole_del_file(percorso: Path) -> list[str]:
+    """Parole del file in minuscolo, senza punteggiatura."""
+    parole: list[str] = []
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in f:
+            for parola in riga.lower().split():
+                parole.append(parola.strip(PUNTEGGIATURA))
+    return parole
+
+tutte: list[str] = parole_del_file(Path("commenti.txt"))
+lunghe: list[str] = [p for p in tutte
+                     if len(p) >= LUNGHEZZA_MINIMA]
+conteggi: Counter[str] = Counter(lunghe)
+
+print(f"Parole: {len(tutte)}, distinte: {len(set(tutte))}")
+print(f"Parole di almeno {LUNGHEZZA_MINIMA} lettere: {len(lunghe)}")
+for parola, volte in conteggi.most_common(3):
+    print(f"{parola}: {volte}")
+print()
+
+
+# ============================================================================
+# EXTRA 2: il verbale d'esame — verbale.py
+# ============================================================================
+print("--- Extra 2: Il verbale d'esame ---")
+import csv
+from pathlib import Path
+
+VOTO_MINIMO: int = 18
+
+with open(Path("appello.csv"), "r", encoding="utf-8") as f:
+    studenti: list[dict[str, str]] = list(
+        csv.DictReader(f, delimiter=";"))
+
+ordinati: list[dict[str, str]] = sorted(
+    studenti, key=lambda s: s["cognome"])
+promossi: int = 0
+
+verbale: Path = Path("verbale.txt")
+with open(verbale, "w", encoding="utf-8") as f:
+    f.write("Verbale dell'appello\n")
+    for s in ordinati:
+        voto: int = int(s["voto"])
+        esito: str = "respinto"
+        if voto >= VOTO_MINIMO:
+            esito = "promosso"
+            promossi += 1
+        f.write(f"{s['matricola']} {s['cognome']} {s['nome']}: "
+                f"{voto}, {esito}\n")
+    f.write(f"Promossi: {promossi} su {len(studenti)}\n")
+
+print(verbale.read_text(encoding="utf-8"), end="")
+print()
+
+
+# ============================================================================
+# EXTRA 3: il registro delle spese — spese.py
+# ============================================================================
+print("--- Extra 3: Il registro delle spese ---")
+import csv
+from collections import defaultdict
+from pathlib import Path
+
+SPESE: Path = Path("spese.csv")
+
+data: str = input("Data (aaaa-mm-gg): ")
+categoria: str = input("Categoria: ").strip().lower()
+try:
+    importo: float = float(input("Importo: "))
+except ValueError:
+    print("Importo non valido: spesa non registrata")
+else:
+    with open(SPESE, "a", encoding="utf-8", newline="") as f:
+        csv.writer(f, delimiter=";").writerow(
+            [data, categoria, f"{importo:.2f}"])
+
+totali: defaultdict[str, float] = defaultdict(float)
+with open(SPESE, "r", encoding="utf-8") as f:
+    for riga in csv.DictReader(f, delimiter=";"):
+        totali[riga["categoria"]] += float(riga["importo"])
+
+for cat, totale in sorted(totali.items(),
+                          key=lambda c: c[1], reverse=True):
+    print(f"{cat}: {totale:.2f} EUR")
+print(f"Totale: {sum(totali.values()):.2f} EUR")
+print()
+
+
+# ============================================================================
+# EXTRA 4: configurazione in json — config_soglia.py
+# ============================================================================
+print("--- Extra 4: Configurazione in JSON ---")
+import csv
+import json
+from pathlib import Path
+
+def sopra_soglia(file: str, colonna: str,
+                 soglia: int) -> list[str]:
+    """Cognomi degli studenti con valore >= soglia."""
+    cognomi: list[str] = []
+    with open(Path(file), "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            if int(riga[colonna]) >= soglia:
+                cognomi.append(riga["cognome"])
+    return cognomi
+
+try:
+    with open(Path("config.json"), "r", encoding="utf-8") as f:
+        config: dict = json.load(f)
+    cognomi: list[str] = sopra_soglia(
+        config["file"], config["colonna"], config["soglia"])
+except FileNotFoundError as e:
+    print(f"File non trovato: {e.filename}")
+except json.JSONDecodeError as e:
+    print(f"config.json non valido alla riga {e.lineno}")
+except KeyError as e:
+    print(f"Chiave mancante: {e}")
+except ValueError:
+    print("La colonna scelta non contiene numeri interi")
+else:
+    print(f"File: {config['file']}, soglia: {config['soglia']}")
+    print(f"Sopra soglia: {len(cognomi)}")
+    print(", ".join(sorted(cognomi)))
+print()
+

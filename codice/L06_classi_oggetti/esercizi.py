@@ -75,43 +75,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 3: la coda in segreteria — segreteria.py
+# ESERCIZIO 3: la graduatoria erasmus — erasmus.py
 # ============================================================================
-print("--- Esercizio 3: La coda in segreteria ---")
-class Ticket:
-    """Biglietto numerato per la coda della segreteria."""
-    SERVIZI: tuple[str, ...] = ("iscrizioni", "tasse", "esami")
-    emessi: int = 0                       # attributo di classe
-
-    def __init__(self, servizio: str) -> None:
-        if servizio not in Ticket.SERVIZI:
-            raise ValueError(f"Servizio sconosciuto: {servizio}")
-        Ticket.emessi += 1
-        self.numero: int = Ticket.emessi  # attributo di istanza
-        self.servizio: str = servizio
-
-    def __str__(self) -> str:
-        return f"Numero {self.numero} ({self.servizio})"
-
-    def __repr__(self) -> str:
-        return f"Ticket({self.numero}, '{self.servizio}')"
-
-coda: list[Ticket] = []
-for s in ["esami", "tasse", "esami", "iscrizioni", "esami"]:
-    coda.append(Ticket(s))
-print(coda)
-print(f"Prossimo: {coda[0]}")
-print(f"Biglietti emessi: {Ticket.emessi}")
-for servizio in Ticket.SERVIZI:
-    n: int = len([t for t in coda if t.servizio == servizio])
-    print(f"{servizio}: {n}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 4: la graduatoria erasmus — erasmus.py
-# ============================================================================
-print("--- Esercizio 4: La graduatoria Erasmus ---")
+print("--- Esercizio 3: La graduatoria Erasmus ---")
 class Candidato:
     """Candidato a una borsa Erasmus."""
 
@@ -147,51 +113,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 5: un campione di misure — campione.py
+# ESERCIZIO 4: il libretto: un oggetto che contiene oggetti — libretto.py
 # ============================================================================
-print("--- Esercizio 5: Un campione di misure ---")
-class Campione:
-    """Campione di misure numeriche."""
-
-    def __init__(self, nome: str) -> None:
-        self.nome: str = nome
-        self._valori: list[float] = []   # uso interno
-
-    def aggiungi(self, x: float) -> None:
-        self._valori.append(x)
-
-    @property
-    def n(self) -> int:
-        return len(self._valori)
-
-    @property
-    def media(self) -> float:
-        return sum(self._valori) / self.n
-
-    @property
-    def varianza(self) -> float:
-        """Varianza campionaria, con divisore n - 1."""
-        m: float = self.media
-        scarti: list[float] = [(x - m) ** 2 for x in self._valori]
-        return sum(scarti) / (self.n - 1)
-
-altezze: Campione = Campione("Altezze (cm)")
-for x in [172, 165, 180, 158, 175]:
-    altezze.aggiungi(x)
-print(f"{altezze.nome}: {altezze.n} valori")
-print(f"Media: {altezze.media:.2f}, varianza: {altezze.varianza:.2f}")
-print(f"Deviazione standard: {altezze.varianza ** 0.5:.2f}")
-try:
-    altezze.media = 175.0
-except AttributeError:
-    print("La media non si assegna: è calcolata dai valori")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 6: il libretto: un oggetto che contiene oggetti — libretto.py
-# ============================================================================
-print("--- Esercizio 6: Il libretto: un oggetto che contiene oggetti ---")
+print("--- Esercizio 4: Il libretto: un oggetto che contiene oggetti ---")
 class Esame:
     def __init__(self, nome: str, cfu: int, voto: int) -> None:
         self.nome: str = nome
@@ -233,107 +157,6 @@ except ValueError as e:
 
 print(lib.cerca("Statistica 1"))
 print(f"Esami: {len(lib.esami)}, media ponderata {lib.media():.2f}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 7: abbonamenti ai mezzi pubblici — abbonamenti.py
-# ============================================================================
-print("--- Esercizio 7: Abbonamenti ai mezzi pubblici ---")
-class Abbonamento:
-    """Abbonamento ai mezzi pubblici, pagato a mesi."""
-    PREZZO_MESE: float = 40.0
-
-    def __init__(self, titolare: str, mesi: int) -> None:
-        if mesi < 1 or mesi > 12:
-            raise ValueError(f"Durata non valida: {mesi} mesi")
-        self.titolare: str = titolare
-        self.mesi: int = mesi
-
-    def prezzo(self) -> float:
-        return self.PREZZO_MESE * self.mesi
-
-    def __str__(self) -> str:
-        return (f"{self.titolare}, {self.mesi} mesi: "
-                f"{self.prezzo():.2f} EUR")
-
-
-class AbbonamentoStudente(Abbonamento):
-    """Abbonamento scontato per chi ha una matricola."""
-    SCONTO: float = 0.3
-
-    def __init__(self, titolare: str, mesi: int,
-                 matricola: str) -> None:
-        super().__init__(titolare, mesi)
-        self.matricola: str = matricola
-
-    def prezzo(self) -> float:
-        return super().prezzo() * (1 - self.SCONTO)
-
-    def __str__(self) -> str:
-        return f"{super().__str__()}, matricola {self.matricola}"
-
-abbonamenti: list[Abbonamento] = [
-    Abbonamento("Marco Bianchi", 12),
-    AbbonamentoStudente("Anna Rossi", 10, "2101234"),
-    AbbonamentoStudente("Luca Russo", 3, "2102345"),
-    Abbonamento("Elena Romano", 2)]
-
-for a in abbonamenti:
-    print(a)
-
-print(f"Incasso: {sum([a.prezzo() for a in abbonamenti]):.2f} EUR")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 8: la biblioteca di dipartimento — biblioteca.py
-# ============================================================================
-print("--- Esercizio 8: La biblioteca di dipartimento ---")
-class Pubblicazione:
-    """Un libro o una rivista della biblioteca."""
-    GIORNI: int = 30                      # durata del prestito
-
-    def __init__(self, titolo: str, anno: int) -> None:
-        self.titolo: str = titolo
-        self.anno: int = anno
-
-    def __str__(self) -> str:
-        return f"{self.anno} {self.titolo}: {self.GIORNI} giorni"
-
-    def __lt__(self, altro: "Pubblicazione") -> bool:
-        return self.anno < altro.anno
-
-
-class Rivista(Pubblicazione):
-    GIORNI: int = 7                       # le riviste durano meno
-
-
-class Biblioteca:
-    """Una biblioteca ha un catalogo di libri e riviste."""
-
-    def __init__(self) -> None:
-        self._catalogo: list[Pubblicazione] = []
-
-    def aggiungi(self, p: Pubblicazione) -> None:
-        self._catalogo.append(p)
-
-    def cerca(self, parola: str) -> list[Pubblicazione]:
-        return [p for p in self._catalogo
-                if parola.lower() in p.titolo.lower()]
-
-    def in_ordine(self) -> list[Pubblicazione]:
-        return sorted(self._catalogo)
-
-bib: Biblioteca = Biblioteca()
-bib.aggiungi(Pubblicazione("Statistica di base", 2019))
-bib.aggiungi(Rivista("Rivista di statistica applicata", 2024))
-bib.aggiungi(Pubblicazione("Probabilità e inferenza", 2015))
-bib.aggiungi(Rivista("Bollettino di demografia", 2023))
-for p in bib.in_ordine():
-    print(p)
-
-print(f"Titoli con 'statistica': {len(bib.cerca('statistica'))}")
 print()
 
 
@@ -682,3 +505,180 @@ print()
 print("=" * 60)
 print("Fine degli esercizi del laboratorio 06")
 print("=" * 60)
+
+# ============================================================================
+# EXTRA 1: la coda in segreteria — segreteria.py
+# ============================================================================
+print("--- Extra 1: La coda in segreteria ---")
+class Ticket:
+    """Biglietto numerato per la coda della segreteria."""
+    SERVIZI: tuple[str, ...] = ("iscrizioni", "tasse", "esami")
+    emessi: int = 0                       # attributo di classe
+
+    def __init__(self, servizio: str) -> None:
+        if servizio not in Ticket.SERVIZI:
+            raise ValueError(f"Servizio sconosciuto: {servizio}")
+        Ticket.emessi += 1
+        self.numero: int = Ticket.emessi  # attributo di istanza
+        self.servizio: str = servizio
+
+    def __str__(self) -> str:
+        return f"Numero {self.numero} ({self.servizio})"
+
+    def __repr__(self) -> str:
+        return f"Ticket({self.numero}, '{self.servizio}')"
+
+coda: list[Ticket] = []
+for s in ["esami", "tasse", "esami", "iscrizioni", "esami"]:
+    coda.append(Ticket(s))
+print(coda)
+print(f"Prossimo: {coda[0]}")
+print(f"Biglietti emessi: {Ticket.emessi}")
+for servizio in Ticket.SERVIZI:
+    n: int = len([t for t in coda if t.servizio == servizio])
+    print(f"{servizio}: {n}")
+print()
+
+
+# ============================================================================
+# EXTRA 2: un campione di misure — campione.py
+# ============================================================================
+print("--- Extra 2: Un campione di misure ---")
+class Campione:
+    """Campione di misure numeriche."""
+
+    def __init__(self, nome: str) -> None:
+        self.nome: str = nome
+        self._valori: list[float] = []   # uso interno
+
+    def aggiungi(self, x: float) -> None:
+        self._valori.append(x)
+
+    @property
+    def n(self) -> int:
+        return len(self._valori)
+
+    @property
+    def media(self) -> float:
+        return sum(self._valori) / self.n
+
+    @property
+    def varianza(self) -> float:
+        """Varianza campionaria, con divisore n - 1."""
+        m: float = self.media
+        scarti: list[float] = [(x - m) ** 2 for x in self._valori]
+        return sum(scarti) / (self.n - 1)
+
+altezze: Campione = Campione("Altezze (cm)")
+for x in [172, 165, 180, 158, 175]:
+    altezze.aggiungi(x)
+print(f"{altezze.nome}: {altezze.n} valori")
+print(f"Media: {altezze.media:.2f}, varianza: {altezze.varianza:.2f}")
+print(f"Deviazione standard: {altezze.varianza ** 0.5:.2f}")
+try:
+    altezze.media = 175.0
+except AttributeError:
+    print("La media non si assegna: è calcolata dai valori")
+print()
+
+
+# ============================================================================
+# EXTRA 3: abbonamenti ai mezzi pubblici — abbonamenti.py
+# ============================================================================
+print("--- Extra 3: Abbonamenti ai mezzi pubblici ---")
+class Abbonamento:
+    """Abbonamento ai mezzi pubblici, pagato a mesi."""
+    PREZZO_MESE: float = 40.0
+
+    def __init__(self, titolare: str, mesi: int) -> None:
+        if mesi < 1 or mesi > 12:
+            raise ValueError(f"Durata non valida: {mesi} mesi")
+        self.titolare: str = titolare
+        self.mesi: int = mesi
+
+    def prezzo(self) -> float:
+        return self.PREZZO_MESE * self.mesi
+
+    def __str__(self) -> str:
+        return (f"{self.titolare}, {self.mesi} mesi: "
+                f"{self.prezzo():.2f} EUR")
+
+
+class AbbonamentoStudente(Abbonamento):
+    """Abbonamento scontato per chi ha una matricola."""
+    SCONTO: float = 0.3
+
+    def __init__(self, titolare: str, mesi: int,
+                 matricola: str) -> None:
+        super().__init__(titolare, mesi)
+        self.matricola: str = matricola
+
+    def prezzo(self) -> float:
+        return super().prezzo() * (1 - self.SCONTO)
+
+    def __str__(self) -> str:
+        return f"{super().__str__()}, matricola {self.matricola}"
+
+abbonamenti: list[Abbonamento] = [
+    Abbonamento("Marco Bianchi", 12),
+    AbbonamentoStudente("Anna Rossi", 10, "2101234"),
+    AbbonamentoStudente("Luca Russo", 3, "2102345"),
+    Abbonamento("Elena Romano", 2)]
+
+for a in abbonamenti:
+    print(a)
+
+print(f"Incasso: {sum([a.prezzo() for a in abbonamenti]):.2f} EUR")
+print()
+
+
+# ============================================================================
+# EXTRA 4: la biblioteca di dipartimento — biblioteca.py
+# ============================================================================
+print("--- Extra 4: La biblioteca di dipartimento ---")
+class Pubblicazione:
+    """Un libro o una rivista della biblioteca."""
+    GIORNI: int = 30                      # durata del prestito
+
+    def __init__(self, titolo: str, anno: int) -> None:
+        self.titolo: str = titolo
+        self.anno: int = anno
+
+    def __str__(self) -> str:
+        return f"{self.anno} {self.titolo}: {self.GIORNI} giorni"
+
+    def __lt__(self, altro: "Pubblicazione") -> bool:
+        return self.anno < altro.anno
+
+
+class Rivista(Pubblicazione):
+    GIORNI: int = 7                       # le riviste durano meno
+
+
+class Biblioteca:
+    """Una biblioteca ha un catalogo di libri e riviste."""
+
+    def __init__(self) -> None:
+        self._catalogo: list[Pubblicazione] = []
+
+    def aggiungi(self, p: Pubblicazione) -> None:
+        self._catalogo.append(p)
+
+    def cerca(self, parola: str) -> list[Pubblicazione]:
+        return [p for p in self._catalogo
+                if parola.lower() in p.titolo.lower()]
+
+    def in_ordine(self) -> list[Pubblicazione]:
+        return sorted(self._catalogo)
+
+bib: Biblioteca = Biblioteca()
+bib.aggiungi(Pubblicazione("Statistica di base", 2019))
+bib.aggiungi(Rivista("Rivista di statistica applicata", 2024))
+bib.aggiungi(Pubblicazione("Probabilità e inferenza", 2015))
+bib.aggiungi(Rivista("Bollettino di demografia", 2023))
+for p in bib.in_ordine():
+    print(p)
+
+print(f"Titoli con 'statistica': {len(bib.cerca('statistica'))}")
+print()
+

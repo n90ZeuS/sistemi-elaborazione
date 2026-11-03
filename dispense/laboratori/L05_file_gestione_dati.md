@@ -4,19 +4,19 @@
 
 Oggi si lavora con dati che stanno nei file: testo, CSV e JSON. Per ogni esercizio create un file `.py` con il nome indicato, nella stessa cartella dei file di dati. I file di dati sono scritti nella slide dell'esercizio: create il file con l'editor e copiate il contenuto, compresa la riga di intestazione, e lasciate un a capo dopo l'ultima riga. Le classi non servono.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T17.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T17.
 
 | # | File | Esercizio |
 |---|---|---|
 | 1 | `conta_righe.py` | Commenti al corso |
-| 2 | `parole_frequenti.py` | Le parole più usate |
-| 3 | `esiti_appello.py` | Gli esiti dell'appello |
-| 4 | `verbale.py` | Il verbale d'esame |
-| 5 | `spese.py` | Il registro delle spese |
-| 6 | `sondaggio.py` | Il sondaggio in JSON |
-| 7 | `appello_robusto.py` | Un appello con errori |
-| 8 | `config_soglia.py` | Configurazione in JSON |
+| 2 | `esiti_appello.py` | Gli esiti dell'appello |
+| 3 | `sondaggio.py` | Il sondaggio in JSON |
+| 4 | `appello_robusto.py` | Un appello con errori |
 | Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
+| Extra 1 | `parole_frequenti.py` | Le parole più usate (a casa) |
+| Extra 2 | `verbale.py` | Il verbale d'esame (a casa) |
+| Extra 3 | `spese.py` | Il registro delle spese (a casa) |
+| Extra 4 | `config_soglia.py` | Configurazione in JSON (a casa) |
 
 ---
 
@@ -49,6 +49,7 @@ except KeyError as e:
 
 ## Esercizio 1 — Commenti al corso (`conta_righe.py`)
 
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-conta_righe)
 **Consegna**
 
 1. Il file `commenti.txt` contiene i commenti liberi di un questionario sul corso, uno per riga. Una riga è vuota.
@@ -82,51 +83,13 @@ Commento più lungo: riga 2, 9 parole
 **Provate anche**
 
 - aggiungete in fondo la riga `Grazie.` → `Righe: 9`, `Parole: 48`, `Parole per commento: 6.0`
-- cambiate il nome in `commenti2.txt` → il programma si ferma con `FileNotFoundError` (lo gestirete nell'esercizio 7)
+- cambiate il nome in `commenti2.txt` → il programma si ferma con `FileNotFoundError` (lo gestirete nell'esercizio 4)
 
 ---
 
-## Esercizio 2 — Le parole più usate (`parole_frequenti.py`)
+## Esercizio 2 — Gli esiti dell'appello (`esiti_appello.py`)
 
-**Consegna**
-
-1. Usate lo stesso `commenti.txt`. Scrivete una funzione `parole_del_file(percorso: Path) -> list[str]` che legge il file e restituisce tutte le parole in minuscolo.
-2. Togliete la punteggiatura attaccata alle parole con `parola.strip(".,;:!?")`.
-3. Stampate il numero di parole e di parole distinte (`set`).
-4. Tenete le parole di almeno 5 lettere, contatele con `Counter` e stampate le 3 più frequenti con `most_common(3)`.
-
-**File `commenti.txt`** (createlo nella cartella del programma)
-
-```
-Lezioni chiare, esempi utili.
-Molto lavoro a casa, poco tempo per gli esercizi.
-Le slide sono utili, il ritmo è veloce.
-
-Vorrei più esempi con dati reali.
-Laboratori utili, ma le aule sono troppo affollate.
-Esercizi utili per capire meglio.
-Più esercizi in aula e meno teoria.
-```
-
-**Esempio di esecuzione**
-
-```
-Parole: 47, distinte: 37
-Parole di almeno 5 lettere: 25
-utili: 4
-esercizi: 3
-esempi: 2
-```
-
-**Provate anche**
-
-- `Utili,` e `utili.` contano come la stessa parola
-- con la riga `Grazie.` in più → `Parole: 48, distinte: 38`
-
----
-
-## Esercizio 3 — Gli esiti dell'appello (`esiti_appello.py`)
-
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-esiti_appello)
 **Consegna**
 
 1. Il file `appello.csv` contiene i voti di un appello, separati da `;`.
@@ -165,93 +128,9 @@ Voto più alto: 30 (Verdi Giulia)
 
 ---
 
-## Esercizio 4 — Il verbale d'esame (`verbale.py`)
+## Esercizio 3 — Il sondaggio in JSON (`sondaggio.py`)
 
-**Consegna**
-
-1. Leggete di nuovo `appello.csv` e ordinate gli studenti per cognome con `sorted(..., key=lambda s: s["cognome"])`.
-2. Aprite `verbale.txt` in scrittura (`"w"`) e scrivete con `f.write()` un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate `\n` alla fine di ogni riga.
-3. Dopo aver chiuso il file, rileggetelo con `Path("verbale.txt").read_text(encoding="utf-8")` e stampatelo.
-
-**File `appello.csv`** (createlo nella cartella del programma)
-
-```
-matricola;cognome;nome;voto
-2101234;Rossi;Anna;28
-2101567;Bianchi;Marco;17
-2102001;Verdi;Giulia;30
-2102345;Russo;Luca;24
-2102890;Ferrari;Sara;15
-2103112;Esposito;Paolo;21
-2103456;Romano;Elena;27
-2103789;Gallo;Davide;19
-```
-
-**Esempio di esecuzione**
-
-```
-Verbale dell'appello
-2101567 Bianchi Marco: 17, respinto
-2103112 Esposito Paolo: 21, promosso
-2102890 Ferrari Sara: 15, respinto
-2103789 Gallo Davide: 19, promosso
-2103456 Romano Elena: 27, promosso
-2101234 Rossi Anna: 28, promosso
-2102345 Russo Luca: 24, promosso
-2102001 Verdi Giulia: 30, promosso
-Promossi: 6 su 8
-```
-
-**Provate anche**
-
-- eseguite il programma due volte: `verbale.txt` viene riscritto da capo, le righe non si ripetono
-- con la riga `2104000;Conti;Marta;18` → Conti è la seconda, `Promossi: 7 su 9`
-
----
-
-## Esercizio 5 — Il registro delle spese (`spese.py`)
-
-**Consegna**
-
-1. Il file `spese.csv` è un registro delle spese di uno studente fuori sede.
-2. Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (`ValueError`) stampate un messaggio e non scrivete niente.
-3. Altrimenti aggiungete la spesa in fondo al file: `open(..., "a", encoding="utf-8", newline="")` e `csv.writer(f, delimiter=";").writerow([...])`.
-4. Rileggete tutto il file e sommate gli importi per categoria con un `defaultdict(float)`. Stampate le categorie dalla più costosa e il totale, con due decimali.
-
-**File `spese.csv`** (createlo nella cartella del programma)
-
-```
-data;categoria;importo
-2026-12-01;affitto;350.00
-2026-12-02;spesa;42.50
-2026-12-03;trasporti;25.00
-2026-12-05;spesa;18.20
-2026-12-06;libri;39.90
-```
-
-**Esempio di esecuzione**
-
-```
-Data (aaaa-mm-gg): 2026-12-07
-Categoria: Spesa
-Importo: 12.30
-affitto: 350.00 EUR
-spesa: 73.00 EUR
-libri: 39.90 EUR
-trasporti: 25.00 EUR
-Totale: 487.90 EUR
-```
-
-**Provate anche**
-
-- sul file originale, `2026-12-07`, `cinema`, `8.50` → compare `cinema: 8.50 EUR`, totale `484.10 EUR`
-- importo `dieci` → `Importo non valido: spesa non registrata` e il file non cambia
-- ogni esecuzione aggiunge una riga: aprite `spese.csv` e controllate
-
----
-
-## Esercizio 6 — Il sondaggio in JSON (`sondaggio.py`)
-
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-sondaggio)
 **Consegna**
 
 1. Il file `sondaggio.json` contiene le risposte a un questionario: per ogni studente il voto di soddisfazione (da 1 a 5) e se frequenta le lezioni.
@@ -295,12 +174,13 @@ Salvato riepilogo.json:
 **Provate anche**
 
 - aggiungete la risposta `{"matricola": "2103456", "voto": 1, "frequenta": false}` → `media 3.43`, `media_non_frequentanti 2.33`, `quota_frequentanti 0.571`
-- togliete la virgola dopo `"anno": 2026` → `json.JSONDecodeError` (lo gestirete nell'esercizio 8)
+- togliete la virgola dopo `"anno": 2026` → `json.JSONDecodeError` (lo gestirete nell'extra 4)
 
 ---
 
-## Esercizio 7 — Un appello con errori (`appello_robusto.py`)
+## Esercizio 4 — Un appello con errori (`appello_robusto.py`)
 
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-appello_robusto)
 **Consegna**
 
 1. Chiedete il nome del file da leggere. Se non esiste (`FileNotFoundError`) stampate un messaggio; se non ha la colonna `voto` (`KeyError`) stampatene un altro.
@@ -340,42 +220,6 @@ Media: 26.5
 
 ---
 
-## Esercizio 8 — Configurazione in JSON (`config_soglia.py`)
-
-**Consegna**
-
-1. Il file `config.json` dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è `appello.csv` dell'esercizio 3.
-2. Scrivete una funzione `sopra_soglia(file: str, colonna: str, soglia: int) -> list[str]` che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.
-3. In un solo `try` caricate la configurazione e chiamate la funzione. Gestite con `except` separati: `FileNotFoundError` (stampate `e.filename`), `json.JSONDecodeError` (stampate `e.lineno`), `KeyError` e `ValueError`.
-4. Nel blocco `else` stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (`", ".join(...)`).
-
-**File `config.json`** (createlo nella cartella del programma)
-
-```
-{
-  "file": "appello.csv",
-  "colonna": "voto",
-  "soglia": 27
-}
-```
-
-**Esempio di esecuzione**
-
-```
-File: appello.csv, soglia: 27
-Sopra soglia: 3
-Romano, Rossi, Verdi
-```
-
-**Provate anche**
-
-- `"soglia": 18` → 6 studenti, da `Esposito` a `Verdi`
-- togliete la riga di `"soglia"` → `Chiave mancante: 'soglia'`; `"colonna": "punteggio"` → `Chiave mancante: 'punteggio'`
-- `"file": "appello2.csv"` → `File non trovato: appello2.csv`; rinominate `config.json` → `File non trovato: config.json`
-- togliete la virgola dopo `"voto"` → `config.json non valido alla riga 4`; `"colonna": "cognome"` → la colonna non contiene numeri
-
----
-
 ## Challenge a scelta
 
 Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.
@@ -401,6 +245,7 @@ Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli s
 
 ### Challenge · Mercati e finanza — Il portafoglio: prezzi da file (`ch_mercati.py`)
 
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-ch_mercati)
 **Consegna**
 
 1. Il file `chiusure.csv` contiene i prezzi di chiusura di `ENRG`, `BANK` e `TECH` dal 1° al 4 dicembre, copiati a mano. In due righe il prezzo manca o non è un numero.
@@ -444,6 +289,7 @@ Righe scartate: 2. Salvato titoli.json
 
 ### Challenge · Sport — Il campionato: tempi da file (`ch_sport.py`)
 
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-ch_sport)
 **Consegna**
 
 1. Il file `giri.csv` contiene i tempi sul giro, in secondi, dei primi tre giri di una gara, scritti dal cronometrista. In due righe al posto del tempo c'è una nota (`SC` per safety car, `box` per il pit stop).
@@ -488,6 +334,7 @@ Righe scartate: 2. Salvato piloti.json
 
 ### Challenge · Imprese e marketing — Il negozio online: ordini da file (`ch_negozio.py`)
 
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-ch_negozio)
 **Consegna**
 
 1. Il file `ordini.csv` contiene gli ordini di una settimana: cliente, città e importo in euro. In due righe l'importo manca o non è un numero.
@@ -532,6 +379,7 @@ Righe scartate: 2. Salvato citta.json
 
 ### Challenge · Salute e scienza — Lo studio clinico: misure da file (`ch_salute.py`)
 
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-ch_salute)
 **Consegna**
 
 1. Il file `pressione.csv` contiene la pressione sistolica (mmHg) dei pazienti dello studio alla fine del trattamento. Per due pazienti la misura manca.
@@ -574,6 +422,7 @@ Righe scartate: 2. Salvato gruppi.json
 
 ### Challenge · Caso e probabilità — Il tavolo da gioco: lanci da file (`ch_probabilita.py`)
 
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-ch_probabilita)
 **Consegna**
 
 1. Il file `lanci.csv` contiene i lanci di un dado fatti da tre giocatori e registrati a mano. In due righe il risultato manca o è scritto in lettere.
@@ -624,3 +473,305 @@ Righe scartate: 2. Salvato giocatori.json
 5. In `appello_robusto.py` il `try` sul voto è dentro il `for`. Cosa cambierebbe mettendolo fuori dal ciclo?
 6. In `config_soglia.py`, cosa succede se nel JSON scrivete `"soglia": "27"`, tra virgolette? Quale eccezione si ottiene?
 7. Nella sfida, perché `float("38,5")` dà errore e come lo si evita?
+
+---
+
+## Esercizi extra
+
+Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.
+
+---
+
+## Extra 1 — Le parole più usate (`parole_frequenti.py`)
+
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-parole_frequenti)
+
+**Consegna**
+
+1. Usate lo stesso `commenti.txt`. Scrivete una funzione `parole_del_file(percorso: Path) -> list[str]` che legge il file e restituisce tutte le parole in minuscolo.
+2. Togliete la punteggiatura attaccata alle parole con `parola.strip(".,;:!?")`.
+3. Stampate il numero di parole e di parole distinte (`set`).
+4. Tenete le parole di almeno 5 lettere, contatele con `Counter` e stampate le 3 più frequenti con `most_common(3)`.
+
+**File `commenti.txt`** (createlo nella cartella del programma)
+
+```
+Lezioni chiare, esempi utili.
+Molto lavoro a casa, poco tempo per gli esercizi.
+Le slide sono utili, il ritmo è veloce.
+
+Vorrei più esempi con dati reali.
+Laboratori utili, ma le aule sono troppo affollate.
+Esercizi utili per capire meglio.
+Più esercizi in aula e meno teoria.
+```
+
+**Esempio di esecuzione**
+
+```
+Parole: 47, distinte: 37
+Parole di almeno 5 lettere: 25
+utili: 4
+esercizi: 3
+esempi: 2
+```
+
+**Provate anche**
+
+- `Utili,` e `utili.` contano come la stessa parola
+- con la riga `Grazie.` in più → `Parole: 48, distinte: 38`
+
+**Soluzione**
+
+```python
+from collections import Counter
+from pathlib import Path
+
+PUNTEGGIATURA: str = ".,;:!?"
+LUNGHEZZA_MINIMA: int = 5
+
+def parole_del_file(percorso: Path) -> list[str]:
+    """Parole del file in minuscolo, senza punteggiatura."""
+    parole: list[str] = []
+    with open(percorso, "r", encoding="utf-8") as f:
+        for riga in f:
+            for parola in riga.lower().split():
+                parole.append(parola.strip(PUNTEGGIATURA))
+    return parole
+
+tutte: list[str] = parole_del_file(Path("commenti.txt"))
+lunghe: list[str] = [p for p in tutte
+                     if len(p) >= LUNGHEZZA_MINIMA]
+conteggi: Counter[str] = Counter(lunghe)
+
+print(f"Parole: {len(tutte)}, distinte: {len(set(tutte))}")
+print(f"Parole di almeno {LUNGHEZZA_MINIMA} lettere: {len(lunghe)}")
+for parola, volte in conteggi.most_common(3):
+    print(f"{parola}: {volte}")
+```
+
+---
+
+## Extra 2 — Il verbale d'esame (`verbale.py`)
+
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-verbale)
+
+**Consegna**
+
+1. Leggete di nuovo `appello.csv` e ordinate gli studenti per cognome con `sorted(..., key=lambda s: s["cognome"])`.
+2. Aprite `verbale.txt` in scrittura (`"w"`) e scrivete con `f.write()` un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate `\n` alla fine di ogni riga.
+3. Dopo aver chiuso il file, rileggetelo con `Path("verbale.txt").read_text(encoding="utf-8")` e stampatelo.
+
+**File `appello.csv`** (createlo nella cartella del programma)
+
+```
+matricola;cognome;nome;voto
+2101234;Rossi;Anna;28
+2101567;Bianchi;Marco;17
+2102001;Verdi;Giulia;30
+2102345;Russo;Luca;24
+2102890;Ferrari;Sara;15
+2103112;Esposito;Paolo;21
+2103456;Romano;Elena;27
+2103789;Gallo;Davide;19
+```
+
+**Esempio di esecuzione**
+
+```
+Verbale dell'appello
+2101567 Bianchi Marco: 17, respinto
+2103112 Esposito Paolo: 21, promosso
+2102890 Ferrari Sara: 15, respinto
+2103789 Gallo Davide: 19, promosso
+2103456 Romano Elena: 27, promosso
+2101234 Rossi Anna: 28, promosso
+2102345 Russo Luca: 24, promosso
+2102001 Verdi Giulia: 30, promosso
+Promossi: 6 su 8
+```
+
+**Provate anche**
+
+- eseguite il programma due volte: `verbale.txt` viene riscritto da capo, le righe non si ripetono
+- con la riga `2104000;Conti;Marta;18` → Conti è la seconda, `Promossi: 7 su 9`
+
+**Soluzione**
+
+```python
+import csv
+from pathlib import Path
+
+VOTO_MINIMO: int = 18
+
+with open(Path("appello.csv"), "r", encoding="utf-8") as f:
+    studenti: list[dict[str, str]] = list(
+        csv.DictReader(f, delimiter=";"))
+
+ordinati: list[dict[str, str]] = sorted(
+    studenti, key=lambda s: s["cognome"])
+promossi: int = 0
+
+verbale: Path = Path("verbale.txt")
+with open(verbale, "w", encoding="utf-8") as f:
+    f.write("Verbale dell'appello\n")
+    for s in ordinati:
+        voto: int = int(s["voto"])
+        esito: str = "respinto"
+        if voto >= VOTO_MINIMO:
+            esito = "promosso"
+            promossi += 1
+        f.write(f"{s['matricola']} {s['cognome']} {s['nome']}: "
+                f"{voto}, {esito}\n")
+    f.write(f"Promossi: {promossi} su {len(studenti)}\n")
+
+print(verbale.read_text(encoding="utf-8"), end="")
+```
+
+---
+
+## Extra 3 — Il registro delle spese (`spese.py`)
+
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-spese)
+
+**Consegna**
+
+1. Il file `spese.csv` è un registro delle spese di uno studente fuori sede.
+2. Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (`ValueError`) stampate un messaggio e non scrivete niente.
+3. Altrimenti aggiungete la spesa in fondo al file: `open(..., "a", encoding="utf-8", newline="")` e `csv.writer(f, delimiter=";").writerow([...])`.
+4. Rileggete tutto il file e sommate gli importi per categoria con un `defaultdict(float)`. Stampate le categorie dalla più costosa e il totale, con due decimali.
+
+**File `spese.csv`** (createlo nella cartella del programma)
+
+```
+data;categoria;importo
+2026-12-01;affitto;350.00
+2026-12-02;spesa;42.50
+2026-12-03;trasporti;25.00
+2026-12-05;spesa;18.20
+2026-12-06;libri;39.90
+```
+
+**Esempio di esecuzione**
+
+```
+Data (aaaa-mm-gg): 2026-12-07
+Categoria: Spesa
+Importo: 12.30
+affitto: 350.00 EUR
+spesa: 73.00 EUR
+libri: 39.90 EUR
+trasporti: 25.00 EUR
+Totale: 487.90 EUR
+```
+
+**Provate anche**
+
+- sul file originale, `2026-12-07`, `cinema`, `8.50` → compare `cinema: 8.50 EUR`, totale `484.10 EUR`
+- importo `dieci` → `Importo non valido: spesa non registrata` e il file non cambia
+- ogni esecuzione aggiunge una riga: aprite `spese.csv` e controllate
+
+**Soluzione**
+
+```python
+import csv
+from collections import defaultdict
+from pathlib import Path
+
+SPESE: Path = Path("spese.csv")
+
+data: str = input("Data (aaaa-mm-gg): ")
+categoria: str = input("Categoria: ").strip().lower()
+try:
+    importo: float = float(input("Importo: "))
+except ValueError:
+    print("Importo non valido: spesa non registrata")
+else:
+    with open(SPESE, "a", encoding="utf-8", newline="") as f:
+        csv.writer(f, delimiter=";").writerow(
+            [data, categoria, f"{importo:.2f}"])
+
+totali: defaultdict[str, float] = defaultdict(float)
+with open(SPESE, "r", encoding="utf-8") as f:
+    for riga in csv.DictReader(f, delimiter=";"):
+        totali[riga["categoria"]] += float(riga["importo"])
+
+for cat, totale in sorted(totali.items(),
+                          key=lambda c: c[1], reverse=True):
+    print(f"{cat}: {totale:.2f} EUR")
+print(f"Totale: {sum(totali.values()):.2f} EUR")
+```
+
+---
+
+## Extra 4 — Configurazione in JSON (`config_soglia.py`)
+
+[Soluzione →](../../codice/L05_file_dati/esercizi.html#sol-config_soglia)
+
+**Consegna**
+
+1. Il file `config.json` dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è `appello.csv` dell'esercizio 2.
+2. Scrivete una funzione `sopra_soglia(file: str, colonna: str, soglia: int) -> list[str]` che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.
+3. In un solo `try` caricate la configurazione e chiamate la funzione. Gestite con `except` separati: `FileNotFoundError` (stampate `e.filename`), `json.JSONDecodeError` (stampate `e.lineno`), `KeyError` e `ValueError`.
+4. Nel blocco `else` stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (`", ".join(...)`).
+
+**File `config.json`** (createlo nella cartella del programma)
+
+```
+{
+  "file": "appello.csv",
+  "colonna": "voto",
+  "soglia": 27
+}
+```
+
+**Esempio di esecuzione**
+
+```
+File: appello.csv, soglia: 27
+Sopra soglia: 3
+Romano, Rossi, Verdi
+```
+
+**Provate anche**
+
+- `"soglia": 18` → 6 studenti, da `Esposito` a `Verdi`
+- togliete la riga di `"soglia"` → `Chiave mancante: 'soglia'`; `"colonna": "punteggio"` → `Chiave mancante: 'punteggio'`
+- `"file": "appello2.csv"` → `File non trovato: appello2.csv`; rinominate `config.json` → `File non trovato: config.json`
+- togliete la virgola dopo `"voto"` → `config.json non valido alla riga 4`; `"colonna": "cognome"` → la colonna non contiene numeri
+
+**Soluzione**
+
+```python
+import csv
+import json
+from pathlib import Path
+
+def sopra_soglia(file: str, colonna: str,
+                 soglia: int) -> list[str]:
+    """Cognomi degli studenti con valore >= soglia."""
+    cognomi: list[str] = []
+    with open(Path(file), "r", encoding="utf-8") as f:
+        for riga in csv.DictReader(f, delimiter=";"):
+            if int(riga[colonna]) >= soglia:
+                cognomi.append(riga["cognome"])
+    return cognomi
+
+try:
+    with open(Path("config.json"), "r", encoding="utf-8") as f:
+        config: dict = json.load(f)
+    cognomi: list[str] = sopra_soglia(
+        config["file"], config["colonna"], config["soglia"])
+except FileNotFoundError as e:
+    print(f"File non trovato: {e.filename}")
+except json.JSONDecodeError as e:
+    print(f"config.json non valido alla riga {e.lineno}")
+except KeyError as e:
+    print(f"Chiave mancante: {e}")
+except ValueError:
+    print("La colonna scelta non contiene numeri interi")
+else:
+    print(f"File: {config['file']}, soglia: {config['soglia']}")
+    print(f"Sopra soglia: {len(cognomi)}")
+    print(", ".join(sorted(cognomi)))
+```

@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -212,7 +216,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 1: i voti in un array — voti_numpy.py</span>
+<span class="cm" id="sol-voti_numpy"># ESERCIZIO 1: i voti in un array — voti_numpy.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: I voti in un array ---&quot;</span>)
 <span class="kw">import</span> numpy <span class="kw">as</span> np
@@ -237,74 +241,9 @@ scarti: np.ndarray <span class="op">=</span> voti <span class="op">-</span> medi
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 2: le ore di studio — ore_studio.py</span>
+<span class="cm" id="sol-test_crocette"># ESERCIZIO 2: rispondere a caso — test_crocette.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Le ore di studio ---&quot;</span>)
-<span class="kw">import</span> numpy <span class="kw">as</span> np
-
-corsi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Informatica&quot;</span>]
-<span class="cm"># righe = settimane, colonne = corsi</span>
-ore: np.ndarray <span class="op">=</span> np.array([[<span class="mi">6</span>, <span class="mi">4</span>, <span class="mi">3</span>],
-                            [<span class="mi">8</span>, <span class="mi">5</span>, <span class="mi">2</span>],
-                            [<span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">4</span>],
-                            [<span class="mi">10</span>, <span class="mi">6</span>, <span class="mi">5</span>]])
-
-<span class="nb">print</span>(<span class="st">f&quot;Forma: {ore.shape}, ore totali: {np.sum(ore)}&quot;</span>)
-per_corso: np.ndarray <span class="op">=</span> np.<span class="nb">sum</span>(ore, axis<span class="op">=</span><span class="mi">0</span>)
-per_settimana: np.ndarray <span class="op">=</span> np.<span class="nb">sum</span>(ore, axis<span class="op">=</span><span class="mi">1</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Ore per corso: {per_corso}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Ore per settimana: {per_settimana}&quot;</span>)
-
-quote: np.ndarray <span class="op">=</span> per_corso <span class="op">/</span> np.<span class="nb">sum</span>(ore)    <span class="cm"># array / scalare</span>
-<span class="kw">for</span> corso, q <span class="kw">in</span> <span class="nb">zip</span>(corsi, quote):
-    <span class="nb">print</span>(<span class="st">f&quot;{corso}: {q:.1%}&quot;</span>)
-
-settimane: np.ndarray <span class="op">=</span> np.arange(<span class="mi">1</span>, ore.shape[<span class="mi">0</span>] <span class="op">+</span> <span class="mi">1</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Settimane oltre 15 ore: {settimane[per_settimana &gt; 15]}&quot;</span>)
-
-medie: np.ndarray <span class="op">=</span> np.mean(ore, axis<span class="op">=</span><span class="mi">0</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Medie per corso: {medie}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;Scarti dalla media del corso:&quot;</span>)
-<span class="nb">print</span>(ore <span class="op">-</span> medie)                             <span class="cm"># broadcasting</span>
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 3: altezze simulate — altezze.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Altezze simulate ---&quot;</span>)
-<span class="kw">import</span> numpy <span class="kw">as</span> np
-
-SEED: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
-N: <span class="nb">int</span> <span class="op">=</span> <span class="mi">500</span>
-
-rng <span class="op">=</span> np.random.default_rng(SEED)
-altezze: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">170</span>, scale<span class="op">=</span><span class="mi">10</span>, size<span class="op">=</span>N)
-<span class="nb">print</span>(<span class="st">f&quot;Prime 5 altezze: {np.round(altezze[:5], 1)}&quot;</span>)
-
-media: <span class="nb">float</span> <span class="op">=</span> np.mean(altezze)
-dev: <span class="nb">float</span> <span class="op">=</span> np.std(altezze, ddof<span class="op">=</span><span class="mi">1</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Media: {media:.1f} cm, dev. std: {dev:.1f} cm&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Minimo: {np.min(altezze):.1f}, &quot;</span>
-      <span class="st">f&quot;massimo: {np.max(altezze):.1f}&quot;</span>)
-
-z: np.ndarray <span class="op">=</span> (altezze <span class="op">-</span> media) <span class="op">/</span> dev        <span class="cm"># z-score</span>
-<span class="nb">print</span>(<span class="st">f&quot;Dev. std degli z: {np.std(z, ddof=1):.2f}&quot;</span>)
-
-entro_1: <span class="nb">float</span> <span class="op">=</span> np.mean(np.<span class="nb">abs</span>(z) <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>)       <span class="cm"># quota di True</span>
-oltre_2: <span class="nb">float</span> <span class="op">=</span> np.mean(np.<span class="nb">abs</span>(z) <span class="op">&gt;</span> <span class="mi">2</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Entro 1 dev. std: {entro_1:.1%} (teorica 68.3%)&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Oltre 2 dev. std: {oltre_2:.1%} (teorica 4.6%)&quot;</span>)
-
-alti: np.ndarray <span class="op">=</span> altezze[(altezze <span class="op">&gt;</span><span class="op">=</span> <span class="mi">185</span>) <span class="op">&amp;</span> (altezze <span class="op">&lt;</span> <span class="mi">195</span>)]
-<span class="nb">print</span>(<span class="st">f&quot;Tra 185 e 195 cm: {alti.size}&quot;</span>)
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 4: rispondere a caso — test_crocette.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Rispondere a caso ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Rispondere a caso ---&quot;</span>)
 <span class="kw">import</span> math
 <span class="kw">import</span> numpy <span class="kw">as</span> np
 
@@ -337,9 +276,9 @@ punteggio: np.ndarray <span class="op">=</span> giuste <span class="op">-</span>
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 5: il libretto in un dataframe — libretto.py</span>
+<span class="cm" id="sol-libretto"># ESERCIZIO 3: il libretto in un dataframe — libretto.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: Il libretto in un DataFrame ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Il libretto in un DataFrame ---&quot;</span>)
 <span class="kw">import</span> pandas <span class="kw">as</span> pd
 
 libretto: pd.DataFrame <span class="op">=</span> pd.DataFrame({
@@ -370,9 +309,9 @@ primo: pd.DataFrame <span class="op">=</span> libretto[(libretto[<span class="st
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 6: esplorare un csv — esami_csv.py</span>
+<span class="cm" id="sol-esami_csv"># ESERCIZIO 4: esplorare un csv — esami_csv.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 6: Esplorare un CSV ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Esplorare un CSV ---&quot;</span>)
 <span class="kw">import</span> pandas <span class="kw">as</span> pd
 
 esami: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;esami.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>)
@@ -392,81 +331,7 @@ stat_2: pd.DataFrame <span class="op">=</span> esami[(esami[<span class="st">&qu
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 7: pulire un questionario — pulizia_questionario.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 7: Pulire un questionario ---&quot;</span>)
-<span class="kw">import</span> pandas <span class="kw">as</span> pd
-
-q: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;questionario.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>,
-                              na_values<span class="op">=</span>[<span class="st">&quot;&quot;</span>, <span class="st">&quot;NA&quot;</span>, <span class="st">&quot;?&quot;</span>])
-<span class="nb">print</span>(<span class="st">f&quot;Righe lette: {len(q)}&quot;</span>)
-<span class="nb">print</span>(<span class="st">&quot;Valori mancanti per colonna:&quot;</span>)
-<span class="nb">print</span>(q.isna().<span class="nb">sum</span>())
-
-doppi: <span class="nb">int</span> <span class="op">=</span> q.duplicated().<span class="nb">sum</span>()
-q <span class="op">=</span> q.drop_duplicates()
-<span class="nb">print</span>(<span class="st">f&quot;Righe duplicate tolte: {doppi}&quot;</span>)
-
-senza_voto: <span class="nb">int</span> <span class="op">=</span> q[<span class="st">&quot;voto&quot;</span>].isna().<span class="nb">sum</span>()
-q <span class="op">=</span> q.dropna(subset<span class="op">=</span>[<span class="st">&quot;voto&quot;</span>])
-<span class="nb">print</span>(<span class="st">f&quot;Righe senza voto tolte: {senza_voto}&quot;</span>)
-
-media_ore: <span class="nb">float</span> <span class="op">=</span> q[<span class="st">&quot;ore_studio&quot;</span>].mean()
-q <span class="op">=</span> q.fillna({<span class="st">&quot;ore_studio&quot;</span>: <span class="nb">round</span>(media_ore, <span class="mi">1</span>)})
-q[<span class="st">&quot;voto&quot;</span>] <span class="op">=</span> q[<span class="st">&quot;voto&quot;</span>].astype(<span class="nb">int</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Ore mancanti sostituite con la media: {media_ore:.1f}&quot;</span>)
-
-<span class="nb">print</span>(<span class="st">f&quot;Righe pulite: {len(q)}, mancanti: {q.isna().sum().sum()}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Voto medio: {q[&#x27;voto&#x27;].mean():.2f}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Ore medie: {q[&#x27;ore_studio&#x27;].mean():.2f}&quot;</span>)
-<span class="nb">print</span>(q.groupby(<span class="st">&quot;corso&quot;</span>)[[<span class="st">&quot;ore_studio&quot;</span>, <span class="st">&quot;voto&quot;</span>]].mean().<span class="nb">round</span>(<span class="mi">1</span>))
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 8: gli esami del primo anno — esami_primo_anno.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 8: Gli esami del primo anno ---&quot;</span>)
-<span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> pandas <span class="kw">as</span> pd
-
-N: <span class="nb">int</span> <span class="op">=</span> <span class="mi">150</span>
-CORSI: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>]
-
-rng <span class="op">=</span> np.random.default_rng(<span class="mi">2026</span>)
-voti: np.ndarray <span class="op">=</span> np.<span class="nb">round</span>(rng.normal(<span class="mi">23</span>, <span class="mi">5</span>, size<span class="op">=</span>N))
-esami: pd.DataFrame <span class="op">=</span> pd.DataFrame({
-    <span class="st">&quot;corso&quot;</span>: rng.choice(CORSI, size<span class="op">=</span>N),
-    <span class="st">&quot;voto&quot;</span>: np.minimum(voti, <span class="mi">30</span>).astype(<span class="nb">int</span>),
-})
-corsi: pd.DataFrame <span class="op">=</span> pd.DataFrame({
-    <span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Economia&quot;</span>],
-    <span class="st">&quot;crediti&quot;</span>: [<span class="mi">9</span>, <span class="mi">9</span>, <span class="mi">6</span>, <span class="mi">9</span>],
-})
-<span class="nb">print</span>(<span class="st">f&quot;Esami: {len(esami)}, voti 30: {np.sum(esami[&#x27;voto&#x27;] == 30)}&quot;</span>)
-
-esami[<span class="st">&quot;promosso&quot;</span>] <span class="op">=</span> esami[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>
-<span class="kw">for</span> corso, quota <span class="kw">in</span> esami.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;promosso&quot;</span>].mean().items():
-    <span class="nb">print</span>(<span class="st">f&quot;{corso}: promossi {quota:.1%}&quot;</span>)
-
-promossi: pd.DataFrame <span class="op">=</span> (
-    esami
-    .merge(corsi, on<span class="op">=</span><span class="st">&quot;corso&quot;</span>, how<span class="op">=</span><span class="st">&quot;left&quot;</span>)
-    .query(<span class="st">&quot;promosso&quot;</span>)
-)
-<span class="nb">print</span>(<span class="st">f&quot;Crediti acquisiti: {promossi[&#x27;crediti&#x27;].sum()}&quot;</span>)
-riepilogo: pd.DataFrame <span class="op">=</span> (
-    promossi
-    .groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>]
-    .agg([<span class="st">&quot;count&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>])
-    .<span class="nb">round</span>(<span class="mi">1</span>)
-)
-<span class="nb">print</span>(riepilogo)
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE MERCATI E FINANZA: il portafoglio simulato — ch_mercati.py</span>
+<span class="cm" id="sol-ch_mercati"># CHALLENGE MERCATI E FINANZA: il portafoglio simulato — ch_mercati.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Mercati e finanza: Il portafoglio simulato ---&quot;</span>)
 <span class="kw">import</span> numpy <span class="kw">as</span> np
@@ -506,7 +371,7 @@ medie_sett: pd.Series <span class="op">=</span> df.groupby(<span class="st">&quo
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE SPORT: la gara simulata — ch_sport.py</span>
+<span class="cm" id="sol-ch_sport"># CHALLENGE SPORT: la gara simulata — ch_sport.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Sport: La gara simulata ---&quot;</span>)
 <span class="kw">import</span> numpy <span class="kw">as</span> np
@@ -544,7 +409,7 @@ gara[<span class="st">&quot;distacco&quot;</span>] <span class="op">=</span> gar
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE IMPRESE E MARKETING: un mese di vendite — ch_negozio.py</span>
+<span class="cm" id="sol-ch_negozio"># CHALLENGE IMPRESE E MARKETING: un mese di vendite — ch_negozio.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Imprese e marketing: Un mese di vendite ---&quot;</span>)
 <span class="kw">import</span> numpy <span class="kw">as</span> np
@@ -583,7 +448,7 @@ negozio[<span class="st">&quot;margine&quot;</span>] <span class="op">=</span> n
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE SALUTE E SCIENZA: lo studio simulato — ch_salute.py</span>
+<span class="cm" id="sol-ch_salute"># CHALLENGE SALUTE E SCIENZA: lo studio simulato — ch_salute.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Salute e scienza: Lo studio simulato ---&quot;</span>)
 <span class="kw">import</span> numpy <span class="kw">as</span> np
@@ -625,7 +490,7 @@ studio[<span class="st">&quot;differenza&quot;</span>] <span class="op">=</span>
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE CASO E PROBABILITÀ: dadi e porte — ch_probabilita.py</span>
+<span class="cm" id="sol-ch_probabilita"># CHALLENGE CASO E PROBABILITÀ: dadi e porte — ch_probabilita.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Caso e probabilità: Dadi e porte ---&quot;</span>)
 <span class="kw">import</span> numpy <span class="kw">as</span> np
@@ -664,6 +529,145 @@ medie: pd.Series <span class="op">=</span> tavolo.groupby(<span class="st">&quot
 <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
 <span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi del laboratorio 07&quot;</span>)
 <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-ore_studio"># EXTRA 1: le ore di studio — ore_studio.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 1: Le ore di studio ---&quot;</span>)
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+corsi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Informatica&quot;</span>]
+<span class="cm"># righe = settimane, colonne = corsi</span>
+ore: np.ndarray <span class="op">=</span> np.array([[<span class="mi">6</span>, <span class="mi">4</span>, <span class="mi">3</span>],
+                            [<span class="mi">8</span>, <span class="mi">5</span>, <span class="mi">2</span>],
+                            [<span class="mi">5</span>, <span class="mi">7</span>, <span class="mi">4</span>],
+                            [<span class="mi">10</span>, <span class="mi">6</span>, <span class="mi">5</span>]])
+
+<span class="nb">print</span>(<span class="st">f&quot;Forma: {ore.shape}, ore totali: {np.sum(ore)}&quot;</span>)
+per_corso: np.ndarray <span class="op">=</span> np.<span class="nb">sum</span>(ore, axis<span class="op">=</span><span class="mi">0</span>)
+per_settimana: np.ndarray <span class="op">=</span> np.<span class="nb">sum</span>(ore, axis<span class="op">=</span><span class="mi">1</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ore per corso: {per_corso}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ore per settimana: {per_settimana}&quot;</span>)
+
+quote: np.ndarray <span class="op">=</span> per_corso <span class="op">/</span> np.<span class="nb">sum</span>(ore)    <span class="cm"># array / scalare</span>
+<span class="kw">for</span> corso, q <span class="kw">in</span> <span class="nb">zip</span>(corsi, quote):
+    <span class="nb">print</span>(<span class="st">f&quot;{corso}: {q:.1%}&quot;</span>)
+
+settimane: np.ndarray <span class="op">=</span> np.arange(<span class="mi">1</span>, ore.shape[<span class="mi">0</span>] <span class="op">+</span> <span class="mi">1</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Settimane oltre 15 ore: {settimane[per_settimana &gt; 15]}&quot;</span>)
+
+medie: np.ndarray <span class="op">=</span> np.mean(ore, axis<span class="op">=</span><span class="mi">0</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Medie per corso: {medie}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Scarti dalla media del corso:&quot;</span>)
+<span class="nb">print</span>(ore <span class="op">-</span> medie)                             <span class="cm"># broadcasting</span>
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-altezze"># EXTRA 2: altezze simulate — altezze.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 2: Altezze simulate ---&quot;</span>)
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+SEED: <span class="nb">int</span> <span class="op">=</span> <span class="mi">42</span>
+N: <span class="nb">int</span> <span class="op">=</span> <span class="mi">500</span>
+
+rng <span class="op">=</span> np.random.default_rng(SEED)
+altezze: np.ndarray <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="mi">170</span>, scale<span class="op">=</span><span class="mi">10</span>, size<span class="op">=</span>N)
+<span class="nb">print</span>(<span class="st">f&quot;Prime 5 altezze: {np.round(altezze[:5], 1)}&quot;</span>)
+
+media: <span class="nb">float</span> <span class="op">=</span> np.mean(altezze)
+dev: <span class="nb">float</span> <span class="op">=</span> np.std(altezze, ddof<span class="op">=</span><span class="mi">1</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {media:.1f} cm, dev. std: {dev:.1f} cm&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Minimo: {np.min(altezze):.1f}, &quot;</span>
+      <span class="st">f&quot;massimo: {np.max(altezze):.1f}&quot;</span>)
+
+z: np.ndarray <span class="op">=</span> (altezze <span class="op">-</span> media) <span class="op">/</span> dev        <span class="cm"># z-score</span>
+<span class="nb">print</span>(<span class="st">f&quot;Dev. std degli z: {np.std(z, ddof=1):.2f}&quot;</span>)
+
+entro_1: <span class="nb">float</span> <span class="op">=</span> np.mean(np.<span class="nb">abs</span>(z) <span class="op">&lt;</span><span class="op">=</span> <span class="mi">1</span>)       <span class="cm"># quota di True</span>
+oltre_2: <span class="nb">float</span> <span class="op">=</span> np.mean(np.<span class="nb">abs</span>(z) <span class="op">&gt;</span> <span class="mi">2</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Entro 1 dev. std: {entro_1:.1%} (teorica 68.3%)&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Oltre 2 dev. std: {oltre_2:.1%} (teorica 4.6%)&quot;</span>)
+
+alti: np.ndarray <span class="op">=</span> altezze[(altezze <span class="op">&gt;</span><span class="op">=</span> <span class="mi">185</span>) <span class="op">&amp;</span> (altezze <span class="op">&lt;</span> <span class="mi">195</span>)]
+<span class="nb">print</span>(<span class="st">f&quot;Tra 185 e 195 cm: {alti.size}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-pulizia_questionario"># EXTRA 3: pulire un questionario — pulizia_questionario.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 3: Pulire un questionario ---&quot;</span>)
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+q: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">&quot;questionario.csv&quot;</span>, sep<span class="op">=</span><span class="st">&quot;;&quot;</span>,
+                              na_values<span class="op">=</span>[<span class="st">&quot;&quot;</span>, <span class="st">&quot;NA&quot;</span>, <span class="st">&quot;?&quot;</span>])
+<span class="nb">print</span>(<span class="st">f&quot;Righe lette: {len(q)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;Valori mancanti per colonna:&quot;</span>)
+<span class="nb">print</span>(q.isna().<span class="nb">sum</span>())
+
+doppi: <span class="nb">int</span> <span class="op">=</span> q.duplicated().<span class="nb">sum</span>()
+q <span class="op">=</span> q.drop_duplicates()
+<span class="nb">print</span>(<span class="st">f&quot;Righe duplicate tolte: {doppi}&quot;</span>)
+
+senza_voto: <span class="nb">int</span> <span class="op">=</span> q[<span class="st">&quot;voto&quot;</span>].isna().<span class="nb">sum</span>()
+q <span class="op">=</span> q.dropna(subset<span class="op">=</span>[<span class="st">&quot;voto&quot;</span>])
+<span class="nb">print</span>(<span class="st">f&quot;Righe senza voto tolte: {senza_voto}&quot;</span>)
+
+media_ore: <span class="nb">float</span> <span class="op">=</span> q[<span class="st">&quot;ore_studio&quot;</span>].mean()
+q <span class="op">=</span> q.fillna({<span class="st">&quot;ore_studio&quot;</span>: <span class="nb">round</span>(media_ore, <span class="mi">1</span>)})
+q[<span class="st">&quot;voto&quot;</span>] <span class="op">=</span> q[<span class="st">&quot;voto&quot;</span>].astype(<span class="nb">int</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ore mancanti sostituite con la media: {media_ore:.1f}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;Righe pulite: {len(q)}, mancanti: {q.isna().sum().sum()}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Voto medio: {q[&#x27;voto&#x27;].mean():.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ore medie: {q[&#x27;ore_studio&#x27;].mean():.2f}&quot;</span>)
+<span class="nb">print</span>(q.groupby(<span class="st">&quot;corso&quot;</span>)[[<span class="st">&quot;ore_studio&quot;</span>, <span class="st">&quot;voto&quot;</span>]].mean().<span class="nb">round</span>(<span class="mi">1</span>))
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-esami_primo_anno"># EXTRA 4: gli esami del primo anno — esami_primo_anno.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 4: Gli esami del primo anno ---&quot;</span>)
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+N: <span class="nb">int</span> <span class="op">=</span> <span class="mi">150</span>
+CORSI: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>]
+
+rng <span class="op">=</span> np.random.default_rng(<span class="mi">2026</span>)
+voti: np.ndarray <span class="op">=</span> np.<span class="nb">round</span>(rng.normal(<span class="mi">23</span>, <span class="mi">5</span>, size<span class="op">=</span>N))
+esami: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;corso&quot;</span>: rng.choice(CORSI, size<span class="op">=</span>N),
+    <span class="st">&quot;voto&quot;</span>: np.minimum(voti, <span class="mi">30</span>).astype(<span class="nb">int</span>),
+})
+corsi: pd.DataFrame <span class="op">=</span> pd.DataFrame({
+    <span class="st">&quot;corso&quot;</span>: [<span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Economia&quot;</span>],
+    <span class="st">&quot;crediti&quot;</span>: [<span class="mi">9</span>, <span class="mi">9</span>, <span class="mi">6</span>, <span class="mi">9</span>],
+})
+<span class="nb">print</span>(<span class="st">f&quot;Esami: {len(esami)}, voti 30: {np.sum(esami[&#x27;voto&#x27;] == 30)}&quot;</span>)
+
+esami[<span class="st">&quot;promosso&quot;</span>] <span class="op">=</span> esami[<span class="st">&quot;voto&quot;</span>] <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>
+<span class="kw">for</span> corso, quota <span class="kw">in</span> esami.groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;promosso&quot;</span>].mean().items():
+    <span class="nb">print</span>(<span class="st">f&quot;{corso}: promossi {quota:.1%}&quot;</span>)
+
+promossi: pd.DataFrame <span class="op">=</span> (
+    esami
+    .merge(corsi, on<span class="op">=</span><span class="st">&quot;corso&quot;</span>, how<span class="op">=</span><span class="st">&quot;left&quot;</span>)
+    .query(<span class="st">&quot;promosso&quot;</span>)
+)
+<span class="nb">print</span>(<span class="st">f&quot;Crediti acquisiti: {promossi[&#x27;crediti&#x27;].sum()}&quot;</span>)
+riepilogo: pd.DataFrame <span class="op">=</span> (
+    promossi
+    .groupby(<span class="st">&quot;corso&quot;</span>)[<span class="st">&quot;voto&quot;</span>]
+    .agg([<span class="st">&quot;count&quot;</span>, <span class="st">&quot;mean&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>])
+    .<span class="nb">round</span>(<span class="mi">1</span>)
+)
+<span class="nb">print</span>(riepilogo)
+<span class="nb">print</span>()
+
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
 </body>

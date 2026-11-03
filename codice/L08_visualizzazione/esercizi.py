@@ -68,39 +68,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 3: ore di studio e voto — studio.py
+# ESERCIZIO 3: l'attesa in mensa — mensa.py
 # ============================================================================
-print("--- Esercizio 3: Ore di studio e voto ---")
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-
-rng = np.random.default_rng(7)
-ore: np.ndarray = rng.uniform(20, 120, 80).round()
-voto: np.ndarray = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round()
-voto = voto.clip(18, 30)
-
-plt.figure(figsize=(7, 4))
-plt.scatter(ore, voto, alpha=0.6, color="steelblue")
-plt.title("Ore di studio e voto all'esame")
-plt.xlabel("Ore di studio")
-plt.ylabel("Voto")
-plt.grid(True, alpha=0.3)
-plt.tight_layout()
-plt.savefig("studio.png")
-
-r: float = np.corrcoef(ore, voto)[0, 1]
-print(f"Studenti: {len(ore)}, correlazione: {r:.2f}")
-print(f"Voto medio con più di 80 ore: {voto[ore > 80].mean():.1f}")
-print(f"Voto medio con 80 ore o meno: {voto[ore <= 80].mean():.1f}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 4: l'attesa in mensa — mensa.py
-# ============================================================================
-print("--- Esercizio 4: L'attesa in mensa ---")
+print("--- Esercizio 3: L'attesa in mensa ---")
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -126,67 +96,6 @@ plt.savefig("mensa.png")
 print(f"Rilevazioni: {len(df)}, media: {df['attesa'].mean():.1f} min")
 print(f"Giorno peggiore: {medie.idxmax()} ({medie.max():.1f} min)")
 print(f"Giorno migliore: {medie.idxmin()} ({medie.min():.1f} min)")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 5: il tragitto per l'università — tragitto.py
-# ============================================================================
-print("--- Esercizio 5: Il tragitto per l'università ---")
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-
-rng = np.random.default_rng(11)
-tempi: dict[str, np.ndarray] = {
-    "bici": rng.normal(22, 3, 40).round(),
-    "autobus": rng.normal(28, 7, 40).round(),
-    "treno": rng.normal(35, 4, 40).round()}
-
-plt.figure(figsize=(7, 4))
-plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))
-plt.title("Tempo per arrivare in università")
-plt.xlabel("Mezzo")
-plt.ylabel("Minuti")
-plt.tight_layout()
-plt.savefig("tragitto.png")
-
-for mezzo, t in tempi.items():
-    print(f"{mezzo}: mediana {np.median(t):.0f} min, "
-          f"oltre 30 min {(t > 30).mean():.1%}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 6: gennaio in due grafici — meteo.py
-# ============================================================================
-print("--- Esercizio 6: Gennaio in due grafici ---")
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-
-rng = np.random.default_rng(1)
-giorni: np.ndarray = np.arange(1, 32)
-minime: np.ndarray = rng.normal(0, 2.5, 31).round(1)
-massime: np.ndarray = (minime + rng.normal(7, 1.8, 31)).round(1)
-
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
-ax1.plot(giorni, massime, color="tomato", label="Massima")
-ax1.plot(giorni, minime, color="steelblue", label="Minima")
-ax1.set_title("Temperature di gennaio a Padova")
-ax1.set_xlabel("Giorno")
-ax1.set_ylabel("°C")
-ax1.legend()
-ax2.hist(massime - minime, bins=8, color="gray", edgecolor="white")
-ax2.set_title("Escursione termica")
-ax2.set_xlabel("Massima - minima (°C)")
-ax2.set_ylabel("Giorni")
-fig.tight_layout()
-fig.savefig("meteo.png")
-print(f"Giorni con la minima sotto zero: {(minime < 0).sum()}")
-print(f"Escursione media: {(massime - minime).mean():.1f} °C")
 print()
 
 
@@ -454,3 +363,94 @@ print()
 print("=" * 60)
 print("Fine degli esercizi del laboratorio 08")
 print("=" * 60)
+
+# ============================================================================
+# EXTRA 1: ore di studio e voto — studio.py
+# ============================================================================
+print("--- Extra 1: Ore di studio e voto ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(7)
+ore: np.ndarray = rng.uniform(20, 120, 80).round()
+voto: np.ndarray = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round()
+voto = voto.clip(18, 30)
+
+plt.figure(figsize=(7, 4))
+plt.scatter(ore, voto, alpha=0.6, color="steelblue")
+plt.title("Ore di studio e voto all'esame")
+plt.xlabel("Ore di studio")
+plt.ylabel("Voto")
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig("studio.png")
+
+r: float = np.corrcoef(ore, voto)[0, 1]
+print(f"Studenti: {len(ore)}, correlazione: {r:.2f}")
+print(f"Voto medio con più di 80 ore: {voto[ore > 80].mean():.1f}")
+print(f"Voto medio con 80 ore o meno: {voto[ore <= 80].mean():.1f}")
+print()
+
+
+# ============================================================================
+# EXTRA 2: il tragitto per l'università — tragitto.py
+# ============================================================================
+print("--- Extra 2: Il tragitto per l'università ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(11)
+tempi: dict[str, np.ndarray] = {
+    "bici": rng.normal(22, 3, 40).round(),
+    "autobus": rng.normal(28, 7, 40).round(),
+    "treno": rng.normal(35, 4, 40).round()}
+
+plt.figure(figsize=(7, 4))
+plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))
+plt.title("Tempo per arrivare in università")
+plt.xlabel("Mezzo")
+plt.ylabel("Minuti")
+plt.tight_layout()
+plt.savefig("tragitto.png")
+
+for mezzo, t in tempi.items():
+    print(f"{mezzo}: mediana {np.median(t):.0f} min, "
+          f"oltre 30 min {(t > 30).mean():.1%}")
+print()
+
+
+# ============================================================================
+# EXTRA 3: gennaio in due grafici — meteo.py
+# ============================================================================
+print("--- Extra 3: Gennaio in due grafici ---")
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(1)
+giorni: np.ndarray = np.arange(1, 32)
+minime: np.ndarray = rng.normal(0, 2.5, 31).round(1)
+massime: np.ndarray = (minime + rng.normal(7, 1.8, 31)).round(1)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+ax1.plot(giorni, massime, color="tomato", label="Massima")
+ax1.plot(giorni, minime, color="steelblue", label="Minima")
+ax1.set_title("Temperature di gennaio a Padova")
+ax1.set_xlabel("Giorno")
+ax1.set_ylabel("°C")
+ax1.legend()
+ax2.hist(massime - minime, bins=8, color="gray", edgecolor="white")
+ax2.set_title("Escursione termica")
+ax2.set_xlabel("Massima - minima (°C)")
+ax2.set_ylabel("Giorni")
+fig.tight_layout()
+fig.savefig("meteo.png")
+print(f"Giorni con la minima sotto zero: {(minime < 0).sum()}")
+print(f"Escursione media: {(massime - minime).mean():.1f} °C")
+print()
+

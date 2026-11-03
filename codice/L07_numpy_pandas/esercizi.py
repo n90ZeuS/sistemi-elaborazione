@@ -32,74 +32,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 2: le ore di studio — ore_studio.py
+# ESERCIZIO 2: rispondere a caso — test_crocette.py
 # ============================================================================
-print("--- Esercizio 2: Le ore di studio ---")
-import numpy as np
-
-corsi: list[str] = ["Statistica", "Analisi", "Informatica"]
-# righe = settimane, colonne = corsi
-ore: np.ndarray = np.array([[6, 4, 3],
-                            [8, 5, 2],
-                            [5, 7, 4],
-                            [10, 6, 5]])
-
-print(f"Forma: {ore.shape}, ore totali: {np.sum(ore)}")
-per_corso: np.ndarray = np.sum(ore, axis=0)
-per_settimana: np.ndarray = np.sum(ore, axis=1)
-print(f"Ore per corso: {per_corso}")
-print(f"Ore per settimana: {per_settimana}")
-
-quote: np.ndarray = per_corso / np.sum(ore)    # array / scalare
-for corso, q in zip(corsi, quote):
-    print(f"{corso}: {q:.1%}")
-
-settimane: np.ndarray = np.arange(1, ore.shape[0] + 1)
-print(f"Settimane oltre 15 ore: {settimane[per_settimana > 15]}")
-
-medie: np.ndarray = np.mean(ore, axis=0)
-print(f"Medie per corso: {medie}")
-print("Scarti dalla media del corso:")
-print(ore - medie)                             # broadcasting
-print()
-
-
-# ============================================================================
-# ESERCIZIO 3: altezze simulate — altezze.py
-# ============================================================================
-print("--- Esercizio 3: Altezze simulate ---")
-import numpy as np
-
-SEED: int = 42
-N: int = 500
-
-rng = np.random.default_rng(SEED)
-altezze: np.ndarray = rng.normal(loc=170, scale=10, size=N)
-print(f"Prime 5 altezze: {np.round(altezze[:5], 1)}")
-
-media: float = np.mean(altezze)
-dev: float = np.std(altezze, ddof=1)
-print(f"Media: {media:.1f} cm, dev. std: {dev:.1f} cm")
-print(f"Minimo: {np.min(altezze):.1f}, "
-      f"massimo: {np.max(altezze):.1f}")
-
-z: np.ndarray = (altezze - media) / dev        # z-score
-print(f"Dev. std degli z: {np.std(z, ddof=1):.2f}")
-
-entro_1: float = np.mean(np.abs(z) <= 1)       # quota di True
-oltre_2: float = np.mean(np.abs(z) > 2)
-print(f"Entro 1 dev. std: {entro_1:.1%} (teorica 68.3%)")
-print(f"Oltre 2 dev. std: {oltre_2:.1%} (teorica 4.6%)")
-
-alti: np.ndarray = altezze[(altezze >= 185) & (altezze < 195)]
-print(f"Tra 185 e 195 cm: {alti.size}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 4: rispondere a caso — test_crocette.py
-# ============================================================================
-print("--- Esercizio 4: Rispondere a caso ---")
+print("--- Esercizio 2: Rispondere a caso ---")
 import math
 import numpy as np
 
@@ -132,9 +67,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 5: il libretto in un dataframe — libretto.py
+# ESERCIZIO 3: il libretto in un dataframe — libretto.py
 # ============================================================================
-print("--- Esercizio 5: Il libretto in un DataFrame ---")
+print("--- Esercizio 3: Il libretto in un DataFrame ---")
 import pandas as pd
 
 libretto: pd.DataFrame = pd.DataFrame({
@@ -165,9 +100,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 6: esplorare un csv — esami_csv.py
+# ESERCIZIO 4: esplorare un csv — esami_csv.py
 # ============================================================================
-print("--- Esercizio 6: Esplorare un CSV ---")
+print("--- Esercizio 4: Esplorare un CSV ---")
 import pandas as pd
 
 esami: pd.DataFrame = pd.read_csv("esami.csv", sep=";")
@@ -183,80 +118,6 @@ stat_2: pd.DataFrame = esami[(esami["corso"] == "Statistica")
                              & (esami["anno"] == 2)]
 print(f"Statistica, secondo anno: {stat_2['matricola'].tolist()}")
 print(esami.groupby("corso")["voto"].mean().round(1))
-print()
-
-
-# ============================================================================
-# ESERCIZIO 7: pulire un questionario — pulizia_questionario.py
-# ============================================================================
-print("--- Esercizio 7: Pulire un questionario ---")
-import pandas as pd
-
-q: pd.DataFrame = pd.read_csv("questionario.csv", sep=";",
-                              na_values=["", "NA", "?"])
-print(f"Righe lette: {len(q)}")
-print("Valori mancanti per colonna:")
-print(q.isna().sum())
-
-doppi: int = q.duplicated().sum()
-q = q.drop_duplicates()
-print(f"Righe duplicate tolte: {doppi}")
-
-senza_voto: int = q["voto"].isna().sum()
-q = q.dropna(subset=["voto"])
-print(f"Righe senza voto tolte: {senza_voto}")
-
-media_ore: float = q["ore_studio"].mean()
-q = q.fillna({"ore_studio": round(media_ore, 1)})
-q["voto"] = q["voto"].astype(int)
-print(f"Ore mancanti sostituite con la media: {media_ore:.1f}")
-
-print(f"Righe pulite: {len(q)}, mancanti: {q.isna().sum().sum()}")
-print(f"Voto medio: {q['voto'].mean():.2f}")
-print(f"Ore medie: {q['ore_studio'].mean():.2f}")
-print(q.groupby("corso")[["ore_studio", "voto"]].mean().round(1))
-print()
-
-
-# ============================================================================
-# ESERCIZIO 8: gli esami del primo anno — esami_primo_anno.py
-# ============================================================================
-print("--- Esercizio 8: Gli esami del primo anno ---")
-import numpy as np
-import pandas as pd
-
-N: int = 150
-CORSI: list[str] = ["Analisi", "Statistica", "Informatica"]
-
-rng = np.random.default_rng(2026)
-voti: np.ndarray = np.round(rng.normal(23, 5, size=N))
-esami: pd.DataFrame = pd.DataFrame({
-    "corso": rng.choice(CORSI, size=N),
-    "voto": np.minimum(voti, 30).astype(int),
-})
-corsi: pd.DataFrame = pd.DataFrame({
-    "corso": ["Analisi", "Statistica", "Informatica", "Economia"],
-    "crediti": [9, 9, 6, 9],
-})
-print(f"Esami: {len(esami)}, voti 30: {np.sum(esami['voto'] == 30)}")
-
-esami["promosso"] = esami["voto"] >= 18
-for corso, quota in esami.groupby("corso")["promosso"].mean().items():
-    print(f"{corso}: promossi {quota:.1%}")
-
-promossi: pd.DataFrame = (
-    esami
-    .merge(corsi, on="corso", how="left")
-    .query("promosso")
-)
-print(f"Crediti acquisiti: {promossi['crediti'].sum()}")
-riepilogo: pd.DataFrame = (
-    promossi
-    .groupby("corso")["voto"]
-    .agg(["count", "mean", "min", "max"])
-    .round(1)
-)
-print(riepilogo)
 print()
 
 
@@ -459,3 +320,142 @@ print()
 print("=" * 60)
 print("Fine degli esercizi del laboratorio 07")
 print("=" * 60)
+
+# ============================================================================
+# EXTRA 1: le ore di studio — ore_studio.py
+# ============================================================================
+print("--- Extra 1: Le ore di studio ---")
+import numpy as np
+
+corsi: list[str] = ["Statistica", "Analisi", "Informatica"]
+# righe = settimane, colonne = corsi
+ore: np.ndarray = np.array([[6, 4, 3],
+                            [8, 5, 2],
+                            [5, 7, 4],
+                            [10, 6, 5]])
+
+print(f"Forma: {ore.shape}, ore totali: {np.sum(ore)}")
+per_corso: np.ndarray = np.sum(ore, axis=0)
+per_settimana: np.ndarray = np.sum(ore, axis=1)
+print(f"Ore per corso: {per_corso}")
+print(f"Ore per settimana: {per_settimana}")
+
+quote: np.ndarray = per_corso / np.sum(ore)    # array / scalare
+for corso, q in zip(corsi, quote):
+    print(f"{corso}: {q:.1%}")
+
+settimane: np.ndarray = np.arange(1, ore.shape[0] + 1)
+print(f"Settimane oltre 15 ore: {settimane[per_settimana > 15]}")
+
+medie: np.ndarray = np.mean(ore, axis=0)
+print(f"Medie per corso: {medie}")
+print("Scarti dalla media del corso:")
+print(ore - medie)                             # broadcasting
+print()
+
+
+# ============================================================================
+# EXTRA 2: altezze simulate — altezze.py
+# ============================================================================
+print("--- Extra 2: Altezze simulate ---")
+import numpy as np
+
+SEED: int = 42
+N: int = 500
+
+rng = np.random.default_rng(SEED)
+altezze: np.ndarray = rng.normal(loc=170, scale=10, size=N)
+print(f"Prime 5 altezze: {np.round(altezze[:5], 1)}")
+
+media: float = np.mean(altezze)
+dev: float = np.std(altezze, ddof=1)
+print(f"Media: {media:.1f} cm, dev. std: {dev:.1f} cm")
+print(f"Minimo: {np.min(altezze):.1f}, "
+      f"massimo: {np.max(altezze):.1f}")
+
+z: np.ndarray = (altezze - media) / dev        # z-score
+print(f"Dev. std degli z: {np.std(z, ddof=1):.2f}")
+
+entro_1: float = np.mean(np.abs(z) <= 1)       # quota di True
+oltre_2: float = np.mean(np.abs(z) > 2)
+print(f"Entro 1 dev. std: {entro_1:.1%} (teorica 68.3%)")
+print(f"Oltre 2 dev. std: {oltre_2:.1%} (teorica 4.6%)")
+
+alti: np.ndarray = altezze[(altezze >= 185) & (altezze < 195)]
+print(f"Tra 185 e 195 cm: {alti.size}")
+print()
+
+
+# ============================================================================
+# EXTRA 3: pulire un questionario — pulizia_questionario.py
+# ============================================================================
+print("--- Extra 3: Pulire un questionario ---")
+import pandas as pd
+
+q: pd.DataFrame = pd.read_csv("questionario.csv", sep=";",
+                              na_values=["", "NA", "?"])
+print(f"Righe lette: {len(q)}")
+print("Valori mancanti per colonna:")
+print(q.isna().sum())
+
+doppi: int = q.duplicated().sum()
+q = q.drop_duplicates()
+print(f"Righe duplicate tolte: {doppi}")
+
+senza_voto: int = q["voto"].isna().sum()
+q = q.dropna(subset=["voto"])
+print(f"Righe senza voto tolte: {senza_voto}")
+
+media_ore: float = q["ore_studio"].mean()
+q = q.fillna({"ore_studio": round(media_ore, 1)})
+q["voto"] = q["voto"].astype(int)
+print(f"Ore mancanti sostituite con la media: {media_ore:.1f}")
+
+print(f"Righe pulite: {len(q)}, mancanti: {q.isna().sum().sum()}")
+print(f"Voto medio: {q['voto'].mean():.2f}")
+print(f"Ore medie: {q['ore_studio'].mean():.2f}")
+print(q.groupby("corso")[["ore_studio", "voto"]].mean().round(1))
+print()
+
+
+# ============================================================================
+# EXTRA 4: gli esami del primo anno — esami_primo_anno.py
+# ============================================================================
+print("--- Extra 4: Gli esami del primo anno ---")
+import numpy as np
+import pandas as pd
+
+N: int = 150
+CORSI: list[str] = ["Analisi", "Statistica", "Informatica"]
+
+rng = np.random.default_rng(2026)
+voti: np.ndarray = np.round(rng.normal(23, 5, size=N))
+esami: pd.DataFrame = pd.DataFrame({
+    "corso": rng.choice(CORSI, size=N),
+    "voto": np.minimum(voti, 30).astype(int),
+})
+corsi: pd.DataFrame = pd.DataFrame({
+    "corso": ["Analisi", "Statistica", "Informatica", "Economia"],
+    "crediti": [9, 9, 6, 9],
+})
+print(f"Esami: {len(esami)}, voti 30: {np.sum(esami['voto'] == 30)}")
+
+esami["promosso"] = esami["voto"] >= 18
+for corso, quota in esami.groupby("corso")["promosso"].mean().items():
+    print(f"{corso}: promossi {quota:.1%}")
+
+promossi: pd.DataFrame = (
+    esami
+    .merge(corsi, on="corso", how="left")
+    .query("promosso")
+)
+print(f"Crediti acquisiti: {promossi['crediti'].sum()}")
+riepilogo: pd.DataFrame = (
+    promossi
+    .groupby("corso")["voto"]
+    .agg(["count", "mean", "min", "max"])
+    .round(1)
+)
+print(riepilogo)
+print()
+

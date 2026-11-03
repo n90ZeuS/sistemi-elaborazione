@@ -328,6 +328,11 @@
         .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
         .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
         .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal img.figura-lab { display: block; margin: 0.4em auto 0; max-width: 100%; }
+        .reveal .tag-extra { background: #e0f2fe; color: #075985; }
+        .reveal a.link-soluzione { position: absolute; top: 0; right: 90px; font-size: 0.42em; font-weight: 600; padding: 0.25em 0.8em; border-radius: 999px; border: 2px solid #2563eb; color: #2563eb; background: #fff; text-decoration: none; }
+        .reveal tr.riga-extra td { color: #64748b; }
+        .reveal a.link-soluzione:hover { background: #2563eb; color: #fff; }
         .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
         .reveal .etichetta {
             font-size: 0.6em;
@@ -367,23 +372,23 @@
 
             <section>
                 <h2>Come funziona</h2>
-                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo negli ultimi esercizi.</p>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo nell'ultimo esercizio.</p>
                 <table class="mini" style="font-size:0.7em">
                     <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
                     <tbody>
                         <tr><td>1</td><td><code>voti_appello.py</code></td><td>L'appello di Statistica</td></tr>
-                        <tr><td>2</td><td><code>coda_mensa.py</code></td><td>La coda in mensa</td></tr>
-                        <tr><td>3</td><td><code>sondaggio.py</code></td><td>Come arrivate in aula</td></tr>
-                        <tr><td>4</td><td><code>tre_corsi.py</code></td><td>Chi segue cosa</td></tr>
-                        <tr><td>5</td><td><code>libretto.py</code></td><td>Il libretto</td></tr>
-                        <tr><td>6</td><td><code>sessione.py</code></td><td>La sessione invernale</td></tr>
-                        <tr><td>7</td><td><code>contingenza.py</code></td><td>Scuola di provenienza ed esito</td></tr>
-                        <tr><td>8</td><td><code>descrittive.py</code></td><td>Ore di studio</td></tr>
+                        <tr><td>2</td><td><code>sondaggio.py</code></td><td>Come arrivate in aula</td></tr>
+                        <tr><td>3</td><td><code>sessione.py</code></td><td>La sessione invernale</td></tr>
+                        <tr><td>4</td><td><code>descrittive.py</code></td><td>Ore di studio</td></tr>
                         <tr><td>Challenge</td><td>a scelta</td><td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td></tr>
+                        <tr class="riga-extra"><td>Extra 1</td><td><code>coda_mensa.py</code></td><td>La coda in mensa <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 2</td><td><code>tre_corsi.py</code></td><td>Chi segue cosa <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 3</td><td><code>libretto.py</code></td><td>Il libretto <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 4</td><td><code>contingenza.py</code></td><td>Scuola di provenienza ed esito <em>(a casa)</em></td></tr>
                     </tbody>
                 </table>
                 <div class="box box-blue" style="font-size:0.7em">
-                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T14.
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Le soluzioni le vediamo all'inizio della lezione T14. Gli extra in fondo sono per casa. «Soluzione →» apre il codice: guardatelo dopo averci provato.
                 </div>
             </section>
 
@@ -409,6 +414,7 @@ gruppi["Analisi"].append(27)    # la lista vuota si crea da sola</code></pre>
 
             <section>
                 <div class="tag tag-esercizio">Esercizio 1 · voti_appello.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-voti_appello" target="_blank">Soluzione →</a>
                 <h2>L'appello di Statistica</h2>
                 <div class="columns">
                     <div class="col">
@@ -436,38 +442,8 @@ Media dei promossi: 24.5</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 2 · coda_mensa.py</div>
-                <h2>La coda in mensa</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Partite da <code>coda: list[str] = ["Anna", "Bruno", "Carla"]</code> e dagli eventi <code>["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]</code>.</li>
-                            <li>Dividete ogni evento con <code>split()</code>. <code>arriva X</code> mette X in fondo (<code>append</code>); <code>servito</code> toglie il primo (<code>pop(0)</code>) e lo aggiunge alla lista <code>serviti</code>; <code>esce X</code> toglie X (<code>remove</code>); <code>davanti X Y</code> mette X subito prima di Y (<code>insert</code> e <code>index</code>).</li>
-                            <li>Se la persona non è in coda o il comando non esiste, stampate <code>Evento non valido: ...</code>; se arriva <code>servito</code> con la coda vuota, stampate <code>Nessuno da servire</code>.</li>
-                            <li>Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.</li>
-                        </ol>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>arriva Davide -&gt; ['Anna', 'Bruno', 'Carla', 'Davide']
-servito -&gt; ['Bruno', 'Carla', 'Davide']
-arriva Elena -&gt; ['Bruno', 'Carla', 'Davide', 'Elena']
-esce Bruno -&gt; ['Carla', 'Davide', 'Elena']
-davanti Franco Elena -&gt; ['Carla', 'Davide', 'Franco', 'Elena']
-servito -&gt; ['Davide', 'Franco', 'Elena']
-Evento non valido: esce Zeno
-esce Zeno -&gt; ['Davide', 'Franco', 'Elena']
-Serviti: ['Anna', 'Carla']
-Ancora in coda: 3</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete quattro <code>servito</code> in fondo agli eventi → l'ultimo stampa <code>Nessuno da servire</code>, serviti in 5</li><li><code>davanti Gino Zeno</code> al posto di <code>davanti Franco Elena</code> → evento non valido, alla fine <code>Ancora in coda: 2</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 3 · sondaggio.py</div>
+                <div class="tag tag-esercizio">Esercizio 2 · sondaggio.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-sondaggio" target="_blank">Soluzione →</a>
                 <h2>Come arrivate in aula</h2>
                 <div class="columns">
                     <div class="col">
@@ -496,65 +472,8 @@ Mezzo più usato: bici</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 4 · tre_corsi.py</div>
-                <h2>Chi segue cosa</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Scrivete i set <code>statistica</code>, <code>analisi</code> e <code>informatica</code> con gli studenti che frequentano i tre corsi (tabella).</li>
-                            <li>Con <code>|</code>, <code>&amp;</code> e <code>-</code> calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.</li>
-                            <li>Per trovare chi segue un corso soltanto, unite i tre set in una lista (<code>list(statistica) + list(analisi) + ...</code>) e contate i nomi con un <code>Counter</code>.</li>
-                            <li>Stampate i nomi con <code>sorted()</code>, così l'ordine è sempre lo stesso.</li>
-                        </ol>
-                        <table class="mini"><thead><tr><th>Corso</th><th>Studenti</th></tr></thead><tbody><tr><td>Statistica</td><td>Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia</td></tr><tr><td>Analisi</td><td>Anna, Chiara, Davide, Hana, Ivan, Giulia</td></tr><tr><td>Informatica</td><td>Bruno, Chiara, Giulia, Ivan, Luca</td></tr></tbody></table>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Studenti diversi: 10
-Tutti e tre i corsi: ['Chiara', 'Giulia']
-Solo Statistica: ['Elisa', 'Fabio']
-Statistica e Analisi, non Informatica: ['Anna', 'Davide']
-Un corso soltanto: ['Elisa', 'Fabio', 'Hana', 'Luca']</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete Luca a Statistica → Luca non segue più un corso soltanto</li><li>aggiungete Marta a Informatica → <code>Studenti diversi: 11</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 5 · libretto.py</div>
-                <h2>Il libretto</h2>
-                <div class="columns" style="font-size:0.88em">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Scrivete il libretto come dizionario esame → tupla (voto, CFU), <code>libretto: dict[str, tuple[int, int]]</code>, con i dati della tabella.</li>
-                            <li>Scorrete <code>libretto.items()</code> con <code>for esame, (voto, cfu) in ...</code>: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.</li>
-                            <li>Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.</li>
-                            <li>La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.</li>
-                        </ol>
-                        <table class="mini"><thead><tr><th>Esame</th><th>Voto e CFU</th></tr></thead><tbody><tr><td>Analisi 1</td><td>24, 9 CFU</td></tr><tr><td>Statistica 1</td><td>28, 9 CFU</td></tr><tr><td>Informatica</td><td>30, 6 CFU</td></tr><tr><td>Economia politica</td><td>22, 9 CFU</td></tr><tr><td>Algebra lineare</td><td>27, 6 CFU</td></tr></tbody></table>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi 1: 24 (9 CFU)
-Statistica 1: 28 (9 CFU)
-Informatica: 30 (6 CFU)
-Economia politica: 22 (9 CFU)
-Algebra lineare: 27 (6 CFU)
-CFU totali: 39
-Media aritmetica: 26.20
-Media ponderata: 25.85
-Base di laurea: 94.8</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete <code>"Probabilità": (30, 9)</code> → 48 CFU, media ponderata <code>26.62</code>, base <code>97.6</code></li><li>date 6 CFU a tutti gli esami → le due medie valgono entrambe <code>26.20</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 6 · sessione.py</div>
+                <div class="tag tag-esercizio">Esercizio 3 · sessione.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-sessione" target="_blank">Soluzione →</a>
                 <h2>La sessione invernale</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -584,32 +503,8 @@ Nessun esame superato: ['Elisa']</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 7 · contingenza.py</div>
-                <h2>Scuola di provenienza ed esito</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: <code>scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]</code> e <code>superato = [True, False, True, False, True, True, False, False, True, False, True, True]</code>.</li>
-                            <li>Con <code>zip()</code> formate le coppie (scuola, esito) e contatele con un <code>Counter</code>: le chiavi sono tuple, per esempio <code>("liceo", True)</code>.</li>
-                            <li>Con un secondo <code>Counter</code> contate le matricole per scuola.</li>
-                            <li>Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.</li>
-                        </ol>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>altro: superato 1, non superato 1, percentuale 50.0%
-liceo: superato 4, non superato 1, percentuale 80.0%
-tecnico: superato 2, non superato 3, percentuale 40.0%
-Totale: 7 su 12 (58.3%)</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete una matricola del liceo che non ha superato l'esame → liceo <code>66.7%</code>, <code>Totale: 7 su 13 (53.8%)</code></li><li>una coppia che non compare non dà errore: <code>tabella[("professionale", True)]</code> vale <code>0</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 8 · descrittive.py</div>
+                <div class="tag tag-esercizio">Esercizio 4 · descrittive.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-descrittive" target="_blank">Soluzione →</a>
                 <h2>Ore di studio</h2>
                 <div class="columns">
                     <div class="col">
@@ -649,6 +544,7 @@ Terzo anno: media 18.5, mediana 17.0, dev. std 10.25</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Mercati e finanza · ch_mercati.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-ch_mercati" target="_blank">Soluzione →</a>
                 <h2>Il portafoglio</h2>
                 <div class="columns" style="font-size:0.8em">
                     <div class="col">
@@ -678,6 +574,7 @@ Mai venduti: ['TECH']</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Sport · ch_sport.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-ch_sport" target="_blank">Soluzione →</a>
                 <h2>Il campionato</h2>
                 <div class="columns" style="font-size:0.74em">
                     <div class="col">
@@ -708,6 +605,7 @@ Senza vittorie: ['Lanza', 'Neri']</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Imprese e marketing · ch_negozio.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-ch_negozio" target="_blank">Soluzione →</a>
                 <h2>Il negozio online</h2>
                 <div class="columns" style="font-size:0.68em">
                     <div class="col">
@@ -738,6 +636,7 @@ Mai venduti: ['lampada']</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-ch_salute" target="_blank">Soluzione →</a>
                 <h2>Lo studio clinico</h2>
                 <div class="columns" style="font-size:0.6em">
                     <div class="col">
@@ -767,6 +666,7 @@ Gruppo con più migliorati: trattamento (3)</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Caso e probabilità · ch_probabilita.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-ch_probabilita" target="_blank">Soluzione →</a>
                 <h2>Il tavolo da gioco</h2>
                 <div class="columns" style="font-size:0.8em">
                     <div class="col">
@@ -805,6 +705,131 @@ Somme mai uscite: [2, 3, 5, 6, 9, 10]</code></pre>
                     <li>In <code>contingenza.py</code> le chiavi del <code>Counter</code> sono tuple. Si potrebbero usare liste? Perché?</li>
                     <li>In <code>descrittive.py</code> la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?</li>
                 </ol>
+            </section>
+
+            <section class="section-slide">
+                <h2>Esercizi extra</h2>
+                <p>Materiale in più per allenarsi a casa, con le soluzioni</p>
+                <aside class="notes">Gli extra non si fanno in laboratorio: chi finisce la challenge può iniziarli, gli altri li trovano nella dispensa con la soluzione sotto ogni consegna.</aside>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 1 · coda_mensa.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-coda_mensa" target="_blank">Soluzione →</a>
+                <h2>La coda in mensa</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Partite da <code>coda: list[str] = ["Anna", "Bruno", "Carla"]</code> e dagli eventi <code>["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]</code>.</li>
+                            <li>Dividete ogni evento con <code>split()</code>. <code>arriva X</code> mette X in fondo (<code>append</code>); <code>servito</code> toglie il primo (<code>pop(0)</code>) e lo aggiunge alla lista <code>serviti</code>; <code>esce X</code> toglie X (<code>remove</code>); <code>davanti X Y</code> mette X subito prima di Y (<code>insert</code> e <code>index</code>).</li>
+                            <li>Se la persona non è in coda o il comando non esiste, stampate <code>Evento non valido: ...</code>; se arriva <code>servito</code> con la coda vuota, stampate <code>Nessuno da servire</code>.</li>
+                            <li>Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>arriva Davide -&gt; ['Anna', 'Bruno', 'Carla', 'Davide']
+servito -&gt; ['Bruno', 'Carla', 'Davide']
+arriva Elena -&gt; ['Bruno', 'Carla', 'Davide', 'Elena']
+esce Bruno -&gt; ['Carla', 'Davide', 'Elena']
+davanti Franco Elena -&gt; ['Carla', 'Davide', 'Franco', 'Elena']
+servito -&gt; ['Davide', 'Franco', 'Elena']
+Evento non valido: esce Zeno
+esce Zeno -&gt; ['Davide', 'Franco', 'Elena']
+Serviti: ['Anna', 'Carla']
+Ancora in coda: 3</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete quattro <code>servito</code> in fondo agli eventi → l'ultimo stampa <code>Nessuno da servire</code>, serviti in 5</li><li><code>davanti Gino Zeno</code> al posto di <code>davanti Franco Elena</code> → evento non valido, alla fine <code>Ancora in coda: 2</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 2 · tre_corsi.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-tre_corsi" target="_blank">Soluzione →</a>
+                <h2>Chi segue cosa</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete i set <code>statistica</code>, <code>analisi</code> e <code>informatica</code> con gli studenti che frequentano i tre corsi (tabella).</li>
+                            <li>Con <code>|</code>, <code>&amp;</code> e <code>-</code> calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.</li>
+                            <li>Per trovare chi segue un corso soltanto, unite i tre set in una lista (<code>list(statistica) + list(analisi) + ...</code>) e contate i nomi con un <code>Counter</code>.</li>
+                            <li>Stampate i nomi con <code>sorted()</code>, così l'ordine è sempre lo stesso.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Corso</th><th>Studenti</th></tr></thead><tbody><tr><td>Statistica</td><td>Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia</td></tr><tr><td>Analisi</td><td>Anna, Chiara, Davide, Hana, Ivan, Giulia</td></tr><tr><td>Informatica</td><td>Bruno, Chiara, Giulia, Ivan, Luca</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Studenti diversi: 10
+Tutti e tre i corsi: ['Chiara', 'Giulia']
+Solo Statistica: ['Elisa', 'Fabio']
+Statistica e Analisi, non Informatica: ['Anna', 'Davide']
+Un corso soltanto: ['Elisa', 'Fabio', 'Hana', 'Luca']</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete Luca a Statistica → Luca non segue più un corso soltanto</li><li>aggiungete Marta a Informatica → <code>Studenti diversi: 11</code></li></ul>
+                        <img class="figura-lab" src="img/L03_tre_corsi.svg" alt="Le regioni del diagramma e le operazioni tra set che le selezionano" style="max-height:200px">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 3 · libretto.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-libretto" target="_blank">Soluzione →</a>
+                <h2>Il libretto</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete il libretto come dizionario esame → tupla (voto, CFU), <code>libretto: dict[str, tuple[int, int]]</code>, con i dati della tabella.</li>
+                            <li>Scorrete <code>libretto.items()</code> con <code>for esame, (voto, cfu) in ...</code>: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.</li>
+                            <li>Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.</li>
+                            <li>La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Esame</th><th>Voto e CFU</th></tr></thead><tbody><tr><td>Analisi 1</td><td>24, 9 CFU</td></tr><tr><td>Statistica 1</td><td>28, 9 CFU</td></tr><tr><td>Informatica</td><td>30, 6 CFU</td></tr><tr><td>Economia politica</td><td>22, 9 CFU</td></tr><tr><td>Algebra lineare</td><td>27, 6 CFU</td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi 1: 24 (9 CFU)
+Statistica 1: 28 (9 CFU)
+Informatica: 30 (6 CFU)
+Economia politica: 22 (9 CFU)
+Algebra lineare: 27 (6 CFU)
+CFU totali: 39
+Media aritmetica: 26.20
+Media ponderata: 25.85
+Base di laurea: 94.8</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>"Probabilità": (30, 9)</code> → 48 CFU, media ponderata <code>26.62</code>, base <code>97.6</code></li><li>date 6 CFU a tutti gli esami → le due medie valgono entrambe <code>26.20</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 4 · contingenza.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-contingenza" target="_blank">Soluzione →</a>
+                <h2>Scuola di provenienza ed esito</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: <code>scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]</code> e <code>superato = [True, False, True, False, True, True, False, False, True, False, True, True]</code>.</li>
+                            <li>Con <code>zip()</code> formate le coppie (scuola, esito) e contatele con un <code>Counter</code>: le chiavi sono tuple, per esempio <code>("liceo", True)</code>.</li>
+                            <li>Con un secondo <code>Counter</code> contate le matricole per scuola.</li>
+                            <li>Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>altro: superato 1, non superato 1, percentuale 50.0%
+liceo: superato 4, non superato 1, percentuale 80.0%
+tecnico: superato 2, non superato 3, percentuale 40.0%
+Totale: 7 su 12 (58.3%)</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete una matricola del liceo che non ha superato l'esame → liceo <code>66.7%</code>, <code>Totale: 7 su 13 (53.8%)</code></li><li>una coppia che non compare non dà errore: <code>tabella[("professionale", True)]</code> vale <code>0</code></li></ul>
+                    </div>
+                </div>
             </section>
 
             <!-- Slide di navigazione -->

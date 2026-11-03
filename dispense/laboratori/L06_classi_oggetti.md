@@ -4,19 +4,19 @@
 
 Oggi ci sono solo esercizi, in ordine di difficoltà, su classi e oggetti. Per ogni esercizio create un file `.py` con il nome indicato: dentro definite le classi richieste, con type hints su attributi e metodi, e poi usatele sui dati della consegna stampando i risultati. Non serve `input()`: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file. Alla fine c'è una challenge a scelta tra 5 temi: sceglietene uno.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio del laboratorio L07.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio del laboratorio L07.
 
 | # | File | Esercizio |
 |---|---|---|
 | 1 | `esame.py` | Un esame del libretto |
 | 2 | `tessera_mensa.py` | La tessera della mensa |
-| 3 | `segreteria.py` | La coda in segreteria |
-| 4 | `erasmus.py` | La graduatoria Erasmus |
-| 5 | `campione.py` | Un campione di misure |
-| 6 | `libretto.py` | Il libretto: un oggetto che contiene oggetti |
-| 7 | `abbonamenti.py` | Abbonamenti ai mezzi pubblici |
-| 8 | `biblioteca.py` | La biblioteca di dipartimento |
+| 3 | `erasmus.py` | La graduatoria Erasmus |
+| 4 | `libretto.py` | Il libretto: un oggetto che contiene oggetti |
 | Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
+| Extra 1 | `segreteria.py` | La coda in segreteria (a casa) |
+| Extra 2 | `campione.py` | Un campione di misure (a casa) |
+| Extra 3 | `abbonamenti.py` | Abbonamenti ai mezzi pubblici (a casa) |
+| Extra 4 | `biblioteca.py` | La biblioteca di dipartimento (a casa) |
 
 ---
 
@@ -46,6 +46,7 @@ for s in sorted(gruppo):
 
 ## Esercizio 1 — Un esame del libretto (`esame.py`)
 
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-esame)
 **Consegna**
 
 1. Definite una classe `Esame` con `__init__(self, nome: str, cfu: int, voto: int)` che salva i tre valori in tre attributi.
@@ -72,6 +73,7 @@ CFU: 27, media ponderata: 27.89
 
 ## Esercizio 2 — La tessera della mensa (`tessera_mensa.py`)
 
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-tessera_mensa)
 **Consegna**
 
 1. Definite una classe `Tessera` con titolare e saldo. Se il saldo iniziale è negativo, `__init__` solleva `ValueError("Il saldo iniziale è negativo")`.
@@ -97,36 +99,9 @@ Tessera di Anna Rossi: 21.00 EUR
 
 ---
 
-## Esercizio 3 — La coda in segreteria (`segreteria.py`)
+## Esercizio 3 — La graduatoria Erasmus (`erasmus.py`)
 
-**Consegna**
-
-1. Definite una classe `Ticket` con due attributi di classe: la tupla `SERVIZI = ("iscrizioni", "tasse", "esami")` e il contatore `emessi = 0`.
-2. `__init__(self, servizio: str)` solleva `ValueError` se il servizio non è in `SERVIZI`; altrimenti aumenta `Ticket.emessi` di 1 e lo salva nell'attributo di istanza `numero`.
-3. Aggiungete `__str__` (`Numero 1 (esami)`) e `__repr__` (`Ticket(1, 'esami')`).
-4. Create i biglietti per esami, tasse, esami, iscrizioni, esami e metteteli in una lista. Stampate la lista, il primo biglietto, il numero di biglietti emessi e quanti ce ne sono per ogni servizio.
-
-**Esempio di esecuzione**
-
-```
-[Ticket(1, 'esami'), Ticket(2, 'tasse'), Ticket(3, 'esami'), Ticket(4, 'iscrizioni'), Ticket(5, 'esami')]
-Prossimo: Numero 1 (esami)
-Biglietti emessi: 5
-iscrizioni: 1
-tasse: 1
-esami: 3
-```
-
-**Provate anche**
-
-- `Ticket("mensa")` → `ValueError: Servizio sconosciuto: mensa`, e `Ticket.emessi` resta 5
-- `print(coda[3].numero, coda[3].emessi)` → `4 5`: l'attributo di classe si legge anche dall'oggetto
-- togliete `__repr__`: la lista si stampa come `[<__main__.Ticket object at 0x...>, ...]`
-
----
-
-## Esercizio 4 — La graduatoria Erasmus (`erasmus.py`)
-
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-erasmus)
 **Consegna**
 
 1. Definite una classe `Candidato` con nome, media e CFU sostenuti, e un `__str__` come nell'esempio.
@@ -162,40 +137,17 @@ Pari merito tra 3 e 4: False
 
 ---
 
-## Esercizio 5 — Un campione di misure (`campione.py`)
+## Esercizio 4 — Il libretto: un oggetto che contiene oggetti (`libretto.py`)
 
-**Consegna**
-
-1. Definite una classe `Campione` con un nome e una lista `_valori`, vuota all'inizio. L'underscore indica che la lista si usa solo dentro la classe.
-2. Aggiungete il metodo `aggiungi(self, x: float)`.
-3. Con `@property` definite `n` (numero di valori), `media` e `varianza` (campionaria, con divisore n − 1).
-4. Create il campione `Altezze (cm)` con 172, 165, 180, 158, 175 e stampate n, media, varianza e deviazione standard (`** 0.5`) con due decimali. Poi provate ad assegnare `altezze.media = 175.0` in un `try` e catturate `AttributeError`.
-
-**Esempio di esecuzione**
-
-```
-Altezze (cm): 5 valori
-Media: 170.00, varianza: 74.50
-Deviazione standard: 8.63
-La media non si assegna: è calcolata dai valori
-```
-
-**Provate anche**
-
-- aggiungete 190 → `6 valori`, `Media: 173.33, varianza: 126.27`
-- `statistics.variance([172, 165, 180, 158, 175])` → `74.5`, come la vostra
-- `print(altezze._valori)` funziona lo stesso: l'underscore è una convenzione, non un divieto
-
----
-
-## Esercizio 6 — Il libretto: un oggetto che contiene oggetti (`libretto.py`)
-
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-libretto)
 **Consegna**
 
 1. Riprendete la classe `Esame` dell'esercizio 1 e aggiungete `__str__` come nell'esempio.
 2. Definite una classe `Libretto` con il nome dello studente e una lista `esami`, vuota all'inizio: il libretto contiene degli esami (composizione).
 3. Aggiungete `cerca(self, nome: str) -> Esame | None`, che restituisce l'esame con quel nome oppure `None`, e `aggiungi(self, esame: Esame)`, che usa `cerca` e solleva `ValueError` se l'esame è già presente.
 4. Aggiungete `media(self) -> float` con la media ponderata. Inserite i tre esami dell'esercizio 1, provate a inserire di nuovo Informatica (con 28) in un `try`, cercate Statistica 1 e stampate numero di esami e media.
+
+![Il libretto contiene una lista di oggetti Esame](../../presentazioni/img/L06_libretto.svg)
 
 **Esempio di esecuzione**
 
@@ -210,74 +162,6 @@ Esami: 3, media ponderata 27.89
 - `print(lib.cerca("Algebra"))` → `None`
 - aggiungete `Esame("Algebra lineare", 9, 24)` → `Esami: 4, media ponderata 26.92`
 - `Libretto("Marco").media()` → `ZeroDivisionError`: un libretto vuoto non ha media
-
----
-
-## Esercizio 7 — Abbonamenti ai mezzi pubblici (`abbonamenti.py`)
-
-**Consegna**
-
-1. Definite una classe `Abbonamento` con titolare e numero di mesi (da 1 a 12, altrimenti `ValueError`) e l'attributo di classe `PREZZO_MESE = 40.0`.
-2. Aggiungete `prezzo(self) -> float` (prezzo al mese per mesi) e `__str__` come nell'esempio.
-3. Definite la sottoclasse `AbbonamentoStudente(Abbonamento)` con la matricola in più e l'attributo di classe `SCONTO = 0.3`. Il suo `__init__` chiama `super().__init__(...)`; `prezzo` e `__str__` riusano quelli della classe madre con `super()`.
-4. Mettete in una lista gli abbonamenti della tabella, stampateli e stampate l'incasso totale.
-
-| Titolare | Abbonamento |
-|---|---|
-| Marco Bianchi | 12 mesi |
-| Anna Rossi | 10 mesi, studente 2101234 |
-| Luca Russo | 3 mesi, studente 2102345 |
-| Elena Romano | 2 mesi |
-
-**Esempio di esecuzione**
-
-```
-Marco Bianchi, 12 mesi: 480.00 EUR
-Anna Rossi, 10 mesi: 280.00 EUR, matricola 2101234
-Luca Russo, 3 mesi: 84.00 EUR, matricola 2102345
-Elena Romano, 2 mesi: 80.00 EUR
-Incasso: 924.00 EUR
-```
-
-**Provate anche**
-
-- `AbbonamentoStudente("Sara Ferrari", 13, "2102890")` → `ValueError: Durata non valida: 13 mesi`: il controllo è ereditato
-- prima della lista scrivete `AbbonamentoStudente.SCONTO = 0.5` → Anna `200.00 EUR`, Luca `60.00 EUR`, `Incasso: 820.00 EUR`
-- contate gli abbonamenti studente con `isinstance(a, AbbonamentoStudente)` → `2`
-
----
-
-## Esercizio 8 — La biblioteca di dipartimento (`biblioteca.py`)
-
-**Consegna**
-
-1. Definite una classe `Pubblicazione` con titolo e anno, l'attributo di classe `GIORNI = 30` (durata del prestito), un `__str__` come nell'esempio e un `__lt__` che ordina per anno.
-2. Definite la sottoclasse `Rivista(Pubblicazione)`, che cambia solo `GIORNI = 7`. Nel `__str__` usate `self.GIORNI`: così ogni oggetto prende il valore della sua classe.
-3. Definite una classe `Biblioteca` con una lista `_catalogo` e i metodi `aggiungi`, `cerca(self, parola: str)`, che restituisce le pubblicazioni con quella parola nel titolo (senza distinguere maiuscole e minuscole), e `in_ordine`, che restituisce il catalogo ordinato con `sorted`.
-4. Inserite le pubblicazioni della tabella, stampate il catalogo in ordine e il numero di titoli che contengono `statistica`.
-
-| Titolo | Tipo, anno |
-|---|---|
-| Statistica di base | libro, 2019 |
-| Rivista di statistica applicata | rivista, 2024 |
-| Probabilità e inferenza | libro, 2015 |
-| Bollettino di demografia | rivista, 2023 |
-
-**Esempio di esecuzione**
-
-```
-2015 Probabilità e inferenza: 30 giorni
-2019 Statistica di base: 30 giorni
-2023 Bollettino di demografia: 7 giorni
-2024 Rivista di statistica applicata: 7 giorni
-Titoli con 'statistica': 2
-```
-
-**Provate anche**
-
-- aggiungete `Rivista("Statistica in medicina", 2021)` → compare `2021 Statistica in medicina: 7 giorni` e `Titoli con 'statistica': 3`
-- `Rivista.GIORNI = 14` prima delle stampe → le riviste hanno 14 giorni, i libri restano a 30
-- `bib.cerca("STATISTICA")` → gli stessi 2 risultati
 
 ---
 
@@ -305,6 +189,7 @@ Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli s
 
 ### Challenge · Mercati e finanza — Il portafoglio a oggetti (`ch_mercati.py`)
 
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-ch_mercati)
 **Consegna**
 
 1. Classe `Titolo` con sigla, numero di azioni e lista dei prezzi di chiusura. Se le azioni non sono positive o un prezzo non è positivo (o ci sono meno di due prezzi), `ValueError("MIB: azioni o prezzi non validi")`.
@@ -341,6 +226,7 @@ Valore totale: 1659.00
 
 ### Challenge · Sport — Il campionato a oggetti (`ch_sport.py`)
 
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-ch_sport)
 **Consegna**
 
 1. Classe `Pilota` con nome, scuderia e lista dei tempi sul giro. Se la lista è vuota o un tempo non è positivo, `ValueError("Neri: tempi non validi")`.
@@ -377,6 +263,7 @@ Giro più veloce: 92.10
 
 ### Challenge · Imprese e marketing — Il negozio online a oggetti (`ch_negozio.py`)
 
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-ch_negozio)
 **Consegna**
 
 1. Classe `Prodotto` con nome, prezzo e lista dei pezzi venduti ogni settimana. Se il prezzo non è positivo o una vendita è negativa (o la lista è vuota), `ValueError("lampada: prezzo o vendite non validi")`.
@@ -415,6 +302,7 @@ Fatturato totale: 1657.80
 
 ### Challenge · Salute e scienza — Lo studio clinico a oggetti (`ch_salute.py`)
 
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-ch_salute)
 **Consegna**
 
 1. Classe `Paziente` con codice, gruppo e lista delle pressioni sistoliche misurate a ogni visita. Se ci sono meno di due misure o una misura è fuori da 60–250 mmHg, `ValueError("P05: misure non valide")`.
@@ -453,6 +341,7 @@ Migliorati: 75.0%
 
 ### Challenge · Caso e probabilità — Il tavolo da gioco a oggetti (`ch_probabilita.py`)
 
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-ch_probabilita)
 **Consegna**
 
 1. Classe `Dado` con il colore e la lista dei risultati dei lanci, registrati a mano. Se la lista è vuota o un risultato è fuori da 1–6, `ValueError("bianco: lanci non validi")`.
@@ -496,3 +385,308 @@ Media di tutti i lanci: 3.72
 5. In `erasmus.py`, perché `__lt__` confronta con `>` (`self.media > altro.media`)?
 6. In `campione.py`, perché `media` è una `@property` e non un attributo calcolato una volta in `__init__`?
 7. Il libretto contiene esami (composizione); un abbonamento studente è un abbonamento (ereditarietà). Fate un altro esempio per ciascuna.
+
+---
+
+## Esercizi extra
+
+Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.
+
+---
+
+## Extra 1 — La coda in segreteria (`segreteria.py`)
+
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-segreteria)
+
+**Consegna**
+
+1. Definite una classe `Ticket` con due attributi di classe: la tupla `SERVIZI = ("iscrizioni", "tasse", "esami")` e il contatore `emessi = 0`.
+2. `__init__(self, servizio: str)` solleva `ValueError` se il servizio non è in `SERVIZI`; altrimenti aumenta `Ticket.emessi` di 1 e lo salva nell'attributo di istanza `numero`.
+3. Aggiungete `__str__` (`Numero 1 (esami)`) e `__repr__` (`Ticket(1, 'esami')`).
+4. Create i biglietti per esami, tasse, esami, iscrizioni, esami e metteteli in una lista. Stampate la lista, il primo biglietto, il numero di biglietti emessi e quanti ce ne sono per ogni servizio.
+
+**Esempio di esecuzione**
+
+```
+[Ticket(1, 'esami'), Ticket(2, 'tasse'), Ticket(3, 'esami'), Ticket(4, 'iscrizioni'), Ticket(5, 'esami')]
+Prossimo: Numero 1 (esami)
+Biglietti emessi: 5
+iscrizioni: 1
+tasse: 1
+esami: 3
+```
+
+**Provate anche**
+
+- `Ticket("mensa")` → `ValueError: Servizio sconosciuto: mensa`, e `Ticket.emessi` resta 5
+- `print(coda[3].numero, coda[3].emessi)` → `4 5`: l'attributo di classe si legge anche dall'oggetto
+- togliete `__repr__`: la lista si stampa come `[<__main__.Ticket object at 0x...>, ...]`
+
+**Soluzione**
+
+```python
+class Ticket:
+    """Biglietto numerato per la coda della segreteria."""
+    SERVIZI: tuple[str, ...] = ("iscrizioni", "tasse", "esami")
+    emessi: int = 0                       # attributo di classe
+
+    def __init__(self, servizio: str) -> None:
+        if servizio not in Ticket.SERVIZI:
+            raise ValueError(f"Servizio sconosciuto: {servizio}")
+        Ticket.emessi += 1
+        self.numero: int = Ticket.emessi  # attributo di istanza
+        self.servizio: str = servizio
+
+    def __str__(self) -> str:
+        return f"Numero {self.numero} ({self.servizio})"
+
+    def __repr__(self) -> str:
+        return f"Ticket({self.numero}, '{self.servizio}')"
+
+coda: list[Ticket] = []
+for s in ["esami", "tasse", "esami", "iscrizioni", "esami"]:
+    coda.append(Ticket(s))
+print(coda)
+print(f"Prossimo: {coda[0]}")
+print(f"Biglietti emessi: {Ticket.emessi}")
+for servizio in Ticket.SERVIZI:
+    n: int = len([t for t in coda if t.servizio == servizio])
+    print(f"{servizio}: {n}")
+```
+
+---
+
+## Extra 2 — Un campione di misure (`campione.py`)
+
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-campione)
+
+**Consegna**
+
+1. Definite una classe `Campione` con un nome e una lista `_valori`, vuota all'inizio. L'underscore indica che la lista si usa solo dentro la classe.
+2. Aggiungete il metodo `aggiungi(self, x: float)`.
+3. Con `@property` definite `n` (numero di valori), `media` e `varianza` (campionaria, con divisore n − 1).
+4. Create il campione `Altezze (cm)` con 172, 165, 180, 158, 175 e stampate n, media, varianza e deviazione standard (`** 0.5`) con due decimali. Poi provate ad assegnare `altezze.media = 175.0` in un `try` e catturate `AttributeError`.
+
+**Esempio di esecuzione**
+
+```
+Altezze (cm): 5 valori
+Media: 170.00, varianza: 74.50
+Deviazione standard: 8.63
+La media non si assegna: è calcolata dai valori
+```
+
+**Provate anche**
+
+- aggiungete 190 → `6 valori`, `Media: 173.33, varianza: 126.27`
+- `statistics.variance([172, 165, 180, 158, 175])` → `74.5`, come la vostra
+- `print(altezze._valori)` funziona lo stesso: l'underscore è una convenzione, non un divieto
+
+**Soluzione**
+
+```python
+class Campione:
+    """Campione di misure numeriche."""
+
+    def __init__(self, nome: str) -> None:
+        self.nome: str = nome
+        self._valori: list[float] = []   # uso interno
+
+    def aggiungi(self, x: float) -> None:
+        self._valori.append(x)
+
+    @property
+    def n(self) -> int:
+        return len(self._valori)
+
+    @property
+    def media(self) -> float:
+        return sum(self._valori) / self.n
+
+    @property
+    def varianza(self) -> float:
+        """Varianza campionaria, con divisore n - 1."""
+        m: float = self.media
+        scarti: list[float] = [(x - m) ** 2 for x in self._valori]
+        return sum(scarti) / (self.n - 1)
+
+altezze: Campione = Campione("Altezze (cm)")
+for x in [172, 165, 180, 158, 175]:
+    altezze.aggiungi(x)
+print(f"{altezze.nome}: {altezze.n} valori")
+print(f"Media: {altezze.media:.2f}, varianza: {altezze.varianza:.2f}")
+print(f"Deviazione standard: {altezze.varianza ** 0.5:.2f}")
+try:
+    altezze.media = 175.0
+except AttributeError:
+    print("La media non si assegna: è calcolata dai valori")
+```
+
+---
+
+## Extra 3 — Abbonamenti ai mezzi pubblici (`abbonamenti.py`)
+
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-abbonamenti)
+
+**Consegna**
+
+1. Definite una classe `Abbonamento` con titolare e numero di mesi (da 1 a 12, altrimenti `ValueError`) e l'attributo di classe `PREZZO_MESE = 40.0`.
+2. Aggiungete `prezzo(self) -> float` (prezzo al mese per mesi) e `__str__` come nell'esempio.
+3. Definite la sottoclasse `AbbonamentoStudente(Abbonamento)` con la matricola in più e l'attributo di classe `SCONTO = 0.3`. Il suo `__init__` chiama `super().__init__(...)`; `prezzo` e `__str__` riusano quelli della classe madre con `super()`.
+4. Mettete in una lista gli abbonamenti della tabella, stampateli e stampate l'incasso totale.
+
+| Titolare | Abbonamento |
+|---|---|
+| Marco Bianchi | 12 mesi |
+| Anna Rossi | 10 mesi, studente 2101234 |
+| Luca Russo | 3 mesi, studente 2102345 |
+| Elena Romano | 2 mesi |
+
+**Esempio di esecuzione**
+
+```
+Marco Bianchi, 12 mesi: 480.00 EUR
+Anna Rossi, 10 mesi: 280.00 EUR, matricola 2101234
+Luca Russo, 3 mesi: 84.00 EUR, matricola 2102345
+Elena Romano, 2 mesi: 80.00 EUR
+Incasso: 924.00 EUR
+```
+
+**Provate anche**
+
+- `AbbonamentoStudente("Sara Ferrari", 13, "2102890")` → `ValueError: Durata non valida: 13 mesi`: il controllo è ereditato
+- prima della lista scrivete `AbbonamentoStudente.SCONTO = 0.5` → Anna `200.00 EUR`, Luca `60.00 EUR`, `Incasso: 820.00 EUR`
+- contate gli abbonamenti studente con `isinstance(a, AbbonamentoStudente)` → `2`
+
+**Soluzione**
+
+```python
+class Abbonamento:
+    """Abbonamento ai mezzi pubblici, pagato a mesi."""
+    PREZZO_MESE: float = 40.0
+
+    def __init__(self, titolare: str, mesi: int) -> None:
+        if mesi < 1 or mesi > 12:
+            raise ValueError(f"Durata non valida: {mesi} mesi")
+        self.titolare: str = titolare
+        self.mesi: int = mesi
+
+    def prezzo(self) -> float:
+        return self.PREZZO_MESE * self.mesi
+
+    def __str__(self) -> str:
+        return (f"{self.titolare}, {self.mesi} mesi: "
+                f"{self.prezzo():.2f} EUR")
+
+
+class AbbonamentoStudente(Abbonamento):
+    """Abbonamento scontato per chi ha una matricola."""
+    SCONTO: float = 0.3
+
+    def __init__(self, titolare: str, mesi: int,
+                 matricola: str) -> None:
+        super().__init__(titolare, mesi)
+        self.matricola: str = matricola
+
+    def prezzo(self) -> float:
+        return super().prezzo() * (1 - self.SCONTO)
+
+    def __str__(self) -> str:
+        return f"{super().__str__()}, matricola {self.matricola}"
+
+abbonamenti: list[Abbonamento] = [
+    Abbonamento("Marco Bianchi", 12),
+    AbbonamentoStudente("Anna Rossi", 10, "2101234"),
+    AbbonamentoStudente("Luca Russo", 3, "2102345"),
+    Abbonamento("Elena Romano", 2)]
+
+for a in abbonamenti:
+    print(a)
+
+print(f"Incasso: {sum([a.prezzo() for a in abbonamenti]):.2f} EUR")
+```
+
+---
+
+## Extra 4 — La biblioteca di dipartimento (`biblioteca.py`)
+
+[Soluzione →](../../codice/L06_classi_oggetti/esercizi.html#sol-biblioteca)
+
+**Consegna**
+
+1. Definite una classe `Pubblicazione` con titolo e anno, l'attributo di classe `GIORNI = 30` (durata del prestito), un `__str__` come nell'esempio e un `__lt__` che ordina per anno.
+2. Definite la sottoclasse `Rivista(Pubblicazione)`, che cambia solo `GIORNI = 7`. Nel `__str__` usate `self.GIORNI`: così ogni oggetto prende il valore della sua classe.
+3. Definite una classe `Biblioteca` con una lista `_catalogo` e i metodi `aggiungi`, `cerca(self, parola: str)`, che restituisce le pubblicazioni con quella parola nel titolo (senza distinguere maiuscole e minuscole), e `in_ordine`, che restituisce il catalogo ordinato con `sorted`.
+4. Inserite le pubblicazioni della tabella, stampate il catalogo in ordine e il numero di titoli che contengono `statistica`.
+
+| Titolo | Tipo, anno |
+|---|---|
+| Statistica di base | libro, 2019 |
+| Rivista di statistica applicata | rivista, 2024 |
+| Probabilità e inferenza | libro, 2015 |
+| Bollettino di demografia | rivista, 2023 |
+
+**Esempio di esecuzione**
+
+```
+2015 Probabilità e inferenza: 30 giorni
+2019 Statistica di base: 30 giorni
+2023 Bollettino di demografia: 7 giorni
+2024 Rivista di statistica applicata: 7 giorni
+Titoli con 'statistica': 2
+```
+
+**Provate anche**
+
+- aggiungete `Rivista("Statistica in medicina", 2021)` → compare `2021 Statistica in medicina: 7 giorni` e `Titoli con 'statistica': 3`
+- `Rivista.GIORNI = 14` prima delle stampe → le riviste hanno 14 giorni, i libri restano a 30
+- `bib.cerca("STATISTICA")` → gli stessi 2 risultati
+
+**Soluzione**
+
+```python
+class Pubblicazione:
+    """Un libro o una rivista della biblioteca."""
+    GIORNI: int = 30                      # durata del prestito
+
+    def __init__(self, titolo: str, anno: int) -> None:
+        self.titolo: str = titolo
+        self.anno: int = anno
+
+    def __str__(self) -> str:
+        return f"{self.anno} {self.titolo}: {self.GIORNI} giorni"
+
+    def __lt__(self, altro: "Pubblicazione") -> bool:
+        return self.anno < altro.anno
+
+
+class Rivista(Pubblicazione):
+    GIORNI: int = 7                       # le riviste durano meno
+
+
+class Biblioteca:
+    """Una biblioteca ha un catalogo di libri e riviste."""
+
+    def __init__(self) -> None:
+        self._catalogo: list[Pubblicazione] = []
+
+    def aggiungi(self, p: Pubblicazione) -> None:
+        self._catalogo.append(p)
+
+    def cerca(self, parola: str) -> list[Pubblicazione]:
+        return [p for p in self._catalogo
+                if parola.lower() in p.titolo.lower()]
+
+    def in_ordine(self) -> list[Pubblicazione]:
+        return sorted(self._catalogo)
+
+bib: Biblioteca = Biblioteca()
+bib.aggiungi(Pubblicazione("Statistica di base", 2019))
+bib.aggiungi(Rivista("Rivista di statistica applicata", 2024))
+bib.aggiungi(Pubblicazione("Probabilità e inferenza", 2015))
+bib.aggiungi(Rivista("Bollettino di demografia", 2023))
+for p in bib.in_ordine():
+    print(p)
+
+print(f"Titoli con 'statistica': {len(bib.cerca('statistica'))}")
+```

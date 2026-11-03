@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -205,8 +209,8 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <a class="download-link" href="L03_strutture_dati.pdf" download>Scarica PDF</a>
 <h1>Laboratorio 3 — Strutture dati</h1>
 <p><strong>Prerequisiti:</strong> lezioni T11 (Liste e tuple), T12 (Dizionari e set) e T13 (Funzioni).</p>
-<p>Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo negli ultimi esercizi.</p>
-<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T14.</p>
+<p>Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo nell'ultimo esercizio.</p>
+<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T14.</p>
 <table>
 <thead><tr>
 <th>#</th>
@@ -220,36 +224,16 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </tr>
 <tr>
 <td>2</td>
-<td><code>coda_mensa.py</code></td>
-<td>La coda in mensa</td>
-</tr>
-<tr>
-<td>3</td>
 <td><code>sondaggio.py</code></td>
 <td>Come arrivate in aula</td>
 </tr>
 <tr>
-<td>4</td>
-<td><code>tre_corsi.py</code></td>
-<td>Chi segue cosa</td>
-</tr>
-<tr>
-<td>5</td>
-<td><code>libretto.py</code></td>
-<td>Il libretto</td>
-</tr>
-<tr>
-<td>6</td>
+<td>3</td>
 <td><code>sessione.py</code></td>
 <td>La sessione invernale</td>
 </tr>
 <tr>
-<td>7</td>
-<td><code>contingenza.py</code></td>
-<td>Scuola di provenienza ed esito</td>
-</tr>
-<tr>
-<td>8</td>
+<td>4</td>
 <td><code>descrittive.py</code></td>
 <td>Ore di studio</td>
 </tr>
@@ -257,6 +241,26 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <td>Challenge</td>
 <td>a scelta</td>
 <td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td>
+</tr>
+<tr>
+<td>Extra 1</td>
+<td><code>coda_mensa.py</code></td>
+<td>La coda in mensa (a casa)</td>
+</tr>
+<tr>
+<td>Extra 2</td>
+<td><code>tre_corsi.py</code></td>
+<td>Chi segue cosa (a casa)</td>
+</tr>
+<tr>
+<td>Extra 3</td>
+<td><code>libretto.py</code></td>
+<td>Il libretto (a casa)</td>
+</tr>
+<tr>
+<td>Extra 4</td>
+<td><code>contingenza.py</code></td>
+<td>Scuola di provenienza ed esito (a casa)</td>
 </tr>
 </tbody></table>
 <hr>
@@ -279,6 +283,7 @@ gruppi: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<s
 gruppi[<span class="st">&quot;Analisi&quot;</span>].append(<span class="mi">27</span>)    <span class="cm"># la lista vuota si crea da sola</span></code></pre>
 <hr>
 <h2>Esercizio 1 — L'appello di Statistica (<code>voti_appello.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-voti_appello" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Chiedete i voti dell'appello su una riga, separati da spazi, e trasformateli in una lista di interi con <code>split()</code> e una list comprehension.</li>
@@ -301,32 +306,8 @@ Media dei promossi: <span class="mi">24.5</span></code></pre>
 <li><code>18</code> → un voto solo: media, minimo e massimo valgono 18</li>
 </ul>
 <hr>
-<h2>Esercizio 2 — La coda in mensa (<code>coda_mensa.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Partite da <code>coda: list[str] = ["Anna", "Bruno", "Carla"]</code> e dagli eventi <code>["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]</code>.</li>
-<li>Dividete ogni evento con <code>split()</code>. <code>arriva X</code> mette X in fondo (<code>append</code>); <code>servito</code> toglie il primo (<code>pop(0)</code>) e lo aggiunge alla lista <code>serviti</code>; <code>esce X</code> toglie X (<code>remove</code>); <code>davanti X Y</code> mette X subito prima di Y (<code>insert</code> e <code>index</code>).</li>
-<li>Se la persona non è in coda o il comando non esiste, stampate <code>Evento non valido: ...</code>; se arriva <code>servito</code> con la coda vuota, stampate <code>Nessuno da servire</code>.</li>
-<li>Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.</li>
-</ol>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>arriva Davide <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
-servito <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
-arriva Elena <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
-esce Bruno <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
-davanti Franco Elena <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
-servito <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
-Evento non valido: esce Zeno
-esce Zeno <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
-Serviti: [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>]
-Ancora <span class="kw">in</span> coda: <span class="mi">3</span></code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>aggiungete quattro <code>servito</code> in fondo agli eventi → l'ultimo stampa <code>Nessuno da servire</code>, serviti in 5</li>
-<li><code>davanti Gino Zeno</code> al posto di <code>davanti Franco Elena</code> → evento non valido, alla fine <code>Ancora in coda: 2</code></li>
-</ul>
-<hr>
-<h2>Esercizio 3 — Come arrivate in aula (<code>sondaggio.py</code>)</h2>
+<h2>Esercizio 2 — Come arrivate in aula (<code>sondaggio.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-sondaggio" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Alle matricole è stato chiesto con quale mezzo arrivano in università. Chiedete le risposte su una riga, separate da virgole.</li>
@@ -349,95 +330,8 @@ Mezzo più usato: bici</code></pre>
 <li><code>bus,,Bus , treno</code> → 3 risposte, <code>bus: 2 (66.7%)</code></li>
 </ul>
 <hr>
-<h2>Esercizio 4 — Chi segue cosa (<code>tre_corsi.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Scrivete i set <code>statistica</code>, <code>analisi</code> e <code>informatica</code> con gli studenti che frequentano i tre corsi (tabella).</li>
-<li>Con <code>|</code>, <code>&</code> e <code>-</code> calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.</li>
-<li>Per trovare chi segue un corso soltanto, unite i tre set in una lista (<code>list(statistica) + list(analisi) + ...</code>) e contate i nomi con un <code>Counter</code>.</li>
-<li>Stampate i nomi con <code>sorted()</code>, così l'ordine è sempre lo stesso.</li>
-</ol>
-<table>
-<thead><tr>
-<th>Corso</th>
-<th>Studenti</th>
-</tr></thead><tbody>
-<tr>
-<td>Statistica</td>
-<td>Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia</td>
-</tr>
-<tr>
-<td>Analisi</td>
-<td>Anna, Chiara, Davide, Hana, Ivan, Giulia</td>
-</tr>
-<tr>
-<td>Informatica</td>
-<td>Bruno, Chiara, Giulia, Ivan, Luca</td>
-</tr>
-</tbody></table>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Studenti diversi: <span class="mi">10</span>
-Tutti e tre i corsi: [<span class="st">&#x27;Chiara&#x27;</span>, <span class="st">&#x27;Giulia&#x27;</span>]
-Solo Statistica: [<span class="st">&#x27;Elisa&#x27;</span>, <span class="st">&#x27;Fabio&#x27;</span>]
-Statistica e Analisi, non Informatica: [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
-Un corso soltanto: [<span class="st">&#x27;Elisa&#x27;</span>, <span class="st">&#x27;Fabio&#x27;</span>, <span class="st">&#x27;Hana&#x27;</span>, <span class="st">&#x27;Luca&#x27;</span>]</code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>aggiungete Luca a Statistica → Luca non segue più un corso soltanto</li>
-<li>aggiungete Marta a Informatica → <code>Studenti diversi: 11</code></li>
-</ul>
-<hr>
-<h2>Esercizio 5 — Il libretto (<code>libretto.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Scrivete il libretto come dizionario esame → tupla (voto, CFU), <code>libretto: dict[str, tuple[int, int]]</code>, con i dati della tabella.</li>
-<li>Scorrete <code>libretto.items()</code> con <code>for esame, (voto, cfu) in ...</code>: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.</li>
-<li>Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.</li>
-<li>La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.</li>
-</ol>
-<table>
-<thead><tr>
-<th>Esame</th>
-<th>Voto e CFU</th>
-</tr></thead><tbody>
-<tr>
-<td>Analisi 1</td>
-<td>24, 9 CFU</td>
-</tr>
-<tr>
-<td>Statistica 1</td>
-<td>28, 9 CFU</td>
-</tr>
-<tr>
-<td>Informatica</td>
-<td>30, 6 CFU</td>
-</tr>
-<tr>
-<td>Economia politica</td>
-<td>22, 9 CFU</td>
-</tr>
-<tr>
-<td>Algebra lineare</td>
-<td>27, 6 CFU</td>
-</tr>
-</tbody></table>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Analisi <span class="mi">1</span>: <span class="mi">24</span> (<span class="mi">9</span> CFU)
-Statistica <span class="mi">1</span>: <span class="mi">28</span> (<span class="mi">9</span> CFU)
-Informatica: <span class="mi">30</span> (<span class="mi">6</span> CFU)
-Economia politica: <span class="mi">22</span> (<span class="mi">9</span> CFU)
-Algebra lineare: <span class="mi">27</span> (<span class="mi">6</span> CFU)
-CFU totali: <span class="mi">39</span>
-Media aritmetica: <span class="mi">26.20</span>
-Media ponderata: <span class="mi">25.85</span>
-Base di laurea: <span class="mi">94.8</span></code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>aggiungete <code>"Probabilità": (30, 9)</code> → 48 CFU, media ponderata <code>26.62</code>, base <code>97.6</code></li>
-<li>date 6 CFU a tutti gli esami → le due medie valgono entrambe <code>26.20</code></li>
-</ul>
-<hr>
-<h2>Esercizio 6 — La sessione invernale (<code>sessione.py</code>)</h2>
+<h2>Esercizio 3 — La sessione invernale (<code>sessione.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-sessione" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Scrivete gli esiti come lista di tuple (studente, esame, voto), nell'ordine della tabella: <code>esiti: list[tuple[str, str, int]]</code>.</li>
@@ -485,26 +379,8 @@ Nessun esame superato: [<span class="st">&#x27;Elisa&#x27;</span>]</code></pre>
 <li>aggiungete <code>("Elisa", "Statistica", 18)</code> → <code>Statistica: 5 prove, media 22.6, promossi 4</code> e <code>Nessun esame superato: []</code></li>
 </ul>
 <hr>
-<h2>Esercizio 7 — Scuola di provenienza ed esito (<code>contingenza.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: <code>scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]</code> e <code>superato = [True, False, True, False, True, True, False, False, True, False, True, True]</code>.</li>
-<li>Con <code>zip()</code> formate le coppie (scuola, esito) e contatele con un <code>Counter</code>: le chiavi sono tuple, per esempio <code>("liceo", True)</code>.</li>
-<li>Con un secondo <code>Counter</code> contate le matricole per scuola.</li>
-<li>Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.</li>
-</ol>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>altro: superato <span class="mi">1</span>, non superato <span class="mi">1</span>, percentuale <span class="mi">50.0</span><span class="op">%</span>
-liceo: superato <span class="mi">4</span>, non superato <span class="mi">1</span>, percentuale <span class="mi">80.0</span><span class="op">%</span>
-tecnico: superato <span class="mi">2</span>, non superato <span class="mi">3</span>, percentuale <span class="mi">40.0</span><span class="op">%</span>
-Totale: <span class="mi">7</span> su <span class="mi">12</span> (<span class="mi">58.3</span><span class="op">%</span>)</code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>aggiungete una matricola del liceo che non ha superato l'esame → liceo <code>66.7%</code>, <code>Totale: 7 su 13 (53.8%)</code></li>
-<li>una coppia che non compare non dà errore: <code>tabella[("professionale", True)]</code> vale <code>0</code></li>
-</ul>
-<hr>
-<h2>Esercizio 8 — Ore di studio (<code>descrittive.py</code>)</h2>
+<h2>Esercizio 4 — Ore di studio (<code>descrittive.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-descrittive" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Scrivete la funzione <code>descrittive(valori: list[float]) -> tuple[float, float, float]</code> che restituisce media, mediana e deviazione standard campionaria.</li>
@@ -567,6 +443,7 @@ Terzo anno: media <span class="mi">18.5</span>, mediana <span class="mi">17.0</s
 </ul>
 <hr>
 <h3>Challenge · Mercati e finanza — Il portafoglio (<code>ch_mercati.py</code>)</h3>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-ch_mercati" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Uno studente investe su tre titoli fittizi: <code>ENRG</code> (energia), <code>BANK</code> (banca) e <code>TECH</code> (tecnologia). Scrivete i suoi ordini come lista di tuple (titolo, quantità, prezzo), <code>ordini: list[tuple[str, int, float]]</code>, con i dati della tabella. Una quantità negativa è una vendita.</li>
@@ -607,6 +484,7 @@ Mai venduti: [<span class="st">&#x27;TECH&#x27;</span>]</code></pre>
 </ul>
 <hr>
 <h3>Challenge · Sport — Il campionato (<code>ch_sport.py</code>)</h3>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-ch_sport" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il campionato ha quattro piloti: Ferri e Lanza corrono per la Scuderia Rossa, Moro e Neri per la Scuderia Blu. Scrivete l'ordine d'arrivo di ogni gara come tupla di quattro nomi, dal primo al quarto, e mettete le cinque tuple nella lista <code>gare</code> (tabella). Scrivete anche <code>rossa: set[str] = {"Ferri", "Lanza"}</code>.</li>
@@ -656,6 +534,7 @@ Senza vittorie: [<span class="st">&#x27;Lanza&#x27;</span>, <span class="st">&#x
 </ul>
 <hr>
 <h3>Challenge · Imprese e marketing — Il negozio online (<code>ch_negozio.py</code>)</h3>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-ch_negozio" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Un negozio online vende cinque prodotti per lo studio: scrivete i prezzi della tabella in <code>prezzi: dict[str, float]</code>. Gli ordini della settimana sono tuple (cliente, prodotto, quantità): <code>[("Irene", "zaino", 1), ("Tommaso", "quaderno", 5), ("Giada", "cuffie", 1), ("Pietro", "borraccia", 2), ("Irene", "quaderno", 3), ("Noemi", "zaino", 1), ("Tommaso", "borraccia", 1), ("Irene", "cuffie", 1), ("Giada", "quaderno", 4), ("Noemi", "borraccia", 2)]</code>.</li>
@@ -705,6 +584,7 @@ Mai venduti: [<span class="st">&#x27;lampada&#x27;</span>]</code></pre>
 </ul>
 <hr>
 <h3>Challenge · Salute e scienza — Lo studio clinico (<code>ch_salute.py</code>)</h3>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-ch_salute" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Uno studio prova un integratore per la pressione su 10 pazienti, metà nel gruppo <code>trattamento</code> e metà nel gruppo <code>controllo</code>. Scrivete i dati come lista di tuple (codice, gruppo, pressione sistolica prima, dopo), <code>pazienti: list[tuple[str, str, int, int]]</code> (tabella). P07 non è tornato alla seconda visita: la sua pressione dopo è registrata come 0.</li>
@@ -773,6 +653,7 @@ Gruppo con più migliorati: trattamento (<span class="mi">3</span>)</code></pre>
 </ul>
 <hr>
 <h3>Challenge · Caso e probabilità — Il tavolo da gioco (<code>ch_probabilita.py</code>)</h3>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-ch_probabilita" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Ada, Bea e Ciro giocano con due dadi e annotano ogni lancio come tupla (giocatore, primo dado, secondo dado). Scrivete la lista <code>lanci: list[tuple[str, int, int]]</code> con i 12 lanci della tabella.</li>
@@ -822,6 +703,242 @@ Somme mai uscite: [<span class="mi">2</span>, <span class="mi">3</span>, <span c
 <li>In <code>contingenza.py</code> le chiavi del <code>Counter</code> sono tuple. Si potrebbero usare liste? Perché?</li>
 <li>In <code>descrittive.py</code> la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?</li>
 </ol>
+<hr>
+<h2>Esercizi extra</h2>
+<p>Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.</p>
+<hr>
+<h2>Extra 1 — La coda in mensa (<code>coda_mensa.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-coda_mensa" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Partite da <code>coda: list[str] = ["Anna", "Bruno", "Carla"]</code> e dagli eventi <code>["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]</code>.</li>
+<li>Dividete ogni evento con <code>split()</code>. <code>arriva X</code> mette X in fondo (<code>append</code>); <code>servito</code> toglie il primo (<code>pop(0)</code>) e lo aggiunge alla lista <code>serviti</code>; <code>esce X</code> toglie X (<code>remove</code>); <code>davanti X Y</code> mette X subito prima di Y (<code>insert</code> e <code>index</code>).</li>
+<li>Se la persona non è in coda o il comando non esiste, stampate <code>Evento non valido: ...</code>; se arriva <code>servito</code> con la coda vuota, stampate <code>Nessuno da servire</code>.</li>
+<li>Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>arriva Davide <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
+servito <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
+arriva Elena <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Bruno&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+esce Bruno <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+davanti Franco Elena <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Carla&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+servito <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+Evento non valido: esce Zeno
+esce Zeno <span class="op">-</span><span class="op">&gt;</span> [<span class="st">&#x27;Davide&#x27;</span>, <span class="st">&#x27;Franco&#x27;</span>, <span class="st">&#x27;Elena&#x27;</span>]
+Serviti: [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Carla&#x27;</span>]
+Ancora <span class="kw">in</span> coda: <span class="mi">3</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete quattro <code>servito</code> in fondo agli eventi → l'ultimo stampa <code>Nessuno da servire</code>, serviti in 5</li>
+<li><code>davanti Gino Zeno</code> al posto di <code>davanti Franco Elena</code> → evento non valido, alla fine <code>Ancora in coda: 2</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code>coda: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Carla&quot;</span>]
+eventi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;arriva Davide&quot;</span>, <span class="st">&quot;servito&quot;</span>, <span class="st">&quot;arriva Elena&quot;</span>,
+                     <span class="st">&quot;esce Bruno&quot;</span>, <span class="st">&quot;davanti Franco Elena&quot;</span>,
+                     <span class="st">&quot;servito&quot;</span>, <span class="st">&quot;esce Zeno&quot;</span>]
+serviti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+
+<span class="kw">for</span> evento <span class="kw">in</span> eventi:
+    parti: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> evento.split()
+    azione: <span class="nb">str</span> <span class="op">=</span> parti[<span class="mi">0</span>]
+    <span class="kw">if</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;arriva&quot;</span>:
+        coda.append(parti[<span class="mi">1</span>])
+    <span class="kw">elif</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;servito&quot;</span>:
+        <span class="kw">if</span> <span class="nb">len</span>(coda) <span class="op">&gt;</span> <span class="mi">0</span>:
+            serviti.append(coda.pop(<span class="mi">0</span>))
+        <span class="kw">else</span>:
+            <span class="nb">print</span>(<span class="st">&quot;Nessuno da servire&quot;</span>)
+    <span class="kw">elif</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;esce&quot;</span> <span class="kw">and</span> parti[<span class="mi">1</span>] <span class="kw">in</span> coda:
+        coda.remove(parti[<span class="mi">1</span>])
+    <span class="kw">elif</span> azione <span class="op">=</span><span class="op">=</span> <span class="st">&quot;davanti&quot;</span> <span class="kw">and</span> parti[<span class="mi">2</span>] <span class="kw">in</span> coda:
+        coda.insert(coda.index(parti[<span class="mi">2</span>]), parti[<span class="mi">1</span>])
+    <span class="kw">else</span>:
+        <span class="nb">print</span>(<span class="st">f&quot;Evento non valido: {evento}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;{evento} -&gt; {coda}&quot;</span>)
+
+<span class="nb">print</span>(<span class="st">f&quot;Serviti: {serviti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ancora in coda: {len(coda)}&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 2 — Chi segue cosa (<code>tre_corsi.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-tre_corsi" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Scrivete i set <code>statistica</code>, <code>analisi</code> e <code>informatica</code> con gli studenti che frequentano i tre corsi (tabella).</li>
+<li>Con <code>|</code>, <code>&</code> e <code>-</code> calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.</li>
+<li>Per trovare chi segue un corso soltanto, unite i tre set in una lista (<code>list(statistica) + list(analisi) + ...</code>) e contate i nomi con un <code>Counter</code>.</li>
+<li>Stampate i nomi con <code>sorted()</code>, così l'ordine è sempre lo stesso.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Corso</th>
+<th>Studenti</th>
+</tr></thead><tbody>
+<tr>
+<td>Statistica</td>
+<td>Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia</td>
+</tr>
+<tr>
+<td>Analisi</td>
+<td>Anna, Chiara, Davide, Hana, Ivan, Giulia</td>
+</tr>
+<tr>
+<td>Informatica</td>
+<td>Bruno, Chiara, Giulia, Ivan, Luca</td>
+</tr>
+</tbody></table>
+<p><img src="../../presentazioni/img/L03_tre_corsi.svg" alt="Le regioni del diagramma e le operazioni tra set che le selezionano" style="max-width: 100%; border: 1px solid #e2e8f0; border-radius: 6px;"></p>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Studenti diversi: <span class="mi">10</span>
+Tutti e tre i corsi: [<span class="st">&#x27;Chiara&#x27;</span>, <span class="st">&#x27;Giulia&#x27;</span>]
+Solo Statistica: [<span class="st">&#x27;Elisa&#x27;</span>, <span class="st">&#x27;Fabio&#x27;</span>]
+Statistica e Analisi, non Informatica: [<span class="st">&#x27;Anna&#x27;</span>, <span class="st">&#x27;Davide&#x27;</span>]
+Un corso soltanto: [<span class="st">&#x27;Elisa&#x27;</span>, <span class="st">&#x27;Fabio&#x27;</span>, <span class="st">&#x27;Hana&#x27;</span>, <span class="st">&#x27;Luca&#x27;</span>]</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete Luca a Statistica → Luca non segue più un corso soltanto</li>
+<li>aggiungete Marta a Informatica → <code>Studenti diversi: 11</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+statistica: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Davide&quot;</span>,
+                        <span class="st">&quot;Elisa&quot;</span>, <span class="st">&quot;Fabio&quot;</span>, <span class="st">&quot;Giulia&quot;</span>}
+analisi: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Davide&quot;</span>, <span class="st">&quot;Hana&quot;</span>,
+                     <span class="st">&quot;Ivan&quot;</span>, <span class="st">&quot;Giulia&quot;</span>}
+informatica: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Chiara&quot;</span>, <span class="st">&quot;Giulia&quot;</span>, <span class="st">&quot;Ivan&quot;</span>,
+                         <span class="st">&quot;Luca&quot;</span>}
+
+almeno_uno: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> statistica <span class="op">|</span> analisi <span class="op">|</span> informatica
+tutti_tre: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> statistica <span class="op">&amp;</span> analisi <span class="op">&amp;</span> informatica
+solo_stat: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> statistica <span class="op">-</span> analisi <span class="op">-</span> informatica
+stat_an: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> (statistica <span class="op">&amp;</span> analisi) <span class="op">-</span> informatica
+
+presenze: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(
+    <span class="nb">list</span>(statistica) <span class="op">+</span> <span class="nb">list</span>(analisi) <span class="op">+</span> <span class="nb">list</span>(informatica))
+un_corso: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [n <span class="kw">for</span> n <span class="kw">in</span> presenze <span class="kw">if</span> presenze[n] <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>]
+
+<span class="nb">print</span>(<span class="st">f&quot;Studenti diversi: {len(almeno_uno)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Tutti e tre i corsi: {sorted(tutti_tre)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Solo Statistica: {sorted(solo_stat)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Statistica e Analisi, non Informatica: {sorted(stat_an)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Un corso soltanto: {sorted(un_corso)}&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 3 — Il libretto (<code>libretto.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-libretto" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Scrivete il libretto come dizionario esame → tupla (voto, CFU), <code>libretto: dict[str, tuple[int, int]]</code>, con i dati della tabella.</li>
+<li>Scorrete <code>libretto.items()</code> con <code>for esame, (voto, cfu) in ...</code>: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.</li>
+<li>Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.</li>
+<li>La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Esame</th>
+<th>Voto e CFU</th>
+</tr></thead><tbody>
+<tr>
+<td>Analisi 1</td>
+<td>24, 9 CFU</td>
+</tr>
+<tr>
+<td>Statistica 1</td>
+<td>28, 9 CFU</td>
+</tr>
+<tr>
+<td>Informatica</td>
+<td>30, 6 CFU</td>
+</tr>
+<tr>
+<td>Economia politica</td>
+<td>22, 9 CFU</td>
+</tr>
+<tr>
+<td>Algebra lineare</td>
+<td>27, 6 CFU</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Analisi <span class="mi">1</span>: <span class="mi">24</span> (<span class="mi">9</span> CFU)
+Statistica <span class="mi">1</span>: <span class="mi">28</span> (<span class="mi">9</span> CFU)
+Informatica: <span class="mi">30</span> (<span class="mi">6</span> CFU)
+Economia politica: <span class="mi">22</span> (<span class="mi">9</span> CFU)
+Algebra lineare: <span class="mi">27</span> (<span class="mi">6</span> CFU)
+CFU totali: <span class="mi">39</span>
+Media aritmetica: <span class="mi">26.20</span>
+Media ponderata: <span class="mi">25.85</span>
+Base di laurea: <span class="mi">94.8</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete <code>"Probabilità": (30, 9)</code> → 48 CFU, media ponderata <code>26.62</code>, base <code>97.6</code></li>
+<li>date 6 CFU a tutti gli esami → le due medie valgono entrambe <code>26.20</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code>libretto: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Analisi 1&quot;</span>: (<span class="mi">24</span>, <span class="mi">9</span>),
+    <span class="st">&quot;Statistica 1&quot;</span>: (<span class="mi">28</span>, <span class="mi">9</span>),
+    <span class="st">&quot;Informatica&quot;</span>: (<span class="mi">30</span>, <span class="mi">6</span>),
+    <span class="st">&quot;Economia politica&quot;</span>: (<span class="mi">22</span>, <span class="mi">9</span>),
+    <span class="st">&quot;Algebra lineare&quot;</span>: (<span class="mi">27</span>, <span class="mi">6</span>),
+}
+
+somma_voti: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+somma_pesata: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+cfu_totali: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+<span class="kw">for</span> esame, (voto, cfu) <span class="kw">in</span> libretto.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{esame}: {voto} ({cfu} CFU)&quot;</span>)
+    somma_voti <span class="op">+</span><span class="op">=</span> voto
+    somma_pesata <span class="op">+</span><span class="op">=</span> voto <span class="op">*</span> cfu
+    cfu_totali <span class="op">+</span><span class="op">=</span> cfu
+
+media: <span class="nb">float</span> <span class="op">=</span> somma_voti <span class="op">/</span> <span class="nb">len</span>(libretto)
+ponderata: <span class="nb">float</span> <span class="op">=</span> somma_pesata <span class="op">/</span> cfu_totali
+<span class="nb">print</span>(<span class="st">f&quot;CFU totali: {cfu_totali}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media aritmetica: {media:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media ponderata: {ponderata:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Base di laurea: {ponderata * 110 / 30:.1f}&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 4 — Scuola di provenienza ed esito (<code>contingenza.py</code>)</h2>
+<p><a href="../../codice/L03_strutture_dati/esercizi.html#sol-contingenza" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: <code>scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]</code> e <code>superato = [True, False, True, False, True, True, False, False, True, False, True, True]</code>.</li>
+<li>Con <code>zip()</code> formate le coppie (scuola, esito) e contatele con un <code>Counter</code>: le chiavi sono tuple, per esempio <code>("liceo", True)</code>.</li>
+<li>Con un secondo <code>Counter</code> contate le matricole per scuola.</li>
+<li>Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>altro: superato <span class="mi">1</span>, non superato <span class="mi">1</span>, percentuale <span class="mi">50.0</span><span class="op">%</span>
+liceo: superato <span class="mi">4</span>, non superato <span class="mi">1</span>, percentuale <span class="mi">80.0</span><span class="op">%</span>
+tecnico: superato <span class="mi">2</span>, non superato <span class="mi">3</span>, percentuale <span class="mi">40.0</span><span class="op">%</span>
+Totale: <span class="mi">7</span> su <span class="mi">12</span> (<span class="mi">58.3</span><span class="op">%</span>)</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete una matricola del liceo che non ha superato l'esame → liceo <code>66.7%</code>, <code>Totale: 7 su 13 (53.8%)</code></li>
+<li>una coppia che non compare non dà errore: <code>tabella[("professionale", True)]</code> vale <code>0</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+scuola: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;altro&quot;</span>, <span class="st">&quot;liceo&quot;</span>,
+                     <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;altro&quot;</span>,
+                     <span class="st">&quot;tecnico&quot;</span>, <span class="st">&quot;liceo&quot;</span>, <span class="st">&quot;tecnico&quot;</span>]
+superato: <span class="nb">list</span>[<span class="nb">bool</span>] <span class="op">=</span> [<span class="kw">True</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">True</span>,
+                        <span class="kw">False</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">False</span>, <span class="kw">True</span>, <span class="kw">True</span>]
+
+tabella: Counter[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">bool</span>]] <span class="op">=</span> Counter(<span class="nb">zip</span>(scuola, superato))
+per_scuola: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(scuola)
+
+<span class="kw">for</span> s <span class="kw">in</span> <span class="nb">sorted</span>(per_scuola):
+    si: <span class="nb">int</span> <span class="op">=</span> tabella[(s, <span class="kw">True</span>)]
+    no: <span class="nb">int</span> <span class="op">=</span> tabella[(s, <span class="kw">False</span>)]
+    <span class="nb">print</span>(<span class="st">f&quot;{s}: superato {si}, non superato {no}, &quot;</span>
+          <span class="st">f&quot;percentuale {si / per_scuola[s]:.1%}&quot;</span>)
+
+totale_si: <span class="nb">int</span> <span class="op">=</span> superato.count(<span class="kw">True</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Totale: {totale_si} su {len(superato)} &quot;</span>
+      <span class="st">f&quot;({totale_si / len(superato):.1%})&quot;</span>)</code></pre>
 <nav class="bottom-nav"><span><a href="../frontali/T13_funzioni_fondamenti.html">← T13</a></span><span><a href="../../index.html">Home</a></span><span><a href="../frontali/T14_funzioni_avanzate_moduli.html">T14 →</a></span></nav>
 </body>
 </html>

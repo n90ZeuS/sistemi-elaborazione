@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -258,7 +262,7 @@ media: <span class="nb">float</span> <span class="op">=</span> calcola_media(vot
 <h3><code>def</code></h3>
 <p>La parola chiave <code>def</code> (abbreviazione di <em>define</em>) introduce la definizione di una funzione. In Python, <code>def</code> e un'istruzione eseguibile: quando l'interprete la incontra, crea un oggetto funzione e lo associa al nome indicato. Questo significa che una funzione deve essere definita <em>prima</em> di essere chiamata.</p>
 <h3>Nome</h3>
-<p>Il nome segue le stesse regole delle variabili: lettere minuscole, parole separate da underscore (<code>snake<em>case</code>). Scegliete nomi che descrivano <em>cosa fa</em> la funzione, tipicamente con un verbo: <code>calcola</em>media</code>, <code>leggi<em>file</code>, <code>filtra</em>outlier</code>, <code>conta<em>valori</em>mancanti</code>.</p>
+<p>Il nome segue le stesse regole delle variabili: lettere minuscole, parole separate da underscore (<code>snake_case</code>). Scegliete nomi che descrivano <em>cosa fa</em> la funzione, tipicamente con un verbo: <code>calcola_media</code>, <code>leggi_file</code>, <code>filtra_outlier</code>, <code>conta_valori_mancanti</code>.</p>
 <h3>Parametri tipizzati</h3>
 <p>Tra le parentesi tonde si elencano i <strong>parametri</strong>: variabili locali che riceveranno i valori passati alla chiamata. Ogni parametro ha un <strong>type hint</strong> che indica il tipo atteso:</p>
 <pre><code><span class="kw">def</span> <span class="fn">calcola_bmi</span>(<span class="fn">peso_kg</span>: <span class="nb">float</span>, altezza_m: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
@@ -341,7 +345,7 @@ m, lo, hi <span class="op">=</span> statistiche_base(dati)
 <p>Questo e estremamente comodo per le funzioni statistiche, dove spesso si vogliono calcolare piu indicatori in un unico passaggio sui dati.</p>
 <hr>
 <h2>Docstring: documentare le funzioni</h2>
-<p>Una <strong>docstring</strong> e una stringa posta come prima istruzione di una funzione, che ne documenta lo scopo, i parametri e il valore di ritorno. Python la rende accessibile tramite l'attributo <code><em>_doc</em>_</code> e la funzione built-in <code>help()</code>.</p>
+<p>Una <strong>docstring</strong> e una stringa posta come prima istruzione di una funzione, che ne documenta lo scopo, i parametri e il valore di ritorno. Python la rende accessibile tramite l'attributo <code>__doc__</code> e la funzione built-in <code>help()</code>.</p>
 <h3>Formato consigliato</h3>
 <p>Esistono diversi stili di docstring. Per questo corso, adottiamo il formato "Google style", chiaro e leggibile:</p>
 <pre><code><span class="kw">def</span> <span class="fn">deviazione_standard</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>], campione: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">True</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
@@ -433,7 +437,7 @@ risultato: <span class="nb">float</span> <span class="op">=</span> deviazione_st
 
 <span class="cm"># Chiaro: si capisce il significato</span>
 risultato: <span class="nb">float</span> <span class="op">=</span> deviazione_standard(dati, campione<span class="op">=</span><span class="kw">True</span>)</code></pre>
-<h3>Cenni su <code><em>args</code> e <code></em>*kwargs</code></h3>
+<h3>Cenni su <code>*args</code> e <code>**kwargs</code></h3>
 <p>Python permette di definire funzioni che accettano un numero variabile di argomenti. Non li userete spesso in questo corso, ma e bene sapere che esistono:</p>
 <pre><code><span class="kw">def</span> <span class="fn">somma_tutti</span>(<span class="op">*</span><span class="fn">args</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
     <span class="st">&quot;&quot;&quot;Somma un numero qualsiasi di valori.&quot;&quot;&quot;</span>
@@ -445,7 +449,7 @@ risultato: <span class="nb">float</span> <span class="op">=</span> deviazione_st
 <span class="nb">print</span>(somma_tutti(<span class="mi">1.0</span>, <span class="mi">2.0</span>, <span class="mi">3.0</span>))       <span class="cm"># 6.0</span>
 <span class="nb">print</span>(somma_tutti(<span class="mi">10.0</span>, <span class="mi">20.0</span>))           <span class="cm"># 30.0</span>
 <span class="nb">print</span>(somma_tutti(<span class="mi">5.0</span>))                  <span class="cm"># 5.0</span></code></pre>
-<p><code><em>args</code> raccoglie tutti gli argomenti posizionali "in piu" in una tupla. Analogamente, <code></em>*kwargs</code> raccoglie argomenti keyword aggiuntivi in un dizionario:</p>
+<p><code>*args</code> raccoglie tutti gli argomenti posizionali "in piu" in una tupla. Analogamente, <code>**kwargs</code> raccoglie argomenti keyword aggiuntivi in un dizionario:</p>
 <pre><code><span class="kw">def</span> <span class="fn">stampa_info</span>(<span class="fn">nome</span>: <span class="nb">str</span>, <span class="op">*</span><span class="op">*</span>kwargs: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
     <span class="st">&quot;&quot;&quot;Stampa informazioni su uno studente.&quot;&quot;&quot;</span>
     <span class="nb">print</span>(<span class="st">f&quot;Nome: {nome}&quot;</span>)
@@ -456,7 +460,7 @@ stampa_info(<span class="st">&quot;Anna&quot;</span>, corso<span class="op">=</s
 <span class="cm"># Nome: Anna</span>
 <span class="cm">#   corso: Statistica</span>
 <span class="cm">#   anno: primo</span></code></pre>
-<p>Troverete <code><em>args</code> e <code></em>*kwargs</code> usati internamente in molte librerie Python. Per ora, concentratevi sui parametri posizionali, con default e keyword.</p>
+<p>Troverete <code>*args</code> e <code>**kwargs</code> usati internamente in molte librerie Python. Per ora, concentratevi sui parametri posizionali, con default e keyword.</p>
 <hr>
 <h2>Il pericolo del default mutabile</h2>
 <p>Questa sezione descrive uno dei bug piu insidiosi di Python, che ha colto di sorpresa generazioni di programmatori. Leggetela con attenzione.</p>
@@ -472,7 +476,7 @@ stampa_info(<span class="st">&quot;Anna&quot;</span>, corso<span class="op">=</s
 <span class="nb">print</span>(aggiungi_voto(<span class="mi">25</span>))  <span class="cm"># [28, 30, 25] — la lista &quot;vuota&quot; non è vuota!</span></code></pre>
 <p>Ogni chiamata modifica la <em>stessa</em> lista! Il valore di default <code>[]</code> viene creato <strong>una sola volta</strong>, nel momento in cui Python esegue la riga <code>def</code>. Da quel momento, tutte le chiamate che non forniscono una lista condividono lo stesso oggetto.</p>
 <h3>Perche succede</h3>
-<p>Quando Python incontra <code>def aggiungi<em>voto(voto: int, lista: list[int] = [])</code>, valuta l'espressione <code>[]</code> e crea un oggetto lista vuota. Questo oggetto viene conservato come attributo della funzione stessa (in <code>aggiungi</em>voto.<em>_defaults</em>_</code>). Ad ogni chiamata senza argomento <code>lista</code>, il parametro punta a <em>quello stesso oggetto</em>, che nel frattempo e stato modificato dalle chiamate precedenti.</p>
+<p>Quando Python incontra <code>def aggiungi_voto(voto: int, lista: list[int] = [])</code>, valuta l'espressione <code>[]</code> e crea un oggetto lista vuota. Questo oggetto viene conservato come attributo della funzione stessa (in <code>aggiungi_voto.__defaults__</code>). Ad ogni chiamata senza argomento <code>lista</code>, il parametro punta a <em>quello stesso oggetto</em>, che nel frattempo e stato modificato dalle chiamate precedenti.</p>
 <p>Potete verificare:</p>
 <pre><code><span class="nb">print</span>(aggiungi_voto.__defaults__)
 <span class="cm"># ([28, 30, 25],)  — il default NON è più una lista vuota!</span></code></pre>
@@ -597,7 +601,7 @@ dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="o
 <h3>Type hints sempre</h3>
 <p>In questo corso annotiamo <em>sempre</em> i parametri e il tipo di ritorno. I type hints sono documentazione vivente, verificabile con strumenti automatici. Non e un capriccio stilistico: in un contesto professionale, il codice senza type hints e piu difficile da mantenere e piu soggetto a errori.</p>
 <h3>Nomi significativi</h3>
-<p>Il nome della funzione deve descrivere <em>cosa fa</em>. Usate verbi: <code>calcola<em></code>, <code>leggi</em></code>, <code>filtra<em></code>, <code>conta</em></code>, <code>valida<em></code>. Evitate nomi generici come <code>funzione1</code>, <code>fai</em>cose</code>, <code>f</code>.</p>
+<p>Il nome della funzione deve descrivere <em>cosa fa</em>. Usate verbi: <code>calcola_</code>, <code>leggi_</code>, <code>filtra_</code>, <code>conta_</code>, <code>valida_</code>. Evitate nomi generici come <code>funzione1</code>, <code>fai_cose</code>, <code>f</code>.</p>
 <h3>Docstring per ogni funzione</h3>
 <p>Ogni funzione pubblica (cioe usata da altri, non solo come dettaglio interno) dovrebbe avere una docstring. Anche una sola riga e meglio di niente.</p>
 <h3>Un esempio completo</h3>
@@ -710,8 +714,8 @@ analisi_descrittiva(altezze, nome_variabile<span class="op">=</span><span class=
 <ul>
 <li><code>media(valori: list[float]) -> float</code></li>
 <li><code>varianza_campionaria(valori: list[float]) -> float</code> (che internamente chiama <code>media()</code>)</li>
-<li><code>deviazione<em>standard(valori: list[float]) -> float</code> (che internamente chiama <code>varianza</em>campionaria()</code>)</li>
-<li><code>coefficiente<em>variazione(valori: list[float]) -> float</code> (che internamente chiama <code>media()</code> e <code>deviazione</em>standard()</code>)</li>
+<li><code>deviazione_standard(valori: list[float]) -> float</code> (che internamente chiama <code>varianza_campionaria()</code>)</li>
+<li><code>coefficiente_variazione(valori: list[float]) -> float</code> (che internamente chiama <code>media()</code> e <code>deviazione_standard()</code>)</li>
 </ul>
 <p>Ogni funzione deve avere type hints completi e una docstring. Il programma principale chiede all'utente di inserire una serie di numeri separati da virgola e stampa tutte le statistiche calcolate.</p>
 <hr>

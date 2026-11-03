@@ -2,19 +2,19 @@
 
 **Prerequisiti:** lezioni T17 (NumPy, Pandas e visualizzazione) e laboratorio L07.
 
-Ultimo laboratorio, in due parti. Nella prima ci sono sei esercizi brevi sui grafici con Matplotlib, dal più semplice al più articolato: ognuno salva un'immagine PNG e stampa poche righe di controllo. Nella seconda c'è il progetto finale: scegliete uno dei 5 temi e analizzate un file CSV dal caricamento alla conclusione. Per ogni esercizio create un file `.py` con il nome indicato. Le soluzioni iniziano con `matplotlib.use("Agg")`, che salva i grafici senza aprire finestre: a casa potete toglierlo e aggiungere `plt.show()` dopo `plt.savefig(...)` per vedere il grafico.
+Ultimo laboratorio, in due parti. Nella prima ci sono tre esercizi brevi sui grafici con Matplotlib, dal più semplice al più articolato: ognuno salva un'immagine PNG e stampa poche righe di controllo. Nella seconda c'è il progetto finale: scegliete uno dei 5 temi e analizzate un file CSV dal caricamento alla conclusione. Per ogni esercizio create un file `.py` con il nome indicato. Le soluzioni iniziano con `matplotlib.use("Agg")`, che salva i grafici senza aprire finestre: a casa potete toglierlo e aggiungere `plt.show()` dopo `plt.savefig(...)` per vedere il grafico.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni vengono pubblicate sul portale dopo il laboratorio.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni vengono pubblicate sul portale dopo il laboratorio.
 
 | # | File | Esercizio |
 |---|---|---|
 | 1 | `immatricolati.py` | Immatricolati e laureati |
 | 2 | `voti.py` | I voti dell'appello |
-| 3 | `studio.py` | Ore di studio e voto |
-| 4 | `mensa.py` | L'attesa in mensa |
-| 5 | `tragitto.py` | Il tragitto per l'università |
-| 6 | `meteo.py` | Gennaio in due grafici |
+| 3 | `mensa.py` | L'attesa in mensa |
 | Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
+| Extra 1 | `studio.py` | Ore di studio e voto (a casa) |
+| Extra 2 | `tragitto.py` | Il tragitto per l'università (a casa) |
+| Extra 3 | `meteo.py` | Gennaio in due grafici (a casa) |
 
 ---
 
@@ -44,6 +44,7 @@ plt.savefig("grafico.png")             # prima di plt.show()
 
 ## Esercizio 1 — Immatricolati e laureati (`immatricolati.py`)
 
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-immatricolati)
 **Consegna**
 
 1. Scrivete i dati nel codice: `anni = list(range(2018, 2026))`, `immatricolati = [182, 195, 210, 204, 231, 248, 240, 262]`, `laureati = [118, 126, 131, 140, 137, 152, 160, 171]`.
@@ -58,6 +59,10 @@ Anno con più immatricolati: 2025 (262)
 Variazione 2018-2025: 44.0%
 ```
 
+**Grafico atteso**
+
+![Grafico atteso di immatricolati.py](../../presentazioni/img/L08_immatricolati.png)
+
 **Provate anche**
 
 - ultimo valore `230` invece di `262` → `Anno con più immatricolati: 2023 (248)`, `Variazione 2018-2025: 26.4%`
@@ -67,6 +72,7 @@ Variazione 2018-2025: 44.0%
 
 ## Esercizio 2 — I voti dell'appello (`voti.py`)
 
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-voti)
 **Consegna**
 
 1. Generate i voti con `rng = np.random.default_rng(14)` e `tutti = rng.normal(23.5, 4, 250).round().clip(max=30)`: 250 voti interi, al massimo 30.
@@ -82,6 +88,10 @@ Media dei promossi: 24.1
 Voti da 27 in su: 26.2%
 ```
 
+**Grafico atteso**
+
+![Grafico atteso di voti.py](../../presentazioni/img/L08_voti.png)
+
 **Provate anche**
 
 - seed `15` → `Promossi: 232 su 250`, `Media dei promossi: 24.2`, `Voti da 27 in su: 28.4%`
@@ -90,32 +100,9 @@ Voti da 27 in su: 26.2%
 
 ---
 
-## Esercizio 3 — Ore di studio e voto (`studio.py`)
+## Esercizio 3 — L'attesa in mensa (`mensa.py`)
 
-**Consegna**
-
-1. Generate i dati di 80 studenti: `rng = np.random.default_rng(7)`, `ore = rng.uniform(20, 120, 80).round()`, `voto = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round().clip(18, 30)`.
-2. Disegnate un grafico di dispersione con `plt.scatter(ore, voto, alpha=0.6)`: la trasparenza mostra i punti sovrapposti.
-3. Aggiungete titolo, etichette e griglia leggera e salvate `studio.png`.
-4. Stampate la correlazione (`np.corrcoef(ore, voto)[0, 1]`) e il voto medio di chi ha studiato più di 80 ore e di chi ne ha studiate 80 o meno.
-
-**Esempio di esecuzione**
-
-```
-Studenti: 80, correlazione: 0.67
-Voto medio con più di 80 ore: 25.2
-Voto medio con 80 ore o meno: 21.6
-```
-
-**Provate anche**
-
-- rumore `rng.normal(0, 5, 80)` → `correlazione: 0.28`, medie `24.3` e `22.0`: i punti sono più sparsi
-- togliete `alpha=0.6`: dove i punti si sovrappongono non si vede quanti sono
-
----
-
-## Esercizio 4 — L'attesa in mensa (`mensa.py`)
-
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-mensa)
 **Consegna**
 
 1. Costruite un DataFrame con 20 settimane di rilevazioni dell'attesa in mensa (minuti): `rng = np.random.default_rng(3)`, `giorni = ["lun", "mar", "mer", "gio", "ven"]`, attese tipiche `[12, 15, 14, 16, 8]`.
@@ -131,57 +118,14 @@ Giorno peggiore: gio (15.8 min)
 Giorno migliore: ven (7.4 min)
 ```
 
+**Grafico atteso**
+
+![Grafico atteso di mensa.py](../../presentazioni/img/L08_mensa.png)
+
 **Provate anche**
 
 - senza `sort=False` le righe stampate non cambiano, ma le barre sono in ordine alfabetico: `gio`, `lun`, `mar`, `mer`, `ven`
 - aggiungete `plt.axhline(df["attesa"].mean(), color="red", linestyle="--")`: si vedono i giorni sopra la media
-
----
-
-## Esercizio 5 — Il tragitto per l'università (`tragitto.py`)
-
-**Consegna**
-
-1. Generate i tempi (minuti) di 40 tragitti per mezzo con `rng = np.random.default_rng(11)` e un dizionario: `"bici": rng.normal(22, 3, 40).round()`, `"autobus": rng.normal(28, 7, 40).round()`, `"treno": rng.normal(35, 4, 40).round()`.
-2. Disegnate un boxplot con `plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))`. Con Matplotlib precedente alla 3.9 il parametro si chiama `labels`.
-3. Aggiungete titolo ed etichette e salvate `tragitto.png`.
-4. Per ogni mezzo stampate la mediana (`np.median`) e la quota di tragitti oltre 30 minuti.
-
-**Esempio di esecuzione**
-
-```
-bici: mediana 22 min, oltre 30 min 0.0%
-autobus: mediana 30 min, oltre 30 min 47.5%
-treno: mediana 35 min, oltre 30 min 82.5%
-```
-
-**Provate anche**
-
-- autobus con `rng.normal(28, 2, 40)` → `autobus: mediana 29 min, oltre 30 min 7.5%`: la scatola si stringe
-- il treno ha la mediana più alta ma una scatola più stretta dell'autobus: è più lento ma più regolare
-
----
-
-## Esercizio 6 — Gennaio in due grafici (`meteo.py`)
-
-**Consegna**
-
-1. Generate le temperature di 31 giorni: `rng = np.random.default_rng(1)`, `minime = rng.normal(0, 2.5, 31).round(1)`, `massime = (minime + rng.normal(7, 1.8, 31)).round(1)`.
-2. Create due grafici affiancati con `fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))`. Sugli assi si usano `ax1.plot(...)`, `ax1.set_title(...)`, `ax1.set_xlabel(...)`.
-3. A sinistra le linee delle massime e delle minime giorno per giorno, con legenda; a destra l'istogramma dell'escursione termica (`massime - minime`, `bins=8`).
-4. Chiudete con `fig.tight_layout()` e `fig.savefig("meteo.png")`, poi stampate i giorni con la minima sotto zero e l'escursione media.
-
-**Esempio di esecuzione**
-
-```
-Giorni con la minima sotto zero: 13
-Escursione media: 6.8 °C
-```
-
-**Provate anche**
-
-- seed `2` → `Giorni con la minima sotto zero: 15`, `Escursione media: 7.4 °C`
-- `plt.subplots(2, 1, figsize=(7, 7))`: i due grafici uno sopra l'altro
 
 ---
 
@@ -210,6 +154,7 @@ Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli s
 
 ### Challenge · Mercati e finanza — Due mesi di borsa (`ch_mercati.py`)
 
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-ch_mercati)
 **Consegna**
 
 1. `prezzi.csv` contiene i prezzi di chiusura di ENRG, BANK, TECH e dell'indice MIB, giorno per giorno, a settembre e ottobre 2026. Colonne: `data`, `titolo`, `prezzo`. Ci sono giorni ripetuti, prezzi mancanti e prezzi non positivi da scartare.
@@ -243,6 +188,7 @@ Il MIB rende 1.9%: 2 titoli su 3 fanno meglio.
 
 ### Challenge · Sport — Il passo gara (`ch_sport.py`)
 
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-ch_sport)
 **Consegna**
 
 1. `tempi_giro.csv` contiene i tempi sul giro (secondi) di Ferri, Lanza, Moro e Neri in 3 gare da 15 giri. Colonne: `gara`, `pilota`, `giro`, `tempo`. Ci sono righe doppie, tempi mancanti e tempi impossibili: tenete solo quelli tra 60 e 180 secondi.
@@ -277,6 +223,7 @@ Gara 1: i tempi crescono fino al pit stop (usura gomme).
 
 ### Challenge · Imprese e marketing — Quattro mesi di ordini (`ch_negozio.py`)
 
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-ch_negozio)
 **Consegna**
 
 1. `ordini.csv` contiene gli ordini del negozio online da settembre a dicembre 2026. Colonne: `ordine`, `data`, `cliente`, `citta`, `prodotto`, `quantita`, `prezzo`. Ci sono ordini registrati due volte, quantità mancanti e quantità non positive da scartare.
@@ -311,6 +258,7 @@ Prodotto quaderno: 41.6% dei pezzi, ma 11.2% del fatturato.
 
 ### Challenge · Salute e scienza — L'effetto dell'integratore (`ch_salute.py`)
 
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-ch_salute)
 **Consegna**
 
 1. `pazienti.csv` contiene i dati dello studio sull'integratore: `codice`, `sesso`, `eta`, `gruppo` (`trattamento` o `controllo`), `pressione_prima` e `pressione_dopo` in mmHg. Ci sono pazienti registrati due volte, pressioni mancanti (pazienti usciti dallo studio) e pressioni impossibili: tenete solo i valori tra 80 e 250 (`between(80, 250)`), sia prima sia dopo.
@@ -343,6 +291,7 @@ Anche il controllo migliora: per questo serve un confronto.
 
 ### Challenge · Caso e probabilità — Il dado sospetto (`ch_probabilita.py`)
 
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-ch_probabilita)
 **Consegna**
 
 1. `lanci.csv` è il registro di 180 lanci di due dadi, fatti a turno da Ada, Bruno, Carla e Dario. Colonne: `lancio`, `giocatore`, `dado1`, `dado2`. Ci sono lanci copiati due volte, valori mancanti e valori impossibili del secondo dado: tenete solo quelli tra 1 e 6 (`between(1, 6)`).
@@ -382,3 +331,183 @@ Con un dado regolare sarebbe 16.7%: va controllato.
 3. In `mensa.py` le barre partono da 0. Come cambierebbe l'impressione se l'asse verticale partisse da 7 minuti?
 4. In `studio.py` la correlazione è 0.67. Basta per dire che studiare di più fa prendere voti più alti?
 5. Nel vostro progetto, quale statistica cambia di più se togliete il filtro sui valori impossibili? Perché?
+
+---
+
+## Esercizi extra
+
+Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.
+
+---
+
+## Extra 1 — Ore di studio e voto (`studio.py`)
+
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-studio)
+
+**Consegna**
+
+1. Generate i dati di 80 studenti: `rng = np.random.default_rng(7)`, `ore = rng.uniform(20, 120, 80).round()`, `voto = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round().clip(18, 30)`.
+2. Disegnate un grafico di dispersione con `plt.scatter(ore, voto, alpha=0.6)`: la trasparenza mostra i punti sovrapposti.
+3. Aggiungete titolo, etichette e griglia leggera e salvate `studio.png`.
+4. Stampate la correlazione (`np.corrcoef(ore, voto)[0, 1]`) e il voto medio di chi ha studiato più di 80 ore e di chi ne ha studiate 80 o meno.
+
+**Esempio di esecuzione**
+
+```
+Studenti: 80, correlazione: 0.67
+Voto medio con più di 80 ore: 25.2
+Voto medio con 80 ore o meno: 21.6
+```
+
+**Grafico atteso**
+
+![Grafico atteso di studio.py](../../presentazioni/img/L08_studio.png)
+
+**Provate anche**
+
+- rumore `rng.normal(0, 5, 80)` → `correlazione: 0.28`, medie `24.3` e `22.0`: i punti sono più sparsi
+- togliete `alpha=0.6`: dove i punti si sovrappongono non si vede quanti sono
+
+**Soluzione**
+
+```python
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(7)
+ore: np.ndarray = rng.uniform(20, 120, 80).round()
+voto: np.ndarray = (17 + 0.09 * ore + rng.normal(0, 2.5, 80)).round()
+voto = voto.clip(18, 30)
+
+plt.figure(figsize=(7, 4))
+plt.scatter(ore, voto, alpha=0.6, color="steelblue")
+plt.title("Ore di studio e voto all'esame")
+plt.xlabel("Ore di studio")
+plt.ylabel("Voto")
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig("studio.png")
+
+r: float = np.corrcoef(ore, voto)[0, 1]
+print(f"Studenti: {len(ore)}, correlazione: {r:.2f}")
+print(f"Voto medio con più di 80 ore: {voto[ore > 80].mean():.1f}")
+print(f"Voto medio con 80 ore o meno: {voto[ore <= 80].mean():.1f}")
+```
+
+---
+
+## Extra 2 — Il tragitto per l'università (`tragitto.py`)
+
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-tragitto)
+
+**Consegna**
+
+1. Generate i tempi (minuti) di 40 tragitti per mezzo con `rng = np.random.default_rng(11)` e un dizionario: `"bici": rng.normal(22, 3, 40).round()`, `"autobus": rng.normal(28, 7, 40).round()`, `"treno": rng.normal(35, 4, 40).round()`.
+2. Disegnate un boxplot con `plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))`. Con Matplotlib precedente alla 3.9 il parametro si chiama `labels`.
+3. Aggiungete titolo ed etichette e salvate `tragitto.png`.
+4. Per ogni mezzo stampate la mediana (`np.median`) e la quota di tragitti oltre 30 minuti.
+
+**Esempio di esecuzione**
+
+```
+bici: mediana 22 min, oltre 30 min 0.0%
+autobus: mediana 30 min, oltre 30 min 47.5%
+treno: mediana 35 min, oltre 30 min 82.5%
+```
+
+**Grafico atteso**
+
+![Grafico atteso di tragitto.py](../../presentazioni/img/L08_tragitto.png)
+
+**Provate anche**
+
+- autobus con `rng.normal(28, 2, 40)` → `autobus: mediana 29 min, oltre 30 min 7.5%`: la scatola si stringe
+- il treno ha la mediana più alta ma una scatola più stretta dell'autobus: è più lento ma più regolare
+
+**Soluzione**
+
+```python
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(11)
+tempi: dict[str, np.ndarray] = {
+    "bici": rng.normal(22, 3, 40).round(),
+    "autobus": rng.normal(28, 7, 40).round(),
+    "treno": rng.normal(35, 4, 40).round()}
+
+plt.figure(figsize=(7, 4))
+plt.boxplot(list(tempi.values()), tick_labels=list(tempi.keys()))
+plt.title("Tempo per arrivare in università")
+plt.xlabel("Mezzo")
+plt.ylabel("Minuti")
+plt.tight_layout()
+plt.savefig("tragitto.png")
+
+for mezzo, t in tempi.items():
+    print(f"{mezzo}: mediana {np.median(t):.0f} min, "
+          f"oltre 30 min {(t > 30).mean():.1%}")
+```
+
+---
+
+## Extra 3 — Gennaio in due grafici (`meteo.py`)
+
+[Soluzione →](../../codice/L08_visualizzazione/esercizi.html#sol-meteo)
+
+**Consegna**
+
+1. Generate le temperature di 31 giorni: `rng = np.random.default_rng(1)`, `minime = rng.normal(0, 2.5, 31).round(1)`, `massime = (minime + rng.normal(7, 1.8, 31)).round(1)`.
+2. Create due grafici affiancati con `fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))`. Sugli assi si usano `ax1.plot(...)`, `ax1.set_title(...)`, `ax1.set_xlabel(...)`.
+3. A sinistra le linee delle massime e delle minime giorno per giorno, con legenda; a destra l'istogramma dell'escursione termica (`massime - minime`, `bins=8`).
+4. Chiudete con `fig.tight_layout()` e `fig.savefig("meteo.png")`, poi stampate i giorni con la minima sotto zero e l'escursione media.
+
+**Esempio di esecuzione**
+
+```
+Giorni con la minima sotto zero: 13
+Escursione media: 6.8 °C
+```
+
+**Grafico atteso**
+
+![Grafico atteso di meteo.py](../../presentazioni/img/L08_meteo.png)
+
+**Provate anche**
+
+- seed `2` → `Giorni con la minima sotto zero: 15`, `Escursione media: 7.4 °C`
+- `plt.subplots(2, 1, figsize=(7, 7))`: i due grafici uno sopra l'altro
+
+**Soluzione**
+
+```python
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(1)
+giorni: np.ndarray = np.arange(1, 32)
+minime: np.ndarray = rng.normal(0, 2.5, 31).round(1)
+massime: np.ndarray = (minime + rng.normal(7, 1.8, 31)).round(1)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+ax1.plot(giorni, massime, color="tomato", label="Massima")
+ax1.plot(giorni, minime, color="steelblue", label="Minima")
+ax1.set_title("Temperature di gennaio a Padova")
+ax1.set_xlabel("Giorno")
+ax1.set_ylabel("°C")
+ax1.legend()
+ax2.hist(massime - minime, bins=8, color="gray", edgecolor="white")
+ax2.set_title("Escursione termica")
+ax2.set_xlabel("Massima - minima (°C)")
+ax2.set_ylabel("Giorni")
+fig.tight_layout()
+fig.savefig("meteo.png")
+print(f"Giorni con la minima sotto zero: {(minime < 0).sum()}")
+print(f"Escursione media: {(massime - minime).mean():.1f} °C")
+```

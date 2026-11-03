@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -206,7 +210,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <h1>Laboratorio 5 — File e gestione dati</h1>
 <p><strong>Prerequisiti:</strong> lezioni T15 (File, dati ed errori).</p>
 <p>Oggi si lavora con dati che stanno nei file: testo, CSV e JSON. Per ogni esercizio create un file <code>.py</code> con il nome indicato, nella stessa cartella dei file di dati. I file di dati sono scritti nella slide dell'esercizio: create il file con l'editor e copiate il contenuto, compresa la riga di intestazione, e lasciate un a capo dopo l'ultima riga. Le classi non servono.</p>
-<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T17.</p>
+<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T17.</p>
 <table>
 <thead><tr>
 <th>#</th>
@@ -220,43 +224,43 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </tr>
 <tr>
 <td>2</td>
-<td><code>parole_frequenti.py</code></td>
-<td>Le parole più usate</td>
-</tr>
-<tr>
-<td>3</td>
 <td><code>esiti_appello.py</code></td>
 <td>Gli esiti dell'appello</td>
 </tr>
 <tr>
-<td>4</td>
-<td><code>verbale.py</code></td>
-<td>Il verbale d'esame</td>
-</tr>
-<tr>
-<td>5</td>
-<td><code>spese.py</code></td>
-<td>Il registro delle spese</td>
-</tr>
-<tr>
-<td>6</td>
+<td>3</td>
 <td><code>sondaggio.py</code></td>
 <td>Il sondaggio in JSON</td>
 </tr>
 <tr>
-<td>7</td>
+<td>4</td>
 <td><code>appello_robusto.py</code></td>
 <td>Un appello con errori</td>
-</tr>
-<tr>
-<td>8</td>
-<td><code>config_soglia.py</code></td>
-<td>Configurazione in JSON</td>
 </tr>
 <tr>
 <td>Challenge</td>
 <td>a scelta</td>
 <td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td>
+</tr>
+<tr>
+<td>Extra 1</td>
+<td><code>parole_frequenti.py</code></td>
+<td>Le parole più usate (a casa)</td>
+</tr>
+<tr>
+<td>Extra 2</td>
+<td><code>verbale.py</code></td>
+<td>Il verbale d'esame (a casa)</td>
+</tr>
+<tr>
+<td>Extra 3</td>
+<td><code>spese.py</code></td>
+<td>Il registro delle spese (a casa)</td>
+</tr>
+<tr>
+<td>Extra 4</td>
+<td><code>config_soglia.py</code></td>
+<td>Configurazione in JSON (a casa)</td>
 </tr>
 </tbody></table>
 <hr>
@@ -282,6 +286,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
     <span class="nb">print</span>(<span class="st">&quot;Chiave mancante:&quot;</span>, e)           <span class="cm"># Chiave mancante: &#x27;lode&#x27;</span></code></pre>
 <hr>
 <h2>Esercizio 1 — Commenti al corso (<code>conta_righe.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-conta_righe" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>commenti.txt</code> contiene i commenti liberi di un questionario sul corso, uno per riga. Una riga è vuota.</li>
@@ -307,39 +312,11 @@ Commento più lungo: riga <span class="mi">2</span>, <span class="mi">9</span> p
 <p><strong>Provate anche</strong></p>
 <ul>
 <li>aggiungete in fondo la riga <code>Grazie.</code> → <code>Righe: 9</code>, <code>Parole: 48</code>, <code>Parole per commento: 6.0</code></li>
-<li>cambiate il nome in <code>commenti2.txt</code> → il programma si ferma con <code>FileNotFoundError</code> (lo gestirete nell'esercizio 7)</li>
+<li>cambiate il nome in <code>commenti2.txt</code> → il programma si ferma con <code>FileNotFoundError</code> (lo gestirete nell'esercizio 4)</li>
 </ul>
 <hr>
-<h2>Esercizio 2 — Le parole più usate (<code>parole_frequenti.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Usate lo stesso <code>commenti.txt</code>. Scrivete una funzione <code>parole<em>del</em>file(percorso: Path) -> list[str]</code> che legge il file e restituisce tutte le parole in minuscolo.</li>
-<li>Togliete la punteggiatura attaccata alle parole con <code>parola.strip(".,;:!?")</code>.</li>
-<li>Stampate il numero di parole e di parole distinte (<code>set</code>).</li>
-<li>Tenete le parole di almeno 5 lettere, contatele con <code>Counter</code> e stampate le 3 più frequenti con <code>most_common(3)</code>.</li>
-</ol>
-<p><strong>File <code>commenti.txt</code></strong> (createlo nella cartella del programma)</p>
-<pre><code>Lezioni chiare, esempi utili.
-Molto lavoro a casa, poco tempo per gli esercizi.
-Le slide sono utili, il ritmo è veloce.
-
-Vorrei più esempi con dati reali.
-Laboratori utili, ma le aule sono troppo affollate.
-Esercizi utili per capire meglio.
-Più esercizi <span class="kw">in</span> aula e meno teoria.</code></pre>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Parole: <span class="mi">47</span>, distinte: <span class="mi">37</span>
-Parole di almeno <span class="mi">5</span> lettere: <span class="mi">25</span>
-utili: <span class="mi">4</span>
-esercizi: <span class="mi">3</span>
-esempi: <span class="mi">2</span></code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li><code>Utili,</code> e <code>utili.</code> contano come la stessa parola</li>
-<li>con la riga <code>Grazie.</code> in più → <code>Parole: 48, distinte: 38</code></li>
-</ul>
-<hr>
-<h2>Esercizio 3 — Gli esiti dell'appello (<code>esiti_appello.py</code>)</h2>
+<h2>Esercizio 2 — Gli esiti dell'appello (<code>esiti_appello.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-esiti_appello" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>appello.csv</code> contiene i voti di un appello, separati da <code>;</code>.</li>
@@ -369,72 +346,8 @@ Voto più alto: <span class="mi">30</span> (Verdi Giulia)</code></pre>
 <li>togliete <code>delimiter=";"</code> e stampate una riga letta: c'è una sola chiave, <code>matricola;cognome;nome;voto</code></li>
 </ul>
 <hr>
-<h2>Esercizio 4 — Il verbale d'esame (<code>verbale.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Leggete di nuovo <code>appello.csv</code> e ordinate gli studenti per cognome con <code>sorted(..., key=lambda s: s["cognome"])</code>.</li>
-<li>Aprite <code>verbale.txt</code> in scrittura (<code>"w"</code>) e scrivete con <code>f.write()</code> un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate <code>\n</code> alla fine di ogni riga.</li>
-<li>Dopo aver chiuso il file, rileggetelo con <code>Path("verbale.txt").read_text(encoding="utf-8")</code> e stampatelo.</li>
-</ol>
-<p><strong>File <code>appello.csv</code></strong> (createlo nella cartella del programma)</p>
-<pre><code>matricola;cognome;nome;voto
-<span class="mi">2101234</span>;Rossi;Anna;<span class="mi">28</span>
-<span class="mi">2101567</span>;Bianchi;Marco;<span class="mi">17</span>
-<span class="mi">2102001</span>;Verdi;Giulia;<span class="mi">30</span>
-<span class="mi">2102345</span>;Russo;Luca;<span class="mi">24</span>
-<span class="mi">2102890</span>;Ferrari;Sara;<span class="mi">15</span>
-<span class="mi">2103112</span>;Esposito;Paolo;<span class="mi">21</span>
-<span class="mi">2103456</span>;Romano;Elena;<span class="mi">27</span>
-<span class="mi">2103789</span>;Gallo;Davide;<span class="mi">19</span></code></pre>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Verbale dell<span class="st">&#x27;appello
-2101567 Bianchi Marco: 17, respinto
-2103112 Esposito Paolo: 21, promosso
-2102890 Ferrari Sara: 15, respinto
-2103789 Gallo Davide: 19, promosso
-2103456 Romano Elena: 27, promosso
-2101234 Rossi Anna: 28, promosso
-2102345 Russo Luca: 24, promosso
-2102001 Verdi Giulia: 30, promosso
-Promossi: 6 su 8</span></code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>eseguite il programma due volte: <code>verbale.txt</code> viene riscritto da capo, le righe non si ripetono</li>
-<li>con la riga <code>2104000;Conti;Marta;18</code> → Conti è la seconda, <code>Promossi: 7 su 9</code></li>
-</ul>
-<hr>
-<h2>Esercizio 5 — Il registro delle spese (<code>spese.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Il file <code>spese.csv</code> è un registro delle spese di uno studente fuori sede.</li>
-<li>Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (<code>ValueError</code>) stampate un messaggio e non scrivete niente.</li>
-<li>Altrimenti aggiungete la spesa in fondo al file: <code>open(..., "a", encoding="utf-8", newline="")</code> e <code>csv.writer(f, delimiter=";").writerow([...])</code>.</li>
-<li>Rileggete tutto il file e sommate gli importi per categoria con un <code>defaultdict(float)</code>. Stampate le categorie dalla più costosa e il totale, con due decimali.</li>
-</ol>
-<p><strong>File <code>spese.csv</code></strong> (createlo nella cartella del programma)</p>
-<pre><code>data;categoria;importo
-<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">01</span>;affitto;<span class="mi">350.00</span>
-<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">02</span>;spesa;<span class="mi">42.50</span>
-<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">03</span>;trasporti;<span class="mi">25.00</span>
-<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">05</span>;spesa;<span class="mi">18.20</span>
-<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">06</span>;libri;<span class="mi">39.90</span></code></pre>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Data (aaaa<span class="op">-</span>mm<span class="op">-</span>gg): <span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">07</span>
-Categoria: Spesa
-Importo: <span class="mi">12.30</span>
-affitto: <span class="mi">350.00</span> EUR
-spesa: <span class="mi">73.00</span> EUR
-libri: <span class="mi">39.90</span> EUR
-trasporti: <span class="mi">25.00</span> EUR
-Totale: <span class="mi">487.90</span> EUR</code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>sul file originale, <code>2026-12-07</code>, <code>cinema</code>, <code>8.50</code> → compare <code>cinema: 8.50 EUR</code>, totale <code>484.10 EUR</code></li>
-<li>importo <code>dieci</code> → <code>Importo non valido: spesa non registrata</code> e il file non cambia</li>
-<li>ogni esecuzione aggiunge una riga: aprite <code>spese.csv</code> e controllate</li>
-</ul>
-<hr>
-<h2>Esercizio 6 — Il sondaggio in JSON (<code>sondaggio.py</code>)</h2>
+<h2>Esercizio 3 — Il sondaggio in JSON (<code>sondaggio.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-sondaggio" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>sondaggio.json</code> contiene le risposte a un questionario: per ogni studente il voto di soddisfazione (da 1 a 5) e se frequenta le lezioni.</li>
@@ -469,11 +382,12 @@ Salvato riepilogo.json:
 }</code></pre>
 <p><strong>Provate anche</strong></p>
 <ul>
-<li>aggiungete la risposta <code>{"matricola": "2103456", "voto": 1, "frequenta": false}</code> → <code>media 3.43</code>, <code>media<em>non</em>frequentanti 2.33</code>, <code>quota_frequentanti 0.571</code></li>
-<li>togliete la virgola dopo <code>"anno": 2026</code> → <code>json.JSONDecodeError</code> (lo gestirete nell'esercizio 8)</li>
+<li>aggiungete la risposta <code>{"matricola": "2103456", "voto": 1, "frequenta": false}</code> → <code>media 3.43</code>, <code>media_non_frequentanti 2.33</code>, <code>quota_frequentanti 0.571</code></li>
+<li>togliete la virgola dopo <code>"anno": 2026</code> → <code>json.JSONDecodeError</code> (lo gestirete nell'extra 4)</li>
 </ul>
 <hr>
-<h2>Esercizio 7 — Un appello con errori (<code>appello_robusto.py</code>)</h2>
+<h2>Esercizio 4 — Un appello con errori (<code>appello_robusto.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-appello_robusto" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Chiedete il nome del file da leggere. Se non esiste (<code>FileNotFoundError</code>) stampate un messaggio; se non ha la colonna <code>voto</code> (<code>KeyError</code>) stampatene un altro.</li>
@@ -502,32 +416,6 @@ Media: <span class="mi">26.5</span></code></pre>
 <li><code>appello.csv</code> → <code>Voti validi: 8, righe scartate: 0</code>, <code>Media: 22.6</code></li>
 <li><code>voti.csv</code> → <code>Il file voti.csv non esiste</code></li>
 <li><code>commenti.txt</code> → <code>Il file commenti.txt non ha la colonna voto</code></li>
-</ul>
-<hr>
-<h2>Esercizio 8 — Configurazione in JSON (<code>config_soglia.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Il file <code>config.json</code> dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è <code>appello.csv</code> dell'esercizio 3.</li>
-<li>Scrivete una funzione <code>sopra_soglia(file: str, colonna: str, soglia: int) -> list[str]</code> che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.</li>
-<li>In un solo <code>try</code> caricate la configurazione e chiamate la funzione. Gestite con <code>except</code> separati: <code>FileNotFoundError</code> (stampate <code>e.filename</code>), <code>json.JSONDecodeError</code> (stampate <code>e.lineno</code>), <code>KeyError</code> e <code>ValueError</code>.</li>
-<li>Nel blocco <code>else</code> stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (<code>", ".join(...)</code>).</li>
-</ol>
-<p><strong>File <code>config.json</code></strong> (createlo nella cartella del programma)</p>
-<pre><code>{
-  <span class="st">&quot;file&quot;</span>: <span class="st">&quot;appello.csv&quot;</span>,
-  <span class="st">&quot;colonna&quot;</span>: <span class="st">&quot;voto&quot;</span>,
-  <span class="st">&quot;soglia&quot;</span>: <span class="mi">27</span>
-}</code></pre>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>File: appello.csv, soglia: <span class="mi">27</span>
-Sopra soglia: <span class="mi">3</span>
-Romano, Rossi, Verdi</code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li><code>"soglia": 18</code> → 6 studenti, da <code>Esposito</code> a <code>Verdi</code></li>
-<li>togliete la riga di <code>"soglia"</code> → <code>Chiave mancante: 'soglia'</code>; <code>"colonna": "punteggio"</code> → <code>Chiave mancante: 'punteggio'</code></li>
-<li><code>"file": "appello2.csv"</code> → <code>File non trovato: appello2.csv</code>; rinominate <code>config.json</code> → <code>File non trovato: config.json</code></li>
-<li>togliete la virgola dopo <code>"voto"</code> → <code>config.json non valido alla riga 4</code>; <code>"colonna": "cognome"</code> → la colonna non contiene numeri</li>
 </ul>
 <hr>
 <h2>Challenge a scelta</h2>
@@ -569,12 +457,13 @@ Romano, Rossi, Verdi</code></pre>
 <li>Create il file CSV della consegna con l'editor, nella stessa cartella del programma: copiate anche l'intestazione e lasciate un a capo dopo l'ultima riga. Una o due righe contengono un valore sbagliato.</li>
 <li>Scrivete una funzione <code>leggi(percorso: Path)</code> che legge il file con <code>csv.DictReader(f, delimiter=";")</code> e restituisce una tupla: un <code>defaultdict(list)</code> con i valori raggruppati e il numero di righe scartate.</li>
 <li>Dentro la funzione convertite il valore di ogni riga in un <code>try</code>: se c'è <code>ValueError</code> contate la riga come scartata e passate alla successiva.</li>
-<li>Nel blocco <code>if <em>_name</em><em> == "</em><em>main</em>_":</code> chiamate la funzione dentro un <code>try</code>. Se il file non esiste (<code>FileNotFoundError</code>) stampate <code>File non trovato:</code> e il nome del file (<code>e.filename</code>).</li>
+<li>Nel blocco <code>if __name__ == "__main__":</code> chiamate la funzione dentro un <code>try</code>. Se il file non esiste (<code>FileNotFoundError</code>) stampate <code>File non trovato:</code> e il nome del file (<code>e.filename</code>).</li>
 <li>Per ogni gruppo, in ordine alfabetico, stampate una riga con le statistiche richieste. Mettete le stesse statistiche in un dizionario di dizionari e salvatelo in JSON con <code>json.dump(..., indent=2, ensure_ascii=False)</code>.</li>
 <li>Alla fine stampate il numero di righe scartate e il nome del file JSON salvato.</li>
 </ul>
 <hr>
 <h3>Challenge · Mercati e finanza — Il portafoglio: prezzi da file (<code>ch_mercati.py</code>)</h3>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-ch_mercati" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>chiusure.csv</code> contiene i prezzi di chiusura di <code>ENRG</code>, <code>BANK</code> e <code>TECH</code> dal 1° al 4 dicembre, copiati a mano. In due righe il prezzo manca o non è un numero.</li>
@@ -608,6 +497,7 @@ Righe scartate: <span class="mi">2.</span> Salvato titoli.json</code></pre>
 </ul>
 <hr>
 <h3>Challenge · Sport — Il campionato: tempi da file (<code>ch_sport.py</code>)</h3>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-ch_sport" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>giri.csv</code> contiene i tempi sul giro, in secondi, dei primi tre giri di una gara, scritti dal cronometrista. In due righe al posto del tempo c'è una nota (<code>SC</code> per safety car, <code>box</code> per il pit stop).</li>
@@ -642,6 +532,7 @@ Righe scartate: <span class="mi">2.</span> Salvato piloti.json</code></pre>
 </ul>
 <hr>
 <h3>Challenge · Imprese e marketing — Il negozio online: ordini da file (<code>ch_negozio.py</code>)</h3>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-ch_negozio" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>ordini.csv</code> contiene gli ordini di una settimana: cliente, città e importo in euro. In due righe l'importo manca o non è un numero.</li>
@@ -676,6 +567,7 @@ Righe scartate: <span class="mi">2.</span> Salvato citta.json</code></pre>
 </ul>
 <hr>
 <h3>Challenge · Salute e scienza — Lo studio clinico: misure da file (<code>ch_salute.py</code>)</h3>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-ch_salute" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>pressione.csv</code> contiene la pressione sistolica (mmHg) dei pazienti dello studio alla fine del trattamento. Per due pazienti la misura manca.</li>
@@ -708,6 +600,7 @@ Righe scartate: <span class="mi">2.</span> Salvato gruppi.json</code></pre>
 </ul>
 <hr>
 <h3>Challenge · Caso e probabilità — Il tavolo da gioco: lanci da file (<code>ch_probabilita.py</code>)</h3>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-ch_probabilita" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Il file <code>lanci.csv</code> contiene i lanci di un dado fatti da tre giocatori e registrati a mano. In due righe il risultato manca o è scritto in lettere.</li>
@@ -750,6 +643,245 @@ Righe scartate: <span class="mi">2.</span> Salvato giocatori.json</code></pre>
 <li>In <code>config_soglia.py</code>, cosa succede se nel JSON scrivete <code>"soglia": "27"</code>, tra virgolette? Quale eccezione si ottiene?</li>
 <li>Nella sfida, perché <code>float("38,5")</code> dà errore e come lo si evita?</li>
 </ol>
+<hr>
+<h2>Esercizi extra</h2>
+<p>Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.</p>
+<hr>
+<h2>Extra 1 — Le parole più usate (<code>parole_frequenti.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-parole_frequenti" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Usate lo stesso <code>commenti.txt</code>. Scrivete una funzione <code>parole_del_file(percorso: Path) -> list[str]</code> che legge il file e restituisce tutte le parole in minuscolo.</li>
+<li>Togliete la punteggiatura attaccata alle parole con <code>parola.strip(".,;:!?")</code>.</li>
+<li>Stampate il numero di parole e di parole distinte (<code>set</code>).</li>
+<li>Tenete le parole di almeno 5 lettere, contatele con <code>Counter</code> e stampate le 3 più frequenti con <code>most_common(3)</code>.</li>
+</ol>
+<p><strong>File <code>commenti.txt</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>Lezioni chiare, esempi utili.
+Molto lavoro a casa, poco tempo per gli esercizi.
+Le slide sono utili, il ritmo è veloce.
+
+Vorrei più esempi con dati reali.
+Laboratori utili, ma le aule sono troppo affollate.
+Esercizi utili per capire meglio.
+Più esercizi <span class="kw">in</span> aula e meno teoria.</code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Parole: <span class="mi">47</span>, distinte: <span class="mi">37</span>
+Parole di almeno <span class="mi">5</span> lettere: <span class="mi">25</span>
+utili: <span class="mi">4</span>
+esercizi: <span class="mi">3</span>
+esempi: <span class="mi">2</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>Utili,</code> e <code>utili.</code> contano come la stessa parola</li>
+<li>con la riga <code>Grazie.</code> in più → <code>Parole: 48, distinte: 38</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+PUNTEGGIATURA: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;.,;:!?&quot;</span>
+LUNGHEZZA_MINIMA: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>
+
+<span class="kw">def</span> <span class="fn">parole_del_file</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Parole del file in minuscolo, senza punteggiatura.&quot;&quot;&quot;</span>
+    parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> f:
+            <span class="kw">for</span> parola <span class="kw">in</span> riga.lower().split():
+                parole.append(parola.strip(PUNTEGGIATURA))
+    <span class="kw">return</span> parole
+
+tutte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> parole_del_file(Path(<span class="st">&quot;commenti.txt&quot;</span>))
+lunghe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [p <span class="kw">for</span> p <span class="kw">in</span> tutte
+                     <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span><span class="op">=</span> LUNGHEZZA_MINIMA]
+conteggi: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(lunghe)
+
+<span class="nb">print</span>(<span class="st">f&quot;Parole: {len(tutte)}, distinte: {len(set(tutte))}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Parole di almeno {LUNGHEZZA_MINIMA} lettere: {len(lunghe)}&quot;</span>)
+<span class="kw">for</span> parola, volte <span class="kw">in</span> conteggi.most_common(<span class="mi">3</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{parola}: {volte}&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 2 — Il verbale d'esame (<code>verbale.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-verbale" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Leggete di nuovo <code>appello.csv</code> e ordinate gli studenti per cognome con <code>sorted(..., key=lambda s: s["cognome"])</code>.</li>
+<li>Aprite <code>verbale.txt</code> in scrittura (<code>"w"</code>) e scrivete con <code>f.write()</code> un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate <code>\n</code> alla fine di ogni riga.</li>
+<li>Dopo aver chiuso il file, rileggetelo con <code>Path("verbale.txt").read_text(encoding="utf-8")</code> e stampatelo.</li>
+</ol>
+<p><strong>File <code>appello.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>matricola;cognome;nome;voto
+<span class="mi">2101234</span>;Rossi;Anna;<span class="mi">28</span>
+<span class="mi">2101567</span>;Bianchi;Marco;<span class="mi">17</span>
+<span class="mi">2102001</span>;Verdi;Giulia;<span class="mi">30</span>
+<span class="mi">2102345</span>;Russo;Luca;<span class="mi">24</span>
+<span class="mi">2102890</span>;Ferrari;Sara;<span class="mi">15</span>
+<span class="mi">2103112</span>;Esposito;Paolo;<span class="mi">21</span>
+<span class="mi">2103456</span>;Romano;Elena;<span class="mi">27</span>
+<span class="mi">2103789</span>;Gallo;Davide;<span class="mi">19</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Verbale dell<span class="st">&#x27;appello
+2101567 Bianchi Marco: 17, respinto
+2103112 Esposito Paolo: 21, promosso
+2102890 Ferrari Sara: 15, respinto
+2103789 Gallo Davide: 19, promosso
+2103456 Romano Elena: 27, promosso
+2101234 Rossi Anna: 28, promosso
+2102345 Russo Luca: 24, promosso
+2102001 Verdi Giulia: 30, promosso
+Promossi: 6 su 8</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>eseguite il programma due volte: <code>verbale.txt</code> viene riscritto da capo, le righe non si ripetono</li>
+<li>con la riga <code>2104000;Conti;Marta;18</code> → Conti è la seconda, <code>Promossi: 7 su 9</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+VOTO_MINIMO: <span class="nb">int</span> <span class="op">=</span> <span class="mi">18</span>
+
+<span class="kw">with</span> <span class="nb">open</span>(Path(<span class="st">&quot;appello.csv&quot;</span>), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> <span class="nb">list</span>(
+        csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>))
+
+ordinati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
+    studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;cognome&quot;</span>])
+promossi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+verbale: Path <span class="op">=</span> Path(<span class="st">&quot;verbale.txt&quot;</span>)
+<span class="kw">with</span> <span class="nb">open</span>(verbale, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">&quot;Verbale dell&#x27;appello\n&quot;</span>)
+    <span class="kw">for</span> s <span class="kw">in</span> ordinati:
+        voto: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(s[<span class="st">&quot;voto&quot;</span>])
+        esito: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;respinto&quot;</span>
+        <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> VOTO_MINIMO:
+            esito <span class="op">=</span> <span class="st">&quot;promosso&quot;</span>
+            promossi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        f.write(<span class="st">f&quot;{s[&#x27;matricola&#x27;]} {s[&#x27;cognome&#x27;]} {s[&#x27;nome&#x27;]}: &quot;</span>
+                <span class="st">f&quot;{voto}, {esito}\n&quot;</span>)
+    f.write(<span class="st">f&quot;Promossi: {promossi} su {len(studenti)}\n&quot;</span>)
+
+<span class="nb">print</span>(verbale.read_text(encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>), end<span class="op">=</span><span class="st">&quot;&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 3 — Il registro delle spese (<code>spese.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-spese" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>spese.csv</code> è un registro delle spese di uno studente fuori sede.</li>
+<li>Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (<code>ValueError</code>) stampate un messaggio e non scrivete niente.</li>
+<li>Altrimenti aggiungete la spesa in fondo al file: <code>open(..., "a", encoding="utf-8", newline="")</code> e <code>csv.writer(f, delimiter=";").writerow([...])</code>.</li>
+<li>Rileggete tutto il file e sommate gli importi per categoria con un <code>defaultdict(float)</code>. Stampate le categorie dalla più costosa e il totale, con due decimali.</li>
+</ol>
+<p><strong>File <code>spese.csv</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>data;categoria;importo
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">01</span>;affitto;<span class="mi">350.00</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">02</span>;spesa;<span class="mi">42.50</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">03</span>;trasporti;<span class="mi">25.00</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">05</span>;spesa;<span class="mi">18.20</span>
+<span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">06</span>;libri;<span class="mi">39.90</span></code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Data (aaaa<span class="op">-</span>mm<span class="op">-</span>gg): <span class="mi">2026</span><span class="op">-</span><span class="mi">12</span><span class="op">-</span><span class="mi">07</span>
+Categoria: Spesa
+Importo: <span class="mi">12.30</span>
+affitto: <span class="mi">350.00</span> EUR
+spesa: <span class="mi">73.00</span> EUR
+libri: <span class="mi">39.90</span> EUR
+trasporti: <span class="mi">25.00</span> EUR
+Totale: <span class="mi">487.90</span> EUR</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>sul file originale, <code>2026-12-07</code>, <code>cinema</code>, <code>8.50</code> → compare <code>cinema: 8.50 EUR</code>, totale <code>484.10 EUR</code></li>
+<li>importo <code>dieci</code> → <code>Importo non valido: spesa non registrata</code> e il file non cambia</li>
+<li>ogni esecuzione aggiunge una riga: aprite <code>spese.csv</code> e controllate</li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+SPESE: Path <span class="op">=</span> Path(<span class="st">&quot;spese.csv&quot;</span>)
+
+data: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Data (aaaa-mm-gg): &quot;</span>)
+categoria: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Categoria: &quot;</span>).strip().lower()
+<span class="kw">try</span>:
+    importo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="nb">input</span>(<span class="st">&quot;Importo: &quot;</span>))
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Importo non valido: spesa non registrata&quot;</span>)
+<span class="kw">else</span>:
+    <span class="kw">with</span> <span class="nb">open</span>(SPESE, <span class="st">&quot;a&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+        csv.writer(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>).writerow(
+            [data, categoria, <span class="st">f&quot;{importo:.2f}&quot;</span>])
+
+totali: defaultdict[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> defaultdict(<span class="nb">float</span>)
+<span class="kw">with</span> <span class="nb">open</span>(SPESE, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> riga <span class="kw">in</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>):
+        totali[riga[<span class="st">&quot;categoria&quot;</span>]] <span class="op">+</span><span class="op">=</span> <span class="nb">float</span>(riga[<span class="st">&quot;importo&quot;</span>])
+
+<span class="kw">for</span> cat, totale <span class="kw">in</span> <span class="nb">sorted</span>(totali.items(),
+                          key<span class="op">=</span><span class="kw">lambda</span> c: c[<span class="mi">1</span>], reverse<span class="op">=</span><span class="kw">True</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{cat}: {totale:.2f} EUR&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Totale: {sum(totali.values()):.2f} EUR&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 4 — Configurazione in JSON (<code>config_soglia.py</code>)</h2>
+<p><a href="../../codice/L05_file_dati/esercizi.html#sol-config_soglia" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Il file <code>config.json</code> dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è <code>appello.csv</code> dell'esercizio 2.</li>
+<li>Scrivete una funzione <code>sopra_soglia(file: str, colonna: str, soglia: int) -> list[str]</code> che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.</li>
+<li>In un solo <code>try</code> caricate la configurazione e chiamate la funzione. Gestite con <code>except</code> separati: <code>FileNotFoundError</code> (stampate <code>e.filename</code>), <code>json.JSONDecodeError</code> (stampate <code>e.lineno</code>), <code>KeyError</code> e <code>ValueError</code>.</li>
+<li>Nel blocco <code>else</code> stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (<code>", ".join(...)</code>).</li>
+</ol>
+<p><strong>File <code>config.json</code></strong> (createlo nella cartella del programma)</p>
+<pre><code>{
+  <span class="st">&quot;file&quot;</span>: <span class="st">&quot;appello.csv&quot;</span>,
+  <span class="st">&quot;colonna&quot;</span>: <span class="st">&quot;voto&quot;</span>,
+  <span class="st">&quot;soglia&quot;</span>: <span class="mi">27</span>
+}</code></pre>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>File: appello.csv, soglia: <span class="mi">27</span>
+Sopra soglia: <span class="mi">3</span>
+Romano, Rossi, Verdi</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>"soglia": 18</code> → 6 studenti, da <code>Esposito</code> a <code>Verdi</code></li>
+<li>togliete la riga di <code>"soglia"</code> → <code>Chiave mancante: 'soglia'</code>; <code>"colonna": "punteggio"</code> → <code>Chiave mancante: 'punteggio'</code></li>
+<li><code>"file": "appello2.csv"</code> → <code>File non trovato: appello2.csv</code>; rinominate <code>config.json</code> → <code>File non trovato: config.json</code></li>
+<li>togliete la virgola dopo <code>"voto"</code> → <code>config.json non valido alla riga 4</code>; <code>"colonna": "cognome"</code> → la colonna non contiene numeri</li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">import</span> csv
+<span class="kw">import</span> json
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">sopra_soglia</span>(<span class="fn">file</span>: <span class="nb">str</span>, colonna: <span class="nb">str</span>,
+                 soglia: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Cognomi degli studenti con valore &gt;= soglia.&quot;&quot;&quot;</span>
+    cognomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(Path(file), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>):
+            <span class="kw">if</span> <span class="nb">int</span>(riga[colonna]) <span class="op">&gt;</span><span class="op">=</span> soglia:
+                cognomi.append(riga[<span class="st">&quot;cognome&quot;</span>])
+    <span class="kw">return</span> cognomi
+
+<span class="kw">try</span>:
+    <span class="kw">with</span> <span class="nb">open</span>(Path(<span class="st">&quot;config.json&quot;</span>), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        config: <span class="nb">dict</span> <span class="op">=</span> json.load(f)
+    cognomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> sopra_soglia(
+        config[<span class="st">&quot;file&quot;</span>], config[<span class="st">&quot;colonna&quot;</span>], config[<span class="st">&quot;soglia&quot;</span>])
+<span class="kw">except</span> <span class="nb">FileNotFoundError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;File non trovato: {e.filename}&quot;</span>)
+<span class="kw">except</span> json.JSONDecodeError <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;config.json non valido alla riga {e.lineno}&quot;</span>)
+<span class="kw">except</span> <span class="nb">KeyError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;Chiave mancante: {e}&quot;</span>)
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;La colonna scelta non contiene numeri interi&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;File: {config[&#x27;file&#x27;]}, soglia: {config[&#x27;soglia&#x27;]}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Sopra soglia: {len(cognomi)}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;, &quot;</span>.join(<span class="nb">sorted</span>(cognomi)))</code></pre>
 <nav class="bottom-nav"><span><a href="../frontali/T16_programmazione_oggetti.html">← T16</a></span><span><a href="../../index.html">Home</a></span><span><a href="../frontali/T17_numpy_pandas_visualizzazione.html">T17 →</a></span></nav>
 </body>
 </html>

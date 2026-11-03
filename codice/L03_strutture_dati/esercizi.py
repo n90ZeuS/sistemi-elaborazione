@@ -28,42 +28,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 2: la coda in mensa — coda_mensa.py
+# ESERCIZIO 2: come arrivate in aula — sondaggio.py
 # ============================================================================
-print("--- Esercizio 2: La coda in mensa ---")
-coda: list[str] = ["Anna", "Bruno", "Carla"]
-eventi: list[str] = ["arriva Davide", "servito", "arriva Elena",
-                     "esce Bruno", "davanti Franco Elena",
-                     "servito", "esce Zeno"]
-serviti: list[str] = []
-
-for evento in eventi:
-    parti: list[str] = evento.split()
-    azione: str = parti[0]
-    if azione == "arriva":
-        coda.append(parti[1])
-    elif azione == "servito":
-        if len(coda) > 0:
-            serviti.append(coda.pop(0))
-        else:
-            print("Nessuno da servire")
-    elif azione == "esce" and parti[1] in coda:
-        coda.remove(parti[1])
-    elif azione == "davanti" and parti[2] in coda:
-        coda.insert(coda.index(parti[2]), parti[1])
-    else:
-        print(f"Evento non valido: {evento}")
-    print(f"{evento} -> {coda}")
-
-print(f"Serviti: {serviti}")
-print(f"Ancora in coda: {len(coda)}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 3: come arrivate in aula — sondaggio.py
-# ============================================================================
-print("--- Esercizio 3: Come arrivate in aula ---")
+print("--- Esercizio 2: Come arrivate in aula ---")
 from collections import Counter
 
 testo: str = input("Risposte separate da virgole: ")
@@ -81,69 +48,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 4: chi segue cosa — tre_corsi.py
+# ESERCIZIO 3: la sessione invernale — sessione.py
 # ============================================================================
-print("--- Esercizio 4: Chi segue cosa ---")
-from collections import Counter
-
-statistica: set[str] = {"Anna", "Bruno", "Chiara", "Davide",
-                        "Elisa", "Fabio", "Giulia"}
-analisi: set[str] = {"Anna", "Chiara", "Davide", "Hana",
-                     "Ivan", "Giulia"}
-informatica: set[str] = {"Bruno", "Chiara", "Giulia", "Ivan",
-                         "Luca"}
-
-almeno_uno: set[str] = statistica | analisi | informatica
-tutti_tre: set[str] = statistica & analisi & informatica
-solo_stat: set[str] = statistica - analisi - informatica
-stat_an: set[str] = (statistica & analisi) - informatica
-
-presenze: Counter[str] = Counter(
-    list(statistica) + list(analisi) + list(informatica))
-un_corso: list[str] = [n for n in presenze if presenze[n] == 1]
-
-print(f"Studenti diversi: {len(almeno_uno)}")
-print(f"Tutti e tre i corsi: {sorted(tutti_tre)}")
-print(f"Solo Statistica: {sorted(solo_stat)}")
-print(f"Statistica e Analisi, non Informatica: {sorted(stat_an)}")
-print(f"Un corso soltanto: {sorted(un_corso)}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 5: il libretto — libretto.py
-# ============================================================================
-print("--- Esercizio 5: Il libretto ---")
-libretto: dict[str, tuple[int, int]] = {
-    "Analisi 1": (24, 9),
-    "Statistica 1": (28, 9),
-    "Informatica": (30, 6),
-    "Economia politica": (22, 9),
-    "Algebra lineare": (27, 6),
-}
-
-somma_voti: int = 0
-somma_pesata: int = 0
-cfu_totali: int = 0
-for esame, (voto, cfu) in libretto.items():
-    print(f"{esame}: {voto} ({cfu} CFU)")
-    somma_voti += voto
-    somma_pesata += voto * cfu
-    cfu_totali += cfu
-
-media: float = somma_voti / len(libretto)
-ponderata: float = somma_pesata / cfu_totali
-print(f"CFU totali: {cfu_totali}")
-print(f"Media aritmetica: {media:.2f}")
-print(f"Media ponderata: {ponderata:.2f}")
-print(f"Base di laurea: {ponderata * 110 / 30:.1f}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 6: la sessione invernale — sessione.py
-# ============================================================================
-print("--- Esercizio 6: La sessione invernale ---")
+print("--- Esercizio 3: La sessione invernale ---")
 from collections import defaultdict
 
 esiti: list[tuple[str, str, int]] = [
@@ -174,36 +81,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 7: scuola di provenienza ed esito — contingenza.py
+# ESERCIZIO 4: ore di studio — descrittive.py
 # ============================================================================
-print("--- Esercizio 7: Scuola di provenienza ed esito ---")
-from collections import Counter
-
-scuola: list[str] = ["liceo", "tecnico", "liceo", "altro", "liceo",
-                     "tecnico", "tecnico", "liceo", "altro",
-                     "tecnico", "liceo", "tecnico"]
-superato: list[bool] = [True, False, True, False, True, True,
-                        False, False, True, False, True, True]
-
-tabella: Counter[tuple[str, bool]] = Counter(zip(scuola, superato))
-per_scuola: Counter[str] = Counter(scuola)
-
-for s in sorted(per_scuola):
-    si: int = tabella[(s, True)]
-    no: int = tabella[(s, False)]
-    print(f"{s}: superato {si}, non superato {no}, "
-          f"percentuale {si / per_scuola[s]:.1%}")
-
-totale_si: int = superato.count(True)
-print(f"Totale: {totale_si} su {len(superato)} "
-      f"({totale_si / len(superato):.1%})")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 8: ore di studio — descrittive.py
-# ============================================================================
-print("--- Esercizio 8: Ore di studio ---")
+print("--- Esercizio 4: Ore di studio ---")
 def descrittive(valori: list[float]) -> tuple[float, float, float]:
     """Restituisce media, mediana e deviazione standard."""
     n: int = len(valori)
@@ -441,3 +321,123 @@ print()
 print("=" * 60)
 print("Fine degli esercizi del laboratorio 03")
 print("=" * 60)
+
+# ============================================================================
+# EXTRA 1: la coda in mensa — coda_mensa.py
+# ============================================================================
+print("--- Extra 1: La coda in mensa ---")
+coda: list[str] = ["Anna", "Bruno", "Carla"]
+eventi: list[str] = ["arriva Davide", "servito", "arriva Elena",
+                     "esce Bruno", "davanti Franco Elena",
+                     "servito", "esce Zeno"]
+serviti: list[str] = []
+
+for evento in eventi:
+    parti: list[str] = evento.split()
+    azione: str = parti[0]
+    if azione == "arriva":
+        coda.append(parti[1])
+    elif azione == "servito":
+        if len(coda) > 0:
+            serviti.append(coda.pop(0))
+        else:
+            print("Nessuno da servire")
+    elif azione == "esce" and parti[1] in coda:
+        coda.remove(parti[1])
+    elif azione == "davanti" and parti[2] in coda:
+        coda.insert(coda.index(parti[2]), parti[1])
+    else:
+        print(f"Evento non valido: {evento}")
+    print(f"{evento} -> {coda}")
+
+print(f"Serviti: {serviti}")
+print(f"Ancora in coda: {len(coda)}")
+print()
+
+
+# ============================================================================
+# EXTRA 2: chi segue cosa — tre_corsi.py
+# ============================================================================
+print("--- Extra 2: Chi segue cosa ---")
+from collections import Counter
+
+statistica: set[str] = {"Anna", "Bruno", "Chiara", "Davide",
+                        "Elisa", "Fabio", "Giulia"}
+analisi: set[str] = {"Anna", "Chiara", "Davide", "Hana",
+                     "Ivan", "Giulia"}
+informatica: set[str] = {"Bruno", "Chiara", "Giulia", "Ivan",
+                         "Luca"}
+
+almeno_uno: set[str] = statistica | analisi | informatica
+tutti_tre: set[str] = statistica & analisi & informatica
+solo_stat: set[str] = statistica - analisi - informatica
+stat_an: set[str] = (statistica & analisi) - informatica
+
+presenze: Counter[str] = Counter(
+    list(statistica) + list(analisi) + list(informatica))
+un_corso: list[str] = [n for n in presenze if presenze[n] == 1]
+
+print(f"Studenti diversi: {len(almeno_uno)}")
+print(f"Tutti e tre i corsi: {sorted(tutti_tre)}")
+print(f"Solo Statistica: {sorted(solo_stat)}")
+print(f"Statistica e Analisi, non Informatica: {sorted(stat_an)}")
+print(f"Un corso soltanto: {sorted(un_corso)}")
+print()
+
+
+# ============================================================================
+# EXTRA 3: il libretto — libretto.py
+# ============================================================================
+print("--- Extra 3: Il libretto ---")
+libretto: dict[str, tuple[int, int]] = {
+    "Analisi 1": (24, 9),
+    "Statistica 1": (28, 9),
+    "Informatica": (30, 6),
+    "Economia politica": (22, 9),
+    "Algebra lineare": (27, 6),
+}
+
+somma_voti: int = 0
+somma_pesata: int = 0
+cfu_totali: int = 0
+for esame, (voto, cfu) in libretto.items():
+    print(f"{esame}: {voto} ({cfu} CFU)")
+    somma_voti += voto
+    somma_pesata += voto * cfu
+    cfu_totali += cfu
+
+media: float = somma_voti / len(libretto)
+ponderata: float = somma_pesata / cfu_totali
+print(f"CFU totali: {cfu_totali}")
+print(f"Media aritmetica: {media:.2f}")
+print(f"Media ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {ponderata * 110 / 30:.1f}")
+print()
+
+
+# ============================================================================
+# EXTRA 4: scuola di provenienza ed esito — contingenza.py
+# ============================================================================
+print("--- Extra 4: Scuola di provenienza ed esito ---")
+from collections import Counter
+
+scuola: list[str] = ["liceo", "tecnico", "liceo", "altro", "liceo",
+                     "tecnico", "tecnico", "liceo", "altro",
+                     "tecnico", "liceo", "tecnico"]
+superato: list[bool] = [True, False, True, False, True, True,
+                        False, False, True, False, True, True]
+
+tabella: Counter[tuple[str, bool]] = Counter(zip(scuola, superato))
+per_scuola: Counter[str] = Counter(scuola)
+
+for s in sorted(per_scuola):
+    si: int = tabella[(s, True)]
+    no: int = tabella[(s, False)]
+    print(f"{s}: superato {si}, non superato {no}, "
+          f"percentuale {si / per_scuola[s]:.1%}")
+
+totale_si: int = superato.count(True)
+print(f"Totale: {totale_si} su {len(superato)} "
+      f"({totale_si / len(superato):.1%})")
+print()
+

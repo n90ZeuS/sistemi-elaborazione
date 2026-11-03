@@ -56,27 +56,7 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 3: prezzo con IVA — iva.py
-# ============================================================================
-print("--- Esercizio 3: Prezzo con IVA ---")
-
-ALIQUOTA_IVA: float = 0.22
-
-# prezzo: float = float(input("Prezzo senza IVA (euro): "))
-prezzo: float = 49.99
-
-iva: float = prezzo * ALIQUOTA_IVA
-totale: float = prezzo + iva
-
-print(f"  Prezzo: {prezzo:.2f} EUR")                    # atteso: 49.99 EUR
-print(f"  IVA: {iva:.2f} EUR ({ALIQUOTA_IVA:.0%})")     # atteso: 11.00 EUR (22%)
-print(f"  Totale: {totale:.2f} EUR")                    # atteso: 60.99 EUR
-# Altri casi da provare: 100 -> IVA 22.00, totale 122.00; 10 -> 2.20, 12.20
-print()
-
-
-# ============================================================================
-# ESERCIZIO 4: calcolo IMC con classificazione — imc.py
+# ESERCIZIO 3: calcolo IMC con classificazione — imc.py
 # ============================================================================
 # IMC = peso (kg) / altezza (m) ** 2
 # Fasce OMS:
@@ -85,7 +65,7 @@ print()
 #   25 <= IMC < 30     -> "Sovrappeso"
 #   IMC >= 30          -> "Obesità"
 # Validazione: peso e altezza positivi, altezza non oltre 2.50 m.
-print("--- Esercizio 4: Calcolo IMC ---")
+print("--- Esercizio 3: Calcolo IMC ---")
 
 # peso_kg: float = float(input("Peso (kg): "))
 # altezza_m: float = float(input("Altezza (m): "))
@@ -120,53 +100,7 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 5: simulazione bancomat — bancomat.py
-# ============================================================================
-# Saldo iniziale 1000.00 EUR, costante nel codice.
-# Menu: D = deposito, P = prelievo, S = saldo (maiuscole o minuscole).
-# Errori da gestire: operazione non riconosciuta, importo negativo o zero,
-# prelievo superiore al saldo.
-print("--- Esercizio 5: Simulazione bancomat ---")
-
-saldo: float = 1000.00
-
-print("  === BANCOMAT ===")
-print(f"  Saldo attuale: {saldo:.2f} EUR")
-
-# operazione: str = input("Operazione (D=Deposito, P=Prelievo, S=Saldo): ").upper()
-operazione: str = "p".upper()
-
-if operazione == "S":
-    print(f"  Saldo disponibile: {saldo:.2f} EUR")
-elif operazione == "D" or operazione == "P":
-    # importo: float = float(input("Importo: "))
-    importo: float = 250.0
-
-    if importo <= 0:
-        print("  Errore: l'importo deve essere positivo")
-    elif operazione == "D":
-        saldo = saldo + importo
-        print(f"  Deposito di {importo:.2f} EUR effettuato.")
-        print(f"  Nuovo saldo: {saldo:.2f} EUR")
-    elif importo > saldo:
-        print(f"  Errore: saldo insufficiente ({saldo:.2f} EUR disponibili)")
-    else:
-        saldo = saldo - importo
-        print(f"  Prelievo di {importo:.2f} EUR effettuato.")
-        print(f"  Nuovo saldo: {saldo:.2f} EUR")
-else:
-    print(f"  Errore: operazione '{operazione}' non riconosciuta")
-# atteso: Prelievo di 250.00 EUR effettuato. Nuovo saldo: 750.00 EUR
-# Altri casi da provare:
-#   "d", 500   -> Nuovo saldo: 1500.00 EUR
-#   "P", 2000  -> saldo insufficiente
-#   "P", -10   -> importo non positivo
-#   "X"        -> operazione non riconosciuta
-print()
-
-
-# ============================================================================
-# ESERCIZIO 6 (sfida): convertitore e classificatore — sfida_temperatura.py
+# SFIDA: convertitore e classificatore — sfida_temperatura.py
 # ============================================================================
 # Convertire Celsius in Fahrenheit e classificare la percezione:
 #   C <= -10        -> Gelido
@@ -210,11 +144,77 @@ print()
 
 
 # ============================================================================
+# EXTRA 1: prezzo con IVA — iva.py
+# ============================================================================
+print("--- Extra 1: Prezzo con IVA ---")
+
+ALIQUOTA_IVA: float = 0.22
+
+# prezzo: float = float(input("Prezzo senza IVA (euro): "))
+prezzo: float = 49.99
+
+iva: float = prezzo * ALIQUOTA_IVA
+totale: float = prezzo + iva
+
+print(f"  Prezzo: {prezzo:.2f} EUR")                    # atteso: 49.99 EUR
+print(f"  IVA: {iva:.2f} EUR ({ALIQUOTA_IVA:.0%})")     # atteso: 11.00 EUR (22%)
+print(f"  Totale: {totale:.2f} EUR")                    # atteso: 60.99 EUR
+# Altri casi da provare: 100 -> IVA 22.00, totale 122.00; 10 -> 2.20, 12.20
+print()
+
+
+# ============================================================================
+# EXTRA 2: simulazione bancomat — bancomat.py
+# ============================================================================
+# Saldo iniziale 1000.00 EUR, costante nel codice.
+# Menu: D = deposito, P = prelievo, S = saldo (maiuscole o minuscole).
+# Errori da gestire: operazione non riconosciuta, importo negativo o zero,
+# prelievo superiore al saldo.
+print("--- Extra 2: Simulazione bancomat ---")
+
+saldo: float = 1000.00
+
+print("  === BANCOMAT ===")
+print(f"  Saldo attuale: {saldo:.2f} EUR")
+
+# operazione: str = input("Operazione (D=Deposito, P=Prelievo, S=Saldo): ").upper()
+operazione: str = "p".upper()
+
+if operazione == "S":
+    print(f"  Saldo disponibile: {saldo:.2f} EUR")
+elif operazione == "D" or operazione == "P":
+    # importo: float = float(input("Importo: "))
+    importo: float = 250.0
+
+    if importo <= 0:
+        print("  Errore: l'importo deve essere positivo")
+    elif operazione == "D":
+        saldo = saldo + importo
+        print(f"  Deposito di {importo:.2f} EUR effettuato.")
+        print(f"  Nuovo saldo: {saldo:.2f} EUR")
+    elif importo > saldo:
+        print(f"  Errore: saldo insufficiente ({saldo:.2f} EUR disponibili)")
+    else:
+        saldo = saldo - importo
+        print(f"  Prelievo di {importo:.2f} EUR effettuato.")
+        print(f"  Nuovo saldo: {saldo:.2f} EUR")
+else:
+    print(f"  Errore: operazione '{operazione}' non riconosciuta")
+# atteso: Prelievo di 250.00 EUR effettuato. Nuovo saldo: 750.00 EUR
+# Altri casi da provare:
+#   "d", 500   -> Nuovo saldo: 1500.00 EUR
+#   "P", 2000  -> saldo insufficiente
+#   "P", -10   -> importo non positivo
+#   "X"        -> operazione non riconosciuta
+print()
+
+
+# ============================================================================
 # ESERCIZI AGGIUNTIVI
 # ============================================================================
 
 # ============================================================================
-# ESERCIZIO 7: calcolo dell'interesse composto
+# ESERCIZIO AGGIUNTIVO A: calcolo dell'interesse composto
 # ============================================================================
 # Formula: A = P * (1 + r/n) ** (n*t)
 # P = capitale iniziale, r = tasso annuo, n = composizioni/anno, t = anni
@@ -236,7 +236,7 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 8: classificazione di un triangolo per lati
+# ESERCIZIO AGGIUNTIVO B: classificazione di un triangolo per lati
 # ============================================================================
 # Dato un triangolo con lati a, b, c:
 # - Non valido: un lato non positivo, oppure un lato >= somma degli altri due
@@ -272,7 +272,7 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 9: calcolatore di tasse semplificato (a scaglioni)
+# ESERCIZIO AGGIUNTIVO C: calcolatore di tasse semplificato (a scaglioni)
 # ============================================================================
 # Sistema a scaglioni IRPEF semplificato:
 #   Fino a 15.000      -> 23%

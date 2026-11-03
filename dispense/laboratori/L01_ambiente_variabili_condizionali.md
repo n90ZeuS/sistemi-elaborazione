@@ -4,22 +4,21 @@
 
 Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T10.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T10.
 
 | # | File | Esercizio |
 |---|---|---|
 | 0 | `saluto.py` | Preparazione |
 | 1 | `operatori.py` | Operatori aritmetici |
 | 2 | `temperatura.py` | Conversione di temperatura |
-| 3 | `iva.py` | Prezzo con IVA |
-| 4 | `imc.py` | Indice di massa corporea |
-| 5 | `bancomat.py` | Bancomat |
+| 3 | `imc.py` | Indice di massa corporea |
 | Sfida | `sfida_temperatura.py` | Report di temperatura |
+| Extra 1 | `iva.py` | Prezzo con IVA (a casa) |
+| Extra 2 | `bancomat.py` | Bancomat (a casa) |
 
 ---
 
 ## Esercizio 0 — Preparazione (`saluto.py`)
-
 1. Aprite il terminale e controllate la versione di Python: `python3 --version` (su Windows: `python --version`).
 2. Create una cartella `lab01` e apritela in VS Code (File → Apri cartella).
 3. Create il file `saluto.py` con il codice qui accanto.
@@ -62,6 +61,7 @@ else:
 
 ## Esercizio 1 — Operatori aritmetici (`operatori.py`)
 
+[Soluzione →](../../codice/L01_ambiente/esercizi.html#sol-operatori)
 **Consegna**
 
 1. Assegnate `a = 17` e `b = 5` (due variabili `int`, senza `input()`).
@@ -89,6 +89,7 @@ else:
 
 ## Esercizio 2 — Conversione di temperatura (`temperatura.py`)
 
+[Soluzione →](../../codice/L01_ambiente/esercizi.html#sol-temperatura)
 **Consegna**
 
 1. Chiedete all'utente una temperatura in gradi Celsius.
@@ -111,34 +112,9 @@ Temperatura in Celsius: 25
 
 ---
 
-## Esercizio 3 — Prezzo con IVA (`iva.py`)
+## Esercizio 3 — Indice di massa corporea (`imc.py`)
 
-**Consegna**
-
-1. Scrivete l'aliquota in una costante: `ALIQUOTA_IVA: float = 0.22`.
-2. Chiedete il prezzo di un prodotto senza IVA.
-3. Calcolate l'IVA e il totale.
-4. Stampate prezzo, IVA e totale con due decimali e l'aliquota come percentuale.
-
-**Esempio di esecuzione**
-
-```
-Prezzo senza IVA (euro): 49.99
-Prezzo: 49.99 EUR
-IVA: 11.00 EUR (22%)
-Totale: 60.99 EUR
-```
-
-**Provate anche**
-
-- `100` → IVA `22.00`, totale `122.00`
-- `10` → IVA `2.20`, totale `12.20`
-- con `ALIQUOTA_IVA = 0.10` e `49.99` → IVA `5.00 EUR (10%)`
-
----
-
-## Esercizio 4 — Indice di massa corporea (`imc.py`)
-
+[Soluzione →](../../codice/L01_ambiente/esercizi.html#sol-imc)
 **Consegna**
 
 1. Chiedete peso (kg) e altezza (m).
@@ -169,37 +145,9 @@ IMC: 23.5 — Normopeso
 
 ---
 
-## Esercizio 5 — Bancomat (`bancomat.py`)
-
-**Consegna**
-
-1. Il saldo iniziale è `1000.00` EUR, scritto nel codice. Stampatelo.
-2. Chiedete l'operazione: `D` deposito, `P` prelievo, `S` saldo. Accettate anche le minuscole con `.upper()`.
-3. Con `S` stampate il saldo. Con `D` e `P` chiedete l'importo, aggiornate il saldo e stampatelo.
-4. Gestite tre errori: operazione sconosciuta, importo minore o uguale a zero, prelievo maggiore del saldo.
-
-**Esempio di esecuzione**
-
-```
-=== BANCOMAT ===
-Saldo attuale: 1000.00 EUR
-Operazione (D=Deposito, P=Prelievo, S=Saldo): P
-Importo: 250
-Prelievo di 250.00 EUR effettuato.
-Nuovo saldo: 750.00 EUR
-```
-
-**Provate anche**
-
-- `d`, `500` → nuovo saldo `1500.00`
-- `P`, `2000` → saldo insufficiente
-- `P`, `-10` → importo non valido
-- `X` → operazione non riconosciuta
-
----
-
 ## Sfida — Report di temperatura (`sfida_temperatura.py`)
 
+[Soluzione →](../../codice/L01_ambiente/esercizi.html#sol-sfida_temperatura)
 **Consegna**
 
 1. Chiedete una temperatura in gradi Celsius.
@@ -240,3 +188,129 @@ Percezione: Caldo
 3. In `imc.py`, perché basta scrivere `elif imc < 25` senza controllare anche `imc >= 18.5`?
 4. Cosa stampano `f"{0.075:.1%}"` e `f"{2 / 3:.2f}"`?
 5. In `bancomat.py`, cosa succede con `P` e importo `-10` se manca il controllo sull'importo?
+
+---
+
+## Esercizi extra
+
+Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.
+
+---
+
+## Extra 1 — Prezzo con IVA (`iva.py`)
+
+[Soluzione →](../../codice/L01_ambiente/esercizi.html#sol-iva)
+
+**Consegna**
+
+1. Scrivete l'aliquota in una costante: `ALIQUOTA_IVA: float = 0.22`.
+2. Chiedete il prezzo di un prodotto senza IVA.
+3. Calcolate l'IVA e il totale.
+4. Stampate prezzo, IVA e totale con due decimali e l'aliquota come percentuale.
+
+**Esempio di esecuzione**
+
+```
+Prezzo senza IVA (euro): 49.99
+Prezzo: 49.99 EUR
+IVA: 11.00 EUR (22%)
+Totale: 60.99 EUR
+```
+
+**Provate anche**
+
+- `100` → IVA `22.00`, totale `122.00`
+- `10` → IVA `2.20`, totale `12.20`
+- con `ALIQUOTA_IVA = 0.10` e `49.99` → IVA `5.00 EUR (10%)`
+
+**Soluzione**
+
+```python
+ALIQUOTA_IVA: float = 0.22
+
+# prezzo: float = float(input("Prezzo senza IVA (euro): "))
+prezzo: float = 49.99
+
+iva: float = prezzo * ALIQUOTA_IVA
+totale: float = prezzo + iva
+
+print(f"  Prezzo: {prezzo:.2f} EUR")                    # atteso: 49.99 EUR
+print(f"  IVA: {iva:.2f} EUR ({ALIQUOTA_IVA:.0%})")     # atteso: 11.00 EUR (22%)
+print(f"  Totale: {totale:.2f} EUR")                    # atteso: 60.99 EUR
+# Altri casi da provare: 100 -> IVA 22.00, totale 122.00; 10 -> 2.20, 12.20
+```
+
+---
+
+## Extra 2 — Bancomat (`bancomat.py`)
+
+[Soluzione →](../../codice/L01_ambiente/esercizi.html#sol-bancomat)
+
+**Consegna**
+
+1. Il saldo iniziale è `1000.00` EUR, scritto nel codice. Stampatelo.
+2. Chiedete l'operazione: `D` deposito, `P` prelievo, `S` saldo. Accettate anche le minuscole con `.upper()`.
+3. Con `S` stampate il saldo. Con `D` e `P` chiedete l'importo, aggiornate il saldo e stampatelo.
+4. Gestite tre errori: operazione sconosciuta, importo minore o uguale a zero, prelievo maggiore del saldo.
+
+**Esempio di esecuzione**
+
+```
+=== BANCOMAT ===
+Saldo attuale: 1000.00 EUR
+Operazione (D=Deposito, P=Prelievo, S=Saldo): P
+Importo: 250
+Prelievo di 250.00 EUR effettuato.
+Nuovo saldo: 750.00 EUR
+```
+
+**Provate anche**
+
+- `d`, `500` → nuovo saldo `1500.00`
+- `P`, `2000` → saldo insufficiente
+- `P`, `-10` → importo non valido
+- `X` → operazione non riconosciuta
+
+**Soluzione**
+
+```python
+# Saldo iniziale 1000.00 EUR, costante nel codice.
+# Menu: D = deposito, P = prelievo, S = saldo (maiuscole o minuscole).
+# Errori da gestire: operazione non riconosciuta, importo negativo o zero,
+# prelievo superiore al saldo.
+
+saldo: float = 1000.00
+
+print("  === BANCOMAT ===")
+print(f"  Saldo attuale: {saldo:.2f} EUR")
+
+# operazione: str = input("Operazione (D=Deposito, P=Prelievo, S=Saldo): ").upper()
+operazione: str = "p".upper()
+
+if operazione == "S":
+    print(f"  Saldo disponibile: {saldo:.2f} EUR")
+elif operazione == "D" or operazione == "P":
+    # importo: float = float(input("Importo: "))
+    importo: float = 250.0
+
+    if importo <= 0:
+        print("  Errore: l'importo deve essere positivo")
+    elif operazione == "D":
+        saldo = saldo + importo
+        print(f"  Deposito di {importo:.2f} EUR effettuato.")
+        print(f"  Nuovo saldo: {saldo:.2f} EUR")
+    elif importo > saldo:
+        print(f"  Errore: saldo insufficiente ({saldo:.2f} EUR disponibili)")
+    else:
+        saldo = saldo - importo
+        print(f"  Prelievo di {importo:.2f} EUR effettuato.")
+        print(f"  Nuovo saldo: {saldo:.2f} EUR")
+else:
+    print(f"  Errore: operazione '{operazione}' non riconosciuta")
+# atteso: Prelievo di 250.00 EUR effettuato. Nuovo saldo: 750.00 EUR
+# Altri casi da provare:
+#   "d", 500   -> Nuovo saldo: 1500.00 EUR
+#   "P", 2000  -> saldo insufficiente
+#   "P", -10   -> importo non positivo
+#   "X"        -> operazione non riconosciuta
+```

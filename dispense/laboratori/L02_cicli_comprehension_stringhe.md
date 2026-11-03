@@ -6,19 +6,19 @@
 
 Oggi ci sono solo esercizi, in ordine di difficoltà, a tema Halloween. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli. Le liste non servono: bastano `for`, `while`, `range()` e le stringhe.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida è per chi finisce prima. Le soluzioni le vediamo all'inizio della lezione T11.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. La sfida chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T11.
 
 | # | File | Esercizio |
 |---|---|---|
 | 1 | `epidemia.py` | Epidemia zombie |
 | 2 | `apocalisse.py` | Quando cade la città |
 | 3 | `venerdi17.py` | Venerdì 17 |
-| 4 | `cena_dracula.py` | La cena di Dracula |
-| 5 | `epitaffio.py` | L'epitaffio |
-| 6 | `anagrammi.py` | Anagrammi maledetti |
-| 7 | `bottino.py` | Il bottino della notte |
-| 8 | `login_dracula.py` | Il login di Dracula |
+| 4 | `epitaffio.py` | L'epitaffio |
 | Sfida | `apocalisse_esercito.py` | Apocalisse con esercito |
+| Extra 1 | `cena_dracula.py` | La cena di Dracula (a casa) |
+| Extra 2 | `anagrammi.py` | Anagrammi maledetti (a casa) |
+| Extra 3 | `bottino.py` | Il bottino della notte (a casa) |
+| Extra 4 | `login_dracula.py` | Il login di Dracula (a casa) |
 
 ---
 
@@ -48,6 +48,7 @@ print(12 // 5, 12 % 5)                      # 2 2  (quoziente e resto)
 
 ## Esercizio 1 — Epidemia zombie (`epidemia.py`)
 
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-epidemia)
 **Consegna**
 
 1. Il giorno 1 c'è un solo infetto e ogni giorno gli infetti raddoppiano.
@@ -74,6 +75,7 @@ Giorno 10: 512 infetti
 
 ## Esercizio 2 — Quando cade la città (`apocalisse.py`)
 
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-apocalisse)
 **Consegna**
 
 1. Stesso contagio: il giorno 1 c'è un infetto, poi gli infetti raddoppiano ogni giorno.
@@ -96,6 +98,7 @@ La città cade il giorno 19: 262144 infetti
 
 ## Esercizio 3 — Venerdì 17 (`venerdi17.py`)
 
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-venerdi17)
 **Consegna**
 
 1. Chiedete un intero `n`.
@@ -117,38 +120,9 @@ Percentuale: 7.6%
 
 ---
 
-## Esercizio 4 — La cena di Dracula (`cena_dracula.py`)
+## Esercizio 4 — L'epitaffio (`epitaffio.py`)
 
-**Consegna**
-
-1. Il conte ha un certo numero di sacche di sangue e vuole dividerle tra i commensali: tutti devono averne lo stesso numero e non deve avanzare niente.
-2. Chiedete il numero di sacche; se non è positivo stampate un errore.
-3. Per ogni numero di commensali da 1 al numero di sacche, se la divisione è esatta (`%`) stampate quante sacche riceve ognuno (`//`). Contate le possibilità.
-4. Se le possibilità sono esattamente due, il numero di sacche è primo: stampatelo.
-
-**Esempio di esecuzione**
-
-```
-Sacche di sangue: 12
-Commensali 1, sacche a testa 12
-Commensali 2, sacche a testa 6
-Commensali 3, sacche a testa 4
-Commensali 4, sacche a testa 3
-Commensali 6, sacche a testa 2
-Commensali 12, sacche a testa 1
-Possibilità: 6
-```
-
-**Provate anche**
-
-- `13` → solo 1 o 13 commensali: 13 è primo
-- `1` → una sola possibilità (1 non è primo)
-- `0` → errore
-
----
-
-## Esercizio 5 — L'epitaffio (`epitaffio.py`)
-
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-epitaffio)
 **Consegna**
 
 1. L'incisore del cimitero si fa pagare a carattere: lettere 2 EUR, cifre 3 EUR, punteggiatura e simboli 1 EUR, spazi gratis. Scrivete i prezzi in costanti.
@@ -172,96 +146,9 @@ Lettere sul totale: 54.3%
 
 ---
 
-## Esercizio 6 — Anagrammi maledetti (`anagrammi.py`)
-
-**Consegna**
-
-1. Due parole sono anagrammi se contengono le stesse lettere, ognuna lo stesso numero di volte.
-2. Chiedete due parole, passatele in minuscolo e togliete gli spazi.
-3. Usate la costante `ALFABETO = "abcdefghijklmnopqrstuvwxyz"`: per ogni lettera confrontate `count()` nelle due parole.
-4. Alla prima lettera che non torna stampate i due conteggi; alla fine dite se sono anagrammi.
-
-**Esempio di esecuzione**
-
-```
-Prima parola: Satan
-Seconda parola: Santa
-Sono anagrammi
-```
-
-**Provate anche**
-
-- `mostro` / `stormo` → anagrammi
-- `lapide` / `pedali` → anagrammi
-- `vampiro` / `zombie` → `Lettera a: 1 nella prima, 0 nella seconda`
-
----
-
-## Esercizio 7 — Il bottino della notte (`bottino.py`)
-
-**Consegna**
-
-1. Leggete con un `while`, casa per casa, quante caramelle avete preso, finché l'utente scrive `fine` (anche in maiuscolo). I valori negativi vanno segnalati e ignorati.
-2. Una casa che dà 0 caramelle ha chiuso la porta.
-3. Alla fine stampate: case visitate, caramelle totali, media per casa con un decimale, casa più generosa (numero e caramelle), percentuale di porte chiuse.
-4. Se non avete visitato nessuna casa, stampate un messaggio. Il testo letto va convertito con `int()` solo dopo aver controllato che non sia `fine`.
-
-**Esempio di esecuzione**
-
-```
-Casa 1, caramelle (fine per finire): 5
-Casa 2, caramelle (fine per finire): 0
-Casa 3, caramelle (fine per finire): 12
-Casa 4, caramelle (fine per finire): -2
-Valore non valido, ignorato
-Casa 4, caramelle (fine per finire): 3
-Casa 5, caramelle (fine per finire): 0
-Casa 6, caramelle (fine per finire): fine
-Case visitate: 5
-Caramelle totali: 20
-Media per casa: 4.0
-Casa più generosa: la 3, con 12 caramelle
-Porte chiuse: 40.0%
-```
-
-**Provate anche**
-
-- subito `fine` → nessuna casa visitata
-- `0`, `0`, `FINE` → porte chiuse `100.0%`, nessuna casa generosa
-
----
-
-## Esercizio 8 — Il login di Dracula (`login_dracula.py`)
-
-**Consegna**
-
-1. Chiedete una password e controllate i requisiti: almeno 8 caratteri, almeno una maiuscola e una cifra, nessuno spazio.
-2. Il conte non accetta password che contengono "aglio" o "croce", anche scritte in maiuscolo: usate `lower()` e `in`.
-3. Per ogni requisito mancante stampate un messaggio.
-4. Richiedete la password finché non è valida.
-
-**Esempio di esecuzione**
-
-```
-Password: ciao
-- servono almeno 8 caratteri
-- manca una lettera maiuscola
-- manca una cifra
-Password: Aglio2026x
-- parola proibita: il conte non gradisce
-Password: Nosferatu1922
-Benvenuto nel castello
-```
-
-**Provate anche**
-
-- `Conte Dracula1` → niente spazi
-- `SantaCROCE99` → parola proibita
-
----
-
 ## Sfida — Apocalisse con esercito (`apocalisse_esercito.py`)
 
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-apocalisse_esercito)
 **Consegna**
 
 1. Chiedete gli zombie e i soldati iniziali.
@@ -299,3 +186,247 @@ Vittoria il giorno 5, restano 9 soldati
 5. In `anagrammi.py`, perché si scorre l'alfabeto e non le lettere della prima parola?
 6. In `bottino.py` il massimo può partire da 0, mentre il minimo non potrebbe. Perché?
 7. Nella sfida, perché infettati ed eliminati vanno calcolati prima di aggiornare zombie e soldati?
+
+---
+
+## Esercizi extra
+
+Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.
+
+---
+
+## Extra 1 — La cena di Dracula (`cena_dracula.py`)
+
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-cena_dracula)
+
+**Consegna**
+
+1. Il conte ha un certo numero di sacche di sangue e vuole dividerle tra i commensali: tutti devono averne lo stesso numero e non deve avanzare niente.
+2. Chiedete il numero di sacche; se non è positivo stampate un errore.
+3. Per ogni numero di commensali da 1 al numero di sacche, se la divisione è esatta (`%`) stampate quante sacche riceve ognuno (`//`). Contate le possibilità.
+4. Se le possibilità sono esattamente due, il numero di sacche è primo: stampatelo.
+
+**Esempio di esecuzione**
+
+```
+Sacche di sangue: 12
+Commensali 1, sacche a testa 12
+Commensali 2, sacche a testa 6
+Commensali 3, sacche a testa 4
+Commensali 4, sacche a testa 3
+Commensali 6, sacche a testa 2
+Commensali 12, sacche a testa 1
+Possibilità: 6
+```
+
+**Provate anche**
+
+- `13` → solo 1 o 13 commensali: 13 è primo
+- `1` → una sola possibilità (1 non è primo)
+- `0` → errore
+
+**Soluzione**
+
+```python
+sacche: int = int(input("Sacche di sangue: "))
+
+if sacche <= 0:
+    print("Errore: serve almeno una sacca")
+else:
+    possibilita: int = 0
+    for commensali in range(1, sacche + 1):
+        if sacche % commensali == 0:
+            print(f"Commensali {commensali}, sacche a testa {sacche // commensali}")
+            possibilita += 1
+    print(f"Possibilità: {possibilita}")
+
+    if possibilita == 2:
+        print(f"{sacche} è primo: si divide solo tra 1 o {sacche} commensali")
+```
+
+---
+
+## Extra 2 — Anagrammi maledetti (`anagrammi.py`)
+
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-anagrammi)
+
+**Consegna**
+
+1. Due parole sono anagrammi se contengono le stesse lettere, ognuna lo stesso numero di volte.
+2. Chiedete due parole, passatele in minuscolo e togliete gli spazi.
+3. Usate la costante `ALFABETO = "abcdefghijklmnopqrstuvwxyz"`: per ogni lettera confrontate `count()` nelle due parole.
+4. Alla prima lettera che non torna stampate i due conteggi; alla fine dite se sono anagrammi.
+
+**Esempio di esecuzione**
+
+```
+Prima parola: Satan
+Seconda parola: Santa
+Sono anagrammi
+```
+
+**Provate anche**
+
+- `mostro` / `stormo` → anagrammi
+- `lapide` / `pedali` → anagrammi
+- `vampiro` / `zombie` → `Lettera a: 1 nella prima, 0 nella seconda`
+
+**Soluzione**
+
+```python
+ALFABETO: str = "abcdefghijklmnopqrstuvwxyz"
+
+prima: str = input("Prima parola: ").lower().replace(" ", "")
+seconda: str = input("Seconda parola: ").lower().replace(" ", "")
+
+anagrammi: bool = True
+for lettera in ALFABETO:
+    if anagrammi and prima.count(lettera) != seconda.count(lettera):
+        anagrammi = False
+        print(f"Lettera {lettera}: {prima.count(lettera)} nella prima, {seconda.count(lettera)} nella seconda")
+
+if anagrammi:
+    print("Sono anagrammi")
+else:
+    print("Non sono anagrammi")
+```
+
+---
+
+## Extra 3 — Il bottino della notte (`bottino.py`)
+
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-bottino)
+
+**Consegna**
+
+1. Leggete con un `while`, casa per casa, quante caramelle avete preso, finché l'utente scrive `fine` (anche in maiuscolo). I valori negativi vanno segnalati e ignorati.
+2. Una casa che dà 0 caramelle ha chiuso la porta.
+3. Alla fine stampate: case visitate, caramelle totali, media per casa con un decimale, casa più generosa (numero e caramelle), percentuale di porte chiuse.
+4. Se non avete visitato nessuna casa, stampate un messaggio. Il testo letto va convertito con `int()` solo dopo aver controllato che non sia `fine`.
+
+**Esempio di esecuzione**
+
+```
+Casa 1, caramelle (fine per finire): 5
+Casa 2, caramelle (fine per finire): 0
+Casa 3, caramelle (fine per finire): 12
+Casa 4, caramelle (fine per finire): -2
+Valore non valido, ignorato
+Casa 4, caramelle (fine per finire): 3
+Casa 5, caramelle (fine per finire): 0
+Casa 6, caramelle (fine per finire): fine
+Case visitate: 5
+Caramelle totali: 20
+Media per casa: 4.0
+Casa più generosa: la 3, con 12 caramelle
+Porte chiuse: 40.0%
+```
+
+**Provate anche**
+
+- subito `fine` → nessuna casa visitata
+- `0`, `0`, `FINE` → porte chiuse `100.0%`, nessuna casa generosa
+
+**Soluzione**
+
+```python
+case: int = 0
+totale: int = 0
+porte_chiuse: int = 0
+piu_caramelle: int = 0
+casa_generosa: int = 0
+
+testo: str = input("Casa 1, caramelle (fine per finire): ")
+while testo.strip().lower() != "fine":
+    caramelle: int = int(testo)
+    if caramelle < 0:
+        print("Valore non valido, ignorato")
+    else:
+        case += 1
+        totale += caramelle
+        if caramelle == 0:
+            porte_chiuse += 1
+        if caramelle > piu_caramelle:
+            piu_caramelle = caramelle
+            casa_generosa = case
+    testo = input(f"Casa {case + 1}, caramelle (fine per finire): ")
+
+if case == 0:
+    print("Nessuna casa visitata")
+else:
+    print(f"Case visitate: {case}")
+    print(f"Caramelle totali: {totale}")
+    print(f"Media per casa: {totale / case:.1f}")
+    if piu_caramelle > 0:
+        print(f"Casa più generosa: la {casa_generosa}, con {piu_caramelle} caramelle")
+    print(f"Porte chiuse: {porte_chiuse / case:.1%}")
+```
+
+---
+
+## Extra 4 — Il login di Dracula (`login_dracula.py`)
+
+[Soluzione →](../../codice/L02_cicli_comprehension/esercizi.html#sol-login_dracula)
+
+**Consegna**
+
+1. Chiedete una password e controllate i requisiti: almeno 8 caratteri, almeno una maiuscola e una cifra, nessuno spazio.
+2. Il conte non accetta password che contengono "aglio" o "croce", anche scritte in maiuscolo: usate `lower()` e `in`.
+3. Per ogni requisito mancante stampate un messaggio.
+4. Richiedete la password finché non è valida.
+
+**Esempio di esecuzione**
+
+```
+Password: ciao
+- servono almeno 8 caratteri
+- manca una lettera maiuscola
+- manca una cifra
+Password: Aglio2026x
+- parola proibita: il conte non gradisce
+Password: Nosferatu1922
+Benvenuto nel castello
+```
+
+**Provate anche**
+
+- `Conte Dracula1` → niente spazi
+- `SantaCROCE99` → parola proibita
+
+**Soluzione**
+
+```python
+valida: bool = False
+
+while not valida:
+    password: str = input("Password: ")
+
+    maiuscola: bool = False
+    cifra: bool = False
+    spazio: bool = False
+    for carattere in password:
+        if carattere.isupper():
+            maiuscola = True
+        elif carattere.isdigit():
+            cifra = True
+        elif carattere == " ":
+            spazio = True
+
+    lunga: bool = len(password) >= 8
+    minuscola: str = password.lower()
+    proibita: bool = "aglio" in minuscola or "croce" in minuscola
+    valida = lunga and maiuscola and cifra and not spazio and not proibita
+
+    if not lunga:
+        print("- servono almeno 8 caratteri")
+    if not maiuscola:
+        print("- manca una lettera maiuscola")
+    if not cifra:
+        print("- manca una cifra")
+    if spazio:
+        print("- niente spazi")
+    if proibita:
+        print("- parola proibita: il conte non gradisce")
+
+print("Benvenuto nel castello")
+```

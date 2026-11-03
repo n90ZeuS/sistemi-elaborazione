@@ -328,6 +328,10 @@
         .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
         .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
         .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .tag-extra { background: #e0f2fe; color: #075985; }
+        .reveal a.link-soluzione { position: absolute; top: 0; right: 90px; font-size: 0.42em; font-weight: 600; padding: 0.25em 0.8em; border-radius: 999px; border: 2px solid #2563eb; color: #2563eb; background: #fff; text-decoration: none; }
+        .reveal tr.riga-extra td { color: #64748b; }
+        .reveal a.link-soluzione:hover { background: #2563eb; color: #fff; }
         .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
         .reveal .etichetta {
             font-size: 0.6em;
@@ -372,18 +376,18 @@
                     <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
                     <tbody>
                         <tr><td>1</td><td><code>esito.py</code></td><td>Esito dell'esame</td></tr>
-                        <tr><td>2</td><td><code>media_ponderata.py</code></td><td>Media ponderata</td></tr>
-                        <tr><td>3</td><td><code>descrittive.py</code></td><td>Media e varianza a mano</td></tr>
-                        <tr><td>4</td><td><code>riassunto.py</code></td><td>Tempi di viaggio</td></tr>
-                        <tr><td>5</td><td><code>esami_date.py</code></td><td>Quanto manca all'esame</td></tr>
-                        <tr><td>6</td><td><code>classifica.py</code></td><td>Classifica del corso</td></tr>
-                        <tr><td>7</td><td><code>questionario.py</code></td><td>Come arrivate in università</td></tr>
-                        <tr><td>8</td><td><code>confronto_gruppi.py</code></td><td>Frequentanti e non frequentanti</td></tr>
+                        <tr><td>2</td><td><code>descrittive.py</code></td><td>Media e varianza a mano</td></tr>
+                        <tr><td>3</td><td><code>riassunto.py</code></td><td>Tempi di viaggio</td></tr>
+                        <tr><td>4</td><td><code>classifica.py</code></td><td>Classifica del corso</td></tr>
                         <tr><td>Challenge</td><td>a scelta</td><td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td></tr>
+                        <tr class="riga-extra"><td>Extra 1</td><td><code>media_ponderata.py</code></td><td>Media ponderata <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 2</td><td><code>esami_date.py</code></td><td>Quanto manca all'esame <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 3</td><td><code>questionario.py</code></td><td>Come arrivate in università <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 4</td><td><code>confronto_gruppi.py</code></td><td>Frequentanti e non frequentanti <em>(a casa)</em></td></tr>
                     </tbody>
                 </table>
                 <div class="box box-blue" style="font-size:0.7em">
-                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T15.
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Le soluzioni le vediamo all'inizio della lezione T15. Gli extra in fondo sono per casa. «Soluzione →» apre il codice: guardatelo dopo averci provato.
                 </div>
             </section>
 
@@ -408,6 +412,7 @@ print(statistics.median([24, 30, 27]))     # 27</code></pre>
 
             <section>
                 <div class="tag tag-esercizio">Esercizio 1 · esito.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-esito" target="_blank">Soluzione →</a>
                 <h2>Esito dell'esame</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -435,31 +440,8 @@ Luca: promosso con 30</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 2 · media_ponderata.py</div>
-                <h2>Media ponderata</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Scrivete <code>media_ponderata(voti: list[int], cfu: list[int]) -&gt; float</code>: somma dei prodotti voto × crediti, divisa per il totale dei crediti. Scorrete le due liste insieme con <code>zip()</code>.</li>
-                            <li>Se la lista dei voti è vuota o le due liste hanno lunghezze diverse, la funzione restituisce <code>0.0</code>.</li>
-                            <li>Scrivete <code>base_laurea(media: float) -&gt; float</code>, che porta la media in centodecimi: <code>media * 110 / 30</code>.</li>
-                            <li>Con <code>voti = [28, 30, 25, 27, 30, 24]</code> e <code>cfu = [9, 6, 12, 6, 9, 6]</code> stampate la media aritmetica e la media ponderata con due decimali, e la base di laurea con un decimale.</li>
-                        </ol>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media aritmetica: 27.33
-Media ponderata: 27.25
-Base di laurea: 99.9/110</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete un 30 da 12 CFU → ponderata <code>27.80</code>, base <code>101.9/110</code></li><li><code>media_ponderata([], [])</code> → <code>0.0</code></li><li><code>media_ponderata([28, 30], [9])</code> → <code>0.0</code> (lunghezze diverse)</li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 3 · descrittive.py</div>
+                <div class="tag tag-esercizio">Esercizio 2 · descrittive.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-descrittive" target="_blank">Soluzione →</a>
                 <h2>Media e varianza a mano</h2>
                 <div class="columns">
                     <div class="col">
@@ -484,7 +466,8 @@ Deviazione standard: 8.66 (statistics: 8.66)</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 4 · riassunto.py</div>
+                <div class="tag tag-esercizio">Esercizio 3 · riassunto.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riassunto" target="_blank">Soluzione →</a>
                 <h2>Tempi di viaggio</h2>
                 <div class="columns">
                     <div class="col">
@@ -509,35 +492,8 @@ Campo di variazione: 63.0 minuti</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 5 · esami_date.py</div>
-                <h2>Quanto manca all'esame</h2>
-                <div class="columns" style="font-size:0.88em">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Importate <code>date</code> dal modulo <code>datetime</code>. La differenza tra due date è un intervallo: <code>(d2 - d1).days</code> sono i giorni.</li>
-                            <li>Scrivete <code>giorni_mancanti(esame: date, oggi: date) -&gt; int</code> e <code>settimane_e_giorni(giorni: int) -&gt; tuple[int, int]</code>, che usa <code>//</code> e <code>%</code>.</li>
-                            <li>Scrivete <code>nome_giorno(giorno: date) -&gt; str</code>: <code>giorno.weekday()</code> dà 0 per il lunedì e 6 per la domenica; usatelo come indice in una lista con i nomi dei giorni.</li>
-                            <li>Con <code>oggi = date(2026, 11, 19)</code> e il dizionario degli appelli in tabella, stampate per ogni esame il giorno della settimana, la data e quanto manca. Se la data è già passata stampate <code>esame già passato</code>.</li>
-                        </ol>
-                        <table class="mini"><thead><tr><th>Esame</th><th>Data</th></tr></thead><tbody><tr><td>Analisi 1</td><td><code>date(2027, 1, 18)</code></td></tr><tr><td>Statistica 1</td><td><code>date(2027, 1, 28)</code></td></tr><tr><td>Sistemi di elaborazione</td><td><code>date(2027, 2, 10)</code></td></tr></tbody></table>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi 1: lunedì 2027-01-18
-  tra 60 giorni: 8 settimane e 4 giorni
-Statistica 1: giovedì 2027-01-28
-  tra 70 giorni: 10 settimane e 0 giorni
-Sistemi di elaborazione: mercoledì 2027-02-10
-  tra 83 giorni: 11 settimane e 6 giorni</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li><code>oggi = date(2027, 1, 25)</code> → Analisi 1 già passato, Statistica 1 <code>tra 3 giorni</code>, Sistemi <code>tra 16 giorni: 2 settimane e 2 giorni</code></li><li><code>nome_giorno(date(2026, 12, 25))</code> → <code>venerdì</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 6 · classifica.py</div>
+                <div class="tag tag-esercizio">Esercizio 4 · classifica.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-classifica" target="_blank">Soluzione →</a>
                 <h2>Classifica del corso</h2>
                 <div class="columns">
                     <div class="col">
@@ -566,61 +522,6 @@ In regola con 70 CFU: ['Sara']</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 7 · questionario.py</div>
-                <h2>Come arrivate in università</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Le risposte a un questionario sono scritte in modo disordinato: <code>grezze = ["Bici", " autobus", "treno ", "BICI", "", "a piedi", "Treno", "bici", "Autobus ", "treno", "autobus", "  "]</code>.</li>
-                            <li>Scrivete <code>pulisci(risposte: list[str]) -&gt; list[str]</code>: toglie gli spazi ai lati, passa in minuscolo e scarta le risposte vuote (una comprehension con filtro).</li>
-                            <li>Scrivete <code>frequenze_relative(risposte: list[str]) -&gt; dict[str, float]</code>: con <code>Counter</code> e <code>most_common()</code>, dalla risposta più comune alla meno comune.</li>
-                            <li>Scrivete <code>mode(risposte: list[str]) -&gt; list[str]</code>: tutte le risposte con la frequenza massima, in ordine alfabetico; <code>[]</code> se la lista è vuota.</li>
-                            <li>Stampate le risposte valide sul totale, le frequenze in percentuale con un decimale e le mode.</li>
-                        </ol>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Risposte valide: 10 su 12
-bici: 30.0%
-autobus: 30.0%
-treno: 30.0%
-a piedi: 10.0%
-Moda: ['autobus', 'bici', 'treno']</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete <code>"Bici "</code> → <code>bici: 36.4%</code>, moda <code>['bici']</code></li><li><code>grezze = ["", " "]</code> → <code>Risposte valide: 0 su 2</code> e <code>Moda: []</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 8 · confronto_gruppi.py</div>
-                <h2>Frequentanti e non frequentanti</h2>
-                <div class="columns" style="font-size:0.8em">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Punteggi di una prova intermedia: <code>frequentanti = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]</code> e <code>non_frequentanti = [21, 18, 30, 14, 23, 25, 13, 20]</code>.</li>
-                            <li>Scrivete <code>confronta(a: list[float], b: list[float], statistica: callable) -&gt; tuple[float, float, float]</code>: chiama la funzione <code>statistica</code> su ciascun gruppo e restituisce i due valori e la differenza a − b.</li>
-                            <li>Scrivete <code>campo(valori: list[float]) -&gt; float</code>, che restituisce massimo − minimo.</li>
-                            <li>Mettete in un dizionario nome → funzione le misure della tabella, senza parentesi dopo il nome della funzione. Scorrete il dizionario, chiamate <code>confronta</code> e stampate una riga per misura, con due decimali.</li>
-                        </ol>
-                        <table class="mini"><thead><tr><th>Nome</th><th>Funzione</th></tr></thead><tbody><tr><td>Media</td><td><code>statistics.mean</code></td></tr><tr><td>Mediana</td><td><code>statistics.median</code></td></tr><tr><td>Deviazione standard</td><td><code>statistics.stdev</code></td></tr><tr><td>Campo di variazione</td><td><code>campo</code></td></tr><tr><td>Minimo</td><td><code>min</code></td></tr></tbody></table>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media: 24.60 contro 20.50 (differenza 4.10)
-Mediana: 25.50 contro 20.50 (differenza 5.00)
-Deviazione standard: 4.48 contro 5.63 (differenza -1.15)
-Campo di variazione: 14.00 contro 17.00 (differenza -3.00)
-Minimo: 16.00 contro 13.00 (differenza 3.00)</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li><code>confronta([18, 30], [24], statistics.mean)</code> → <code>(24, 24, 0)</code></li><li>aggiungete <code>"Quota di sufficienti"</code> con <code>lambda v: len([x for x in v if x &gt;= 18]) / len(v)</code> → <code>0.90 contro 0.75 (differenza 0.15)</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
                 <div class="tag tag-challenge">Challenge a scelta</div>
                 <h2>Scegliete un tema</h2>
                 <div class="columns">
@@ -637,6 +538,7 @@ Minimo: 16.00 contro 13.00 (differenza 3.00)</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Mercati e finanza · ch_mercati.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-ch_mercati" target="_blank">Soluzione →</a>
                 <h2>Rischio e rendimento</h2>
                 <div class="columns" style="font-size:0.74em">
                     <div class="col">
@@ -666,6 +568,7 @@ Valore l'ultimo giorno: 1707.00 euro</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Sport · ch_sport.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-ch_sport" target="_blank">Soluzione →</a>
                 <h2>Il passo gara</h2>
                 <div class="columns" style="font-size:0.74em">
                     <div class="col">
@@ -695,6 +598,7 @@ Giri sotto 93 secondi: {'Ferri': 6, 'Lanza': 1, 'Moro': 7, 'Neri': 0}</code></pr
 
             <section>
                 <div class="tag tag-challenge">Challenge · Imprese e marketing · ch_negozio.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-ch_negozio" target="_blank">Soluzione →</a>
                 <h2>Margini e sconti</h2>
                 <div class="columns" style="font-size:0.68em">
                     <div class="col">
@@ -725,6 +629,7 @@ Zaini con lo sconto del 20%: incasso 63.84, margine 19.84</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-ch_salute" target="_blank">Soluzione →</a>
                 <h2>Le variazioni di pressione</h2>
                 <div class="columns" style="font-size:0.8em">
                     <div class="col">
@@ -754,6 +659,7 @@ controllo: media -3.8 mmHg, dev. std 4.76 (statistics: 4.76)
 
             <section>
                 <div class="tag tag-challenge">Challenge · Caso e probabilità · ch_probabilita.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-ch_probabilita" target="_blank">Soluzione →</a>
                 <h2>Tanti lanci</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -791,6 +697,123 @@ Somma 5 con due dadi da 4 facce: 25.0%</code></pre>
                     <li>In <code>confronto_gruppi.py</code>, che differenza c'è tra scrivere <code>statistics.mean</code> e <code>statistics.mean(frequentanti)</code>?</li>
                     <li>Nella sfida, a cosa serve <code>random.seed(2026)</code>? Cosa succede togliendolo?</li>
                 </ol>
+            </section>
+
+            <section class="section-slide">
+                <h2>Esercizi extra</h2>
+                <p>Materiale in più per allenarsi a casa, con le soluzioni</p>
+                <aside class="notes">Gli extra non si fanno in laboratorio: chi finisce la challenge può iniziarli, gli altri li trovano nella dispensa con la soluzione sotto ogni consegna.</aside>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 1 · media_ponderata.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-media_ponderata" target="_blank">Soluzione →</a>
+                <h2>Media ponderata</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete <code>media_ponderata(voti: list[int], cfu: list[int]) -&gt; float</code>: somma dei prodotti voto × crediti, divisa per il totale dei crediti. Scorrete le due liste insieme con <code>zip()</code>.</li>
+                            <li>Se la lista dei voti è vuota o le due liste hanno lunghezze diverse, la funzione restituisce <code>0.0</code>.</li>
+                            <li>Scrivete <code>base_laurea(media: float) -&gt; float</code>, che porta la media in centodecimi: <code>media * 110 / 30</code>.</li>
+                            <li>Con <code>voti = [28, 30, 25, 27, 30, 24]</code> e <code>cfu = [9, 6, 12, 6, 9, 6]</code> stampate la media aritmetica e la media ponderata con due decimali, e la base di laurea con un decimale.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media aritmetica: 27.33
+Media ponderata: 27.25
+Base di laurea: 99.9/110</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete un 30 da 12 CFU → ponderata <code>27.80</code>, base <code>101.9/110</code></li><li><code>media_ponderata([], [])</code> → <code>0.0</code></li><li><code>media_ponderata([28, 30], [9])</code> → <code>0.0</code> (lunghezze diverse)</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 2 · esami_date.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-esami_date" target="_blank">Soluzione →</a>
+                <h2>Quanto manca all'esame</h2>
+                <div class="columns" style="font-size:0.88em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Importate <code>date</code> dal modulo <code>datetime</code>. La differenza tra due date è un intervallo: <code>(d2 - d1).days</code> sono i giorni.</li>
+                            <li>Scrivete <code>giorni_mancanti(esame: date, oggi: date) -&gt; int</code> e <code>settimane_e_giorni(giorni: int) -&gt; tuple[int, int]</code>, che usa <code>//</code> e <code>%</code>.</li>
+                            <li>Scrivete <code>nome_giorno(giorno: date) -&gt; str</code>: <code>giorno.weekday()</code> dà 0 per il lunedì e 6 per la domenica; usatelo come indice in una lista con i nomi dei giorni.</li>
+                            <li>Con <code>oggi = date(2026, 11, 19)</code> e il dizionario degli appelli in tabella, stampate per ogni esame il giorno della settimana, la data e quanto manca. Se la data è già passata stampate <code>esame già passato</code>.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Esame</th><th>Data</th></tr></thead><tbody><tr><td>Analisi 1</td><td><code>date(2027, 1, 18)</code></td></tr><tr><td>Statistica 1</td><td><code>date(2027, 1, 28)</code></td></tr><tr><td>Sistemi di elaborazione</td><td><code>date(2027, 2, 10)</code></td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi 1: lunedì 2027-01-18
+  tra 60 giorni: 8 settimane e 4 giorni
+Statistica 1: giovedì 2027-01-28
+  tra 70 giorni: 10 settimane e 0 giorni
+Sistemi di elaborazione: mercoledì 2027-02-10
+  tra 83 giorni: 11 settimane e 6 giorni</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>oggi = date(2027, 1, 25)</code> → Analisi 1 già passato, Statistica 1 <code>tra 3 giorni</code>, Sistemi <code>tra 16 giorni: 2 settimane e 2 giorni</code></li><li><code>nome_giorno(date(2026, 12, 25))</code> → <code>venerdì</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 3 · questionario.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-questionario" target="_blank">Soluzione →</a>
+                <h2>Come arrivate in università</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Le risposte a un questionario sono scritte in modo disordinato: <code>grezze = ["Bici", " autobus", "treno ", "BICI", "", "a piedi", "Treno", "bici", "Autobus ", "treno", "autobus", "  "]</code>.</li>
+                            <li>Scrivete <code>pulisci(risposte: list[str]) -&gt; list[str]</code>: toglie gli spazi ai lati, passa in minuscolo e scarta le risposte vuote (una comprehension con filtro).</li>
+                            <li>Scrivete <code>frequenze_relative(risposte: list[str]) -&gt; dict[str, float]</code>: con <code>Counter</code> e <code>most_common()</code>, dalla risposta più comune alla meno comune.</li>
+                            <li>Scrivete <code>mode(risposte: list[str]) -&gt; list[str]</code>: tutte le risposte con la frequenza massima, in ordine alfabetico; <code>[]</code> se la lista è vuota.</li>
+                            <li>Stampate le risposte valide sul totale, le frequenze in percentuale con un decimale e le mode.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Risposte valide: 10 su 12
+bici: 30.0%
+autobus: 30.0%
+treno: 30.0%
+a piedi: 10.0%
+Moda: ['autobus', 'bici', 'treno']</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>aggiungete <code>"Bici "</code> → <code>bici: 36.4%</code>, moda <code>['bici']</code></li><li><code>grezze = ["", " "]</code> → <code>Risposte valide: 0 su 2</code> e <code>Moda: []</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 4 · confronto_gruppi.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-confronto_gruppi" target="_blank">Soluzione →</a>
+                <h2>Frequentanti e non frequentanti</h2>
+                <div class="columns" style="font-size:0.8em">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Punteggi di una prova intermedia: <code>frequentanti = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]</code> e <code>non_frequentanti = [21, 18, 30, 14, 23, 25, 13, 20]</code>.</li>
+                            <li>Scrivete <code>confronta(a: list[float], b: list[float], statistica: callable) -&gt; tuple[float, float, float]</code>: chiama la funzione <code>statistica</code> su ciascun gruppo e restituisce i due valori e la differenza a − b.</li>
+                            <li>Scrivete <code>campo(valori: list[float]) -&gt; float</code>, che restituisce massimo − minimo.</li>
+                            <li>Mettete in un dizionario nome → funzione le misure della tabella, senza parentesi dopo il nome della funzione. Scorrete il dizionario, chiamate <code>confronta</code> e stampate una riga per misura, con due decimali.</li>
+                        </ol>
+                        <table class="mini"><thead><tr><th>Nome</th><th>Funzione</th></tr></thead><tbody><tr><td>Media</td><td><code>statistics.mean</code></td></tr><tr><td>Mediana</td><td><code>statistics.median</code></td></tr><tr><td>Deviazione standard</td><td><code>statistics.stdev</code></td></tr><tr><td>Campo di variazione</td><td><code>campo</code></td></tr><tr><td>Minimo</td><td><code>min</code></td></tr></tbody></table>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media: 24.60 contro 20.50 (differenza 4.10)
+Mediana: 25.50 contro 20.50 (differenza 5.00)
+Deviazione standard: 4.48 contro 5.63 (differenza -1.15)
+Campo di variazione: 14.00 contro 17.00 (differenza -3.00)
+Minimo: 16.00 contro 13.00 (differenza 3.00)</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>confronta([18, 30], [24], statistics.mean)</code> → <code>(24, 24, 0)</code></li><li>aggiungete <code>"Quota di sufficienti"</code> con <code>lambda v: len([x for x in v if x &gt;= 18]) / len(v)</code> → <code>0.90 contro 0.75 (differenza 0.15)</code></li></ul>
+                    </div>
+                </div>
             </section>
 
             <!-- Slide di navigazione -->

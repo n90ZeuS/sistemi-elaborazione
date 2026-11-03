@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -254,7 +258,7 @@ c3 <span class="op">=</span> Contatore()
 <p><strong>Output:</strong></p>
 <pre><code><span class="mi">3</span>
 <span class="mi">3</span></code></pre>
-<p><strong>Spiegazione:</strong> Ogni volta che viene creata un'istanza, <code><em>_init</em>_</code> incrementa l'attributo di classe <code>conteggio</code>. Dopo tre istanze, <code>conteggio</code> vale <code>3</code>. Il metodo <code>quanti()</code> restituisce il valore dell'attributo di classe, che e' lo stesso per tutte le istanze. Sia <code>c1.quanti()</code> che <code>c2.quanti()</code> restituiscono <code>3</code>.</p>
+<p><strong>Spiegazione:</strong> Ogni volta che viene creata un'istanza, <code>__init__</code> incrementa l'attributo di classe <code>conteggio</code>. Dopo tre istanze, <code>conteggio</code> vale <code>3</code>. Il metodo <code>quanti()</code> restituisce il valore dell'attributo di classe, che e' lo stesso per tutte le istanze. Sia <code>c1.quanti()</code> che <code>c2.quanti()</code> restituiscono <code>3</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 3</h3>
@@ -282,7 +286,7 @@ animali <span class="op">=</span> [Cane(<span class="st">&quot;Fido&quot;</span>
 <pre><code>Fido fa: Bau<span class="op">!</span>
 Micio fa: Miao<span class="op">!</span>
 Creatura fa un suono generico</code></pre>
-<p><strong>Spiegazione:</strong> Questo e' un esempio di <strong>ereditarieta'</strong> e <strong>polimorfismo</strong>. <code>Cane</code> e <code>Gatto</code> ereditano da <code>Animale</code> e sovrascrivono il metodo <code>parla()</code>. Quando chiamiamo <code>a.parla()</code>, Python usa il metodo della classe specifica dell'oggetto. <code>Cane</code> usa il suo <code>parla()</code>, <code>Gatto</code> usa il suo, e <code>Animale</code> usa quello generico. Tutti e tre condividono l'<code><em>_init</em>_</code> della classe base.</p>
+<p><strong>Spiegazione:</strong> Questo e' un esempio di <strong>ereditarieta'</strong> e <strong>polimorfismo</strong>. <code>Cane</code> e <code>Gatto</code> ereditano da <code>Animale</code> e sovrascrivono il metodo <code>parla()</code>. Quando chiamiamo <code>a.parla()</code>, Python usa il metodo della classe specifica dell'oggetto. <code>Cane</code> usa il suo <code>parla()</code>, <code>Gatto</code> usa il suo, e <code>Animale</code> usa quello generico. Tutti e tre condividono l'<code>__init__</code> della classe base.</p>
 <p></details></p>
 <hr>
 <h2>Trova l'errore</h2>
@@ -300,7 +304,7 @@ r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="m
 <p><details></p>
 <p><summary>Mostra la risposta</summary></p>
 <p><strong>Errore:</strong> <code>AttributeError: 'Rettangolo' object has no attribute 'base'</code></p>
-<p><strong>Problema:</strong> Nell'<code><em>_init</em>_</code>, manca <code>self.</code> davanti agli attributi. <code>base = base</code> crea una variabile locale che viene scartata alla fine del metodo, invece di salvare il valore nell'istanza.</p>
+<p><strong>Problema:</strong> Nell'<code>__init__</code>, manca <code>self.</code> davanti agli attributi. <code>base = base</code> crea una variabile locale che viene scartata alla fine del metodo, invece di salvare il valore nell'istanza.</p>
 <p><strong>Correzione:</strong></p>
 <pre><code><span class="kw">class</span> <span class="fn">Rettangolo</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, base, altezza):
@@ -312,7 +316,7 @@ r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="m
 
 r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="mi">3</span>)
 <span class="nb">print</span>(r.area())  <span class="cm"># 15</span></code></pre>
-<p><strong>Lezione:</strong> Dentro <code><em>_init</em><em></code>, usate sempre <code>self.nome</em>attributo = valore</code> per salvare i dati nell'istanza. Senza <code>self.</code>, i valori sono solo variabili locali temporanee.</p>
+<p><strong>Lezione:</strong> Dentro <code>__init__</code>, usate sempre <code>self.nome_attributo = valore</code> per salvare i dati nell'istanza. Senza <code>self.</code>, i valori sono solo variabili locali temporanee.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 5</h3>
@@ -354,7 +358,7 @@ lazio.aggiungi(<span class="st">&quot;Immobile&quot;</span>)
 
 <span class="nb">print</span>(<span class="st">f&quot;Roma: {roma.giocatori}&quot;</span>)   <span class="cm"># Roma: [&#x27;Totti&#x27;]</span>
 <span class="nb">print</span>(<span class="st">f&quot;Lazio: {lazio.giocatori}&quot;</span>) <span class="cm"># Lazio: [&#x27;Immobile&#x27;]</span></code></pre>
-<p><strong>Lezione:</strong> Non usate attributi di classe <strong>mutabili</strong> (liste, dizionari) se ogni istanza deve avere la propria copia. Inizializzateli dentro <code><em>_init</em>_</code> con <code>self.</code>.</p>
+<p><strong>Lezione:</strong> Non usate attributi di classe <strong>mutabili</strong> (liste, dizionari) se ogni istanza deve avere la propria copia. Inizializzateli dentro <code>__init__</code> con <code>self.</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 6</h3>
@@ -366,8 +370,8 @@ lazio.aggiungi(<span class="st">&quot;Immobile&quot;</span>)
 c <span class="op">=</span> Cerchio(<span class="mi">5</span>)</code></pre>
 <p><details></p>
 <p><summary>Mostra la risposta</summary></p>
-<p><strong>Errore:</strong> <code>TypeError: <em>_init</em>_() should return None, not 'float'</code></p>
-<p><strong>Problema:</strong> Il metodo <code><em>_init</em>_</code> <strong>non deve restituire un valore</strong>. Il suo compito e' solo inizializzare l'oggetto, non restituire risultati. Python lo chiama automaticamente dopo la creazione dell'oggetto.</p>
+<p><strong>Errore:</strong> <code>TypeError: __init__() should return None, not 'float'</code></p>
+<p><strong>Problema:</strong> Il metodo <code>__init__</code> <strong>non deve restituire un valore</strong>. Il suo compito e' solo inizializzare l'oggetto, non restituire risultati. Python lo chiama automaticamente dopo la creazione dell'oggetto.</p>
 <p><strong>Correzione:</strong></p>
 <pre><code><span class="kw">class</span> <span class="fn">Cerchio</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, raggio):
@@ -382,12 +386,12 @@ c <span class="op">=</span> Cerchio(<span class="mi">5</span>)</code></pre>
 c <span class="op">=</span> Cerchio(<span class="mi">5</span>)
 <span class="nb">print</span>(c.area())           <span class="cm"># 78.53975</span>
 <span class="nb">print</span>(c.circonferenza())  <span class="cm"># 31.4159</span></code></pre>
-<p><strong>Lezione:</strong> <code><em>_init</em>_</code> serve solo per inizializzare gli attributi. I calcoli vanno in metodi separati che restituiscono i risultati.</p>
+<p><strong>Lezione:</strong> <code>__init__</code> serve solo per inizializzare gli attributi. I calcoli vanno in metodi separati che restituiscono i risultati.</p>
 <p></details></p>
 <hr>
 <h2>Completa il codice</h2>
 <h3>Esercizio 7</h3>
-<p>Completa la classe <code>Studente</code> con <code><em>_init</em>_</code>, un metodo per aggiungere voti e uno per calcolare la media.</p>
+<p>Completa la classe <code>Studente</code> con <code>__init__</code>, un metodo per aggiungere voti e uno per calcolare la media.</p>
 <pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
     <span class="cm"># --- COMPLETA: __init__ con nome e lista voti vuota ---</span>
 
@@ -446,7 +450,7 @@ s.aggiungi_voto(<span class="mi">15</span>)  <span class="cm"># Ignorato</span>
 s.aggiungi_voto(<span class="mi">26</span>)
 <span class="nb">print</span>(s)           <span class="cm"># Alice - Media: 28.0</span>
 <span class="nb">print</span>(s.media())   <span class="cm"># 28.0</span></code></pre>
-<p><strong>Spiegazione:</strong> La lista <code>voti</code> e' inizializzata in <code><em>_init</em><em></code> come attributo di istanza. <code>aggiungi</em>voto</code> valida il voto prima di aggiungerlo. <code>media</code> gestisce il caso di lista vuota restituendo <code>None</code>. <code><em>_str</em>_</code> viene chiamato automaticamente da <code>print()</code>.</p>
+<p><strong>Spiegazione:</strong> La lista <code>voti</code> e' inizializzata in <code>__init__</code> come attributo di istanza. <code>aggiungi_voto</code> valida il voto prima di aggiungerlo. <code>media</code> gestisce il caso di lista vuota restituendo <code>None</code>. <code>__str__</code> viene chiamato automaticamente da <code>print()</code>.</p>
 <p></details></p>
 <hr>
 <h3>Esercizio 8</h3>
@@ -514,7 +518,7 @@ q <span class="op">=</span> Quadrato(<span class="st">&quot;rosso&quot;</span>, 
 c <span class="op">=</span> CerchioColorato(<span class="st">&quot;blu&quot;</span>, <span class="mi">3</span>)
 <span class="nb">print</span>(q.descrizione())  <span class="cm"># Forma rosso con area 16.00</span>
 <span class="nb">print</span>(c.descrizione())  <span class="cm"># Forma blu con area 28.27</span></code></pre>
-<p><strong>Spiegazione:</strong> <code>super().<em>_init</em><em>(colore)</code> chiama l'<code></em><em>init</em>_</code> della classe base <code>Forma</code> per inizializzare <code>self.colore</code>. Ogni sottoclasse aggiunge i propri attributi specifici (<code>lato</code> o <code>raggio</code>) e implementa il metodo <code>area()</code>. Il metodo <code>descrizione()</code> ereditato da <code>Forma</code> funziona correttamente perche' chiama <code>self.area()</code>, che grazie al polimorfismo usa la versione della sottoclasse.</p>
+<p><strong>Spiegazione:</strong> <code>super().__init__(colore)</code> chiama l'<code>__init__</code> della classe base <code>Forma</code> per inizializzare <code>self.colore</code>. Ogni sottoclasse aggiunge i propri attributi specifici (<code>lato</code> o <code>raggio</code>) e implementa il metodo <code>area()</code>. Il metodo <code>descrizione()</code> ereditato da <code>Forma</code> funziona correttamente perche' chiama <code>self.area()</code>, che grazie al polimorfismo usa la versione della sottoclasse.</p>
 <p></details></p>
 <nav class="bottom-nav"><span></span><span><a href="../index.html">Home</a></span><span></span></nav>
 </body>

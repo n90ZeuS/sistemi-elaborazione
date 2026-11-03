@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -213,7 +217,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 1: commenti al corso — conta_righe.py</span>
+<span class="cm" id="sol-conta_righe"># ESERCIZIO 1: commenti al corso — conta_righe.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: Commenti al corso ---&quot;</span>)
 <span class="kw">from</span> pathlib <span class="kw">import</span> Path
@@ -246,40 +250,9 @@ commenti: <span class="nb">int</span> <span class="op">=</span> righe <span clas
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 2: le parole più usate — parole_frequenti.py</span>
+<span class="cm" id="sol-esiti_appello"># ESERCIZIO 2: gli esiti dell&#x27;appello — esiti_appello.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Le parole più usate ---&quot;</span>)
-<span class="kw">from</span> collections <span class="kw">import</span> Counter
-<span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-PUNTEGGIATURA: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;.,;:!?&quot;</span>
-LUNGHEZZA_MINIMA: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>
-
-<span class="kw">def</span> <span class="fn">parole_del_file</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
-    <span class="st">&quot;&quot;&quot;Parole del file in minuscolo, senza punteggiatura.&quot;&quot;&quot;</span>
-    parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        <span class="kw">for</span> riga <span class="kw">in</span> f:
-            <span class="kw">for</span> parola <span class="kw">in</span> riga.lower().split():
-                parole.append(parola.strip(PUNTEGGIATURA))
-    <span class="kw">return</span> parole
-
-tutte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> parole_del_file(Path(<span class="st">&quot;commenti.txt&quot;</span>))
-lunghe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [p <span class="kw">for</span> p <span class="kw">in</span> tutte
-                     <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span><span class="op">=</span> LUNGHEZZA_MINIMA]
-conteggi: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(lunghe)
-
-<span class="nb">print</span>(<span class="st">f&quot;Parole: {len(tutte)}, distinte: {len(set(tutte))}&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Parole di almeno {LUNGHEZZA_MINIMA} lettere: {len(lunghe)}&quot;</span>)
-<span class="kw">for</span> parola, volte <span class="kw">in</span> conteggi.most_common(<span class="mi">3</span>):
-    <span class="nb">print</span>(<span class="st">f&quot;{parola}: {volte}&quot;</span>)
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 3: gli esiti dell&#x27;appello — esiti_appello.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Gli esiti dell&#x27;appello ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 2: Gli esiti dell&#x27;appello ---&quot;</span>)
 <span class="kw">import</span> csv
 <span class="kw">from</span> pathlib <span class="kw">import</span> Path
 
@@ -307,76 +280,9 @@ migliore: <span class="nb">dict</span>[<span class="nb">str</span>, <span class=
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 4: il verbale d&#x27;esame — verbale.py</span>
+<span class="cm" id="sol-sondaggio"># ESERCIZIO 3: il sondaggio in json — sondaggio.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Il verbale d&#x27;esame ---&quot;</span>)
-<span class="kw">import</span> csv
-<span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-VOTO_MINIMO: <span class="nb">int</span> <span class="op">=</span> <span class="mi">18</span>
-
-<span class="kw">with</span> <span class="nb">open</span>(Path(<span class="st">&quot;appello.csv&quot;</span>), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-    studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> <span class="nb">list</span>(
-        csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>))
-
-ordinati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
-    studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;cognome&quot;</span>])
-promossi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
-
-verbale: Path <span class="op">=</span> Path(<span class="st">&quot;verbale.txt&quot;</span>)
-<span class="kw">with</span> <span class="nb">open</span>(verbale, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-    f.write(<span class="st">&quot;Verbale dell&#x27;appello\n&quot;</span>)
-    <span class="kw">for</span> s <span class="kw">in</span> ordinati:
-        voto: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(s[<span class="st">&quot;voto&quot;</span>])
-        esito: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;respinto&quot;</span>
-        <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> VOTO_MINIMO:
-            esito <span class="op">=</span> <span class="st">&quot;promosso&quot;</span>
-            promossi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
-        f.write(<span class="st">f&quot;{s[&#x27;matricola&#x27;]} {s[&#x27;cognome&#x27;]} {s[&#x27;nome&#x27;]}: &quot;</span>
-                <span class="st">f&quot;{voto}, {esito}\n&quot;</span>)
-    f.write(<span class="st">f&quot;Promossi: {promossi} su {len(studenti)}\n&quot;</span>)
-
-<span class="nb">print</span>(verbale.read_text(encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>), end<span class="op">=</span><span class="st">&quot;&quot;</span>)
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 5: il registro delle spese — spese.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 5: Il registro delle spese ---&quot;</span>)
-<span class="kw">import</span> csv
-<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
-<span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-SPESE: Path <span class="op">=</span> Path(<span class="st">&quot;spese.csv&quot;</span>)
-
-data: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Data (aaaa-mm-gg): &quot;</span>)
-categoria: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Categoria: &quot;</span>).strip().lower()
-<span class="kw">try</span>:
-    importo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="nb">input</span>(<span class="st">&quot;Importo: &quot;</span>))
-<span class="kw">except</span> <span class="nb">ValueError</span>:
-    <span class="nb">print</span>(<span class="st">&quot;Importo non valido: spesa non registrata&quot;</span>)
-<span class="kw">else</span>:
-    <span class="kw">with</span> <span class="nb">open</span>(SPESE, <span class="st">&quot;a&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
-        csv.writer(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>).writerow(
-            [data, categoria, <span class="st">f&quot;{importo:.2f}&quot;</span>])
-
-totali: defaultdict[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> defaultdict(<span class="nb">float</span>)
-<span class="kw">with</span> <span class="nb">open</span>(SPESE, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-    <span class="kw">for</span> riga <span class="kw">in</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>):
-        totali[riga[<span class="st">&quot;categoria&quot;</span>]] <span class="op">+</span><span class="op">=</span> <span class="nb">float</span>(riga[<span class="st">&quot;importo&quot;</span>])
-
-<span class="kw">for</span> cat, totale <span class="kw">in</span> <span class="nb">sorted</span>(totali.items(),
-                          key<span class="op">=</span><span class="kw">lambda</span> c: c[<span class="mi">1</span>], reverse<span class="op">=</span><span class="kw">True</span>):
-    <span class="nb">print</span>(<span class="st">f&quot;{cat}: {totale:.2f} EUR&quot;</span>)
-<span class="nb">print</span>(<span class="st">f&quot;Totale: {sum(totali.values()):.2f} EUR&quot;</span>)
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 6: il sondaggio in json — sondaggio.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 6: Il sondaggio in JSON ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 3: Il sondaggio in JSON ---&quot;</span>)
 <span class="kw">import</span> json
 <span class="kw">from</span> pathlib <span class="kw">import</span> Path
 
@@ -412,9 +318,9 @@ riepilogo: <span class="nb">dict</span>[<span class="nb">str</span>, <span class
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 7: un appello con errori — appello_robusto.py</span>
+<span class="cm" id="sol-appello_robusto"># ESERCIZIO 4: un appello con errori — appello_robusto.py</span>
 <span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 7: Un appello con errori ---&quot;</span>)
+<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Un appello con errori ---&quot;</span>)
 <span class="kw">import</span> csv
 <span class="kw">from</span> pathlib <span class="kw">import</span> Path
 
@@ -450,45 +356,7 @@ scartate: <span class="nb">int</span> <span class="op">=</span> <span class="mi"
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># ESERCIZIO 8: configurazione in json — config_soglia.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 8: Configurazione in JSON ---&quot;</span>)
-<span class="kw">import</span> csv
-<span class="kw">import</span> json
-<span class="kw">from</span> pathlib <span class="kw">import</span> Path
-
-<span class="kw">def</span> <span class="fn">sopra_soglia</span>(<span class="fn">file</span>: <span class="nb">str</span>, colonna: <span class="nb">str</span>,
-                 soglia: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
-    <span class="st">&quot;&quot;&quot;Cognomi degli studenti con valore &gt;= soglia.&quot;&quot;&quot;</span>
-    cognomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
-    <span class="kw">with</span> <span class="nb">open</span>(Path(file), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        <span class="kw">for</span> riga <span class="kw">in</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>):
-            <span class="kw">if</span> <span class="nb">int</span>(riga[colonna]) <span class="op">&gt;</span><span class="op">=</span> soglia:
-                cognomi.append(riga[<span class="st">&quot;cognome&quot;</span>])
-    <span class="kw">return</span> cognomi
-
-<span class="kw">try</span>:
-    <span class="kw">with</span> <span class="nb">open</span>(Path(<span class="st">&quot;config.json&quot;</span>), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
-        config: <span class="nb">dict</span> <span class="op">=</span> json.load(f)
-    cognomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> sopra_soglia(
-        config[<span class="st">&quot;file&quot;</span>], config[<span class="st">&quot;colonna&quot;</span>], config[<span class="st">&quot;soglia&quot;</span>])
-<span class="kw">except</span> <span class="nb">FileNotFoundError</span> <span class="kw">as</span> e:
-    <span class="nb">print</span>(<span class="st">f&quot;File non trovato: {e.filename}&quot;</span>)
-<span class="kw">except</span> json.JSONDecodeError <span class="kw">as</span> e:
-    <span class="nb">print</span>(<span class="st">f&quot;config.json non valido alla riga {e.lineno}&quot;</span>)
-<span class="kw">except</span> <span class="nb">KeyError</span> <span class="kw">as</span> e:
-    <span class="nb">print</span>(<span class="st">f&quot;Chiave mancante: {e}&quot;</span>)
-<span class="kw">except</span> <span class="nb">ValueError</span>:
-    <span class="nb">print</span>(<span class="st">&quot;La colonna scelta non contiene numeri interi&quot;</span>)
-<span class="kw">else</span>:
-    <span class="nb">print</span>(<span class="st">f&quot;File: {config[&#x27;file&#x27;]}, soglia: {config[&#x27;soglia&#x27;]}&quot;</span>)
-    <span class="nb">print</span>(<span class="st">f&quot;Sopra soglia: {len(cognomi)}&quot;</span>)
-    <span class="nb">print</span>(<span class="st">&quot;, &quot;</span>.join(<span class="nb">sorted</span>(cognomi)))
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE MERCATI E FINANZA: il portafoglio: prezzi da file — ch_mercati.py</span>
+<span class="cm" id="sol-ch_mercati"># CHALLENGE MERCATI E FINANZA: il portafoglio: prezzi da file — ch_mercati.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Mercati e finanza: Il portafoglio: prezzi da file ---&quot;</span>)
 <span class="kw">import</span> csv
@@ -530,7 +398,7 @@ scartate: <span class="nb">int</span> <span class="op">=</span> <span class="mi"
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE SPORT: il campionato: tempi da file — ch_sport.py</span>
+<span class="cm" id="sol-ch_sport"># CHALLENGE SPORT: il campionato: tempi da file — ch_sport.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Sport: Il campionato: tempi da file ---&quot;</span>)
 <span class="kw">import</span> csv
@@ -572,7 +440,7 @@ scartate: <span class="nb">int</span> <span class="op">=</span> <span class="mi"
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE IMPRESE E MARKETING: il negozio online: ordini da file — ch_negozio.py</span>
+<span class="cm" id="sol-ch_negozio"># CHALLENGE IMPRESE E MARKETING: il negozio online: ordini da file — ch_negozio.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Imprese e marketing: Il negozio online: ordini da file ---&quot;</span>)
 <span class="kw">import</span> csv
@@ -614,7 +482,7 @@ scartate: <span class="nb">int</span> <span class="op">=</span> <span class="mi"
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE SALUTE E SCIENZA: lo studio clinico: misure da file — ch_salute.py</span>
+<span class="cm" id="sol-ch_salute"># CHALLENGE SALUTE E SCIENZA: lo studio clinico: misure da file — ch_salute.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Salute e scienza: Lo studio clinico: misure da file ---&quot;</span>)
 <span class="kw">import</span> csv
@@ -656,7 +524,7 @@ scartate: <span class="nb">int</span> <span class="op">=</span> <span class="mi"
 
 
 <span class="cm"># ============================================================================</span>
-<span class="cm"># CHALLENGE CASO E PROBABILITÀ: il tavolo da gioco: lanci da file — ch_probabilita.py</span>
+<span class="cm" id="sol-ch_probabilita"># CHALLENGE CASO E PROBABILITÀ: il tavolo da gioco: lanci da file — ch_probabilita.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Challenge Caso e probabilità: Il tavolo da gioco: lanci da file ---&quot;</span>)
 <span class="kw">import</span> csv
@@ -701,6 +569,142 @@ scartate: <span class="nb">int</span> <span class="op">=</span> <span class="mi"
 <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
 <span class="nb">print</span>(<span class="st">&quot;Fine degli esercizi del laboratorio 05&quot;</span>)
 <span class="nb">print</span>(<span class="st">&quot;=&quot;</span> <span class="op">*</span> <span class="mi">60</span>)
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-parole_frequenti"># EXTRA 1: le parole più usate — parole_frequenti.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 1: Le parole più usate ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+PUNTEGGIATURA: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;.,;:!?&quot;</span>
+LUNGHEZZA_MINIMA: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>
+
+<span class="kw">def</span> <span class="fn">parole_del_file</span>(<span class="fn">percorso</span>: Path) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Parole del file in minuscolo, senza punteggiatura.&quot;&quot;&quot;</span>
+    parole: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(percorso, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> f:
+            <span class="kw">for</span> parola <span class="kw">in</span> riga.lower().split():
+                parole.append(parola.strip(PUNTEGGIATURA))
+    <span class="kw">return</span> parole
+
+tutte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> parole_del_file(Path(<span class="st">&quot;commenti.txt&quot;</span>))
+lunghe: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [p <span class="kw">for</span> p <span class="kw">in</span> tutte
+                     <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span><span class="op">=</span> LUNGHEZZA_MINIMA]
+conteggi: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(lunghe)
+
+<span class="nb">print</span>(<span class="st">f&quot;Parole: {len(tutte)}, distinte: {len(set(tutte))}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Parole di almeno {LUNGHEZZA_MINIMA} lettere: {len(lunghe)}&quot;</span>)
+<span class="kw">for</span> parola, volte <span class="kw">in</span> conteggi.most_common(<span class="mi">3</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{parola}: {volte}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-verbale"># EXTRA 2: il verbale d&#x27;esame — verbale.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 2: Il verbale d&#x27;esame ---&quot;</span>)
+<span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+VOTO_MINIMO: <span class="nb">int</span> <span class="op">=</span> <span class="mi">18</span>
+
+<span class="kw">with</span> <span class="nb">open</span>(Path(<span class="st">&quot;appello.csv&quot;</span>), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    studenti: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> <span class="nb">list</span>(
+        csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>))
+
+ordinati: <span class="nb">list</span>[<span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">str</span>]] <span class="op">=</span> <span class="nb">sorted</span>(
+    studenti, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">&quot;cognome&quot;</span>])
+promossi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>
+
+verbale: Path <span class="op">=</span> Path(<span class="st">&quot;verbale.txt&quot;</span>)
+<span class="kw">with</span> <span class="nb">open</span>(verbale, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">&quot;Verbale dell&#x27;appello\n&quot;</span>)
+    <span class="kw">for</span> s <span class="kw">in</span> ordinati:
+        voto: <span class="nb">int</span> <span class="op">=</span> <span class="nb">int</span>(s[<span class="st">&quot;voto&quot;</span>])
+        esito: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;respinto&quot;</span>
+        <span class="kw">if</span> voto <span class="op">&gt;</span><span class="op">=</span> VOTO_MINIMO:
+            esito <span class="op">=</span> <span class="st">&quot;promosso&quot;</span>
+            promossi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        f.write(<span class="st">f&quot;{s[&#x27;matricola&#x27;]} {s[&#x27;cognome&#x27;]} {s[&#x27;nome&#x27;]}: &quot;</span>
+                <span class="st">f&quot;{voto}, {esito}\n&quot;</span>)
+    f.write(<span class="st">f&quot;Promossi: {promossi} su {len(studenti)}\n&quot;</span>)
+
+<span class="nb">print</span>(verbale.read_text(encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>), end<span class="op">=</span><span class="st">&quot;&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-spese"># EXTRA 3: il registro delle spese — spese.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 3: Il registro delle spese ---&quot;</span>)
+<span class="kw">import</span> csv
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+SPESE: Path <span class="op">=</span> Path(<span class="st">&quot;spese.csv&quot;</span>)
+
+data: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Data (aaaa-mm-gg): &quot;</span>)
+categoria: <span class="nb">str</span> <span class="op">=</span> <span class="nb">input</span>(<span class="st">&quot;Categoria: &quot;</span>).strip().lower()
+<span class="kw">try</span>:
+    importo: <span class="nb">float</span> <span class="op">=</span> <span class="nb">float</span>(<span class="nb">input</span>(<span class="st">&quot;Importo: &quot;</span>))
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;Importo non valido: spesa non registrata&quot;</span>)
+<span class="kw">else</span>:
+    <span class="kw">with</span> <span class="nb">open</span>(SPESE, <span class="st">&quot;a&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="kw">as</span> f:
+        csv.writer(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>).writerow(
+            [data, categoria, <span class="st">f&quot;{importo:.2f}&quot;</span>])
+
+totali: defaultdict[<span class="nb">str</span>, <span class="nb">float</span>] <span class="op">=</span> defaultdict(<span class="nb">float</span>)
+<span class="kw">with</span> <span class="nb">open</span>(SPESE, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> riga <span class="kw">in</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>):
+        totali[riga[<span class="st">&quot;categoria&quot;</span>]] <span class="op">+</span><span class="op">=</span> <span class="nb">float</span>(riga[<span class="st">&quot;importo&quot;</span>])
+
+<span class="kw">for</span> cat, totale <span class="kw">in</span> <span class="nb">sorted</span>(totali.items(),
+                          key<span class="op">=</span><span class="kw">lambda</span> c: c[<span class="mi">1</span>], reverse<span class="op">=</span><span class="kw">True</span>):
+    <span class="nb">print</span>(<span class="st">f&quot;{cat}: {totale:.2f} EUR&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Totale: {sum(totali.values()):.2f} EUR&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-config_soglia"># EXTRA 4: configurazione in json — config_soglia.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 4: Configurazione in JSON ---&quot;</span>)
+<span class="kw">import</span> csv
+<span class="kw">import</span> json
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="kw">def</span> <span class="fn">sopra_soglia</span>(<span class="fn">file</span>: <span class="nb">str</span>, colonna: <span class="nb">str</span>,
+                 soglia: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Cognomi degli studenti con valore &gt;= soglia.&quot;&quot;&quot;</span>
+    cognomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> []
+    <span class="kw">with</span> <span class="nb">open</span>(Path(file), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> riga <span class="kw">in</span> csv.DictReader(f, delimiter<span class="op">=</span><span class="st">&quot;;&quot;</span>):
+            <span class="kw">if</span> <span class="nb">int</span>(riga[colonna]) <span class="op">&gt;</span><span class="op">=</span> soglia:
+                cognomi.append(riga[<span class="st">&quot;cognome&quot;</span>])
+    <span class="kw">return</span> cognomi
+
+<span class="kw">try</span>:
+    <span class="kw">with</span> <span class="nb">open</span>(Path(<span class="st">&quot;config.json&quot;</span>), <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="kw">as</span> f:
+        config: <span class="nb">dict</span> <span class="op">=</span> json.load(f)
+    cognomi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> sopra_soglia(
+        config[<span class="st">&quot;file&quot;</span>], config[<span class="st">&quot;colonna&quot;</span>], config[<span class="st">&quot;soglia&quot;</span>])
+<span class="kw">except</span> <span class="nb">FileNotFoundError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;File non trovato: {e.filename}&quot;</span>)
+<span class="kw">except</span> json.JSONDecodeError <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;config.json non valido alla riga {e.lineno}&quot;</span>)
+<span class="kw">except</span> <span class="nb">KeyError</span> <span class="kw">as</span> e:
+    <span class="nb">print</span>(<span class="st">f&quot;Chiave mancante: {e}&quot;</span>)
+<span class="kw">except</span> <span class="nb">ValueError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;La colonna scelta non contiene numeri interi&quot;</span>)
+<span class="kw">else</span>:
+    <span class="nb">print</span>(<span class="st">f&quot;File: {config[&#x27;file&#x27;]}, soglia: {config[&#x27;soglia&#x27;]}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">f&quot;Sopra soglia: {len(cognomi)}&quot;</span>)
+    <span class="nb">print</span>(<span class="st">&quot;, &quot;</span>.join(<span class="nb">sorted</span>(cognomi)))
+<span class="nb">print</span>()
+
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
 </body>

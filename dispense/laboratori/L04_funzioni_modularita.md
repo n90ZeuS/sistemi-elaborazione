@@ -4,19 +4,19 @@
 
 Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file `.py` con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve `input()`: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T15.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T15.
 
 | # | File | Esercizio |
 |---|---|---|
 | 1 | `esito.py` | Esito dell'esame |
-| 2 | `media_ponderata.py` | Media ponderata |
-| 3 | `descrittive.py` | Media e varianza a mano |
-| 4 | `riassunto.py` | Tempi di viaggio |
-| 5 | `esami_date.py` | Quanto manca all'esame |
-| 6 | `classifica.py` | Classifica del corso |
-| 7 | `questionario.py` | Come arrivate in università |
-| 8 | `confronto_gruppi.py` | Frequentanti e non frequentanti |
+| 2 | `descrittive.py` | Media e varianza a mano |
+| 3 | `riassunto.py` | Tempi di viaggio |
+| 4 | `classifica.py` | Classifica del corso |
 | Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
+| Extra 1 | `media_ponderata.py` | Media ponderata (a casa) |
+| Extra 2 | `esami_date.py` | Quanto manca all'esame (a casa) |
+| Extra 3 | `questionario.py` | Come arrivate in università (a casa) |
+| Extra 4 | `confronto_gruppi.py` | Frequentanti e non frequentanti (a casa) |
 
 ---
 
@@ -45,6 +45,7 @@ print(statistics.median([24, 30, 27]))     # 27
 
 ## Esercizio 1 — Esito dell'esame (`esito.py`)
 
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-esito)
 **Consegna**
 
 1. Scrivete `esito(voto: int, lode: bool = False) -> str`, che restituisce l'esito come stringa secondo la tabella. I casi si controllano nell'ordine della tabella.
@@ -78,33 +79,9 @@ Luca: promosso con 30
 
 ---
 
-## Esercizio 2 — Media ponderata (`media_ponderata.py`)
+## Esercizio 2 — Media e varianza a mano (`descrittive.py`)
 
-**Consegna**
-
-1. Scrivete `media_ponderata(voti: list[int], cfu: list[int]) -> float`: somma dei prodotti voto × crediti, divisa per il totale dei crediti. Scorrete le due liste insieme con `zip()`.
-2. Se la lista dei voti è vuota o le due liste hanno lunghezze diverse, la funzione restituisce `0.0`.
-3. Scrivete `base_laurea(media: float) -> float`, che porta la media in centodecimi: `media * 110 / 30`.
-4. Con `voti = [28, 30, 25, 27, 30, 24]` e `cfu = [9, 6, 12, 6, 9, 6]` stampate la media aritmetica e la media ponderata con due decimali, e la base di laurea con un decimale.
-
-**Esempio di esecuzione**
-
-```
-Media aritmetica: 27.33
-Media ponderata: 27.25
-Base di laurea: 99.9/110
-```
-
-**Provate anche**
-
-- aggiungete un 30 da 12 CFU → ponderata `27.80`, base `101.9/110`
-- `media_ponderata([], [])` → `0.0`
-- `media_ponderata([28, 30], [9])` → `0.0` (lunghezze diverse)
-
----
-
-## Esercizio 3 — Media e varianza a mano (`descrittive.py`)
-
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-descrittive)
 **Consegna**
 
 1. Scrivete `media(valori: list[float]) -> float`.
@@ -128,8 +105,9 @@ Deviazione standard: 8.66 (statistics: 8.66)
 
 ---
 
-## Esercizio 4 — Tempi di viaggio (`riassunto.py`)
+## Esercizio 3 — Tempi di viaggio (`riassunto.py`)
 
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-riassunto)
 **Consegna**
 
 1. La lista `tempi: list[float] = [35, 12, 50, 20, 75, 18, 40, 25]` contiene i minuti che otto studenti impiegano per arrivare in università.
@@ -154,41 +132,9 @@ Campo di variazione: 63.0 minuti
 
 ---
 
-## Esercizio 5 — Quanto manca all'esame (`esami_date.py`)
+## Esercizio 4 — Classifica del corso (`classifica.py`)
 
-**Consegna**
-
-1. Importate `date` dal modulo `datetime`. La differenza tra due date è un intervallo: `(d2 - d1).days` sono i giorni.
-2. Scrivete `giorni_mancanti(esame: date, oggi: date) -> int` e `settimane_e_giorni(giorni: int) -> tuple[int, int]`, che usa `//` e `%`.
-3. Scrivete `nome_giorno(giorno: date) -> str`: `giorno.weekday()` dà 0 per il lunedì e 6 per la domenica; usatelo come indice in una lista con i nomi dei giorni.
-4. Con `oggi = date(2026, 11, 19)` e il dizionario degli appelli in tabella, stampate per ogni esame il giorno della settimana, la data e quanto manca. Se la data è già passata stampate `esame già passato`.
-
-| Esame | Data |
-|---|---|
-| Analisi 1 | `date(2027, 1, 18)` |
-| Statistica 1 | `date(2027, 1, 28)` |
-| Sistemi di elaborazione | `date(2027, 2, 10)` |
-
-**Esempio di esecuzione**
-
-```
-Analisi 1: lunedì 2027-01-18
-  tra 60 giorni: 8 settimane e 4 giorni
-Statistica 1: giovedì 2027-01-28
-  tra 70 giorni: 10 settimane e 0 giorni
-Sistemi di elaborazione: mercoledì 2027-02-10
-  tra 83 giorni: 11 settimane e 6 giorni
-```
-
-**Provate anche**
-
-- `oggi = date(2027, 1, 25)` → Analisi 1 già passato, Statistica 1 `tra 3 giorni`, Sistemi `tra 16 giorni: 2 settimane e 2 giorni`
-- `nome_giorno(date(2026, 12, 25))` → `venerdì`
-
----
-
-## Esercizio 6 — Classifica del corso (`classifica.py`)
-
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-classifica)
 **Consegna**
 
 1. Ogni studente è una tupla (nome, media, crediti): `studenti = [("Marco", 26.4, 66), ("Anna", 28.1, 54), ("Sara", 26.4, 72), ("Luca", 24.9, 48), ("Giulia", 29.3, 60)]`.
@@ -217,68 +163,6 @@ In regola con 70 CFU: ['Sara']
 
 ---
 
-## Esercizio 7 — Come arrivate in università (`questionario.py`)
-
-**Consegna**
-
-1. Le risposte a un questionario sono scritte in modo disordinato: `grezze = ["Bici", " autobus", "treno ", "BICI", "", "a piedi", "Treno", "bici", "Autobus ", "treno", "autobus", "  "]`.
-2. Scrivete `pulisci(risposte: list[str]) -> list[str]`: toglie gli spazi ai lati, passa in minuscolo e scarta le risposte vuote (una comprehension con filtro).
-3. Scrivete `frequenze_relative(risposte: list[str]) -> dict[str, float]`: con `Counter` e `most_common()`, dalla risposta più comune alla meno comune.
-4. Scrivete `mode(risposte: list[str]) -> list[str]`: tutte le risposte con la frequenza massima, in ordine alfabetico; `[]` se la lista è vuota.
-5. Stampate le risposte valide sul totale, le frequenze in percentuale con un decimale e le mode.
-
-**Esempio di esecuzione**
-
-```
-Risposte valide: 10 su 12
-bici: 30.0%
-autobus: 30.0%
-treno: 30.0%
-a piedi: 10.0%
-Moda: ['autobus', 'bici', 'treno']
-```
-
-**Provate anche**
-
-- aggiungete `"Bici "` → `bici: 36.4%`, moda `['bici']`
-- `grezze = ["", " "]` → `Risposte valide: 0 su 2` e `Moda: []`
-
----
-
-## Esercizio 8 — Frequentanti e non frequentanti (`confronto_gruppi.py`)
-
-**Consegna**
-
-1. Punteggi di una prova intermedia: `frequentanti = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]` e `non_frequentanti = [21, 18, 30, 14, 23, 25, 13, 20]`.
-2. Scrivete `confronta(a: list[float], b: list[float], statistica: callable) -> tuple[float, float, float]`: chiama la funzione `statistica` su ciascun gruppo e restituisce i due valori e la differenza a − b.
-3. Scrivete `campo(valori: list[float]) -> float`, che restituisce massimo − minimo.
-4. Mettete in un dizionario nome → funzione le misure della tabella, senza parentesi dopo il nome della funzione. Scorrete il dizionario, chiamate `confronta` e stampate una riga per misura, con due decimali.
-
-| Nome | Funzione |
-|---|---|
-| Media | `statistics.mean` |
-| Mediana | `statistics.median` |
-| Deviazione standard | `statistics.stdev` |
-| Campo di variazione | `campo` |
-| Minimo | `min` |
-
-**Esempio di esecuzione**
-
-```
-Media: 24.60 contro 20.50 (differenza 4.10)
-Mediana: 25.50 contro 20.50 (differenza 5.00)
-Deviazione standard: 4.48 contro 5.63 (differenza -1.15)
-Campo di variazione: 14.00 contro 17.00 (differenza -3.00)
-Minimo: 16.00 contro 13.00 (differenza 3.00)
-```
-
-**Provate anche**
-
-- `confronta([18, 30], [24], statistics.mean)` → `(24, 24, 0)`
-- aggiungete `"Quota di sufficienti"` con `lambda v: len([x for x in v if x >= 18]) / len(v)` → `0.90 contro 0.75 (differenza 0.15)`
-
----
-
 ## Challenge a scelta
 
 Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli stessi strumenti: cambiano la storia e i dati. Ogni tema continua nei laboratori successivi.
@@ -304,6 +188,7 @@ Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli s
 
 ### Challenge · Mercati e finanza — Rischio e rendimento (`ch_mercati.py`)
 
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-ch_mercati)
 **Consegna**
 
 1. Il portafoglio costruito in L03 è `{"ENRG": 40, "BANK": 20, "TECH": 20}`. Scrivete i prezzi di chiusura di otto giorni in `prezzi: dict[str, list[float]]` (tabella). Il quinto prezzo di ENRG manca ed è registrato come `0.0`.
@@ -339,6 +224,7 @@ Valore l'ultimo giorno: 1707.00 euro
 
 ### Challenge · Sport — Il passo gara (`ch_sport.py`)
 
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-ch_sport)
 **Consegna**
 
 1. Nell'ultima gara del campionato sono stati cronometrati otto giri per pilota, in secondi (tabella): `tempi: dict[str, list[float]]`. I giri sopra i 100 secondi sono pit stop; lo `0.0` di Neri è un giro non registrato.
@@ -375,6 +261,7 @@ Giri sotto 93 secondi: {'Ferri': 6, 'Lanza': 1, 'Moro': 7, 'Neri': 0}
 
 ### Challenge · Imprese e marketing — Margini e sconti (`ch_negozio.py`)
 
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-ch_negozio)
 **Consegna**
 
 1. Il catalogo del negozio ha ora anche il costo di ogni prodotto: `CATALOGO: dict[str, tuple[float, float]]`, prodotto → (prezzo, costo), con i dati della tabella. I pezzi venduti in settimana sono `{"zaino": 2, "borraccia": 5, "quaderno": 12, "cuffie": 2, "lampada": 3, "penna": 4}`; la penna non è in catalogo.
@@ -413,6 +300,7 @@ Zaini con lo sconto del 20%: incasso 63.84, margine 19.84
 
 ### Challenge · Salute e scienza — Le variazioni di pressione (`ch_salute.py`)
 
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-ch_salute)
 **Consegna**
 
 1. Lo studio di L03 è arrivato a 12 pazienti. I dati sono in un dizionario gruppo → lista di tuple (codice, prima, dopo): `studio: dict[str, list[tuple[str, int, int]]]` (tabella). Due misure sono sbagliate: P07 non ha la seconda misura (0) e per P12 è stato scritto 15 invece di 150.
@@ -446,6 +334,7 @@ controllo: media -3.8 mmHg, dev. std 4.76 (statistics: 4.76)
 
 ### Challenge · Caso e probabilità — Tanti lanci (`ch_probabilita.py`)
 
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-ch_probabilita)
 **Consegna**
 
 1. Nella serata di L03 Ada, Bea e Ciro hanno fatto solo 12 lanci. Ora i lanci di due dadi si simulano: chiamate `random.seed(2026)` una volta, prima di tutte le simulazioni.
@@ -482,3 +371,276 @@ Somma 5 con due dadi da 4 facce: 25.0%
 5. In `classifica.py`, perché nella chiave si scrive `-s[1]` invece di usare `reverse=True`?
 6. In `confronto_gruppi.py`, che differenza c'è tra scrivere `statistics.mean` e `statistics.mean(frequentanti)`?
 7. Nella sfida, a cosa serve `random.seed(2026)`? Cosa succede togliendolo?
+
+---
+
+## Esercizi extra
+
+Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.
+
+---
+
+## Extra 1 — Media ponderata (`media_ponderata.py`)
+
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-media_ponderata)
+
+**Consegna**
+
+1. Scrivete `media_ponderata(voti: list[int], cfu: list[int]) -> float`: somma dei prodotti voto × crediti, divisa per il totale dei crediti. Scorrete le due liste insieme con `zip()`.
+2. Se la lista dei voti è vuota o le due liste hanno lunghezze diverse, la funzione restituisce `0.0`.
+3. Scrivete `base_laurea(media: float) -> float`, che porta la media in centodecimi: `media * 110 / 30`.
+4. Con `voti = [28, 30, 25, 27, 30, 24]` e `cfu = [9, 6, 12, 6, 9, 6]` stampate la media aritmetica e la media ponderata con due decimali, e la base di laurea con un decimale.
+
+**Esempio di esecuzione**
+
+```
+Media aritmetica: 27.33
+Media ponderata: 27.25
+Base di laurea: 99.9/110
+```
+
+**Provate anche**
+
+- aggiungete un 30 da 12 CFU → ponderata `27.80`, base `101.9/110`
+- `media_ponderata([], [])` → `0.0`
+- `media_ponderata([28, 30], [9])` → `0.0` (lunghezze diverse)
+
+**Soluzione**
+
+```python
+def media_ponderata(voti: list[int], cfu: list[int]) -> float:
+    """Media pesata con i crediti; 0.0 se i dati non vanno bene."""
+    if len(voti) == 0 or len(voti) != len(cfu):
+        return 0.0
+    somma: int = 0
+    for voto, crediti in zip(voti, cfu):
+        somma += voto * crediti
+    return somma / sum(cfu)
+
+
+def base_laurea(media: float) -> float:
+    """Converte una media in trentesimi in centodecimi."""
+    return media * 110 / 30
+
+
+voti: list[int] = [28, 30, 25, 27, 30, 24]
+cfu: list[int] = [9, 6, 12, 6, 9, 6]
+
+ponderata: float = media_ponderata(voti, cfu)
+print(f"Media aritmetica: {sum(voti) / len(voti):.2f}")
+print(f"Media ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {base_laurea(ponderata):.1f}/110")
+```
+
+---
+
+## Extra 2 — Quanto manca all'esame (`esami_date.py`)
+
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-esami_date)
+
+**Consegna**
+
+1. Importate `date` dal modulo `datetime`. La differenza tra due date è un intervallo: `(d2 - d1).days` sono i giorni.
+2. Scrivete `giorni_mancanti(esame: date, oggi: date) -> int` e `settimane_e_giorni(giorni: int) -> tuple[int, int]`, che usa `//` e `%`.
+3. Scrivete `nome_giorno(giorno: date) -> str`: `giorno.weekday()` dà 0 per il lunedì e 6 per la domenica; usatelo come indice in una lista con i nomi dei giorni.
+4. Con `oggi = date(2026, 11, 19)` e il dizionario degli appelli in tabella, stampate per ogni esame il giorno della settimana, la data e quanto manca. Se la data è già passata stampate `esame già passato`.
+
+| Esame | Data |
+|---|---|
+| Analisi 1 | `date(2027, 1, 18)` |
+| Statistica 1 | `date(2027, 1, 28)` |
+| Sistemi di elaborazione | `date(2027, 2, 10)` |
+
+**Esempio di esecuzione**
+
+```
+Analisi 1: lunedì 2027-01-18
+  tra 60 giorni: 8 settimane e 4 giorni
+Statistica 1: giovedì 2027-01-28
+  tra 70 giorni: 10 settimane e 0 giorni
+Sistemi di elaborazione: mercoledì 2027-02-10
+  tra 83 giorni: 11 settimane e 6 giorni
+```
+
+**Provate anche**
+
+- `oggi = date(2027, 1, 25)` → Analisi 1 già passato, Statistica 1 `tra 3 giorni`, Sistemi `tra 16 giorni: 2 settimane e 2 giorni`
+- `nome_giorno(date(2026, 12, 25))` → `venerdì`
+
+**Soluzione**
+
+```python
+from datetime import date
+
+GIORNI: list[str] = ["lunedì", "martedì", "mercoledì", "giovedì",
+                     "venerdì", "sabato", "domenica"]
+
+
+def giorni_mancanti(esame: date, oggi: date) -> int:
+    """Giorni tra oggi e la data dell'esame."""
+    return (esame - oggi).days
+
+
+def settimane_e_giorni(giorni: int) -> tuple[int, int]:
+    """Divide un numero di giorni in settimane e giorni."""
+    return giorni // 7, giorni % 7
+
+
+def nome_giorno(giorno: date) -> str:
+    """Nome italiano del giorno della settimana."""
+    return GIORNI[giorno.weekday()]
+
+
+oggi: date = date(2026, 11, 19)
+esami: dict[str, date] = {
+    "Analisi 1": date(2027, 1, 18),
+    "Statistica 1": date(2027, 1, 28),
+    "Sistemi di elaborazione": date(2027, 2, 10),
+}
+for corso, giorno in esami.items():
+    mancano: int = giorni_mancanti(giorno, oggi)
+    print(f"{corso}: {nome_giorno(giorno)} {giorno}")
+    if mancano < 0:
+        print("  esame già passato")
+    else:
+        s, g = settimane_e_giorni(mancano)
+        print(f"  tra {mancano} giorni: {s} settimane e {g} giorni")
+```
+
+---
+
+## Extra 3 — Come arrivate in università (`questionario.py`)
+
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-questionario)
+
+**Consegna**
+
+1. Le risposte a un questionario sono scritte in modo disordinato: `grezze = ["Bici", " autobus", "treno ", "BICI", "", "a piedi", "Treno", "bici", "Autobus ", "treno", "autobus", "  "]`.
+2. Scrivete `pulisci(risposte: list[str]) -> list[str]`: toglie gli spazi ai lati, passa in minuscolo e scarta le risposte vuote (una comprehension con filtro).
+3. Scrivete `frequenze_relative(risposte: list[str]) -> dict[str, float]`: con `Counter` e `most_common()`, dalla risposta più comune alla meno comune.
+4. Scrivete `mode(risposte: list[str]) -> list[str]`: tutte le risposte con la frequenza massima, in ordine alfabetico; `[]` se la lista è vuota.
+5. Stampate le risposte valide sul totale, le frequenze in percentuale con un decimale e le mode.
+
+**Esempio di esecuzione**
+
+```
+Risposte valide: 10 su 12
+bici: 30.0%
+autobus: 30.0%
+treno: 30.0%
+a piedi: 10.0%
+Moda: ['autobus', 'bici', 'treno']
+```
+
+**Provate anche**
+
+- aggiungete `"Bici "` → `bici: 36.4%`, moda `['bici']`
+- `grezze = ["", " "]` → `Risposte valide: 0 su 2` e `Moda: []`
+
+**Soluzione**
+
+```python
+from collections import Counter
+
+
+def pulisci(risposte: list[str]) -> list[str]:
+    """Toglie spazi e maiuscole e scarta le risposte vuote."""
+    return [r.strip().lower() for r in risposte if r.strip() != ""]
+
+
+def frequenze_relative(risposte: list[str]) -> dict[str, float]:
+    """Frequenza relativa di ogni risposta, dalla più comune."""
+    conteggi: Counter = Counter(risposte)
+    n: int = len(risposte)
+    return {r: c / n for r, c in conteggi.most_common()}
+
+
+def mode(risposte: list[str]) -> list[str]:
+    """Risposte più frequenti in ordine alfabetico; [] se vuota."""
+    if len(risposte) == 0:
+        return []
+    conteggi: Counter = Counter(risposte)
+    massimo: int = max(conteggi.values())
+    return sorted([r for r in conteggi if conteggi[r] == massimo])
+
+
+grezze: list[str] = ["Bici", " autobus", "treno ", "BICI", "",
+                     "a piedi", "Treno", "bici", "Autobus ",
+                     "treno", "autobus", "  "]
+
+risposte: list[str] = pulisci(grezze)
+print(f"Risposte valide: {len(risposte)} su {len(grezze)}")
+for mezzo, quota in frequenze_relative(risposte).items():
+    print(f"{mezzo}: {quota:.1%}")
+print(f"Moda: {mode(risposte)}")
+```
+
+---
+
+## Extra 4 — Frequentanti e non frequentanti (`confronto_gruppi.py`)
+
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-confronto_gruppi)
+
+**Consegna**
+
+1. Punteggi di una prova intermedia: `frequentanti = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]` e `non_frequentanti = [21, 18, 30, 14, 23, 25, 13, 20]`.
+2. Scrivete `confronta(a: list[float], b: list[float], statistica: callable) -> tuple[float, float, float]`: chiama la funzione `statistica` su ciascun gruppo e restituisce i due valori e la differenza a − b.
+3. Scrivete `campo(valori: list[float]) -> float`, che restituisce massimo − minimo.
+4. Mettete in un dizionario nome → funzione le misure della tabella, senza parentesi dopo il nome della funzione. Scorrete il dizionario, chiamate `confronta` e stampate una riga per misura, con due decimali.
+
+| Nome | Funzione |
+|---|---|
+| Media | `statistics.mean` |
+| Mediana | `statistics.median` |
+| Deviazione standard | `statistics.stdev` |
+| Campo di variazione | `campo` |
+| Minimo | `min` |
+
+**Esempio di esecuzione**
+
+```
+Media: 24.60 contro 20.50 (differenza 4.10)
+Mediana: 25.50 contro 20.50 (differenza 5.00)
+Deviazione standard: 4.48 contro 5.63 (differenza -1.15)
+Campo di variazione: 14.00 contro 17.00 (differenza -3.00)
+Minimo: 16.00 contro 13.00 (differenza 3.00)
+```
+
+**Provate anche**
+
+- `confronta([18, 30], [24], statistics.mean)` → `(24, 24, 0)`
+- aggiungete `"Quota di sufficienti"` con `lambda v: len([x for x in v if x >= 18]) / len(v)` → `0.90 contro 0.75 (differenza 0.15)`
+
+**Soluzione**
+
+```python
+import statistics
+
+
+def confronta(a: list[float], b: list[float],
+              statistica: callable) -> tuple[float, float, float]:
+    """Applica statistica ai gruppi; dà i valori e la differenza."""
+    valore_a: float = statistica(a)
+    valore_b: float = statistica(b)
+    return valore_a, valore_b, valore_a - valore_b
+
+
+def campo(valori: list[float]) -> float:
+    """Campo di variazione: massimo meno minimo."""
+    return max(valori) - min(valori)
+
+
+frequentanti: list[float] = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]
+non_frequentanti: list[float] = [21, 18, 30, 14, 23, 25, 13, 20]
+
+misure: dict[str, callable] = {
+    "Media": statistics.mean,
+    "Mediana": statistics.median,
+    "Deviazione standard": statistics.stdev,
+    "Campo di variazione": campo,
+    "Minimo": min,
+}
+for nome, funzione in misure.items():
+    f, nf, diff = confronta(frequentanti, non_frequentanti, funzione)
+    print(f"{nome}: {f:.2f} contro {nf:.2f} (differenza {diff:.2f})")
+```

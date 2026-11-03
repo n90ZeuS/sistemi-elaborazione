@@ -35,38 +35,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 2: media ponderata — media_ponderata.py
+# ESERCIZIO 2: media e varianza a mano — descrittive.py
 # ============================================================================
-print("--- Esercizio 2: Media ponderata ---")
-def media_ponderata(voti: list[int], cfu: list[int]) -> float:
-    """Media pesata con i crediti; 0.0 se i dati non vanno bene."""
-    if len(voti) == 0 or len(voti) != len(cfu):
-        return 0.0
-    somma: int = 0
-    for voto, crediti in zip(voti, cfu):
-        somma += voto * crediti
-    return somma / sum(cfu)
-
-
-def base_laurea(media: float) -> float:
-    """Converte una media in trentesimi in centodecimi."""
-    return media * 110 / 30
-
-
-voti: list[int] = [28, 30, 25, 27, 30, 24]
-cfu: list[int] = [9, 6, 12, 6, 9, 6]
-
-ponderata: float = media_ponderata(voti, cfu)
-print(f"Media aritmetica: {sum(voti) / len(voti):.2f}")
-print(f"Media ponderata: {ponderata:.2f}")
-print(f"Base di laurea: {base_laurea(ponderata):.1f}/110")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 3: media e varianza a mano — descrittive.py
-# ============================================================================
-print("--- Esercizio 3: Media e varianza a mano ---")
+print("--- Esercizio 2: Media e varianza a mano ---")
 import statistics
 
 
@@ -103,9 +74,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 4: tempi di viaggio — riassunto.py
+# ESERCIZIO 3: tempi di viaggio — riassunto.py
 # ============================================================================
-print("--- Esercizio 4: Tempi di viaggio ---")
+print("--- Esercizio 3: Tempi di viaggio ---")
 def mediana(valori: list[float]) -> float:
     """Valore centrale dei dati ordinati."""
     ordinati: list[float] = sorted(valori)
@@ -132,51 +103,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 5: quanto manca all'esame — esami_date.py
+# ESERCIZIO 4: classifica del corso — classifica.py
 # ============================================================================
-print("--- Esercizio 5: Quanto manca all'esame ---")
-from datetime import date
-
-GIORNI: list[str] = ["lunedì", "martedì", "mercoledì", "giovedì",
-                     "venerdì", "sabato", "domenica"]
-
-
-def giorni_mancanti(esame: date, oggi: date) -> int:
-    """Giorni tra oggi e la data dell'esame."""
-    return (esame - oggi).days
-
-
-def settimane_e_giorni(giorni: int) -> tuple[int, int]:
-    """Divide un numero di giorni in settimane e giorni."""
-    return giorni // 7, giorni % 7
-
-
-def nome_giorno(giorno: date) -> str:
-    """Nome italiano del giorno della settimana."""
-    return GIORNI[giorno.weekday()]
-
-
-oggi: date = date(2026, 11, 19)
-esami: dict[str, date] = {
-    "Analisi 1": date(2027, 1, 18),
-    "Statistica 1": date(2027, 1, 28),
-    "Sistemi di elaborazione": date(2027, 2, 10),
-}
-for corso, giorno in esami.items():
-    mancano: int = giorni_mancanti(giorno, oggi)
-    print(f"{corso}: {nome_giorno(giorno)} {giorno}")
-    if mancano < 0:
-        print("  esame già passato")
-    else:
-        s, g = settimane_e_giorni(mancano)
-        print(f"  tra {mancano} giorni: {s} settimane e {g} giorni")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 6: classifica del corso — classifica.py
-# ============================================================================
-print("--- Esercizio 6: Classifica del corso ---")
+print("--- Esercizio 4: Classifica del corso ---")
 def classifica(
     studenti: list[tuple[str, float, int]],
 ) -> list[tuple[str, float, int]]:
@@ -205,82 +134,6 @@ piu_cfu: tuple[str, float, int] = max(studenti, key=lambda s: s[2])
 print(f"Più crediti: {piu_cfu[0]} con {piu_cfu[2]}")
 print(f"In regola con 60 CFU: {in_regola(studenti)}")
 print(f"In regola con 70 CFU: {in_regola(studenti, cfu_minimi=70)}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 7: come arrivate in università — questionario.py
-# ============================================================================
-print("--- Esercizio 7: Come arrivate in università ---")
-from collections import Counter
-
-
-def pulisci(risposte: list[str]) -> list[str]:
-    """Toglie spazi e maiuscole e scarta le risposte vuote."""
-    return [r.strip().lower() for r in risposte if r.strip() != ""]
-
-
-def frequenze_relative(risposte: list[str]) -> dict[str, float]:
-    """Frequenza relativa di ogni risposta, dalla più comune."""
-    conteggi: Counter = Counter(risposte)
-    n: int = len(risposte)
-    return {r: c / n for r, c in conteggi.most_common()}
-
-
-def mode(risposte: list[str]) -> list[str]:
-    """Risposte più frequenti in ordine alfabetico; [] se vuota."""
-    if len(risposte) == 0:
-        return []
-    conteggi: Counter = Counter(risposte)
-    massimo: int = max(conteggi.values())
-    return sorted([r for r in conteggi if conteggi[r] == massimo])
-
-
-grezze: list[str] = ["Bici", " autobus", "treno ", "BICI", "",
-                     "a piedi", "Treno", "bici", "Autobus ",
-                     "treno", "autobus", "  "]
-
-risposte: list[str] = pulisci(grezze)
-print(f"Risposte valide: {len(risposte)} su {len(grezze)}")
-for mezzo, quota in frequenze_relative(risposte).items():
-    print(f"{mezzo}: {quota:.1%}")
-print(f"Moda: {mode(risposte)}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 8: frequentanti e non frequentanti — confronto_gruppi.py
-# ============================================================================
-print("--- Esercizio 8: Frequentanti e non frequentanti ---")
-import statistics
-
-
-def confronta(a: list[float], b: list[float],
-              statistica: callable) -> tuple[float, float, float]:
-    """Applica statistica ai gruppi; dà i valori e la differenza."""
-    valore_a: float = statistica(a)
-    valore_b: float = statistica(b)
-    return valore_a, valore_b, valore_a - valore_b
-
-
-def campo(valori: list[float]) -> float:
-    """Campo di variazione: massimo meno minimo."""
-    return max(valori) - min(valori)
-
-
-frequentanti: list[float] = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]
-non_frequentanti: list[float] = [21, 18, 30, 14, 23, 25, 13, 20]
-
-misure: dict[str, callable] = {
-    "Media": statistics.mean,
-    "Mediana": statistics.median,
-    "Deviazione standard": statistics.stdev,
-    "Campo di variazione": campo,
-    "Minimo": min,
-}
-for nome, funzione in misure.items():
-    f, nf, diff = confronta(frequentanti, non_frequentanti, funzione)
-    print(f"{nome}: {f:.2f} contro {nf:.2f} (differenza {diff:.2f})")
 print()
 
 
@@ -533,3 +386,150 @@ print()
 print("=" * 60)
 print("Fine degli esercizi del laboratorio 04")
 print("=" * 60)
+
+# ============================================================================
+# EXTRA 1: media ponderata — media_ponderata.py
+# ============================================================================
+print("--- Extra 1: Media ponderata ---")
+def media_ponderata(voti: list[int], cfu: list[int]) -> float:
+    """Media pesata con i crediti; 0.0 se i dati non vanno bene."""
+    if len(voti) == 0 or len(voti) != len(cfu):
+        return 0.0
+    somma: int = 0
+    for voto, crediti in zip(voti, cfu):
+        somma += voto * crediti
+    return somma / sum(cfu)
+
+
+def base_laurea(media: float) -> float:
+    """Converte una media in trentesimi in centodecimi."""
+    return media * 110 / 30
+
+
+voti: list[int] = [28, 30, 25, 27, 30, 24]
+cfu: list[int] = [9, 6, 12, 6, 9, 6]
+
+ponderata: float = media_ponderata(voti, cfu)
+print(f"Media aritmetica: {sum(voti) / len(voti):.2f}")
+print(f"Media ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {base_laurea(ponderata):.1f}/110")
+print()
+
+
+# ============================================================================
+# EXTRA 2: quanto manca all'esame — esami_date.py
+# ============================================================================
+print("--- Extra 2: Quanto manca all'esame ---")
+from datetime import date
+
+GIORNI: list[str] = ["lunedì", "martedì", "mercoledì", "giovedì",
+                     "venerdì", "sabato", "domenica"]
+
+
+def giorni_mancanti(esame: date, oggi: date) -> int:
+    """Giorni tra oggi e la data dell'esame."""
+    return (esame - oggi).days
+
+
+def settimane_e_giorni(giorni: int) -> tuple[int, int]:
+    """Divide un numero di giorni in settimane e giorni."""
+    return giorni // 7, giorni % 7
+
+
+def nome_giorno(giorno: date) -> str:
+    """Nome italiano del giorno della settimana."""
+    return GIORNI[giorno.weekday()]
+
+
+oggi: date = date(2026, 11, 19)
+esami: dict[str, date] = {
+    "Analisi 1": date(2027, 1, 18),
+    "Statistica 1": date(2027, 1, 28),
+    "Sistemi di elaborazione": date(2027, 2, 10),
+}
+for corso, giorno in esami.items():
+    mancano: int = giorni_mancanti(giorno, oggi)
+    print(f"{corso}: {nome_giorno(giorno)} {giorno}")
+    if mancano < 0:
+        print("  esame già passato")
+    else:
+        s, g = settimane_e_giorni(mancano)
+        print(f"  tra {mancano} giorni: {s} settimane e {g} giorni")
+print()
+
+
+# ============================================================================
+# EXTRA 3: come arrivate in università — questionario.py
+# ============================================================================
+print("--- Extra 3: Come arrivate in università ---")
+from collections import Counter
+
+
+def pulisci(risposte: list[str]) -> list[str]:
+    """Toglie spazi e maiuscole e scarta le risposte vuote."""
+    return [r.strip().lower() for r in risposte if r.strip() != ""]
+
+
+def frequenze_relative(risposte: list[str]) -> dict[str, float]:
+    """Frequenza relativa di ogni risposta, dalla più comune."""
+    conteggi: Counter = Counter(risposte)
+    n: int = len(risposte)
+    return {r: c / n for r, c in conteggi.most_common()}
+
+
+def mode(risposte: list[str]) -> list[str]:
+    """Risposte più frequenti in ordine alfabetico; [] se vuota."""
+    if len(risposte) == 0:
+        return []
+    conteggi: Counter = Counter(risposte)
+    massimo: int = max(conteggi.values())
+    return sorted([r for r in conteggi if conteggi[r] == massimo])
+
+
+grezze: list[str] = ["Bici", " autobus", "treno ", "BICI", "",
+                     "a piedi", "Treno", "bici", "Autobus ",
+                     "treno", "autobus", "  "]
+
+risposte: list[str] = pulisci(grezze)
+print(f"Risposte valide: {len(risposte)} su {len(grezze)}")
+for mezzo, quota in frequenze_relative(risposte).items():
+    print(f"{mezzo}: {quota:.1%}")
+print(f"Moda: {mode(risposte)}")
+print()
+
+
+# ============================================================================
+# EXTRA 4: frequentanti e non frequentanti — confronto_gruppi.py
+# ============================================================================
+print("--- Extra 4: Frequentanti e non frequentanti ---")
+import statistics
+
+
+def confronta(a: list[float], b: list[float],
+              statistica: callable) -> tuple[float, float, float]:
+    """Applica statistica ai gruppi; dà i valori e la differenza."""
+    valore_a: float = statistica(a)
+    valore_b: float = statistica(b)
+    return valore_a, valore_b, valore_a - valore_b
+
+
+def campo(valori: list[float]) -> float:
+    """Campo di variazione: massimo meno minimo."""
+    return max(valori) - min(valori)
+
+
+frequentanti: list[float] = [27, 24, 30, 22, 28, 19, 26, 25, 29, 16]
+non_frequentanti: list[float] = [21, 18, 30, 14, 23, 25, 13, 20]
+
+misure: dict[str, callable] = {
+    "Media": statistics.mean,
+    "Mediana": statistics.median,
+    "Deviazione standard": statistics.stdev,
+    "Campo di variazione": campo,
+    "Minimo": min,
+}
+for nome, funzione in misure.items():
+    f, nf, diff = confronta(frequentanti, non_frequentanti, funzione)
+    print(f"{nome}: {f:.2f} contro {nf:.2f} (differenza {diff:.2f})")
+print()
+

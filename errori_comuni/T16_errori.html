@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -257,7 +261,7 @@ informatica.iscrivi(<span class="st">&quot;Anna&quot;</span>)
 <p><strong>Cosa succede:</strong></p>
 <pre><code>Iscritti a Informatica: [<span class="st">&#x27;Luca&#x27;</span>, <span class="st">&#x27;Anna&#x27;</span>]</code></pre>
 <p>Luca compare anche tra gli iscritti a Informatica, anche se è stato iscritto solo a Statistica.</p>
-<p><strong>Perché è sbagliato:</strong> <code>iscritti = []</code> è un attributo di classe, condiviso tra tutte le istanze. Tutte le istanze di <code>Corso</code> puntano alla stessa lista. Quando si modifica la lista tramite un'istanza, la modifica è visibile da tutte le altre. Gli attributi mutabili (liste, dizionari, set) devono essere creati nel <code><em>_init</em>_</code>.</p>
+<p><strong>Perché è sbagliato:</strong> <code>iscritti = []</code> è un attributo di classe, condiviso tra tutte le istanze. Tutte le istanze di <code>Corso</code> puntano alla stessa lista. Quando si modifica la lista tramite un'istanza, la modifica è visibile da tutte le altre. Gli attributi mutabili (liste, dizionari, set) devono essere creati nel <code>__init__</code>.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code><span class="kw">class</span> <span class="fn">Corso</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome):
@@ -274,9 +278,9 @@ statistica.iscrivi(<span class="st">&quot;Luca&quot;</span>)
 informatica.iscrivi(<span class="st">&quot;Anna&quot;</span>)
 
 <span class="nb">print</span>(<span class="st">f&quot;Iscritti a Informatica: {informatica.iscritti}&quot;</span>)  <span class="cm"># [&#x27;Anna&#x27;]</span></code></pre>
-<p><strong>Regola da ricordare:</strong> Non usare mai liste, dizionari o altri oggetti mutabili come attributi di classe: creali dentro <code><em>_init</em>_</code> con <code>self.</code> per avere una copia separata per ogni istanza.</p>
+<p><strong>Regola da ricordare:</strong> Non usare mai liste, dizionari o altri oggetti mutabili come attributi di classe: creali dentro <code>__init__</code> con <code>self.</code> per avere una copia separata per ogni istanza.</p>
 <hr>
-<h3>Errore 3: <code><em>_init</em>_</code> che restituisce un valore</h3>
+<h3>Errore 3: <code>__init__</code> che restituisce un valore</h3>
 <p><strong>Codice errato:</strong></p>
 <pre><code><span class="kw">class</span> <span class="fn">Rettangolo</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, base, altezza):
@@ -287,7 +291,7 @@ informatica.iscrivi(<span class="st">&quot;Anna&quot;</span>)
 r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="mi">3</span>)</code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code><span class="nb">TypeError</span>: __init__() should <span class="kw">return</span> <span class="kw">None</span>, <span class="kw">not</span> <span class="st">&#x27;int&#x27;</span></code></pre>
-<p><strong>Perché è sbagliato:</strong> Il metodo <code><em>_init</em><em></code> serve solo a inizializzare l'oggetto, impostando i suoi attributi. Non può restituire valori con <code>return</code>. Python crea l'oggetto internamente e <code></em><em>init</em>_</code> lo configura: il risultato di <code>Rettangolo(5, 3)</code> è sempre l'oggetto creato, non un valore di ritorno.</p>
+<p><strong>Perché è sbagliato:</strong> Il metodo <code>__init__</code> serve solo a inizializzare l'oggetto, impostando i suoi attributi. Non può restituire valori con <code>return</code>. Python crea l'oggetto internamente e <code>__init__</code> lo configura: il risultato di <code>Rettangolo(5, 3)</code> è sempre l'oggetto creato, non un valore di ritorno.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code><span class="kw">class</span> <span class="fn">Rettangolo</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, base, altezza):
@@ -299,9 +303,9 @@ r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="m
 
 r <span class="op">=</span> Rettangolo(<span class="mi">5</span>, <span class="mi">3</span>)
 <span class="nb">print</span>(r.area())  <span class="cm"># 15</span></code></pre>
-<p><strong>Regola da ricordare:</strong> Il metodo <code><em>_init</em>_</code> non deve mai contenere <code>return valore</code>: serve solo a impostare gli attributi con <code>self.</code>, non a restituire risultati.</p>
+<p><strong>Regola da ricordare:</strong> Il metodo <code>__init__</code> non deve mai contenere <code>return valore</code>: serve solo a impostare gli attributi con <code>self.</code>, non a restituire risultati.</p>
 <hr>
-<h3>Errore 4: Dimenticare <code>super().<em>_init</em>_()</code> nelle sottoclassi</h3>
+<h3>Errore 4: Dimenticare <code>super().__init__()</code> nelle sottoclassi</h3>
 <p><strong>Codice errato:</strong></p>
 <pre><code><span class="kw">class</span> <span class="fn">Persona</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome, età):
@@ -317,7 +321,7 @@ s <span class="op">=</span> Studente(<span class="st">&quot;Luca&quot;</span>, <
 <span class="nb">print</span>(s.nome)</code></pre>
 <p><strong>Cosa succede:</strong></p>
 <pre><code><span class="nb">AttributeError</span>: <span class="st">&#x27;Studente&#x27;</span> <span class="nb">object</span> has no attribute <span class="st">&#x27;nome&#x27;</span></code></pre>
-<p><strong>Perché è sbagliato:</strong> Quando una sottoclasse definisce il proprio <code><em>_init</em><em></code>, sovrascrive quello della classe genitore. Se non si chiama <code>super().</em><em>init</em><em>(...)</code>, gli attributi definiti nel <code></em><em>init</em>_</code> del genitore (<code>nome</code>, <code>età</code>) non vengono mai creati. L'oggetto <code>Studente</code> avrà solo l'attributo <code>matricola</code>.</p>
+<p><strong>Perché è sbagliato:</strong> Quando una sottoclasse definisce il proprio <code>__init__</code>, sovrascrive quello della classe genitore. Se non si chiama <code>super().__init__(...)</code>, gli attributi definiti nel <code>__init__</code> del genitore (<code>nome</code>, <code>età</code>) non vengono mai creati. L'oggetto <code>Studente</code> avrà solo l'attributo <code>matricola</code>.</p>
 <p><strong>Codice corretto:</strong></p>
 <pre><code><span class="kw">class</span> <span class="fn">Persona</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome, età):
@@ -332,7 +336,7 @@ s <span class="op">=</span> Studente(<span class="st">&quot;Luca&quot;</span>, <
 s <span class="op">=</span> Studente(<span class="st">&quot;Luca&quot;</span>, <span class="mi">21</span>, <span class="st">&quot;MAT001&quot;</span>)
 <span class="nb">print</span>(s.nome)       <span class="cm"># Luca</span>
 <span class="nb">print</span>(s.matricola)  <span class="cm"># MAT001</span></code></pre>
-<p><strong>Regola da ricordare:</strong> Quando una sottoclasse ha il proprio <code><em>_init</em><em></code>, chiama sempre <code>super().</em><em>init</em>_(...)</code> per inizializzare gli attributi ereditati dalla classe genitore.</p>
+<p><strong>Regola da ricordare:</strong> Quando una sottoclasse ha il proprio <code>__init__</code>, chiama sempre <code>super().__init__(...)</code> per inizializzare gli attributi ereditati dalla classe genitore.</p>
 <hr>
 <h3>Errore 5: Confondere metodo e attributo (parentesi mancanti o in eccesso)</h3>
 <p><strong>Codice errato:</strong></p>

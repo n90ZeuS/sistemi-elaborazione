@@ -2,21 +2,21 @@
 
 **Prerequisiti:** lezioni T11 (Liste e tuple), T12 (Dizionari e set) e T13 (Funzioni).
 
-Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli. Le funzioni servono solo negli ultimi esercizi.
+Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli. Le funzioni servono solo nell'ultimo esercizio.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T14.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T14.
 
 | # | File | Esercizio |
 |---|---|---|
 | 1 | `voti_appello.py` | L'appello di Statistica |
-| 2 | `coda_mensa.py` | La coda in mensa |
-| 3 | `sondaggio.py` | Come arrivate in aula |
-| 4 | `tre_corsi.py` | Chi segue cosa |
-| 5 | `libretto.py` | Il libretto |
-| 6 | `sessione.py` | La sessione invernale |
-| 7 | `contingenza.py` | Scuola di provenienza ed esito |
-| 8 | `descrittive.py` | Ore di studio |
+| 2 | `sondaggio.py` | Come arrivate in aula |
+| 3 | `sessione.py` | La sessione invernale |
+| 4 | `descrittive.py` | Ore di studio |
 | Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
+| Extra 1 | `coda_mensa.py` | La coda in mensa (a casa) |
+| Extra 2 | `tre_corsi.py` | Chi segue cosa (a casa) |
+| Extra 3 | `libretto.py` | Il libretto (a casa) |
+| Extra 4 | `contingenza.py` | Scuola di provenienza ed esito (a casa) |
 
 ---
 
@@ -46,6 +46,7 @@ gruppi["Analisi"].append(27)    # la lista vuota si crea da sola
 
 ## Esercizio 1 — L'appello di Statistica (`voti_appello.py`)
 
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-voti_appello)
 **Consegna**
 
 1. Chiedete i voti dell'appello su una riga, separati da spazi, e trasformateli in una lista di interi con `split()` e una list comprehension.
@@ -73,39 +74,9 @@ Media dei promossi: 24.5
 
 ---
 
-## Esercizio 2 — La coda in mensa (`coda_mensa.py`)
+## Esercizio 2 — Come arrivate in aula (`sondaggio.py`)
 
-**Consegna**
-
-1. Partite da `coda: list[str] = ["Anna", "Bruno", "Carla"]` e dagli eventi `["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]`.
-2. Dividete ogni evento con `split()`. `arriva X` mette X in fondo (`append`); `servito` toglie il primo (`pop(0)`) e lo aggiunge alla lista `serviti`; `esce X` toglie X (`remove`); `davanti X Y` mette X subito prima di Y (`insert` e `index`).
-3. Se la persona non è in coda o il comando non esiste, stampate `Evento non valido: ...`; se arriva `servito` con la coda vuota, stampate `Nessuno da servire`.
-4. Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.
-
-**Esempio di esecuzione**
-
-```
-arriva Davide -> ['Anna', 'Bruno', 'Carla', 'Davide']
-servito -> ['Bruno', 'Carla', 'Davide']
-arriva Elena -> ['Bruno', 'Carla', 'Davide', 'Elena']
-esce Bruno -> ['Carla', 'Davide', 'Elena']
-davanti Franco Elena -> ['Carla', 'Davide', 'Franco', 'Elena']
-servito -> ['Davide', 'Franco', 'Elena']
-Evento non valido: esce Zeno
-esce Zeno -> ['Davide', 'Franco', 'Elena']
-Serviti: ['Anna', 'Carla']
-Ancora in coda: 3
-```
-
-**Provate anche**
-
-- aggiungete quattro `servito` in fondo agli eventi → l'ultimo stampa `Nessuno da servire`, serviti in 5
-- `davanti Gino Zeno` al posto di `davanti Franco Elena` → evento non valido, alla fine `Ancora in coda: 2`
-
----
-
-## Esercizio 3 — Come arrivate in aula (`sondaggio.py`)
-
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-sondaggio)
 **Consegna**
 
 1. Alle matricole è stato chiesto con quale mezzo arrivano in università. Chiedete le risposte su una riga, separate da virgole.
@@ -133,78 +104,9 @@ Mezzo più usato: bici
 
 ---
 
-## Esercizio 4 — Chi segue cosa (`tre_corsi.py`)
+## Esercizio 3 — La sessione invernale (`sessione.py`)
 
-**Consegna**
-
-1. Scrivete i set `statistica`, `analisi` e `informatica` con gli studenti che frequentano i tre corsi (tabella).
-2. Con `|`, `&` e `-` calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.
-3. Per trovare chi segue un corso soltanto, unite i tre set in una lista (`list(statistica) + list(analisi) + ...`) e contate i nomi con un `Counter`.
-4. Stampate i nomi con `sorted()`, così l'ordine è sempre lo stesso.
-
-| Corso | Studenti |
-|---|---|
-| Statistica | Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia |
-| Analisi | Anna, Chiara, Davide, Hana, Ivan, Giulia |
-| Informatica | Bruno, Chiara, Giulia, Ivan, Luca |
-
-**Esempio di esecuzione**
-
-```
-Studenti diversi: 10
-Tutti e tre i corsi: ['Chiara', 'Giulia']
-Solo Statistica: ['Elisa', 'Fabio']
-Statistica e Analisi, non Informatica: ['Anna', 'Davide']
-Un corso soltanto: ['Elisa', 'Fabio', 'Hana', 'Luca']
-```
-
-**Provate anche**
-
-- aggiungete Luca a Statistica → Luca non segue più un corso soltanto
-- aggiungete Marta a Informatica → `Studenti diversi: 11`
-
----
-
-## Esercizio 5 — Il libretto (`libretto.py`)
-
-**Consegna**
-
-1. Scrivete il libretto come dizionario esame → tupla (voto, CFU), `libretto: dict[str, tuple[int, int]]`, con i dati della tabella.
-2. Scorrete `libretto.items()` con `for esame, (voto, cfu) in ...`: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.
-3. Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.
-4. La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.
-
-| Esame | Voto e CFU |
-|---|---|
-| Analisi 1 | 24, 9 CFU |
-| Statistica 1 | 28, 9 CFU |
-| Informatica | 30, 6 CFU |
-| Economia politica | 22, 9 CFU |
-| Algebra lineare | 27, 6 CFU |
-
-**Esempio di esecuzione**
-
-```
-Analisi 1: 24 (9 CFU)
-Statistica 1: 28 (9 CFU)
-Informatica: 30 (6 CFU)
-Economia politica: 22 (9 CFU)
-Algebra lineare: 27 (6 CFU)
-CFU totali: 39
-Media aritmetica: 26.20
-Media ponderata: 25.85
-Base di laurea: 94.8
-```
-
-**Provate anche**
-
-- aggiungete `"Probabilità": (30, 9)` → 48 CFU, media ponderata `26.62`, base `97.6`
-- date 6 CFU a tutti gli esami → le due medie valgono entrambe `26.20`
-
----
-
-## Esercizio 6 — La sessione invernale (`sessione.py`)
-
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-sessione)
 **Consegna**
 
 1. Scrivete gli esiti come lista di tuple (studente, esame, voto), nell'ordine della tabella: `esiti: list[tuple[str, str, int]]`.
@@ -239,33 +141,9 @@ Nessun esame superato: ['Elisa']
 
 ---
 
-## Esercizio 7 — Scuola di provenienza ed esito (`contingenza.py`)
+## Esercizio 4 — Ore di studio (`descrittive.py`)
 
-**Consegna**
-
-1. Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: `scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]` e `superato = [True, False, True, False, True, True, False, False, True, False, True, True]`.
-2. Con `zip()` formate le coppie (scuola, esito) e contatele con un `Counter`: le chiavi sono tuple, per esempio `("liceo", True)`.
-3. Con un secondo `Counter` contate le matricole per scuola.
-4. Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.
-
-**Esempio di esecuzione**
-
-```
-altro: superato 1, non superato 1, percentuale 50.0%
-liceo: superato 4, non superato 1, percentuale 80.0%
-tecnico: superato 2, non superato 3, percentuale 40.0%
-Totale: 7 su 12 (58.3%)
-```
-
-**Provate anche**
-
-- aggiungete una matricola del liceo che non ha superato l'esame → liceo `66.7%`, `Totale: 7 su 13 (53.8%)`
-- una coppia che non compare non dà errore: `tabella[("professionale", True)]` vale `0`
-
----
-
-## Esercizio 8 — Ore di studio (`descrittive.py`)
-
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-descrittive)
 **Consegna**
 
 1. Scrivete la funzione `descrittive(valori: list[float]) -> tuple[float, float, float]` che restituisce media, mediana e deviazione standard campionaria.
@@ -313,6 +191,7 @@ Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli s
 
 ### Challenge · Mercati e finanza — Il portafoglio (`ch_mercati.py`)
 
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-ch_mercati)
 **Consegna**
 
 1. Uno studente investe su tre titoli fittizi: `ENRG` (energia), `BANK` (banca) e `TECH` (tecnologia). Scrivete i suoi ordini come lista di tuple (titolo, quantità, prezzo), `ordini: list[tuple[str, int, float]]`, con i dati della tabella. Una quantità negativa è una vendita.
@@ -347,6 +226,7 @@ Mai venduti: ['TECH']
 
 ### Challenge · Sport — Il campionato (`ch_sport.py`)
 
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-ch_sport)
 **Consegna**
 
 1. Il campionato ha quattro piloti: Ferri e Lanza corrono per la Scuderia Rossa, Moro e Neri per la Scuderia Blu. Scrivete l'ordine d'arrivo di ogni gara come tupla di quattro nomi, dal primo al quarto, e mettete le cinque tuple nella lista `gare` (tabella). Scrivete anche `rossa: set[str] = {"Ferri", "Lanza"}`.
@@ -384,6 +264,7 @@ Senza vittorie: ['Lanza', 'Neri']
 
 ### Challenge · Imprese e marketing — Il negozio online (`ch_negozio.py`)
 
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-ch_negozio)
 **Consegna**
 
 1. Un negozio online vende cinque prodotti per lo studio: scrivete i prezzi della tabella in `prezzi: dict[str, float]`. Gli ordini della settimana sono tuple (cliente, prodotto, quantità): `[("Irene", "zaino", 1), ("Tommaso", "quaderno", 5), ("Giada", "cuffie", 1), ("Pietro", "borraccia", 2), ("Irene", "quaderno", 3), ("Noemi", "zaino", 1), ("Tommaso", "borraccia", 1), ("Irene", "cuffie", 1), ("Giada", "quaderno", 4), ("Noemi", "borraccia", 2)]`.
@@ -421,6 +302,7 @@ Mai venduti: ['lampada']
 
 ### Challenge · Salute e scienza — Lo studio clinico (`ch_salute.py`)
 
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-ch_salute)
 **Consegna**
 
 1. Uno studio prova un integratore per la pressione su 10 pazienti, metà nel gruppo `trattamento` e metà nel gruppo `controllo`. Scrivete i dati come lista di tuple (codice, gruppo, pressione sistolica prima, dopo), `pazienti: list[tuple[str, str, int, int]]` (tabella). P07 non è tornato alla seconda visita: la sua pressione dopo è registrata come 0.
@@ -462,6 +344,7 @@ Gruppo con più migliorati: trattamento (3)
 
 ### Challenge · Caso e probabilità — Il tavolo da gioco (`ch_probabilita.py`)
 
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-ch_probabilita)
 **Consegna**
 
 1. Ada, Bea e Ciro giocano con due dadi e annotano ogni lancio come tupla (giocatore, primo dado, secondo dado). Scrivete la lista `lanci: list[tuple[str, int, int]]` con i 12 lanci della tabella.
@@ -503,3 +386,257 @@ Somme mai uscite: [2, 3, 5, 6, 9, 10]
 5. In `libretto.py`, quando la media ponderata coincide con la media aritmetica?
 6. In `contingenza.py` le chiavi del `Counter` sono tuple. Si potrebbero usare liste? Perché?
 7. In `descrittive.py` la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?
+
+---
+
+## Esercizi extra
+
+Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.
+
+---
+
+## Extra 1 — La coda in mensa (`coda_mensa.py`)
+
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-coda_mensa)
+
+**Consegna**
+
+1. Partite da `coda: list[str] = ["Anna", "Bruno", "Carla"]` e dagli eventi `["arriva Davide", "servito", "arriva Elena", "esce Bruno", "davanti Franco Elena", "servito", "esce Zeno"]`.
+2. Dividete ogni evento con `split()`. `arriva X` mette X in fondo (`append`); `servito` toglie il primo (`pop(0)`) e lo aggiunge alla lista `serviti`; `esce X` toglie X (`remove`); `davanti X Y` mette X subito prima di Y (`insert` e `index`).
+3. Se la persona non è in coda o il comando non esiste, stampate `Evento non valido: ...`; se arriva `servito` con la coda vuota, stampate `Nessuno da servire`.
+4. Dopo ogni evento stampate l'evento e la coda; alla fine stampate i serviti e quante persone restano in coda.
+
+**Esempio di esecuzione**
+
+```
+arriva Davide -> ['Anna', 'Bruno', 'Carla', 'Davide']
+servito -> ['Bruno', 'Carla', 'Davide']
+arriva Elena -> ['Bruno', 'Carla', 'Davide', 'Elena']
+esce Bruno -> ['Carla', 'Davide', 'Elena']
+davanti Franco Elena -> ['Carla', 'Davide', 'Franco', 'Elena']
+servito -> ['Davide', 'Franco', 'Elena']
+Evento non valido: esce Zeno
+esce Zeno -> ['Davide', 'Franco', 'Elena']
+Serviti: ['Anna', 'Carla']
+Ancora in coda: 3
+```
+
+**Provate anche**
+
+- aggiungete quattro `servito` in fondo agli eventi → l'ultimo stampa `Nessuno da servire`, serviti in 5
+- `davanti Gino Zeno` al posto di `davanti Franco Elena` → evento non valido, alla fine `Ancora in coda: 2`
+
+**Soluzione**
+
+```python
+coda: list[str] = ["Anna", "Bruno", "Carla"]
+eventi: list[str] = ["arriva Davide", "servito", "arriva Elena",
+                     "esce Bruno", "davanti Franco Elena",
+                     "servito", "esce Zeno"]
+serviti: list[str] = []
+
+for evento in eventi:
+    parti: list[str] = evento.split()
+    azione: str = parti[0]
+    if azione == "arriva":
+        coda.append(parti[1])
+    elif azione == "servito":
+        if len(coda) > 0:
+            serviti.append(coda.pop(0))
+        else:
+            print("Nessuno da servire")
+    elif azione == "esce" and parti[1] in coda:
+        coda.remove(parti[1])
+    elif azione == "davanti" and parti[2] in coda:
+        coda.insert(coda.index(parti[2]), parti[1])
+    else:
+        print(f"Evento non valido: {evento}")
+    print(f"{evento} -> {coda}")
+
+print(f"Serviti: {serviti}")
+print(f"Ancora in coda: {len(coda)}")
+```
+
+---
+
+## Extra 2 — Chi segue cosa (`tre_corsi.py`)
+
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-tre_corsi)
+
+**Consegna**
+
+1. Scrivete i set `statistica`, `analisi` e `informatica` con gli studenti che frequentano i tre corsi (tabella).
+2. Con `|`, `&` e `-` calcolate: quanti studenti diversi ci sono, chi segue tutti e tre i corsi, chi segue solo Statistica, chi segue Statistica e Analisi ma non Informatica.
+3. Per trovare chi segue un corso soltanto, unite i tre set in una lista (`list(statistica) + list(analisi) + ...`) e contate i nomi con un `Counter`.
+4. Stampate i nomi con `sorted()`, così l'ordine è sempre lo stesso.
+
+| Corso | Studenti |
+|---|---|
+| Statistica | Anna, Bruno, Chiara, Davide, Elisa, Fabio, Giulia |
+| Analisi | Anna, Chiara, Davide, Hana, Ivan, Giulia |
+| Informatica | Bruno, Chiara, Giulia, Ivan, Luca |
+
+![Le regioni del diagramma e le operazioni tra set che le selezionano](../../presentazioni/img/L03_tre_corsi.svg)
+
+**Esempio di esecuzione**
+
+```
+Studenti diversi: 10
+Tutti e tre i corsi: ['Chiara', 'Giulia']
+Solo Statistica: ['Elisa', 'Fabio']
+Statistica e Analisi, non Informatica: ['Anna', 'Davide']
+Un corso soltanto: ['Elisa', 'Fabio', 'Hana', 'Luca']
+```
+
+**Provate anche**
+
+- aggiungete Luca a Statistica → Luca non segue più un corso soltanto
+- aggiungete Marta a Informatica → `Studenti diversi: 11`
+
+**Soluzione**
+
+```python
+from collections import Counter
+
+statistica: set[str] = {"Anna", "Bruno", "Chiara", "Davide",
+                        "Elisa", "Fabio", "Giulia"}
+analisi: set[str] = {"Anna", "Chiara", "Davide", "Hana",
+                     "Ivan", "Giulia"}
+informatica: set[str] = {"Bruno", "Chiara", "Giulia", "Ivan",
+                         "Luca"}
+
+almeno_uno: set[str] = statistica | analisi | informatica
+tutti_tre: set[str] = statistica & analisi & informatica
+solo_stat: set[str] = statistica - analisi - informatica
+stat_an: set[str] = (statistica & analisi) - informatica
+
+presenze: Counter[str] = Counter(
+    list(statistica) + list(analisi) + list(informatica))
+un_corso: list[str] = [n for n in presenze if presenze[n] == 1]
+
+print(f"Studenti diversi: {len(almeno_uno)}")
+print(f"Tutti e tre i corsi: {sorted(tutti_tre)}")
+print(f"Solo Statistica: {sorted(solo_stat)}")
+print(f"Statistica e Analisi, non Informatica: {sorted(stat_an)}")
+print(f"Un corso soltanto: {sorted(un_corso)}")
+```
+
+---
+
+## Extra 3 — Il libretto (`libretto.py`)
+
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-libretto)
+
+**Consegna**
+
+1. Scrivete il libretto come dizionario esame → tupla (voto, CFU), `libretto: dict[str, tuple[int, int]]`, con i dati della tabella.
+2. Scorrete `libretto.items()` con `for esame, (voto, cfu) in ...`: stampate ogni esame e accumulate la somma dei voti, la somma di voto × CFU e i CFU totali.
+3. Stampate i CFU totali, la media aritmetica e la media ponderata sui CFU, con due decimali.
+4. La base di laurea è la media ponderata × 110 / 30: stampatela con un decimale.
+
+| Esame | Voto e CFU |
+|---|---|
+| Analisi 1 | 24, 9 CFU |
+| Statistica 1 | 28, 9 CFU |
+| Informatica | 30, 6 CFU |
+| Economia politica | 22, 9 CFU |
+| Algebra lineare | 27, 6 CFU |
+
+**Esempio di esecuzione**
+
+```
+Analisi 1: 24 (9 CFU)
+Statistica 1: 28 (9 CFU)
+Informatica: 30 (6 CFU)
+Economia politica: 22 (9 CFU)
+Algebra lineare: 27 (6 CFU)
+CFU totali: 39
+Media aritmetica: 26.20
+Media ponderata: 25.85
+Base di laurea: 94.8
+```
+
+**Provate anche**
+
+- aggiungete `"Probabilità": (30, 9)` → 48 CFU, media ponderata `26.62`, base `97.6`
+- date 6 CFU a tutti gli esami → le due medie valgono entrambe `26.20`
+
+**Soluzione**
+
+```python
+libretto: dict[str, tuple[int, int]] = {
+    "Analisi 1": (24, 9),
+    "Statistica 1": (28, 9),
+    "Informatica": (30, 6),
+    "Economia politica": (22, 9),
+    "Algebra lineare": (27, 6),
+}
+
+somma_voti: int = 0
+somma_pesata: int = 0
+cfu_totali: int = 0
+for esame, (voto, cfu) in libretto.items():
+    print(f"{esame}: {voto} ({cfu} CFU)")
+    somma_voti += voto
+    somma_pesata += voto * cfu
+    cfu_totali += cfu
+
+media: float = somma_voti / len(libretto)
+ponderata: float = somma_pesata / cfu_totali
+print(f"CFU totali: {cfu_totali}")
+print(f"Media aritmetica: {media:.2f}")
+print(f"Media ponderata: {ponderata:.2f}")
+print(f"Base di laurea: {ponderata * 110 / 30:.1f}")
+```
+
+---
+
+## Extra 4 — Scuola di provenienza ed esito (`contingenza.py`)
+
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-contingenza)
+
+**Consegna**
+
+1. Per 12 matricole conoscete la scuola di provenienza e se hanno superato Statistica al primo appello: `scuola = ["liceo", "tecnico", "liceo", "altro", "liceo", "tecnico", "tecnico", "liceo", "altro", "tecnico", "liceo", "tecnico"]` e `superato = [True, False, True, False, True, True, False, False, True, False, True, True]`.
+2. Con `zip()` formate le coppie (scuola, esito) e contatele con un `Counter`: le chiavi sono tuple, per esempio `("liceo", True)`.
+3. Con un secondo `Counter` contate le matricole per scuola.
+4. Per ogni scuola, in ordine alfabetico, stampate superati, non superati e percentuale di superati con un decimale; alla fine stampate il totale.
+
+**Esempio di esecuzione**
+
+```
+altro: superato 1, non superato 1, percentuale 50.0%
+liceo: superato 4, non superato 1, percentuale 80.0%
+tecnico: superato 2, non superato 3, percentuale 40.0%
+Totale: 7 su 12 (58.3%)
+```
+
+**Provate anche**
+
+- aggiungete una matricola del liceo che non ha superato l'esame → liceo `66.7%`, `Totale: 7 su 13 (53.8%)`
+- una coppia che non compare non dà errore: `tabella[("professionale", True)]` vale `0`
+
+**Soluzione**
+
+```python
+from collections import Counter
+
+scuola: list[str] = ["liceo", "tecnico", "liceo", "altro", "liceo",
+                     "tecnico", "tecnico", "liceo", "altro",
+                     "tecnico", "liceo", "tecnico"]
+superato: list[bool] = [True, False, True, False, True, True,
+                        False, False, True, False, True, True]
+
+tabella: Counter[tuple[str, bool]] = Counter(zip(scuola, superato))
+per_scuola: Counter[str] = Counter(scuola)
+
+for s in sorted(per_scuola):
+    si: int = tabella[(s, True)]
+    no: int = tabella[(s, False)]
+    print(f"{s}: superato {si}, non superato {no}, "
+          f"percentuale {si / per_scuola[s]:.1%}")
+
+totale_si: int = superato.count(True)
+print(f"Totale: {totale_si} su {len(superato)} "
+      f"({totale_si / len(superato):.1%})")
+```

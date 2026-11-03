@@ -328,6 +328,10 @@
         .reveal .tag-esercizio { background: #dcfce7; color: #166534; }
         .reveal .tag-sfida { background: #fef3c7; color: #92400e; }
         .reveal .tag-soluzione { background: var(--accent-light); color: var(--accent-dark); }
+        .reveal .tag-extra { background: #e0f2fe; color: #075985; }
+        .reveal a.link-soluzione { position: absolute; top: 0; right: 90px; font-size: 0.42em; font-weight: 600; padding: 0.25em 0.8em; border-radius: 999px; border: 2px solid #2563eb; color: #2563eb; background: #fff; text-decoration: none; }
+        .reveal tr.riga-extra td { color: #64748b; }
+        .reveal a.link-soluzione:hover { background: #2563eb; color: #fff; }
         .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
         .reveal .etichetta {
             font-size: 0.6em;
@@ -372,18 +376,18 @@
                     <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
                     <tbody>
                         <tr><td>1</td><td><code>conta_righe.py</code></td><td>Commenti al corso</td></tr>
-                        <tr><td>2</td><td><code>parole_frequenti.py</code></td><td>Le parole più usate</td></tr>
-                        <tr><td>3</td><td><code>esiti_appello.py</code></td><td>Gli esiti dell'appello</td></tr>
-                        <tr><td>4</td><td><code>verbale.py</code></td><td>Il verbale d'esame</td></tr>
-                        <tr><td>5</td><td><code>spese.py</code></td><td>Il registro delle spese</td></tr>
-                        <tr><td>6</td><td><code>sondaggio.py</code></td><td>Il sondaggio in JSON</td></tr>
-                        <tr><td>7</td><td><code>appello_robusto.py</code></td><td>Un appello con errori</td></tr>
-                        <tr><td>8</td><td><code>config_soglia.py</code></td><td>Configurazione in JSON</td></tr>
+                        <tr><td>2</td><td><code>esiti_appello.py</code></td><td>Gli esiti dell'appello</td></tr>
+                        <tr><td>3</td><td><code>sondaggio.py</code></td><td>Il sondaggio in JSON</td></tr>
+                        <tr><td>4</td><td><code>appello_robusto.py</code></td><td>Un appello con errori</td></tr>
                         <tr><td>Challenge</td><td>a scelta</td><td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td></tr>
+                        <tr class="riga-extra"><td>Extra 1</td><td><code>parole_frequenti.py</code></td><td>Le parole più usate <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 2</td><td><code>verbale.py</code></td><td>Il verbale d'esame <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 3</td><td><code>spese.py</code></td><td>Il registro delle spese <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 4</td><td><code>config_soglia.py</code></td><td>Configurazione in JSON <em>(a casa)</em></td></tr>
                     </tbody>
                 </table>
                 <div class="box box-blue" style="font-size:0.7em">
-                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio della lezione T17.
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Le soluzioni le vediamo all'inizio della lezione T17. Gli extra in fondo sono per casa. «Soluzione →» apre il codice: guardatelo dopo averci provato.
                 </div>
             </section>
 
@@ -412,6 +416,7 @@ except KeyError as e:
 
             <section>
                 <div class="tag tag-esercizio">Esercizio 1 · conta_righe.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-conta_righe" target="_blank">Soluzione →</a>
                 <h2>Commenti al corso</h2>
                 <div class="columns">
                     <div class="col">
@@ -440,48 +445,14 @@ Parole: 47
 Parole per commento: 6.7
 Commento più lungo: riga 2, 9 parole</code></pre>
                         <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete in fondo la riga <code>Grazie.</code> → <code>Righe: 9</code>, <code>Parole: 48</code>, <code>Parole per commento: 6.0</code></li><li>cambiate il nome in <code>commenti2.txt</code> → il programma si ferma con <code>FileNotFoundError</code> (lo gestirete nell'esercizio 7)</li></ul>
+                        <ul class="prove"><li>aggiungete in fondo la riga <code>Grazie.</code> → <code>Righe: 9</code>, <code>Parole: 48</code>, <code>Parole per commento: 6.0</code></li><li>cambiate il nome in <code>commenti2.txt</code> → il programma si ferma con <code>FileNotFoundError</code> (lo gestirete nell'esercizio 4)</li></ul>
                     </div>
                 </div>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 2 · parole_frequenti.py</div>
-                <h2>Le parole più usate</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Usate lo stesso <code>commenti.txt</code>. Scrivete una funzione <code>parole_del_file(percorso: Path) -&gt; list[str]</code> che legge il file e restituisce tutte le parole in minuscolo.</li>
-                            <li>Togliete la punteggiatura attaccata alle parole con <code>parola.strip(".,;:!?")</code>.</li>
-                            <li>Stampate il numero di parole e di parole distinte (<code>set</code>).</li>
-                            <li>Tenete le parole di almeno 5 lettere, contatele con <code>Counter</code> e stampate le 3 più frequenti con <code>most_common(3)</code>.</li>
-                        </ol>
-                        <div class="etichetta">File commenti.txt</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Lezioni chiare, esempi utili.
-Molto lavoro a casa, poco tempo per gli esercizi.
-Le slide sono utili, il ritmo è veloce.
-
-Vorrei più esempi con dati reali.
-Laboratori utili, ma le aule sono troppo affollate.
-Esercizi utili per capire meglio.
-Più esercizi in aula e meno teoria.</code></pre>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Parole: 47, distinte: 37
-Parole di almeno 5 lettere: 25
-utili: 4
-esercizi: 3
-esempi: 2</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li><code>Utili,</code> e <code>utili.</code> contano come la stessa parola</li><li>con la riga <code>Grazie.</code> in più → <code>Parole: 48, distinte: 38</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 3 · esiti_appello.py</div>
+                <div class="tag tag-esercizio">Esercizio 2 · esiti_appello.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-esiti_appello" target="_blank">Soluzione →</a>
                 <h2>Gli esiti dell'appello</h2>
                 <div class="columns">
                     <div class="col">
@@ -517,83 +488,8 @@ Voto più alto: 30 (Verdi Giulia)</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 4 · verbale.py</div>
-                <h2>Il verbale d'esame</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Leggete di nuovo <code>appello.csv</code> e ordinate gli studenti per cognome con <code>sorted(..., key=lambda s: s["cognome"])</code>.</li>
-                            <li>Aprite <code>verbale.txt</code> in scrittura (<code>"w"</code>) e scrivete con <code>f.write()</code> un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate <code>\n</code> alla fine di ogni riga.</li>
-                            <li>Dopo aver chiuso il file, rileggetelo con <code>Path("verbale.txt").read_text(encoding="utf-8")</code> e stampatelo.</li>
-                        </ol>
-                        <div class="etichetta">File appello.csv</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>matricola;cognome;nome;voto
-2101234;Rossi;Anna;28
-2101567;Bianchi;Marco;17
-2102001;Verdi;Giulia;30
-2102345;Russo;Luca;24
-2102890;Ferrari;Sara;15
-2103112;Esposito;Paolo;21
-2103456;Romano;Elena;27
-2103789;Gallo;Davide;19</code></pre>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Verbale dell'appello
-2101567 Bianchi Marco: 17, respinto
-2103112 Esposito Paolo: 21, promosso
-2102890 Ferrari Sara: 15, respinto
-2103789 Gallo Davide: 19, promosso
-2103456 Romano Elena: 27, promosso
-2101234 Rossi Anna: 28, promosso
-2102345 Russo Luca: 24, promosso
-2102001 Verdi Giulia: 30, promosso
-Promossi: 6 su 8</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>eseguite il programma due volte: <code>verbale.txt</code> viene riscritto da capo, le righe non si ripetono</li><li>con la riga <code>2104000;Conti;Marta;18</code> → Conti è la seconda, <code>Promossi: 7 su 9</code></li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 5 · spese.py</div>
-                <h2>Il registro delle spese</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Il file <code>spese.csv</code> è un registro delle spese di uno studente fuori sede.</li>
-                            <li>Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (<code>ValueError</code>) stampate un messaggio e non scrivete niente.</li>
-                            <li>Altrimenti aggiungete la spesa in fondo al file: <code>open(..., "a", encoding="utf-8", newline="")</code> e <code>csv.writer(f, delimiter=";").writerow([...])</code>.</li>
-                            <li>Rileggete tutto il file e sommate gli importi per categoria con un <code>defaultdict(float)</code>. Stampate le categorie dalla più costosa e il totale, con due decimali.</li>
-                        </ol>
-                        <div class="etichetta">File spese.csv</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>data;categoria;importo
-2026-12-01;affitto;350.00
-2026-12-02;spesa;42.50
-2026-12-03;trasporti;25.00
-2026-12-05;spesa;18.20
-2026-12-06;libri;39.90</code></pre>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Data (aaaa-mm-gg): 2026-12-07
-Categoria: Spesa
-Importo: 12.30
-affitto: 350.00 EUR
-spesa: 73.00 EUR
-libri: 39.90 EUR
-trasporti: 25.00 EUR
-Totale: 487.90 EUR</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>sul file originale, <code>2026-12-07</code>, <code>cinema</code>, <code>8.50</code> → compare <code>cinema: 8.50 EUR</code>, totale <code>484.10 EUR</code></li><li>importo <code>dieci</code> → <code>Importo non valido: spesa non registrata</code> e il file non cambia</li><li>ogni esecuzione aggiunge una riga: aprite <code>spese.csv</code> e controllate</li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="tag tag-esercizio">Esercizio 6 · sondaggio.py</div>
+                <div class="tag tag-esercizio">Esercizio 3 · sondaggio.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-sondaggio" target="_blank">Soluzione →</a>
                 <h2>Il sondaggio in JSON</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -632,13 +528,14 @@ Salvato riepilogo.json:
   "quota_frequentanti": 0.667
 }</code></pre>
                         <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li>aggiungete la risposta <code>{"matricola": "2103456", "voto": 1, "frequenta": false}</code> → <code>media 3.43</code>, <code>media_non_frequentanti 2.33</code>, <code>quota_frequentanti 0.571</code></li><li>togliete la virgola dopo <code>"anno": 2026</code> → <code>json.JSONDecodeError</code> (lo gestirete nell'esercizio 8)</li></ul>
+                        <ul class="prove"><li>aggiungete la risposta <code>{"matricola": "2103456", "voto": 1, "frequenta": false}</code> → <code>media 3.43</code>, <code>media_non_frequentanti 2.33</code>, <code>quota_frequentanti 0.571</code></li><li>togliete la virgola dopo <code>"anno": 2026</code> → <code>json.JSONDecodeError</code> (lo gestirete nell'extra 4)</li></ul>
                     </div>
                 </div>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 7 · appello_robusto.py</div>
+                <div class="tag tag-esercizio">Esercizio 4 · appello_robusto.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-appello_robusto" target="_blank">Soluzione →</a>
                 <h2>Un appello con errori</h2>
                 <div class="columns">
                     <div class="col">
@@ -674,36 +571,6 @@ Media: 26.5</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 8 · config_soglia.py</div>
-                <h2>Configurazione in JSON</h2>
-                <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Il file <code>config.json</code> dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è <code>appello.csv</code> dell'esercizio 3.</li>
-                            <li>Scrivete una funzione <code>sopra_soglia(file: str, colonna: str, soglia: int) -&gt; list[str]</code> che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.</li>
-                            <li>In un solo <code>try</code> caricate la configurazione e chiamate la funzione. Gestite con <code>except</code> separati: <code>FileNotFoundError</code> (stampate <code>e.filename</code>), <code>json.JSONDecodeError</code> (stampate <code>e.lineno</code>), <code>KeyError</code> e <code>ValueError</code>.</li>
-                            <li>Nel blocco <code>else</code> stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (<code>", ".join(...)</code>).</li>
-                        </ol>
-                        <div class="etichetta">File config.json</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>{
-  "file": "appello.csv",
-  "colonna": "voto",
-  "soglia": 27
-}</code></pre>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>File: appello.csv, soglia: 27
-Sopra soglia: 3
-Romano, Rossi, Verdi</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li><code>"soglia": 18</code> → 6 studenti, da <code>Esposito</code> a <code>Verdi</code></li><li>togliete la riga di <code>"soglia"</code> → <code>Chiave mancante: 'soglia'</code>; <code>"colonna": "punteggio"</code> → <code>Chiave mancante: 'punteggio'</code></li><li><code>"file": "appello2.csv"</code> → <code>File non trovato: appello2.csv</code>; rinominate <code>config.json</code> → <code>File non trovato: config.json</code></li><li>togliete la virgola dopo <code>"voto"</code> → <code>config.json non valido alla riga 4</code>; <code>"colonna": "cognome"</code> → la colonna non contiene numeri</li></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section>
                 <div class="tag tag-challenge">Challenge a scelta</div>
                 <h2>Scegliete un tema</h2>
                 <div class="columns">
@@ -720,6 +587,7 @@ Romano, Rossi, Verdi</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Mercati e finanza · ch_mercati.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-ch_mercati" target="_blank">Soluzione →</a>
                 <h2>Il portafoglio: prezzi da file</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -758,6 +626,7 @@ Righe scartate: 2. Salvato titoli.json</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Sport · ch_sport.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-ch_sport" target="_blank">Soluzione →</a>
                 <h2>Il campionato: tempi da file</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -797,6 +666,7 @@ Righe scartate: 2. Salvato piloti.json</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Imprese e marketing · ch_negozio.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-ch_negozio" target="_blank">Soluzione →</a>
                 <h2>Il negozio online: ordini da file</h2>
                 <div class="columns">
                     <div class="col">
@@ -836,6 +706,7 @@ Righe scartate: 2. Salvato citta.json</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-ch_salute" target="_blank">Soluzione →</a>
                 <h2>Lo studio clinico: misure da file</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -873,6 +744,7 @@ Righe scartate: 2. Salvato gruppi.json</code></pre>
 
             <section>
                 <div class="tag tag-challenge">Challenge · Caso e probabilità · ch_probabilita.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-ch_probabilita" target="_blank">Soluzione →</a>
                 <h2>Il tavolo da gioco: lanci da file</h2>
                 <div class="columns" style="font-size:0.88em">
                     <div class="col">
@@ -920,6 +792,157 @@ Righe scartate: 2. Salvato giocatori.json</code></pre>
                     <li>In <code>config_soglia.py</code>, cosa succede se nel JSON scrivete <code>"soglia": "27"</code>, tra virgolette? Quale eccezione si ottiene?</li>
                     <li>Nella sfida, perché <code>float("38,5")</code> dà errore e come lo si evita?</li>
                 </ol>
+            </section>
+
+            <section class="section-slide">
+                <h2>Esercizi extra</h2>
+                <p>Materiale in più per allenarsi a casa, con le soluzioni</p>
+                <aside class="notes">Gli extra non si fanno in laboratorio: chi finisce la challenge può iniziarli, gli altri li trovano nella dispensa con la soluzione sotto ogni consegna.</aside>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 1 · parole_frequenti.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-parole_frequenti" target="_blank">Soluzione →</a>
+                <h2>Le parole più usate</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Usate lo stesso <code>commenti.txt</code>. Scrivete una funzione <code>parole_del_file(percorso: Path) -&gt; list[str]</code> che legge il file e restituisce tutte le parole in minuscolo.</li>
+                            <li>Togliete la punteggiatura attaccata alle parole con <code>parola.strip(".,;:!?")</code>.</li>
+                            <li>Stampate il numero di parole e di parole distinte (<code>set</code>).</li>
+                            <li>Tenete le parole di almeno 5 lettere, contatele con <code>Counter</code> e stampate le 3 più frequenti con <code>most_common(3)</code>.</li>
+                        </ol>
+                        <div class="etichetta">File commenti.txt</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Lezioni chiare, esempi utili.
+Molto lavoro a casa, poco tempo per gli esercizi.
+Le slide sono utili, il ritmo è veloce.
+
+Vorrei più esempi con dati reali.
+Laboratori utili, ma le aule sono troppo affollate.
+Esercizi utili per capire meglio.
+Più esercizi in aula e meno teoria.</code></pre>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Parole: 47, distinte: 37
+Parole di almeno 5 lettere: 25
+utili: 4
+esercizi: 3
+esempi: 2</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>Utili,</code> e <code>utili.</code> contano come la stessa parola</li><li>con la riga <code>Grazie.</code> in più → <code>Parole: 48, distinte: 38</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 2 · verbale.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-verbale" target="_blank">Soluzione →</a>
+                <h2>Il verbale d'esame</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Leggete di nuovo <code>appello.csv</code> e ordinate gli studenti per cognome con <code>sorted(..., key=lambda s: s["cognome"])</code>.</li>
+                            <li>Aprite <code>verbale.txt</code> in scrittura (<code>"w"</code>) e scrivete con <code>f.write()</code> un'intestazione, una riga per studente con matricola, cognome, nome, voto ed esito, e in fondo il numero di promossi. Ricordate <code>\n</code> alla fine di ogni riga.</li>
+                            <li>Dopo aver chiuso il file, rileggetelo con <code>Path("verbale.txt").read_text(encoding="utf-8")</code> e stampatelo.</li>
+                        </ol>
+                        <div class="etichetta">File appello.csv</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>matricola;cognome;nome;voto
+2101234;Rossi;Anna;28
+2101567;Bianchi;Marco;17
+2102001;Verdi;Giulia;30
+2102345;Russo;Luca;24
+2102890;Ferrari;Sara;15
+2103112;Esposito;Paolo;21
+2103456;Romano;Elena;27
+2103789;Gallo;Davide;19</code></pre>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Verbale dell'appello
+2101567 Bianchi Marco: 17, respinto
+2103112 Esposito Paolo: 21, promosso
+2102890 Ferrari Sara: 15, respinto
+2103789 Gallo Davide: 19, promosso
+2103456 Romano Elena: 27, promosso
+2101234 Rossi Anna: 28, promosso
+2102345 Russo Luca: 24, promosso
+2102001 Verdi Giulia: 30, promosso
+Promossi: 6 su 8</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>eseguite il programma due volte: <code>verbale.txt</code> viene riscritto da capo, le righe non si ripetono</li><li>con la riga <code>2104000;Conti;Marta;18</code> → Conti è la seconda, <code>Promossi: 7 su 9</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 3 · spese.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-spese" target="_blank">Soluzione →</a>
+                <h2>Il registro delle spese</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Il file <code>spese.csv</code> è un registro delle spese di uno studente fuori sede.</li>
+                            <li>Chiedete data, categoria (in minuscolo) e importo. Se l'importo non è un numero (<code>ValueError</code>) stampate un messaggio e non scrivete niente.</li>
+                            <li>Altrimenti aggiungete la spesa in fondo al file: <code>open(..., "a", encoding="utf-8", newline="")</code> e <code>csv.writer(f, delimiter=";").writerow([...])</code>.</li>
+                            <li>Rileggete tutto il file e sommate gli importi per categoria con un <code>defaultdict(float)</code>. Stampate le categorie dalla più costosa e il totale, con due decimali.</li>
+                        </ol>
+                        <div class="etichetta">File spese.csv</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>data;categoria;importo
+2026-12-01;affitto;350.00
+2026-12-02;spesa;42.50
+2026-12-03;trasporti;25.00
+2026-12-05;spesa;18.20
+2026-12-06;libri;39.90</code></pre>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Data (aaaa-mm-gg): 2026-12-07
+Categoria: Spesa
+Importo: 12.30
+affitto: 350.00 EUR
+spesa: 73.00 EUR
+libri: 39.90 EUR
+trasporti: 25.00 EUR
+Totale: 487.90 EUR</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li>sul file originale, <code>2026-12-07</code>, <code>cinema</code>, <code>8.50</code> → compare <code>cinema: 8.50 EUR</code>, totale <code>484.10 EUR</code></li><li>importo <code>dieci</code> → <code>Importo non valido: spesa non registrata</code> e il file non cambia</li><li>ogni esecuzione aggiunge una riga: aprite <code>spese.csv</code> e controllate</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 4 · config_soglia.py</div>
+                <a class="link-soluzione" href="../codice/L05_file_dati/esercizi.html#sol-config_soglia" target="_blank">Soluzione →</a>
+                <h2>Configurazione in JSON</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Il file <code>config.json</code> dice quale CSV leggere, quale colonna usare e la soglia. Il CSV è <code>appello.csv</code> dell'esercizio 2.</li>
+                            <li>Scrivete una funzione <code>sopra_soglia(file: str, colonna: str, soglia: int) -&gt; list[str]</code> che restituisce i cognomi degli studenti con valore maggiore o uguale alla soglia.</li>
+                            <li>In un solo <code>try</code> caricate la configurazione e chiamate la funzione. Gestite con <code>except</code> separati: <code>FileNotFoundError</code> (stampate <code>e.filename</code>), <code>json.JSONDecodeError</code> (stampate <code>e.lineno</code>), <code>KeyError</code> e <code>ValueError</code>.</li>
+                            <li>Nel blocco <code>else</code> stampate file, soglia, numero di studenti e cognomi in ordine alfabetico separati da virgola (<code>", ".join(...)</code>).</li>
+                        </ol>
+                        <div class="etichetta">File config.json</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>{
+  "file": "appello.csv",
+  "colonna": "voto",
+  "soglia": 27
+}</code></pre>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>File: appello.csv, soglia: 27
+Sopra soglia: 3
+Romano, Rossi, Verdi</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>"soglia": 18</code> → 6 studenti, da <code>Esposito</code> a <code>Verdi</code></li><li>togliete la riga di <code>"soglia"</code> → <code>Chiave mancante: 'soglia'</code>; <code>"colonna": "punteggio"</code> → <code>Chiave mancante: 'punteggio'</code></li><li><code>"file": "appello2.csv"</code> → <code>File non trovato: appello2.csv</code>; rinominate <code>config.json</code> → <code>File non trovato: config.json</code></li><li>togliete la virgola dopo <code>"voto"</code> → <code>config.json non valido alla riga 4</code>; <code>"colonna": "cognome"</code> → la colonna non contiene numeri</li></ul>
+                    </div>
+                </div>
             </section>
 
             <!-- Slide di navigazione -->

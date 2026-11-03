@@ -53,30 +53,9 @@ print()
 
 
 # ============================================================================
-# ESERCIZIO 4: la cena di dracula — cena_dracula.py
+# ESERCIZIO 4: l'epitaffio — epitaffio.py
 # ============================================================================
-print("--- Esercizio 4: La cena di Dracula ---")
-sacche: int = int(input("Sacche di sangue: "))
-
-if sacche <= 0:
-    print("Errore: serve almeno una sacca")
-else:
-    possibilita: int = 0
-    for commensali in range(1, sacche + 1):
-        if sacche % commensali == 0:
-            print(f"Commensali {commensali}, sacche a testa {sacche // commensali}")
-            possibilita += 1
-    print(f"Possibilità: {possibilita}")
-
-    if possibilita == 2:
-        print(f"{sacche} è primo: si divide solo tra 1 o {sacche} commensali")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 5: l'epitaffio — epitaffio.py
-# ============================================================================
-print("--- Esercizio 5: L'epitaffio ---")
+print("--- Esercizio 4: L'epitaffio ---")
 PREZZO_LETTERA: int = 2
 PREZZO_CIFRA: int = 3
 PREZZO_ALTRO: int = 1      # gli spazi sono gratis
@@ -106,105 +85,6 @@ print(f"Spazi: {spazi}  Altri: {altri}")
 print(f"Costo dell'incisione: {costo} EUR")
 if len(epitaffio) > 0:
     print(f"Lettere sul totale: {lettere / len(epitaffio):.1%}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 6: anagrammi maledetti — anagrammi.py
-# ============================================================================
-print("--- Esercizio 6: Anagrammi maledetti ---")
-ALFABETO: str = "abcdefghijklmnopqrstuvwxyz"
-
-prima: str = input("Prima parola: ").lower().replace(" ", "")
-seconda: str = input("Seconda parola: ").lower().replace(" ", "")
-
-anagrammi: bool = True
-for lettera in ALFABETO:
-    if anagrammi and prima.count(lettera) != seconda.count(lettera):
-        anagrammi = False
-        print(f"Lettera {lettera}: {prima.count(lettera)} nella prima, {seconda.count(lettera)} nella seconda")
-
-if anagrammi:
-    print("Sono anagrammi")
-else:
-    print("Non sono anagrammi")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 7: il bottino della notte — bottino.py
-# ============================================================================
-print("--- Esercizio 7: Il bottino della notte ---")
-case: int = 0
-totale: int = 0
-porte_chiuse: int = 0
-piu_caramelle: int = 0
-casa_generosa: int = 0
-
-testo: str = input("Casa 1, caramelle (fine per finire): ")
-while testo.strip().lower() != "fine":
-    caramelle: int = int(testo)
-    if caramelle < 0:
-        print("Valore non valido, ignorato")
-    else:
-        case += 1
-        totale += caramelle
-        if caramelle == 0:
-            porte_chiuse += 1
-        if caramelle > piu_caramelle:
-            piu_caramelle = caramelle
-            casa_generosa = case
-    testo = input(f"Casa {case + 1}, caramelle (fine per finire): ")
-
-if case == 0:
-    print("Nessuna casa visitata")
-else:
-    print(f"Case visitate: {case}")
-    print(f"Caramelle totali: {totale}")
-    print(f"Media per casa: {totale / case:.1f}")
-    if piu_caramelle > 0:
-        print(f"Casa più generosa: la {casa_generosa}, con {piu_caramelle} caramelle")
-    print(f"Porte chiuse: {porte_chiuse / case:.1%}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 8: il login di dracula — login_dracula.py
-# ============================================================================
-print("--- Esercizio 8: Il login di Dracula ---")
-valida: bool = False
-
-while not valida:
-    password: str = input("Password: ")
-
-    maiuscola: bool = False
-    cifra: bool = False
-    spazio: bool = False
-    for carattere in password:
-        if carattere.isupper():
-            maiuscola = True
-        elif carattere.isdigit():
-            cifra = True
-        elif carattere == " ":
-            spazio = True
-
-    lunga: bool = len(password) >= 8
-    minuscola: str = password.lower()
-    proibita: bool = "aglio" in minuscola or "croce" in minuscola
-    valida = lunga and maiuscola and cifra and not spazio and not proibita
-
-    if not lunga:
-        print("- servono almeno 8 caratteri")
-    if not maiuscola:
-        print("- manca una lettera maiuscola")
-    if not cifra:
-        print("- manca una cifra")
-    if spazio:
-        print("- niente spazi")
-    if proibita:
-        print("- parola proibita: il conte non gradisce")
-
-print("Benvenuto nel castello")
 print()
 
 
@@ -252,3 +132,123 @@ print()
 print("=" * 60)
 print("Fine degli esercizi del laboratorio 02")
 print("=" * 60)
+
+# ============================================================================
+# EXTRA 1: la cena di dracula — cena_dracula.py
+# ============================================================================
+print("--- Extra 1: La cena di Dracula ---")
+sacche: int = int(input("Sacche di sangue: "))
+
+if sacche <= 0:
+    print("Errore: serve almeno una sacca")
+else:
+    possibilita: int = 0
+    for commensali in range(1, sacche + 1):
+        if sacche % commensali == 0:
+            print(f"Commensali {commensali}, sacche a testa {sacche // commensali}")
+            possibilita += 1
+    print(f"Possibilità: {possibilita}")
+
+    if possibilita == 2:
+        print(f"{sacche} è primo: si divide solo tra 1 o {sacche} commensali")
+print()
+
+
+# ============================================================================
+# EXTRA 2: anagrammi maledetti — anagrammi.py
+# ============================================================================
+print("--- Extra 2: Anagrammi maledetti ---")
+ALFABETO: str = "abcdefghijklmnopqrstuvwxyz"
+
+prima: str = input("Prima parola: ").lower().replace(" ", "")
+seconda: str = input("Seconda parola: ").lower().replace(" ", "")
+
+anagrammi: bool = True
+for lettera in ALFABETO:
+    if anagrammi and prima.count(lettera) != seconda.count(lettera):
+        anagrammi = False
+        print(f"Lettera {lettera}: {prima.count(lettera)} nella prima, {seconda.count(lettera)} nella seconda")
+
+if anagrammi:
+    print("Sono anagrammi")
+else:
+    print("Non sono anagrammi")
+print()
+
+
+# ============================================================================
+# EXTRA 3: il bottino della notte — bottino.py
+# ============================================================================
+print("--- Extra 3: Il bottino della notte ---")
+case: int = 0
+totale: int = 0
+porte_chiuse: int = 0
+piu_caramelle: int = 0
+casa_generosa: int = 0
+
+testo: str = input("Casa 1, caramelle (fine per finire): ")
+while testo.strip().lower() != "fine":
+    caramelle: int = int(testo)
+    if caramelle < 0:
+        print("Valore non valido, ignorato")
+    else:
+        case += 1
+        totale += caramelle
+        if caramelle == 0:
+            porte_chiuse += 1
+        if caramelle > piu_caramelle:
+            piu_caramelle = caramelle
+            casa_generosa = case
+    testo = input(f"Casa {case + 1}, caramelle (fine per finire): ")
+
+if case == 0:
+    print("Nessuna casa visitata")
+else:
+    print(f"Case visitate: {case}")
+    print(f"Caramelle totali: {totale}")
+    print(f"Media per casa: {totale / case:.1f}")
+    if piu_caramelle > 0:
+        print(f"Casa più generosa: la {casa_generosa}, con {piu_caramelle} caramelle")
+    print(f"Porte chiuse: {porte_chiuse / case:.1%}")
+print()
+
+
+# ============================================================================
+# EXTRA 4: il login di dracula — login_dracula.py
+# ============================================================================
+print("--- Extra 4: Il login di Dracula ---")
+valida: bool = False
+
+while not valida:
+    password: str = input("Password: ")
+
+    maiuscola: bool = False
+    cifra: bool = False
+    spazio: bool = False
+    for carattere in password:
+        if carattere.isupper():
+            maiuscola = True
+        elif carattere.isdigit():
+            cifra = True
+        elif carattere == " ":
+            spazio = True
+
+    lunga: bool = len(password) >= 8
+    minuscola: str = password.lower()
+    proibita: bool = "aglio" in minuscola or "croce" in minuscola
+    valida = lunga and maiuscola and cifra and not spazio and not proibita
+
+    if not lunga:
+        print("- servono almeno 8 caratteri")
+    if not maiuscola:
+        print("- manca una lettera maiuscola")
+    if not cifra:
+        print("- manca una cifra")
+    if spazio:
+        print("- niente spazi")
+    if proibita:
+        print("- parola proibita: il conte non gradisce")
+
+print("Benvenuto nel castello")
+print()
+

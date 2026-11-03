@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -206,7 +210,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <h1>Laboratorio 6 — Classi e oggetti</h1>
 <p><strong>Prerequisiti:</strong> lezioni T16 (Programmazione a oggetti).</p>
 <p>Oggi ci sono solo esercizi, in ordine di difficoltà, su classi e oggetti. Per ogni esercizio create un file <code>.py</code> con il nome indicato: dentro definite le classi richieste, con type hints su attributi e metodi, e poi usatele sui dati della consegna stampando i risultati. Non serve <code>input()</code>: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file. Alla fine c'è una challenge a scelta tra 5 temi: sceglietene uno.</p>
-<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi. Le soluzioni le vediamo all'inizio del laboratorio L07.</p>
+<p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio del laboratorio L07.</p>
 <table>
 <thead><tr>
 <th>#</th>
@@ -225,43 +229,43 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 </tr>
 <tr>
 <td>3</td>
-<td><code>segreteria.py</code></td>
-<td>La coda in segreteria</td>
-</tr>
-<tr>
-<td>4</td>
 <td><code>erasmus.py</code></td>
 <td>La graduatoria Erasmus</td>
 </tr>
 <tr>
-<td>5</td>
-<td><code>campione.py</code></td>
-<td>Un campione di misure</td>
-</tr>
-<tr>
-<td>6</td>
+<td>4</td>
 <td><code>libretto.py</code></td>
 <td>Il libretto: un oggetto che contiene oggetti</td>
-</tr>
-<tr>
-<td>7</td>
-<td><code>abbonamenti.py</code></td>
-<td>Abbonamenti ai mezzi pubblici</td>
-</tr>
-<tr>
-<td>8</td>
-<td><code>biblioteca.py</code></td>
-<td>La biblioteca di dipartimento</td>
 </tr>
 <tr>
 <td>Challenge</td>
 <td>a scelta</td>
 <td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td>
 </tr>
+<tr>
+<td>Extra 1</td>
+<td><code>segreteria.py</code></td>
+<td>La coda in segreteria (a casa)</td>
+</tr>
+<tr>
+<td>Extra 2</td>
+<td><code>campione.py</code></td>
+<td>Un campione di misure (a casa)</td>
+</tr>
+<tr>
+<td>Extra 3</td>
+<td><code>abbonamenti.py</code></td>
+<td>Abbonamenti ai mezzi pubblici (a casa)</td>
+</tr>
+<tr>
+<td>Extra 4</td>
+<td><code>biblioteca.py</code></td>
+<td>La biblioteca di dipartimento (a casa)</td>
+</tr>
 </tbody></table>
 <hr>
 <h2>Promemoria</h2>
-<p>Gli strumenti che servono oggi. <code><em>_init</em><em></code> riceve i dati e li salva negli attributi con <code>self.</code>; ogni metodo ha <code>self</code> come primo parametro, ma quando lo chiamate non lo scrivete. <code></em><em>str</em><em></code> decide cosa stampa <code>print</code>, <code></em><em>lt</em><em></code> dice a <code>sorted</code> quale oggetto viene prima. Se i dati non sono validi, <code></em><em>init</em>_</code> solleva un errore con <code>raise ValueError(...)</code>.</p>
+<p>Gli strumenti che servono oggi. <code>__init__</code> riceve i dati e li salva negli attributi con <code>self.</code>; ogni metodo ha <code>self</code> come primo parametro, ma quando lo chiamate non lo scrivete. <code>__str__</code> decide cosa stampa <code>print</code>, <code>__lt__</code> dice a <code>sorted</code> quale oggetto viene prima. Se i dati non sono validi, <code>__init__</code> solleva un errore con <code>raise ValueError(...)</code>.</p>
 <pre><code><span class="kw">class</span> <span class="fn">Studente</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>, voti: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
         self.nome: <span class="nb">str</span> <span class="op">=</span> nome                       <span class="cm"># attributi</span>
@@ -279,9 +283,10 @@ gruppo: <span class="nb">list</span>[Studente] <span class="op">=</span> [Studen
     <span class="nb">print</span>(s)                                        <span class="cm"># Luca: 25.0 ...</span></code></pre>
 <hr>
 <h2>Esercizio 1 — Un esame del libretto (<code>esame.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-esame" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
-<li>Definite una classe <code>Esame</code> con <code><em>_init</em>_(self, nome: str, cfu: int, voto: int)</code> che salva i tre valori in tre attributi.</li>
+<li>Definite una classe <code>Esame</code> con <code>__init__(self, nome: str, cfu: int, voto: int)</code> che salva i tre valori in tre attributi.</li>
 <li>Aggiungete un metodo <code>punti(self) -> int</code> che restituisce il voto moltiplicato per i crediti.</li>
 <li>Create una lista con tre esami: Analisi 1 (12 CFU, 26), Statistica 1 (9 CFU, 29), Informatica (6 CFU, 30).</li>
 <li>Con un ciclo stampate ogni esame, usando gli attributi, e sommate crediti e punti. Alla fine stampate i CFU totali e la media ponderata con due decimali.</li>
@@ -295,15 +300,16 @@ CFU: <span class="mi">27</span>, media ponderata: <span class="mi">27.89</span><
 <ul>
 <li>aggiungete <code>Esame("Algebra lineare", 9, 24)</code> → <code>CFU: 36, media ponderata: 26.92</code></li>
 <li>prima del ciclo scrivete <code>esami[0].voto = 28</code> → <code>Analisi 1: 28 (12 CFU)</code>, <code>media ponderata: 28.78</code></li>
-<li><code>print(esami[0])</code> → <code><<em>_main</em><em>.Esame object at 0x...></code>: per una stampa leggibile serve <code></em><em>str</em>_</code> (esercizio 2)</li>
+<li><code>print(esami[0])</code> → <code><__main__.Esame object at 0x...></code>: per una stampa leggibile serve <code>__str__</code> (esercizio 2)</li>
 </ul>
 <hr>
 <h2>Esercizio 2 — La tessera della mensa (<code>tessera_mensa.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-tessera_mensa" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
-<li>Definite una classe <code>Tessera</code> con titolare e saldo. Se il saldo iniziale è negativo, <code><em>_init</em>_</code> solleva <code>ValueError("Il saldo iniziale è negativo")</code>.</li>
+<li>Definite una classe <code>Tessera</code> con titolare e saldo. Se il saldo iniziale è negativo, <code>__init__</code> solleva <code>ValueError("Il saldo iniziale è negativo")</code>.</li>
 <li>Aggiungete <code>ricarica(self, importo: float)</code>, che solleva <code>ValueError</code> se l'importo non è positivo, e <code>paga(self, prezzo: float)</code>, che solleva <code>ValueError</code> se il saldo non basta. Nel messaggio scrivete il saldo con due decimali.</li>
-<li>Aggiungete <code><em>_str</em>_</code> che restituisce titolare e saldo, come nell'esempio.</li>
+<li>Aggiungete <code>__str__</code> che restituisce titolare e saldo, come nell'esempio.</li>
 <li>Create la tessera di Anna Rossi con 10 EUR e provate a pagare tre pasti da 4.50 EUR, ognuno in un <code>try</code>. Poi ricaricate 20 EUR e stampate la tessera.</li>
 </ol>
 <p><strong>Esempio di esecuzione</strong></p>
@@ -319,34 +325,13 @@ Tessera di Anna Rossi: <span class="mi">21.00</span> EUR</code></pre>
 <li><code>tessera.ricarica(0)</code> → <code>ValueError: La ricarica deve essere positiva</code></li>
 </ul>
 <hr>
-<h2>Esercizio 3 — La coda in segreteria (<code>segreteria.py</code>)</h2>
+<h2>Esercizio 3 — La graduatoria Erasmus (<code>erasmus.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-erasmus" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
-<li>Definite una classe <code>Ticket</code> con due attributi di classe: la tupla <code>SERVIZI = ("iscrizioni", "tasse", "esami")</code> e il contatore <code>emessi = 0</code>.</li>
-<li><code><em>_init</em>_(self, servizio: str)</code> solleva <code>ValueError</code> se il servizio non è in <code>SERVIZI</code>; altrimenti aumenta <code>Ticket.emessi</code> di 1 e lo salva nell'attributo di istanza <code>numero</code>.</li>
-<li>Aggiungete <code><em>_str</em><em></code> (<code>Numero 1 (esami)</code>) e <code></em><em>repr</em>_</code> (<code>Ticket(1, 'esami')</code>).</li>
-<li>Create i biglietti per esami, tasse, esami, iscrizioni, esami e metteteli in una lista. Stampate la lista, il primo biglietto, il numero di biglietti emessi e quanti ce ne sono per ogni servizio.</li>
-</ol>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>[Ticket(<span class="mi">1</span>, <span class="st">&#x27;esami&#x27;</span>), Ticket(<span class="mi">2</span>, <span class="st">&#x27;tasse&#x27;</span>), Ticket(<span class="mi">3</span>, <span class="st">&#x27;esami&#x27;</span>), Ticket(<span class="mi">4</span>, <span class="st">&#x27;iscrizioni&#x27;</span>), Ticket(<span class="mi">5</span>, <span class="st">&#x27;esami&#x27;</span>)]
-Prossimo: Numero <span class="mi">1</span> (esami)
-Biglietti emessi: <span class="mi">5</span>
-iscrizioni: <span class="mi">1</span>
-tasse: <span class="mi">1</span>
-esami: <span class="mi">3</span></code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li><code>Ticket("mensa")</code> → <code>ValueError: Servizio sconosciuto: mensa</code>, e <code>Ticket.emessi</code> resta 5</li>
-<li><code>print(coda[3].numero, coda[3].emessi)</code> → <code>4 5</code>: l'attributo di classe si legge anche dall'oggetto</li>
-<li>togliete <code><em>_repr</em><em></code>: la lista si stampa come <code>[<</em><em>main</em>_.Ticket object at 0x...>, ...]</code></li>
-</ul>
-<hr>
-<h2>Esercizio 4 — La graduatoria Erasmus (<code>erasmus.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Definite una classe <code>Candidato</code> con nome, media e CFU sostenuti, e un <code><em>_str</em>_</code> come nell'esempio.</li>
-<li>Aggiungete <code><em>_eq</em>_</code>: due candidati sono a pari merito se hanno la stessa media e gli stessi CFU. Se l'altro oggetto non è un <code>Candidato</code> restituite <code>NotImplemented</code>.</li>
-<li>Aggiungete <code><em>_lt</em>_</code>: viene prima chi ha la media più alta e, a parità di media, chi ha più CFU.</li>
+<li>Definite una classe <code>Candidato</code> con nome, media e CFU sostenuti, e un <code>__str__</code> come nell'esempio.</li>
+<li>Aggiungete <code>__eq__</code>: due candidati sono a pari merito se hanno la stessa media e gli stessi CFU. Se l'altro oggetto non è un <code>Candidato</code> restituite <code>NotImplemented</code>.</li>
+<li>Aggiungete <code>__lt__</code>: viene prima chi ha la media più alta e, a parità di media, chi ha più CFU.</li>
 <li>Ordinate i candidati con <code>sorted</code>, stampate la graduatoria numerata con <code>enumerate</code> e controllate con <code>==</code> se il primo e il secondo, e il terzo e il quarto, sono a pari merito.</li>
 </ol>
 <table>
@@ -387,37 +372,19 @@ Pari merito tra <span class="mi">3</span> e <span class="mi">4</span>: <span cla
 <ul>
 <li>aggiungete <code>Candidato("Marta", 29.0, 60)</code> → <code>1. Marta (media 29.00, 60 CFU)</code></li>
 <li><code>print(classifica[0] == "Sara")</code> → <code>False</code>: una stringa non è un <code>Candidato</code></li>
-<li>togliete <code><em>_lt</em>_</code> → <code>TypeError: '<' not supported between instances of 'Candidato' and 'Candidato'</code></li>
+<li>togliete <code>__lt__</code> → <code>TypeError: '<' not supported between instances of 'Candidato' and 'Candidato'</code></li>
 </ul>
 <hr>
-<h2>Esercizio 5 — Un campione di misure (<code>campione.py</code>)</h2>
+<h2>Esercizio 4 — Il libretto: un oggetto che contiene oggetti (<code>libretto.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-libretto" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
-<li>Definite una classe <code>Campione</code> con un nome e una lista <code>_valori</code>, vuota all'inizio. L'underscore indica che la lista si usa solo dentro la classe.</li>
-<li>Aggiungete il metodo <code>aggiungi(self, x: float)</code>.</li>
-<li>Con <code>@property</code> definite <code>n</code> (numero di valori), <code>media</code> e <code>varianza</code> (campionaria, con divisore n − 1).</li>
-<li>Create il campione <code>Altezze (cm)</code> con 172, 165, 180, 158, 175 e stampate n, media, varianza e deviazione standard (<code>** 0.5</code>) con due decimali. Poi provate ad assegnare <code>altezze.media = 175.0</code> in un <code>try</code> e catturate <code>AttributeError</code>.</li>
-</ol>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Altezze (cm): <span class="mi">5</span> valori
-Media: <span class="mi">170.00</span>, varianza: <span class="mi">74.50</span>
-Deviazione standard: <span class="mi">8.63</span>
-La media non si assegna: è calcolata dai valori</code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>aggiungete 190 → <code>6 valori</code>, <code>Media: 173.33, varianza: 126.27</code></li>
-<li><code>statistics.variance([172, 165, 180, 158, 175])</code> → <code>74.5</code>, come la vostra</li>
-<li><code>print(altezze._valori)</code> funziona lo stesso: l'underscore è una convenzione, non un divieto</li>
-</ul>
-<hr>
-<h2>Esercizio 6 — Il libretto: un oggetto che contiene oggetti (<code>libretto.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Riprendete la classe <code>Esame</code> dell'esercizio 1 e aggiungete <code><em>_str</em>_</code> come nell'esempio.</li>
+<li>Riprendete la classe <code>Esame</code> dell'esercizio 1 e aggiungete <code>__str__</code> come nell'esempio.</li>
 <li>Definite una classe <code>Libretto</code> con il nome dello studente e una lista <code>esami</code>, vuota all'inizio: il libretto contiene degli esami (composizione).</li>
 <li>Aggiungete <code>cerca(self, nome: str) -> Esame | None</code>, che restituisce l'esame con quel nome oppure <code>None</code>, e <code>aggiungi(self, esame: Esame)</code>, che usa <code>cerca</code> e solleva <code>ValueError</code> se l'esame è già presente.</li>
 <li>Aggiungete <code>media(self) -> float</code> con la media ponderata. Inserite i tre esami dell'esercizio 1, provate a inserire di nuovo Informatica (con 28) in un <code>try</code>, cercate Statistica 1 e stampate numero di esami e media.</li>
 </ol>
+<p><img src="../../presentazioni/img/L06_libretto.svg" alt="Il libretto contiene una lista di oggetti Esame" style="max-width: 100%; border: 1px solid #e2e8f0; border-radius: 6px;"></p>
 <p><strong>Esempio di esecuzione</strong></p>
 <pre><code>Informatica è già nel libretto
 Statistica <span class="mi">1</span>: <span class="mi">29</span> (<span class="mi">9</span> CFU)
@@ -427,92 +394,6 @@ Esami: <span class="mi">3</span>, media ponderata <span class="mi">27.89</span><
 <li><code>print(lib.cerca("Algebra"))</code> → <code>None</code></li>
 <li>aggiungete <code>Esame("Algebra lineare", 9, 24)</code> → <code>Esami: 4, media ponderata 26.92</code></li>
 <li><code>Libretto("Marco").media()</code> → <code>ZeroDivisionError</code>: un libretto vuoto non ha media</li>
-</ul>
-<hr>
-<h2>Esercizio 7 — Abbonamenti ai mezzi pubblici (<code>abbonamenti.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Definite una classe <code>Abbonamento</code> con titolare e numero di mesi (da 1 a 12, altrimenti <code>ValueError</code>) e l'attributo di classe <code>PREZZO_MESE = 40.0</code>.</li>
-<li>Aggiungete <code>prezzo(self) -> float</code> (prezzo al mese per mesi) e <code><em>_str</em>_</code> come nell'esempio.</li>
-<li>Definite la sottoclasse <code>AbbonamentoStudente(Abbonamento)</code> con la matricola in più e l'attributo di classe <code>SCONTO = 0.3</code>. Il suo <code><em>_init</em><em></code> chiama <code>super().</em><em>init</em><em>(...)</code>; <code>prezzo</code> e <code></em><em>str</em>_</code> riusano quelli della classe madre con <code>super()</code>.</li>
-<li>Mettete in una lista gli abbonamenti della tabella, stampateli e stampate l'incasso totale.</li>
-</ol>
-<table>
-<thead><tr>
-<th>Titolare</th>
-<th>Abbonamento</th>
-</tr></thead><tbody>
-<tr>
-<td>Marco Bianchi</td>
-<td>12 mesi</td>
-</tr>
-<tr>
-<td>Anna Rossi</td>
-<td>10 mesi, studente 2101234</td>
-</tr>
-<tr>
-<td>Luca Russo</td>
-<td>3 mesi, studente 2102345</td>
-</tr>
-<tr>
-<td>Elena Romano</td>
-<td>2 mesi</td>
-</tr>
-</tbody></table>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code>Marco Bianchi, <span class="mi">12</span> mesi: <span class="mi">480.00</span> EUR
-Anna Rossi, <span class="mi">10</span> mesi: <span class="mi">280.00</span> EUR, matricola <span class="mi">2101234</span>
-Luca Russo, <span class="mi">3</span> mesi: <span class="mi">84.00</span> EUR, matricola <span class="mi">2102345</span>
-Elena Romano, <span class="mi">2</span> mesi: <span class="mi">80.00</span> EUR
-Incasso: <span class="mi">924.00</span> EUR</code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li><code>AbbonamentoStudente("Sara Ferrari", 13, "2102890")</code> → <code>ValueError: Durata non valida: 13 mesi</code>: il controllo è ereditato</li>
-<li>prima della lista scrivete <code>AbbonamentoStudente.SCONTO = 0.5</code> → Anna <code>200.00 EUR</code>, Luca <code>60.00 EUR</code>, <code>Incasso: 820.00 EUR</code></li>
-<li>contate gli abbonamenti studente con <code>isinstance(a, AbbonamentoStudente)</code> → <code>2</code></li>
-</ul>
-<hr>
-<h2>Esercizio 8 — La biblioteca di dipartimento (<code>biblioteca.py</code>)</h2>
-<p><strong>Consegna</strong></p>
-<ol>
-<li>Definite una classe <code>Pubblicazione</code> con titolo e anno, l'attributo di classe <code>GIORNI = 30</code> (durata del prestito), un <code><em>_str</em><em></code> come nell'esempio e un <code></em><em>lt</em>_</code> che ordina per anno.</li>
-<li>Definite la sottoclasse <code>Rivista(Pubblicazione)</code>, che cambia solo <code>GIORNI = 7</code>. Nel <code><em>_str</em>_</code> usate <code>self.GIORNI</code>: così ogni oggetto prende il valore della sua classe.</li>
-<li>Definite una classe <code>Biblioteca</code> con una lista <code><em>catalogo</code> e i metodi <code>aggiungi</code>, <code>cerca(self, parola: str)</code>, che restituisce le pubblicazioni con quella parola nel titolo (senza distinguere maiuscole e minuscole), e <code>in</em>ordine</code>, che restituisce il catalogo ordinato con <code>sorted</code>.</li>
-<li>Inserite le pubblicazioni della tabella, stampate il catalogo in ordine e il numero di titoli che contengono <code>statistica</code>.</li>
-</ol>
-<table>
-<thead><tr>
-<th>Titolo</th>
-<th>Tipo, anno</th>
-</tr></thead><tbody>
-<tr>
-<td>Statistica di base</td>
-<td>libro, 2019</td>
-</tr>
-<tr>
-<td>Rivista di statistica applicata</td>
-<td>rivista, 2024</td>
-</tr>
-<tr>
-<td>Probabilità e inferenza</td>
-<td>libro, 2015</td>
-</tr>
-<tr>
-<td>Bollettino di demografia</td>
-<td>rivista, 2023</td>
-</tr>
-</tbody></table>
-<p><strong>Esempio di esecuzione</strong></p>
-<pre><code><span class="mi">2015</span> Probabilità e inferenza: <span class="mi">30</span> giorni
-<span class="mi">2019</span> Statistica di base: <span class="mi">30</span> giorni
-<span class="mi">2023</span> Bollettino di demografia: <span class="mi">7</span> giorni
-<span class="mi">2024</span> Rivista di statistica applicata: <span class="mi">7</span> giorni
-Titoli con <span class="st">&#x27;statistica&#x27;</span>: <span class="mi">2</span></code></pre>
-<p><strong>Provate anche</strong></p>
-<ul>
-<li>aggiungete <code>Rivista("Statistica in medicina", 2021)</code> → compare <code>2021 Statistica in medicina: 7 giorni</code> e <code>Titoli con 'statistica': 3</code></li>
-<li><code>Rivista.GIORNI = 14</code> prima delle stampe → le riviste hanno 14 giorni, i libri restano a 30</li>
-<li><code>bib.cerca("STATISTICA")</code> → gli stessi 2 risultati</li>
 </ul>
 <hr>
 <h2>Challenge a scelta</h2>
@@ -551,18 +432,19 @@ Titoli con <span class="st">&#x27;statistica&#x27;</span>: <span class="mi">2</s
 </tbody></table>
 <p><strong>Tutte le challenge chiedono:</strong></p>
 <ul>
-<li>Definite una classe per l'elemento del tema. <code><em>_init</em>_</code> riceve i dati e li controlla: se non sono validi solleva <code>ValueError</code> con un messaggio che contiene il nome dell'elemento; altrimenti li salva in attributi con type hints.</li>
-<li>La classe ha due metodi che calcolano qualcosa dai dati, un <code><em>_str</em><em></code> per la stampa e un <code></em><em>lt</em>_</code> per ordinare gli oggetti con <code>sorted</code>.</li>
+<li>Definite una classe per l'elemento del tema. <code>__init__</code> riceve i dati e li controlla: se non sono validi solleva <code>ValueError</code> con un messaggio che contiene il nome dell'elemento; altrimenti li salva in attributi con type hints.</li>
+<li>La classe ha due metodi che calcolano qualcosa dai dati, un <code>__str__</code> per la stampa e un <code>__lt__</code> per ordinare gli oggetti con <code>sorted</code>.</li>
 <li>Definite una classe contenitore che ha come attributo una lista di oggetti della prima classe (composizione), con i metodi <code>aggiungi</code>, <code>cerca</code> (restituisce l'oggetto oppure <code>None</code>) e un metodo che calcola una statistica su tutti gli oggetti.</li>
 <li>Create gli oggetti con i dati della consegna in un ciclo e aggiungeteli al contenitore. Uno dei dati è sbagliato: catturate il <code>ValueError</code> con <code>try/except</code> e stampatene il messaggio.</li>
 <li>Stampate gli oggetti in ordine con <code>sorted</code>, il risultato di due ricerche (una riuscita e una no) e la statistica.</li>
 </ul>
 <hr>
 <h3>Challenge · Mercati e finanza — Il portafoglio a oggetti (<code>ch_mercati.py</code>)</h3>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-ch_mercati" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Classe <code>Titolo</code> con sigla, numero di azioni e lista dei prezzi di chiusura. Se le azioni non sono positive o un prezzo non è positivo (o ci sono meno di due prezzi), <code>ValueError("MIB: azioni o prezzi non validi")</code>.</li>
-<li>Metodi <code>rendimento()</code>, dal primo all'ultimo prezzo, e <code>valore()</code>, azioni per ultimo prezzo. <code><em>_lt</em>_</code> confronta i rendimenti.</li>
+<li>Metodi <code>rendimento()</code>, dal primo all'ultimo prezzo, e <code>valore()</code>, azioni per ultimo prezzo. <code>__lt__</code> confronta i rendimenti.</li>
 <li>Classe <code>Portafoglio</code> con il titolare e una lista di titoli; metodi <code>aggiungi</code>, <code>cerca(sigla)</code> e <code>valore_totale()</code>.</li>
 <li>Create il portafoglio di Giulia con i titoli della tabella e stampate i titoli dal rendimento più alto (<code>reverse=True</code>), le ricerche di <code>BANK</code> e <code>MIB</code> e il valore totale.</li>
 </ol>
@@ -604,10 +486,11 @@ Valore totale: <span class="mi">1659.00</span></code></pre>
 </ul>
 <hr>
 <h3>Challenge · Sport — Il campionato a oggetti (<code>ch_sport.py</code>)</h3>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-ch_sport" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Classe <code>Pilota</code> con nome, scuderia e lista dei tempi sul giro. Se la lista è vuota o un tempo non è positivo, <code>ValueError("Neri: tempi non validi")</code>.</li>
-<li>Metodi <code>media()</code> e <code>migliore()</code> (il tempo minimo). <code><em>_lt</em>_</code> confronta le medie: viene prima il pilota più veloce.</li>
+<li>Metodi <code>media()</code> e <code>migliore()</code> (il tempo minimo). <code>__lt__</code> confronta le medie: viene prima il pilota più veloce.</li>
 <li>Classe <code>Gara</code> con il circuito e una lista di piloti; metodi <code>aggiungi</code>, <code>cerca(nome)</code> e <code>giro_veloce()</code>, il miglior tempo tra tutti i piloti.</li>
 <li>Create la gara di Monza con i piloti della tabella e stampate i piloti in ordine, le ricerche di <code>Lanza</code> e <code>Neri</code> e il giro più veloce.</li>
 </ol>
@@ -649,10 +532,11 @@ Giro più veloce: <span class="mi">92.10</span></code></pre>
 </ul>
 <hr>
 <h3>Challenge · Imprese e marketing — Il negozio online a oggetti (<code>ch_negozio.py</code>)</h3>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-ch_negozio" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Classe <code>Prodotto</code> con nome, prezzo e lista dei pezzi venduti ogni settimana. Se il prezzo non è positivo o una vendita è negativa (o la lista è vuota), <code>ValueError("lampada: prezzo o vendite non validi")</code>.</li>
-<li>Metodi <code>pezzi()</code>, il totale venduto, e <code>fatturato()</code>, prezzo per pezzi. <code><em>_lt</em>_</code> confronta i fatturati.</li>
+<li>Metodi <code>pezzi()</code>, il totale venduto, e <code>fatturato()</code>, prezzo per pezzi. <code>__lt__</code> confronta i fatturati.</li>
 <li>Classe <code>Negozio</code> con il nome e una lista di prodotti; metodi <code>aggiungi</code>, <code>cerca(nome)</code> e <code>fatturato_totale()</code>.</li>
 <li>Create il negozio con i prodotti della tabella e stampate i prodotti dal fatturato più alto (<code>reverse=True</code>), le ricerche di <code>cuffie</code> e <code>lampada</code> e il fatturato totale.</li>
 </ol>
@@ -699,10 +583,11 @@ Fatturato totale: <span class="mi">1657.80</span></code></pre>
 </ul>
 <hr>
 <h3>Challenge · Salute e scienza — Lo studio clinico a oggetti (<code>ch_salute.py</code>)</h3>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-ch_salute" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Classe <code>Paziente</code> con codice, gruppo e lista delle pressioni sistoliche misurate a ogni visita. Se ci sono meno di due misure o una misura è fuori da 60–250 mmHg, <code>ValueError("P05: misure non valide")</code>.</li>
-<li>Metodi <code>variazione()</code>, ultima misura meno prima, e <code>migliorato()</code>, vero se la pressione è scesa di almeno 10 mmHg. <code><em>_lt</em>_</code> confronta le variazioni: viene prima chi è sceso di più.</li>
+<li>Metodi <code>variazione()</code>, ultima misura meno prima, e <code>migliorato()</code>, vero se la pressione è scesa di almeno 10 mmHg. <code>__lt__</code> confronta le variazioni: viene prima chi è sceso di più.</li>
 <li>Classe <code>Studio</code> con il nome e una lista di pazienti; metodi <code>aggiungi</code>, <code>cerca(codice)</code> e <code>quota_migliorati()</code>.</li>
 <li>Create lo studio con i pazienti della tabella e stampate i pazienti in ordine, le ricerche di <code>P02</code> e <code>P05</code> e la quota di migliorati.</li>
 </ol>
@@ -749,10 +634,11 @@ Migliorati: <span class="mi">75.0</span><span class="op">%</span></code></pre>
 </ul>
 <hr>
 <h3>Challenge · Caso e probabilità — Il tavolo da gioco a oggetti (<code>ch_probabilita.py</code>)</h3>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-ch_probabilita" class="link-soluzione">Soluzione →</a></p>
 <p><strong>Consegna</strong></p>
 <ol>
 <li>Classe <code>Dado</code> con il colore e la lista dei risultati dei lanci, registrati a mano. Se la lista è vuota o un risultato è fuori da 1–6, <code>ValueError("bianco: lanci non validi")</code>.</li>
-<li>Metodi <code>media()</code> e <code>quota(faccia)</code>, la frequenza relativa di una faccia. <code><em>_lt</em>_</code> confronta le medie.</li>
+<li>Metodi <code>media()</code> e <code>quota(faccia)</code>, la frequenza relativa di una faccia. <code>__lt__</code> confronta le medie.</li>
 <li>Classe <code>Tavolo</code> con il nome e una lista di dadi; metodi <code>aggiungi</code>, <code>cerca(colore)</code> e <code>media_generale()</code>, la media di tutti i lanci di tutti i dadi.</li>
 <li>Create il tavolo con i dadi della tabella e stampate i dadi dalla media più alta (<code>reverse=True</code>), con la quota di 6, le ricerche di <code>blu</code> e <code>bianco</code> e la media generale.</li>
 </ol>
@@ -798,11 +684,299 @@ Media di tutti i lanci: <span class="mi">3.72</span></code></pre>
 <li>Che differenza c'è tra la classe <code>Esame</code> e l'oggetto <code>Esame("Analisi 1", 12, 26)</code>? Quanti oggetti crea <code>esame.py</code>?</li>
 <li>Ogni metodo ha <code>self</code> come primo parametro, ma in <code>e.punti()</code> non lo scrivete. Chi lo passa?</li>
 <li>In <code>segreteria.py</code> il contatore si aggiorna con <code>Ticket.emessi += 1</code>. Cosa succederebbe scrivendo <code>self.emessi += 1</code>?</li>
-<li>Che differenza c'è tra <code><em>_str</em><em></code> e <code></em><em>repr</em>_</code>? Quale usa <code>print(coda)</code> per gli elementi della lista?</li>
-<li>In <code>erasmus.py</code>, perché <code><em>_lt</em>_</code> confronta con <code>></code> (<code>self.media > altro.media</code>)?</li>
-<li>In <code>campione.py</code>, perché <code>media</code> è una <code>@property</code> e non un attributo calcolato una volta in <code><em>_init</em>_</code>?</li>
+<li>Che differenza c'è tra <code>__str__</code> e <code>__repr__</code>? Quale usa <code>print(coda)</code> per gli elementi della lista?</li>
+<li>In <code>erasmus.py</code>, perché <code>__lt__</code> confronta con <code>></code> (<code>self.media > altro.media</code>)?</li>
+<li>In <code>campione.py</code>, perché <code>media</code> è una <code>@property</code> e non un attributo calcolato una volta in <code>__init__</code>?</li>
 <li>Il libretto contiene esami (composizione); un abbonamento studente è un abbonamento (ereditarietà). Fate un altro esempio per ciascuna.</li>
 </ol>
+<hr>
+<h2>Esercizi extra</h2>
+<p>Questi esercizi non si fanno in laboratorio: sono materiale in più per allenarsi a casa, nello stesso ordine di difficoltà. Sotto ogni consegna c'è la soluzione: provate prima da soli e guardatela solo alla fine, per confrontarla con la vostra.</p>
+<hr>
+<h2>Extra 1 — La coda in segreteria (<code>segreteria.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-segreteria" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Definite una classe <code>Ticket</code> con due attributi di classe: la tupla <code>SERVIZI = ("iscrizioni", "tasse", "esami")</code> e il contatore <code>emessi = 0</code>.</li>
+<li><code>__init__(self, servizio: str)</code> solleva <code>ValueError</code> se il servizio non è in <code>SERVIZI</code>; altrimenti aumenta <code>Ticket.emessi</code> di 1 e lo salva nell'attributo di istanza <code>numero</code>.</li>
+<li>Aggiungete <code>__str__</code> (<code>Numero 1 (esami)</code>) e <code>__repr__</code> (<code>Ticket(1, 'esami')</code>).</li>
+<li>Create i biglietti per esami, tasse, esami, iscrizioni, esami e metteteli in una lista. Stampate la lista, il primo biglietto, il numero di biglietti emessi e quanti ce ne sono per ogni servizio.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>[Ticket(<span class="mi">1</span>, <span class="st">&#x27;esami&#x27;</span>), Ticket(<span class="mi">2</span>, <span class="st">&#x27;tasse&#x27;</span>), Ticket(<span class="mi">3</span>, <span class="st">&#x27;esami&#x27;</span>), Ticket(<span class="mi">4</span>, <span class="st">&#x27;iscrizioni&#x27;</span>), Ticket(<span class="mi">5</span>, <span class="st">&#x27;esami&#x27;</span>)]
+Prossimo: Numero <span class="mi">1</span> (esami)
+Biglietti emessi: <span class="mi">5</span>
+iscrizioni: <span class="mi">1</span>
+tasse: <span class="mi">1</span>
+esami: <span class="mi">3</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>Ticket("mensa")</code> → <code>ValueError: Servizio sconosciuto: mensa</code>, e <code>Ticket.emessi</code> resta 5</li>
+<li><code>print(coda[3].numero, coda[3].emessi)</code> → <code>4 5</code>: l'attributo di classe si legge anche dall'oggetto</li>
+<li>togliete <code>__repr__</code>: la lista si stampa come <code>[<__main__.Ticket object at 0x...>, ...]</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">class</span> <span class="fn">Ticket</span>:
+    <span class="st">&quot;&quot;&quot;Biglietto numerato per la coda della segreteria.&quot;&quot;&quot;</span>
+    SERVIZI: <span class="nb">tuple</span>[<span class="nb">str</span>, ...] <span class="op">=</span> (<span class="st">&quot;iscrizioni&quot;</span>, <span class="st">&quot;tasse&quot;</span>, <span class="st">&quot;esami&quot;</span>)
+    emessi: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>                       <span class="cm"># attributo di classe</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, servizio: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> servizio <span class="kw">not</span> <span class="kw">in</span> Ticket.SERVIZI:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Servizio sconosciuto: {servizio}&quot;</span>)
+        Ticket.emessi <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+        self.numero: <span class="nb">int</span> <span class="op">=</span> Ticket.emessi  <span class="cm"># attributo di istanza</span>
+        self.servizio: <span class="nb">str</span> <span class="op">=</span> servizio
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Numero {self.numero} ({self.servizio})&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;Ticket({self.numero}, &#x27;{self.servizio}&#x27;)&quot;</span>
+
+coda: <span class="nb">list</span>[Ticket] <span class="op">=</span> []
+<span class="kw">for</span> s <span class="kw">in</span> [<span class="st">&quot;esami&quot;</span>, <span class="st">&quot;tasse&quot;</span>, <span class="st">&quot;esami&quot;</span>, <span class="st">&quot;iscrizioni&quot;</span>, <span class="st">&quot;esami&quot;</span>]:
+    coda.append(Ticket(s))
+<span class="nb">print</span>(coda)
+<span class="nb">print</span>(<span class="st">f&quot;Prossimo: {coda[0]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Biglietti emessi: {Ticket.emessi}&quot;</span>)
+<span class="kw">for</span> servizio <span class="kw">in</span> Ticket.SERVIZI:
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>([t <span class="kw">for</span> t <span class="kw">in</span> coda <span class="kw">if</span> t.servizio <span class="op">=</span><span class="op">=</span> servizio])
+    <span class="nb">print</span>(<span class="st">f&quot;{servizio}: {n}&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 2 — Un campione di misure (<code>campione.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-campione" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Definite una classe <code>Campione</code> con un nome e una lista <code>_valori</code>, vuota all'inizio. L'underscore indica che la lista si usa solo dentro la classe.</li>
+<li>Aggiungete il metodo <code>aggiungi(self, x: float)</code>.</li>
+<li>Con <code>@property</code> definite <code>n</code> (numero di valori), <code>media</code> e <code>varianza</code> (campionaria, con divisore n − 1).</li>
+<li>Create il campione <code>Altezze (cm)</code> con 172, 165, 180, 158, 175 e stampate n, media, varianza e deviazione standard (<code>** 0.5</code>) con due decimali. Poi provate ad assegnare <code>altezze.media = 175.0</code> in un <code>try</code> e catturate <code>AttributeError</code>.</li>
+</ol>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Altezze (cm): <span class="mi">5</span> valori
+Media: <span class="mi">170.00</span>, varianza: <span class="mi">74.50</span>
+Deviazione standard: <span class="mi">8.63</span>
+La media non si assegna: è calcolata dai valori</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete 190 → <code>6 valori</code>, <code>Media: 173.33, varianza: 126.27</code></li>
+<li><code>statistics.variance([172, 165, 180, 158, 175])</code> → <code>74.5</code>, come la vostra</li>
+<li><code>print(altezze._valori)</code> funziona lo stesso: l'underscore è una convenzione, non un divieto</li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">class</span> <span class="fn">Campione</span>:
+    <span class="st">&quot;&quot;&quot;Campione di misure numeriche.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, nome: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.nome: <span class="nb">str</span> <span class="op">=</span> nome
+        self._valori: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> []   <span class="cm"># uso interno</span>
+
+    <span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">self</span>, x: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self._valori.append(x)
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">n</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+        <span class="kw">return</span> <span class="nb">len</span>(self._valori)
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">media</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> <span class="nb">sum</span>(self._valori) <span class="op">/</span> self.n
+
+    <span class="dc">@property</span>
+    <span class="kw">def</span> <span class="fn">varianza</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="st">&quot;&quot;&quot;Varianza campionaria, con divisore n - 1.&quot;&quot;&quot;</span>
+        m: <span class="nb">float</span> <span class="op">=</span> self.media
+        scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(x <span class="op">-</span> m) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> self._valori]
+        <span class="kw">return</span> <span class="nb">sum</span>(scarti) <span class="op">/</span> (self.n <span class="op">-</span> <span class="mi">1</span>)
+
+altezze: Campione <span class="op">=</span> Campione(<span class="st">&quot;Altezze (cm)&quot;</span>)
+<span class="kw">for</span> x <span class="kw">in</span> [<span class="mi">172</span>, <span class="mi">165</span>, <span class="mi">180</span>, <span class="mi">158</span>, <span class="mi">175</span>]:
+    altezze.aggiungi(x)
+<span class="nb">print</span>(<span class="st">f&quot;{altezze.nome}: {altezze.n} valori&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {altezze.media:.2f}, varianza: {altezze.varianza:.2f}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Deviazione standard: {altezze.varianza ** 0.5:.2f}&quot;</span>)
+<span class="kw">try</span>:
+    altezze.media <span class="op">=</span> <span class="mi">175.0</span>
+<span class="kw">except</span> <span class="nb">AttributeError</span>:
+    <span class="nb">print</span>(<span class="st">&quot;La media non si assegna: è calcolata dai valori&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 3 — Abbonamenti ai mezzi pubblici (<code>abbonamenti.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-abbonamenti" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Definite una classe <code>Abbonamento</code> con titolare e numero di mesi (da 1 a 12, altrimenti <code>ValueError</code>) e l'attributo di classe <code>PREZZO_MESE = 40.0</code>.</li>
+<li>Aggiungete <code>prezzo(self) -> float</code> (prezzo al mese per mesi) e <code>__str__</code> come nell'esempio.</li>
+<li>Definite la sottoclasse <code>AbbonamentoStudente(Abbonamento)</code> con la matricola in più e l'attributo di classe <code>SCONTO = 0.3</code>. Il suo <code>__init__</code> chiama <code>super().__init__(...)</code>; <code>prezzo</code> e <code>__str__</code> riusano quelli della classe madre con <code>super()</code>.</li>
+<li>Mettete in una lista gli abbonamenti della tabella, stampateli e stampate l'incasso totale.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Titolare</th>
+<th>Abbonamento</th>
+</tr></thead><tbody>
+<tr>
+<td>Marco Bianchi</td>
+<td>12 mesi</td>
+</tr>
+<tr>
+<td>Anna Rossi</td>
+<td>10 mesi, studente 2101234</td>
+</tr>
+<tr>
+<td>Luca Russo</td>
+<td>3 mesi, studente 2102345</td>
+</tr>
+<tr>
+<td>Elena Romano</td>
+<td>2 mesi</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code>Marco Bianchi, <span class="mi">12</span> mesi: <span class="mi">480.00</span> EUR
+Anna Rossi, <span class="mi">10</span> mesi: <span class="mi">280.00</span> EUR, matricola <span class="mi">2101234</span>
+Luca Russo, <span class="mi">3</span> mesi: <span class="mi">84.00</span> EUR, matricola <span class="mi">2102345</span>
+Elena Romano, <span class="mi">2</span> mesi: <span class="mi">80.00</span> EUR
+Incasso: <span class="mi">924.00</span> EUR</code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li><code>AbbonamentoStudente("Sara Ferrari", 13, "2102890")</code> → <code>ValueError: Durata non valida: 13 mesi</code>: il controllo è ereditato</li>
+<li>prima della lista scrivete <code>AbbonamentoStudente.SCONTO = 0.5</code> → Anna <code>200.00 EUR</code>, Luca <code>60.00 EUR</code>, <code>Incasso: 820.00 EUR</code></li>
+<li>contate gli abbonamenti studente con <code>isinstance(a, AbbonamentoStudente)</code> → <code>2</code></li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">class</span> <span class="fn">Abbonamento</span>:
+    <span class="st">&quot;&quot;&quot;Abbonamento ai mezzi pubblici, pagato a mesi.&quot;&quot;&quot;</span>
+    PREZZO_MESE: <span class="nb">float</span> <span class="op">=</span> <span class="mi">40.0</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, titolare: <span class="nb">str</span>, mesi: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="kw">if</span> mesi <span class="op">&lt;</span> <span class="mi">1</span> <span class="kw">or</span> mesi <span class="op">&gt;</span> <span class="mi">12</span>:
+            <span class="kw">raise</span> <span class="nb">ValueError</span>(<span class="st">f&quot;Durata non valida: {mesi} mesi&quot;</span>)
+        self.titolare: <span class="nb">str</span> <span class="op">=</span> titolare
+        self.mesi: <span class="nb">int</span> <span class="op">=</span> mesi
+
+    <span class="kw">def</span> <span class="fn">prezzo</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> self.PREZZO_MESE <span class="op">*</span> self.mesi
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> (<span class="st">f&quot;{self.titolare}, {self.mesi} mesi: &quot;</span>
+                <span class="st">f&quot;{self.prezzo():.2f} EUR&quot;</span>)
+
+
+<span class="kw">class</span> <span class="fn">AbbonamentoStudente</span>(<span class="fn">Abbonamento</span>):
+    <span class="st">&quot;&quot;&quot;Abbonamento scontato per chi ha una matricola.&quot;&quot;&quot;</span>
+    SCONTO: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.3</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, titolare: <span class="nb">str</span>, mesi: <span class="nb">int</span>,
+                 matricola: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        <span class="nb">super</span>().__init__(titolare, mesi)
+        self.matricola: <span class="nb">str</span> <span class="op">=</span> matricola
+
+    <span class="kw">def</span> <span class="fn">prezzo</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+        <span class="kw">return</span> <span class="nb">super</span>().prezzo() <span class="op">*</span> (<span class="mi">1</span> <span class="op">-</span> self.SCONTO)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;{super().__str__()}, matricola {self.matricola}&quot;</span>
+
+abbonamenti: <span class="nb">list</span>[Abbonamento] <span class="op">=</span> [
+    Abbonamento(<span class="st">&quot;Marco Bianchi&quot;</span>, <span class="mi">12</span>),
+    AbbonamentoStudente(<span class="st">&quot;Anna Rossi&quot;</span>, <span class="mi">10</span>, <span class="st">&quot;2101234&quot;</span>),
+    AbbonamentoStudente(<span class="st">&quot;Luca Russo&quot;</span>, <span class="mi">3</span>, <span class="st">&quot;2102345&quot;</span>),
+    Abbonamento(<span class="st">&quot;Elena Romano&quot;</span>, <span class="mi">2</span>)]
+
+<span class="kw">for</span> a <span class="kw">in</span> abbonamenti:
+    <span class="nb">print</span>(a)
+
+<span class="nb">print</span>(<span class="st">f&quot;Incasso: {sum([a.prezzo() for a in abbonamenti]):.2f} EUR&quot;</span>)</code></pre>
+<hr>
+<h2>Extra 4 — La biblioteca di dipartimento (<code>biblioteca.py</code>)</h2>
+<p><a href="../../codice/L06_classi_oggetti/esercizi.html#sol-biblioteca" class="link-soluzione">Soluzione →</a></p>
+<p><strong>Consegna</strong></p>
+<ol>
+<li>Definite una classe <code>Pubblicazione</code> con titolo e anno, l'attributo di classe <code>GIORNI = 30</code> (durata del prestito), un <code>__str__</code> come nell'esempio e un <code>__lt__</code> che ordina per anno.</li>
+<li>Definite la sottoclasse <code>Rivista(Pubblicazione)</code>, che cambia solo <code>GIORNI = 7</code>. Nel <code>__str__</code> usate <code>self.GIORNI</code>: così ogni oggetto prende il valore della sua classe.</li>
+<li>Definite una classe <code>Biblioteca</code> con una lista <code>_catalogo</code> e i metodi <code>aggiungi</code>, <code>cerca(self, parola: str)</code>, che restituisce le pubblicazioni con quella parola nel titolo (senza distinguere maiuscole e minuscole), e <code>in_ordine</code>, che restituisce il catalogo ordinato con <code>sorted</code>.</li>
+<li>Inserite le pubblicazioni della tabella, stampate il catalogo in ordine e il numero di titoli che contengono <code>statistica</code>.</li>
+</ol>
+<table>
+<thead><tr>
+<th>Titolo</th>
+<th>Tipo, anno</th>
+</tr></thead><tbody>
+<tr>
+<td>Statistica di base</td>
+<td>libro, 2019</td>
+</tr>
+<tr>
+<td>Rivista di statistica applicata</td>
+<td>rivista, 2024</td>
+</tr>
+<tr>
+<td>Probabilità e inferenza</td>
+<td>libro, 2015</td>
+</tr>
+<tr>
+<td>Bollettino di demografia</td>
+<td>rivista, 2023</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio di esecuzione</strong></p>
+<pre><code><span class="mi">2015</span> Probabilità e inferenza: <span class="mi">30</span> giorni
+<span class="mi">2019</span> Statistica di base: <span class="mi">30</span> giorni
+<span class="mi">2023</span> Bollettino di demografia: <span class="mi">7</span> giorni
+<span class="mi">2024</span> Rivista di statistica applicata: <span class="mi">7</span> giorni
+Titoli con <span class="st">&#x27;statistica&#x27;</span>: <span class="mi">2</span></code></pre>
+<p><strong>Provate anche</strong></p>
+<ul>
+<li>aggiungete <code>Rivista("Statistica in medicina", 2021)</code> → compare <code>2021 Statistica in medicina: 7 giorni</code> e <code>Titoli con 'statistica': 3</code></li>
+<li><code>Rivista.GIORNI = 14</code> prima delle stampe → le riviste hanno 14 giorni, i libri restano a 30</li>
+<li><code>bib.cerca("STATISTICA")</code> → gli stessi 2 risultati</li>
+</ul>
+<p><strong>Soluzione</strong></p>
+<pre><code><span class="kw">class</span> <span class="fn">Pubblicazione</span>:
+    <span class="st">&quot;&quot;&quot;Un libro o una rivista della biblioteca.&quot;&quot;&quot;</span>
+    GIORNI: <span class="nb">int</span> <span class="op">=</span> <span class="mi">30</span>                      <span class="cm"># durata del prestito</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, titolo: <span class="nb">str</span>, anno: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self.titolo: <span class="nb">str</span> <span class="op">=</span> titolo
+        self.anno: <span class="nb">int</span> <span class="op">=</span> anno
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+        <span class="kw">return</span> <span class="st">f&quot;{self.anno} {self.titolo}: {self.GIORNI} giorni&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__lt__</span>(<span class="fn">self</span>, altro: <span class="st">&quot;Pubblicazione&quot;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+        <span class="kw">return</span> self.anno <span class="op">&lt;</span> altro.anno
+
+
+<span class="kw">class</span> <span class="fn">Rivista</span>(<span class="fn">Pubblicazione</span>):
+    GIORNI: <span class="nb">int</span> <span class="op">=</span> <span class="mi">7</span>                       <span class="cm"># le riviste durano meno</span>
+
+
+<span class="kw">class</span> <span class="fn">Biblioteca</span>:
+    <span class="st">&quot;&quot;&quot;Una biblioteca ha un catalogo di libri e riviste.&quot;&quot;&quot;</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self._catalogo: <span class="nb">list</span>[Pubblicazione] <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">aggiungi</span>(<span class="fn">self</span>, p: Pubblicazione) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+        self._catalogo.append(p)
+
+    <span class="kw">def</span> <span class="fn">cerca</span>(<span class="fn">self</span>, parola: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Pubblicazione]:
+        <span class="kw">return</span> [p <span class="kw">for</span> p <span class="kw">in</span> self._catalogo
+                <span class="kw">if</span> parola.lower() <span class="kw">in</span> p.titolo.lower()]
+
+    <span class="kw">def</span> <span class="fn">in_ordine</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[Pubblicazione]:
+        <span class="kw">return</span> <span class="nb">sorted</span>(self._catalogo)
+
+bib: Biblioteca <span class="op">=</span> Biblioteca()
+bib.aggiungi(Pubblicazione(<span class="st">&quot;Statistica di base&quot;</span>, <span class="mi">2019</span>))
+bib.aggiungi(Rivista(<span class="st">&quot;Rivista di statistica applicata&quot;</span>, <span class="mi">2024</span>))
+bib.aggiungi(Pubblicazione(<span class="st">&quot;Probabilità e inferenza&quot;</span>, <span class="mi">2015</span>))
+bib.aggiungi(Rivista(<span class="st">&quot;Bollettino di demografia&quot;</span>, <span class="mi">2023</span>))
+<span class="kw">for</span> p <span class="kw">in</span> bib.in_ordine():
+    <span class="nb">print</span>(p)
+
+<span class="nb">print</span>(<span class="st">f&quot;Titoli con &#x27;statistica&#x27;: {len(bib.cerca(&#x27;statistica&#x27;))}&quot;</span>)</code></pre>
 <nav class="bottom-nav"><span><a href="../frontali/T17_numpy_pandas_visualizzazione.html">← T17</a></span><span><a href="../../index.html">Home</a></span><span><a href="L07_numpy_pandas.html">L07 →</a></span></nav>
 </body>
 </html>

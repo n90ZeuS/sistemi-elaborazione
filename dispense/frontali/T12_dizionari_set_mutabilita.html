@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -660,7 +664,7 @@ ordinata: <span class="nb">list</span>[<span class="nb">int</span>] <span class=
 <span class="nb">print</span>(originale)  <span class="cm"># [3, 1, 4, 1, 5] — intatta</span>
 <span class="nb">print</span>(ordinata)   <span class="cm"># [1, 1, 3, 4, 5]</span></code></pre>
 <h3>Chiavi di dizionario e mutabilità</h3>
-<p>Ora potete capire perché le chiavi dei dizionari devono essere immutabili. Se una chiave fosse una lista e la modificaste dopo averla usata come chiave, il suo hash cambierebbe. Il dizionario avrebbe salvato il valore in una posizione basata sull'hash originale, ma non lo troverebbe più perché l'hash è cambiato. Python previene questo problema alla radice: gli oggetti mutabili non hanno un metodo <code><em>_hash</em>_</code> e non possono essere usati come chiavi.</p>
+<p>Ora potete capire perché le chiavi dei dizionari devono essere immutabili. Se una chiave fosse una lista e la modificaste dopo averla usata come chiave, il suo hash cambierebbe. Il dizionario avrebbe salvato il valore in una posizione basata sull'hash originale, ma non lo troverebbe più perché l'hash è cambiato. Python previene questo problema alla radice: gli oggetti mutabili non hanno un metodo <code>__hash__</code> e non possono essere usati come chiavi.</p>
 <pre><code><span class="cm"># Questo principio si applica anche ai set</span>
 <span class="cm"># (un set è essenzialmente un dizionario senza valori)</span>
 valido: <span class="nb">set</span>[<span class="nb">tuple</span>[<span class="nb">int</span>, <span class="nb">int</span>]] <span class="op">=</span> {(<span class="mi">1</span>, <span class="mi">2</span>), (<span class="mi">3</span>, <span class="mi">4</span>)}     <span class="cm"># OK: tuple immutabili</span>
@@ -847,11 +851,11 @@ tempo_set: <span class="nb">float</span> <span class="op">=</span> time.time() <
 <li>Scrivete una funzione <code>inverti_dizionario(d: dict[str, int]) -> dict[int, list[str]]</code> che, dato un dizionario, crei un nuovo dizionario dove i valori originali diventano chiavi e le chiavi originali diventano liste di valori. Ad esempio, <code>{"a": 1, "b": 2, "c": 1}</code> diventa <code>{1: ["a", "c"], 2: ["b"]}</code>. Usate <code>defaultdict</code>.</li>
 </ol>
 <ol>
-<li>Scrivete una funzione <code>rimuovi<em>duplicati</em>mantieni_ordine(lista: list[int]) -> list[int]</code> che rimuova i duplicati da una lista mantenendo l'ordine della prima occorrenza. (Suggerimento: usate un set come "registro delle presenze".)</li>
+<li>Scrivete una funzione <code>rimuovi_duplicati_mantieni_ordine(lista: list[int]) -> list[int]</code> che rimuova i duplicati da una lista mantenendo l'ordine della prima occorrenza. (Suggerimento: usate un set come "registro delle presenze".)</li>
 </ol>
 <h3>Avanzato</h3>
 <ol>
-<li>Scrivete una funzione <code>analisi<em>testo(testo: str) -> dict[str, int | float | list[str]]</code> che, dato un testo, restituisca un dizionario con: il numero di parole (<code>"n</em>parole"</code>), il numero di parole uniche (<code>"n<em>uniche"</code>), la parola piu frequente (<code>"piu</em>frequente"</code>), le parole che compaiono una sola volta (<code>"hapax"</code>). Usate <code>Counter</code> e operazioni sui set.</li>
+<li>Scrivete una funzione <code>analisi_testo(testo: str) -> dict[str, int | float | list[str]]</code> che, dato un testo, restituisca un dizionario con: il numero di parole (<code>"n_parole"</code>), il numero di parole uniche (<code>"n_uniche"</code>), la parola piu frequente (<code>"piu_frequente"</code>), le parole che compaiono una sola volta (<code>"hapax"</code>). Usate <code>Counter</code> e operazioni sui set.</li>
 </ol>
 <pre><code>   testo: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;il gatto e il cane e il topo e il gatto&quot;</span>
    risultato: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span> <span class="op">|</span> <span class="nb">float</span> <span class="op">|</span> <span class="nb">list</span>[<span class="nb">str</span>]] <span class="op">=</span> analisi_testo(testo)

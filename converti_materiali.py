@@ -250,6 +250,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -564,8 +568,21 @@ def md_to_html(md_text: str) -> str:
 
 def inline_md(text: str) -> str:
     """Converte Markdown inline: bold, italic, code, links."""
-    # Code spans (prima, per evitare conflitti)
-    text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
+    # Link e code span messi da parte, così gli underscore di URL e nomi di
+    # file non diventano corsivo
+    protetti: list[str] = []
+
+    def proteggi(html_frammento: str) -> str:
+        protetti.append(html_frammento)
+        return f"\x00{len(protetti) - 1}\x00"
+
+    text = re.sub(r'`([^`]+)`', lambda m: proteggi(f'<code>{m.group(1)}</code>'), text)
+    text = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)',
+                  lambda m: proteggi(f'<img src="{m.group(2)}" alt="{m.group(1)}" style="max-width: 100%; border: 1px solid #e2e8f0; border-radius: 6px;">'),
+                  text)
+    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)',
+                  lambda m: proteggi(f'<a href="{m.group(2)}"{" class=\"link-soluzione\"" if m.group(2).startswith("../../codice/") else ""}>{m.group(1)}</a>'),
+                  text)
     # Bold + italic
     text = re.sub(r'\*\*\*(.+?)\*\*\*', r'<strong><em>\1</em></strong>', text)
     # Bold
@@ -573,9 +590,7 @@ def inline_md(text: str) -> str:
     # Italic
     text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
     text = re.sub(r'_(.+?)_', r'<em>\1</em>', text)
-    # Links
-    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', text)
-    return text
+    return re.sub(r'\x00(\d+)\x00', lambda m: protetti[int(m.group(1))], text)
 
 
 # ─── Generazione pagina HTML ───
@@ -735,6 +750,11 @@ def convert_python_files() -> None:
     for py_file in sorted(codice.rglob("*.py")):
         code_text: str = py_file.read_text(encoding="utf-8")
         highlighted: str = highlight_python(code_text)
+        # Ancore per i link «Soluzione →» di slide e dispense dei laboratori:
+        # "# ESERCIZIO 1: ... — voti_appello.py" diventa id="sol-voti_appello"
+        highlighted = re.sub(
+            r'<span class="cm">(# (?:ESERCIZIO|EXTRA|SFIDA|CHALLENGE)[^<]*— (\w+)\.py)</span>',
+            r'<span class="cm" id="sol-\2">\1</span>', highlighted)
         body: str = f'<pre><code>{highlighted}</code></pre>'
 
         dir_code: str = py_file.parent.name.split("_")[0]

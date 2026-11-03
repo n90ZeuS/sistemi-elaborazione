@@ -159,6 +159,10 @@ hr {
 }
 
 a { color: var(--accent); }
+a.link-soluzione { display: inline-block; font-size: 0.85em; font-weight: 600; padding: 0.15em 0.8em; border: 1.5px solid var(--accent); border-radius: 999px; text-decoration: none; }
+a.link-soluzione:hover { background: var(--accent); color: #fff; }
+[id^="sol-"] { scroll-margin-top: 1.5em; }
+[id^="sol-"]:target { background: #fef3c7; font-weight: 700; }
 
 .download-link {
     display: inline-block;
@@ -362,19 +366,19 @@ marco.aggiungi_voto(<span class="mi">27</span>)
 <p>Confrontate questo codice con la versione procedurale dell'introduzione. I vantaggi sono evidenti:</p>
 <ul>
 <li><strong>Il tipo è chiaro.</strong> <code>anna: Studente</code> dice esattamente cosa contiene quella variabile.</li>
-<li><strong>La validazione è centralizzata.</strong> Avviene in <code><em>_init</em><em></code> e in <code>aggiungi</em>voto</code>. Non è possibile creare uno studente malformato.</li>
+<li><strong>La validazione è centralizzata.</strong> Avviene in <code>__init__</code> e in <code>aggiungi_voto</code>. Non è possibile creare uno studente malformato.</li>
 <li><strong>Dati e comportamento sono uniti.</strong> <code>anna.media()</code> è più naturale di <code>calcola_media(anna)</code>.</li>
 <li><strong>Il type checker può aiutarci.</strong> Se scriviamo <code>anna.media</code> senza parentesi, l'IDE ci avvisa.</li>
 </ul>
 <hr>
-<h2>5. <code><em>_init</em>_</code> e <code>self</code>: due concetti fondamentali</h2>
-<h3><code><em>_init</em>_</code>: inizializzazione, non costruzione</h3>
-<p>Il metodo <code><em>_init</em>_</code> viene chiamato automaticamente da Python subito dopo la creazione dell'oggetto. Il suo compito è <em>inizializzare</em> l'oggetto, cioè assegnare valori iniziali ai suoi attributi.</p>
-<p>Una precisazione importante: <code><em>_init</em><em></code> <strong>non è il costruttore</strong>. Il vero costruttore in Python è <code></em><em>new</em><em></code>, che crea l'oggetto in memoria. <code></em><em>init</em>_</code> riceve l'oggetto già creato e lo <em>configura</em>. In pratica, la distinzione raramente conta, ma è bene saperlo per non usare il termine sbagliato.</p>
+<h2>5. <code>__init__</code> e <code>self</code>: due concetti fondamentali</h2>
+<h3><code>__init__</code>: inizializzazione, non costruzione</h3>
+<p>Il metodo <code>__init__</code> viene chiamato automaticamente da Python subito dopo la creazione dell'oggetto. Il suo compito è <em>inizializzare</em> l'oggetto, cioè assegnare valori iniziali ai suoi attributi.</p>
+<p>Una precisazione importante: <code>__init__</code> <strong>non è il costruttore</strong>. Il vero costruttore in Python è <code>__new__</code>, che crea l'oggetto in memoria. <code>__init__</code> riceve l'oggetto già creato e lo <em>configura</em>. In pratica, la distinzione raramente conta, ma è bene saperlo per non usare il termine sbagliato.</p>
 <p>Quando scriviamo <code>Studente("Anna", "Rossi", 12345)</code>, Python esegue due passi:</p>
 <ol>
-<li>Crea un nuovo oggetto di tipo <code>Studente</code> (tramite <code><em>_new</em>_</code>).</li>
-<li>Chiama <code><em>_init</em>_</code> passandogli quell'oggetto come primo argomento (<code>self</code>).</li>
+<li>Crea un nuovo oggetto di tipo <code>Studente</code> (tramite <code>__new__</code>).</li>
+<li>Chiama <code>__init__</code> passandogli quell'oggetto come primo argomento (<code>self</code>).</li>
 </ol>
 <h3><code>self</code>: il riferimento esplicito all'istanza</h3>
 <p>In molti linguaggi (Java, C#, C++), l'istanza corrente è disponibile tramite una parola chiave implicita (<code>this</code>). Python segue una filosofia diversa, espressa dallo Zen di Python:</p>
@@ -396,7 +400,7 @@ e: Esempio <span class="op">=</span> Esempio()
 <h2>6. Attributi di istanza vs attributi di classe</h2>
 <p>Esistono due tipi di attributi, ed è importante non confonderli.</p>
 <h3>Attributi di istanza</h3>
-<p>Sono definiti dentro <code><em>_init</em><em></code> (o in altri metodi) usando <code>self.nome</em>attributo</code>. Ogni istanza ha la propria copia indipendente.</p>
+<p>Sono definiti dentro <code>__init__</code> (o in altri metodi) usando <code>self.nome_attributo</code>. Ogni istanza ha la propria copia indipendente.</p>
 <pre><code><span class="kw">class</span> <span class="fn">Contatore</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
         self.valore: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>  <span class="cm"># Attributo di istanza</span>
@@ -435,9 +439,9 @@ s2: Studente <span class="op">=</span> Studente(<span class="st">&quot;Marco&quo
 <p>Gli attributi di classe sono utili per valori costanti condivisi (come <code>universita</code>) o per tenere traccia di informazioni globali alla classe (come il contatore). Usateli con parsimonia: nella maggior parte dei casi, gli attributi di istanza sono la scelta giusta.</p>
 <hr>
 <h2>7. Metodi speciali (dunder methods)</h2>
-<p>Python utilizza un sistema elegante di <strong>metodi speciali</strong> per definire come gli oggetti interagiscono con il linguaggio stesso. Questi metodi hanno nomi circondati da doppi underscore (<code><em>_nome</em>_</code>), per questo sono chiamati <em>dunder methods</em> (da <em>double underscore</em>).</p>
+<p>Python utilizza un sistema elegante di <strong>metodi speciali</strong> per definire come gli oggetti interagiscono con il linguaggio stesso. Questi metodi hanno nomi circondati da doppi underscore (<code>__nome__</code>), per questo sono chiamati <em>dunder methods</em> (da <em>double underscore</em>).</p>
 <p>Non vengono chiamati direttamente: Python li invoca automaticamente in risposta a operatori e funzioni built-in.</p>
-<h3><code><em>_str</em><em></code> e <code></em><em>repr</em>_</code>: rappresentazione testuale</h3>
+<h3><code>__str__</code> e <code>__repr__</code>: rappresentazione testuale</h3>
 <pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
         self.x: <span class="nb">float</span> <span class="op">=</span> x
@@ -445,7 +449,7 @@ s2: Studente <span class="op">=</span> Studente(<span class="st">&quot;Marco&quo
 
 p: Punto <span class="op">=</span> Punto(<span class="mi">3.0</span>, <span class="mi">4.0</span>)
 <span class="nb">print</span>(p)  <span class="cm"># &lt;__main__.Punto object at 0x...&gt; — poco utile!</span></code></pre>
-<p>Senza <code><em>_str</em>_</code>, stampare un oggetto produce un messaggio poco informativo. Definiamo le rappresentazioni:</p>
+<p>Senza <code>__str__</code>, stampare un oggetto produce un messaggio poco informativo. Definiamo le rappresentazioni:</p>
 <pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
         self.x: <span class="nb">float</span> <span class="op">=</span> x
@@ -463,8 +467,8 @@ p: Punto <span class="op">=</span> Punto(<span class="mi">3.0</span>, <span clas
 <span class="nb">print</span>(p)       <span class="cm"># (3.0, 4.0) — usa __str__</span>
 <span class="nb">print</span>(<span class="nb">repr</span>(p)) <span class="cm"># Punto(x=3.0, y=4.0) — usa __repr__</span>
 <span class="nb">print</span>([p])     <span class="cm"># [Punto(x=3.0, y=4.0)] — nelle collezioni Python usa __repr__</span></code></pre>
-<p>La regola pratica: <code><em>_str</em><em></code> deve essere leggibile per un essere umano; <code></em><em>repr</em><em></code> deve essere una stringa da cui, idealmente, si possa ricostruire l'oggetto. Se definite un solo metodo, definite <code></em><em>repr</em><em></code>: Python lo usa come fallback per <code></em><em>str</em>_</code>.</p>
-<h3><code><em>_len</em>_</code>: lunghezza</h3>
+<p>La regola pratica: <code>__str__</code> deve essere leggibile per un essere umano; <code>__repr__</code> deve essere una stringa da cui, idealmente, si possa ricostruire l'oggetto. Se definite un solo metodo, definite <code>__repr__</code>: Python lo usa come fallback per <code>__str__</code>.</p>
+<h3><code>__len__</code>: lunghezza</h3>
 <pre><code><span class="kw">class</span> <span class="fn">Classe</span>:
     <span class="st">&quot;&quot;&quot;Rappresenta una classe scolastica con i suoi studenti.&quot;&quot;&quot;</span>
 
@@ -484,7 +488,7 @@ prima_a.aggiungi(<span class="st">&quot;Marco&quot;</span>)
 prima_a.aggiungi(<span class="st">&quot;Luca&quot;</span>)
 
 <span class="nb">print</span>(<span class="nb">len</span>(prima_a))  <span class="cm"># 3 — funziona grazie a __len__</span></code></pre>
-<h3><code><em>_eq</em><em></code> e <code></em><em>lt</em>_</code>: confronti</h3>
+<h3><code>__eq__</code> e <code>__lt__</code>: confronti</h3>
 <p>Per default, due oggetti sono uguali solo se sono lo <em>stesso</em> oggetto in memoria. Spesso vogliamo un comportamento diverso:</p>
 <pre><code><span class="kw">class</span> <span class="fn">Punto</span>:
     <span class="kw">def</span> <span class="fn">__init__</span>(<span class="fn">self</span>, x: <span class="nb">float</span>, y: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
@@ -514,8 +518,8 @@ p3: Punto <span class="op">=</span> Punto(<span class="mi">1.0</span>, <span cla
 punti: <span class="nb">list</span>[Punto] <span class="op">=</span> [p1, p3]
 punti.sort()
 <span class="nb">print</span>(punti)  <span class="cm"># [Punto(1.0, 1.0), Punto(3.0, 4.0)]</span></code></pre>
-<p>Notate il pattern in <code><em>_eq</em>_</code>: controlliamo che <code>altro</code> sia effettivamente un <code>Punto</code> con <code>isinstance</code>, e restituiamo <code>NotImplemented</code> (non <code>NotImplementedError</code>) se non lo è. Questo permette a Python di provare il confronto nell'altro senso.</p>
-<h3><code><em>_getitem</em>_</code>: accesso con indice</h3>
+<p>Notate il pattern in <code>__eq__</code>: controlliamo che <code>altro</code> sia effettivamente un <code>Punto</code> con <code>isinstance</code>, e restituiamo <code>NotImplemented</code> (non <code>NotImplementedError</code>) se non lo è. Questo permette a Python di provare il confronto nell'altro senso.</p>
+<h3><code>__getitem__</code>: accesso con indice</h3>
 <pre><code><span class="kw">class</span> <span class="fn">SerieStorica</span>:
     <span class="st">&quot;&quot;&quot;Una serie di valori indicizzati nel tempo.&quot;&quot;&quot;</span>
 
@@ -540,52 +544,52 @@ serie: SerieStorica <span class="op">=</span> SerieStorica([<span class="mi">100
 <th>Scopo</th>
 </tr></thead><tbody>
 <tr>
-<td><code><em>_init</em>_</code></td>
+<td><code>__init__</code></td>
 <td><code>Classe(...)</code></td>
 <td>Inizializzazione</td>
 </tr>
 <tr>
-<td><code><em>_str</em>_</code></td>
+<td><code>__str__</code></td>
 <td><code>str(obj)</code>, <code>print(obj)</code></td>
 <td>Rappresentazione leggibile</td>
 </tr>
 <tr>
-<td><code><em>_repr</em>_</code></td>
+<td><code>__repr__</code></td>
 <td><code>repr(obj)</code>, nel REPL</td>
 <td>Rappresentazione tecnica</td>
 </tr>
 <tr>
-<td><code><em>_len</em>_</code></td>
+<td><code>__len__</code></td>
 <td><code>len(obj)</code></td>
 <td>Lunghezza</td>
 </tr>
 <tr>
-<td><code><em>_eq</em>_</code></td>
+<td><code>__eq__</code></td>
 <td><code>obj1 == obj2</code></td>
 <td>Uguaglianza</td>
 </tr>
 <tr>
-<td><code><em>_lt</em>_</code></td>
+<td><code>__lt__</code></td>
 <td><code>obj1 < obj2</code>, <code>sorted()</code></td>
 <td>Confronto "minore di"</td>
 </tr>
 <tr>
-<td><code><em>_getitem</em>_</code></td>
+<td><code>__getitem__</code></td>
 <td><code>obj[i]</code></td>
 <td>Accesso per indice</td>
 </tr>
 <tr>
-<td><code><em>_contains</em>_</code></td>
+<td><code>__contains__</code></td>
 <td><code>x in obj</code></td>
 <td>Appartenenza</td>
 </tr>
 <tr>
-<td><code><em>_add</em>_</code></td>
+<td><code>__add__</code></td>
 <td><code>obj1 + obj2</code></td>
 <td>Somma</td>
 </tr>
 <tr>
-<td><code><em>_bool</em>_</code></td>
+<td><code>__bool__</code></td>
 <td><code>if obj:</code></td>
 <td>Valore di verità</td>
 </tr>
@@ -663,7 +667,7 @@ sl.aggiungi_voto(<span class="mi">30</span>)
 <span class="nb">print</span>(<span class="nb">isinstance</span>(sl, StudenteLavoratore))  <span class="cm"># True</span>
 <span class="nb">print</span>(<span class="nb">isinstance</span>(sl, Studente))            <span class="cm"># True — è anche uno Studente</span></code></pre>
 <h3><code>super()</code>: chiamare la classe madre</h3>
-<p>La funzione <code>super()</code> restituisce un riferimento alla superclasse. Si usa tipicamente in <code><em>_init</em>_</code> per non duplicare il codice di inizializzazione, e nei metodi ridefiniti per estendere (anziché sostituire) il comportamento originale.</p>
+<p>La funzione <code>super()</code> restituisce un riferimento alla superclasse. Si usa tipicamente in <code>__init__</code> per non duplicare il codice di inizializzazione, e nei metodi ridefiniti per estendere (anziché sostituire) il comportamento originale.</p>
 <h3>"È un" vs "ha un": preferire la composizione</h3>
 <p>Non tutte le relazioni tra classi sono relazioni "è un". Spesso la relazione corretta è <strong>"ha un"</strong> (<em>has-a</em>), e in quel caso si usa la <strong>composizione</strong>: un oggetto contiene un altro oggetto come attributo.</p>
 <pre><code><span class="cm"># SBAGLIATO: un Dipartimento NON è una lista di docenti</span>
@@ -717,7 +721,7 @@ sl.aggiungi_voto(<span class="mi">30</span>)
 
     <span class="kw">def</span> <span class="fn">get_saldo</span>(<span class="fn">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
         <span class="kw">return</span> self._saldo</code></pre>
-<p>L'underscore dice: "non accedere direttamente a <code><em>saldo</code> da fuori la classe; usa i metodi <code>deposita</code>, <code>preleva</code> e <code>get</em>saldo</code>". Chi lo fa comunque non riceve un errore tecnico, ma viola il contratto implicito e rischia che il codice si rompa in futuro.</p>
+<p>L'underscore dice: "non accedere direttamente a <code>_saldo</code> da fuori la classe; usa i metodi <code>deposita</code>, <code>preleva</code> e <code>get_saldo</code>". Chi lo fa comunque non riceve un errore tecnico, ma viola il contratto implicito e rischia che il codice si rompa in futuro.</p>
 <h3>Il decoratore <code>@property</code></h3>
 <p>Python offre un modo più elegante per controllare l'accesso agli attributi: il decoratore <code>@property</code>. Permette di definire metodi che si usano <em>come se fossero attributi</em>.</p>
 <pre><code><span class="kw">class</span> <span class="fn">ContoBancario</span>:
@@ -762,7 +766,7 @@ df: pd.DataFrame <span class="op">=</span> pd.DataFrame({<span class="st">&quot;
 <span class="nb">print</span>(df.describe())  <span class="cm"># metodo</span>
 <span class="nb">print</span>(df[<span class="st">&quot;età&quot;</span>])       <span class="cm"># __getitem__</span>
 <span class="nb">print</span>(<span class="nb">len</span>(df))         <span class="cm"># __len__</span></code></pre>
-<p>State usando esattamente i concetti di questa lezione: attributi (<code>shape</code>), metodi (<code>describe()</code>), metodi speciali (<code><em>_getitem</em><em></code> per l'accesso con <code>[]</code>, <code></em><em>len</em>_</code> per <code>len()</code>).</p>
+<p>State usando esattamente i concetti di questa lezione: attributi (<code>shape</code>), metodi (<code>describe()</code>), metodi speciali (<code>__getitem__</code> per l'accesso con <code>[]</code>, <code>__len__</code> per <code>len()</code>).</p>
 <h3>Modelli scikit-learn</h3>
 <p>Anche i modelli di machine learning sono oggetti con un'interfaccia comune:</p>
 <pre><code><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression
@@ -783,7 +787,7 @@ previsioni: np.ndarray <span class="op">=</span> modello.predict(X)  <span class
 <li>Qual è la differenza tra una classe e un'istanza? Fate un'analogia con un esempio della vita quotidiana diverso da quelli visti a lezione.</li>
 </ol>
 <ol>
-<li>Perché <code><em>_init</em><em></code> si chiama "inizializzatore" e non "costruttore"? Cosa succede prima che <code></em><em>init</em>_</code> venga eseguito?</li>
+<li>Perché <code>__init__</code> si chiama "inizializzatore" e non "costruttore"? Cosa succede prima che <code>__init__</code> venga eseguito?</li>
 </ol>
 <ol>
 <li>Spiegate il ruolo di <code>self</code> nei metodi di istanza. Perché Python richiede che sia esplicito, a differenza di altri linguaggi?</li>
@@ -792,7 +796,7 @@ previsioni: np.ndarray <span class="op">=</span> modello.predict(X)  <span class
 <li>Qual è la differenza tra un attributo di istanza e un attributo di classe? In quale situazione usereste un attributo di classe?</li>
 </ol>
 <ol>
-<li>Spiegate la differenza tra <code><em>_str</em><em></code> e <code></em><em>repr</em>_</code>. Se poteste definire un solo metodo tra i due, quale scegliereste e perché?</li>
+<li>Spiegate la differenza tra <code>__str__</code> e <code>__repr__</code>. Se poteste definire un solo metodo tra i due, quale scegliereste e perché?</li>
 </ol>
 <ol>
 <li>Cosa significa la regola "preferire la composizione all'ereditarietà"? Fate un esempio di una relazione tra classi che dovrebbe usare la composizione e non l'ereditarietà.</li>
@@ -807,35 +811,35 @@ previsioni: np.ndarray <span class="op">=</span> modello.predict(X)  <span class
 <h2>Esercizi</h2>
 <h3>Base</h3>
 <p><strong>Esercizio 1 — Rettangolo</strong></p>
-<p>Scrivete una classe <code>Rettangolo</code> con attributi <code>larghezza: float</code> e <code>altezza: float</code> (entrambi devono essere positivi, altrimenti <code>ValueError</code>). Implementate i metodi <code>area() -> float</code>, <code>perimetro() -> float</code> e <code><em>_str</em>_</code> (che deve restituire qualcosa come <code>"Rettangolo 5.0 × 3.0"</code>). Usate sempre i type hints.</p>
+<p>Scrivete una classe <code>Rettangolo</code> con attributi <code>larghezza: float</code> e <code>altezza: float</code> (entrambi devono essere positivi, altrimenti <code>ValueError</code>). Implementate i metodi <code>area() -> float</code>, <code>perimetro() -> float</code> e <code>__str__</code> (che deve restituire qualcosa come <code>"Rettangolo 5.0 × 3.0"</code>). Usate sempre i type hints.</p>
 <p><strong>Esercizio 2 — Contatore con limiti</strong></p>
-<p>Scrivete una classe <code>Contatore</code> con un attributo <code><em>valore: int</code> inizializzato a zero e un attributo <code>massimo: int</code> passato al costruttore. Implementate i metodi <code>incrementa() -> None</code> (che alza un <code>ValueError</code> se il contatore ha raggiunto il massimo), <code>reset() -> None</code> (che riporta il valore a zero) e una <code>@property</code> chiamata <code>valore</code> che restituisce il valore corrente in sola lettura. Implementate anche <code></em><em>str</em><em></code> e <code></em><em>repr</em>_</code>.</p>
+<p>Scrivete una classe <code>Contatore</code> con un attributo <code>_valore: int</code> inizializzato a zero e un attributo <code>massimo: int</code> passato al costruttore. Implementate i metodi <code>incrementa() -> None</code> (che alza un <code>ValueError</code> se il contatore ha raggiunto il massimo), <code>reset() -> None</code> (che riporta il valore a zero) e una <code>@property</code> chiamata <code>valore</code> che restituisce il valore corrente in sola lettura. Implementate anche <code>__str__</code> e <code>__repr__</code>.</p>
 <p><strong>Esercizio 3 — Dado</strong></p>
-<p>Scrivete una classe <code>Dado</code> con un attributo <code>facce: int</code> (default 6). Implementate un metodo <code>lancia() -> int</code> che restituisce un valore casuale tra 1 e <code>facce</code> (usate <code>random.randint</code>). Aggiungete un attributo <code><em>storico: list[int]</code> che tiene traccia di tutti i lanci e un metodo <code>media</em>lanci() -> float</code> che restituisce la media dei lanci effettuati.</p>
+<p>Scrivete una classe <code>Dado</code> con un attributo <code>facce: int</code> (default 6). Implementate un metodo <code>lancia() -> int</code> che restituisce un valore casuale tra 1 e <code>facce</code> (usate <code>random.randint</code>). Aggiungete un attributo <code>_storico: list[int]</code> che tiene traccia di tutti i lanci e un metodo <code>media_lanci() -> float</code> che restituisce la media dei lanci effettuati.</p>
 <h3>Intermedio</h3>
 <p><strong>Esercizio 4 — Registro esami</strong></p>
 <p>Scrivete una classe <code>Esame</code> con attributi <code>materia: str</code>, <code>voto: int</code> e <code>data: str</code>. Poi scrivete una classe <code>RegistroEsami</code> che contiene una lista di esami e implementa:</p>
 <ul>
 <li><code>aggiungi(esame: Esame) -> None</code> con validazione del voto.</li>
 <li><code>media() -> float</code> che calcola la media dei voti.</li>
-<li><code><em>_len</em>_</code> che restituisce il numero di esami.</li>
-<li><code><em>_getitem</em>_</code> che permette di accedere agli esami per indice.</li>
-<li><code>migliore() -> Esame</code> che restituisce l'esame con il voto più alto. Implementate <code><em>_lt</em>_</code> su <code>Esame</code> per poter usare <code>max()</code>.</li>
+<li><code>__len__</code> che restituisce il numero di esami.</li>
+<li><code>__getitem__</code> che permette di accedere agli esami per indice.</li>
+<li><code>migliore() -> Esame</code> che restituisce l'esame con il voto più alto. Implementate <code>__lt__</code> su <code>Esame</code> per poter usare <code>max()</code>.</li>
 </ul>
 <p><strong>Esercizio 5 — Statistiche descrittive</strong></p>
-<p>Scrivete una classe <code>CampioneStatistico</code> che riceve una lista di <code>float</code> nel costruttore (deve contenere almeno un elemento). Implementate come <code>@property</code>: <code>media</code>, <code>varianza</code> (della popolazione), <code>deviazione<em>standard</code>. Implementate <code></em><em>len</em><em></code>, <code></em><em>getitem</em><em></code>, <code></em><em>str</em><em></code> (che stampa <code>"Campione(n=10, media=5.32, std=1.41)"</code>) e <code></em><em>eq</em>_</code> (due campioni sono uguali se contengono gli stessi valori nello stesso ordine).</p>
+<p>Scrivete una classe <code>CampioneStatistico</code> che riceve una lista di <code>float</code> nel costruttore (deve contenere almeno un elemento). Implementate come <code>@property</code>: <code>media</code>, <code>varianza</code> (della popolazione), <code>deviazione_standard</code>. Implementate <code>__len__</code>, <code>__getitem__</code>, <code>__str__</code> (che stampa <code>"Campione(n=10, media=5.32, std=1.41)"</code>) e <code>__eq__</code> (due campioni sono uguali se contengono gli stessi valori nello stesso ordine).</p>
 <h3>Avanzato</h3>
 <p><strong>Esercizio 6 — Matrice semplice</strong></p>
 <p>Scrivete una classe <code>Matrice</code> che rappresenta una matrice di numeri reali. Il costruttore riceve una lista di liste di <code>float</code> e verifica che tutte le righe abbiano la stessa lunghezza. Implementate:</p>
 <ul>
 <li><code>righe</code> e <code>colonne</code> come <code>@property</code>.</li>
-<li><code><em>_getitem</em>_</code> che accetta una tupla <code>(riga, colonna)</code> e restituisce l'elemento.</li>
-<li><code><em>_add</em>_</code> per la somma tra matrici (stesse dimensioni, altrimenti <code>ValueError</code>).</li>
-<li><code><em>_str</em>_</code> per una rappresentazione leggibile.</li>
+<li><code>__getitem__</code> che accetta una tupla <code>(riga, colonna)</code> e restituisce l'elemento.</li>
+<li><code>__add__</code> per la somma tra matrici (stesse dimensioni, altrimenti <code>ValueError</code>).</li>
+<li><code>__str__</code> per una rappresentazione leggibile.</li>
 <li>Un metodo <code>trasposta() -> "Matrice"</code> che restituisce una nuova matrice trasposta.</li>
 </ul>
 <p><strong>Esercizio 7 — Gerarchia di forme</strong></p>
-<p>Create una classe base <code>Forma</code> con un metodo astratto (basta alzare <code>NotImplementedError</code>) <code>area() -> float</code> e un metodo <code>descrizione() -> str</code> che restituisce <code>"Forma con area X.XX"</code>. Derivate le classi <code>Cerchio</code> (attributo <code>raggio</code>), <code>Rettangolo</code> (attributi <code>larghezza</code> e <code>altezza</code>) e <code>Quadrato</code> che eredita da <code>Rettangolo</code> (un quadrato <em>è un</em> rettangolo con lato uguale). Ogni sottoclasse implementa <code>area()</code> e <code><em>_repr</em><em></code>. Scrivete una funzione <code>area</em>totale(forme: list[Forma]) -> float</code> che somma le aree di una lista di forme qualsiasi.</p>
+<p>Create una classe base <code>Forma</code> con un metodo astratto (basta alzare <code>NotImplementedError</code>) <code>area() -> float</code> e un metodo <code>descrizione() -> str</code> che restituisce <code>"Forma con area X.XX"</code>. Derivate le classi <code>Cerchio</code> (attributo <code>raggio</code>), <code>Rettangolo</code> (attributi <code>larghezza</code> e <code>altezza</code>) e <code>Quadrato</code> che eredita da <code>Rettangolo</code> (un quadrato <em>è un</em> rettangolo con lato uguale). Ogni sottoclasse implementa <code>area()</code> e <code>__repr__</code>. Scrivete una funzione <code>area_totale(forme: list[Forma]) -> float</code> che somma le aree di una lista di forme qualsiasi.</p>
 <hr>
 <h2>Osservazioni finali</h2>
 <p>La programmazione orientata agli oggetti è, prima di tutto, uno strumento per <em>organizzare il pensiero</em>. Quando rappresentiamo un concetto come una classe, siamo costretti a rispondere a domande precise: quali dati lo definiscono? Quali operazioni ha senso compiere su di esso? Quali garanzie devono valere sempre? Queste domande rendono il codice più chiaro, più robusto e più facile da estendere.</p>
@@ -844,7 +848,7 @@ previsioni: np.ndarray <span class="op">=</span> modello.predict(X)  <span class
 <ol>
 <li><strong>Classe = modello, istanza = oggetto concreto.</strong> La classe definisce la struttura; le istanze contengono i dati.</li>
 <li><strong><code>self</code> è esplicito.</strong> Ogni metodo riceve il riferimento all'istanza come primo argomento.</li>
-<li><strong>I metodi speciali integrano i vostri oggetti nel linguaggio.</strong> Definite <code><em>_str</em><em></code>, <code></em><em>repr</em><em></code>, <code></em><em>len</em><em></code>, <code></em><em>eq</em>_</code> per rendere i vostri oggetti cittadini di prima classe in Python.</li>
+<li><strong>I metodi speciali integrano i vostri oggetti nel linguaggio.</strong> Definite <code>__str__</code>, <code>__repr__</code>, <code>__len__</code>, <code>__eq__</code> per rendere i vostri oggetti cittadini di prima classe in Python.</li>
 <li><strong>Preferite la composizione all'ereditarietà.</strong> Usate l'ereditarietà per le vere relazioni "è un"; usate la composizione per le relazioni "ha un".</li>
 <li><strong>Tutto in Python è un oggetto.</strong> Le stringhe, le liste, i DataFrame, i modelli di machine learning — tutto segue gli stessi principi che avete imparato oggi.</li>
 </ol>
