@@ -216,6 +216,105 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 
 
 <span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-riscaldamento"># RISCALDAMENTO: dieci passi sulle strutture dati — riscaldamento.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Riscaldamento ---&quot;</span>)
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+
+<span class="cm"># Passo 1 — Lista: leggere gli elementi</span>
+corsi: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Inglese&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Primo: {corsi[0]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Ultimo: {corsi[-1]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Numero di corsi: {len(corsi)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Primi due: {corsi[:2]}&quot;</span>)
+
+<span class="cm"># Passo 2 — Lista: aggiungere e togliere</span>
+corsi <span class="op">=</span> [<span class="st">&quot;Analisi&quot;</span>, <span class="st">&quot;Statistica&quot;</span>, <span class="st">&quot;Informatica&quot;</span>, <span class="st">&quot;Inglese&quot;</span>]
+corsi.append(<span class="st">&quot;Economia&quot;</span>)
+<span class="nb">print</span>(corsi)
+corsi.insert(<span class="mi">0</span>, <span class="st">&quot;Fisica&quot;</span>)
+<span class="nb">print</span>(corsi)
+corsi.remove(<span class="st">&quot;Inglese&quot;</span>)
+<span class="nb">print</span>(corsi)
+tolto: <span class="nb">str</span> <span class="op">=</span> corsi.pop()
+<span class="nb">print</span>(<span class="st">f&quot;Tolto: {tolto}, restano {corsi}&quot;</span>)
+
+<span class="cm"># Passo 3 — Lista: cercare e contare</span>
+voti: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> [<span class="mi">24</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">18</span>, <span class="mi">27</span>]
+<span class="nb">print</span>(<span class="st">f&quot;30 c&#x27;è? {30 in voti}  17 c&#x27;è? {17 in voti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Quanti 18: {voti.count(18)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Posizione del 30: {voti.index(30)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Somma {sum(voti)}, minimo {min(voti)}, massimo {max(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Media: {sum(voti) / len(voti):.2f}&quot;</span>)
+
+<span class="cm"># Passo 4 — sorted() e sort()</span>
+voti <span class="op">=</span> [<span class="mi">24</span>, <span class="mi">18</span>, <span class="mi">30</span>, <span class="mi">18</span>, <span class="mi">27</span>]
+<span class="nb">print</span>(<span class="st">f&quot;sorted: {sorted(voti)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;voti dopo sorted: {voti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;dal più alto: {sorted(voti, reverse=True)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;risultato di sort: {voti.sort()}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;voti dopo sort: {voti}&quot;</span>)
+
+<span class="cm"># Passo 5 — Due nomi per la stessa lista</span>
+voti <span class="op">=</span> [<span class="mi">24</span>, <span class="mi">18</span>, <span class="mi">30</span>]
+altri: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> voti
+altri.append(<span class="mi">0</span>)
+<span class="nb">print</span>(<span class="st">f&quot;voti: {voti}&quot;</span>)
+copia: <span class="nb">list</span>[<span class="nb">int</span>] <span class="op">=</span> voti.copy()
+copia.append(<span class="mi">99</span>)
+<span class="nb">print</span>(<span class="st">f&quot;voti: {voti}  copia: {copia}&quot;</span>)
+
+<span class="cm"># Passo 6 — Tuple</span>
+esame: <span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>, <span class="nb">int</span>] <span class="op">=</span> (<span class="st">&quot;Statistica&quot;</span>, <span class="mi">6</span>, <span class="mi">28</span>)
+nome, cfu, voto <span class="op">=</span> esame
+<span class="nb">print</span>(<span class="st">f&quot;{nome}: {cfu} CFU, voto {voto}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Elementi: {len(esame)}, primo: {esame[0]}&quot;</span>)
+<span class="cm"># esame[2] = 30   # TypeError: &#x27;tuple&#x27; object does not support item assignment</span>
+
+<span class="cm"># Passo 7 — Dizionario: chiavi e valori</span>
+crediti: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">int</span>] <span class="op">=</span> {<span class="st">&quot;Analisi&quot;</span>: <span class="mi">9</span>, <span class="st">&quot;Statistica&quot;</span>: <span class="mi">6</span>}
+crediti[<span class="st">&quot;Informatica&quot;</span>] <span class="op">=</span> <span class="mi">9</span>
+crediti[<span class="st">&quot;Statistica&quot;</span>] <span class="op">=</span> <span class="mi">9</span>
+<span class="kw">del</span> crediti[<span class="st">&quot;Analisi&quot;</span>]
+<span class="nb">print</span>(crediti)
+<span class="nb">print</span>(<span class="st">f&quot;Inglese c&#x27;è? {&#x27;Inglese&#x27; in crediti}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;CFU di Inglese: {crediti.get(&#x27;Inglese&#x27;, 0)}&quot;</span>)
+<span class="cm"># print(crediti[&quot;Inglese&quot;])   # KeyError: &#x27;Inglese&#x27;</span>
+
+<span class="cm"># Passo 8 — Dizionario: il ciclo</span>
+crediti <span class="op">=</span> {<span class="st">&quot;Analisi&quot;</span>: <span class="mi">9</span>, <span class="st">&quot;Statistica&quot;</span>: <span class="mi">6</span>, <span class="st">&quot;Informatica&quot;</span>: <span class="mi">9</span>, <span class="st">&quot;Inglese&quot;</span>: <span class="mi">3</span>}
+<span class="kw">for</span> esame_nome, n <span class="kw">in</span> crediti.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{esame_nome}: {n} CFU&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Totale: {sum(crediti.values())} CFU&quot;</span>)
+da_nove: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [e <span class="kw">for</span> e, n <span class="kw">in</span> crediti.items() <span class="kw">if</span> n <span class="op">=</span><span class="op">=</span> <span class="mi">9</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Esami da 9 CFU: {da_nove}&quot;</span>)
+
+<span class="cm"># Passo 9 — Set</span>
+a: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Carla&quot;</span>}
+b: <span class="nb">set</span>[<span class="nb">str</span>] <span class="op">=</span> {<span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Davide&quot;</span>}
+a.add(<span class="st">&quot;Anna&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Elementi di a: {len(a)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;a | b: {sorted(a | b)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;a &amp; b: {sorted(a &amp; b)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;a - b: {sorted(a - b)}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;a ^ b: {sorted(a ^ b)}&quot;</span>)
+presenze: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Bruno&quot;</span>, <span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;Carla&quot;</span>, <span class="st">&quot;Bruno&quot;</span>]
+<span class="nb">print</span>(<span class="st">f&quot;Presenze: {len(presenze)}, persone diverse: {len(set(presenze))}&quot;</span>)
+
+<span class="cm"># Passo 10 — Counter e defaultdict</span>
+lettere: Counter[<span class="nb">str</span>] <span class="op">=</span> Counter(<span class="st">&quot;statistica&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Quante t: {lettere[&#x27;t&#x27;]}  quante z: {lettere[&#x27;z&#x27;]}&quot;</span>)
+<span class="nb">print</span>(<span class="st">f&quot;Le due più frequenti: {lettere.most_common(2)}&quot;</span>)
+prove: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">int</span>]] <span class="op">=</span> [(<span class="st">&quot;Anna&quot;</span>, <span class="mi">28</span>), (<span class="st">&quot;Bruno&quot;</span>, <span class="mi">24</span>), (<span class="st">&quot;Anna&quot;</span>, <span class="mi">30</span>)]
+per_nome: defaultdict[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">int</span>]] <span class="op">=</span> defaultdict(<span class="nb">list</span>)
+<span class="kw">for</span> chi, v <span class="kw">in</span> prove:
+    per_nome[chi].append(v)
+<span class="kw">for</span> chi, lista <span class="kw">in</span> per_nome.items():
+    <span class="nb">print</span>(<span class="st">f&quot;{chi}: {lista}&quot;</span>)
+<span class="nb">print</span>()
+
+
+<span class="cm"># ============================================================================</span>
 <span class="cm" id="sol-voti_appello"># ESERCIZIO 1: l&#x27;appello di statistica — voti_appello.py</span>
 <span class="cm"># ============================================================================</span>
 <span class="nb">print</span>(<span class="st">&quot;--- Esercizio 1: L&#x27;appello di Statistica ---&quot;</span>)
@@ -286,37 +385,6 @@ studenti: <span class="nb">set</span>[<span class="nb">str</span>] <span class="
 <span class="kw">for</span> nome <span class="kw">in</span> <span class="nb">sorted</span>(superati):
     <span class="nb">print</span>(<span class="st">f&quot;{nome} ha superato {superati[nome]}&quot;</span>)
 <span class="nb">print</span>(<span class="st">f&quot;Nessun esame superato: {sorted(studenti - set(superati))}&quot;</span>)
-<span class="nb">print</span>()
-
-
-<span class="cm"># ============================================================================</span>
-<span class="cm" id="sol-descrittive"># ESERCIZIO 4: ore di studio — descrittive.py</span>
-<span class="cm"># ============================================================================</span>
-<span class="nb">print</span>(<span class="st">&quot;--- Esercizio 4: Ore di studio ---&quot;</span>)
-<span class="kw">def</span> <span class="fn">descrittive</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
-    <span class="st">&quot;&quot;&quot;Restituisce media, mediana e deviazione standard.&quot;&quot;&quot;</span>
-    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
-    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
-    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(valori)
-    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
-        mediana: <span class="nb">float</span> <span class="op">=</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]
-    <span class="kw">else</span>:
-        mediana <span class="op">=</span> (ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]) <span class="op">/</span> <span class="mi">2</span>
-    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori]
-    dev_std: <span class="nb">float</span> <span class="op">=</span> (<span class="nb">sum</span>(scarti) <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
-    <span class="kw">return</span> media, mediana, dev_std
-
-
-ore_studio: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> {
-    <span class="st">&quot;Primo anno&quot;</span>: [<span class="mi">12</span>, <span class="mi">15</span>, <span class="mi">8</span>, <span class="mi">20</span>, <span class="mi">10</span>, <span class="mi">14</span>, <span class="mi">9</span>],
-    <span class="st">&quot;Secondo anno&quot;</span>: [<span class="mi">18</span>, <span class="mi">22</span>, <span class="mi">15</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">16</span>],
-    <span class="st">&quot;Terzo anno&quot;</span>: [<span class="mi">20</span>, <span class="mi">8</span>, <span class="mi">35</span>, <span class="mi">12</span>, <span class="mi">28</span>, <span class="mi">6</span>, <span class="mi">14</span>, <span class="mi">25</span>],
-}
-
-<span class="kw">for</span> anno, ore <span class="kw">in</span> ore_studio.items():
-    media, mediana, dev_std <span class="op">=</span> descrittive(ore)
-    <span class="nb">print</span>(<span class="st">f&quot;{anno}: media {media:.1f}, mediana {mediana:.1f}, &quot;</span>
-          <span class="st">f&quot;dev. std {dev_std:.2f}&quot;</span>)
 <span class="nb">print</span>()
 
 
@@ -650,6 +718,36 @@ totale_si: <span class="nb">int</span> <span class="op">=</span> superato.count(
       <span class="st">f&quot;({totale_si / len(superato):.1%})&quot;</span>)
 <span class="nb">print</span>()
 
+
+<span class="cm"># ============================================================================</span>
+<span class="cm" id="sol-descrittive"># EXTRA 5: ore di studio — descrittive.py</span>
+<span class="cm"># ============================================================================</span>
+<span class="nb">print</span>(<span class="st">&quot;--- Extra 5: Ore di studio ---&quot;</span>)
+<span class="kw">def</span> <span class="fn">descrittive</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">float</span>, <span class="nb">float</span>, <span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce media, mediana e deviazione standard.&quot;&quot;&quot;</span>
+    n: <span class="nb">int</span> <span class="op">=</span> <span class="nb">len</span>(valori)
+    media: <span class="nb">float</span> <span class="op">=</span> <span class="nb">sum</span>(valori) <span class="op">/</span> n
+    ordinati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> <span class="nb">sorted</span>(valori)
+    <span class="kw">if</span> n <span class="op">%</span> <span class="mi">2</span> <span class="op">=</span><span class="op">=</span> <span class="mi">1</span>:
+        mediana: <span class="nb">float</span> <span class="op">=</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]
+    <span class="kw">else</span>:
+        mediana <span class="op">=</span> (ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span> <span class="op">-</span> <span class="mi">1</span>] <span class="op">+</span> ordinati[n <span class="op">/</span><span class="op">/</span> <span class="mi">2</span>]) <span class="op">/</span> <span class="mi">2</span>
+    scarti: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [(x <span class="op">-</span> media) <span class="op">*</span><span class="op">*</span> <span class="mi">2</span> <span class="kw">for</span> x <span class="kw">in</span> valori]
+    dev_std: <span class="nb">float</span> <span class="op">=</span> (<span class="nb">sum</span>(scarti) <span class="op">/</span> (n <span class="op">-</span> <span class="mi">1</span>)) <span class="op">*</span><span class="op">*</span> <span class="mi">0.5</span>
+    <span class="kw">return</span> media, mediana, dev_std
+
+
+ore_studio: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">list</span>[<span class="nb">float</span>]] <span class="op">=</span> {
+    <span class="st">&quot;Primo anno&quot;</span>: [<span class="mi">12</span>, <span class="mi">15</span>, <span class="mi">8</span>, <span class="mi">20</span>, <span class="mi">10</span>, <span class="mi">14</span>, <span class="mi">9</span>],
+    <span class="st">&quot;Secondo anno&quot;</span>: [<span class="mi">18</span>, <span class="mi">22</span>, <span class="mi">15</span>, <span class="mi">25</span>, <span class="mi">30</span>, <span class="mi">16</span>],
+    <span class="st">&quot;Terzo anno&quot;</span>: [<span class="mi">20</span>, <span class="mi">8</span>, <span class="mi">35</span>, <span class="mi">12</span>, <span class="mi">28</span>, <span class="mi">6</span>, <span class="mi">14</span>, <span class="mi">25</span>],
+}
+
+<span class="kw">for</span> anno, ore <span class="kw">in</span> ore_studio.items():
+    media, mediana, dev_std <span class="op">=</span> descrittive(ore)
+    <span class="nb">print</span>(<span class="st">f&quot;{anno}: media {media:.1f}, mediana {mediana:.1f}, &quot;</span>
+          <span class="st">f&quot;dev. std {dev_std:.2f}&quot;</span>)
+<span class="nb">print</span>()
 </code></pre>
 <nav class="bottom-nav"><span></span><span><a href="../../index.html">Home</a></span><span></span></nav>
 </body>

@@ -430,6 +430,149 @@ Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da 
 
                 <section>
                     <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>riscaldamento.py · passi 1-2</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 1 — Lista: leggere gli elementi
+corsi: list[str] = ["Analisi", "Statistica", "Informatica", "Inglese"]
+print(f"Primo: {corsi[0]}")
+print(f"Ultimo: {corsi[-1]}")
+print(f"Numero di corsi: {len(corsi)}")
+print(f"Primi due: {corsi[:2]}")
+
+# Passo 2 — Lista: aggiungere e togliere
+corsi = ["Analisi", "Statistica", "Informatica", "Inglese"]
+corsi.append("Economia")
+print(corsi)
+corsi.insert(0, "Fisica")
+print(corsi)
+corsi.remove("Inglese")
+print(corsi)
+tolto: str = corsi.pop()
+print(f"Tolto: {tolto}, restano {corsi}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Gli indici partono da 0; <code>[-1]</code> è l'ultimo elemento. <code>append</code>, <code>insert</code>, <code>remove</code> e <code>pop</code> modificano la lista stessa.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L03»
+Da dire: lo slicing [:2] si ferma prima dell'indice 2. pop() senza argomenti toglie l'ultimo e lo restituisce.
+Chiedere / fare: cosa succede con corsi.remove("Chimica")? ValueError.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>riscaldamento.py · passi 3-4</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 3 — Lista: cercare e contare
+voti: list[int] = [24, 18, 30, 18, 27]
+print(f"30 c'è? {30 in voti}  17 c'è? {17 in voti}")
+print(f"Quanti 18: {voti.count(18)}")
+print(f"Posizione del 30: {voti.index(30)}")
+print(f"Somma {sum(voti)}, minimo {min(voti)}, massimo {max(voti)}")
+print(f"Media: {sum(voti) / len(voti):.2f}")
+
+# Passo 4 — sorted() e sort()
+voti = [24, 18, 30, 18, 27]
+print(f"sorted: {sorted(voti)}")
+print(f"voti dopo sorted: {voti}")
+print(f"dal più alto: {sorted(voti, reverse=True)}")
+print(f"risultato di sort: {voti.sort()}")
+print(f"voti dopo sort: {voti}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>sorted()</code> restituisce una lista nuova; <code>sort()</code> ordina quella che c'è e restituisce <code>None</code>.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L03»
+Da dire: index() restituisce la prima posizione. Errore tipico: voti = voti.sort() lascia voti a None.
+Chiedere / fare: chi ha scritto print(voti.sort()) aspettandosi la lista?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>riscaldamento.py · passi 5-6</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 5 — Due nomi per la stessa lista
+voti = [24, 18, 30]
+altri: list[int] = voti
+altri.append(0)
+print(f"voti: {voti}")
+copia: list[int] = voti.copy()
+copia.append(99)
+print(f"voti: {voti}  copia: {copia}")
+
+# Passo 6 — Tuple
+esame: tuple[str, int, int] = ("Statistica", 6, 28)
+nome, cfu, voto = esame
+print(f"{nome}: {cfu} CFU, voto {voto}")
+print(f"Elementi: {len(esame)}, primo: {esame[0]}")
+# esame[2] = 30   # TypeError: 'tuple' object does not support item assignment</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>altri = voti</code> non copia: i due nomi indicano la stessa lista. Per una lista nuova serve <code>copy()</code>. Le tuple non si modificano.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L03»
+Da dire: è lo stesso discorso della mutabilità di T12. Le tuple si leggono con l'indice o si spacchettano.
+Chiedere / fare: far leggere ad alta voce il TypeError.</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>riscaldamento.py · passi 7-8</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 7 — Dizionario: chiavi e valori
+crediti: dict[str, int] = {"Analisi": 9, "Statistica": 6}
+crediti["Informatica"] = 9
+crediti["Statistica"] = 9
+del crediti["Analisi"]
+print(crediti)
+print(f"Inglese c'è? {'Inglese' in crediti}")
+print(f"CFU di Inglese: {crediti.get('Inglese', 0)}")
+# print(crediti["Inglese"])   # KeyError: 'Inglese'
+
+# Passo 8 — Dizionario: il ciclo
+crediti = {"Analisi": 9, "Statistica": 6, "Informatica": 9, "Inglese": 3}
+for esame_nome, n in crediti.items():
+    print(f"{esame_nome}: {n} CFU")
+print(f"Totale: {sum(crediti.values())} CFU")
+da_nove: list[str] = [e for e, n in crediti.items() if n == 9]
+print(f"Esami da 9 CFU: {da_nove}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Assegnare a una chiave la crea o la sovrascrive. <code>get()</code> evita il <code>KeyError</code> quando la chiave può mancare.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L03»
+Da dire: items() dà le coppie (chiave, valore); values() solo i valori.
+Chiedere / fare: quando conviene get e quando le parentesi quadre?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
+                    <h2>riscaldamento.py · passi 9-10</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+# Passo 9 — Set
+a: set[str] = {"Anna", "Bruno", "Carla"}
+b: set[str] = {"Bruno", "Davide"}
+a.add("Anna")
+print(f"Elementi di a: {len(a)}")
+print(f"a | b: {sorted(a | b)}")
+print(f"a &amp; b: {sorted(a &amp; b)}")
+print(f"a - b: {sorted(a - b)}")
+print(f"a ^ b: {sorted(a ^ b)}")
+presenze: list[str] = ["Anna", "Bruno", "Anna", "Carla", "Bruno"]
+print(f"Presenze: {len(presenze)}, persone diverse: {len(set(presenze))}")
+
+# Passo 10 — Counter e defaultdict
+lettere: Counter[str] = Counter("statistica")
+print(f"Quante t: {lettere['t']}  quante z: {lettere['z']}")
+print(f"Le due più frequenti: {lettere.most_common(2)}")
+prove: list[tuple[str, int]] = [("Anna", 28), ("Bruno", 24), ("Anna", 30)]
+per_nome: defaultdict[str, list[int]] = defaultdict(list)
+for chi, v in prove:
+    per_nome[chi].append(v)
+for chi, lista in per_nome.items():
+    print(f"{chi}: {lista}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>I set ignorano i duplicati e non hanno un ordine: per stamparli sempre uguali si usa <code>sorted()</code>. <code>Counter</code> e <code>defaultdict</code> evitano di controllare se la chiave c'è.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L03»
+Da dire: a ^ b sono gli elementi che stanno in uno solo dei due set. Counter restituisce 0 per una chiave assente.
+Chiedere / fare: come si contano i nomi diversi in una lista? len(set(lista)).</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 3</div>
                     <h2>voti_appello.py</h2>
                     <div class="columns">
                         <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>SOGLIA: int = 18

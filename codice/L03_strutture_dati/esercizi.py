@@ -7,6 +7,105 @@
 
 
 # ============================================================================
+# RISCALDAMENTO: dieci passi sulle strutture dati — riscaldamento.py
+# ============================================================================
+print("--- Riscaldamento ---")
+from collections import Counter, defaultdict
+
+# Passo 1 — Lista: leggere gli elementi
+corsi: list[str] = ["Analisi", "Statistica", "Informatica", "Inglese"]
+print(f"Primo: {corsi[0]}")
+print(f"Ultimo: {corsi[-1]}")
+print(f"Numero di corsi: {len(corsi)}")
+print(f"Primi due: {corsi[:2]}")
+
+# Passo 2 — Lista: aggiungere e togliere
+corsi = ["Analisi", "Statistica", "Informatica", "Inglese"]
+corsi.append("Economia")
+print(corsi)
+corsi.insert(0, "Fisica")
+print(corsi)
+corsi.remove("Inglese")
+print(corsi)
+tolto: str = corsi.pop()
+print(f"Tolto: {tolto}, restano {corsi}")
+
+# Passo 3 — Lista: cercare e contare
+voti: list[int] = [24, 18, 30, 18, 27]
+print(f"30 c'è? {30 in voti}  17 c'è? {17 in voti}")
+print(f"Quanti 18: {voti.count(18)}")
+print(f"Posizione del 30: {voti.index(30)}")
+print(f"Somma {sum(voti)}, minimo {min(voti)}, massimo {max(voti)}")
+print(f"Media: {sum(voti) / len(voti):.2f}")
+
+# Passo 4 — sorted() e sort()
+voti = [24, 18, 30, 18, 27]
+print(f"sorted: {sorted(voti)}")
+print(f"voti dopo sorted: {voti}")
+print(f"dal più alto: {sorted(voti, reverse=True)}")
+print(f"risultato di sort: {voti.sort()}")
+print(f"voti dopo sort: {voti}")
+
+# Passo 5 — Due nomi per la stessa lista
+voti = [24, 18, 30]
+altri: list[int] = voti
+altri.append(0)
+print(f"voti: {voti}")
+copia: list[int] = voti.copy()
+copia.append(99)
+print(f"voti: {voti}  copia: {copia}")
+
+# Passo 6 — Tuple
+esame: tuple[str, int, int] = ("Statistica", 6, 28)
+nome, cfu, voto = esame
+print(f"{nome}: {cfu} CFU, voto {voto}")
+print(f"Elementi: {len(esame)}, primo: {esame[0]}")
+# esame[2] = 30   # TypeError: 'tuple' object does not support item assignment
+
+# Passo 7 — Dizionario: chiavi e valori
+crediti: dict[str, int] = {"Analisi": 9, "Statistica": 6}
+crediti["Informatica"] = 9
+crediti["Statistica"] = 9
+del crediti["Analisi"]
+print(crediti)
+print(f"Inglese c'è? {'Inglese' in crediti}")
+print(f"CFU di Inglese: {crediti.get('Inglese', 0)}")
+# print(crediti["Inglese"])   # KeyError: 'Inglese'
+
+# Passo 8 — Dizionario: il ciclo
+crediti = {"Analisi": 9, "Statistica": 6, "Informatica": 9, "Inglese": 3}
+for esame_nome, n in crediti.items():
+    print(f"{esame_nome}: {n} CFU")
+print(f"Totale: {sum(crediti.values())} CFU")
+da_nove: list[str] = [e for e, n in crediti.items() if n == 9]
+print(f"Esami da 9 CFU: {da_nove}")
+
+# Passo 9 — Set
+a: set[str] = {"Anna", "Bruno", "Carla"}
+b: set[str] = {"Bruno", "Davide"}
+a.add("Anna")
+print(f"Elementi di a: {len(a)}")
+print(f"a | b: {sorted(a | b)}")
+print(f"a & b: {sorted(a & b)}")
+print(f"a - b: {sorted(a - b)}")
+print(f"a ^ b: {sorted(a ^ b)}")
+presenze: list[str] = ["Anna", "Bruno", "Anna", "Carla", "Bruno"]
+print(f"Presenze: {len(presenze)}, persone diverse: {len(set(presenze))}")
+
+# Passo 10 — Counter e defaultdict
+lettere: Counter[str] = Counter("statistica")
+print(f"Quante t: {lettere['t']}  quante z: {lettere['z']}")
+print(f"Le due più frequenti: {lettere.most_common(2)}")
+prove: list[tuple[str, int]] = [("Anna", 28), ("Bruno", 24), ("Anna", 30)]
+per_nome: defaultdict[str, list[int]] = defaultdict(list)
+for chi, v in prove:
+    per_nome[chi].append(v)
+for chi, lista in per_nome.items():
+    print(f"{chi}: {lista}")
+print()
+
+
+# ============================================================================
 # ESERCIZIO 1: l'appello di statistica — voti_appello.py
 # ============================================================================
 print("--- Esercizio 1: L'appello di Statistica ---")
@@ -77,37 +176,6 @@ for esame, voti in voti_esame.items():
 for nome in sorted(superati):
     print(f"{nome} ha superato {superati[nome]}")
 print(f"Nessun esame superato: {sorted(studenti - set(superati))}")
-print()
-
-
-# ============================================================================
-# ESERCIZIO 4: ore di studio — descrittive.py
-# ============================================================================
-print("--- Esercizio 4: Ore di studio ---")
-def descrittive(valori: list[float]) -> tuple[float, float, float]:
-    """Restituisce media, mediana e deviazione standard."""
-    n: int = len(valori)
-    media: float = sum(valori) / n
-    ordinati: list[float] = sorted(valori)
-    if n % 2 == 1:
-        mediana: float = ordinati[n // 2]
-    else:
-        mediana = (ordinati[n // 2 - 1] + ordinati[n // 2]) / 2
-    scarti: list[float] = [(x - media) ** 2 for x in valori]
-    dev_std: float = (sum(scarti) / (n - 1)) ** 0.5
-    return media, mediana, dev_std
-
-
-ore_studio: dict[str, list[float]] = {
-    "Primo anno": [12, 15, 8, 20, 10, 14, 9],
-    "Secondo anno": [18, 22, 15, 25, 30, 16],
-    "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25],
-}
-
-for anno, ore in ore_studio.items():
-    media, mediana, dev_std = descrittive(ore)
-    print(f"{anno}: media {media:.1f}, mediana {mediana:.1f}, "
-          f"dev. std {dev_std:.2f}")
 print()
 
 
@@ -441,3 +509,33 @@ print(f"Totale: {totale_si} su {len(superato)} "
       f"({totale_si / len(superato):.1%})")
 print()
 
+
+# ============================================================================
+# EXTRA 5: ore di studio — descrittive.py
+# ============================================================================
+print("--- Extra 5: Ore di studio ---")
+def descrittive(valori: list[float]) -> tuple[float, float, float]:
+    """Restituisce media, mediana e deviazione standard."""
+    n: int = len(valori)
+    media: float = sum(valori) / n
+    ordinati: list[float] = sorted(valori)
+    if n % 2 == 1:
+        mediana: float = ordinati[n // 2]
+    else:
+        mediana = (ordinati[n // 2 - 1] + ordinati[n // 2]) / 2
+    scarti: list[float] = [(x - media) ** 2 for x in valori]
+    dev_std: float = (sum(scarti) / (n - 1)) ** 0.5
+    return media, mediana, dev_std
+
+
+ore_studio: dict[str, list[float]] = {
+    "Primo anno": [12, 15, 8, 20, 10, 14, 9],
+    "Secondo anno": [18, 22, 15, 25, 30, 16],
+    "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25],
+}
+
+for anno, ore in ore_studio.items():
+    media, mediana, dev_std = descrittive(ore)
+    print(f"{anno}: media {media:.1f}, mediana {mediana:.1f}, "
+          f"dev. std {dev_std:.2f}")
+print()

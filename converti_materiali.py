@@ -753,7 +753,7 @@ def convert_python_files() -> None:
         # Ancore per i link «Soluzione →» di slide e dispense dei laboratori:
         # "# ESERCIZIO 1: ... — voti_appello.py" diventa id="sol-voti_appello"
         highlighted = re.sub(
-            r'<span class="cm">(# (?:ESERCIZIO|EXTRA|SFIDA|CHALLENGE)[^<]*— (\w+)\.py)</span>',
+            r'<span class="cm">(# (?:RISCALDAMENTO|ESERCIZIO|EXTRA|SFIDA|CHALLENGE)[^<]*— (\w+)\.py)</span>',
             r'<span class="cm" id="sol-\2">\1</span>', highlighted)
         body: str = f'<pre><code>{highlighted}</code></pre>'
 

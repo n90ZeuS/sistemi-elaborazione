@@ -334,6 +334,10 @@
         .reveal tr.riga-extra td { color: #64748b; }
         .reveal a.link-soluzione:hover { background: #2563eb; color: #fff; }
         .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
+        .reveal .tag-riscaldamento { background: #ffedd5; color: #9a3412; }
+        .reveal .passo { margin-bottom: 0.5em; }
+        .reveal .passo .consegna { font-size: 0.62em; }
+        .reveal .passo pre.output { font-size: 0.5em; }
         .reveal .etichetta {
             font-size: 0.6em;
             font-weight: 700;
@@ -372,23 +376,24 @@
 
             <section>
                 <h2>Come funziona</h2>
-                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo nell'ultimo esercizio.</p>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file <code>.py</code> con il nome indicato e scrivete il programma da soli. Le funzioni servono solo nella challenge. Si comincia con un riscaldamento di 10 passi brevi, tutti nello stesso file.</p>
                 <table class="mini" style="font-size:0.7em">
                     <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
                     <tbody>
+                        <tr><td>Passi 1-10</td><td><code>riscaldamento.py</code></td><td>Riscaldamento: liste, tuple, dizionari e set</td></tr>
                         <tr><td>1</td><td><code>voti_appello.py</code></td><td>L'appello di Statistica</td></tr>
                         <tr><td>2</td><td><code>sondaggio.py</code></td><td>Come arrivate in aula</td></tr>
                         <tr><td>3</td><td><code>sessione.py</code></td><td>La sessione invernale</td></tr>
-                        <tr><td>4</td><td><code>descrittive.py</code></td><td>Ore di studio</td></tr>
                         <tr><td>Challenge</td><td>a scelta</td><td>Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità</td></tr>
                         <tr class="riga-extra"><td>Extra 1</td><td><code>coda_mensa.py</code></td><td>La coda in mensa <em>(a casa)</em></td></tr>
                         <tr class="riga-extra"><td>Extra 2</td><td><code>tre_corsi.py</code></td><td>Chi segue cosa <em>(a casa)</em></td></tr>
                         <tr class="riga-extra"><td>Extra 3</td><td><code>libretto.py</code></td><td>Il libretto <em>(a casa)</em></td></tr>
                         <tr class="riga-extra"><td>Extra 4</td><td><code>contingenza.py</code></td><td>Scuola di provenienza ed esito <em>(a casa)</em></td></tr>
+                        <tr class="riga-extra"><td>Extra 5</td><td><code>descrittive.py</code></td><td>Ore di studio <em>(a casa)</em></td></tr>
                     </tbody>
                 </table>
                 <div class="box box-blue" style="font-size:0.7em">
-                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Le soluzioni le vediamo all'inizio della lezione T14. Gli extra in fondo sono per casa. «Soluzione →» apre il codice: guardatelo dopo averci provato.
+                    Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Dopo ogni consegna c'è la slide «Da dove partire» con lo scheletro del file: commenti e variabili, il resto lo scrivete voi. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Le soluzioni le vediamo all'inizio della lezione T14. Gli extra in fondo sono per casa. «Soluzione →» apre il codice: guardatelo dopo averci provato.
                 </div>
             </section>
 
@@ -410,6 +415,176 @@ print(sorted(a | b), a &amp; b, a - b)  # ['Anna', ...] {'Bruno'} {'Anna'}
 print(Counter("abbccc").most_common(1))     # [('c', 3)]
 gruppi: defaultdict[str, list[int]] = defaultdict(list)
 gruppi["Analisi"].append(27)    # la lista vuota si crea da sola</code></pre>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Riscaldamento</h2>
+                <p style="font-size:0.75em">Dieci passi brevi per provare una operazione alla volta su liste, tuple, dizionari e set.</p>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 1-2</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Liste: leggere e modificare</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 1 · Leggere una lista</div>
+                        <ul class="consegna"><li>Partite da <code>corsi = ["Analisi", "Statistica", "Informatica", "Inglese"]</code>.</li><li>Stampate il primo corso (<code>[0]</code>), l'ultimo (<code>[-1]</code>), quanti sono (<code>len()</code>) e i primi due con lo slicing <code>[:2]</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Primo: Analisi
+Ultimo: Inglese
+Numero di corsi: 4
+Primi due: ['Analisi', 'Statistica']</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 2 · Aggiungere e togliere</div>
+                        <ul class="consegna"><li>Ripartite dalla stessa lista <code>corsi</code> del passo 1.</li><li>Uno alla volta: <code>append("Economia")</code>, <code>insert(0, "Fisica")</code>, <code>remove("Inglese")</code>. Dopo ognuno stampate la lista.</li><li>Togliete l'ultimo corso con <code>pop()</code>, salvatelo in <code>tolto</code> e stampate <code>tolto</code> e la lista.</li><li>Prima di eseguire scrivete in un commento come pensate che diventi la lista.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>['Analisi', 'Statistica', 'Informatica', 'Inglese', 'Economia']
+['Fisica', 'Analisi', 'Statistica', 'Informatica', 'Inglese', 'Economia']
+['Fisica', 'Analisi', 'Statistica', 'Informatica', 'Economia']
+Tolto: Economia, restano ['Fisica', 'Analisi', 'Statistica', 'Informatica']</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 3-4</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Liste: cercare e ordinare</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 3 · Cercare e contare</div>
+                        <ul class="consegna"><li>Partite da <code>voti = [24, 18, 30, 18, 27]</code>.</li><li>Con <code>in</code> controllate se ci sono un 30 e un 17; con <code>count()</code> contate i 18; con <code>index()</code> trovate la posizione del 30.</li><li>Stampate somma, minimo, massimo e la media con due decimali.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>30 c'è? True  17 c'è? False
+Quanti 18: 2
+Posizione del 30: 2
+Somma 117, minimo 18, massimo 30
+Media: 23.40</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 4 · sorted() e sort()</div>
+                        <ul class="consegna"><li>Stessa lista <code>voti</code> del passo 3.</li><li>Stampate <code>sorted(voti)</code> e poi <code>voti</code>: la lista di partenza non è cambiata. Stampate anche <code>sorted(voti, reverse=True)</code>.</li><li>Stampate <code>voti.sort()</code> e poi <code>voti</code>: <code>sort()</code> ordina la lista stessa e restituisce <code>None</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>sorted: [18, 18, 24, 27, 30]
+voti dopo sorted: [24, 18, 30, 18, 27]
+dal più alto: [30, 27, 24, 18, 18]
+risultato di sort: None
+voti dopo sort: [18, 18, 24, 27, 30]</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 5-6</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Copie e tuple</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 5 · Due nomi, una lista</div>
+                        <ul class="consegna"><li>Scrivete <code>voti = [24, 18, 30]</code>, poi <code>altri = voti</code> e <code>altri.append(0)</code>. Stampate <code>voti</code>: è cambiata anche lei, perché i due nomi indicano la stessa lista.</li><li>Ora <code>copia = voti.copy()</code> e <code>copia.append(99)</code>. Stampate <code>voti</code> e <code>copia</code>: la copia è una lista nuova e <code>voti</code> non cambia.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>voti: [24, 18, 30, 0]
+voti: [24, 18, 30, 0]  copia: [24, 18, 30, 0, 99]</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 6 · Tuple</div>
+                        <ul class="consegna"><li>Partite da <code>esame = ("Statistica", 6, 28)</code>. Spacchettatela in <code>nome, cfu, voto</code> e stampate la prima riga dell'output.</li><li>Stampate quanti elementi ha la tupla e il primo.</li><li>Provate <code>esame[2] = 30</code>, leggete l'errore e poi commentate la riga: una tupla non si può modificare.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Statistica: 6 CFU, voto 28
+Elementi: 3, primo: Statistica
+TypeError: 'tuple' object does not support item assignment</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 7-8</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Dizionari</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 7 · Dizionario: chiavi e valori</div>
+                        <ul class="consegna"><li>Partite da <code>crediti = {"Analisi": 9, "Statistica": 6}</code>.</li><li>Aggiungete <code>"Informatica"</code> con 9 CFU, portate <code>"Statistica"</code> a 9 e cancellate <code>"Analisi"</code> con <code>del</code>. Stampate il dizionario.</li><li>Controllate con <code>in</code> se c'è <code>"Inglese"</code> e leggetelo con <code>get("Inglese", 0)</code>.</li><li>Provate <code>crediti["Inglese"]</code>, leggete l'errore e poi commentate la riga.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>{'Statistica': 9, 'Informatica': 9}
+Inglese c'è? False
+CFU di Inglese: 0
+KeyError: 'Inglese'</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 8 · Dizionario: il ciclo</div>
+                        <ul class="consegna"><li>Partite da <code>crediti = {"Analisi": 9, "Statistica": 6, "Informatica": 9, "Inglese": 3}</code>.</li><li>Con un ciclo su <code>items()</code> stampate ogni esame con i suoi CFU, poi il totale con <code>sum(crediti.values())</code>.</li><li>Con una comprehension su <code>items()</code> tenete gli esami da 9 CFU.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Analisi: 9 CFU
+Statistica: 6 CFU
+Informatica: 9 CFU
+Inglese: 3 CFU
+Totale: 27 CFU
+Esami da 9 CFU: ['Analisi', 'Informatica']</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 9-10</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Set, Counter e defaultdict</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 9 · Set</div>
+                        <ul class="consegna"><li>Partite da <code>a = {"Anna", "Bruno", "Carla"}</code> e <code>b = {"Bruno", "Davide"}</code>.</li><li>Eseguite <code>a.add("Anna")</code> e stampate <code>len(a)</code>: Anna c'era già, quindi gli elementi restano 3.</li><li>Stampate unione <code>|</code>, intersezione <code>&amp;</code>, differenza <code>-</code> e differenza simmetrica <code>^</code>, sempre dentro <code>sorted()</code>.</li><li>Con <code>presenze = ["Anna", "Bruno", "Anna", "Carla", "Bruno"]</code> e <code>set()</code> contate le persone diverse.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Elementi di a: 3
+a | b: ['Anna', 'Bruno', 'Carla', 'Davide']
+a &amp; b: ['Bruno']
+a - b: ['Anna', 'Carla']
+a ^ b: ['Anna', 'Carla', 'Davide']
+Presenze: 5, persone diverse: 3</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 10 · Counter e defaultdict</div>
+                        <ul class="consegna"><li>Con <code>lettere = Counter("statistica")</code> stampate quante <code>t</code> e quante <code>z</code> ci sono (una chiave assente vale 0) e le due lettere più frequenti con <code>most_common(2)</code>.</li><li>Con <code>prove = [("Anna", 28), ("Bruno", 24), ("Anna", 30)]</code> raggruppate i voti per nome in un <code>defaultdict(list)</code> e stampate ogni nome con la sua lista.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Quante t: 3  quante z: 0
+Le due più frequenti: [('t', 3), ('s', 2)]
+Anna: [28, 30]
+Bruno: [24]</code></pre>
+                    </div>
+                </div>
             </section>
 
             <section>
@@ -442,6 +617,30 @@ Media dei promossi: 24.5</code></pre>
             </section>
 
             <section>
+                <div class="tag tag-esercizio">Esercizio 1 · voti_appello.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
+                <pre class="small" style="font-size:0.5em"><code class="language-python" data-trim data-noescape>SOGLIA: int = 18
+
+# 1. leggo la riga e la trasformo in una lista di interi
+testo: str = input("Voti separati da spazi: ")
+voti: list[int] = ...
+
+# 2. stampo la lista ordinata
+# stampo il numero di presenti
+# stampo la media con un decimale
+# stampo minimo e massimo
+
+# 3. tengo i voti da SOGLIA in su
+promossi: list[int] = ...
+# stampo quanti sono e la loro percentuale
+
+# 4. se c'è almeno un promosso:
+#     calcolo la media dei promossi
+#     la stampo</code></pre>
+            </section>
+
+            <section>
                 <div class="tag tag-esercizio">Esercizio 2 · sondaggio.py</div>
                 <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-sondaggio" target="_blank">Soluzione →</a>
                 <h2>Come arrivate in aula</h2>
@@ -469,6 +668,31 @@ Mezzo più usato: bici</code></pre>
                         <ul class="prove"><li><code>auto</code> → <code>auto: 1 (100.0%)</code></li><li><code>bus,,Bus , treno</code> → 3 risposte, <code>bus: 2 (66.7%)</code></li></ul>
                     </div>
                 </div>
+            </section>
+
+            <section>
+                <div class="tag tag-esercizio">Esercizio 2 · sondaggio.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
+                <pre class="small" style="font-size:0.5em"><code class="language-python" data-trim data-noescape>from collections import Counter
+
+# 1. leggo le risposte
+testo: str = input("Risposte separate da virgole: ")
+
+# 2. divido sulle virgole e pulisco ogni pezzo (strip e lower)
+risposte: list[str] = ...
+# tolgo le risposte vuote
+
+# 3. conto le risposte
+conteggio: Counter[str] = ...
+totale: int = ...
+# stampo il numero di risposte e di mezzi diversi
+# per ogni coppia (mezzo, n) di most_common():
+#     stampo mezzo, conteggio e percentuale
+
+# 4. il mezzo più usato: il primo elemento di most_common(1)
+moda: str = ...
+# lo stampo</code></pre>
             </section>
 
             <section>
@@ -503,29 +727,37 @@ Nessun esame superato: ['Elisa']</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-esercizio">Esercizio 4 · descrittive.py</div>
-                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-descrittive" target="_blank">Soluzione →</a>
-                <h2>Ore di studio</h2>
+                <div class="tag tag-esercizio">Esercizio 3 · sessione.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
                 <div class="columns">
-                    <div class="col">
-                        <div class="etichetta">Consegna</div>
-                        <ol class="consegna">
-                            <li>Scrivete la funzione <code>descrittive(valori: list[float]) -&gt; tuple[float, float, float]</code> che restituisce media, mediana e deviazione standard campionaria.</li>
-                            <li>Mediana: ordinate i valori con <code>sorted()</code>; se sono in numero dispari è il valore centrale, se sono pari è la media dei due centrali.</li>
-                            <li>Deviazione standard: somma dei quadrati degli scarti dalla media, divisa per n − 1, poi radice quadrata (<code>** 0.5</code>).</li>
-                            <li>Partite da <code>ore_studio = {"Primo anno": [12, 15, 8, 20, 10, 14, 9], "Secondo anno": [18, 22, 15, 25, 30, 16], "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25]}</code> (ore di studio settimanali). Per ogni anno chiamate la funzione e stampate media e mediana con un decimale, deviazione standard con due.</li>
-                        </ol>
-                    </div>
-                    <div class="col">
-                        <div class="etichetta">Esempio di esecuzione</div>
-                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Primo anno: media 12.6, mediana 12.0, dev. std 4.16
-Secondo anno: media 21.0, mediana 20.0, dev. std 5.80
-Terzo anno: media 18.5, mediana 17.0, dev. std 10.25</code></pre>
-                        <div class="etichetta">Provate anche</div>
-                        <ul class="prove"><li><code>descrittive([1, 2, 3, 4])</code> → media <code>2.5</code>, mediana <code>2.5</code>, deviazione standard <code>1.29</code></li><li>aggiungete <code>"Fuori corso": [5, 5, 5]</code> → <code>dev. std 0.00</code></li></ul>
-                    </div>
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape>from collections import defaultdict
+
+# 1. gli esiti, nell'ordine della tabella
+esiti: list[tuple[str, str, int]] = [
+    ("Anna", "Statistica", 28), ("Anna", "Analisi", 30),
+    # continuate con Bruno, Chiara, Davide ed Elisa
+]</code></pre></div>
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape># 2. le tre strutture da riempire in un solo ciclo
+voti_esame: defaultdict[str, list[int]] = defaultdict(list)  # esame -&gt; voti
+superati: defaultdict[str, list[str]] = defaultdict(list)    # nome -&gt; esami
+studenti: set[str] = set()                                   # tutti i nomi
+# per ogni (nome, esame, voto) in esiti:
+#     aggiungo il voto alla lista del suo esame
+#     aggiungo il nome al set
+#     se il voto è da 18 in su:
+#         aggiungo l'esame alla lista dello studente
+
+# 3. per ogni (esame, voti) di voti_esame:
+#     conto i promossi
+#     stampo prove, media e promossi
+
+# 4. per ogni nome di superati, in ordine alfabetico:
+#     stampo i suoi esami superati
+# stampo chi è in studenti ma non in superati (differenza tra set)</code></pre></div>
                 </div>
             </section>
+
 
             <section>
                 <div class="tag tag-challenge">Challenge a scelta</div>
@@ -573,6 +805,45 @@ Mai venduti: ['TECH']</code></pre>
             </section>
 
             <section>
+                <div class="tag tag-challenge">Challenge · Mercati e finanza · ch_mercati.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
+                <div class="columns">
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+def escursione(prezzi: list[float]) -&gt; tuple[float, float]:
+    """Restituisce il prezzo minimo e il prezzo massimo."""
+    # restituisco minimo e massimo della lista
+    ...
+
+# 1. gli ordini (titolo, quantità, prezzo); quantità negativa = vendita
+ordini: list[tuple[str, int, float]] = [
+    ("ENRG", 30, 12.40), ("ENRG", 20, 12.10), ("ENRG", -10, 13.05),
+    # continuate con BANK e TECH
+]</code></pre></div>
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape># 3. prezzi per titolo e azioni in portafoglio
+prezzi: defaultdict[str, list[float]] = defaultdict(list)
+portafoglio: Counter[str] = Counter()
+# per ogni (titolo, quantità, prezzo) in ordini:
+#     aggiungo il prezzo alla lista del titolo
+#     sommo la quantità nel portafoglio
+# per ogni titolo, in ordine alfabetico:
+#     chiamo escursione e spacchetto minimo e massimo
+#     stampo ordini, prezzi e azioni
+
+# 4. la posizione più grande
+# prendo la prima coppia di most_common(1) e la stampo
+vendite: list[tuple[str, int, float]] = ...  # ordini con quantità &lt; 0
+# stampo quante sono e la percentuale sugli ordini
+
+# 5. i titoli mai venduti
+comprati: set[str] = ...
+venduti: set[str] = ...
+# stampo la differenza, ordinata</code></pre></div>
+                </div>
+            </section>
+
+            <section>
                 <div class="tag tag-challenge">Challenge · Sport · ch_sport.py</div>
                 <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-ch_sport" target="_blank">Soluzione →</a>
                 <h2>Il campionato</h2>
@@ -600,6 +871,48 @@ Senza vittorie: ['Lanza', 'Neri']</code></pre>
                         <div class="etichetta">Provate anche</div>
                         <ul class="prove"><li>aggiungete la gara <code>("Neri", "Lanza", "Moro", "Ferri")</code> → <code>Neri: 94 punti, miglior piazzamento 1</code>, <code>Gare vinte dalla Scuderia Rossa: 2 su 6 (33.3%)</code> e <code>Senza vittorie: ['Lanza']</code></li><li><code>PUNTI = [10, 6, 4, 3]</code> → <code>Ferri: 34 punti</code> e <code>Moro: 40 punti</code>; le altre righe non cambiano</li></ul>
                     </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Sport · ch_sport.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
+                <div class="columns">
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+PUNTI: list[int] = [25, 18, 15, 12]
+
+def bilancio(posizioni: list[int]) -&gt; tuple[int, int]:
+    """Restituisce i punti totali e il miglior piazzamento."""
+    # trasformo ogni piazzamento p nei punti PUNTI[p - 1]
+    # restituisco la somma dei punti e il piazzamento minimo
+    ...
+
+# 1. la Scuderia Rossa e le gare (dal primo al quarto)
+rossa: set[str] = {"Ferri", "Lanza"}
+gare: list[tuple[str, str, str, str]] = [
+    ("Ferri", "Moro", "Lanza", "Neri"),
+    # continuate con le gare da 2 a 5
+]</code></pre></div>
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape># 3. piazzamenti per pilota e vittorie
+posizioni: defaultdict[str, list[int]] = defaultdict(list)
+vittorie: Counter[str] = Counter()
+# per ogni arrivo in gare:
+#     conto una vittoria per il primo pilota
+#     per ogni indice i dell'arrivo:
+#         aggiungo i + 1 ai piazzamenti di quel pilota
+# per ogni pilota, in ordine alfabetico:
+#     chiamo bilancio e spacchetto punti e miglior piazzamento
+#     stampo
+
+# 4. il pilota con più vittorie
+# prendo la prima coppia di most_common(1) e la stampo
+vinte: list[str] = ...  # vincitori che sono in rossa
+# stampo quante gare e la percentuale
+
+# 5. i piloti senza vittorie
+# stampo i piloti di posizioni che non sono in vittorie, ordinati</code></pre></div>
                 </div>
             </section>
 
@@ -635,6 +948,47 @@ Mai venduti: ['lampada']</code></pre>
             </section>
 
             <section>
+                <div class="tag tag-challenge">Challenge · Imprese e marketing · ch_negozio.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
+                <div class="columns">
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+def vendite(quantita: list[int]) -&gt; tuple[int, int]:
+    """Restituisce il numero di ordini e il numero di pezzi."""
+    # restituisco la lunghezza della lista e la somma
+    ...
+
+# 1. i prezzi e gli ordini (cliente, prodotto, quantità)
+prezzi: dict[str, float] = {
+    "zaino": 39.90,
+    # continuate con la tabella
+}
+ordini: list[tuple[str, str, int]] = [
+    ("Irene", "zaino", 1), ("Tommaso", "quaderno", 5),
+    # continuate con la consegna
+]</code></pre></div>
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape># 3. quantità per prodotto e ordini per cliente
+pezzi: defaultdict[str, list[int]] = defaultdict(list)
+clienti: Counter[str] = Counter()
+# per ogni (cliente, prodotto, quantità) in ordini:
+#     aggiungo la quantità alla lista del prodotto
+#     conto un ordine per il cliente
+# per ogni prodotto di pezzi, in ordine alfabetico:
+#     chiamo vendite e spacchetto ordini e pezzi
+#     stampo ordini, pezzi e incasso (pezzi × prezzo)
+
+# 4. il cliente più assiduo
+# prendo la prima coppia di most_common(1) e la stampo
+multipli: list[tuple[str, str, int]] = ...  # ordini con più di un pezzo
+# stampo quanti sono e la percentuale
+
+# 5. i prodotti mai venduti
+# stampo le chiavi di prezzi che non sono in pezzi, ordinate</code></pre></div>
+                </div>
+            </section>
+
+            <section>
                 <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py</div>
                 <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-ch_salute" target="_blank">Soluzione →</a>
                 <h2>Lo studio clinico</h2>
@@ -661,6 +1015,46 @@ Gruppo con più migliorati: trattamento (3)</code></pre>
                         <div class="etichetta">Provate anche</div>
                         <ul class="prove"><li>P07 con la misura dopo <code>145</code> → <code>Misure valide: 10 su 10 (100.0%)</code>, <code>Senza seconda misura: []</code> e <code>trattamento: 5 pazienti, variazione media -11.8 mmHg, migliorati 4</code></li><li>aggiungete <code>("P11", "controllo", 151, 0)</code> → <code>Misure valide: 9 su 11 (81.8%)</code> e <code>Senza seconda misura: ['P07', 'P11']</code></li></ul>
                     </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-challenge">Challenge · Salute e scienza · ch_salute.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
+                <div class="columns">
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+def variazione(differenze: list[int]) -&gt; tuple[int, float]:
+    """Restituisce il numero di pazienti e la variazione media."""
+    # restituisco la lunghezza della lista e la media
+    ...
+
+# 1. i pazienti (codice, gruppo, prima, dopo); dopo = 0 se manca
+pazienti: list[tuple[str, str, int, int]] = [
+    ("P01", "trattamento", 152, 138), ("P02", "controllo", 148, 145),
+    # continuate con la tabella
+]</code></pre></div>
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape># 2. i pazienti validi e quelli senza seconda misura
+validi: list[tuple[str, str, int, int]] = ...  # misura dopo &gt; 0
+# stampo quanti sono e la percentuale
+persi: set[str] = ...  # codici di tutti meno codici dei validi
+# stampo persi, ordinati
+
+# 4. variazioni e migliorati, per gruppo
+differenze: defaultdict[str, list[int]] = defaultdict(list)
+migliorati: Counter[str] = Counter()
+# per ogni (codice, gruppo, prima, dopo) in validi:
+#     aggiungo dopo - prima alla lista del gruppo
+#     se dopo - prima vale -10 o meno:
+#         conto un migliorato per il gruppo
+# per ogni gruppo, in ordine alfabetico:
+#     chiamo variazione e spacchetto pazienti e media
+#     stampo pazienti, media e migliorati
+
+# 5. il totale dei migliorati
+# stampo la somma dei valori di migliorati e quanti sono i validi
+# prendo la prima coppia di most_common(1) e la stampo</code></pre></div>
                 </div>
             </section>
 
@@ -695,6 +1089,44 @@ Somme mai uscite: [2, 3, 5, 6, 9, 10]</code></pre>
             </section>
 
             <section>
+                <div class="tag tag-challenge">Challenge · Caso e probabilità · ch_probabilita.py · da dove partire</div>
+                <h2>Da dove partire</h2>
+                <p style="font-size:0.6em">Partite da qui: i commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di <code>...</code> scrivete il vostro codice.</p>
+                <div class="columns">
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape>from collections import Counter, defaultdict
+
+def riassunto(somme: list[int]) -&gt; tuple[float, int]:
+    """Restituisce la somma media e la somma più alta."""
+    # restituisco la media e il massimo della lista
+    ...
+
+# 1. i lanci (giocatore, primo dado, secondo dado)
+lanci: list[tuple[str, int, int]] = [
+    ("Ada", 3, 4), ("Ada", 1, 3), ("Ada", 6, 5), ("Ada", 2, 2),
+    # continuate con Bea e Ciro
+]</code></pre></div>
+                    <div class="col"><pre class="small" style="font-size:0.45em"><code class="language-python" data-trim data-noescape># 3. somme per giocatore e quante volte esce ogni somma
+somme: defaultdict[str, list[int]] = defaultdict(list)
+uscite: Counter[int] = Counter()
+# per ogni (giocatore, d1, d2) in lanci:
+#     aggiungo d1 + d2 alla lista del giocatore
+#     conto un'uscita per la somma d1 + d2
+# per ogni giocatore, in ordine alfabetico:
+#     chiamo riassunto e spacchetto media e somma più alta
+#     stampo
+
+# 4. la somma più uscita
+# prendo la prima coppia di most_common(1) e la stampo
+doppi: list[tuple[str, int, int]] = ...  # lanci con i due dadi uguali
+# stampo quanti sono e la percentuale
+
+# 5. le somme mai uscite
+possibili: set[int] = ...  # a + b con a e b da 1 a 6
+# stampo le possibili che non sono in uscite, ordinate</code></pre></div>
+                </div>
+            </section>
+
+            <section>
                 <h2>Domande di verifica</h2>
                 <ol style="font-size:0.85em">
                     <li>Che differenza c'è tra <code>sorted(voti)</code> e <code>voti.sort()</code>? Quale dei due modifica la lista?</li>
@@ -703,7 +1135,7 @@ Somme mai uscite: [2, 3, 5, 6, 9, 10]</code></pre>
                     <li>Perché, per stampare un set, conviene usare <code>sorted()</code>?</li>
                     <li>In <code>libretto.py</code>, quando la media ponderata coincide con la media aritmetica?</li>
                     <li>In <code>contingenza.py</code> le chiavi del <code>Counter</code> sono tuple. Si potrebbero usare liste? Perché?</li>
-                    <li>In <code>descrittive.py</code> la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?</li>
+                    <li>In <code>descrittive.py</code> (Extra 5) la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?</li>
                 </ol>
             </section>
 
@@ -828,6 +1260,31 @@ tecnico: superato 2, non superato 3, percentuale 40.0%
 Totale: 7 su 12 (58.3%)</code></pre>
                         <div class="etichetta">Provate anche</div>
                         <ul class="prove"><li>aggiungete una matricola del liceo che non ha superato l'esame → liceo <code>66.7%</code>, <code>Totale: 7 su 13 (53.8%)</code></li><li>una coppia che non compare non dà errore: <code>tabella[("professionale", True)]</code> vale <code>0</code></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-extra">Extra 5 · descrittive.py</div>
+                <a class="link-soluzione" href="../codice/L03_strutture_dati/esercizi.html#sol-descrittive" target="_blank">Soluzione →</a>
+                <h2>Ore di studio</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="etichetta">Consegna</div>
+                        <ol class="consegna">
+                            <li>Scrivete la funzione <code>descrittive(valori: list[float]) -&gt; tuple[float, float, float]</code> che restituisce media, mediana e deviazione standard campionaria.</li>
+                            <li>Mediana: ordinate i valori con <code>sorted()</code>; se sono in numero dispari è il valore centrale, se sono pari è la media dei due centrali.</li>
+                            <li>Deviazione standard: somma dei quadrati degli scarti dalla media, divisa per n − 1, poi radice quadrata (<code>** 0.5</code>).</li>
+                            <li>Partite da <code>ore_studio = {"Primo anno": [12, 15, 8, 20, 10, 14, 9], "Secondo anno": [18, 22, 15, 25, 30, 16], "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25]}</code> (ore di studio settimanali). Per ogni anno chiamate la funzione e stampate media e mediana con un decimale, deviazione standard con due.</li>
+                        </ol>
+                    </div>
+                    <div class="col">
+                        <div class="etichetta">Esempio di esecuzione</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Primo anno: media 12.6, mediana 12.0, dev. std 4.16
+Secondo anno: media 21.0, mediana 20.0, dev. std 5.80
+Terzo anno: media 18.5, mediana 17.0, dev. std 10.25</code></pre>
+                        <div class="etichetta">Provate anche</div>
+                        <ul class="prove"><li><code>descrittive([1, 2, 3, 4])</code> → media <code>2.5</code>, mediana <code>2.5</code>, deviazione standard <code>1.29</code></li><li>aggiungete <code>"Fuori corso": [5, 5, 5]</code> → <code>dev. std 0.00</code></li></ul>
                     </div>
                 </div>
             </section>

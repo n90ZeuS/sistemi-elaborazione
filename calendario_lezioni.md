@@ -293,8 +293,9 @@
 
 | Attività | Descrizione |
 |----------|-------------|
-| Esercizi 1-4 | L'appello di Statistica; La coda in mensa; Come arrivate in aula; Chi segue cosa |
-| Esercizi 5-8 | Il libretto; La sessione invernale; Scuola di provenienza ed esito; Ore di studio |
+| Riscaldamento | 10 passi brevi su liste, tuple, dizionari e set (`riscaldamento.py`) |
+| Esercizi 1-3 | L'appello di Statistica; Come arrivate in aula; La sessione invernale |
+| Extra 1-5 (a casa) | La coda in mensa; Chi segue cosa; Il libretto; Scuola di provenienza ed esito; Ore di studio |
 | Challenge a scelta | Mercati e finanza: Il portafoglio; Sport: Il campionato; Imprese e marketing: Il negozio online; Salute e scienza: Lo studio clinico; Caso e probabilità: Il tavolo da gioco |
 | Soluzioni | All'inizio della lezione T14 |
 

@@ -2,21 +2,22 @@
 
 **Prerequisiti:** lezioni T11 (Liste e tuple), T12 (Dizionari e set) e T13 (Funzioni).
 
-Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli. Le funzioni servono solo nell'ultimo esercizio.
+Oggi ci sono solo esercizi, in ordine di difficoltà, su liste, tuple, dizionari e set. Per ogni esercizio create un file `.py` con il nome indicato e scrivete il programma da soli. Le funzioni servono solo nella challenge. Si comincia con un riscaldamento di 10 passi brevi, tutti nello stesso file.
 
-Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T14.
+Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Sotto ogni consegna c'è anche «Da dove partire», lo scheletro del file: commenti e variabili, il resto lo scrivete voi. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T14.
 
 | # | File | Esercizio |
 |---|---|---|
+| Passi 1-10 | `riscaldamento.py` | Riscaldamento: liste, tuple, dizionari e set |
 | 1 | `voti_appello.py` | L'appello di Statistica |
 | 2 | `sondaggio.py` | Come arrivate in aula |
 | 3 | `sessione.py` | La sessione invernale |
-| 4 | `descrittive.py` | Ore di studio |
 | Challenge | a scelta | Mercati e finanza · Sport · Imprese e marketing · Salute e scienza · Caso e probabilità |
 | Extra 1 | `coda_mensa.py` | La coda in mensa (a casa) |
 | Extra 2 | `tre_corsi.py` | Chi segue cosa (a casa) |
 | Extra 3 | `libretto.py` | Il libretto (a casa) |
 | Extra 4 | `contingenza.py` | Scuola di provenienza ed esito (a casa) |
+| Extra 5 | `descrittive.py` | Ore di studio (a casa) |
 
 ---
 
@@ -44,6 +45,147 @@ gruppi["Analisi"].append(27)    # la lista vuota si crea da sola
 
 ---
 
+## Riscaldamento (`riscaldamento.py`)
+
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-riscaldamento)
+
+Dieci passi brevi per provare una operazione alla volta su liste, tuple, dizionari e set.
+
+### Passo 1 — Leggere una lista
+
+- Partite da `corsi = ["Analisi", "Statistica", "Informatica", "Inglese"]`.
+- Stampate il primo corso (`[0]`), l'ultimo (`[-1]`), quanti sono (`len()`) e i primi due con lo slicing `[:2]`.
+
+```
+Primo: Analisi
+Ultimo: Inglese
+Numero di corsi: 4
+Primi due: ['Analisi', 'Statistica']
+```
+
+### Passo 2 — Aggiungere e togliere
+
+- Ripartite dalla stessa lista `corsi` del passo 1.
+- Uno alla volta: `append("Economia")`, `insert(0, "Fisica")`, `remove("Inglese")`. Dopo ognuno stampate la lista.
+- Togliete l'ultimo corso con `pop()`, salvatelo in `tolto` e stampate `tolto` e la lista.
+- Prima di eseguire scrivete in un commento come pensate che diventi la lista.
+
+```
+['Analisi', 'Statistica', 'Informatica', 'Inglese', 'Economia']
+['Fisica', 'Analisi', 'Statistica', 'Informatica', 'Inglese', 'Economia']
+['Fisica', 'Analisi', 'Statistica', 'Informatica', 'Economia']
+Tolto: Economia, restano ['Fisica', 'Analisi', 'Statistica', 'Informatica']
+```
+
+### Passo 3 — Cercare e contare
+
+- Partite da `voti = [24, 18, 30, 18, 27]`.
+- Con `in` controllate se ci sono un 30 e un 17; con `count()` contate i 18; con `index()` trovate la posizione del 30.
+- Stampate somma, minimo, massimo e la media con due decimali.
+
+```
+30 c'è? True  17 c'è? False
+Quanti 18: 2
+Posizione del 30: 2
+Somma 117, minimo 18, massimo 30
+Media: 23.40
+```
+
+### Passo 4 — sorted() e sort()
+
+- Stessa lista `voti` del passo 3.
+- Stampate `sorted(voti)` e poi `voti`: la lista di partenza non è cambiata. Stampate anche `sorted(voti, reverse=True)`.
+- Stampate `voti.sort()` e poi `voti`: `sort()` ordina la lista stessa e restituisce `None`.
+
+```
+sorted: [18, 18, 24, 27, 30]
+voti dopo sorted: [24, 18, 30, 18, 27]
+dal più alto: [30, 27, 24, 18, 18]
+risultato di sort: None
+voti dopo sort: [18, 18, 24, 27, 30]
+```
+
+### Passo 5 — Due nomi, una lista
+
+- Scrivete `voti = [24, 18, 30]`, poi `altri = voti` e `altri.append(0)`. Stampate `voti`: è cambiata anche lei, perché i due nomi indicano la stessa lista.
+- Ora `copia = voti.copy()` e `copia.append(99)`. Stampate `voti` e `copia`: la copia è una lista nuova e `voti` non cambia.
+
+```
+voti: [24, 18, 30, 0]
+voti: [24, 18, 30, 0]  copia: [24, 18, 30, 0, 99]
+```
+
+### Passo 6 — Tuple
+
+- Partite da `esame = ("Statistica", 6, 28)`. Spacchettatela in `nome, cfu, voto` e stampate la prima riga dell'output.
+- Stampate quanti elementi ha la tupla e il primo.
+- Provate `esame[2] = 30`, leggete l'errore e poi commentate la riga: una tupla non si può modificare.
+
+```
+Statistica: 6 CFU, voto 28
+Elementi: 3, primo: Statistica
+TypeError: 'tuple' object does not support item assignment
+```
+
+### Passo 7 — Dizionario: chiavi e valori
+
+- Partite da `crediti = {"Analisi": 9, "Statistica": 6}`.
+- Aggiungete `"Informatica"` con 9 CFU, portate `"Statistica"` a 9 e cancellate `"Analisi"` con `del`. Stampate il dizionario.
+- Controllate con `in` se c'è `"Inglese"` e leggetelo con `get("Inglese", 0)`.
+- Provate `crediti["Inglese"]`, leggete l'errore e poi commentate la riga.
+
+```
+{'Statistica': 9, 'Informatica': 9}
+Inglese c'è? False
+CFU di Inglese: 0
+KeyError: 'Inglese'
+```
+
+### Passo 8 — Dizionario: il ciclo
+
+- Partite da `crediti = {"Analisi": 9, "Statistica": 6, "Informatica": 9, "Inglese": 3}`.
+- Con un ciclo su `items()` stampate ogni esame con i suoi CFU, poi il totale con `sum(crediti.values())`.
+- Con una comprehension su `items()` tenete gli esami da 9 CFU.
+
+```
+Analisi: 9 CFU
+Statistica: 6 CFU
+Informatica: 9 CFU
+Inglese: 3 CFU
+Totale: 27 CFU
+Esami da 9 CFU: ['Analisi', 'Informatica']
+```
+
+### Passo 9 — Set
+
+- Partite da `a = {"Anna", "Bruno", "Carla"}` e `b = {"Bruno", "Davide"}`.
+- Eseguite `a.add("Anna")` e stampate `len(a)`: Anna c'era già, quindi gli elementi restano 3.
+- Stampate unione `|`, intersezione `&`, differenza `-` e differenza simmetrica `^`, sempre dentro `sorted()`.
+- Con `presenze = ["Anna", "Bruno", "Anna", "Carla", "Bruno"]` e `set()` contate le persone diverse.
+
+```
+Elementi di a: 3
+a | b: ['Anna', 'Bruno', 'Carla', 'Davide']
+a & b: ['Bruno']
+a - b: ['Anna', 'Carla']
+a ^ b: ['Anna', 'Carla', 'Davide']
+Presenze: 5, persone diverse: 3
+```
+
+### Passo 10 — Counter e defaultdict
+
+- Con `lettere = Counter("statistica")` stampate quante `t` e quante `z` ci sono (una chiave assente vale 0) e le due lettere più frequenti con `most_common(2)`.
+- Con `prove = [("Anna", 28), ("Bruno", 24), ("Anna", 30)]` raggruppate i voti per nome in un `defaultdict(list)` e stampate ogni nome con la sua lista.
+
+```
+Quante t: 3  quante z: 0
+Le due più frequenti: [('t', 3), ('s', 2)]
+Anna: [28, 30]
+Bruno: [24]
+```
+
+---
+
 ## Esercizio 1 — L'appello di Statistica (`voti_appello.py`)
 
 [Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-voti_appello)
@@ -53,6 +195,31 @@ gruppi["Analisi"].append(27)    # la lista vuota si crea da sola
 2. Stampate la lista ordinata (`sorted()`), il numero di presenti, la media con un decimale, il voto minimo e il massimo.
 3. Con una seconda comprehension tenete i voti da 18 in su: stampate quanti sono, la loro percentuale con un decimale e la loro media.
 4. Se nessuno è promosso, la media dei promossi non va stampata.
+
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+SOGLIA: int = 18
+
+# 1. leggo la riga e la trasformo in una lista di interi
+testo: str = input("Voti separati da spazi: ")
+voti: list[int] = ...
+
+# 2. stampo la lista ordinata
+# stampo il numero di presenti
+# stampo la media con un decimale
+# stampo minimo e massimo
+
+# 3. tengo i voti da SOGLIA in su
+promossi: list[int] = ...
+# stampo quanti sono e la loro percentuale
+
+# 4. se c'è almeno un promosso:
+#     calcolo la media dei promossi
+#     la stampo
+```
 
 **Esempio di esecuzione**
 
@@ -83,6 +250,32 @@ Media dei promossi: 24.5
 2. Pulite ogni risposta con `strip()` e `lower()`, così `Bus` e ` bus` diventano uguali, e scartate le risposte vuote.
 3. Contate le risposte con un `Counter`. Stampate il numero di risposte e di mezzi diversi, poi ogni mezzo dal più frequente (`most_common()`) con il conteggio e la percentuale con un decimale.
 4. Stampate infine il mezzo più usato, cioè la moda.
+
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+from collections import Counter
+
+# 1. leggo le risposte
+testo: str = input("Risposte separate da virgole: ")
+
+# 2. divido sulle virgole e pulisco ogni pezzo (strip e lower)
+risposte: list[str] = ...
+# tolgo le risposte vuote
+
+# 3. conto le risposte
+conteggio: Counter[str] = ...
+totale: int = ...
+# stampo il numero di risposte e di mezzi diversi
+# per ogni coppia (mezzo, n) di most_common():
+#     stampo mezzo, conteggio e percentuale
+
+# 4. il mezzo più usato: il primo elemento di most_common(1)
+moda: str = ...
+# lo stampo
+```
 
 **Esempio di esecuzione**
 
@@ -122,6 +315,38 @@ Mezzo più usato: bici
 | Davide | Statistica 21, Informatica 26 |
 | Elisa | Analisi 12 |
 
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+from collections import defaultdict
+
+# 1. gli esiti, nell'ordine della tabella
+esiti: list[tuple[str, str, int]] = [
+    ("Anna", "Statistica", 28), ("Anna", "Analisi", 30),
+    # continuate con Bruno, Chiara, Davide ed Elisa
+]
+
+# 2. le tre strutture da riempire in un solo ciclo
+voti_esame: defaultdict[str, list[int]] = defaultdict(list)  # esame -> voti
+superati: defaultdict[str, list[str]] = defaultdict(list)    # nome -> esami
+studenti: set[str] = set()                                   # tutti i nomi
+# per ogni (nome, esame, voto) in esiti:
+#     aggiungo il voto alla lista del suo esame
+#     aggiungo il nome al set
+#     se il voto è da 18 in su:
+#         aggiungo l'esame alla lista dello studente
+
+# 3. per ogni (esame, voti) di voti_esame:
+#     conto i promossi
+#     stampo prove, media e promossi
+
+# 4. per ogni nome di superati, in ordine alfabetico:
+#     stampo i suoi esami superati
+# stampo chi è in studenti ma non in superati (differenza tra set)
+```
+
 **Esempio di esecuzione**
 
 ```
@@ -138,31 +363,6 @@ Nessun esame superato: ['Elisa']
 **Provate anche**
 
 - aggiungete `("Elisa", "Statistica", 18)` → `Statistica: 5 prove, media 22.6, promossi 4` e `Nessun esame superato: []`
-
----
-
-## Esercizio 4 — Ore di studio (`descrittive.py`)
-
-[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-descrittive)
-**Consegna**
-
-1. Scrivete la funzione `descrittive(valori: list[float]) -> tuple[float, float, float]` che restituisce media, mediana e deviazione standard campionaria.
-2. Mediana: ordinate i valori con `sorted()`; se sono in numero dispari è il valore centrale, se sono pari è la media dei due centrali.
-3. Deviazione standard: somma dei quadrati degli scarti dalla media, divisa per n − 1, poi radice quadrata (`** 0.5`).
-4. Partite da `ore_studio = {"Primo anno": [12, 15, 8, 20, 10, 14, 9], "Secondo anno": [18, 22, 15, 25, 30, 16], "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25]}` (ore di studio settimanali). Per ogni anno chiamate la funzione e stampate media e mediana con un decimale, deviazione standard con due.
-
-**Esempio di esecuzione**
-
-```
-Primo anno: media 12.6, mediana 12.0, dev. std 4.16
-Secondo anno: media 21.0, mediana 20.0, dev. std 5.80
-Terzo anno: media 18.5, mediana 17.0, dev. std 10.25
-```
-
-**Provate anche**
-
-- `descrittive([1, 2, 3, 4])` → media `2.5`, mediana `2.5`, deviazione standard `1.29`
-- aggiungete `"Fuori corso": [5, 5, 5]` → `dev. std 0.00`
 
 ---
 
@@ -206,6 +406,47 @@ Scegliete un tema. Le cinque challenge hanno la stessa difficoltà e usano gli s
 | BANK | 20 a 8.15, -5 a 8.60, 10 a 8.30, -5 a 8.75 |
 | TECH | 10 a 45.20, 5 a 47.80, 5 a 44.90 |
 
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+from collections import Counter, defaultdict
+
+
+def escursione(prezzi: list[float]) -> tuple[float, float]:
+    """Restituisce il prezzo minimo e il prezzo massimo."""
+    # restituisco minimo e massimo della lista
+    ...
+
+
+# 1. gli ordini (titolo, quantità, prezzo); quantità negativa = vendita
+ordini: list[tuple[str, int, float]] = [
+    ("ENRG", 30, 12.40), ("ENRG", 20, 12.10), ("ENRG", -10, 13.05),
+    # continuate con BANK e TECH
+]
+
+# 3. prezzi per titolo e azioni in portafoglio
+prezzi: defaultdict[str, list[float]] = defaultdict(list)
+portafoglio: Counter[str] = Counter()
+# per ogni (titolo, quantità, prezzo) in ordini:
+#     aggiungo il prezzo alla lista del titolo
+#     sommo la quantità nel portafoglio
+# per ogni titolo, in ordine alfabetico:
+#     chiamo escursione e spacchetto minimo e massimo
+#     stampo ordini, prezzi e azioni
+
+# 4. la posizione più grande
+# prendo la prima coppia di most_common(1) e la stampo
+vendite: list[tuple[str, int, float]] = ...  # ordini con quantità < 0
+# stampo quante sono e la percentuale sugli ordini
+
+# 5. i titoli mai venduti
+comprati: set[str] = ...
+venduti: set[str] = ...
+# stampo la differenza, ordinata
+```
+
 **Esempio di esecuzione**
 
 ```
@@ -242,6 +483,50 @@ Mai venduti: ['TECH']
 | 3 | Ferri, Lanza, Moro, Neri |
 | 4 | Moro, Lanza, Ferri, Neri |
 | 5 | Moro, Neri, Ferri, Lanza |
+
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+from collections import Counter, defaultdict
+
+PUNTI: list[int] = [25, 18, 15, 12]
+
+
+def bilancio(posizioni: list[int]) -> tuple[int, int]:
+    """Restituisce i punti totali e il miglior piazzamento."""
+    # trasformo ogni piazzamento p nei punti PUNTI[p - 1]
+    # restituisco la somma dei punti e il piazzamento minimo
+    ...
+
+
+# 1. la Scuderia Rossa e le gare (dal primo al quarto)
+rossa: set[str] = {"Ferri", "Lanza"}
+gare: list[tuple[str, str, str, str]] = [
+    ("Ferri", "Moro", "Lanza", "Neri"),
+    # continuate con le gare da 2 a 5
+]
+
+# 3. piazzamenti per pilota e vittorie
+posizioni: defaultdict[str, list[int]] = defaultdict(list)
+vittorie: Counter[str] = Counter()
+# per ogni arrivo in gare:
+#     conto una vittoria per il primo pilota
+#     per ogni indice i dell'arrivo:
+#         aggiungo i + 1 ai piazzamenti di quel pilota
+# per ogni pilota, in ordine alfabetico:
+#     chiamo bilancio e spacchetto punti e miglior piazzamento
+#     stampo
+
+# 4. il pilota con più vittorie
+# prendo la prima coppia di most_common(1) e la stampo
+vinte: list[str] = ...  # vincitori che sono in rossa
+# stampo quante gare e la percentuale
+
+# 5. i piloti senza vittorie
+# stampo i piloti di posizioni che non sono in vittorie, ordinati
+```
 
 **Esempio di esecuzione**
 
@@ -280,6 +565,49 @@ Senza vittorie: ['Lanza', 'Neri']
 | quaderno | 3.20 |
 | cuffie | 24.90 |
 | lampada | 18.00 |
+
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+from collections import Counter, defaultdict
+
+
+def vendite(quantita: list[int]) -> tuple[int, int]:
+    """Restituisce il numero di ordini e il numero di pezzi."""
+    # restituisco la lunghezza della lista e la somma
+    ...
+
+
+# 1. i prezzi e gli ordini (cliente, prodotto, quantità)
+prezzi: dict[str, float] = {
+    "zaino": 39.90,
+    # continuate con la tabella
+}
+ordini: list[tuple[str, str, int]] = [
+    ("Irene", "zaino", 1), ("Tommaso", "quaderno", 5),
+    # continuate con la consegna
+]
+
+# 3. quantità per prodotto e ordini per cliente
+pezzi: defaultdict[str, list[int]] = defaultdict(list)
+clienti: Counter[str] = Counter()
+# per ogni (cliente, prodotto, quantità) in ordini:
+#     aggiungo la quantità alla lista del prodotto
+#     conto un ordine per il cliente
+# per ogni prodotto di pezzi, in ordine alfabetico:
+#     chiamo vendite e spacchetto ordini e pezzi
+#     stampo ordini, pezzi e incasso (pezzi × prezzo)
+
+# 4. il cliente più assiduo
+# prendo la prima coppia di most_common(1) e la stampo
+multipli: list[tuple[str, str, int]] = ...  # ordini con più di un pezzo
+# stampo quanti sono e la percentuale
+
+# 5. i prodotti mai venduti
+# stampo le chiavi di prezzi che non sono in pezzi, ordinate
+```
 
 **Esempio di esecuzione**
 
@@ -324,6 +652,48 @@ Mai venduti: ['lampada']
 | P09 | trattamento, 162 → 148 |
 | P10 | controllo, 157 → 155 |
 
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+from collections import Counter, defaultdict
+
+
+def variazione(differenze: list[int]) -> tuple[int, float]:
+    """Restituisce il numero di pazienti e la variazione media."""
+    # restituisco la lunghezza della lista e la media
+    ...
+
+
+# 1. i pazienti (codice, gruppo, prima, dopo); dopo = 0 se manca
+pazienti: list[tuple[str, str, int, int]] = [
+    ("P01", "trattamento", 152, 138), ("P02", "controllo", 148, 145),
+    # continuate con la tabella
+]
+
+# 2. i pazienti validi e quelli senza seconda misura
+validi: list[tuple[str, str, int, int]] = ...  # misura dopo > 0
+# stampo quanti sono e la percentuale
+persi: set[str] = ...  # codici di tutti meno codici dei validi
+# stampo persi, ordinati
+
+# 4. variazioni e migliorati, per gruppo
+differenze: defaultdict[str, list[int]] = defaultdict(list)
+migliorati: Counter[str] = Counter()
+# per ogni (codice, gruppo, prima, dopo) in validi:
+#     aggiungo dopo - prima alla lista del gruppo
+#     se dopo - prima vale -10 o meno:
+#         conto un migliorato per il gruppo
+# per ogni gruppo, in ordine alfabetico:
+#     chiamo variazione e spacchetto pazienti e media
+#     stampo pazienti, media e migliorati
+
+# 5. il totale dei migliorati
+# stampo la somma dei valori di migliorati e quanti sono i validi
+# prendo la prima coppia di most_common(1) e la stampo
+```
+
 **Esempio di esecuzione**
 
 ```
@@ -359,6 +729,46 @@ Gruppo con più migliorati: trattamento (3)
 | Bea | 6 e 6, 5 e 2, 3 e 1, 4 e 3 |
 | Ciro | 2 e 5, 4 e 4, 6 e 2, 5 e 3 |
 
+**Da dove partire**
+
+I commenti numerati seguono i passi della consegna e ogni commento corrisponde a una riga di codice, da scrivere subito sotto. Al posto di `...` scrivete il vostro codice.
+
+```python
+from collections import Counter, defaultdict
+
+
+def riassunto(somme: list[int]) -> tuple[float, int]:
+    """Restituisce la somma media e la somma più alta."""
+    # restituisco la media e il massimo della lista
+    ...
+
+
+# 1. i lanci (giocatore, primo dado, secondo dado)
+lanci: list[tuple[str, int, int]] = [
+    ("Ada", 3, 4), ("Ada", 1, 3), ("Ada", 6, 5), ("Ada", 2, 2),
+    # continuate con Bea e Ciro
+]
+
+# 3. somme per giocatore e quante volte esce ogni somma
+somme: defaultdict[str, list[int]] = defaultdict(list)
+uscite: Counter[int] = Counter()
+# per ogni (giocatore, d1, d2) in lanci:
+#     aggiungo d1 + d2 alla lista del giocatore
+#     conto un'uscita per la somma d1 + d2
+# per ogni giocatore, in ordine alfabetico:
+#     chiamo riassunto e spacchetto media e somma più alta
+#     stampo
+
+# 4. la somma più uscita
+# prendo la prima coppia di most_common(1) e la stampo
+doppi: list[tuple[str, int, int]] = ...  # lanci con i due dadi uguali
+# stampo quanti sono e la percentuale
+
+# 5. le somme mai uscite
+possibili: set[int] = ...  # a + b con a e b da 1 a 6
+# stampo le possibili che non sono in uscite, ordinate
+```
+
 **Esempio di esecuzione**
 
 ```
@@ -385,7 +795,7 @@ Somme mai uscite: [2, 3, 5, 6, 9, 10]
 4. Perché, per stampare un set, conviene usare `sorted()`?
 5. In `libretto.py`, quando la media ponderata coincide con la media aritmetica?
 6. In `contingenza.py` le chiavi del `Counter` sono tuple. Si potrebbero usare liste? Perché?
-7. In `descrittive.py` la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?
+7. In `descrittive.py` (Extra 5) la funzione restituisce tre valori: che tipo ha il risultato e come si separa in tre variabili?
 
 ---
 
@@ -639,4 +1049,59 @@ for s in sorted(per_scuola):
 totale_si: int = superato.count(True)
 print(f"Totale: {totale_si} su {len(superato)} "
       f"({totale_si / len(superato):.1%})")
+```
+
+---
+
+## Extra 5 — Ore di studio (`descrittive.py`)
+
+[Soluzione →](../../codice/L03_strutture_dati/esercizi.html#sol-descrittive)
+**Consegna**
+
+1. Scrivete la funzione `descrittive(valori: list[float]) -> tuple[float, float, float]` che restituisce media, mediana e deviazione standard campionaria.
+2. Mediana: ordinate i valori con `sorted()`; se sono in numero dispari è il valore centrale, se sono pari è la media dei due centrali.
+3. Deviazione standard: somma dei quadrati degli scarti dalla media, divisa per n − 1, poi radice quadrata (`** 0.5`).
+4. Partite da `ore_studio = {"Primo anno": [12, 15, 8, 20, 10, 14, 9], "Secondo anno": [18, 22, 15, 25, 30, 16], "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25]}` (ore di studio settimanali). Per ogni anno chiamate la funzione e stampate media e mediana con un decimale, deviazione standard con due.
+
+
+**Esempio di esecuzione**
+
+```
+Primo anno: media 12.6, mediana 12.0, dev. std 4.16
+Secondo anno: media 21.0, mediana 20.0, dev. std 5.80
+Terzo anno: media 18.5, mediana 17.0, dev. std 10.25
+```
+
+**Provate anche**
+
+- `descrittive([1, 2, 3, 4])` → media `2.5`, mediana `2.5`, deviazione standard `1.29`
+- aggiungete `"Fuori corso": [5, 5, 5]` → `dev. std 0.00`
+
+**Soluzione**
+
+```python
+def descrittive(valori: list[float]) -> tuple[float, float, float]:
+    """Restituisce media, mediana e deviazione standard."""
+    n: int = len(valori)
+    media: float = sum(valori) / n
+    ordinati: list[float] = sorted(valori)
+    if n % 2 == 1:
+        mediana: float = ordinati[n // 2]
+    else:
+        mediana = (ordinati[n // 2 - 1] + ordinati[n // 2]) / 2
+    scarti: list[float] = [(x - media) ** 2 for x in valori]
+    dev_std: float = (sum(scarti) / (n - 1)) ** 0.5
+    return media, mediana, dev_std
+
+
+ore_studio: dict[str, list[float]] = {
+    "Primo anno": [12, 15, 8, 20, 10, 14, 9],
+    "Secondo anno": [18, 22, 15, 25, 30, 16],
+    "Terzo anno": [20, 8, 35, 12, 28, 6, 14, 25],
+}
+
+for anno, ore in ore_studio.items():
+    media, mediana, dev_std = descrittive(ore)
+    print(f"{anno}: media {media:.1f}, mediana {mediana:.1f}, "
+          f"dev. std {dev_std:.2f}")
 ```
