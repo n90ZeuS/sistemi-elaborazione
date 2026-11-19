@@ -333,6 +333,10 @@
         .reveal tr.riga-extra td { color: #64748b; }
         .reveal a.link-soluzione:hover { background: #2563eb; color: #fff; }
         .reveal .tag-challenge { background: #ede9fe; color: #5b21b6; }
+        .reveal .tag-riscaldamento { background: #ffedd5; color: #9a3412; }
+        .reveal .passo { margin-bottom: 0.5em; }
+        .reveal .passo .consegna { font-size: 0.62em; }
+        .reveal .passo pre.output { font-size: 0.5em; }
         .reveal .etichetta {
             font-size: 0.6em;
             font-weight: 700;
@@ -371,10 +375,11 @@
 
             <section>
                 <h2>Come funziona</h2>
-                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file <code>.py</code> con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve <code>input()</code>: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file.</p>
+                <p style="font-size:0.8em">Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file <code>.py</code> con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve <code>input()</code>: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file. Si comincia con un riscaldamento di 16 passi brevi, tutti nello stesso file.</p>
                 <table class="mini" style="font-size:0.7em">
                     <thead><tr><th>#</th><th>File</th><th>Esercizio</th></tr></thead>
                     <tbody>
+                        <tr><td>Passi 1-16</td><td><code>riscaldamento.py</code></td><td>Riscaldamento: scrivere e chiamare funzioni</td></tr>
                         <tr><td>1</td><td><code>esito.py</code></td><td>Esito dell'esame</td></tr>
                         <tr><td>2</td><td><code>descrittive.py</code></td><td>Media e varianza a mano</td></tr>
                         <tr><td>3</td><td><code>riassunto.py</code></td><td>Tempi di viaggio</td></tr>
@@ -408,6 +413,471 @@ esami: list[tuple[str, int]] = [("Analisi", 24), ("Statistica", 30)]
 print(sorted(esami, key=lambda e: -e[1]))  # prima Statistica
 print(max(esami, key=lambda e: e[1])[0])   # Statistica
 print(statistics.median([24, 30, 27]))     # 27</code></pre>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Riscaldamento</h2>
+                <p style="font-size:0.75em">Sedici passi brevi, tutti nello stesso file <code>riscaldamento.py</code>: si parte da una funzione che stampa un saluto e si arriva a funzioni che ne chiamano altre.</p>
+                <ul style="font-size:0.7em">
+                    <li>Ogni funzione ha i type hints e una docstring di una riga.</li>
+                    <li>Le funzioni dei primi passi servono di nuovo più avanti: non cancellatele.</li>
+                    <li>Prima di eseguire, provate a prevedere l'output; poi confrontatelo con quello atteso.</li>
+                    <li>Dopo ogni coppia di passi c'è una slide «Come si fa» con un esempio diverso che usa gli stessi strumenti.</li>
+                </ul>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 1-2</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>La prima funzione</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 1 · La prima funzione</div>
+                        <ul class="consegna"><li>Scrivete <code>saluta() -&gt; None</code>, che stampa <code>Benvenuti al laboratorio 4!</code>. Sotto la riga del <code>def</code> mettete una docstring di una riga.</li><li>Chiamatela due volte. La funzione parte solo quando la chiamate: scrivere <code>saluta</code> senza parentesi non stampa niente.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Benvenuti al laboratorio 4!
+Benvenuti al laboratorio 4!</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 2 · Un parametro</div>
+                        <ul class="consegna"><li>Scrivete <code>saluta_persona(nome: str) -&gt; None</code>, che stampa <code>Ciao,</code> seguito dal nome e da un punto esclamativo.</li><li>Chiamatela con <code>"Anna"</code> e con <code>"Marco"</code>, poi con una variabile: <code>studente = "Giulia"</code> e <code>saluta_persona(studente)</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Ciao, Anna!
+Ciao, Marco!
+Ciao, Giulia!</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 1-2</div>
+                <h2>Definire e chiamare una funzione</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def benvenuto() -&gt; None:
+    """Stampa una riga di benvenuto."""
+    print("Buongiorno!")
+
+benvenuto()      # chiamata: esegue il corpo → Buongiorno!
+benvenuto()      # si può chiamare quante volte si vuole
+
+def presenta_corso(corso: str) -&gt; None:
+    """Stampa il nome del corso."""
+    print(f"Corso di {corso}")
+
+presenta_corso("Economia")   # corso vale "Economia"
+materia: str = "Fisica"
+presenta_corso(materia)      # corso vale "Fisica"</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>def</code>, nome, parentesi con i parametri, due punti. Il corpo è indentato.</li><li>La prima riga del corpo è la docstring: dice cosa fa la funzione.</li><li><code>-&gt; None</code>: la funzione non restituisce niente, fa solo qualcosa (qui stampa).</li><li>Il <code>def</code> definisce e basta: il corpo parte solo con la chiamata <code>nome()</code>.</li><li>Il parametro è una variabile che riceve il valore dell'argomento, qualunque nome abbia l'argomento.</li></ul></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 3-4</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>return e parametri</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 3 · return o print?</div>
+                        <ul class="consegna"><li>Scrivete <code>doppio(x: float) -&gt; float</code>, che <em>restituisce</em> il doppio di <code>x</code> con <code>return</code>, e <code>stampa_doppio(x: float) -&gt; None</code>, che invece lo <em>stampa</em>.</li><li>Stampate <code>doppio(5)</code>, poi salvate <code>doppio(5) + 1</code> in una variabile e stampatela: il risultato di <code>return</code> si può riusare.</li><li>Scrivete <code>valore = stampa_doppio(5)</code> e stampate <code>valore</code>: la funzione stampa 10 ma restituisce <code>None</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>10
+doppio(5) + 1 = 11
+10
+stampa_doppio ha restituito: None</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 4 · Due parametri</div>
+                        <ul class="consegna"><li>Scrivete <code>differenza(a: float, b: float) -&gt; float</code> (<code>a</code> meno <code>b</code>) e <code>media_due(a: float, b: float) -&gt; float</code>.</li><li>Stampate <code>differenza(30, 24)</code> e <code>differenza(24, 30)</code>: l'ordine degli argomenti conta.</li><li>Stampate la media di 24 e 30, poi la media fra quel risultato e 28, mettendo una chiamata dentro l'altra.</li><li>Provate <code>media_due(24)</code>, leggete l'errore e poi commentate la riga.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>differenza(30, 24) = 6
+differenza(24, 30) = -6
+media_due(24, 30) = 27.0
+media di 27 e di 28: 27.5
+TypeError: media_due() missing 1 required positional argument: 'b'</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 3-4</div>
+                <h2>return e più parametri</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def triplo(x: float) -&gt; float:
+    """Restituisce il triplo di x."""
+    return 3 * x
+
+t: float = triplo(4)     # t vale 12
+print(triplo(4) - 2)     # 10: il risultato entra in un calcolo
+
+def stampa_triplo(x: float) -&gt; None:
+    """Stampa il triplo di x."""
+    print(3 * x)
+
+r = stampa_triplo(4)     # stampa 12, ma r vale None
+
+def rapporto(a: float, b: float) -&gt; float:
+    """Restituisce a diviso b."""
+    return a / b
+
+print(rapporto(10, 4))           # a=10, b=4 → 2.5
+print(rapporto(4, 10))           # a=4, b=10 → 0.4
+print(rapporto(triplo(2), 3))    # prima triplo(2) = 6, poi 6 / 3 → 2.0</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>return</code> consegna il valore a chi chiama e chiude la funzione.</li><li>Senza <code>return</code> la funzione restituisce <code>None</code>: stampare non è restituire.</li><li>Gli argomenti vanno ai parametri nell'ordine in cui sono scritti.</li><li>Servono tanti argomenti quanti parametri, altrimenti <code>TypeError: ... missing 1 required positional argument</code>.</li><li>In una chiamata dentro l'altra Python calcola prima quella interna.</li></ul></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 5-6</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Funzioni che decidono</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 5 · Restituire True o False</div>
+                        <ul class="consegna"><li>Scrivete <code>promosso(voto: int) -&gt; bool</code>, vera se il voto è almeno 18. Basta <code>return voto &gt;= 18</code>, senza <code>if</code>.</li><li>Scrivete <code>pari(n: int) -&gt; bool</code> con l'operatore <code>%</code>.</li><li>Stampate <code>promosso(25)</code> e <code>promosso(17)</code>. Poi, per 3, 8 e 11, usate <code>pari()</code> come condizione di un <code>if</code> e stampate se il numero è pari o dispari.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>promosso(25): True  promosso(17): False
+3 è dispari
+8 è pari
+11 è dispari</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 6 · Più return</div>
+                        <ul class="consegna"><li>Scrivete <code>fascia(voto: float) -&gt; str</code>: <code>insufficiente</code> sotto 18, <code>sufficiente</code> sotto 24, <code>buono</code> sotto 28, <code>ottimo</code> negli altri casi.</li><li>Usate un <code>return</code> per ogni caso: quando arriva a un <code>return</code> la funzione si ferma, quindi bastano degli <code>if</code> uno sotto l'altro, senza <code>elif</code> né <code>else</code>.</li><li>Con un ciclo stampate la fascia di 15, 18, 24, 27 e 30.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>15: insufficiente
+18: sufficiente
+24: buono
+27: buono
+30: ottimo</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 5-6</div>
+                <h2>Funzioni che decidono</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def maggiorenne(eta: int) -&gt; bool:
+    """Restituisce True se eta è almeno 18."""
+    return eta &gt;= 18       # il confronto vale già True o False
+
+if maggiorenne(20):        # non serve == True
+    print("Può votare")
+
+def taglia(cm: float) -&gt; str:
+    """Restituisce la taglia per un'altezza in cm."""
+    if cm &lt; 160:
+        return "S"
+    if cm &lt; 175:
+        return "M"         # qui si arriva solo con cm &gt;= 160
+    return "L"             # qui solo con cm &gt;= 175
+
+print(taglia(150), taglia(170), taglia(190))   # S M L</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Un confronto è già un <code>bool</code>: niente <code>if ... return True else return False</code>.</li><li>Una funzione che restituisce <code>bool</code> si usa direttamente come condizione di un <code>if</code>.</li><li>Pari o dispari: il resto della divisione per 2, <code>n % 2</code>, vale 0 per i pari.</li><li>Il primo <code>return</code> raggiunto chiude la funzione: le righe sotto non vengono eseguite.</li><li>Per questo l'ordine dei controlli conta: dal più stretto al più largo.</li></ul></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 7-8</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Default e keyword</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 7 · Parametro con valore di default</div>
+                        <ul class="consegna"><li>Scrivete <code>prezzo_scontato(prezzo: float, sconto: float = 0.1) -&gt; float</code>, che restituisce <code>prezzo * (1 - sconto)</code>.</li><li>Chiamatela su 50 euro in tre modi: senza sconto (vale il default, il 10%), con <code>0.2</code> come secondo argomento e con <code>sconto=0.5</code>. Due decimali.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Senza sconto indicato: 45.00 euro
+Con sconto 0.2: 40.00 euro
+Con sconto=0.5: 25.00 euro</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 8 · Argomenti keyword</div>
+                        <ul class="consegna"><li>Scrivete <code>presenta(nome: str, corso: str = "Statistica", anno: int = 1) -&gt; str</code>, che restituisce la stringa come nell'output.</li><li>Stampate <code>presenta("Anna")</code>; poi Marco al secondo anno, passando solo <code>anno=2</code>; poi Sara, Economia, terzo anno, passando tutti e tre gli argomenti per nome e in un ordine diverso da quello del <code>def</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Anna, Statistica, anno 1
+Marco, Statistica, anno 2
+Sara, Economia, anno 3</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 7-8</div>
+                <h2>Default e keyword</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def interesse(capitale: float, tasso: float = 0.02) -&gt; float:
+    """Restituisce l'interesse di un anno (0.02 = 2%)."""
+    return capitale * tasso
+
+print(interesse(1000))              # tasso = 0.02 → 20.0
+print(interesse(1000, 0.05))        # posizionale → 50.0
+print(interesse(1000, tasso=0.05))  # keyword → 50.0
+
+def biglietto(citta: str, classe: int = 2,
+              ritorno: bool = False) -&gt; str:
+    """Restituisce la descrizione del biglietto."""
+    return f"{citta}, classe {classe}, ritorno {ritorno}"
+
+print(biglietto("Roma", ritorno=True))   # classe resta 2
+print(biglietto(classe=1, citta="Milano"))</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Il valore di default si scrive nel <code>def</code> con <code>=</code> e vale quando l'argomento manca.</li><li>I parametri con default vanno dopo quelli senza.</li><li>Un argomento keyword (<code>nome=valore</code>) dice a quale parametro va: l'ordine non conta più.</li><li>Con le keyword si può saltare un parametro con default e cambiare solo quello dopo.</li><li>Prima i posizionali, poi le keyword: <code>biglietto(citta="Roma", 1)</code> è un errore.</li></ul></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 9-10</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Funzioni e liste</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 9 · Una lista come parametro</div>
+                        <ul class="consegna"><li>Scrivete <code>somma(valori: list[float]) -&gt; float</code> con un ciclo <code>for</code>, senza usare <code>sum()</code>.</li><li>Scrivete <code>conta_sopra(valori: list[float], soglia: float) -&gt; int</code>, che conta i valori maggiori della soglia.</li><li>Con <code>ore = [2, 5, 3, 8, 1, 6]</code> stampate la somma (controllatela con <code>sum()</code>) e quanti valori superano 4 e 7.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Somma: 25, controllo con sum(): 25
+Sopra 4 ore: 3
+Sopra 7 ore: 1</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 10 · Restituire una lista nuova</div>
+                        <ul class="consegna"><li>Scrivete <code>solo_promossi(voti: list[int]) -&gt; list[int]</code> con una list comprehension che chiama <code>promosso()</code> del passo 5.</li><li>Con <code>appello = [24, 15, 30, 17, 18]</code> stampate i promossi e poi <code>appello</code>: la lista di partenza non è cambiata.</li><li>Chiamatela anche su una lista vuota.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Promossi: [24, 30, 18]
+Appello: [24, 15, 30, 17, 18]
+Promossi in un appello vuoto: []</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 9-10</div>
+                <h2>Funzioni e liste</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def conta_negativi(valori: list[float]) -&gt; int:
+    """Conta i valori minori di zero."""
+    conta: int = 0              # si parte da zero
+    for v in valori:
+        if v &lt; 0:
+            conta += 1
+    return conta                # fuori dal ciclo!
+
+print(conta_negativi([3, -1, -4, 2]))   # 2
+print(conta_negativi([5, 6]))           # 0
+
+def solo_positivi(valori: list[float]) -&gt; list[float]:
+    """Restituisce una lista nuova con i valori maggiori di zero."""
+    return [v for v in valori if v &gt; 0]
+
+dati: list[float] = [3, -1, -4, 2]
+print(solo_positivi(dati), dati)   # [3, 2] [3, -1, -4, 2]</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>La stessa funzione lavora su qualsiasi lista le passiate.</li><li>Accumulatore: si crea prima del ciclo, si aggiorna dentro, si restituisce dopo.</li><li>Errore classico: il <code>return</code> dentro il ciclo chiude la funzione al primo giro.</li><li>Una comprehension costruisce una lista nuova: quella passata non cambia.</li><li>Nella condizione della comprehension si può chiamare un'altra funzione, per esempio <code>if positivo(v)</code>.</li></ul></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 11-12</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Tuple e funzioni che si chiamano</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 11 · Restituire una tupla</div>
+                        <ul class="consegna"><li>Scrivete <code>min_max(valori: list[float]) -&gt; tuple[float, float]</code> con <code>return min(valori), max(valori)</code>.</li><li>Con <code>temperature = [12.5, 9.0, 15.5, 11.0]</code> spacchettate il risultato in <code>basso, alto</code> e stampate minima, massima ed escursione.</li><li>Salvate <code>min_max([3, 7])</code> in una sola variabile e stampatela: è una tupla.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Minima 9.0, massima 15.5, escursione 6.5
+Senza spacchettare: (3, 7)</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 12 · Una funzione che ne chiama un&#x27;altra</div>
+                        <ul class="consegna"><li>Scrivete <code>media(valori: list[float]) -&gt; float</code> usando <code>somma()</code> del passo 9.</li><li>Scrivete <code>sopra_media(valori: list[float]) -&gt; list[float]</code>: chiama <code>media()</code> una volta sola, salva il risultato in una variabile e poi tiene i valori maggiori.</li><li>Con <code>ore</code> del passo 9 stampate la media (due decimali) e i valori sopra la media. Poi scrivete <code>help(media)</code>: Python mostra la firma e la vostra docstring.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Media delle ore: 4.17
+Sopra la media: [5, 8, 6]
+Help on function media in module __main__:
+media(valori: list[float]) -&gt; float
+    Restituisce la media aritmetica dei valori.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 11-12</div>
+                <h2>Tuple e funzioni che si chiamano</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def primo_ultimo(parole: list[str]) -&gt; tuple[str, str]:
+    """Restituisce la prima e l'ultima parola."""
+    return parole[0], parole[-1]       # una tupla
+
+inizio, fine = primo_ultimo(["alfa", "beta", "gamma"])
+print(inizio, fine)                    # alfa gamma
+coppia = primo_ultimo(["x", "y"])
+print(coppia)                          # ('x', 'y')
+
+def quadrato(x: float) -&gt; float:
+    """Restituisce x al quadrato."""
+    return x * x
+
+def somma_quadrati(valori: list[float]) -&gt; float:
+    """Restituisce la somma dei quadrati, usando quadrato()."""
+    totale: float = 0
+    for v in valori:
+        totale += quadrato(v)
+    return totale
+
+print(somma_quadrati([1, 2, 3]))       # 14
+help(quadrato)                         # firma e docstring</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>return a, b</code> restituisce una tupla; il tipo è <code>tuple[...]</code>.</li><li>Si spacchetta con tante variabili quanti sono gli elementi; con una sola variabile si tiene la tupla intera.</li><li>Una funzione già scritta si chiama dentro un'altra: si scrive una volta e si usa ovunque.</li><li>Un valore che serve più volte (per esempio la media) si calcola una volta e si salva in una variabile, non dentro la comprehension.</li><li><code>help(funzione)</code> mostra la firma e la docstring.</li></ul></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 13-14</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Dizionari e scope</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 13 · Un dizionario come parametro</div>
+                        <ul class="consegna"><li>Scrivete <code>esame_migliore(libretto: dict[str, int]) -&gt; str</code>: con un ciclo su <code>items()</code> tenete da parte l'esame con il voto più alto visto finora.</li><li>Scrivete <code>media_libretto(libretto: dict[str, int]) -&gt; float</code>, che riusa <code>media()</code> su <code>list(libretto.values())</code>.</li><li>Provatele con <code>libretto = {"Analisi": 26, "Statistica": 30, "Informatica": 28}</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Esame migliore: Statistica
+Media del libretto: 28.00</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 14 · Scope: cosa vede la funzione</div>
+                        <ul class="consegna"><li>Scrivete <code>aumenta(n: int) -&gt; int</code>, che fa <code>n = n + 1</code> e restituisce <code>n</code>. Con <code>x = 10</code> stampate <code>aumenta(x)</code> e poi <code>x</code>: <code>n</code> è una variabile locale e cambiarla non cambia <code>x</code>. Per aggiornare <code>x</code> scrivete <code>x = aumenta(x)</code>.</li><li>Scrivete <code>aggiungi_voto(voti: list[int], voto: int) -&gt; None</code>, che fa <code>voti.append(voto)</code>. Chiamatela su <code>miei = [24, 27]</code>: la lista cambia, perché la funzione riceve la stessa lista.</li><li>Fuori dalle funzioni provate <code>print(n)</code>, leggete l'errore e poi commentate la riga.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>aumenta(x) = 11, x = 10
+dopo x = aumenta(x): x = 11
+miei dopo aggiungi_voto: [24, 27, 30]
+NameError: name 'n' is not defined</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 13-14</div>
+                <h2>Dizionari e scope</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def totale_spesa(prezzi: dict[str, float]) -&gt; float:
+    """Restituisce la somma dei prezzi."""
+    totale: float = 0
+    for prodotto, prezzo in prezzi.items():
+        totale += prezzo
+    return totale
+
+print(totale_spesa({"pane": 2.5, "latte": 1.5}))   # 4.0
+
+def raddoppia(k: int) -&gt; int:
+    """Restituisce il doppio di k."""
+    k = k * 2          # k è locale
+    return k
+
+y: int = 5
+print(raddoppia(y), y)   # 10 5: y non cambia
+y = raddoppia(y)         # ora y vale 10
+
+def svuota(lista: list[int]) -&gt; None:
+    """Toglie tutti gli elementi dalla lista."""
+    lista.clear()        # modifica la lista di chi chiama</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Un dizionario si passa come una lista; dentro si scorre con <code>items()</code>.</li><li>Per il massimo servono due variabili, il nome e il valore migliori visti finora, aggiornate insieme dentro il ciclo.</li><li>Le variabili create nella funzione sono locali: alla fine spariscono, e fuori si ha <code>NameError</code>.</li><li>Riassegnare un parametro (<code>k = k * 2</code>) non cambia la variabile di chi chiama: si usa <code>y = raddoppia(y)</code>.</li><li>Una lista passata è la stessa lista: <code>append</code>, <code>clear</code> e gli altri metodi la modificano anche fuori.</li></ul></div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · riscaldamento.py · passi 15-16</div>
+                <a class="link-soluzione" href="../codice/L04_funzioni/esercizi.html#sol-riscaldamento" target="_blank">Soluzione →</a>
+                <h2>Mettere tutto insieme</h2>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 15 · Separare dati validi e non validi</div>
+                        <ul class="consegna"><li>Scrivete <code>valido(voto: int) -&gt; bool</code>, vera se il voto è tra 0 e 30.</li><li>Scrivete <code>separa(voti: list[int]) -&gt; tuple[list[int], list[int]]</code>: con un ciclo e <code>valido()</code> riempie due liste, i validi e gli scartati, e le restituisce insieme.</li><li>Con <code>letti = [28, 31, 18, -2, 24, 99, 15]</code> stampate le due liste, la media dei validi e i promossi fra i validi, riusando <code>media()</code> e <code>solo_promossi()</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Validi: [28, 18, 24, 15]
+Scartati: [31, -2, 99]
+Media dei validi: 21.25, promossi: [28, 18, 24]</code></pre>
+                    </div>
+                </div>
+                <div class="columns passo">
+                    <div class="col-60">
+                        <div class="etichetta">Passo 16 · Mettere tutto insieme</div>
+                        <ul class="consegna"><li>Scrivete <code>riepilogo(nome: str, voti: list[int]) -&gt; str</code>: chiama <code>separa()</code>, poi <code>media()</code> sui validi e <code>fascia()</code> sulla media, e restituisce la riga come nell'output.</li><li>Partite da <code>classe = {"Anna": [28, 30, 27], "Marco": [18, 35, 21], "Sara": [16, 19, 17, -1]}</code>: il programma principale è solo un ciclo che stampa <code>riepilogo()</code> per ogni studente.</li><li>Contate quante funzioni dei passi precedenti lavorano per una sola chiamata di <code>riepilogo()</code>.</li></ul>
+                    </div>
+                    <div class="col-40">
+                        <div class="etichetta">Output atteso</div>
+                        <pre class="output"><code class="language-plaintext" data-trim data-noescape>Anna: media 28.33, ottimo, voti scartati: 0
+Marco: media 19.50, sufficiente, voti scartati: 1
+Sara: media 17.33, insufficiente, voti scartati: 1</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 15-16</div>
+                <h2>Funzioni piccole che lavorano insieme</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def pulisci(parola: str) -&gt; str:
+    """Toglie gli spazi ai lati e porta in minuscolo."""
+    return parola.strip().lower()
+
+def lunghe(parole: list[str], minimo: int = 5) -&gt; list[str]:
+    """Restituisce le parole pulite con almeno minimo lettere."""
+    pulite: list[str] = [pulisci(p) for p in parole]
+    return [p for p in pulite if len(p) &gt;= minimo]
+
+def scheda(titolo: str, parole: list[str]) -&gt; str:
+    """Restituisce una riga che riassume le parole lunghe."""
+    scelte: list[str] = lunghe(parole)
+    return f"{titolo}: {len(scelte)} parole lunghe {scelte}"
+
+elenco: list[str] = [" Statistica ", "dati", "MEDIA "]
+print(scheda("Elenco", elenco))
+# Elenco: 2 parole lunghe ['statistica', 'media']</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Per restituire due liste: si creano vuote prima del ciclo, si riempiono con <code>append</code>, si restituiscono con <code>return a, b</code>.</li><li>Ogni funzione fa una cosa sola e si prova da sola, prima di usarla nelle altre.</li><li>Il programma principale chiama poche funzioni: si legge come un elenco di passi.</li><li>Se cambia una regola (cosa è valido, le fasce) si corregge in un posto solo.</li><li>Ordine di lavoro: prima le funzioni piccole, poi quella che le mette insieme.</li></ul></div>
+                </div>
             </section>
 
             <section>

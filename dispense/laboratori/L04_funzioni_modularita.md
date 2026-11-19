@@ -2,12 +2,13 @@
 
 **Prerequisiti:** lezioni T13 (Funzioni) e T14 (Funzioni avanzate e moduli).
 
-Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file `.py` con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve `input()`: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file.
+Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file `.py` con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve `input()`: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file. Si comincia con un riscaldamento di 16 passi brevi, tutti nello stesso file.
 
 Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T15.
 
 | # | File | Esercizio |
 |---|---|---|
+| Passi 1-16 | `riscaldamento.py` | Riscaldamento: scrivere e chiamare funzioni |
 | 1 | `esito.py` | Esito dell'esame |
 | 2 | `descrittive.py` | Media e varianza a mano |
 | 3 | `riassunto.py` | Tempi di viaggio |
@@ -40,6 +41,439 @@ print(sorted(esami, key=lambda e: -e[1]))  # prima Statistica
 print(max(esami, key=lambda e: e[1])[0])   # Statistica
 print(statistics.median([24, 30, 27]))     # 27
 ```
+
+---
+
+## Riscaldamento (`riscaldamento.py`)
+
+[Soluzione →](../../codice/L04_funzioni/esercizi.html#sol-riscaldamento)
+
+Sedici passi brevi, tutti nello stesso file `riscaldamento.py`: si parte da una funzione che stampa un saluto e si arriva a funzioni che ne chiamano altre. Ogni funzione ha i type hints e una docstring di una riga. Le funzioni dei primi passi servono di nuovo più avanti: non cancellatele. Prima di eseguire, provate a prevedere l'output; poi confrontatelo con quello atteso. Dopo ogni coppia di passi c'è «Come si fa», con un esempio diverso che usa gli stessi strumenti.
+
+### Passo 1 — La prima funzione
+
+- Scrivete `saluta() -> None`, che stampa `Benvenuti al laboratorio 4!`. Sotto la riga del `def` mettete una docstring di una riga.
+- Chiamatela due volte. La funzione parte solo quando la chiamate: scrivere `saluta` senza parentesi non stampa niente.
+
+```
+Benvenuti al laboratorio 4!
+Benvenuti al laboratorio 4!
+```
+
+### Passo 2 — Un parametro
+
+- Scrivete `saluta_persona(nome: str) -> None`, che stampa `Ciao,` seguito dal nome e da un punto esclamativo.
+- Chiamatela con `"Anna"` e con `"Marco"`, poi con una variabile: `studente = "Giulia"` e `saluta_persona(studente)`.
+
+```
+Ciao, Anna!
+Ciao, Marco!
+Ciao, Giulia!
+```
+
+#### Come si fa — Definire e chiamare una funzione
+
+```python
+def benvenuto() -> None:
+    """Stampa una riga di benvenuto."""
+    print("Buongiorno!")
+
+benvenuto()      # chiamata: esegue il corpo → Buongiorno!
+benvenuto()      # si può chiamare quante volte si vuole
+
+def presenta_corso(corso: str) -> None:
+    """Stampa il nome del corso."""
+    print(f"Corso di {corso}")
+
+presenta_corso("Economia")   # corso vale "Economia"
+materia: str = "Fisica"
+presenta_corso(materia)      # corso vale "Fisica"
+```
+
+- `def`, nome, parentesi con i parametri, due punti. Il corpo è indentato.
+- La prima riga del corpo è la docstring: dice cosa fa la funzione.
+- `-> None`: la funzione non restituisce niente, fa solo qualcosa (qui stampa).
+- Il `def` definisce e basta: il corpo parte solo con la chiamata `nome()`.
+- Il parametro è una variabile che riceve il valore dell'argomento, qualunque nome abbia l'argomento.
+
+### Passo 3 — return o print?
+
+- Scrivete `doppio(x: float) -> float`, che *restituisce* il doppio di `x` con `return`, e `stampa_doppio(x: float) -> None`, che invece lo *stampa*.
+- Stampate `doppio(5)`, poi salvate `doppio(5) + 1` in una variabile e stampatela: il risultato di `return` si può riusare.
+- Scrivete `valore = stampa_doppio(5)` e stampate `valore`: la funzione stampa 10 ma restituisce `None`.
+
+```
+10
+doppio(5) + 1 = 11
+10
+stampa_doppio ha restituito: None
+```
+
+### Passo 4 — Due parametri
+
+- Scrivete `differenza(a: float, b: float) -> float` (`a` meno `b`) e `media_due(a: float, b: float) -> float`.
+- Stampate `differenza(30, 24)` e `differenza(24, 30)`: l'ordine degli argomenti conta.
+- Stampate la media di 24 e 30, poi la media fra quel risultato e 28, mettendo una chiamata dentro l'altra.
+- Provate `media_due(24)`, leggete l'errore e poi commentate la riga.
+
+```
+differenza(30, 24) = 6
+differenza(24, 30) = -6
+media_due(24, 30) = 27.0
+media di 27 e di 28: 27.5
+TypeError: media_due() missing 1 required positional argument: 'b'
+```
+
+#### Come si fa — return e più parametri
+
+```python
+def triplo(x: float) -> float:
+    """Restituisce il triplo di x."""
+    return 3 * x
+
+t: float = triplo(4)     # t vale 12
+print(triplo(4) - 2)     # 10: il risultato entra in un calcolo
+
+def stampa_triplo(x: float) -> None:
+    """Stampa il triplo di x."""
+    print(3 * x)
+
+r = stampa_triplo(4)     # stampa 12, ma r vale None
+
+def rapporto(a: float, b: float) -> float:
+    """Restituisce a diviso b."""
+    return a / b
+
+print(rapporto(10, 4))           # a=10, b=4 → 2.5
+print(rapporto(4, 10))           # a=4, b=10 → 0.4
+print(rapporto(triplo(2), 3))    # prima triplo(2) = 6, poi 6 / 3 → 2.0
+```
+
+- `return` consegna il valore a chi chiama e chiude la funzione.
+- Senza `return` la funzione restituisce `None`: stampare non è restituire.
+- Gli argomenti vanno ai parametri nell'ordine in cui sono scritti.
+- Servono tanti argomenti quanti parametri, altrimenti `TypeError: ... missing 1 required positional argument`.
+- In una chiamata dentro l'altra Python calcola prima quella interna.
+
+### Passo 5 — Restituire True o False
+
+- Scrivete `promosso(voto: int) -> bool`, vera se il voto è almeno 18. Basta `return voto >= 18`, senza `if`.
+- Scrivete `pari(n: int) -> bool` con l'operatore `%`.
+- Stampate `promosso(25)` e `promosso(17)`. Poi, per 3, 8 e 11, usate `pari()` come condizione di un `if` e stampate se il numero è pari o dispari.
+
+```
+promosso(25): True  promosso(17): False
+3 è dispari
+8 è pari
+11 è dispari
+```
+
+### Passo 6 — Più return
+
+- Scrivete `fascia(voto: float) -> str`: `insufficiente` sotto 18, `sufficiente` sotto 24, `buono` sotto 28, `ottimo` negli altri casi.
+- Usate un `return` per ogni caso: quando arriva a un `return` la funzione si ferma, quindi bastano degli `if` uno sotto l'altro, senza `elif` né `else`.
+- Con un ciclo stampate la fascia di 15, 18, 24, 27 e 30.
+
+```
+15: insufficiente
+18: sufficiente
+24: buono
+27: buono
+30: ottimo
+```
+
+#### Come si fa — Funzioni che decidono
+
+```python
+def maggiorenne(eta: int) -> bool:
+    """Restituisce True se eta è almeno 18."""
+    return eta >= 18       # il confronto vale già True o False
+
+if maggiorenne(20):        # non serve == True
+    print("Può votare")
+
+def taglia(cm: float) -> str:
+    """Restituisce la taglia per un'altezza in cm."""
+    if cm < 160:
+        return "S"
+    if cm < 175:
+        return "M"         # qui si arriva solo con cm >= 160
+    return "L"             # qui solo con cm >= 175
+
+print(taglia(150), taglia(170), taglia(190))   # S M L
+```
+
+- Un confronto è già un `bool`: niente `if ... return True else return False`.
+- Una funzione che restituisce `bool` si usa direttamente come condizione di un `if`.
+- Pari o dispari: il resto della divisione per 2, `n % 2`, vale 0 per i pari.
+- Il primo `return` raggiunto chiude la funzione: le righe sotto non vengono eseguite.
+- Per questo l'ordine dei controlli conta: dal più stretto al più largo.
+
+### Passo 7 — Parametro con valore di default
+
+- Scrivete `prezzo_scontato(prezzo: float, sconto: float = 0.1) -> float`, che restituisce `prezzo * (1 - sconto)`.
+- Chiamatela su 50 euro in tre modi: senza sconto (vale il default, il 10%), con `0.2` come secondo argomento e con `sconto=0.5`. Due decimali.
+
+```
+Senza sconto indicato: 45.00 euro
+Con sconto 0.2: 40.00 euro
+Con sconto=0.5: 25.00 euro
+```
+
+### Passo 8 — Argomenti keyword
+
+- Scrivete `presenta(nome: str, corso: str = "Statistica", anno: int = 1) -> str`, che restituisce la stringa come nell'output.
+- Stampate `presenta("Anna")`; poi Marco al secondo anno, passando solo `anno=2`; poi Sara, Economia, terzo anno, passando tutti e tre gli argomenti per nome e in un ordine diverso da quello del `def`.
+
+```
+Anna, Statistica, anno 1
+Marco, Statistica, anno 2
+Sara, Economia, anno 3
+```
+
+#### Come si fa — Default e keyword
+
+```python
+def interesse(capitale: float, tasso: float = 0.02) -> float:
+    """Restituisce l'interesse di un anno (0.02 = 2%)."""
+    return capitale * tasso
+
+print(interesse(1000))              # tasso = 0.02 → 20.0
+print(interesse(1000, 0.05))        # posizionale → 50.0
+print(interesse(1000, tasso=0.05))  # keyword → 50.0
+
+def biglietto(citta: str, classe: int = 2,
+              ritorno: bool = False) -> str:
+    """Restituisce la descrizione del biglietto."""
+    return f"{citta}, classe {classe}, ritorno {ritorno}"
+
+print(biglietto("Roma", ritorno=True))   # classe resta 2
+print(biglietto(classe=1, citta="Milano"))
+```
+
+- Il valore di default si scrive nel `def` con `=` e vale quando l'argomento manca.
+- I parametri con default vanno dopo quelli senza.
+- Un argomento keyword (`nome=valore`) dice a quale parametro va: l'ordine non conta più.
+- Con le keyword si può saltare un parametro con default e cambiare solo quello dopo.
+- Prima i posizionali, poi le keyword: `biglietto(citta="Roma", 1)` è un errore.
+
+### Passo 9 — Una lista come parametro
+
+- Scrivete `somma(valori: list[float]) -> float` con un ciclo `for`, senza usare `sum()`.
+- Scrivete `conta_sopra(valori: list[float], soglia: float) -> int`, che conta i valori maggiori della soglia.
+- Con `ore = [2, 5, 3, 8, 1, 6]` stampate la somma (controllatela con `sum()`) e quanti valori superano 4 e 7.
+
+```
+Somma: 25, controllo con sum(): 25
+Sopra 4 ore: 3
+Sopra 7 ore: 1
+```
+
+### Passo 10 — Restituire una lista nuova
+
+- Scrivete `solo_promossi(voti: list[int]) -> list[int]` con una list comprehension che chiama `promosso()` del passo 5.
+- Con `appello = [24, 15, 30, 17, 18]` stampate i promossi e poi `appello`: la lista di partenza non è cambiata.
+- Chiamatela anche su una lista vuota.
+
+```
+Promossi: [24, 30, 18]
+Appello: [24, 15, 30, 17, 18]
+Promossi in un appello vuoto: []
+```
+
+#### Come si fa — Funzioni e liste
+
+```python
+def conta_negativi(valori: list[float]) -> int:
+    """Conta i valori minori di zero."""
+    conta: int = 0              # si parte da zero
+    for v in valori:
+        if v < 0:
+            conta += 1
+    return conta                # fuori dal ciclo!
+
+print(conta_negativi([3, -1, -4, 2]))   # 2
+print(conta_negativi([5, 6]))           # 0
+
+def solo_positivi(valori: list[float]) -> list[float]:
+    """Restituisce una lista nuova con i valori maggiori di zero."""
+    return [v for v in valori if v > 0]
+
+dati: list[float] = [3, -1, -4, 2]
+print(solo_positivi(dati), dati)   # [3, 2] [3, -1, -4, 2]
+```
+
+- La stessa funzione lavora su qualsiasi lista le passiate.
+- Accumulatore: si crea prima del ciclo, si aggiorna dentro, si restituisce dopo.
+- Errore classico: il `return` dentro il ciclo chiude la funzione al primo giro.
+- Una comprehension costruisce una lista nuova: quella passata non cambia.
+- Nella condizione della comprehension si può chiamare un'altra funzione, per esempio `if positivo(v)`.
+
+### Passo 11 — Restituire una tupla
+
+- Scrivete `min_max(valori: list[float]) -> tuple[float, float]` con `return min(valori), max(valori)`.
+- Con `temperature = [12.5, 9.0, 15.5, 11.0]` spacchettate il risultato in `basso, alto` e stampate minima, massima ed escursione.
+- Salvate `min_max([3, 7])` in una sola variabile e stampatela: è una tupla.
+
+```
+Minima 9.0, massima 15.5, escursione 6.5
+Senza spacchettare: (3, 7)
+```
+
+### Passo 12 — Una funzione che ne chiama un'altra
+
+- Scrivete `media(valori: list[float]) -> float` usando `somma()` del passo 9.
+- Scrivete `sopra_media(valori: list[float]) -> list[float]`: chiama `media()` una volta sola, salva il risultato in una variabile e poi tiene i valori maggiori.
+- Con `ore` del passo 9 stampate la media (due decimali) e i valori sopra la media. Poi scrivete `help(media)`: Python mostra la firma e la vostra docstring.
+
+```
+Media delle ore: 4.17
+Sopra la media: [5, 8, 6]
+Help on function media in module __main__:
+media(valori: list[float]) -> float
+    Restituisce la media aritmetica dei valori.
+```
+
+#### Come si fa — Tuple e funzioni che si chiamano
+
+```python
+def primo_ultimo(parole: list[str]) -> tuple[str, str]:
+    """Restituisce la prima e l'ultima parola."""
+    return parole[0], parole[-1]       # una tupla
+
+inizio, fine = primo_ultimo(["alfa", "beta", "gamma"])
+print(inizio, fine)                    # alfa gamma
+coppia = primo_ultimo(["x", "y"])
+print(coppia)                          # ('x', 'y')
+
+def quadrato(x: float) -> float:
+    """Restituisce x al quadrato."""
+    return x * x
+
+def somma_quadrati(valori: list[float]) -> float:
+    """Restituisce la somma dei quadrati, usando quadrato()."""
+    totale: float = 0
+    for v in valori:
+        totale += quadrato(v)
+    return totale
+
+print(somma_quadrati([1, 2, 3]))       # 14
+help(quadrato)                         # firma e docstring
+```
+
+- `return a, b` restituisce una tupla; il tipo è `tuple[...]`.
+- Si spacchetta con tante variabili quanti sono gli elementi; con una sola variabile si tiene la tupla intera.
+- Una funzione già scritta si chiama dentro un'altra: si scrive una volta e si usa ovunque.
+- Un valore che serve più volte (per esempio la media) si calcola una volta e si salva in una variabile, non dentro la comprehension.
+- `help(funzione)` mostra la firma e la docstring.
+
+### Passo 13 — Un dizionario come parametro
+
+- Scrivete `esame_migliore(libretto: dict[str, int]) -> str`: con un ciclo su `items()` tenete da parte l'esame con il voto più alto visto finora.
+- Scrivete `media_libretto(libretto: dict[str, int]) -> float`, che riusa `media()` su `list(libretto.values())`.
+- Provatele con `libretto = {"Analisi": 26, "Statistica": 30, "Informatica": 28}`.
+
+```
+Esame migliore: Statistica
+Media del libretto: 28.00
+```
+
+### Passo 14 — Scope: cosa vede la funzione
+
+- Scrivete `aumenta(n: int) -> int`, che fa `n = n + 1` e restituisce `n`. Con `x = 10` stampate `aumenta(x)` e poi `x`: `n` è una variabile locale e cambiarla non cambia `x`. Per aggiornare `x` scrivete `x = aumenta(x)`.
+- Scrivete `aggiungi_voto(voti: list[int], voto: int) -> None`, che fa `voti.append(voto)`. Chiamatela su `miei = [24, 27]`: la lista cambia, perché la funzione riceve la stessa lista.
+- Fuori dalle funzioni provate `print(n)`, leggete l'errore e poi commentate la riga.
+
+```
+aumenta(x) = 11, x = 10
+dopo x = aumenta(x): x = 11
+miei dopo aggiungi_voto: [24, 27, 30]
+NameError: name 'n' is not defined
+```
+
+#### Come si fa — Dizionari e scope
+
+```python
+def totale_spesa(prezzi: dict[str, float]) -> float:
+    """Restituisce la somma dei prezzi."""
+    totale: float = 0
+    for prodotto, prezzo in prezzi.items():
+        totale += prezzo
+    return totale
+
+print(totale_spesa({"pane": 2.5, "latte": 1.5}))   # 4.0
+
+def raddoppia(k: int) -> int:
+    """Restituisce il doppio di k."""
+    k = k * 2          # k è locale
+    return k
+
+y: int = 5
+print(raddoppia(y), y)   # 10 5: y non cambia
+y = raddoppia(y)         # ora y vale 10
+
+def svuota(lista: list[int]) -> None:
+    """Toglie tutti gli elementi dalla lista."""
+    lista.clear()        # modifica la lista di chi chiama
+```
+
+- Un dizionario si passa come una lista; dentro si scorre con `items()`.
+- Per il massimo servono due variabili, il nome e il valore migliori visti finora, aggiornate insieme dentro il ciclo.
+- Le variabili create nella funzione sono locali: alla fine spariscono, e fuori si ha `NameError`.
+- Riassegnare un parametro (`k = k * 2`) non cambia la variabile di chi chiama: si usa `y = raddoppia(y)`.
+- Una lista passata è la stessa lista: `append`, `clear` e gli altri metodi la modificano anche fuori.
+
+### Passo 15 — Separare dati validi e non validi
+
+- Scrivete `valido(voto: int) -> bool`, vera se il voto è tra 0 e 30.
+- Scrivete `separa(voti: list[int]) -> tuple[list[int], list[int]]`: con un ciclo e `valido()` riempie due liste, i validi e gli scartati, e le restituisce insieme.
+- Con `letti = [28, 31, 18, -2, 24, 99, 15]` stampate le due liste, la media dei validi e i promossi fra i validi, riusando `media()` e `solo_promossi()`.
+
+```
+Validi: [28, 18, 24, 15]
+Scartati: [31, -2, 99]
+Media dei validi: 21.25, promossi: [28, 18, 24]
+```
+
+### Passo 16 — Mettere tutto insieme
+
+- Scrivete `riepilogo(nome: str, voti: list[int]) -> str`: chiama `separa()`, poi `media()` sui validi e `fascia()` sulla media, e restituisce la riga come nell'output.
+- Partite da `classe = {"Anna": [28, 30, 27], "Marco": [18, 35, 21], "Sara": [16, 19, 17, -1]}`: il programma principale è solo un ciclo che stampa `riepilogo()` per ogni studente.
+- Contate quante funzioni dei passi precedenti lavorano per una sola chiamata di `riepilogo()`.
+
+```
+Anna: media 28.33, ottimo, voti scartati: 0
+Marco: media 19.50, sufficiente, voti scartati: 1
+Sara: media 17.33, insufficiente, voti scartati: 1
+```
+
+#### Come si fa — Funzioni piccole che lavorano insieme
+
+```python
+def pulisci(parola: str) -> str:
+    """Toglie gli spazi ai lati e porta in minuscolo."""
+    return parola.strip().lower()
+
+def lunghe(parole: list[str], minimo: int = 5) -> list[str]:
+    """Restituisce le parole pulite con almeno minimo lettere."""
+    pulite: list[str] = [pulisci(p) for p in parole]
+    return [p for p in pulite if len(p) >= minimo]
+
+def scheda(titolo: str, parole: list[str]) -> str:
+    """Restituisce una riga che riassume le parole lunghe."""
+    scelte: list[str] = lunghe(parole)
+    return f"{titolo}: {len(scelte)} parole lunghe {scelte}"
+
+elenco: list[str] = [" Statistica ", "dati", "MEDIA "]
+print(scheda("Elenco", elenco))
+# Elenco: 2 parole lunghe ['statistica', 'media']
+```
+
+- Per restituire due liste: si creano vuote prima del ciclo, si riempiono con `append`, si restituiscono con `return a, b`.
+- Ogni funzione fa una cosa sola e si prova da sola, prima di usarla nelle altre.
+- Il programma principale chiama poche funzioni: si legge come un elenco di passi.
+- Se cambia una regola (cosa è valido, le fasce) si corregge in un posto solo.
+- Ordine di lavoro: prima le funzioni piccole, poi quella che le mette insieme.
 
 ---
 

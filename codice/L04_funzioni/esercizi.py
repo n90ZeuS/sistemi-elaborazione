@@ -6,6 +6,280 @@
 
 
 # ============================================================================
+# RISCALDAMENTO: sedici passi sulle funzioni — riscaldamento.py
+# ============================================================================
+print("--- Riscaldamento ---")
+# Passo 1 — La prima funzione
+def saluta() -> None:
+    """Stampa il saluto di inizio laboratorio."""
+    print("Benvenuti al laboratorio 4!")
+
+
+saluta()
+saluta()
+
+
+# Passo 2 — Un parametro
+def saluta_persona(nome: str) -> None:
+    """Stampa un saluto per la persona indicata."""
+    print(f"Ciao, {nome}!")
+
+
+saluta_persona("Anna")
+saluta_persona("Marco")
+studente: str = "Giulia"
+saluta_persona(studente)
+
+
+# Passo 3 — return o print?
+def doppio(x: float) -> float:
+    """Restituisce il doppio di x."""
+    return 2 * x
+
+
+def stampa_doppio(x: float) -> None:
+    """Stampa il doppio di x, senza restituirlo."""
+    print(2 * x)
+
+
+print(doppio(5))
+risultato: float = doppio(5) + 1
+print(f"doppio(5) + 1 = {risultato}")
+valore = stampa_doppio(5)
+print(f"stampa_doppio ha restituito: {valore}")
+
+
+# Passo 4 — Due parametri
+def differenza(a: float, b: float) -> float:
+    """Restituisce a meno b."""
+    return a - b
+
+
+def media_due(a: float, b: float) -> float:
+    """Restituisce la media di due numeri."""
+    return (a + b) / 2
+
+
+print(f"differenza(30, 24) = {differenza(30, 24)}")
+print(f"differenza(24, 30) = {differenza(24, 30)}")
+print(f"media_due(24, 30) = {media_due(24, 30)}")
+print(f"media di 27 e di 28: {media_due(media_due(24, 30), 28)}")
+# media_due(24)
+# TypeError: media_due() missing 1 required positional argument: 'b'
+
+
+# Passo 5 — Restituire True o False
+def promosso(voto: int) -> bool:
+    """Restituisce True se il voto è almeno 18."""
+    return voto >= 18
+
+
+def pari(n: int) -> bool:
+    """Restituisce True se n è pari."""
+    return n % 2 == 0
+
+
+print(f"promosso(25): {promosso(25)}  promosso(17): {promosso(17)}")
+for numero in [3, 8, 11]:
+    if pari(numero):
+        print(f"{numero} è pari")
+    else:
+        print(f"{numero} è dispari")
+
+
+# Passo 6 — Più return
+def fascia(voto: float) -> str:
+    """Restituisce la fascia del voto."""
+    if voto < 18:
+        return "insufficiente"
+    if voto < 24:
+        return "sufficiente"
+    if voto < 28:
+        return "buono"
+    return "ottimo"
+
+
+for v in [15, 18, 24, 27, 30]:
+    print(f"{v}: {fascia(v)}")
+
+
+# Passo 7 — Parametro con valore di default
+def prezzo_scontato(prezzo: float, sconto: float = 0.1) -> float:
+    """Restituisce il prezzo dopo lo sconto (0.1 = 10%)."""
+    return prezzo * (1 - sconto)
+
+
+print(f"Senza sconto indicato: {prezzo_scontato(50):.2f} euro")
+print(f"Con sconto 0.2: {prezzo_scontato(50, 0.2):.2f} euro")
+print(f"Con sconto=0.5: {prezzo_scontato(50, sconto=0.5):.2f} euro")
+
+
+# Passo 8 — Argomenti keyword
+def presenta(nome: str, corso: str = "Statistica", anno: int = 1) -> str:
+    """Restituisce una frase di presentazione."""
+    return f"{nome}, {corso}, anno {anno}"
+
+
+print(presenta("Anna"))
+print(presenta("Marco", anno=2))
+print(presenta(anno=3, nome="Sara", corso="Economia"))
+
+
+# Passo 9 — Una lista come parametro
+def somma(valori: list[float]) -> float:
+    """Restituisce la somma dei valori, con un ciclo."""
+    totale: float = 0
+    for v in valori:
+        totale += v
+    return totale
+
+
+def conta_sopra(valori: list[float], soglia: float) -> int:
+    """Conta i valori maggiori della soglia."""
+    conta: int = 0
+    for v in valori:
+        if v > soglia:
+            conta += 1
+    return conta
+
+
+ore: list[float] = [2, 5, 3, 8, 1, 6]
+print(f"Somma: {somma(ore)}, controllo con sum(): {sum(ore)}")
+print(f"Sopra 4 ore: {conta_sopra(ore, 4)}")
+print(f"Sopra 7 ore: {conta_sopra(ore, 7)}")
+
+
+# Passo 10 — Restituire una lista nuova
+def solo_promossi(voti: list[int]) -> list[int]:
+    """Restituisce una lista nuova con i voti da 18 in su."""
+    return [v for v in voti if promosso(v)]
+
+
+appello: list[int] = [24, 15, 30, 17, 18]
+buoni: list[int] = solo_promossi(appello)
+print(f"Promossi: {buoni}")
+print(f"Appello: {appello}")
+print(f"Promossi in un appello vuoto: {solo_promossi([])}")
+
+
+# Passo 11 — Restituire una tupla
+def min_max(valori: list[float]) -> tuple[float, float]:
+    """Restituisce minimo e massimo dei valori."""
+    return min(valori), max(valori)
+
+
+temperature: list[float] = [12.5, 9.0, 15.5, 11.0]
+basso, alto = min_max(temperature)
+print(f"Minima {basso}, massima {alto}, escursione {alto - basso}")
+coppia = min_max([3, 7])
+print(f"Senza spacchettare: {coppia}")
+
+
+# Passo 12 — Una funzione che ne chiama un'altra
+def media(valori: list[float]) -> float:
+    """Restituisce la media aritmetica dei valori."""
+    return somma(valori) / len(valori)
+
+
+def sopra_media(valori: list[float]) -> list[float]:
+    """Restituisce i valori maggiori della media."""
+    m: float = media(valori)
+    return [v for v in valori if v > m]
+
+
+print(f"Media delle ore: {media(ore):.2f}")
+print(f"Sopra la media: {sopra_media(ore)}")
+help(media)
+
+
+# Passo 13 — Un dizionario come parametro
+def esame_migliore(libretto: dict[str, int]) -> str:
+    """Restituisce il nome dell'esame con il voto più alto."""
+    migliore: str = ""
+    voto_max: int = -1
+    for esame, voto in libretto.items():
+        if voto > voto_max:
+            migliore = esame
+            voto_max = voto
+    return migliore
+
+
+def media_libretto(libretto: dict[str, int]) -> float:
+    """Restituisce la media dei voti del libretto."""
+    return media(list(libretto.values()))
+
+
+libretto: dict[str, int] = {"Analisi": 26, "Statistica": 30, "Informatica": 28}
+print(f"Esame migliore: {esame_migliore(libretto)}")
+print(f"Media del libretto: {media_libretto(libretto):.2f}")
+
+
+# Passo 14 — Scope: cosa vede la funzione
+def aumenta(n: int) -> int:
+    """Restituisce n + 1."""
+    n = n + 1
+    return n
+
+
+def aggiungi_voto(voti: list[int], voto: int) -> None:
+    """Aggiunge il voto in fondo alla lista."""
+    voti.append(voto)
+
+
+x: int = 10
+print(f"aumenta(x) = {aumenta(x)}, x = {x}")
+x = aumenta(x)
+print(f"dopo x = aumenta(x): x = {x}")
+miei: list[int] = [24, 27]
+aggiungi_voto(miei, 30)
+print(f"miei dopo aggiungi_voto: {miei}")
+# print(n)
+# NameError: name 'n' is not defined
+
+
+# Passo 15 — Separare dati validi e non validi
+def valido(voto: int) -> bool:
+    """Restituisce True se il voto è tra 0 e 30."""
+    return 0 <= voto <= 30
+
+
+def separa(voti: list[int]) -> tuple[list[int], list[int]]:
+    """Restituisce i voti validi e quelli non validi."""
+    validi: list[int] = []
+    scartati: list[int] = []
+    for v in voti:
+        if valido(v):
+            validi.append(v)
+        else:
+            scartati.append(v)
+    return validi, scartati
+
+
+letti: list[int] = [28, 31, 18, -2, 24, 99, 15]
+validi, scartati = separa(letti)
+print(f"Validi: {validi}")
+print(f"Scartati: {scartati}")
+print(f"Media dei validi: {media(validi):.2f}, promossi: {solo_promossi(validi)}")
+
+
+# Passo 16 — Mettere tutto insieme
+def riepilogo(nome: str, voti: list[int]) -> str:
+    """Restituisce una riga di riepilogo per lo studente."""
+    validi, scartati = separa(voti)
+    m: float = media(validi)
+    return f"{nome}: media {m:.2f}, {fascia(m)}, voti scartati: {len(scartati)}"
+
+
+classe: dict[str, list[int]] = {
+    "Anna": [28, 30, 27],
+    "Marco": [18, 35, 21],
+    "Sara": [16, 19, 17, -1],
+}
+for nome, voti in classe.items():
+    print(riepilogo(nome, voti))
+
+
+# ============================================================================
 # ESERCIZIO 1: esito dell'esame — esito.py
 # ============================================================================
 print("--- Esercizio 1: Esito dell'esame ---")

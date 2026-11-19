@@ -348,6 +348,7 @@
 
 | Attività | Descrizione |
 |----------|-------------|
+| Riscaldamento | 16 passi brevi per scrivere e chiamare funzioni, dal saluto a funzioni che ne chiamano altre (`riscaldamento.py`) |
 | Esercizi 1-4 | Esito dell'esame; Media ponderata; Media e varianza a mano; Tempi di viaggio |
 | Esercizi 5-8 | Quanto manca all'esame; Classifica del corso; Come arrivate in università; Frequentanti e non frequentanti |
 | Challenge a scelta | Mercati e finanza: Rischio e rendimento; Sport: Il passo gara; Imprese e marketing: Margini e sconti; Salute e scienza: Le variazioni di pressione; Caso e probabilità: Tanti lanci |

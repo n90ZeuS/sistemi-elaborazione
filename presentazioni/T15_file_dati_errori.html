@@ -420,6 +420,340 @@ Chiedere / fare: chiedere quali esercizi sono stati più difficili e partire da 
 
                 <section>
                     <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 1-2</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 1 — La prima funzione
+def saluta() -&gt; None:
+    """Stampa il saluto di inizio laboratorio."""
+    print("Benvenuti al laboratorio 4!")
+
+
+saluta()
+saluta()
+
+# Passo 2 — Un parametro
+def saluta_persona(nome: str) -&gt; None:
+    """Stampa un saluto per la persona indicata."""
+    print(f"Ciao, {nome}!")
+
+
+saluta_persona("Anna")
+saluta_persona("Marco")
+studente: str = "Giulia"
+saluta_persona(studente)</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Il <code>def</code> definisce la funzione, la chiamata con <code>()</code> la esegue. Il corpo è indentato.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: definire non vuol dire eseguire: finché non c'è saluta() non succede nulla. Il parametro nome riceve il valore dell'argomento, anche se l'argomento è una variabile con un altro nome.
+Chiedere / fare: cosa stampa saluta_persona("Anna" + " B.")?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 3-4</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 3 — return o print?
+def doppio(x: float) -&gt; float:
+    """Restituisce il doppio di x."""
+    return 2 * x
+
+
+def stampa_doppio(x: float) -&gt; None:
+    """Stampa il doppio di x, senza restituirlo."""
+    print(2 * x)
+
+
+print(doppio(5))
+risultato: float = doppio(5) + 1
+print(f"doppio(5) + 1 = {risultato}")
+valore = stampa_doppio(5)
+print(f"stampa_doppio ha restituito: {valore}")
+
+# Passo 4 — Due parametri
+def differenza(a: float, b: float) -&gt; float:
+    """Restituisce a meno b."""
+    return a - b
+
+
+def media_due(a: float, b: float) -&gt; float:
+    """Restituisce la media di due numeri."""
+    return (a + b) / 2
+
+
+print(f"differenza(30, 24) = {differenza(30, 24)}")
+print(f"differenza(24, 30) = {differenza(24, 30)}")
+print(f"media_due(24, 30) = {media_due(24, 30)}")
+print(f"media di 27 e di 28: {media_due(media_due(24, 30), 28)}")
+# media_due(24)
+# TypeError: media_due() missing 1 required positional argument: 'b'</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>return</code> consegna un valore a chi chiama; <code>print</code> lo mostra e basta. Senza <code>return</code> la funzione restituisce <code>None</code>.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: è l'errore più comune di oggi: stampare dentro la funzione invece di restituire. media_due(24) dà TypeError perché manca b.
+Chiedere / fare: cosa stampa print(stampa_doppio(3))? (6 e poi None)</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 5-6</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 5 — Restituire True o False
+def promosso(voto: int) -&gt; bool:
+    """Restituisce True se il voto è almeno 18."""
+    return voto &gt;= 18
+
+
+def pari(n: int) -&gt; bool:
+    """Restituisce True se n è pari."""
+    return n % 2 == 0
+
+
+print(f"promosso(25): {promosso(25)}  promosso(17): {promosso(17)}")
+for numero in [3, 8, 11]:
+    if pari(numero):
+        print(f"{numero} è pari")
+    else:
+        print(f"{numero} è dispari")
+
+# Passo 6 — Più return
+def fascia(voto: float) -&gt; str:
+    """Restituisce la fascia del voto."""
+    if voto &lt; 18:
+        return "insufficiente"
+    if voto &lt; 24:
+        return "sufficiente"
+    if voto &lt; 28:
+        return "buono"
+    return "ottimo"
+
+
+for v in [15, 18, 24, 27, 30]:
+    print(f"{v}: {fascia(v)}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li><code>return voto &gt;= 18</code> restituisce già un booleano. Il primo <code>return</code> raggiunto chiude la funzione.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: in fascia non servono elif: se voto &lt; 18 la funzione è già uscita, quindi al secondo if si arriva solo con voto &gt;= 18.
+Chiedere / fare: cosa restituisce fascia(23.9)? (sufficiente)</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 7-8</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 7 — Parametro con valore di default
+def prezzo_scontato(prezzo: float, sconto: float = 0.1) -&gt; float:
+    """Restituisce il prezzo dopo lo sconto (0.1 = 10%)."""
+    return prezzo * (1 - sconto)
+
+
+print(f"Senza sconto indicato: {prezzo_scontato(50):.2f} euro")
+print(f"Con sconto 0.2: {prezzo_scontato(50, 0.2):.2f} euro")
+print(f"Con sconto=0.5: {prezzo_scontato(50, sconto=0.5):.2f} euro")
+
+# Passo 8 — Argomenti keyword
+def presenta(nome: str, corso: str = "Statistica", anno: int = 1) -&gt; str:
+    """Restituisce una frase di presentazione."""
+    return f"{nome}, {corso}, anno {anno}"
+
+
+print(presenta("Anna"))
+print(presenta("Marco", anno=2))
+print(presenta(anno=3, nome="Sara", corso="Economia"))</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Il default vale quando l'argomento manca. Con gli argomenti keyword l'ordine non conta.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: i parametri con default vanno dopo quelli senza. presenta("Marco", anno=2) salta corso, che resta Statistica.
+Chiedere / fare: presenta("Luca", "Fisica")? (Luca, Fisica, anno 1)</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 9-10</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 9 — Una lista come parametro
+def somma(valori: list[float]) -&gt; float:
+    """Restituisce la somma dei valori, con un ciclo."""
+    totale: float = 0
+    for v in valori:
+        totale += v
+    return totale
+
+
+def conta_sopra(valori: list[float], soglia: float) -&gt; int:
+    """Conta i valori maggiori della soglia."""
+    conta: int = 0
+    for v in valori:
+        if v &gt; soglia:
+            conta += 1
+    return conta
+
+
+ore: list[float] = [2, 5, 3, 8, 1, 6]
+print(f"Somma: {somma(ore)}, controllo con sum(): {sum(ore)}")
+print(f"Sopra 4 ore: {conta_sopra(ore, 4)}")
+print(f"Sopra 7 ore: {conta_sopra(ore, 7)}")
+
+# Passo 10 — Restituire una lista nuova
+def solo_promossi(voti: list[int]) -&gt; list[int]:
+    """Restituisce una lista nuova con i voti da 18 in su."""
+    return [v for v in voti if promosso(v)]
+
+
+appello: list[int] = [24, 15, 30, 17, 18]
+buoni: list[int] = solo_promossi(appello)
+print(f"Promossi: {buoni}")
+print(f"Appello: {appello}")
+print(f"Promossi in un appello vuoto: {solo_promossi([])}")</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>La funzione lavora su qualsiasi lista le passiate. <code>solo_promossi</code> costruisce una lista nuova e non tocca quella di partenza.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: totale parte da 0 e si aggiorna nel ciclo, come in L02. solo_promossi riusa promosso: una funzione piccola si chiama dentro un'altra.
+Chiedere / fare: cosa restituisce conta_sopra([], 4)? (0)</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 11-12</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 11 — Restituire una tupla
+def min_max(valori: list[float]) -&gt; tuple[float, float]:
+    """Restituisce minimo e massimo dei valori."""
+    return min(valori), max(valori)
+
+
+temperature: list[float] = [12.5, 9.0, 15.5, 11.0]
+basso, alto = min_max(temperature)
+print(f"Minima {basso}, massima {alto}, escursione {alto - basso}")
+coppia = min_max([3, 7])
+print(f"Senza spacchettare: {coppia}")
+
+# Passo 12 — Una funzione che ne chiama un'altra
+def media(valori: list[float]) -&gt; float:
+    """Restituisce la media aritmetica dei valori."""
+    return somma(valori) / len(valori)
+
+
+def sopra_media(valori: list[float]) -&gt; list[float]:
+    """Restituisce i valori maggiori della media."""
+    m: float = media(valori)
+    return [v for v in valori if v &gt; m]
+
+
+print(f"Media delle ore: {media(ore):.2f}")
+print(f"Sopra la media: {sopra_media(ore)}")
+help(media)</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Più valori si restituiscono come tupla e si spacchettano. <code>media</code> riusa <code>somma</code>.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: in sopra_media la media si calcola una volta sola, fuori dalla comprehension; dentro verrebbe ricalcolata per ogni elemento. help() mostra la docstring: per questo la scriviamo.
+Chiedere / fare: cosa succede con media([])? (ZeroDivisionError)</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 13-14</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 13 — Un dizionario come parametro
+def esame_migliore(libretto: dict[str, int]) -&gt; str:
+    """Restituisce il nome dell'esame con il voto più alto."""
+    migliore: str = ""
+    voto_max: int = -1
+    for esame, voto in libretto.items():
+        if voto &gt; voto_max:
+            migliore = esame
+            voto_max = voto
+    return migliore
+
+
+def media_libretto(libretto: dict[str, int]) -&gt; float:
+    """Restituisce la media dei voti del libretto."""
+    return media(list(libretto.values()))
+
+
+libretto: dict[str, int] = {"Analisi": 26, "Statistica": 30, "Informatica": 28}
+print(f"Esame migliore: {esame_migliore(libretto)}")
+print(f"Media del libretto: {media_libretto(libretto):.2f}")
+
+# Passo 14 — Scope: cosa vede la funzione
+def aumenta(n: int) -&gt; int:
+    """Restituisce n + 1."""
+    n = n + 1
+    return n
+
+
+def aggiungi_voto(voti: list[int], voto: int) -&gt; None:
+    """Aggiunge il voto in fondo alla lista."""
+    voti.append(voto)
+
+
+x: int = 10
+print(f"aumenta(x) = {aumenta(x)}, x = {x}")
+x = aumenta(x)
+print(f"dopo x = aumenta(x): x = {x}")
+miei: list[int] = [24, 27]
+aggiungi_voto(miei, 30)
+print(f"miei dopo aggiungi_voto: {miei}")
+# print(n)
+# NameError: name 'n' is not defined</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Le variabili create dentro una funzione sono locali. Una lista passata come argomento è la stessa lista: <code>append</code> la modifica anche fuori.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: esame_migliore è il pattern del massimo visto in L02, dentro una funzione. In aumenta, n = n + 1 cambia solo la variabile locale; per cambiare x serve x = aumenta(x).
+Chiedere / fare: perché print(n) dà NameError anche se n era un parametro?</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
+                    <h2>riscaldamento.py · passi 15-16</h2>
+                    <div class="columns">
+                        <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape># Passo 15 — Separare dati validi e non validi
+def valido(voto: int) -&gt; bool:
+    """Restituisce True se il voto è tra 0 e 30."""
+    return 0 &lt;= voto &lt;= 30
+
+
+def separa(voti: list[int]) -&gt; tuple[list[int], list[int]]:
+    """Restituisce i voti validi e quelli non validi."""
+    validi: list[int] = []
+    scartati: list[int] = []
+    for v in voti:
+        if valido(v):
+            validi.append(v)
+        else:
+            scartati.append(v)
+    return validi, scartati
+
+
+letti: list[int] = [28, 31, 18, -2, 24, 99, 15]
+validi, scartati = separa(letti)
+print(f"Validi: {validi}")
+print(f"Scartati: {scartati}")
+print(f"Media dei validi: {media(validi):.2f}, promossi: {solo_promossi(validi)}")
+
+# Passo 16 — Mettere tutto insieme
+def riepilogo(nome: str, voti: list[int]) -&gt; str:
+    """Restituisce una riga di riepilogo per lo studente."""
+    validi, scartati = separa(voti)
+    m: float = media(validi)
+    return f"{nome}: media {m:.2f}, {fascia(m)}, voti scartati: {len(scartati)}"
+
+
+classe: dict[str, list[int]] = {
+    "Anna": [28, 30, 27],
+    "Marco": [18, 35, 21],
+    "Sara": [16, 19, 17, -1],
+}
+for nome, voti in classe.items():
+    print(riepilogo(nome, voti))</code></pre></div>
+                        <div class="col-40"><ul class="note-sol"><li>Funzioni piccole, ognuna con un compito, che si chiamano a vicenda: il programma principale resta un ciclo di due righe.</li></ul></div>
+                    </div>
+                    <aside class="notes">⏱ 1' · blocco «Soluzioni L04»
+Da dire: una chiamata di riepilogo fa lavorare separa, valido, media, somma e fascia: cinque funzioni. Se c'è un errore nella media si corregge in un posto solo.
+Chiedere / fare: aggiungere uno studente con tutti voti non validi: cosa succede? (ZeroDivisionError in media: andrebbe controllato)</aside>
+                </section>
+
+                <section>
+                    <div class="tag tag-soluzione">Soluzione · laboratorio 4</div>
                     <h2>esito.py</h2>
                     <div class="columns">
                         <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def esito(voto: int, lode: bool = False) -&gt; str:

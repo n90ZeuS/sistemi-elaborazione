@@ -209,7 +209,7 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <a class="download-link" href="L04_funzioni_modularita.pdf" download>Scarica PDF</a>
 <h1>Laboratorio 4 — Funzioni e modularità</h1>
 <p><strong>Prerequisiti:</strong> lezioni T13 (Funzioni) e T14 (Funzioni avanzate e moduli).</p>
-<p>Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file <code>.py</code> con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve <code>input()</code>: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file.</p>
+<p>Oggi ci sono solo esercizi, in ordine di difficoltà. Per ogni esercizio create un file <code>.py</code> con il nome indicato: dentro scrivete le funzioni richieste, con type hints e docstring, e poi chiamatele sui dati della consegna stampando i risultati. Non serve <code>input()</code>: i dati sono già scritti nella consegna. Tutto il codice di un esercizio sta in un solo file. Si comincia con un riscaldamento di 16 passi brevi, tutti nello stesso file.</p>
 <p>Ogni esercizio ha la consegna, un esempio di esecuzione e alcuni casi da provare: il programma è corretto quando dà gli stessi risultati. Alla fine c'è una challenge a scelta tra 5 temi, che chiude il laboratorio. Gli esercizi extra, in fondo, sono per casa: in laboratorio non si fanno e hanno la soluzione subito sotto la consegna. Il link «Soluzione →» di ogni esercizio porta al codice: apritelo dopo averci provato. Le soluzioni le vediamo all'inizio della lezione T15.</p>
 <table>
 <thead><tr>
@@ -217,6 +217,11 @@ nav.bottom-nav a:hover { text-decoration: underline; }
 <th>File</th>
 <th>Esercizio</th>
 </tr></thead><tbody>
+<tr>
+<td>Passi 1-16</td>
+<td><code>riscaldamento.py</code></td>
+<td>Riscaldamento: scrivere e chiamare funzioni</td>
+</tr>
 <tr>
 <td>1</td>
 <td><code>esito.py</code></td>
@@ -280,6 +285,363 @@ esami: <span class="nb">list</span>[<span class="nb">tuple</span>[<span class="n
 <span class="nb">print</span>(<span class="nb">sorted</span>(esami, key<span class="op">=</span><span class="kw">lambda</span> e: <span class="op">-</span>e[<span class="mi">1</span>]))  <span class="cm"># prima Statistica</span>
 <span class="nb">print</span>(<span class="nb">max</span>(esami, key<span class="op">=</span><span class="kw">lambda</span> e: e[<span class="mi">1</span>])[<span class="mi">0</span>])   <span class="cm"># Statistica</span>
 <span class="nb">print</span>(statistics.median([<span class="mi">24</span>, <span class="mi">30</span>, <span class="mi">27</span>]))     <span class="cm"># 27</span></code></pre>
+<hr>
+<h2>Riscaldamento (<code>riscaldamento.py</code>)</h2>
+<p><a href="../../codice/L04_funzioni/esercizi.html#sol-riscaldamento" class="link-soluzione">Soluzione →</a></p>
+<p>Sedici passi brevi, tutti nello stesso file <code>riscaldamento.py</code>: si parte da una funzione che stampa un saluto e si arriva a funzioni che ne chiamano altre. Ogni funzione ha i type hints e una docstring di una riga. Le funzioni dei primi passi servono di nuovo più avanti: non cancellatele. Prima di eseguire, provate a prevedere l'output; poi confrontatelo con quello atteso. Dopo ogni coppia di passi c'è «Come si fa», con un esempio diverso che usa gli stessi strumenti.</p>
+<h3>Passo 1 — La prima funzione</h3>
+<ul>
+<li>Scrivete <code>saluta() -> None</code>, che stampa <code>Benvenuti al laboratorio 4!</code>. Sotto la riga del <code>def</code> mettete una docstring di una riga.</li>
+<li>Chiamatela due volte. La funzione parte solo quando la chiamate: scrivere <code>saluta</code> senza parentesi non stampa niente.</li>
+</ul>
+<pre><code>Benvenuti al laboratorio <span class="mi">4</span><span class="op">!</span>
+Benvenuti al laboratorio <span class="mi">4</span><span class="op">!</span></code></pre>
+<h3>Passo 2 — Un parametro</h3>
+<ul>
+<li>Scrivete <code>saluta_persona(nome: str) -> None</code>, che stampa <code>Ciao,</code> seguito dal nome e da un punto esclamativo.</li>
+<li>Chiamatela con <code>"Anna"</code> e con <code>"Marco"</code>, poi con una variabile: <code>studente = "Giulia"</code> e <code>saluta_persona(studente)</code>.</li>
+</ul>
+<pre><code>Ciao, Anna<span class="op">!</span>
+Ciao, Marco<span class="op">!</span>
+Ciao, Giulia<span class="op">!</span></code></pre>
+<h4>Come si fa — Definire e chiamare una funzione</h4>
+<pre><code><span class="kw">def</span> <span class="fn">benvenuto</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa una riga di benvenuto.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="st">&quot;Buongiorno!&quot;</span>)
+
+benvenuto()      <span class="cm"># chiamata: esegue il corpo → Buongiorno!</span>
+benvenuto()      <span class="cm"># si può chiamare quante volte si vuole</span>
+
+<span class="kw">def</span> <span class="fn">presenta_corso</span>(<span class="fn">corso</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa il nome del corso.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="st">f&quot;Corso di {corso}&quot;</span>)
+
+presenta_corso(<span class="st">&quot;Economia&quot;</span>)   <span class="cm"># corso vale &quot;Economia&quot;</span>
+materia: <span class="nb">str</span> <span class="op">=</span> <span class="st">&quot;Fisica&quot;</span>
+presenta_corso(materia)      <span class="cm"># corso vale &quot;Fisica&quot;</span></code></pre>
+<ul>
+<li><code>def</code>, nome, parentesi con i parametri, due punti. Il corpo è indentato.</li>
+<li>La prima riga del corpo è la docstring: dice cosa fa la funzione.</li>
+<li><code>-> None</code>: la funzione non restituisce niente, fa solo qualcosa (qui stampa).</li>
+<li>Il <code>def</code> definisce e basta: il corpo parte solo con la chiamata <code>nome()</code>.</li>
+<li>Il parametro è una variabile che riceve il valore dell'argomento, qualunque nome abbia l'argomento.</li>
+</ul>
+<h3>Passo 3 — return o print?</h3>
+<ul>
+<li>Scrivete <code>doppio(x: float) -> float</code>, che <em>restituisce</em> il doppio di <code>x</code> con <code>return</code>, e <code>stampa_doppio(x: float) -> None</code>, che invece lo <em>stampa</em>.</li>
+<li>Stampate <code>doppio(5)</code>, poi salvate <code>doppio(5) + 1</code> in una variabile e stampatela: il risultato di <code>return</code> si può riusare.</li>
+<li>Scrivete <code>valore = stampa_doppio(5)</code> e stampate <code>valore</code>: la funzione stampa 10 ma restituisce <code>None</code>.</li>
+</ul>
+<pre><code><span class="mi">10</span>
+doppio(<span class="mi">5</span>) <span class="op">+</span> <span class="mi">1</span> <span class="op">=</span> <span class="mi">11</span>
+<span class="mi">10</span>
+stampa_doppio ha restituito: <span class="kw">None</span></code></pre>
+<h3>Passo 4 — Due parametri</h3>
+<ul>
+<li>Scrivete <code>differenza(a: float, b: float) -> float</code> (<code>a</code> meno <code>b</code>) e <code>media_due(a: float, b: float) -> float</code>.</li>
+<li>Stampate <code>differenza(30, 24)</code> e <code>differenza(24, 30)</code>: l'ordine degli argomenti conta.</li>
+<li>Stampate la media di 24 e 30, poi la media fra quel risultato e 28, mettendo una chiamata dentro l'altra.</li>
+<li>Provate <code>media_due(24)</code>, leggete l'errore e poi commentate la riga.</li>
+</ul>
+<pre><code>differenza(<span class="mi">30</span>, <span class="mi">24</span>) <span class="op">=</span> <span class="mi">6</span>
+differenza(<span class="mi">24</span>, <span class="mi">30</span>) <span class="op">=</span> <span class="op">-</span><span class="mi">6</span>
+media_due(<span class="mi">24</span>, <span class="mi">30</span>) <span class="op">=</span> <span class="mi">27.0</span>
+media di <span class="mi">27</span> e di <span class="mi">28</span>: <span class="mi">27.5</span>
+<span class="nb">TypeError</span>: media_due() missing <span class="mi">1</span> required positional argument: <span class="st">&#x27;b&#x27;</span></code></pre>
+<h4>Come si fa — return e più parametri</h4>
+<pre><code><span class="kw">def</span> <span class="fn">triplo</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce il triplo di x.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="mi">3</span> <span class="op">*</span> x
+
+t: <span class="nb">float</span> <span class="op">=</span> triplo(<span class="mi">4</span>)     <span class="cm"># t vale 12</span>
+<span class="nb">print</span>(triplo(<span class="mi">4</span>) <span class="op">-</span> <span class="mi">2</span>)     <span class="cm"># 10: il risultato entra in un calcolo</span>
+
+<span class="kw">def</span> <span class="fn">stampa_triplo</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Stampa il triplo di x.&quot;&quot;&quot;</span>
+    <span class="nb">print</span>(<span class="mi">3</span> <span class="op">*</span> x)
+
+r <span class="op">=</span> stampa_triplo(<span class="mi">4</span>)     <span class="cm"># stampa 12, ma r vale None</span>
+
+<span class="kw">def</span> <span class="fn">rapporto</span>(<span class="fn">a</span>: <span class="nb">float</span>, b: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce a diviso b.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> a <span class="op">/</span> b
+
+<span class="nb">print</span>(rapporto(<span class="mi">10</span>, <span class="mi">4</span>))           <span class="cm"># a=10, b=4 → 2.5</span>
+<span class="nb">print</span>(rapporto(<span class="mi">4</span>, <span class="mi">10</span>))           <span class="cm"># a=4, b=10 → 0.4</span>
+<span class="nb">print</span>(rapporto(triplo(<span class="mi">2</span>), <span class="mi">3</span>))    <span class="cm"># prima triplo(2) = 6, poi 6 / 3 → 2.0</span></code></pre>
+<ul>
+<li><code>return</code> consegna il valore a chi chiama e chiude la funzione.</li>
+<li>Senza <code>return</code> la funzione restituisce <code>None</code>: stampare non è restituire.</li>
+<li>Gli argomenti vanno ai parametri nell'ordine in cui sono scritti.</li>
+<li>Servono tanti argomenti quanti parametri, altrimenti <code>TypeError: ... missing 1 required positional argument</code>.</li>
+<li>In una chiamata dentro l'altra Python calcola prima quella interna.</li>
+</ul>
+<h3>Passo 5 — Restituire True o False</h3>
+<ul>
+<li>Scrivete <code>promosso(voto: int) -> bool</code>, vera se il voto è almeno 18. Basta <code>return voto >= 18</code>, senza <code>if</code>.</li>
+<li>Scrivete <code>pari(n: int) -> bool</code> con l'operatore <code>%</code>.</li>
+<li>Stampate <code>promosso(25)</code> e <code>promosso(17)</code>. Poi, per 3, 8 e 11, usate <code>pari()</code> come condizione di un <code>if</code> e stampate se il numero è pari o dispari.</li>
+</ul>
+<pre><code>promosso(<span class="mi">25</span>): <span class="kw">True</span>  promosso(<span class="mi">17</span>): <span class="kw">False</span>
+<span class="mi">3</span> è dispari
+<span class="mi">8</span> è pari
+<span class="mi">11</span> è dispari</code></pre>
+<h3>Passo 6 — Più return</h3>
+<ul>
+<li>Scrivete <code>fascia(voto: float) -> str</code>: <code>insufficiente</code> sotto 18, <code>sufficiente</code> sotto 24, <code>buono</code> sotto 28, <code>ottimo</code> negli altri casi.</li>
+<li>Usate un <code>return</code> per ogni caso: quando arriva a un <code>return</code> la funzione si ferma, quindi bastano degli <code>if</code> uno sotto l'altro, senza <code>elif</code> né <code>else</code>.</li>
+<li>Con un ciclo stampate la fascia di 15, 18, 24, 27 e 30.</li>
+</ul>
+<pre><code><span class="mi">15</span>: insufficiente
+<span class="mi">18</span>: sufficiente
+<span class="mi">24</span>: buono
+<span class="mi">27</span>: buono
+<span class="mi">30</span>: ottimo</code></pre>
+<h4>Come si fa — Funzioni che decidono</h4>
+<pre><code><span class="kw">def</span> <span class="fn">maggiorenne</span>(<span class="fn">eta</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">bool</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce True se eta è almeno 18.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> eta <span class="op">&gt;</span><span class="op">=</span> <span class="mi">18</span>       <span class="cm"># il confronto vale già True o False</span>
+
+<span class="kw">if</span> maggiorenne(<span class="mi">20</span>):        <span class="cm"># non serve == True</span>
+    <span class="nb">print</span>(<span class="st">&quot;Può votare&quot;</span>)
+
+<span class="kw">def</span> <span class="fn">taglia</span>(<span class="fn">cm</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce la taglia per un&#x27;altezza in cm.&quot;&quot;&quot;</span>
+    <span class="kw">if</span> cm <span class="op">&lt;</span> <span class="mi">160</span>:
+        <span class="kw">return</span> <span class="st">&quot;S&quot;</span>
+    <span class="kw">if</span> cm <span class="op">&lt;</span> <span class="mi">175</span>:
+        <span class="kw">return</span> <span class="st">&quot;M&quot;</span>         <span class="cm"># qui si arriva solo con cm &gt;= 160</span>
+    <span class="kw">return</span> <span class="st">&quot;L&quot;</span>             <span class="cm"># qui solo con cm &gt;= 175</span>
+
+<span class="nb">print</span>(taglia(<span class="mi">150</span>), taglia(<span class="mi">170</span>), taglia(<span class="mi">190</span>))   <span class="cm"># S M L</span></code></pre>
+<ul>
+<li>Un confronto è già un <code>bool</code>: niente <code>if ... return True else return False</code>.</li>
+<li>Una funzione che restituisce <code>bool</code> si usa direttamente come condizione di un <code>if</code>.</li>
+<li>Pari o dispari: il resto della divisione per 2, <code>n % 2</code>, vale 0 per i pari.</li>
+<li>Il primo <code>return</code> raggiunto chiude la funzione: le righe sotto non vengono eseguite.</li>
+<li>Per questo l'ordine dei controlli conta: dal più stretto al più largo.</li>
+</ul>
+<h3>Passo 7 — Parametro con valore di default</h3>
+<ul>
+<li>Scrivete <code>prezzo_scontato(prezzo: float, sconto: float = 0.1) -> float</code>, che restituisce <code>prezzo * (1 - sconto)</code>.</li>
+<li>Chiamatela su 50 euro in tre modi: senza sconto (vale il default, il 10%), con <code>0.2</code> come secondo argomento e con <code>sconto=0.5</code>. Due decimali.</li>
+</ul>
+<pre><code>Senza sconto indicato: <span class="mi">45.00</span> euro
+Con sconto <span class="mi">0.2</span>: <span class="mi">40.00</span> euro
+Con sconto<span class="op">=</span><span class="mi">0.5</span>: <span class="mi">25.00</span> euro</code></pre>
+<h3>Passo 8 — Argomenti keyword</h3>
+<ul>
+<li>Scrivete <code>presenta(nome: str, corso: str = "Statistica", anno: int = 1) -> str</code>, che restituisce la stringa come nell'output.</li>
+<li>Stampate <code>presenta("Anna")</code>; poi Marco al secondo anno, passando solo <code>anno=2</code>; poi Sara, Economia, terzo anno, passando tutti e tre gli argomenti per nome e in un ordine diverso da quello del <code>def</code>.</li>
+</ul>
+<pre><code>Anna, Statistica, anno <span class="mi">1</span>
+Marco, Statistica, anno <span class="mi">2</span>
+Sara, Economia, anno <span class="mi">3</span></code></pre>
+<h4>Come si fa — Default e keyword</h4>
+<pre><code><span class="kw">def</span> <span class="fn">interesse</span>(<span class="fn">capitale</span>: <span class="nb">float</span>, tasso: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0.02</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce l&#x27;interesse di un anno (0.02 = 2%).&quot;&quot;&quot;</span>
+    <span class="kw">return</span> capitale <span class="op">*</span> tasso
+
+<span class="nb">print</span>(interesse(<span class="mi">1000</span>))              <span class="cm"># tasso = 0.02 → 20.0</span>
+<span class="nb">print</span>(interesse(<span class="mi">1000</span>, <span class="mi">0.05</span>))        <span class="cm"># posizionale → 50.0</span>
+<span class="nb">print</span>(interesse(<span class="mi">1000</span>, tasso<span class="op">=</span><span class="mi">0.05</span>))  <span class="cm"># keyword → 50.0</span>
+
+<span class="kw">def</span> <span class="fn">biglietto</span>(<span class="fn">citta</span>: <span class="nb">str</span>, classe: <span class="nb">int</span> <span class="op">=</span> <span class="mi">2</span>,
+              ritorno: <span class="nb">bool</span> <span class="op">=</span> <span class="kw">False</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce la descrizione del biglietto.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> <span class="st">f&quot;{citta}, classe {classe}, ritorno {ritorno}&quot;</span>
+
+<span class="nb">print</span>(biglietto(<span class="st">&quot;Roma&quot;</span>, ritorno<span class="op">=</span><span class="kw">True</span>))   <span class="cm"># classe resta 2</span>
+<span class="nb">print</span>(biglietto(classe<span class="op">=</span><span class="mi">1</span>, citta<span class="op">=</span><span class="st">&quot;Milano&quot;</span>))</code></pre>
+<ul>
+<li>Il valore di default si scrive nel <code>def</code> con <code>=</code> e vale quando l'argomento manca.</li>
+<li>I parametri con default vanno dopo quelli senza.</li>
+<li>Un argomento keyword (<code>nome=valore</code>) dice a quale parametro va: l'ordine non conta più.</li>
+<li>Con le keyword si può saltare un parametro con default e cambiare solo quello dopo.</li>
+<li>Prima i posizionali, poi le keyword: <code>biglietto(citta="Roma", 1)</code> è un errore.</li>
+</ul>
+<h3>Passo 9 — Una lista come parametro</h3>
+<ul>
+<li>Scrivete <code>somma(valori: list[float]) -> float</code> con un ciclo <code>for</code>, senza usare <code>sum()</code>.</li>
+<li>Scrivete <code>conta_sopra(valori: list[float], soglia: float) -> int</code>, che conta i valori maggiori della soglia.</li>
+<li>Con <code>ore = [2, 5, 3, 8, 1, 6]</code> stampate la somma (controllatela con <code>sum()</code>) e quanti valori superano 4 e 7.</li>
+</ul>
+<pre><code>Somma: <span class="mi">25</span>, controllo con <span class="nb">sum</span>(): <span class="mi">25</span>
+Sopra <span class="mi">4</span> ore: <span class="mi">3</span>
+Sopra <span class="mi">7</span> ore: <span class="mi">1</span></code></pre>
+<h3>Passo 10 — Restituire una lista nuova</h3>
+<ul>
+<li>Scrivete <code>solo_promossi(voti: list[int]) -> list[int]</code> con una list comprehension che chiama <code>promosso()</code> del passo 5.</li>
+<li>Con <code>appello = [24, 15, 30, 17, 18]</code> stampate i promossi e poi <code>appello</code>: la lista di partenza non è cambiata.</li>
+<li>Chiamatela anche su una lista vuota.</li>
+</ul>
+<pre><code>Promossi: [<span class="mi">24</span>, <span class="mi">30</span>, <span class="mi">18</span>]
+Appello: [<span class="mi">24</span>, <span class="mi">15</span>, <span class="mi">30</span>, <span class="mi">17</span>, <span class="mi">18</span>]
+Promossi <span class="kw">in</span> un appello vuoto: []</code></pre>
+<h4>Come si fa — Funzioni e liste</h4>
+<pre><code><span class="kw">def</span> <span class="fn">conta_negativi</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Conta i valori minori di zero.&quot;&quot;&quot;</span>
+    conta: <span class="nb">int</span> <span class="op">=</span> <span class="mi">0</span>              <span class="cm"># si parte da zero</span>
+    <span class="kw">for</span> v <span class="kw">in</span> valori:
+        <span class="kw">if</span> v <span class="op">&lt;</span> <span class="mi">0</span>:
+            conta <span class="op">+</span><span class="op">=</span> <span class="mi">1</span>
+    <span class="kw">return</span> conta                <span class="cm"># fuori dal ciclo!</span>
+
+<span class="nb">print</span>(conta_negativi([<span class="mi">3</span>, <span class="op">-</span><span class="mi">1</span>, <span class="op">-</span><span class="mi">4</span>, <span class="mi">2</span>]))   <span class="cm"># 2</span>
+<span class="nb">print</span>(conta_negativi([<span class="mi">5</span>, <span class="mi">6</span>]))           <span class="cm"># 0</span>
+
+<span class="kw">def</span> <span class="fn">solo_positivi</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">float</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce una lista nuova con i valori maggiori di zero.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> [v <span class="kw">for</span> v <span class="kw">in</span> valori <span class="kw">if</span> v <span class="op">&gt;</span> <span class="mi">0</span>]
+
+dati: <span class="nb">list</span>[<span class="nb">float</span>] <span class="op">=</span> [<span class="mi">3</span>, <span class="op">-</span><span class="mi">1</span>, <span class="op">-</span><span class="mi">4</span>, <span class="mi">2</span>]
+<span class="nb">print</span>(solo_positivi(dati), dati)   <span class="cm"># [3, 2] [3, -1, -4, 2]</span></code></pre>
+<ul>
+<li>La stessa funzione lavora su qualsiasi lista le passiate.</li>
+<li>Accumulatore: si crea prima del ciclo, si aggiorna dentro, si restituisce dopo.</li>
+<li>Errore classico: il <code>return</code> dentro il ciclo chiude la funzione al primo giro.</li>
+<li>Una comprehension costruisce una lista nuova: quella passata non cambia.</li>
+<li>Nella condizione della comprehension si può chiamare un'altra funzione, per esempio <code>if positivo(v)</code>.</li>
+</ul>
+<h3>Passo 11 — Restituire una tupla</h3>
+<ul>
+<li>Scrivete <code>min_max(valori: list[float]) -> tuple[float, float]</code> con <code>return min(valori), max(valori)</code>.</li>
+<li>Con <code>temperature = [12.5, 9.0, 15.5, 11.0]</code> spacchettate il risultato in <code>basso, alto</code> e stampate minima, massima ed escursione.</li>
+<li>Salvate <code>min_max([3, 7])</code> in una sola variabile e stampatela: è una tupla.</li>
+</ul>
+<pre><code>Minima <span class="mi">9.0</span>, massima <span class="mi">15.5</span>, escursione <span class="mi">6.5</span>
+Senza spacchettare: (<span class="mi">3</span>, <span class="mi">7</span>)</code></pre>
+<h3>Passo 12 — Una funzione che ne chiama un'altra</h3>
+<ul>
+<li>Scrivete <code>media(valori: list[float]) -> float</code> usando <code>somma()</code> del passo 9.</li>
+<li>Scrivete <code>sopra_media(valori: list[float]) -> list[float]</code>: chiama <code>media()</code> una volta sola, salva il risultato in una variabile e poi tiene i valori maggiori.</li>
+<li>Con <code>ore</code> del passo 9 stampate la media (due decimali) e i valori sopra la media. Poi scrivete <code>help(media)</code>: Python mostra la firma e la vostra docstring.</li>
+</ul>
+<pre><code>Media delle ore: <span class="mi">4.17</span>
+Sopra la media: [<span class="mi">5</span>, <span class="mi">8</span>, <span class="mi">6</span>]
+Help on function media <span class="kw">in</span> module __main__:
+media(valori: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>
+    Restituisce la media aritmetica dei valori.</code></pre>
+<h4>Come si fa — Tuple e funzioni che si chiamano</h4>
+<pre><code><span class="kw">def</span> <span class="fn">primo_ultimo</span>(<span class="fn">parole</span>: <span class="nb">list</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">tuple</span>[<span class="nb">str</span>, <span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce la prima e l&#x27;ultima parola.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> parole[<span class="mi">0</span>], parole[<span class="op">-</span><span class="mi">1</span>]       <span class="cm"># una tupla</span>
+
+inizio, fine <span class="op">=</span> primo_ultimo([<span class="st">&quot;alfa&quot;</span>, <span class="st">&quot;beta&quot;</span>, <span class="st">&quot;gamma&quot;</span>])
+<span class="nb">print</span>(inizio, fine)                    <span class="cm"># alfa gamma</span>
+coppia <span class="op">=</span> primo_ultimo([<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>])
+<span class="nb">print</span>(coppia)                          <span class="cm"># (&#x27;x&#x27;, &#x27;y&#x27;)</span>
+
+<span class="kw">def</span> <span class="fn">quadrato</span>(<span class="fn">x</span>: <span class="nb">float</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce x al quadrato.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> x <span class="op">*</span> x
+
+<span class="kw">def</span> <span class="fn">somma_quadrati</span>(<span class="fn">valori</span>: <span class="nb">list</span>[<span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce la somma dei quadrati, usando quadrato().&quot;&quot;&quot;</span>
+    totale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">for</span> v <span class="kw">in</span> valori:
+        totale <span class="op">+</span><span class="op">=</span> quadrato(v)
+    <span class="kw">return</span> totale
+
+<span class="nb">print</span>(somma_quadrati([<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>]))       <span class="cm"># 14</span>
+help(quadrato)                         <span class="cm"># firma e docstring</span></code></pre>
+<ul>
+<li><code>return a, b</code> restituisce una tupla; il tipo è <code>tuple[...]</code>.</li>
+<li>Si spacchetta con tante variabili quanti sono gli elementi; con una sola variabile si tiene la tupla intera.</li>
+<li>Una funzione già scritta si chiama dentro un'altra: si scrive una volta e si usa ovunque.</li>
+<li>Un valore che serve più volte (per esempio la media) si calcola una volta e si salva in una variabile, non dentro la comprehension.</li>
+<li><code>help(funzione)</code> mostra la firma e la docstring.</li>
+</ul>
+<h3>Passo 13 — Un dizionario come parametro</h3>
+<ul>
+<li>Scrivete <code>esame_migliore(libretto: dict[str, int]) -> str</code>: con un ciclo su <code>items()</code> tenete da parte l'esame con il voto più alto visto finora.</li>
+<li>Scrivete <code>media_libretto(libretto: dict[str, int]) -> float</code>, che riusa <code>media()</code> su <code>list(libretto.values())</code>.</li>
+<li>Provatele con <code>libretto = {"Analisi": 26, "Statistica": 30, "Informatica": 28}</code>.</li>
+</ul>
+<pre><code>Esame migliore: Statistica
+Media <span class="kw">del</span> libretto: <span class="mi">28.00</span></code></pre>
+<h3>Passo 14 — Scope: cosa vede la funzione</h3>
+<ul>
+<li>Scrivete <code>aumenta(n: int) -> int</code>, che fa <code>n = n + 1</code> e restituisce <code>n</code>. Con <code>x = 10</code> stampate <code>aumenta(x)</code> e poi <code>x</code>: <code>n</code> è una variabile locale e cambiarla non cambia <code>x</code>. Per aggiornare <code>x</code> scrivete <code>x = aumenta(x)</code>.</li>
+<li>Scrivete <code>aggiungi_voto(voti: list[int], voto: int) -> None</code>, che fa <code>voti.append(voto)</code>. Chiamatela su <code>miei = [24, 27]</code>: la lista cambia, perché la funzione riceve la stessa lista.</li>
+<li>Fuori dalle funzioni provate <code>print(n)</code>, leggete l'errore e poi commentate la riga.</li>
+</ul>
+<pre><code>aumenta(x) <span class="op">=</span> <span class="mi">11</span>, x <span class="op">=</span> <span class="mi">10</span>
+dopo x <span class="op">=</span> aumenta(x): x <span class="op">=</span> <span class="mi">11</span>
+miei dopo aggiungi_voto: [<span class="mi">24</span>, <span class="mi">27</span>, <span class="mi">30</span>]
+NameError: name <span class="st">&#x27;n&#x27;</span> <span class="kw">is</span> <span class="kw">not</span> defined</code></pre>
+<h4>Come si fa — Dizionari e scope</h4>
+<pre><code><span class="kw">def</span> <span class="fn">totale_spesa</span>(<span class="fn">prezzi</span>: <span class="nb">dict</span>[<span class="nb">str</span>, <span class="nb">float</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">float</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce la somma dei prezzi.&quot;&quot;&quot;</span>
+    totale: <span class="nb">float</span> <span class="op">=</span> <span class="mi">0</span>
+    <span class="kw">for</span> prodotto, prezzo <span class="kw">in</span> prezzi.items():
+        totale <span class="op">+</span><span class="op">=</span> prezzo
+    <span class="kw">return</span> totale
+
+<span class="nb">print</span>(totale_spesa({<span class="st">&quot;pane&quot;</span>: <span class="mi">2.5</span>, <span class="st">&quot;latte&quot;</span>: <span class="mi">1.5</span>}))   <span class="cm"># 4.0</span>
+
+<span class="kw">def</span> <span class="fn">raddoppia</span>(<span class="fn">k</span>: <span class="nb">int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">int</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce il doppio di k.&quot;&quot;&quot;</span>
+    k <span class="op">=</span> k <span class="op">*</span> <span class="mi">2</span>          <span class="cm"># k è locale</span>
+    <span class="kw">return</span> k
+
+y: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>
+<span class="nb">print</span>(raddoppia(y), y)   <span class="cm"># 10 5: y non cambia</span>
+y <span class="op">=</span> raddoppia(y)         <span class="cm"># ora y vale 10</span>
+
+<span class="kw">def</span> <span class="fn">svuota</span>(<span class="fn">lista</span>: <span class="nb">list</span>[<span class="nb">int</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">None</span>:
+    <span class="st">&quot;&quot;&quot;Toglie tutti gli elementi dalla lista.&quot;&quot;&quot;</span>
+    lista.clear()        <span class="cm"># modifica la lista di chi chiama</span></code></pre>
+<ul>
+<li>Un dizionario si passa come una lista; dentro si scorre con <code>items()</code>.</li>
+<li>Per il massimo servono due variabili, il nome e il valore migliori visti finora, aggiornate insieme dentro il ciclo.</li>
+<li>Le variabili create nella funzione sono locali: alla fine spariscono, e fuori si ha <code>NameError</code>.</li>
+<li>Riassegnare un parametro (<code>k = k * 2</code>) non cambia la variabile di chi chiama: si usa <code>y = raddoppia(y)</code>.</li>
+<li>Una lista passata è la stessa lista: <code>append</code>, <code>clear</code> e gli altri metodi la modificano anche fuori.</li>
+</ul>
+<h3>Passo 15 — Separare dati validi e non validi</h3>
+<ul>
+<li>Scrivete <code>valido(voto: int) -> bool</code>, vera se il voto è tra 0 e 30.</li>
+<li>Scrivete <code>separa(voti: list[int]) -> tuple[list[int], list[int]]</code>: con un ciclo e <code>valido()</code> riempie due liste, i validi e gli scartati, e le restituisce insieme.</li>
+<li>Con <code>letti = [28, 31, 18, -2, 24, 99, 15]</code> stampate le due liste, la media dei validi e i promossi fra i validi, riusando <code>media()</code> e <code>solo_promossi()</code>.</li>
+</ul>
+<pre><code>Validi: [<span class="mi">28</span>, <span class="mi">18</span>, <span class="mi">24</span>, <span class="mi">15</span>]
+Scartati: [<span class="mi">31</span>, <span class="op">-</span><span class="mi">2</span>, <span class="mi">99</span>]
+Media dei validi: <span class="mi">21.25</span>, promossi: [<span class="mi">28</span>, <span class="mi">18</span>, <span class="mi">24</span>]</code></pre>
+<h3>Passo 16 — Mettere tutto insieme</h3>
+<ul>
+<li>Scrivete <code>riepilogo(nome: str, voti: list[int]) -> str</code>: chiama <code>separa()</code>, poi <code>media()</code> sui validi e <code>fascia()</code> sulla media, e restituisce la riga come nell'output.</li>
+<li>Partite da <code>classe = {"Anna": [28, 30, 27], "Marco": [18, 35, 21], "Sara": [16, 19, 17, -1]}</code>: il programma principale è solo un ciclo che stampa <code>riepilogo()</code> per ogni studente.</li>
+<li>Contate quante funzioni dei passi precedenti lavorano per una sola chiamata di <code>riepilogo()</code>.</li>
+</ul>
+<pre><code>Anna: media <span class="mi">28.33</span>, ottimo, voti scartati: <span class="mi">0</span>
+Marco: media <span class="mi">19.50</span>, sufficiente, voti scartati: <span class="mi">1</span>
+Sara: media <span class="mi">17.33</span>, insufficiente, voti scartati: <span class="mi">1</span></code></pre>
+<h4>Come si fa — Funzioni piccole che lavorano insieme</h4>
+<pre><code><span class="kw">def</span> <span class="fn">pulisci</span>(<span class="fn">parola</span>: <span class="nb">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Toglie gli spazi ai lati e porta in minuscolo.&quot;&quot;&quot;</span>
+    <span class="kw">return</span> parola.strip().lower()
+
+<span class="kw">def</span> <span class="fn">lunghe</span>(<span class="fn">parole</span>: <span class="nb">list</span>[<span class="nb">str</span>], minimo: <span class="nb">int</span> <span class="op">=</span> <span class="mi">5</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">list</span>[<span class="nb">str</span>]:
+    <span class="st">&quot;&quot;&quot;Restituisce le parole pulite con almeno minimo lettere.&quot;&quot;&quot;</span>
+    pulite: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [pulisci(p) <span class="kw">for</span> p <span class="kw">in</span> parole]
+    <span class="kw">return</span> [p <span class="kw">for</span> p <span class="kw">in</span> pulite <span class="kw">if</span> <span class="nb">len</span>(p) <span class="op">&gt;</span><span class="op">=</span> minimo]
+
+<span class="kw">def</span> <span class="fn">scheda</span>(<span class="fn">titolo</span>: <span class="nb">str</span>, parole: <span class="nb">list</span>[<span class="nb">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="nb">str</span>:
+    <span class="st">&quot;&quot;&quot;Restituisce una riga che riassume le parole lunghe.&quot;&quot;&quot;</span>
+    scelte: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> lunghe(parole)
+    <span class="kw">return</span> <span class="st">f&quot;{titolo}: {len(scelte)} parole lunghe {scelte}&quot;</span>
+
+elenco: <span class="nb">list</span>[<span class="nb">str</span>] <span class="op">=</span> [<span class="st">&quot; Statistica &quot;</span>, <span class="st">&quot;dati&quot;</span>, <span class="st">&quot;MEDIA &quot;</span>]
+<span class="nb">print</span>(scheda(<span class="st">&quot;Elenco&quot;</span>, elenco))
+<span class="cm"># Elenco: 2 parole lunghe [&#x27;statistica&#x27;, &#x27;media&#x27;]</span></code></pre>
+<ul>
+<li>Per restituire due liste: si creano vuote prima del ciclo, si riempiono con <code>append</code>, si restituiscono con <code>return a, b</code>.</li>
+<li>Ogni funzione fa una cosa sola e si prova da sola, prima di usarla nelle altre.</li>
+<li>Il programma principale chiama poche funzioni: si legge come un elenco di passi.</li>
+<li>Se cambia una regola (cosa è valido, le fasce) si corregge in un posto solo.</li>
+<li>Ordine di lavoro: prima le funzioni piccole, poi quella che le mette insieme.</li>
+</ul>
 <hr>
 <h2>Esercizio 1 — Esito dell'esame (<code>esito.py</code>)</h2>
 <p><a href="../../codice/L04_funzioni/esercizi.html#sol-esito" class="link-soluzione">Soluzione →</a></p>
