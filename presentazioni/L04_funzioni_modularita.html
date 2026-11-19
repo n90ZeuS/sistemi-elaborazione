@@ -424,7 +424,7 @@ print(statistics.median([24, 30, 27]))     # 27</code></pre>
                     <li>Ogni funzione ha i type hints e una docstring di una riga.</li>
                     <li>Le funzioni dei primi passi servono di nuovo più avanti: non cancellatele.</li>
                     <li>Prima di eseguire, provate a prevedere l'output; poi confrontatelo con quello atteso.</li>
-                    <li>Dopo ogni coppia di passi c'è una slide «Come si fa» con un esempio diverso che usa gli stessi strumenti.</li>
+                    <li>Dopo ogni slide di passi ci sono le slide «Come si fa», che spiegano il codice di quei passi riga per riga: guardatele dopo averci provato.</li>
                 </ul>
             </section>
 
@@ -458,24 +458,33 @@ Ciao, Giulia!</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 1-2</div>
-                <h2>Definire e chiamare una funzione</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 1</div>
+                <h2>La prima funzione</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def benvenuto() -&gt; None:
-    """Stampa una riga di benvenuto."""
-    print("Buongiorno!")
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def saluta() -&gt; None:          # niente parametri, niente return
+    """Stampa il saluto di inizio laboratorio."""
+    print("Benvenuti al laboratorio 4!")  # il corpo è indentato
 
-benvenuto()      # chiamata: esegue il corpo → Buongiorno!
-benvenuto()      # si può chiamare quante volte si vuole
+saluta()      # prima chiamata: esegue il corpo
+saluta()      # seconda chiamata: lo esegue di nuovo
+# saluta      # senza () è solo il nome: non succede niente</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>La riga del <code>def</code>: nome, parentesi (qui vuote), <code>-&gt; None</code> e due punti.</li><li>Sotto, indentati di 4 spazi: la docstring e il corpo. Le chiamate invece non sono indentate: stanno fuori dalla funzione.</li><li><code>-&gt; None</code> vuol dire che la funzione non restituisce niente: fa qualcosa, qui stampa.</li><li>Il <code>def</code> da solo non stampa nulla: il corpo parte a ogni chiamata <code>saluta()</code>.</li></ul></div>
+                </div>
+            </section>
 
-def presenta_corso(corso: str) -&gt; None:
-    """Stampa il nome del corso."""
-    print(f"Corso di {corso}")
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 2</div>
+                <h2>Un parametro</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def saluta_persona(nome: str) -&gt; None:
+    """Stampa un saluto per la persona indicata."""
+    print(f"Ciao, {nome}!")      # nome vale quello che passa chi chiama
 
-presenta_corso("Economia")   # corso vale "Economia"
-materia: str = "Fisica"
-presenta_corso(materia)      # corso vale "Fisica"</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li><code>def</code>, nome, parentesi con i parametri, due punti. Il corpo è indentato.</li><li>La prima riga del corpo è la docstring: dice cosa fa la funzione.</li><li><code>-&gt; None</code>: la funzione non restituisce niente, fa solo qualcosa (qui stampa).</li><li>Il <code>def</code> definisce e basta: il corpo parte solo con la chiamata <code>nome()</code>.</li><li>Il parametro è una variabile che riceve il valore dell'argomento, qualunque nome abbia l'argomento.</li></ul></div>
+saluta_persona("Anna")           # nome = "Anna"
+saluta_persona("Marco")          # nome = "Marco"
+studente: str = "Giulia"
+saluta_persona(studente)         # nome = "Giulia": conta il valore</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>nome</code> nel <code>def</code> è il parametro; <code>"Anna"</code> nella chiamata è l'argomento.</li><li>A ogni chiamata il parametro prende il valore dell'argomento, poi il corpo lo usa nella f-string.</li><li>Nell'ultima chiamata l'argomento è una variabile: conta il suo valore, non il suo nome.</li><li><code>saluta_persona()</code> senza argomento dà <code>TypeError</code>: il parametro <code>nome</code> deve ricevere un valore.</li></ul></div>
                 </div>
             </section>
 
@@ -513,30 +522,45 @@ TypeError: media_due() missing 1 required positional argument: 'b'</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 3-4</div>
-                <h2>return e più parametri</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 3</div>
+                <h2>return o print?</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def triplo(x: float) -&gt; float:
-    """Restituisce il triplo di x."""
-    return 3 * x
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def doppio(x: float) -&gt; float:
+    """Restituisce il doppio di x."""
+    return 2 * x                  # consegna il valore a chi chiama
 
-t: float = triplo(4)     # t vale 12
-print(triplo(4) - 2)     # 10: il risultato entra in un calcolo
+def stampa_doppio(x: float) -&gt; None:
+    """Stampa il doppio di x, senza restituirlo."""
+    print(2 * x)                  # lo mostra e basta
 
-def stampa_triplo(x: float) -&gt; None:
-    """Stampa il triplo di x."""
-    print(3 * x)
+print(doppio(5))                  # doppio(5) diventa 10, print lo mostra
+risultato: float = doppio(5) + 1  # 10 + 1: il valore si riusa
+print(f"doppio(5) + 1 = {risultato}")
+valore = stampa_doppio(5)         # stampa 10...
+print(f"stampa_doppio ha restituito: {valore}")   # ...e restituisce None</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Dopo il <code>return</code> la chiamata <code>doppio(5)</code> «diventa» 10: si stampa, si somma, si salva.</li><li><code>doppio</code> da sola non stampa niente: la stampa la fa chi chiama, con <code>print</code>.</li><li><code>stampa_doppio</code> stampa 10 ma non ha <code>return</code>, quindi restituisce <code>None</code>.</li><li><code>stampa_doppio(5) + 1</code> darebbe <code>TypeError</code>: non si può sommare <code>None</code> e 1. Per questo le funzioni di oggi restituiscono.</li></ul></div>
+                </div>
+            </section>
 
-r = stampa_triplo(4)     # stampa 12, ma r vale None
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 4</div>
+                <h2>Due parametri</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def differenza(a: float, b: float) -&gt; float:
+    """Restituisce a meno b."""
+    return a - b
 
-def rapporto(a: float, b: float) -&gt; float:
-    """Restituisce a diviso b."""
-    return a / b
+def media_due(a: float, b: float) -&gt; float:
+    """Restituisce la media di due numeri."""
+    return (a + b) / 2            # le parentesi: prima la somma
 
-print(rapporto(10, 4))           # a=10, b=4 → 2.5
-print(rapporto(4, 10))           # a=4, b=10 → 0.4
-print(rapporto(triplo(2), 3))    # prima triplo(2) = 6, poi 6 / 3 → 2.0</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li><code>return</code> consegna il valore a chi chiama e chiude la funzione.</li><li>Senza <code>return</code> la funzione restituisce <code>None</code>: stampare non è restituire.</li><li>Gli argomenti vanno ai parametri nell'ordine in cui sono scritti.</li><li>Servono tanti argomenti quanti parametri, altrimenti <code>TypeError: ... missing 1 required positional argument</code>.</li><li>In una chiamata dentro l'altra Python calcola prima quella interna.</li></ul></div>
+print(f"differenza(30, 24) = {differenza(30, 24)}")   # a=30, b=24
+print(f"differenza(24, 30) = {differenza(24, 30)}")   # a=24, b=30
+print(f"media_due(24, 30) = {media_due(24, 30)}")
+# prima media_due(24, 30) = 27.0, poi media_due(27.0, 28)
+print(f"media di 27 e di 28: {media_due(media_due(24, 30), 28)}")
+# media_due(24)                   # TypeError: manca b</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Gli argomenti vanno ai parametri in ordine: il primo ad <code>a</code>, il secondo a <code>b</code>. Per questo <code>differenza(24, 30)</code> dà -6.</li><li><code>/</code> dà sempre un <code>float</code>: la media di 24 e 30 è <code>27.0</code>.</li><li>Nella chiamata annidata Python calcola prima quella interna (27.0) e usa il risultato come argomento di quella esterna.</li><li>Il messaggio <code>missing 1 required positional argument: 'b'</code> dice proprio quale parametro manca.</li></ul></div>
                 </div>
             </section>
 
@@ -574,26 +598,44 @@ print(rapporto(triplo(2), 3))    # prima triplo(2) = 6, poi 6 / 3 → 2.0</code>
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 5-6</div>
-                <h2>Funzioni che decidono</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 5</div>
+                <h2>Restituire True o False</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def maggiorenne(eta: int) -&gt; bool:
-    """Restituisce True se eta è almeno 18."""
-    return eta &gt;= 18       # il confronto vale già True o False
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def promosso(voto: int) -&gt; bool:
+    """Restituisce True se il voto è almeno 18."""
+    return voto &gt;= 18             # il confronto vale già True o False
 
-if maggiorenne(20):        # non serve == True
-    print("Può votare")
+def pari(n: int) -&gt; bool:
+    """Restituisce True se n è pari."""
+    return n % 2 == 0             # resto della divisione per 2
 
-def taglia(cm: float) -&gt; str:
-    """Restituisce la taglia per un'altezza in cm."""
-    if cm &lt; 160:
-        return "S"
-    if cm &lt; 175:
-        return "M"         # qui si arriva solo con cm &gt;= 160
-    return "L"             # qui solo con cm &gt;= 175
+print(f"promosso(25): {promosso(25)}  promosso(17): {promosso(17)}")
+for numero in [3, 8, 11]:
+    if pari(numero):              # la chiamata fa da condizione
+        print(f"{numero} è pari")
+    else:
+        print(f"{numero} è dispari")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>voto &gt;= 18</code> è già <code>True</code> o <code>False</code>: si restituisce direttamente, senza <code>if</code> ... <code>else</code>.</li><li><code>n % 2</code> è il resto della divisione per 2: vale 0 per i pari, 1 per i dispari.</li><li>Una funzione che restituisce <code>bool</code> si usa come condizione: <code>if pari(numero):</code>, senza <code>== True</code>.</li><li>Nella chiamata il valore di <code>numero</code> passa al parametro <code>n</code>: i nomi possono essere diversi.</li></ul></div>
+                </div>
+            </section>
 
-print(taglia(150), taglia(170), taglia(190))   # S M L</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li>Un confronto è già un <code>bool</code>: niente <code>if ... return True else return False</code>.</li><li>Una funzione che restituisce <code>bool</code> si usa direttamente come condizione di un <code>if</code>.</li><li>Pari o dispari: il resto della divisione per 2, <code>n % 2</code>, vale 0 per i pari.</li><li>Il primo <code>return</code> raggiunto chiude la funzione: le righe sotto non vengono eseguite.</li><li>Per questo l'ordine dei controlli conta: dal più stretto al più largo.</li></ul></div>
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 6</div>
+                <h2>Più return</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def fascia(voto: float) -&gt; str:
+    """Restituisce la fascia del voto."""
+    if voto &lt; 18:
+        return "insufficiente"    # esce subito
+    if voto &lt; 24:                 # qui voto è almeno 18
+        return "sufficiente"
+    if voto &lt; 28:                 # qui voto è almeno 24
+        return "buono"
+    return "ottimo"               # tutti gli altri casi
+
+for v in [15, 18, 24, 27, 30]:
+    print(f"{v}: {fascia(v)}")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Il primo <code>return</code> raggiunto chiude la funzione: le righe sotto non vengono eseguite.</li><li>Per questo bastano degli <code>if</code> uno sotto l'altro: al secondo si arriva solo se il primo era falso.</li><li>L'ordine conta: se il primo controllo fosse <code>voto &lt; 28</code>, il 15 risulterebbe «buono».</li><li>Attenzione ai confini: 18 è sufficiente perché <code>18 &lt; 18</code> è falso; 24 è buono per lo stesso motivo.</li></ul></div>
                 </div>
             </section>
 
@@ -628,25 +670,35 @@ Sara, Economia, anno 3</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 7-8</div>
-                <h2>Default e keyword</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 7</div>
+                <h2>Parametro con valore di default</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def interesse(capitale: float, tasso: float = 0.02) -&gt; float:
-    """Restituisce l'interesse di un anno (0.02 = 2%)."""
-    return capitale * tasso
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def prezzo_scontato(prezzo: float, sconto: float = 0.1) -&gt; float:
+    """Restituisce il prezzo dopo lo sconto (0.1 = 10%)."""
+    return prezzo * (1 - sconto)  # 1 - sconto è la parte che si paga
 
-print(interesse(1000))              # tasso = 0.02 → 20.0
-print(interesse(1000, 0.05))        # posizionale → 50.0
-print(interesse(1000, tasso=0.05))  # keyword → 50.0
+# sconto non passato: vale il default 0.1
+print(f"Senza sconto indicato: {prezzo_scontato(50):.2f} euro")
+# secondo argomento posizionale: sconto = 0.2
+print(f"Con sconto 0.2: {prezzo_scontato(50, 0.2):.2f} euro")
+# argomento keyword: sconto = 0.5
+print(f"Con sconto=0.5: {prezzo_scontato(50, sconto=0.5):.2f} euro")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Il default si scrive nel <code>def</code> con <code>=</code>: <code>sconto = 0.1</code>.</li><li>Vale solo quando l'argomento manca: nella prima chiamata <code>sconto</code> è 0.1, nelle altre è quello passato.</li><li><code>prezzo_scontato(50, 0.2)</code> e <code>prezzo_scontato(50, sconto=0.2)</code> fanno la stessa cosa; con il nome è più chiaro.</li><li><code>1 - sconto</code> è la parte che si paga: con il 10% di sconto si paga 0.9 del prezzo.</li></ul></div>
+                </div>
+            </section>
 
-def biglietto(citta: str, classe: int = 2,
-              ritorno: bool = False) -&gt; str:
-    """Restituisce la descrizione del biglietto."""
-    return f"{citta}, classe {classe}, ritorno {ritorno}"
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 8</div>
+                <h2>Argomenti keyword</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def presenta(nome: str, corso: str = "Statistica", anno: int = 1) -&gt; str:
+    """Restituisce una frase di presentazione."""
+    return f"{nome}, {corso}, anno {anno}"   # restituisce, non stampa
 
-print(biglietto("Roma", ritorno=True))   # classe resta 2
-print(biglietto(classe=1, citta="Milano"))</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li>Il valore di default si scrive nel <code>def</code> con <code>=</code> e vale quando l'argomento manca.</li><li>I parametri con default vanno dopo quelli senza.</li><li>Un argomento keyword (<code>nome=valore</code>) dice a quale parametro va: l'ordine non conta più.</li><li>Con le keyword si può saltare un parametro con default e cambiare solo quello dopo.</li><li>Prima i posizionali, poi le keyword: <code>biglietto(citta="Roma", 1)</code> è un errore.</li></ul></div>
+print(presenta("Anna"))                  # corso e anno di default
+print(presenta("Marco", anno=2))         # corso resta Statistica
+print(presenta(anno=3, nome="Sara", corso="Economia"))   # tutti per nome</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>nome</code> non ha default ed è obbligatorio; <code>corso</code> e <code>anno</code> possono mancare.</li><li><code>presenta("Marco", 2)</code> sarebbe sbagliato: il 2 andrebbe a <code>corso</code> e si otterrebbe <code>Marco, 2, anno 1</code>.</li><li>Con <code>anno=2</code> si salta <code>corso</code>, che resta al suo default.</li><li>Se tutti gli argomenti sono keyword l'ordine non conta. La funzione restituisce la stringa: la stampa la fa <code>print</code> fuori.</li></ul></div>
                 </div>
             </section>
 
@@ -681,27 +733,46 @@ Promossi in un appello vuoto: []</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 9-10</div>
-                <h2>Funzioni e liste</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 9</div>
+                <h2>Una lista come parametro</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def conta_negativi(valori: list[float]) -&gt; int:
-    """Conta i valori minori di zero."""
-    conta: int = 0              # si parte da zero
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def somma(valori: list[float]) -&gt; float:
+    """Restituisce la somma dei valori, con un ciclo."""
+    totale: float = 0             # 1. accumulatore a zero
     for v in valori:
-        if v &lt; 0:
-            conta += 1
-    return conta                # fuori dal ciclo!
+        totale += v               # 2. si aggiorna a ogni giro
+    return totale                 # 3. fuori dal ciclo
 
-print(conta_negativi([3, -1, -4, 2]))   # 2
-print(conta_negativi([5, 6]))           # 0
+def conta_sopra(valori: list[float], soglia: float) -&gt; int:
+    """Conta i valori maggiori della soglia."""
+    conta: int = 0
+    for v in valori:
+        if v &gt; soglia:
+            conta += 1            # conta solo quelli sopra
+    return conta
 
-def solo_positivi(valori: list[float]) -&gt; list[float]:
-    """Restituisce una lista nuova con i valori maggiori di zero."""
-    return [v for v in valori if v &gt; 0]
+ore: list[float] = [2, 5, 3, 8, 1, 6]
+print(f"Somma: {somma(ore)}, controllo con sum(): {sum(ore)}")
+print(f"Sopra 4 ore: {conta_sopra(ore, 4)}")
+print(f"Sopra 7 ore: {conta_sopra(ore, 7)}")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Schema dell'accumulatore: 1. valore iniziale prima del ciclo, 2. aggiornamento dentro, 3. <code>return</code> dopo.</li><li>Errore classico: il <code>return</code> indentato dentro il <code>for</code>. La funzione uscirebbe al primo giro e <code>somma(ore)</code> darebbe 2.</li><li><code>valori</code> è la lista passata: la stessa funzione va bene per qualsiasi lista.</li><li>Il secondo parametro cambia il risultato senza riscrivere la funzione: soglia 4 → 3 valori, soglia 7 → 1.</li></ul></div>
+                </div>
+            </section>
 
-dati: list[float] = [3, -1, -4, 2]
-print(solo_positivi(dati), dati)   # [3, 2] [3, -1, -4, 2]</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li>La stessa funzione lavora su qualsiasi lista le passiate.</li><li>Accumulatore: si crea prima del ciclo, si aggiorna dentro, si restituisce dopo.</li><li>Errore classico: il <code>return</code> dentro il ciclo chiude la funzione al primo giro.</li><li>Una comprehension costruisce una lista nuova: quella passata non cambia.</li><li>Nella condizione della comprehension si può chiamare un'altra funzione, per esempio <code>if positivo(v)</code>.</li></ul></div>
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 10</div>
+                <h2>Restituire una lista nuova</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def solo_promossi(voti: list[int]) -&gt; list[int]:
+    """Restituisce una lista nuova con i voti da 18 in su."""
+    return [v for v in voti if promosso(v)]   # promosso() del passo 5
+
+appello: list[int] = [24, 15, 30, 17, 18]
+buoni: list[int] = solo_promossi(appello)
+print(f"Promossi: {buoni}")
+print(f"Appello: {appello}")      # non è cambiata
+print(f"Promossi in un appello vuoto: {solo_promossi([])}")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>La comprehension costruisce una lista nuova: <code>appello</code> non viene toccata.</li><li>Nella condizione si chiama <code>promosso()</code>: la regola «da 18 in su» è scritta in un posto solo.</li><li>È come un ciclo che parte da <code>[]</code> e fa <code>append(v)</code> quando <code>promosso(v)</code> è vero.</li><li>Con la lista vuota il ciclo non fa nessun giro e il risultato è <code>[]</code>, senza errori.</li></ul></div>
                 </div>
             </section>
 
@@ -737,32 +808,39 @@ media(valori: list[float]) -&gt; float
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 11-12</div>
-                <h2>Tuple e funzioni che si chiamano</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 11</div>
+                <h2>Restituire una tupla</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def primo_ultimo(parole: list[str]) -&gt; tuple[str, str]:
-    """Restituisce la prima e l'ultima parola."""
-    return parole[0], parole[-1]       # una tupla
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def min_max(valori: list[float]) -&gt; tuple[float, float]:
+    """Restituisce minimo e massimo dei valori."""
+    return min(valori), max(valori)   # due valori: una tupla
 
-inizio, fine = primo_ultimo(["alfa", "beta", "gamma"])
-print(inizio, fine)                    # alfa gamma
-coppia = primo_ultimo(["x", "y"])
-print(coppia)                          # ('x', 'y')
+temperature: list[float] = [12.5, 9.0, 15.5, 11.0]
+basso, alto = min_max(temperature)    # basso = 9.0, alto = 15.5
+print(f"Minima {basso}, massima {alto}, escursione {alto - basso}")
+coppia = min_max([3, 7])              # una sola variabile: la tupla intera
+print(f"Senza spacchettare: {coppia}")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>return min(valori), max(valori)</code>: due valori separati da virgola formano una tupla.</li><li>Spacchettando servono tante variabili quanti elementi: <code>basso, alto</code>. Con tre variabili si ha <code>ValueError</code>.</li><li>Con una sola variabile si tiene la tupla intera; poi <code>coppia[0]</code> è il minimo.</li><li><code>min_max([])</code> dà errore: <code>min()</code> di una lista vuota non esiste.</li></ul></div>
+                </div>
+            </section>
 
-def quadrato(x: float) -&gt; float:
-    """Restituisce x al quadrato."""
-    return x * x
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 12</div>
+                <h2>Una funzione che ne chiama un&#x27;altra</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def media(valori: list[float]) -&gt; float:
+    """Restituisce la media aritmetica dei valori."""
+    return somma(valori) / len(valori)    # somma() del passo 9
 
-def somma_quadrati(valori: list[float]) -&gt; float:
-    """Restituisce la somma dei quadrati, usando quadrato()."""
-    totale: float = 0
-    for v in valori:
-        totale += quadrato(v)
-    return totale
+def sopra_media(valori: list[float]) -&gt; list[float]:
+    """Restituisce i valori maggiori della media."""
+    m: float = media(valori)              # calcolata una volta sola
+    return [v for v in valori if v &gt; m]
 
-print(somma_quadrati([1, 2, 3]))       # 14
-help(quadrato)                         # firma e docstring</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li><code>return a, b</code> restituisce una tupla; il tipo è <code>tuple[...]</code>.</li><li>Si spacchetta con tante variabili quanti sono gli elementi; con una sola variabile si tiene la tupla intera.</li><li>Una funzione già scritta si chiama dentro un'altra: si scrive una volta e si usa ovunque.</li><li>Un valore che serve più volte (per esempio la media) si calcola una volta e si salva in una variabile, non dentro la comprehension.</li><li><code>help(funzione)</code> mostra la firma e la docstring.</li></ul></div>
+print(f"Media delle ore: {media(ore):.2f}")   # ore del passo 9
+print(f"Sopra la media: {sopra_media(ore)}")
+help(media)                               # firma e docstring</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>media</code> usa <code>somma</code>, <code>sopra_media</code> usa <code>media</code>: ogni calcolo è scritto una volta sola.</li><li>La media si salva in <code>m</code> prima della comprehension. Scrivendo <code>if v &gt; media(valori)</code> si ricalcolerebbe per ogni elemento.</li><li><code>help(media)</code> stampa la firma e la docstring: è per questo che la docstring si scrive.</li><li><code>media([])</code> dà <code>ZeroDivisionError</code>: <code>len</code> vale 0.</li></ul></div>
                 </div>
             </section>
 
@@ -797,31 +875,52 @@ NameError: name 'n' is not defined</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 13-14</div>
-                <h2>Dizionari e scope</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 13</div>
+                <h2>Un dizionario come parametro</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def totale_spesa(prezzi: dict[str, float]) -&gt; float:
-    """Restituisce la somma dei prezzi."""
-    totale: float = 0
-    for prodotto, prezzo in prezzi.items():
-        totale += prezzo
-    return totale
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def esame_migliore(libretto: dict[str, int]) -&gt; str:
+    """Restituisce il nome dell'esame con il voto più alto."""
+    migliore: str = ""            # il migliore visto finora
+    voto_max: int = -1            # più basso di qualsiasi voto
+    for esame, voto in libretto.items():
+        if voto &gt; voto_max:       # trovato un voto più alto
+            migliore = esame      # si aggiornano insieme
+            voto_max = voto
+    return migliore
 
-print(totale_spesa({"pane": 2.5, "latte": 1.5}))   # 4.0
+def media_libretto(libretto: dict[str, int]) -&gt; float:
+    """Restituisce la media dei voti del libretto."""
+    return media(list(libretto.values()))   # i voti in una lista
 
-def raddoppia(k: int) -&gt; int:
-    """Restituisce il doppio di k."""
-    k = k * 2          # k è locale
-    return k
+libretto: dict[str, int] = {"Analisi": 26, "Statistica": 30, "Informatica": 28}
+print(f"Esame migliore: {esame_migliore(libretto)}")
+print(f"Media del libretto: {media_libretto(libretto):.2f}")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>items()</code> dà le coppie (esame, voto): il ciclo le spacchetta in due variabili.</li><li>Il massimo «visto finora»: si parte da -1, più basso di ogni voto, e a ogni voto più alto si aggiornano insieme nome e voto.</li><li>Con il libretto dell'esempio: Analisi 26 diventa il migliore, poi Statistica 30; Informatica 28 non lo supera.</li><li><code>values()</code> non è una lista: <code>list(...)</code> la crea, così si può riusare <code>media()</code>.</li></ul></div>
+                </div>
+            </section>
 
-y: int = 5
-print(raddoppia(y), y)   # 10 5: y non cambia
-y = raddoppia(y)         # ora y vale 10
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 14</div>
+                <h2>Scope: cosa vede la funzione</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def aumenta(n: int) -&gt; int:
+    """Restituisce n + 1."""
+    n = n + 1                     # cambia solo la n locale
+    return n
 
-def svuota(lista: list[int]) -&gt; None:
-    """Toglie tutti gli elementi dalla lista."""
-    lista.clear()        # modifica la lista di chi chiama</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li>Un dizionario si passa come una lista; dentro si scorre con <code>items()</code>.</li><li>Per il massimo servono due variabili, il nome e il valore migliori visti finora, aggiornate insieme dentro il ciclo.</li><li>Le variabili create nella funzione sono locali: alla fine spariscono, e fuori si ha <code>NameError</code>.</li><li>Riassegnare un parametro (<code>k = k * 2</code>) non cambia la variabile di chi chiama: si usa <code>y = raddoppia(y)</code>.</li><li>Una lista passata è la stessa lista: <code>append</code>, <code>clear</code> e gli altri metodi la modificano anche fuori.</li></ul></div>
+def aggiungi_voto(voti: list[int], voto: int) -&gt; None:
+    """Aggiunge il voto in fondo alla lista."""
+    voti.append(voto)             # modifica la lista di chi chiama
+
+x: int = 10
+print(f"aumenta(x) = {aumenta(x)}, x = {x}")   # 11, ma x resta 10
+x = aumenta(x)                    # per cambiare x si riassegna
+print(f"dopo x = aumenta(x): x = {x}")
+miei: list[int] = [24, 27]
+aggiungi_voto(miei, 30)           # voti e miei sono la stessa lista
+print(f"miei dopo aggiungi_voto: {miei}")
+# print(n)                        # NameError: n esiste solo in aumenta</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li>Alla chiamata <code>n</code> riceve il valore 10. <code>n = n + 1</code> cambia solo la variabile locale: <code>x</code> resta 10.</li><li>Per aggiornare <code>x</code> si usa il valore restituito: <code>x = aumenta(x)</code>.</li><li><code>voti</code> e <code>miei</code> sono due nomi della stessa lista (come in L03): <code>append</code> la modifica anche fuori.</li><li>Le variabili locali spariscono alla fine della chiamata: fuori, <code>print(n)</code> dà <code>NameError</code>.</li></ul></div>
                 </div>
             </section>
 
@@ -856,27 +955,53 @@ Sara: media 17.33, insufficiente, voti scartati: 1</code></pre>
             </section>
 
             <section>
-                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passi 15-16</div>
-                <h2>Funzioni piccole che lavorano insieme</h2>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 15</div>
+                <h2>Separare dati validi e non validi</h2>
                 <div class="columns">
-                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def pulisci(parola: str) -&gt; str:
-    """Toglie gli spazi ai lati e porta in minuscolo."""
-    return parola.strip().lower()
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def valido(voto: int) -&gt; bool:
+    """Restituisce True se il voto è tra 0 e 30."""
+    return 0 &lt;= voto &lt;= 30        # come 0 &lt;= voto and voto &lt;= 30
 
-def lunghe(parole: list[str], minimo: int = 5) -&gt; list[str]:
-    """Restituisce le parole pulite con almeno minimo lettere."""
-    pulite: list[str] = [pulisci(p) for p in parole]
-    return [p for p in pulite if len(p) &gt;= minimo]
+def separa(voti: list[int]) -&gt; tuple[list[int], list[int]]:
+    """Restituisce i voti validi e quelli non validi."""
+    validi: list[int] = []        # due liste vuote prima del ciclo
+    scartati: list[int] = []
+    for v in voti:
+        if valido(v):
+            validi.append(v)
+        else:
+            scartati.append(v)
+    return validi, scartati       # tutte e due, in una tupla
 
-def scheda(titolo: str, parole: list[str]) -&gt; str:
-    """Restituisce una riga che riassume le parole lunghe."""
-    scelte: list[str] = lunghe(parole)
-    return f"{titolo}: {len(scelte)} parole lunghe {scelte}"
+letti: list[int] = [28, 31, 18, -2, 24, 99, 15]
+validi, scartati = separa(letti)
+print(f"Validi: {validi}")
+print(f"Scartati: {scartati}")
+m_validi: float = media(validi)   # media() e solo_promossi() già scritte
+print(f"Media dei validi: {m_validi:.2f}, promossi: {solo_promossi(validi)}")</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>0 &lt;= voto &lt;= 30</code> è un confronto concatenato, come <code>0 &lt;= voto and voto &lt;= 30</code>.</li><li>Due liste vuote prima del ciclo; a ogni giro il voto finisce in una delle due; alla fine si restituiscono insieme come tupla.</li><li><code>validi</code> e <code>scartati</code> dentro e fuori la funzione sono variabili diverse con lo stesso nome.</li><li>Prima si puliscono i dati, poi si calcola: con -2 e 99 la media verrebbe 30.43, sopra il voto massimo.</li></ul></div>
+                </div>
+            </section>
 
-elenco: list[str] = [" Statistica ", "dati", "MEDIA "]
-print(scheda("Elenco", elenco))
-# Elenco: 2 parole lunghe ['statistica', 'media']</code></pre></div>
-                    <div class="col-40"><ul class="note-sol"><li>Per restituire due liste: si creano vuote prima del ciclo, si riempiono con <code>append</code>, si restituiscono con <code>return a, b</code>.</li><li>Ogni funzione fa una cosa sola e si prova da sola, prima di usarla nelle altre.</li><li>Il programma principale chiama poche funzioni: si legge come un elenco di passi.</li><li>Se cambia una regola (cosa è valido, le fasce) si corregge in un posto solo.</li><li>Ordine di lavoro: prima le funzioni piccole, poi quella che le mette insieme.</li></ul></div>
+            <section>
+                <div class="tag tag-riscaldamento">Riscaldamento · come si fa · passo 16</div>
+                <h2>Mettere tutto insieme</h2>
+                <div class="columns">
+                    <div class="col-60"><pre class="small"><code class="language-python" data-trim data-noescape>def riepilogo(nome: str, voti: list[int]) -&gt; str:
+    """Restituisce una riga di riepilogo per lo studente."""
+    validi, scartati = separa(voti)   # 1. separa (usa valido)
+    m: float = media(validi)          # 2. media (usa somma)
+    # 3. fascia della media e numero di scartati
+    return f"{nome}: media {m:.2f}, {fascia(m)}, voti scartati: {len(scartati)}"
+
+classe: dict[str, list[int]] = {
+    "Anna": [28, 30, 27],
+    "Marco": [18, 35, 21],
+    "Sara": [16, 19, 17, -1],
+}
+for nome, voti in classe.items():     # il programma principale
+    print(riepilogo(nome, voti))</code></pre></div>
+                    <div class="col-40"><ul class="note-sol"><li><code>riepilogo</code> fa tre cose, ciascuna con una funzione già scritta: separa, media, fascia.</li><li>Per una sola chiamata lavorano cinque funzioni: <code>separa</code>, <code>valido</code>, <code>media</code>, <code>somma</code> e <code>fascia</code>.</li><li>Il programma principale è un ciclo di due righe: le funzioni danno un nome a ogni passaggio.</li><li>Uno studente con tutti voti non validi darebbe <code>ZeroDivisionError</code> in <code>media</code>: andrebbe controllato prima.</li></ul></div>
                 </div>
             </section>
 
